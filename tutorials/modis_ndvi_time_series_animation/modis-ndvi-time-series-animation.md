@@ -1,4 +1,4 @@
-[![Open In Editor](https://github.com/jdbcode/tutorial-test/blob/master/ee-editor-badge.png?raw=true)](https://code.earthengine.google.com/56ff6d581ffe7b90266027293087066b)
+[![Open In Editor](ee-editor-badge.svg)](https://code.earthengine.google.com/e6b3b0ce9268e2015685ce68761c9eab)
 
 # MODIS NDVI Times Series Animation
 
@@ -7,13 +7,15 @@ In this tutorial, you'll learn how to generate an animated GIF representing 20-y
 NDVI for serial 16-day MODIS composites spanning January 1st through December 31st. The
 following image is an example of the resulting animation. 
 
-![MODIS NDVI GIF](modis_ndvi_time_series_animation.gif)
+![MODIS NDVI GIF](modis-ndvi-time-series-animation.gif)
 
 ## Context
 
-MODIS is a moderate resolution satellite imaging system and NDVI is a vegetation metric derived from its data.
-In the above animation, color scales from tan to dark green, respectively representing a photosynthetic capacity
-gradient from low to high (low to high vegetation cover/density/productivity). In this example of Africa, the
+[MODIS](https://modis.gsfc.nasa.gov/) is a moderate resolution satellite imaging system and NDVI is a 
+common reflectance-based vegetation index. The [Earth Engine Data Catalog](https://developers.google.com/earth-engine/datasets/)
+provides NDVI as a precalculated [dataset](https://developers.google.com/earth-engine/datasets/catalog/MODIS_006_MOD13A2)
+for convenience. In the above animation, NDVI is mapped to a color gradient from tan to dark green representing 
+low to high photosynthetic capacity (low to high vegetation cover/density/productivity). The
 tide-like latitudinal shift in vegetation is associated with the sun’s declination moving between 23.5&deg;
 north and 23.5&deg; south, relative to the equator, throughout the year driving shifts in rainfall. Similar
 seasonal patterns of vegetation productivity are found around the world at both small and large scales.
@@ -24,7 +26,7 @@ The basic workflow is as follows:
 
 1. Fetch the MODIS vegetation indices dataset and subset the NDVI band
 2. Define region of interest and animation frame geometries
-3. Group images from the same 16-day composite window using a join
+3. Group images from the same annual 16-day composite window using a join
 4. Reduce the composite groups by median to produce animation frames
 5. Define visualization parameters and convert data into RGB visualization images
 6. Generate a URL that will produce a GIF in the browser
@@ -47,6 +49,9 @@ serves as the clipping geometry. When applied, all pixels outside of Africa will
 describing a rectangular extent of the desired animation is defined. In your own application, you may define
 these two geometries any number of ways. Note, however, that very large regional extents may exceed limitations
 of the function used to produce the animated GIF, in which case an error will be printed in the console.
+Please see the [Geometry Overview](https://developers.google.com/earth-engine/geometries) section of the
+Developers Guide for more information on defining geometries. Note that you can also [upload shapefiles](https://developers.google.com/earth-engine/importing#uploading-table-assets)
+and import them as `ee.Geometry` objects.
 
 ```js
 // Define a mask to clip the NDVI data by.
@@ -79,10 +84,10 @@ col = col.map(function(img){
 });
 ```
 
-A join operation will be implemented that groups images by the 'doy' property just added. It expects two
-collections: a distinct DOY collection and the complete collection. The complete collection exists, the
-distinct collection needs to be defined. Do so by filtering the complete collection to a single year of
-data e.g. 2013. 
+A join operation will be implemented that groups images by the 'doy' property just added. The join opperation 
+expects two collections, in this case: a distinct DOY collection and the complete collection modified to
+include the 'doy' property. The complete collection exists, the distinct collection needs to be defined.
+Do so by filtering the complete collection to a single year of data e.g. 2013. 
 
 ```js
 var dist = col.filterDate('2013-01-01', '2014-01-01');
@@ -90,8 +95,8 @@ var dist = col.filterDate('2013-01-01', '2014-01-01');
 
 Complete the join by:
 
-1. Creating a filter that will identify matching images by the `doy` property
-2. Defining a `saveAll` join that will produce a list of all matches in a property called 'doy_matches'
+1. Creating a filter that will identify matching images between the distinct and complete collections by the `doy` property
+2. Defining a `saveAll` join that will produce a list of all matches per distinct 'doy' in a property called 'doy_matches'
 3. Applying the join
 
 ```js
@@ -161,7 +166,8 @@ The final step is to define arguments for the `getVideoThumbURL` method which wi
 the collection of RGB visualization images generated in the previous step. Relevant parameters include:
 
 - `region`: set to the region defined in above [Step 2](#2-define-clipping-and-region-boundary-geometries)
-- `dimensions`: set to 600 which defines the larger dimension of the resulting GIF as 600px (the smaller dimension is proportionally scaled)
+- `dimensions`: set to 600 which defines the larger dimension of the resulting GIF as 600px (the smaller dimension
+is proportionally scaled)
 - `crs`: set to 'EPSG:3857' to match the coordinate reference system of the Code Editor map
 - `framesPerSecond`: set to 10 (frames per second)
 
@@ -180,4 +186,4 @@ print(rgbVis.getVideoThumbURL(gifParams));
 
 A URL will be printed to the console after running this block of code. Upon visiting the URL, Earth Engine servers
 will complete the work needed to produce the GIF on-the-fly. Once the task is complete, the animation will appear in
-the browser. Use the right-click context menu to select options for downloading the GIF file to your location machine.
+the browser. Use the right-click context menu to select options for downloading the GIF file to your computer.

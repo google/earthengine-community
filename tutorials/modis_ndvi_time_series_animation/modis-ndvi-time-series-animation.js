@@ -37,7 +37,7 @@ col = col.map(function(img){
 });
 
 // Get a collection of distinct images by 'doy'.
-var dist = col.filterDate('2013-01-01', '2014-01-01');
+var distinctDOY = col.filterDate('2013-01-01', '2014-01-01');
 
 // Define a filter that identifies which images from the complete 
 // collection match the DOY from the distinct DOY collection. 
@@ -47,7 +47,7 @@ var filter = ee.Filter.equals({leftField: 'doy', rightField: 'doy'});
 var join = ee.Join.saveAll('doy_matches');
 
 // Apply the join and convert the resulting FeatureCollection to an ImageCollection.
-var joinCol = ee.ImageCollection(join.apply(dist, col, filter));
+var joinCol = ee.ImageCollection(join.apply(distinctDOY, col, filter));
 
 // Apply median reduction among matching DOY collections.
 var comp = joinCol.map(function(img) {

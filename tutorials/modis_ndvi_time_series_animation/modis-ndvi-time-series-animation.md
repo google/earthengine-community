@@ -17,7 +17,7 @@ provides NDVI as a precalculated [dataset](https://developers.google.com/earth-e
 for convenience. In the above animation, NDVI is mapped to a color gradient from tan to dark green representing 
 low to high photosynthetic capacity (low to high vegetation cover/density/productivity). The
 tide-like latitudinal shift in vegetation is associated with the sun’s declination moving between 23.5&deg;
-north and 23.5&deg; south, relative to the equator, throughout the year driving shifts in rainfall. Similar
+north and 23.5&deg; south, relative to the equator, throughout the year. See [Nicholson, 2019](https://journals.ametsoc.org/doi/full/10.1175/BAMS-D-16-0287.1) for more information on this phenomenon. Similar
 seasonal patterns of vegetation productivity are found around the world at both small and large scales.
 
 ## Instructions
@@ -33,8 +33,8 @@ The basic workflow is as follows:
 
 ### 1. Get MODIS NDVI collection
 
-Retrieve the MODIS Terra Vegetation Indices 16-Day Global 1km dataset as an `ee.ImageCollection`
-and select the NDVI band.
+Retrieve the [MODIS Terra Vegetation Indices 16-Day Global 1km dataset](https://developers.google.com/earth-engine/datasets/catalog/MODIS_006_MOD13A2)
+as an `ee.ImageCollection` and select the NDVI band.
 
 ```js
 var col = ee.ImageCollection('MODIS/006/MOD13A2').select('NDVI');
@@ -86,11 +86,11 @@ col = col.map(function(img){
 
 A join operation will be implemented that groups images by the 'doy' property just added. The join opperation 
 expects two collections, in this case: a distinct DOY collection and the complete collection modified to
-include the 'doy' property. The complete collection exists, the distinct collection needs to be defined.
+include the 'doy' property. The complete collection (`col`) exists, the distinct collection needs to be defined.
 Do so by filtering the complete collection to a single year of data e.g. 2013. 
 
 ```js
-var dist = col.filterDate('2013-01-01', '2014-01-01');
+var distinctDOY = col.filterDate('2013-01-01', '2014-01-01');
 ```
 
 Complete the join by:
@@ -108,11 +108,11 @@ var filter = ee.Filter.equals({leftField: 'doy', rightField: 'doy'});
 var join = ee.Join.saveAll('doy_matches');
 
 // Apply the join and convert the resulting FeatureCollection to an ImageCollection.
-var joinCol = ee.ImageCollection(join.apply(dist, col, filter));
+var joinCol = ee.ImageCollection(join.apply(distinctDOY, col, filter));
 ```
 
-The result is a copy of the distinct DOY collection with a property added to each image (`same_doy`) that lists all of the
-images from the complete collection that have the same DOY for a given distinct DOY image.
+The result (`joinCol`) is a copy of the distinct DOY collection with a property added to each image (`same_doy`) that lists all of the
+images from the complete collection (`col`) that have the same DOY for a given distinct DOY image.
 
 ### 4. Reduce composite groups
 
@@ -121,7 +121,7 @@ of its constituents. Map this oppertation over each distinct DOY image in the ne
 The result is a new collection, with one image per distinct DOY composite that represents its 20-year
 median NDVI per pixel. It took some work to get to this point, but using a central tendency statistic
 based on a population of data produces an annual time series animation that is free of missing data and
-outliers i.e. the animation is less noisy.   
+outliers (i.e. the animation is less noisy).   
 
 ```js
 // Apply median reduction among matching DOY collections.

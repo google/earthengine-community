@@ -17,6 +17,20 @@
 
 var Dataset = require('users/gmiceli/ee-lct:impl/dataset.js').Dataset;
 
+var COMMON_BAND_NAMES = {
+  'B1': 'coastal',
+  'B2': 'blue',
+  'B3': 'green',
+  'B4': 'red',
+  'B5': 'nir',
+  'B6': 'swir1',
+  'B7': 'swir2',
+  'B8': 'pan',
+  'B9': 'cirrus',
+  'B10': 'thermal1',
+  'B11': 'thermal2'
+};
+
 var DEFAULT_VIS_PARAMS =
     {bands: ['B4', 'B3', 'B2'], min: 0, max: 3000, gamma: 1.4};
 var CLOUD_SHADOW_BIT_MASK = 1 << 3;

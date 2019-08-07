@@ -41,6 +41,70 @@ var mockNetworkCalls = function() {
   });
 };
 
+
+var encodeFunctionInvocationValue = function(invocation) {
+  var args = {};
+  for (var argName in invocation.arguments) {
+    args[argName] = encode(invocation.arguments[argName]);
+  }
+  var value = {};
+  value[invocation.functionName] = args;
+  return value;
+};
+
+var encodeFunctionDefinitionValue = function(definition) {
+  var value = {};
+  var argNames = definition.argumentNames;
+  value['function(' + argNames.join(', ') + ')'] = encode(definition.body);
+  return value;
+};
+
+var encode = function(graph) {
+  if (Object.keys(graph) > 1) {
+    throw new Error('Multiple value types not supported: ' + Object.keys(graph));
+  }
+  var valueType = Object.keys(graph)[0];
+  var value = Object.values(graph)[0];
+  switch (valueType) {
+    case 'functionInvocationValue':
+      return encodeFunctionInvocationValue(value);
+    case 'functionDefinitionValue':
+      return encodeFunctionDefinitionValue(value);
+    case 'constantValue':
+      return value;
+    case 'argumentReference':
+      return '$' + value;
+    default:
+      throw new Error('Unknown value type: ' + valueType);
+  }
+};
+
+var encodeForTesting = function(obj) {
+  return encode(ee.Serializer.encodeCloudApiPretty(obj));
+};
+
+var stringifyJson = function(obj) {
+  return JSON.stringify(obj, null, 2);
+};
+
+var stringifyEeObject = function(obj) {
+ return '<EE API Object ' + stringifyJson(encodeForTesting(obj)) + '>';
+};
+
+global.eeObjectMatching = function(expected) {
+  const matcher = function() {}; 
+  matcher.asymmetricMatch = function(actual) {
+    // Use stringify() to perform deep compare on two objects.
+    return JSON.stringify(encodeForTesting(actual)) === JSON.stringify(expected);
+  }
+  matcher.jasmineToString = function() {
+    return '<EE API Object ' + stringifyJson(expected) + '>';
+  }
+  return matcher;
+};
+
+ee.ComputedObject.prototype.toString = function() { return stringifyEeObject(this); };
+
 /**
  * Runs a test or set of tests locally, mocking out calls that would normally
  * communicate to the remote Earth Engine server. This also sets up the

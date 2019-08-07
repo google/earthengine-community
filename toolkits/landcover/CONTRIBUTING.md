@@ -23,7 +23,7 @@ These instructions only need to be followed once per development workstation:
 
 2.  Install Node.js
 
-        $ nvm install 8.16.0
+        $ nvm install 10.16.2
 
 3.  Install Jasmine test framework
 

@@ -41,6 +41,7 @@ var mockNetworkCalls = function() {
   });
 };
 
+
 /**
  * Runs a test or set of tests locally, mocking out calls that would normally
  * communicate to the remote Earth Engine server. This also sets up the

@@ -1,6 +1,6 @@
-**/.*
 !.gitignore
 !.eslintrc.yml
-node_modules
+**/.*
 coverage
+node_modules
 out

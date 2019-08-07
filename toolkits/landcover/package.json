@@ -7,6 +7,7 @@
     "test:unit": "jasmine --config=test/jasmine.json 'test/unit/*.js'",
     "test:int": "jasmine --config=test/jasmine.json 'test/int/*.js'",
     "coverage": "nyc npm run test:unit",
+    "lint": "./node_modules/.bin/eslint .",
     "open-coverage": "open ./coverage/lcov-report/index.html",
     "update-algorithms": "node test/update-algorithms.js"
   },
@@ -27,6 +28,8 @@
   "homepage": "https://github.com/google/earthengine-community",
   "devDependencies": {
     "@google/earthengine": "^0.1.186",
+    "eslint": "^6.1.0",
+    "eslint-config-google": "^0.13.0",
     "jasmine": "^3.4.0",
     "jasmine-console-reporter": "^3.1.0",
     "karma-jasmine-diff-reporter": "^2.0.0",

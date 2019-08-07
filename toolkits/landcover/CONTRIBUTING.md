@@ -58,7 +58,11 @@ Do this once to set up a local copy of the source code:
 #### Testing
 
 After making changes, use the following commands to test your changes offline
-locally (unit tests) and against Earth Engine (integration tests).
+locally (lint and unit tests) and against Earth Engine (integration tests).
+
+*   Run lint checks
+
+        $ npm run lint
 
 *   Run unit tests
 

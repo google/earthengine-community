@@ -19,21 +19,44 @@ var assert = require('assert');
 var lct = require('../../api');
 
 withEarthEngineStub('Landsat8', function() {
-  it('fmaskCloudsAndShadows()', function() {
-    var dataset = lct.Landsat8();
-    // Mock the Image constructor instead of creating an ImageCollection with a
-    // mock Image. We do this because provided images are copied at construction
-    // time, in which case the mocks would not get used internally. In this case
-    // the constructor will always return this instance.
-    var image = ee.Image(0);
-    spyOn(ee, 'Image').and.returnValue(image);
-    // Return {} since EE expects updateMask() to always return a non-empty
-    // result.
-    spyOn(image, 'updateMask').and.returnValue({});
+	it('fmaskCloudsAndShadows()', function() {
+		var dataset = lct.Landsat8();
 
-    dataset.fmaskCloudsAndShadows();
+		spyOn(ee.Image.prototype, 'updateMask').and.callThrough();
 
-    // Sanity check that we made it through to the updateMask() call.
-    expect(image.updateMask).toHaveBeenCalled();
-  });
+		dataset = dataset.fmaskCloudsAndShadows();
+    console.log(ee.Image.)
+		expect(ee.Image.prototype.updateMask).toHaveBeenCalledWith(
+			eeObjectMatching({
+				'Image.and': {
+					image1: {
+						'Image.eq': {
+							image1: {
+								'Image.bitwiseAnd': {
+									image1: {
+										'Image.select': { input: '$uninitializedVar', bandSelectors: [ 'pixel_qa' ] }
+									},
+									image2: { 'Image.constant': { value: 8 } }
+								}
+							},
+							image2: { 'Image.constant': { value: 0 } }
+						}
+					},
+					image2: {
+						'Image.eq': {
+							image1: {
+								'Image.bitwiseAnd': {
+									image1: {
+										'Image.select': { input: '$uninitializedVar', bandSelectors: [ 'pixel_qa' ] }
+									},
+									image2: { 'Image.constant': { value: 32 } }
+								}
+							},
+							image2: { 'Image.constant': { value: 0 } }
+						}
+					}
+				}
+			})
+		);
+	});
 });

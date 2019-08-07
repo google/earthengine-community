@@ -26,9 +26,10 @@
   },
   "homepage": "https://github.com/google/earthengine-community",
   "devDependencies": {
-    "@google/earthengine": "^0.1.185",
+    "@google/earthengine": "^0.1.186",
     "jasmine": "^3.4.0",
     "jasmine-console-reporter": "^3.1.0",
+    "karma-jasmine-diff-reporter": "^2.0.0",
     "nyc": "^14.1.1"
   }
 }

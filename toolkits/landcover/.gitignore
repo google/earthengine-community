@@ -1,6 +1,6 @@
-**/.*
 !.gitignore
-!.travis.yml
+!.eslintrc.yml
+**/.*
 coverage
 node_modules
 out

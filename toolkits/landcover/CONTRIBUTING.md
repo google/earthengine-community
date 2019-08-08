@@ -23,7 +23,7 @@ These instructions only need to be followed once per development workstation:
 
 2.  Install Node.js
 
-        $ nvm install 8.16.0
+        $ nvm install 10.16.2
 
 3.  Install Jasmine test framework
 
@@ -58,7 +58,11 @@ Do this once to set up a local copy of the source code:
 #### Testing
 
 After making changes, use the following commands to test your changes offline
-locally (unit tests) and against Earth Engine (integration tests).
+locally (lint and unit tests) and against Earth Engine (integration tests).
+
+*   Run lint checks
+
+        $ npm run lint
 
 *   Run unit tests
 

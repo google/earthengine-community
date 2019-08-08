@@ -41,6 +41,129 @@ var mockNetworkCalls = function() {
   });
 };
 
+// TODO(gino-m): Refactor custom encoders into shared util.
+
+/**
+ * Converts an Earth Engine function invocation into a human-readable object
+ * graph for use in unit tests.
+ *
+ * @param {*} invocation The Earth Engine API internal representation of
+ *    a function invocation.
+ * @return {*} A JSON-compatible structure representing the input.  
+ */
+var encodeFunctionInvocationValue = function(invocation) {
+  var args = {};
+  for (var argName in invocation.arguments) {
+    args[argName] = encode(invocation.arguments[argName]);
+  }
+  var value = {};
+  value[invocation.functionName] = args;
+  return value;
+};
+
+/**
+ * Converts an Earth Engine function definition into a human-readable object
+ * graph for use in unit tests.
+ *
+ * @param {*} definition The Earth Engine API internal representation of
+ *    a function definition.
+ * @return {*} A JSON-compatible structure representing the input.  
+ */
+var encodeFunctionDefinitionValue = function(definition) {
+  var value = {};
+  var argNames = definition.argumentNames;
+  value['function(' + argNames.join(', ') + ')'] = encode(definition.body);
+  return value;
+};
+
+/**
+ * Converts an Earth Engine query graph into a human-readable object
+ * graph for use in unit tests.
+ *
+ * @param {*} graph The Earth Engine API internal representation of
+ *    a query graph.
+ * @return {*} A JSON-compatible structure representing the input.  
+ */
+var encode = function(graph) {
+  if (Object.keys(graph) > 1) {
+    throw new Error(
+        'Multiple value types in a single ComputedObject: ' + Object.keys(graph));
+  }
+  var valueType = Object.keys(graph)[0];
+  var value = Object.values(graph)[0];
+  switch (valueType) {
+    case 'functionInvocationValue':
+      return encodeFunctionInvocationValue(value);
+    case 'functionDefinitionValue':
+      return encodeFunctionDefinitionValue(value);
+    case 'constantValue':
+      return value;
+    case 'argumentReference':
+      return '$' + value;
+    default:
+      throw new Error('Unknown value type: ' + valueType);
+  }
+};
+
+/**
+ * Converts an Earth Engine API object into a human-readable object graph
+ * for use in unit tests.
+ *
+ * @param {*} obj The Earth Engine API object to convert.
+ * @return {*} A JSON-compatible structure representing the input.  
+ */
+var encodeForTesting = function(obj) {
+  return encode(ee.Serializer.encodeCloudApiPretty(obj));
+};
+
+/**
+ * Converts arbitrary object into a formatted human-readable JSON string.
+ *
+ * @param {*} obj The object to convert.
+ * @return {string} A formatted JSON string representing the input.
+ */
+var stringifyJson = function(obj) {
+  return JSON.stringify(obj, null, 2);
+};
+
+/**
+ * Converts an Earth Engine API object into a formatted human-readable object
+ * graph for use in debugging unit tests.
+ *
+ * @param {*} obj The Earth Engine API object to convert.
+ * @return {string} A formatted JSON string representing the input.
+ */
+var stringifyEeObject = function(obj) {
+  return '<EE API Object ' + stringifyJson(encodeForTesting(obj)) + '>';
+};
+
+/**
+ * A custom Jasmine matcher for comparing an Earth Engine API object with its
+ * human-readable JSON representation.
+ *
+ * @param {*} expected The expected value.
+ * @return {Function} A Jasmine matcher for use in unit tests.
+ */
+global.eeObjectMatching = function(expected) {
+  // TODO(gino-m): Add diff reporter to make identifying diffs in mismatches
+  // easier.
+  const matcher = function() {};
+  matcher.asymmetricMatch = function(actual) {
+    // Use stringify() to perform deep compare on two objects.
+    return JSON.stringify(encodeForTesting(actual)) ===
+        JSON.stringify(expected);
+  };
+  matcher.jasmineToString = function() {
+    return '<EE API Object ' + stringifyJson(expected) + '>';
+  };
+  return matcher;
+};
+
+// Replace toString() method of all EE ComputedObjects to provide human-
+// readable JSON to facilitate debugging.
+ee.ComputedObject.prototype.toString = function() {
+  return stringifyEeObject(this);
+};
 
 /**
  * Runs a test or set of tests locally, mocking out calls that would normally

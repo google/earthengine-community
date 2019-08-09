@@ -1,25 +1,25 @@
 ---
-# Copyright 2019 Google LLC
-#
-# Licensed under the Apache License, Version 2.0 (the "License");
-# you may not use this file except in compliance with the License.
-# You may obtain a copy of the License at
-#
-#     https://www.apache.org/licenses/LICENSE-2.0
-#
-# Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an "AS IS" BASIS,
-# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-# See the License for the specific language governing permissions and
-# limitations under the License.
-
 title: MODIS NDVI Times Series Animation
-description: Generate an animated GIF representing 20-year median
-    NDVI for serial 16-day MODIS composites spanning January 1st through December 31st.
+description: Generate an animated GIF representing 20-year median NDVI for serial 16-day MODIS composites spanning January 1st through December 31st.
 author: jdbcode
 tags: modis, ndvi, animation, join, reduce, composite, gif, africa, visualization
 date_published: 2019-08-07
 ---
+<!--
+Copyright 2019 Google LLC
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+    https://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+-->
 
 [![Open In Editor](ee-editor-badge.svg)](https://code.earthengine.google.com/0ee1513ac09808307463585f73dda77c)
 

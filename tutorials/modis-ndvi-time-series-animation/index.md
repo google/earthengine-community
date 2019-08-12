@@ -30,7 +30,7 @@ In this tutorial, you'll learn how to generate an animated GIF representing 20-y
 NDVI for serial 16-day MODIS composites spanning January 1st through December 31st. The
 following image is an example of the resulting animation. 
 
-![MODIS NDVI GIF](modis-ndvi-time-series-animation.gif)
+![MODIS NDVI GIF](http://bigstore/_details/earthengine-community/tutorials/modis-ndvi-time-series-animation/modis-ndvi-time-series-animation.gif?project=earthengine-community&folder=true&organizationId=433637338589)
 
 ## Context
 

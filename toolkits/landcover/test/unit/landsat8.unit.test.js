@@ -19,51 +19,51 @@ var assert = require('assert');
 var lct = require('../../api');
 
 withEarthEngineStub('Landsat8', function() {
-  it('fmaskCloudsAndShadows()', function() {
+  it('Constructor uses default collection', function() {
     var dataset = lct.Landsat8();
 
-    // Create spy to capture to invocation of updateMask().
-    spyOn(ee.Image.prototype, 'updateMask').and.callThrough();
+    expect(dataset.getImageCollection())
+        .toEqual(ee.ImageCollection(lct.Landsat8.DEFAULT_COLLECTION_ID));
+  });
 
-    dataset = dataset.fmaskCloudsAndShadows();
+  it('Constructor uses specified collection', function() {
+    var mockCollection = ee.ImageCollection('TEST');
+    var dataset = lct.Landsat8(mockCollection);
 
-    // Verify updateMask() was called with the appropriate mask.
-    expect(ee.Image.prototype.updateMask)
-        .toHaveBeenCalledWith(eeObjectMatching({
-          'Image.and': {
-            image1: {
-              'Image.eq': {
-                image1: {
-                  'Image.bitwiseAnd': {
-                    image1: {
-                      'Image.select': {
-                        input: '$uninitializedVar',
-                        bandSelectors: ['pixel_qa']
-                      }
-                    },
-                    image2: {'Image.constant': {value: 8}}
-                  }
-                },
-                image2: {'Image.constant': {value: 0}}
-              }
-            },
-            image2: {
-              'Image.eq': {
-                image1: {
-                  'Image.bitwiseAnd': {
-                    image1: {
-                      'Image.select': {
-                        input: '$uninitializedVar',
-                        bandSelectors: ['pixel_qa']
-                      }
-                    },
-                    image2: {'Image.constant': {value: 32}}
-                  }
-                },
-                image2: {'Image.constant': {value: 0}}
-              }
-            }
-          }
-        }));
+    expect(dataset.getImageCollection()).toEqual(mockCollection);
+  });
+
+  it('fmaskCloudsAndShadows() calls map', function() {
+    var mockCollection = ee.ImageCollection('TEST');
+    spyOn(mockCollection, 'map');
+    var dataset = lct.Landsat8(mockCollection);
+
+    dataset.fmaskCloudsAndShadows();
+
+    expect(mockCollection.map).toHaveBeenCalled();
+  });
+
+  it('fmaskCloudsAndShadows() returns self', function() {
+    var dataset = lct.Landsat8();
+
+    expect(dataset.fmaskCloudsAndShadows()).toEqual(dataset);
+  });
+
+  it('applyCloudAndShadowBitMasks() updates mask', function() {
+    var mockImage = ee.Image(0);
+    spyOn(mockImage, 'updateMask');
+
+    lct.Landsat8.applyCloudAndShadowBitMasks(mockImage);
+
+    expect(mockImage.updateMask).toHaveBeenCalled();
+  });
+
+  it('applyCloudAndShadowBitMasks() returns new image', function() {
+    var mockImage = ee.Image(0);
+
+    var newImage = lct.Landsat8.applyCloudAndShadowBitMasks(mockImage);
+
+    expect(newImage).toBeTruthy();
+    expect(newImage).not.toEqual(mockImage);
   });
 });

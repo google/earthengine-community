@@ -41,17 +41,27 @@ var QA_BAND = 'pixel_qa';
  * Returns a new Landsat 8 SR dataset instance.
  *
  * @constructor
+ * @param {?ee.ImageCollection} collection An image collection containing
+ *     LANDSAT 8 images to be used to as the source for the new dataset. If
+ *     one is not specified, a default LANDSAT 8 SR collection will be used.
  * @return {!Landsat8}
  */
-var Landsat8 = function() {
+var Landsat8 = function(source) {
   // Constructor safety.
   if (!(this instanceof Landsat8)) {
-    return new Landsat8();
+    return new Landsat8(source);
   }
-
+  var collection = source || ee.ImageCollection(Landsat8.DEFAULT_COLLECTION_ID);
   // TODO(gino-m): Accept `type` "SR"|"TOA".
-  Dataset.call(this, 'LANDSAT/LC08/C01/T1_SR', DEFAULT_VIS_PARAMS);
+  Dataset.call(this, collection, DEFAULT_VIS_PARAMS);
 };
+
+/**
+ * The ID of the default collection to be used when no source collection is
+ * specified in the constructor.
+ * @{string}
+ */
+Landsat8.DEFAULT_COLLECTION_ID = 'LANDSAT/LC08/C01/T1_SR';
 
 // Extend Dataset class. This causes Landsat8 to inherit all method and
 // properties of Dataset.
@@ -71,7 +81,7 @@ Landsat8.prototype.fmaskCloudsAndShadows = function() {
   // TODO(gorelick): Is BQA in TOA calculated using Fmask as well? If so, how do
   // we model and/or abstract this for the user?
   // TODO(gino-m): Do something different or fail for type != 'SR'.
-  this.collection_ = this.collection_.map(Landsat8.applyCloudShadowBitMasks_);
+  this.collection_ = this.collection_.map(Landsat8.applyCloudAndShadowBitMasks);
   return this;
 };
 
@@ -85,7 +95,7 @@ Landsat8.prototype.fmaskCloudsAndShadows = function() {
  * @return {!ee.Image}
  * @private
  */
-Landsat8.applyCloudShadowBitMasks_ = function(image) {
+Landsat8.applyCloudAndShadowBitMasks = function(image) {
   var qa = image.select(QA_BAND);
   // Both flags should be set to zero, indicating clear conditions.
   var mask = qa.bitwiseAnd(CLOUD_SHADOW_BIT_MASK)

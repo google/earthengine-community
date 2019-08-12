@@ -22,15 +22,15 @@ var Bands = require('users/gmiceli/ee-lct:impl/bands.js').Bands;
  * Returns a new dataset instance for an arbitrary image collection.
  *
  * @constructor
- * @param {string} id The id of the collection in the Earth Engine data
- *     catalog.
+ * @param {!ee.ImageCollection} collection The image collection backing the new
+ *     dataset.
  * @param {!ee.data.ImageVisualizationParameters} defaultVisParams The
  *     parameters to be used when adding the resulting collection to a layer for
  *     visualization.
  * @return {!Dataset}
  */
-var Dataset = function(id, defaultVisParams) {
-  this.collection_ = ee.ImageCollection(id);
+var Dataset = function(collection, defaultVisParams) {
+  this.collection_ = collection;
   this.defaultVisParams_ = defaultVisParams;
 };
 

@@ -1,7 +1,5 @@
 ---
-title: MODIS NDVI Times Series Animation
-author: jdbcode
-date_published: 2019-08-07
+title: Test title
 ---
 <!--
 Copyright 2019 Google LLC

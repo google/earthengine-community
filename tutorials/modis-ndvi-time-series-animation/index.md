@@ -5,6 +5,7 @@ author: jdbcode
 tags: modis, ndvi, animation, join, reduce, composite, gif, africa, visualization
 date_published: 2019-08-07
 ---
+
 <!--
 Copyright 2019 Google LLC
 

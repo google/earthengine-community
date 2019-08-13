@@ -21,7 +21,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 -->
 
-[![Open In Editor](ee-editor-badge.svg)](https://code.earthengine.google.com/0ee1513ac09808307463585f73dda77c)
+[Open In Code Editor](https://code.earthengine.google.com/0ee1513ac09808307463585f73dda77c)
 
 # MODIS NDVI Times Series Animation
 

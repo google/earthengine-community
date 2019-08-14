@@ -1,6 +1,6 @@
 # Google Earth Engine Community
 
-This repository contains content submitted or editable by the Earth Engine
+This repository contains content submitted and/or maintained by the Earth Engine
 user community.
 
 ## Community Tutorials

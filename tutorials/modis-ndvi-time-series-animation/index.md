@@ -23,8 +23,6 @@ limitations under the License.
 
 [Open In Code Editor](https://code.earthengine.google.com/0ee1513ac09808307463585f73dda77c)
 
-# MODIS NDVI Times Series Animation
-
 Time series animations of Earth observation imagery are captivating and engaging.
 In this tutorial, you'll learn how to generate an animated GIF representing 20-year median
 NDVI for serial 16-day MODIS composites spanning January 1st through December 31st. The

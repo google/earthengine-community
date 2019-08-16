@@ -400,7 +400,7 @@ A chart similar to [Figure 3](#fig3) will appear in the console after some proce
 time.
 
 <figure id='fig3'>
-  <img src="https://github.com/jdbcode/earthengine-community/blob/master/tutorials/landsat-etm-to-oli-harmonization/ts-median-obs"
+  <img src="https://github.com/jdbcode/earthengine-community/blob/master/tutorials/ts-median-obs.png"
     alt="Area of interest" style="width:100%">
   <figcaption>Figure 3. Median summer spectral response time series chart for a
     single pixel with representation from Landsat TM, ETM+, and OLI. TM and ETM+

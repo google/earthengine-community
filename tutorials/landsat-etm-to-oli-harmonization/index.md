@@ -40,6 +40,25 @@ Note that the characteristics of Landsat ETM+ and Landsat TM data are assumed eq
 in this tutorial. As such, with regard to harmonization transformations, reference
 to ETM+ is synonymous with TM.
 
+## Table of contents
+
+* [Context](#context)
+* [Why harmonization](#why-harmonization)
+* [Instructions](#instructions)
+  + [Functions](#functions)
+    - [Harmonization](#harmonization)
+    - [Cloud and shadow masking](#cloud-and-shadow-masking)
+    - [Spectral index calculation](#spectral-index-calculation)
+    - [Combine functions](#combine-functions)
+  + [Time series example](#time-series-example)
+    - [Define an area of interest](#define-an-area-of-interest)
+    - [Retrieve Landsat sensor collections](#retrieve-landsat-sensor-collections)
+    - [Define an image collection filter](#define-an-image-collection-filter)
+    - [Prepare the collections](#prepare-the-collections)
+    - [Make a times series chart displaying all observations](#make-a-times-series-chart-displaying-all-observations)
+    - [Make a times series chart displaying annual median](#make-a-times-series-chart-displaying-annual-median)
+  + [The Dollar Lake fire](#the-dollar-lake-fire)
+
 ## Context
 
 [Landsat](https://landsat.gsfc.nasa.gov/about/) is a satellite imaging program

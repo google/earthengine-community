@@ -174,9 +174,8 @@ conifer forest patch (Figure 1) that experiences some perturbation in the 1980's
 and a high magnitude burn in the 2000s.
 
 <figure id='fig1'>
-  <img
-		src="https://storage.googleapis.com/earthengine-community/tutorials/landsat-etm-to-oli-harmonization/area-of-interest.jpg"
-		alt="Area of interest" style="width:100%">
+  <img src="https://github.com/jdbcode/earthengine-community/blob/master/tutorials/landsat-etm-to-oli-harmonization/area-of-interest.jpg"
+       alt="Area of interest" style="width:100%">
   <figcaption>Figure 1. Location and site character for example area of interest.
 		Mature pacific northwest conifer forest on the north slope of Mt Hood, OR, USA.</figcaption>
 </figure>

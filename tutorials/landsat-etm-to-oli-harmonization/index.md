@@ -175,9 +175,9 @@ and a high magnitude burn in the 2000s.
 
 <figure id='fig1'>
   <img src="https://github.com/jdbcode/earthengine-community/blob/master/tutorials/landsat-etm-to-oli-harmonization/area-of-interest.jpg"
-       alt="Area of interest" style="width:100%">
+    alt="Area of interest" style="width:100%">
   <figcaption>Figure 1. Location and site character for example area of interest.
-		Mature pacific northwest conifer forest on the north slope of Mt Hood, OR, USA.</figcaption>
+    Mature pacific northwest conifer forest on the north slope of Mt Hood, OR, USA.</figcaption>
 </figure>
 
 #### Define an area of interest
@@ -318,13 +318,11 @@ August.
 loss.
 
 <figure id='fig2'>
-  <img
-		src="https://storage.googleapis.com/earthengine-community/tutorials/landsat-etm-to-oli-harmonization/ts-all-obs.png"
-		alt="Area of interest" style="width:100%">
+  <img src="https://github.com/jdbcode/earthengine-community/blob/master/tutorials/landsat-etm-to-oli-harmonization/ts-all-obs.png"         alt="Area of interest" style="width:100%">
   <figcaption>Figure 2. Spectral response time series chart for a single pixel
-		with representation from Landsat TM, ETM+, and OLI. TM and ETM+ images
-		are harmonized to OLI by a linear transformation. Images are from July
-		through August and are filtered for high quality.</figcaption>
+    with representation from Landsat TM, ETM+, and OLI. TM and ETM+ images
+    are harmonized to OLI by a linear transformation. Images are from July
+    through August and are filtered for high quality.</figcaption>
 </figure>
 
 #### Make a times series chart displaying annual median
@@ -402,13 +400,12 @@ A chart similar to [Figure 3](#fig3) will appear in the console after some proce
 time.
 
 <figure id='fig3'>
-  <img
-		src="https://storage.googleapis.com/earthengine-community/tutorials/landsat-etm-to-oli-harmonization/ts-median-obs"
-		alt="Area of interest" style="width:100%">
+  <img src="https://github.com/jdbcode/earthengine-community/blob/master/tutorials/landsat-etm-to-oli-harmonization/ts-median-obs"
+    alt="Area of interest" style="width:100%">
   <figcaption>Figure 3. Median summer spectral response time series chart for a
-		single pixel with representation from Landsat TM, ETM+, and OLI. TM and ETM+
-		images are harmonized to OLI by a linear transformation. Images are from
-		July through August and are filtered for high quality.</figcaption>
+    single pixel with representation from Landsat TM, ETM+, and OLI. TM and ETM+
+    images are harmonized to OLI by a linear transformation. Images are from
+    July through August and are filtered for high quality.</figcaption>
 </figure>
 
 ### The Dollar Lake fire
@@ -418,6 +415,3 @@ mid-September, 2011 on the northern slopes of Mt Hood, OR, USA. Visit this
 [blog post](https://wyeastblog.org/2016/10/22/dollar-lake-fire-five-years-after/)
 and see this [manuscript](http://dearing.biology.utah.edu/Lab/pdf/2015_varner_too_hot_trot.pdf)
 for more information about it.
-
-
-

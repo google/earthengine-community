@@ -192,12 +192,10 @@ This particular pixel relates the recent history of a mature pacific northwest
 conifer forest patch (Figure 1) that experiences some perturbation in the 1980's
 and a high magnitude burn in the 2000s.
 
-<figure id='fig1'>
-  <img src="https://github.com/jdbcode/earthengine-community/blob/master/tutorials/landsat-etm-to-oli-harmonization/area-of-interest.jpg"
-    alt="Area of interest" style="width:100%">
-  <figcaption>Figure 1. Location and site character for example area of interest.
-    Mature pacific northwest conifer forest on the north slope of Mt Hood, OR, USA.</figcaption>
-</figure>
+![Area of interest](https://github.com/jdbcode/earthengine-community/blob/master/tutorials/landsat-etm-to-oli-harmonization/area-of-interest.jpg)
+
+Figure 1. Location and site character for example area of interest. Mature pacific
+northwest conifer forest on the north slope of Mt Hood, OR, USA.
 
 #### Define an area of interest
 
@@ -336,13 +334,12 @@ August.
 - Vegetation recovery (increasing NBR response) begins two years after the major NBR
 loss.
 
-<figure id='fig2'>
-  <img src="https://github.com/jdbcode/earthengine-community/blob/master/tutorials/landsat-etm-to-oli-harmonization/ts-all-obs.png"         alt="Time series all observations" style="width:100%">
-  <figcaption>Figure 2. Spectral response time series chart for a single pixel
-    with representation from Landsat TM, ETM+, and OLI. TM and ETM+ images
-    are harmonized to OLI by a linear transformation. Images are from July
-    through August and are filtered for high quality.</figcaption>
-</figure>
+![Time series all observations](https://github.com/jdbcode/earthengine-community/blob/master/tutorials/landsat-etm-to-oli-harmonization/ts-all-obs.png)
+
+Figure 2. Spectral response time series chart for a single pixel
+with representation from Landsat TM, ETM+, and OLI. TM and ETM+ images
+are harmonized to OLI by a linear transformation. Images are from July
+through August and are filtered for high quality.
 
 #### Make a times series chart displaying annual median
 
@@ -418,14 +415,12 @@ print(chartMedianComp);
 A chart similar to [Figure 3](#fig3) will appear in the console after some processing
 time.
 
-<figure id='fig3'>
-  <img src="https://github.com/jdbcode/earthengine-community/blob/master/tutorials/landsat-etm-to-oli-harmonization/ts-median-obs.png"
-    alt="Time series median" style="width:100%">
-  <figcaption>Figure 3. Median summer spectral response time series chart for a
-    single pixel with representation from Landsat TM, ETM+, and OLI. TM and ETM+
-    images are harmonized to OLI by a linear transformation. Images are from
-    July through August and are filtered for high quality.</figcaption>
-</figure>
+![Time series median](https://github.com/jdbcode/earthengine-community/blob/master/tutorials/landsat-etm-to-oli-harmonization/ts-median-obs.png)
+
+Figure 3. Median summer spectral response time series chart for a
+single pixel with representation from Landsat TM, ETM+, and OLI. TM and ETM+
+images are harmonized to OLI by a linear transformation. Images are from
+July through August and are filtered for high quality.
 
 ### The Dollar Lake fire
 

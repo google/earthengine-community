@@ -163,7 +163,7 @@ function prepImg(img) {
 In your application, you might decide to include or exclude functions. Alter this
 wrapper as needed.
 
-### Time Series Example
+### Time series example
 
 The `prepImg` wrapper function above can be mapped over Landsat surface reflectance
 collections to create cross-sensor analysis ready data that can be used to visualize
@@ -318,7 +318,7 @@ August.
 loss.
 
 <figure id='fig2'>
-  <img src="https://github.com/jdbcode/earthengine-community/blob/master/tutorials/landsat-etm-to-oli-harmonization/ts-all-obs.png"         alt="Area of interest" style="width:100%">
+  <img src="https://github.com/jdbcode/earthengine-community/blob/master/tutorials/landsat-etm-to-oli-harmonization/ts-all-obs.png"         alt="Time series all observations" style="width:100%">
   <figcaption>Figure 2. Spectral response time series chart for a single pixel
     with representation from Landsat TM, ETM+, and OLI. TM and ETM+ images
     are harmonized to OLI by a linear transformation. Images are from July
@@ -400,8 +400,8 @@ A chart similar to [Figure 3](#fig3) will appear in the console after some proce
 time.
 
 <figure id='fig3'>
-  <img src="https://github.com/jdbcode/earthengine-community/blob/master/tutorials/ts-median-obs.png"
-    alt="Area of interest" style="width:100%">
+  <img src="https://github.com/jdbcode/earthengine-community/blob/master/tutorials/landsat-etm-to-oli-harmonization/ts-median-obs.png"
+    alt="Time series median" style="width:100%">
   <figcaption>Figure 3. Median summer spectral response time series chart for a
     single pixel with representation from Landsat TM, ETM+, and OLI. TM and ETM+
     images are harmonized to OLI by a linear transformation. Images are from

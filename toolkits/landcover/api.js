@@ -17,10 +17,7 @@
  * @fileoverview Main entry point for toolkit.
  */
 
-var Landsat8 = require('users/gmiceli/ee-lct:impl/landsat8.js').Landsat8;
-var Region = require('users/gmiceli/ee-lct:impl/region.js').Region;
-var Composites = require('users/gmiceli/ee-lct:impl/composites.js').Composites;
-
-exports.Landsat8 = Landsat8;
-exports.Region = Region;
-exports.Composites = Composites;
+exports.Landsat8 = require('users/gmiceli/ee-lct:impl/landsat8.js').Landsat8;
+exports.Region = require('users/gmiceli/ee-lct:impl/region.js').Region;
+exports.Composites =
+    require('users/gmiceli/ee-lct:impl/composites.js').Composites;

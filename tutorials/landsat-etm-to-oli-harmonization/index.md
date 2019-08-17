@@ -68,9 +68,9 @@ temporal record for identifying spatiotemporal trends in landscape change.
 Thematic Mapper (TM), Enhanced Thematic Mapper Plus (ETM+), and Operational
 Land Imager (OLI) are used in this tutorial. They are closely related and
 and relatively easy to consolidate into a consistent time series that produces a
-continous times series record from 1984 to the present at a cadance of 16 days
+continuous times series record from 1984 to the present at a cadence of 16 days
 per sensor with 30 meter spatial resolution. The seminal Multispectral Scanner
-intrument extents the Landsat record back to 1972, but its data are quite different
+instrument extents the Landsat record back to 1972, but its data are quite different
 making integration with later sensors challenging, though no impossible
 ([Savage et al., 2018](https://www.mdpi.com/1999-4907/9/4/157);
 [Vogeler et al., 2018](https://www.sciencedirect.com/science/article/abs/pii/S0034425718300579))

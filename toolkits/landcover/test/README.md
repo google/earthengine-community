@@ -57,7 +57,9 @@ execution. For this reason, attempting to check the state of the resulting
 objects offline will effectively require our tests to contain a verbatim copy
 of the actual code under test. These types of tests are fragile and don't catch
 actual defects, as is thoughtfully described in [TotT: Change-Detector Tests
-Considered Harmful][tott-change-detector].
+Considered Harmful][tott-change-detector]. For this reason, we also omit unit
+tests for trivial methods such as getters, setters, and simple pass-through
+calls to the API.
 
 ## End-to-end integration tests
 

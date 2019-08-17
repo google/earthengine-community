@@ -32,7 +32,7 @@ surface reflectance. It provides:
 - Functions to create analysis ready data
 - A time series visualization example
 
-The objective is to provide an end-to-end guide for visualizing a 35+ year regional
+It is intended to be an end-to-end guide for visualizing a 35+ year regional
 time series of Landsat data that can be immediately applied to your own region(s)
 of interest.
 
@@ -65,10 +65,19 @@ to ETM+ is synonymous with TM.
 that has been collecting moderate resolution Earth imagery since 1972.
 As the longest space-based Earth observation system, it provides a valuable
 temporal record for identifying spatiotemporal trends in landscape change.
+Thematic Mapper (TM), Enhanced Thematic Mapper Plus (ETM+), and Operational
+Land Imager (OLI) are used in this tutorial. They are closely related and
+and relatively easy to consolidate into a consistent time series that produces a
+continous times series record from 1984 to the present at a cadance of 16 days
+per sensor with 30 meter spatial resolution. The seminal Multispectral Scanner
+intrument extents the Landsat record back to 1972, but its data are quite different
+making integration with later sensors challenging, though no impossible
+([Savage et al., 2018](https://www.mdpi.com/1999-4907/9/4/157);
+[Vogeler et al., 2018](https://www.sciencedirect.com/science/article/abs/pii/S0034425718300579))
 
 ## Why harmonization
 
-[Roy et al. 2016](https://openprairie.sdstate.edu/cgi/viewcontent.cgi?referer=https://scholar.google.com/&httpsredir=1&article=1035&context=gsce_pubs)
+[Roy et al. (2016)](https://openprairie.sdstate.edu/cgi/viewcontent.cgi?referer=https://scholar.google.com/&httpsredir=1&article=1035&context=gsce_pubs)
 demonstrate that there are small, but potentially significant differences between
 the spectral characteristics of Landsat ETM+ and OLI, depending on application.
 Reasons you might want to harmonize datasets include producing a long time series
@@ -86,7 +95,7 @@ Define all the functions first.
 
 Harmonization is achieved via linear translation of ETM+ spectral space to OLI
 spectral space according to coefficients presented in
-Roy et. al. (2016) Table 2 OLS regression. The following snippet defines a dictionary
+Roy et al. (2016) Table 2 OLS regression. The following snippet defines a dictionary
 containing slope (`slopes`) and intercept (`itcps`) images with respective slope
 and intercept values per reflectance band.
 
@@ -130,7 +139,7 @@ function etm2oli(img) {
 #### Cloud and shadow masking
 
 Analysis ready data should have clouds and cloud shadows masked out. The following
-function uses the CFmask ([Zhu et al, 2015](https://www.sciencedirect.com/science/article/abs/pii/S0034425714005069))
+function uses the CFmask ([Zhu et al., 2015](https://www.sciencedirect.com/science/article/abs/pii/S0034425714005069))
 `pixel_qa` band included with each Landsat USGS surface reflectance image to set
 pixels identified as cloud and cloud shadow to null.
 

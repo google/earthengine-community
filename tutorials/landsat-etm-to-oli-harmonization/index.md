@@ -26,7 +26,7 @@ limitations under the License.
 # Landsat ETM+ to OLI Harmonization
 
 This tutorial concerns harmonizing Landsat ETM+ surface reflectance to Landsat OLI
-surface reflectance and vice versa. It provides:
+surface reflectance. It provides:
 
 - A spectral translation function
 - Functions to create analysis ready data
@@ -42,7 +42,7 @@ to ETM+ is synonymous with TM.
 
 ## Table of contents
 
-* [Context](#context)
+* [About Landsat](#about-landsat)
 * [Why harmonization](#why-harmonization)
 * [Instructions](#instructions)
   + [Functions](#functions)
@@ -59,14 +59,14 @@ to ETM+ is synonymous with TM.
     - [Make a times series chart displaying annual median](#make-a-times-series-chart-displaying-annual-median)
   + [The Dollar Lake fire](#the-dollar-lake-fire)
 
-## Context
+## About Landsat
 
 [Landsat](https://landsat.gsfc.nasa.gov/about/) is a satellite imaging program
 that has been collecting moderate resolution Earth imagery since 1972.
 As the longest space-based Earth observation system, it provides a valuable
 temporal record for identifying spatiotemporal trends in landscape change.
 
-## Why harmonization?
+## Why harmonization
 
 [Roy et al. 2016](https://openprairie.sdstate.edu/cgi/viewcontent.cgi?referer=https://scholar.google.com/&httpsredir=1&article=1035&context=gsce_pubs)
 demonstrate that there are small, but potentially significant differences between
@@ -189,8 +189,8 @@ collections to create cross-sensor analysis ready data that can be used to visua
 the spectral chronology of a pixel or region of pixels. In this example you will
 create a 35+ year time series and display the spectral history for a single pixel.
 This particular pixel relates the recent history of a mature pacific northwest
-conifer forest patch (Figure 1) that experiences some perturbation in the 1980's
-and a high magnitude burn in the 2000s.
+conifer forest patch (Figure 1) that experiences some perturbation in the 1980's and
+90's and a high magnitude burn in the in 2011.
 
 ![Area of interest](https://github.com/jdbcode/earthengine-community/blob/master/tutorials/landsat-etm-to-oli-harmonization/area-of-interest.jpg)
 
@@ -316,7 +316,7 @@ var chartAllObs = ui.Chart.feature.groups(
 print(chartAllObs);
 ```
 
-A chart similar to [Figure 2](#fig2) will appear in the console after some processing
+A chart similar to Figure 2 will appear in the console after some processing
 time. Note several things:
 
 - There are multiple observations per year.
@@ -330,7 +330,8 @@ shows much greater intra- and inter-annual response variability.
 - A great, rapid reduction in NBR response results from a forest fire evident in
 2012. Note however, that the fire ([Dollar Lake fire](#the-dollar-lake-fire)) occurred in September of
 2011. The difference is due to the annual composite date range being July through
-August.
+August; changes occuring after this period are not picked until the next composite, unless
+there are missing observations.
 - Vegetation recovery (increasing NBR response) begins two years after the major NBR
 loss.
 
@@ -412,7 +413,7 @@ var chartMedianComp = ui.Chart.image.series({
 print(chartMedianComp);
 ```
 
-A chart similar to [Figure 3](#fig3) will appear in the console after some processing
+A chart similar to Figure 3 will appear in the console after some processing
 time.
 
 ![Time series median](https://github.com/jdbcode/earthengine-community/blob/master/tutorials/landsat-etm-to-oli-harmonization/ts-median-obs.png)

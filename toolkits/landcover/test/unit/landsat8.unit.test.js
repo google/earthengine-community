@@ -15,6 +15,5 @@
  * limitations under the License.
  */
 
-var assert = require('assert');
 var lct = require('../../api');
 

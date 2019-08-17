@@ -203,8 +203,8 @@ conifer forest patch (Figure 1) that experiences some perturbation in the 1980's
 
 ![Area of interest](https://github.com/jdbcode/earthengine-community/blob/master/tutorials/landsat-etm-to-oli-harmonization/area-of-interest.jpg)
 
-Figure 1. Location and site character for example area of interest. Mature pacific
-northwest conifer forest on the north slope of Mt Hood, OR, USA.
+_Figure 1. Location and site character for example area of interest. Mature pacific
+northwest conifer forest on the north slope of Mt Hood, OR, USA._
 
 #### Define an area of interest
 
@@ -346,10 +346,10 @@ loss.
 
 ![Time series all observations](https://github.com/jdbcode/earthengine-community/blob/master/tutorials/landsat-etm-to-oli-harmonization/ts-all-obs.png)
 
-Figure 2. Spectral response time series chart for a single pixel
+_Figure 2. Spectral response time series chart for a single pixel
 with representation from Landsat TM, ETM+, and OLI. TM and ETM+ images
 are harmonized to OLI by a linear transformation. Images are from July
-through August and are filtered for high quality.
+through August and are filtered for high quality._
 
 #### Make a times series chart displaying annual median
 
@@ -427,10 +427,10 @@ time.
 
 ![Time series median](https://github.com/jdbcode/earthengine-community/blob/master/tutorials/landsat-etm-to-oli-harmonization/ts-median-obs.png)
 
-Figure 3. Median summer spectral response time series chart for a
+_Figure 3. Median summer spectral response time series chart for a
 single pixel with representation from Landsat TM, ETM+, and OLI. TM and ETM+
 images are harmonized to OLI by a linear transformation. Images are from
-July through August and are filtered for high quality.
+July through August and are filtered for high quality._
 
 ### The Dollar Lake fire
 

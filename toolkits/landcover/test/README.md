@@ -42,24 +42,31 @@ added to Earth Engine, when online simply run:
 
     $ npm run update-algorithms
 
-### Test behavior instead of state
+### Why test interactions?
 
 As discussed in [TotT: Testing State vs. Testing Interactions][tott-state-vs],
-in most cases unit tests would test the result of a particular operation or its
-state rather than inspecting its actual behavior. In the Landcover Toolkit,
-however, we verify whether or not specific methods were called. Why do we test
-behavior instead of state?
+we generally prefer to test the result of a particular operation or its final
+state over inspecting interactions with other libraries (e.g., testing the
+result of filtering an `ImageCollection`, not that `updateMask()` was called
+with specific parameters). Directly testing that specific Earth Engine API
+methods are called is also a clear contradiction of testing behavior over
+implementation ([TotT: Test Behavior, Not Implementation][tott-test-behavior]).
+Why, then, do we test interactions instead of state?
 
 As you may recall, the Earth Engine API doesn't actually do the heavy lifting of
 calculating results. Instead, it builds up an execution graph that essentially
 mirrors clients' calls to the API. This graph is then sent to the server for
 execution. For this reason, attempting to check the state of the resulting
-objects offline will effectively require our tests to contain a verbatim copy
+objects offline will effectively require our tests to contain a mirror image
 of the actual code under test. These types of tests are fragile and don't catch
 actual defects, as is thoughtfully described in [TotT: Change-Detector Tests
-Considered Harmful][tott-change-detector]. For this reason, we also omit unit
-tests for trivial methods such as getters, setters, and simple pass-through
-calls to the API.
+Considered Harmful][tott-change-detector].
+
+Another way to think of it is that the Toolkit is fit for purpose when it calls
+the Earth Engine API on our behalf as expected. How the Earth Engine API stores
+state internally, builds up server requests, and communicates with the server is
+irrelevant from the perspective of the Toolkit. In that sense, by testing the
+Toolkit's usage of the Earth Engine API, we're effectively testing its behavior.
 
 ## End-to-end integration tests
 
@@ -73,7 +80,7 @@ Rather than check results returned by Earth Engine against "golden copies" which
 could easily become stale, we instead select return values that are unlikely to
 change, and that demonstrate that the code under test is behaving as expected.
 
-Integration tests are define in `test/int/filename.int.test.js`, where
+Integration tests are defined in `test/int/filename.int.test.js`, where
 `filename` represents the file under test. Since integration tests are run
 against the live server, they take more time to run. They can be run
 independently from unit tests with:
@@ -85,4 +92,4 @@ independently from unit tests with:
 [tott-change-detector]: https://testing.googleblog.com/2015/01/testing-on-toilet-change-detector-tests.html
 [tott-doubles]: https://testing.googleblog.com/2013/07/testing-on-toilet-know-your-test-doubles.html
 [tott-state-vs]: https://testing.googleblog.com/2013/03/testing-on-toilet-testing-state-vs.html
-
+[tott-test-behavior]: https://testing.googleblog.com/2013/08/testing-on-toilet-test-behavior-not.html

@@ -336,9 +336,9 @@ time. Note several things:
 relatively tight. Trying this with NDVI (img.normalizedDifference(['B5', 'B4']).rename('NDVI');)
 shows much greater intra- and inter-annual response variability.
 - NBR remains high for the majority of the time series with some minor perturbations.
-- A great, rapid reduction in NBR response results from a forest fire evident in
-2012. Note however, that the fire ([Dollar Lake fire](#the-dollar-lake-fire)) occurred in September of
-2011. The difference is due to the annual composite date range being July through
+- A great, rapid reduction in NBR response results from a forest fire evident in 2012. Note 
+however, that the fire ([Dollar Lake fire](#the-dollar-lake-fire)) occurred in September of 2011.
+The difference is due to the annual composite date range being July through
 August; changes occuring after this period are not picked until the next composite, unless
 there are missing observations.
 - Vegetation recovery (increasing NBR response) begins two years after the major NBR

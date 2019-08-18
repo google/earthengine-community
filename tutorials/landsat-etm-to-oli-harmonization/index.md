@@ -67,13 +67,14 @@ As the longest space-based Earth observation system, it provides a valuable
 temporal record for identifying spatiotemporal trends in landscape change.
 Thematic Mapper (TM), Enhanced Thematic Mapper Plus (ETM+), and Operational
 Land Imager (OLI) are used in this tutorial. They are closely related and
-and relatively easy to consolidate into a consistent time series that produces a
-continuous times series record from 1984 to the present at a cadence of 16 days
+relatively easy to consolidate into a consistent time series that produce a
+continuous record from 1984 to the present at a cadence of 16 days
 per sensor with 30 meter spatial resolution. The seminal Multispectral Scanner
-instrument extents the Landsat record back to 1972, but its data are quite different
-making integration with later sensors challenging, though no impossible
-([Savage et al., 2018](https://www.mdpi.com/1999-4907/9/4/157);
-[Vogeler et al., 2018](https://www.sciencedirect.com/science/article/abs/pii/S0034425718300579))
+instrument extents the Landsat record back to 1972, but it is not used in this tutorial.
+Its data are quite different, making integration with later sensors challenging. See
+[Savage et al. (2018)](https://www.mdpi.com/1999-4907/9/4/157) and
+[Vogeler et al. (2018)](https://www.sciencedirect.com/science/article/abs/pii/S0034425718300579)
+for examples of harmonization across all sensors.
 
 ## Why harmonization
 
@@ -83,7 +84,7 @@ the spectral characteristics of Landsat ETM+ and OLI, depending on application.
 Reasons you might want to harmonize datasets include producing a long time series
 that spans Landsat TM, ETM+, and OLI or you want to produce near-date intra-annual
 composites to reduce the effects of missing observations from ETM+ SLC-off gaps
-and masking clouds/shadows. Please see the linked manuscript above for more information.
+and cloud/shadow masking. Please see the linked manuscript above for more information.
 
 ## Instructions
 
@@ -96,7 +97,7 @@ Define all the functions first.
 Harmonization is achieved via linear translation of ETM+ spectral space to OLI
 spectral space according to coefficients presented in
 Roy et al. (2016) Table 2 OLS regression. The following snippet defines a dictionary
-containing slope (`slopes`) and intercept (`itcps`) images with respective slope
+containing slope (`slopes`) and intercept (`itcps`) images with constant respective slope
 and intercept values per reflectance band.
 
 ```js
@@ -106,7 +107,7 @@ var coefficients = {
 };
 ```
 
-Band names for the same spectral response window vary between ETM+ (TM) and OLI
+Band names for the same spectral response window vary between ETM+ and OLI
 and should be unified. The following function selects only reflectance bands and
 the `pixel_qa` bands from any given Landsat surface reflectance image and forces
 all band names to be consistent with OLI.
@@ -121,8 +122,8 @@ function oliBands(img) {
 }
 ```
 
-Finally, define the translation function, which applied the linear model, casts
-type as Int16 for consistency with OLI, and reattaches the `pixel_qa` bands for
+Finally, define the translation function, which applies the linear model to ETM+ data,
+casts data type as `Int16` for consistency with OLI, and reattaches the `pixel_qa` band for
 later use in cloud and shadow masking.
 
 ```js
@@ -132,7 +133,8 @@ function etm2oli(img) {
     .add(coefficients.itcps)
     .round()
     .toShort()
-    .addBands(img.select('pixel_qa'));
+    .addBands(img.select('pixel_qa')
+  );
 }
 ```
 
@@ -156,12 +158,12 @@ function fmask(img) {
 
 #### Spectral index calculation
 
-Define a function to calculate normalized burn ratio (NBR). The following
-application example looks at the spectral history of a forested pixel experiencing
-a wildfire. NBR is used here because
+Define a function to calculate normalized burn ratio (NBR).
 [Cohen et al. (2018)](https://www.fs.fed.us/rm/pubs_journals/2018/rmrs_2018_cohen_w001.pdf)
-found NBR to have the greatest signal to noise ratio with regard to forest disturbance
-(signal) throughout the US.
+found that among 13 spectral indices/bands, NBR had the greatest signal to
+noise ratio with regard to forest disturbance (signal) throughout the US.
+The following application example uses NBR to interpret the spectral history
+of a forested pixel affected by wildfire.
 
 ```js
 function calcNBR(img) {
@@ -174,8 +176,8 @@ is the place to alter or add an additional index.
 
 #### Combine functions
 
-Define a wrapper function that can be mapped over all images in a collection to
-apply all of the above functions.
+Define a wrapper function that consolidates all above functions for convience in applying
+them to an image collection.
 
 ```js
 function prepImg(img) {
@@ -198,8 +200,8 @@ collections to create cross-sensor analysis ready data that can be used to visua
 the spectral chronology of a pixel or region of pixels. In this example you will
 create a 35+ year time series and display the spectral history for a single pixel.
 This particular pixel relates the recent history of a mature pacific northwest
-conifer forest patch (Figure 1) that experiences some perturbation in the 1980's and
-90's and a high magnitude burn in the in 2011.
+conifer forest patch (Figure 1) that experienced some perturbation in the 1980's and
+90's and a high magnitude burn in 2011.
 
 ![Area of interest](https://github.com/jdbcode/earthengine-community/blob/master/tutorials/landsat-etm-to-oli-harmonization/area-of-interest.jpg)
 
@@ -215,9 +217,10 @@ An `ee.Geometry.point` is used to define the pixel's location.
 var point = ee.Geometry.Point([-121.70938, 45.43185]);
 ```
 
-In your application, you might select a different pixel. Simply, replace the above
-longitude and latitude coordinates accordingly. Alternatively, you can summarize
-the spectral history of group of pixels by using other `ee.Geometry` object definitions.
+In your application, you might select a different pixel. Do so by replacing the above
+longitude and latitude coordinates. Alternatively, you can summarize
+the spectral history of a group of pixels by using other `ee.Geometry` object definitions,
+such as `ee.Geometry.polygon()` and `ee.Geometry.rectangle()`.
 Please see the [Geometries](https://developers.google.com/earth-engine/geometries)
 section of the Developer Guide for more information.
 

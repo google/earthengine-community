@@ -79,6 +79,11 @@ function prepImg(img) {
 // to extract time series for.
 var point = ee.Geometry.Point([-121.70938, 45.43185]);
 
+// Display point on the map.
+Map.centerObject(point, 9);
+Map.addLayer(point, {color: 'f8766d'}, 'AOI');
+Map.setOptions('HYBRID');
+
 // Get Landsat surface reflectance collections for OLI, ETM+ and TM sensors.
 var oliCol = ee.ImageCollection('LANDSAT/LC08/C01/T1_SR');
 var etmCol= ee.ImageCollection('LANDSAT/LE07/C01/T1_SR');

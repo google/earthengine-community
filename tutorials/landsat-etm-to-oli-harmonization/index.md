@@ -28,8 +28,8 @@ limitations under the License.
 This tutorial concerns harmonizing Landsat ETM+ surface reflectance to Landsat OLI
 surface reflectance. It provides:
 
-- A spectral translation function
-- Functions to create analysis ready data
+- A spectral transformation function
+- Functions to create analysis-ready data
 - A time series visualization example
 
 It is intended to be an end-to-end guide for harmonizing and visualizing a 35+ year
@@ -84,7 +84,7 @@ for examples of harmonization across all sensors.
 demonstrate that there are small, but potentially significant differences between
 the spectral characteristics of Landsat ETM+ and OLI, depending on application.
 Reasons you might want to harmonize datasets include producing a long time series
-that spans Landsat TM, ETM+, and OLI or you want to produce near-date intra-annual
+that spans Landsat TM, ETM+, and OLI, or you want to produce near-date intra-annual
 composites to reduce the effects of missing observations from ETM+ SLC-off gaps
 and cloud/shadow masking. Please see the linked manuscript above for more information.
 
@@ -286,19 +286,18 @@ observations from the current collection as a time series chart, but it will not
 distinguish observations from the various sensors. `ui.Chart.feature.groups`
 provides this functionality, but requires rearranging the `ee.ImageCollection`
 into an `ee.FeatureCollection`. To make the conversion, each image needs to be
-reduced by the area of interest, and the resulting dictionary cast as a feature,
+reduced by the area of interest, and the resulting dictionary cast as a `ee.Feature`,
 so that the `reduceRegion` function can be mapped over the image collection
 and result in a feature collection.
 
 ```js
-function imgReduce(img){
+var allObs = col.map(function(img) {
   return ee.Feature(null, img.reduceRegion({
     geometry: point,
     reducer: ee.Reducer.first(),
     scale: 30
   })).copyProperties(img, img.propertyNames());
-}
-var allObs = col.map(imgReduce);
+});
 ```
 
 The result is an `ee.FeatureCollection` where each feature contains a set of
@@ -367,12 +366,12 @@ The first step is to group images by year. Add a new 'year' property to each ima
 mapping over the collection setting 'year' from each image's `ee.Image.Date`.
 
 ```js
-var col = col.map(function(img){
+col = col.map(function(img) {
   return img.set('year', img.date().get('year'));
 });
 ```
 
-The new 'year' property can be used to group images from the same year using a join.
+The new 'year' property can be used to group images from the same year by a join.
 The join between a distinct image year collection and the complete
 collection provides same-year lists, from which median reductions can be performed.
 Subset the complete collection to a set of distinct year representatives.
@@ -442,7 +441,7 @@ July through August and are filtered for high quality._
 ### Alternative transformation functions
 
 Roy et al. (2016) Table 2 provides OLS and RMA regression coefficients
-to translate ETM+ surface reflectance to OLI surface reflectance and visa
+to transform ETM+ surface reflectance to OLI surface reflectance and visa
 versa. The above tutorial demonstrates only ETM+ to OLI transformation by OLS
 regression. Functions for all translation options can be found in the
 [Code Editor script]()

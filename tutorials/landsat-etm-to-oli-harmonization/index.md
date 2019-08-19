@@ -340,7 +340,7 @@ relatively tight. Trying this with NDVI (img.normalizedDifference(['B5', 'B4']).
 shows much greater intra- and inter-annual response variability.
 - NBR remains high for the majority of the time series with some minor perturbations.
 - A great, rapid reduction in NBR response results from a forest fire evident in 2012. Note 
-however, that the fire ([Dollar Lake fire](#the-dollar-lake-fire)) occurred in September of 2011.
+however, that the fire ([Dollar Lake](#the-dollar-lake-fire)) occurred in September of 2011.
 The error in detection year is due to the annual composite date range being July through
 August; changes occuring after this period are not picked until the next available non-null
 composite year.
@@ -445,7 +445,7 @@ to transform ETM+ surface reflectance to OLI surface reflectance and vice
 versa. The above tutorial demonstrates only ETM+ to OLI transformation by OLS
 regression. Functions for all translation options can be found in the
 [Code Editor script](https://code.earthengine.google.com/a780e0817678e2e1e27eec7d84eb2a85)
-or the [GitHub source script](https://github.com/google/earthengine-community/tree/master/tutorials/landsat-etm-to-oli-harmonization/script.js).
+or the [GitHub source script](landsat-etm-to-oli-harmonization/script.js).
 
 ### The Dollar Lake fire
 

@@ -27,12 +27,19 @@
   },
   "homepage": "https://github.com/google/earthengine-community",
   "devDependencies": {
+<<<<<<< HEAD
     "@google/earthengine": "^0.1.186",
+=======
+    "@google/earthengine": "0.1.185",
+>>>>>>> 8e1399c4c5efa73feea59f26032f28909eace6d3
     "eslint": "^6.1.0",
     "eslint-config-google": "^0.13.0",
     "jasmine": "^3.4.0",
     "jasmine-console-reporter": "^3.1.0",
+<<<<<<< HEAD
     "karma-jasmine-diff-reporter": "^2.0.0",
+=======
+>>>>>>> 8e1399c4c5efa73feea59f26032f28909eace6d3
     "nyc": "^14.1.1"
   }
 }

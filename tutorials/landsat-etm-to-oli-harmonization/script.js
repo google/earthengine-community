@@ -42,7 +42,8 @@ function etm2oli(img) {
     .add(coefficients.itcps)
     .round()
     .toShort()
-    .addBands(img.select('pixel_qa'));
+    .addBands(img.select('pixel_qa')
+  );
 }
 
 // Define function to mask out clouds and cloud shadows.
@@ -176,3 +177,98 @@ var chartMedianComp = ui.Chart.image.series({
   lineWidth: 6
 });
 print(chartMedianComp);
+
+// ################################################################
+// ### ALTERNATIVE TRANSFORMATION FUNCTIONS ###
+// ################################################################
+
+// Roy et al. (2016) Table 2 provides OLS and RMA regression coefficients
+// to translate ETM+ surface reflectance to OLI surface reflectance and visa
+// versa. The above tutorial demontrates only ETM+ to OLI transformation by OLS
+// regession. Below are functions for all translation options. Replace above
+// lines: 67 (band name stanardization) and 69 (transformation) of the `preImg`
+// function to apply different different transformation options.
+
+// Define OLS and RMA surface regression coefficents.
+var coefficients = {
+  etm2oli_ols: {
+    itcps: ee.Image.constant([0.0003, 0.0088, 0.0061, 0.0412, 0.0254, 0.0172]).multiply(10000),
+    slopes: ee.Image.constant([0.8474, 0.8483, 0.9047, 0.8462, 0.8937, 0.9071])
+  },
+  oli2etm_ols: {
+    itcps: ee.Image.constant([0.0183, 0.0123, 0.0123, 0.0448, 0.0306, 0.0116]).multiply(10000),
+    slopes: ee.Image.constant([0.885, 0.9317, 0.9372, 0.8339, 0.8639, 0.9165])
+  },
+  rma: {
+    itcp: ee.Image.constant([-0.0095, -0.0016, -0.0022, -0.0021, -0.0030, 0.0029]).multiply(10000),
+    slopes: ee.Image.constant([0.9785, 0.9542, 0.9825, 1.0073, 1.0171, 0.9949])
+  }
+};
+
+// Define function to apply OLS ETM+ to OLI transformation.
+function etm2oli_ols(img) {
+  return img.select(['B2', 'B3', 'B4', 'B5', 'B6', 'B7'])
+    .multiply(coefficients.etm2oli_ols.slopes)
+    .add(coefficients.etm2oli_ols.itcps)
+    .round()
+    .toShort()
+    .addBands(img.select('pixel_qa')
+  );
+}
+
+// Define function to apply OLS OLI to ETM+ transformation.
+function oli2etm_ols(img) {
+  return ee.Image(
+    img.select(['B1', 'B2', 'B3', 'B4', 'B5', 'B7'])
+      .multiply(coefficients.oli2etm_ols.slopes)
+      .add(coefficients.oli2etm_ols.itcps)
+      .round()
+      .toShort()
+      .addBands(img.select('pixel_qa'))
+      .copyProperties(img, ['system:time_start'])
+  );
+}
+
+// Define function to apply RMA OLI to ETM+ transformation.
+function oli2etm_rma(img) {
+  return ee.Image(
+    img.select(['B1', 'B2', 'B3', 'B4', 'B5', 'B7'])
+      .subtract(coefficients.rma.itcps)
+      .divide(coefficients.rma.slopes)
+      .round()
+      .toShort()
+      .addBands(img.select('pixel_qa'))
+      .copyProperties(img, ['system:time_start'])
+  );
+}
+
+// Define function to apply RMA ETM+ to OLI transformation.
+function etm2oli_rma(img) {
+  return ee.Image(
+    img.select(['B2', 'B3', 'B4', 'B5', 'B6', 'B7'])
+      .multiply(coefficients.rma.slopes)
+      .add(coefficients.rma.itcps)
+      .round()
+      .toShort()
+      .addBands(img.select('pixel_qa'))
+      .copyProperties(img, ['system:time_start'])
+  );
+}
+
+// Define function to get consistent band names (OLI).
+function oliBands(img) {
+  return ee.Image(ee.Algorithms.If(
+    ee.Algorithms.IsEqual(img.get('SATELLITE'), ee.String('LANDSAT_8')),
+    img.select(['B2', 'B3', 'B4', 'B5', 'B6', 'B7', 'pixel_qa']),
+    img.select(['B1', 'B2', 'B3', 'B4', 'B5', 'B7', 'pixel_qa'], ['B2', 'B3', 'B4', 'B5', 'B6', 'B7', 'pixel_qa'])
+  ));
+}
+
+// Define function to get consistent band names (ETM+).
+function etmBands(img) {
+  return ee.Image(ee.Algorithms.If(
+    ee.Algorithms.IsEqual(img.get('SATELLITE'), ee.String('LANDSAT_8')),
+    img.select(['B2', 'B3', 'B4', 'B5', 'B6', 'B7', 'pixel_qa'], ['B1', 'B2', 'B3', 'B4', 'B5', 'B7', 'pixel_qa']),
+    img.select(['B1', 'B2', 'B3', 'B4', 'B5', 'B7', 'pixel_qa'])
+  ));
+}

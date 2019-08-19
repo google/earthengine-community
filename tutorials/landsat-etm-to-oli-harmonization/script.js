@@ -184,12 +184,12 @@ print(chartMedianComp);
 
 // Roy et al. (2016) Table 2 provides OLS and RMA regression coefficients
 // to translate ETM+ surface reflectance to OLI surface reflectance and visa
-// versa. The above tutorial demontrates only ETM+ to OLI transformation by OLS
-// regession. Below are functions for all translation options. Replace above
-// lines: 67 (band name stanardization) and 69 (transformation) of the `preImg`
+// versa. The above tutorial demonstrates only ETM+ to OLI transformation by OLS
+// regression. Below are functions for all translation options. Replace above
+// lines: 67 (band name standardization) and 69 (transformation) of the `preImg`
 // function to apply different different transformation options.
 
-// Define OLS and RMA surface regression coefficents.
+// Define OLS and RMA surface regression coefficients.
 var coefficients = {
   etm2oli_ols: {
     itcps: ee.Image.constant([0.0003, 0.0088, 0.0061, 0.0412, 0.0254, 0.0172]).multiply(10000),

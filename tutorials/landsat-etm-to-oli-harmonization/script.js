@@ -187,7 +187,7 @@ print(chartMedianComp);
 // versa. The above tutorial demonstrates only ETM+ to OLI transformation by OLS
 // regression. Below are functions for all translation options. Replace above
 // lines: 67 (band name standardization) and 69 (transformation) of the `preImg`
-// function to apply different different transformation options.
+// function to apply different transformation options.
 
 // Define OLS and RMA surface regression coefficients.
 var coefficients = {

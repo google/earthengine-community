@@ -435,6 +435,15 @@ single pixel with representation from Landsat TM, ETM+, and OLI. TM and ETM+
 images are harmonized to OLI by a linear transformation. Images are from
 July through August and are filtered for high quality._
 
+### Alternative transformation functions
+
+Roy et al. (2016) Table 2 provides OLS and RMA regression coefficients
+to translate ETM+ surface reflectance to OLI surface reflectance and visa
+versa. The above tutorial demonstrates only ETM+ to OLI transformation by OLS
+regression. Functions for all translation options can be found in the
+[Code Editor script]()
+or the [GitHub source script](https://github.com/google/earthengine-community/tree/master/tutorials/landsat-etm-to-oli-harmonization/script.js).
+
 ### The Dollar Lake fire
 
 The fire mentioned in this tutorial is the Dollar Lake fire, which occured

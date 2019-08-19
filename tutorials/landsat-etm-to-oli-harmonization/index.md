@@ -445,7 +445,7 @@ to transform ETM+ surface reflectance to OLI surface reflectance and vice
 versa. The above tutorial demonstrates only ETM+ to OLI transformation by OLS
 regression. Functions for all translation options can be found in the
 [Code Editor script](https://code.earthengine.google.com/a780e0817678e2e1e27eec7d84eb2a85)
-or the [GitHub source script](landsat-etm-to-oli-harmonization/script.js).
+or the [GitHub source script](script.js).
 
 ### The Dollar Lake fire
 

@@ -27,7 +27,7 @@
   },
   "homepage": "https://github.com/google/earthengine-community",
   "devDependencies": {
-    "@google/earthengine": "0.1.185",
+    "@google/earthengine": "0.1.191",
     "eslint": "^6.1.0",
     "eslint-config-google": "^0.13.0",
     "jasmine": "^3.4.0",

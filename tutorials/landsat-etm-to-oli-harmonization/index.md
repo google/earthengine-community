@@ -206,7 +206,7 @@ This particular pixel relates the recent history of a mature pacific northwest
 conifer forest patch (Figure 1) that experienced some perturbation in the 1980's and
 90's and a high magnitude burn in 2011.
 
-![Area of interest](https://github.com/jdbcode/earthengine-community/blob/master/tutorials/landsat-etm-to-oli-harmonization/area-of-interest.jpg)
+![Area of interest](area-of-interest.jpg)
 
 _Figure 1. Location and site character for example area of interest. Mature pacific
 northwest conifer forest on the north slope of Mt Hood, OR, USA. Images courtesy of:

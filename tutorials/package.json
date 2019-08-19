@@ -1,0 +1,12 @@
+{
+  "name": "earthengine-community-tutorials",
+  "description": "Earth Engine Community Tutorial tests",
+  "private": true,
+  "scripts": {
+    "lint": "./node_modules/.bin/eslint ."
+  },
+  "devDependencies": {
+    "eslint": "^6.1.0",
+    "eslint-config-google": "^0.13.0"
+  }
+}

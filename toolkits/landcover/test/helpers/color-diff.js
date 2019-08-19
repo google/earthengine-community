@@ -5,7 +5,7 @@ var formatComputedObject =
 
 /**
  * Formats an individual diff for display.
- * 
+ *
  * @param {*} diff The individual diff returned by the diff library.
  * @returns {string} Diff line with markers and color codes.
  */
@@ -22,7 +22,7 @@ var formatDiff = function(diff) {
 /**
  * Decorates a Jasmine matcher with ability to pretty-print differences in
  * Earth Engine objects.
- * 
+ *
  * @param {*} jasmineMatcher The original matcher being decorated.
  * @param {*} desc The textual hint to be displayed in error messages.
  */

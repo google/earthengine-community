@@ -24,7 +24,7 @@ withEarthEngineStub('Landsat8', function() {
     var newImage = lct.Landsat8.applyCloudShadowBitMasks(originalImage);
 
     var qa = originalImage.select('pixel_qa');
-    var mask = qa.bitwiseAnd(1 << 4).eq(0).and(qa.bitwiseAnd(1 << 5).eq(0));
+    var mask = qa.bitwiseAnd(1 << 3).eq(0).and(qa.bitwiseAnd(1 << 5).eq(0));
     var expected = originalImage.updateMask(mask);
     expect(newImage).toEqual(expected);
   });

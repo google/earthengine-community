@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "An Earth Engine library for easy land cover and land cover change mapping",
   "scripts": {
-    "test": "karma run 'test/*/*.js'",
+    "test": "jasmine 'test/*/*.js'",
     "test:unit": "jasmine --config=test/jasmine.json 'test/unit/*.js'",
     "test:int": "jasmine --config=test/jasmine.json 'test/int/*.js'",
     "coverage": "nyc npm run test:unit",

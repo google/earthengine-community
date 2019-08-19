@@ -106,14 +106,13 @@ var col = oliCol
 // Extract NBR values for all pixels in the collection that
 // intersect the point. Returns FeatureCollection - copy image
 // properties to each feature.
-function imgReduce(img){
+var allObs = col.map(function(img) {
   return ee.Feature(null, img.reduceRegion({
     geometry: point,
     reducer: ee.Reducer.first(),
     scale: 30
   })).copyProperties(img, img.propertyNames());
-}
-var allObs = col.map(imgReduce);
+});
 
 // Make a chart of all observations in FeatureCollection.
 var chartAllObs = ui.Chart.feature.groups(
@@ -134,7 +133,7 @@ print(chartAllObs);
 // Reduce the ImageCollection to intra-annual median.
 // Need to identify same-year images by a join.
 // Start by adding a 'year' property to each image.
-var col = col.map(function(img){
+var col = col.map(function(img) {
   return img.set('year', img.date().get('year')); 
 });
 
@@ -183,10 +182,10 @@ print(chartMedianComp);
 // ################################################################
 
 // Roy et al. (2016) Table 2 provides OLS and RMA regression coefficients
-// to translate ETM+ surface reflectance to OLI surface reflectance and visa
+// to translate ETM+ surface reflectance to OLI surface reflectance and vice
 // versa. The above tutorial demonstrates only ETM+ to OLI transformation by OLS
 // regression. Below are functions for all translation options. Replace above
-// lines: 67 (band name standardization) and 69 (transformation) of the `preImg`
+// lines: 67 (band name standardization) and 69 (transformation) of the `prepImg`
 // function to apply different transformation options.
 
 // Define OLS and RMA surface regression coefficients.
@@ -200,7 +199,7 @@ var coefficients = {
     slopes: ee.Image.constant([0.885, 0.9317, 0.9372, 0.8339, 0.8639, 0.9165])
   },
   rma: {
-    itcp: ee.Image.constant([-0.0095, -0.0016, -0.0022, -0.0021, -0.0030, 0.0029]).multiply(10000),
+    itcps: ee.Image.constant([-0.0095, -0.0016, -0.0022, -0.0021, -0.0030, 0.0029]).multiply(10000),
     slopes: ee.Image.constant([0.9785, 0.9542, 0.9825, 1.0073, 1.0171, 0.9949])
   }
 };

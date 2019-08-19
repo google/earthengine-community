@@ -17,3 +17,15 @@
 
 var lct = require('../../api');
 
+withEarthEngineStub('Landsat8', function() {
+  it('applyCloudAndShadowBitMasks() updates mask', function() {
+    var originalImage = ee.Image(0);
+
+    var newImage = lct.Landsat8.applyCloudShadowBitMasks(originalImage);
+
+    var qa = originalImage.select('pixel_qa');
+    var mask = qa.bitwiseAnd(1 << 4).eq(0).and(qa.bitwiseAnd(1 << 5).eq(0));
+    var expected = originalImage.updateMask(mask);
+    expect(newImage).toEqual(expected);
+  });
+});

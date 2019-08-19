@@ -71,7 +71,7 @@ Landsat8.prototype.fmaskCloudsAndShadows = function() {
   // TODO(gorelick): Is BQA in TOA calculated using Fmask as well? If so, how do
   // we model and/or abstract this for the user?
   // TODO(gino-m): Do something different or fail for type != 'SR'.
-  this.collection_ = this.collection_.map(Landsat8.applyCloudShadowBitMasks_);
+  this.collection_ = this.collection_.map(Landsat8.applyCloudShadowBitMasks);
   return this;
 };
 
@@ -83,9 +83,8 @@ Landsat8.prototype.fmaskCloudsAndShadows = function() {
  *
  * @param {!ee.Image} image The image to be masked.
  * @return {!ee.Image}
- * @private
  */
-Landsat8.applyCloudShadowBitMasks_ = function(image) {
+Landsat8.applyCloudShadowBitMasks = function(image) {
   var qa = image.select(QA_BAND);
   // Both flags should be set to zero, indicating clear conditions.
   var mask = qa.bitwiseAnd(CLOUD_SHADOW_BIT_MASK)
@@ -93,5 +92,9 @@ Landsat8.applyCloudShadowBitMasks_ = function(image) {
                  .and(qa.bitwiseAnd(CLOUD_BIT_MASK).eq(0));
   return image.updateMask(mask);
 };
+
+Landsat8.QA_BAND = QA_BAND;
+Landsat8.CLOUD_SHADOW_BIT_MASK = CLOUD_SHADOW_BIT_MASK;
+Landsat8.CLOUD_BIT_MASK = CLOUD_BIT_MASK;
 
 exports.Landsat8 = Landsat8;

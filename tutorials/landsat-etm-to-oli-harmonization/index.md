@@ -21,7 +21,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 -->
 
-[Open In Code Editor](https://code.earthengine.google.com/f06171a7bffc0a926d7e802b1f0580eb)
+[Open In Code Editor](https://code.earthengine.google.com/cd3450269e4d748cc431b8082cecb6a9)
 
 # Landsat ETM+ to OLI Harmonization
 
@@ -441,10 +441,10 @@ July through August and are filtered for high quality._
 ### Alternative transformation functions
 
 Roy et al. (2016) Table 2 provides OLS and RMA regression coefficients
-to transform ETM+ surface reflectance to OLI surface reflectance and visa
+to transform ETM+ surface reflectance to OLI surface reflectance and vice
 versa. The above tutorial demonstrates only ETM+ to OLI transformation by OLS
 regression. Functions for all translation options can be found in the
-[Code Editor script]()
+[Code Editor script](https://code.earthengine.google.com/cd3450269e4d748cc431b8082cecb6a9)
 or the [GitHub source script](https://github.com/google/earthengine-community/tree/master/tutorials/landsat-etm-to-oli-harmonization/script.js).
 
 ### The Dollar Lake fire

@@ -72,7 +72,7 @@ Land Imager (OLI) are used in this tutorial. They are closely related and
 relatively easy to consolidate into a consistent time series that produce a
 continuous record from 1984 to the present, at a cadence of 16 days
 per sensor with 30 meter spatial resolution. The seminal Multispectral Scanner
-instrument extents the Landsat record back to 1972, but is not used in this tutorial.
+instrument extends the Landsat record back to 1972, but is not used in this tutorial.
 Its data are quite different, making integration with later sensors challenging. See
 [Savage et al. (2018)](https://www.mdpi.com/1999-4907/9/4/157) and
 [Vogeler et al. (2018)](https://www.sciencedirect.com/science/article/abs/pii/S0034425718300579)
@@ -179,7 +179,7 @@ is the place to alter or add an additional index.
 
 #### Combine functions
 
-Define a wrapper function that consolidates all above functions for convience in applying
+Define a wrapper function that consolidates all above functions for convenience in applying
 them to an image collection.
 
 ```js
@@ -209,7 +209,7 @@ conifer forest patch (Figure 1) that experienced some perturbation in the 1980's
 ![Area of interest](https://github.com/jdbcode/earthengine-community/blob/master/tutorials/landsat-etm-to-oli-harmonization/area-of-interest.jpg)
 
 _Figure 1. Location and site character for example area of interest. Mature pacific
-northwest conifer forest on the north slope of Mt Hood, OR, USA. Images curtisousy of:
+northwest conifer forest on the north slope of Mt Hood, OR, USA. Images courtesy of:
 Google Earth, USDA Forest Service, Landsat, and Copernicus._
 
 #### Define an area of interest
@@ -342,7 +342,7 @@ shows much greater intra- and inter-annual response variability.
 - A great, rapid reduction in NBR response results from a forest fire evident in 2012. Note 
 however, that the fire ([Dollar Lake fire](#the-dollar-lake-fire)) occurred in September of 2011.
 The error in detection year is due to the annual composite date range being July through
-August; changes occuring after this period are not picked until the next avaible non-null
+August; changes occuring after this period are not picked until the next available non-null
 composite year.
 - Vegetation recovery (increasing NBR response) begins two years after the major NBR
 loss.
@@ -449,7 +449,7 @@ or the [GitHub source script](https://github.com/google/earthengine-community/tr
 
 ### The Dollar Lake fire
 
-The fire mentioned in this tutorial is the Dollar Lake fire, which occured
+The fire mentioned in this tutorial is the Dollar Lake fire, which occurred
 mid-September, 2011 on the northern slopes of Mt Hood, OR, USA. Visit this
 [blog post](https://wyeastblog.org/2016/10/22/dollar-lake-fire-five-years-after/)
 and see this [manuscript](http://dearing.biology.utah.edu/Lab/pdf/2015_varner_too_hot_trot.pdf)

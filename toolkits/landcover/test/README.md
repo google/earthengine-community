@@ -40,10 +40,6 @@ features are added to Earth Engine, this file should be updated by running:
 
 ### Methodology
 
-A small example for discussion:
-
-https://github.com/google/earthengine-community/blob/d8051340488bea4efdb74d7bd8e18210b1c26e2a/toolkits/landcover/test/unit/landsat8.unit.test.js#L20-L33
-
 As discussed in [TotT: Testing State vs. Testing Interactions][tott-state-vs],
 we generally prefer to test the result of a particular operation (i.e., its
 final state) over inspecting interactions with other libraries. For example,

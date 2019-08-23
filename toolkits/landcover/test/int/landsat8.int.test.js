@@ -15,26 +15,42 @@
  * limitations under the License.
  */
 
-var assert = require('assert');
-var lct = require('../../api.js');
+var Landsat8 = require('../../api.js').Landsat8;
+
+var collectBands = function(values) {
+  var result;
+  for (var band in values) {
+    var img = ee.Image(values[band]).rename(band);
+    if (result) {
+      result = result.addBands(img);
+    } else {
+      result = img;
+    }
+  }
+  return result;
+};
+
+var createTestImage = function(date, values) {
+  var image = collectBands(values || {}) || ee.Image();
+  image = image.set('system:time_start', ee.Date(date).millis());
+  return image;
+};
 
 withEarthEngine('Landsat8', function() {
-  it('Filter and mask SR data', function(done) {
-    var point = ee.Geometry.Point(36.17819452553215, -4.826158059877228);
-    var image = lct.Landsat8('SR')
-                    .filterDate('2018-01-01', '2018-04-01')
-                    .filterBounds(point)
+  fit('fmaskCloudsAndShadows() masks cloud pixels', function(done) {
+    var clearPixel = createTestImage('2018-03-01', {pixel_qa: 0, B4: 12});
+    var cloudyPixel = createTestImage(
+        '2018-03-01', {pixel_qa: Landsat8.CLOUD_BIT_MASK, B4: 100});
+    var testCollection = ee.ImageCollection([clearPixel, cloudyPixel]);
+    var image = Landsat8(testCollection)
                     .fmaskCloudsAndShadows()
                     .getImageCollection()
                     .mosaic();
 
-    // Cloudly pixel be masked out.
-    // TODO(gorelick): What would be a better way to test this?
-    var redValue = image.select('B4')
-                       .reduceRegion(ee.Reducer.first(), point, 10)
-                       .get('B4');
+    // Verify cloud-free pixel was returned.
+    var redValue = image.select('B4').reduceRegion(ee.Reducer.first());
     redValue.evaluate(function(actual) {
-      assert.equal(actual, null);
+      expect(actual).toEqual(12);
       done();
     });
   });

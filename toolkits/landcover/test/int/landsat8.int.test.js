@@ -16,30 +16,12 @@
  */
 
 var Landsat8 = require('../../api.js').Landsat8;
-
-var collectBands = function(values) {
-  var result;
-  for (var band in values) {
-    var img = ee.Image(values[band]).rename(band);
-    if (result) {
-      result = result.addBands(img);
-    } else {
-      result = img;
-    }
-  }
-  return result;
-};
-
-var createTestImage = function(date, values) {
-  var image = collectBands(values || {}) || ee.Image();
-  image = image.set('system:time_start', ee.Date(date).millis());
-  return image;
-};
+var TestImage = require('../helpers/test-image.js');
 
 withEarthEngine('Landsat8', function() {
-  fit('fmaskCloudsAndShadows() masks cloud pixels', function(done) {
-    var clearPixel = createTestImage('2018-03-01', {pixel_qa: 0, B4: 12});
-    var cloudyPixel = createTestImage(
+  it('fmaskCloudsAndShadows() masks cloud pixels', function(done) {
+    var clearPixel = TestImage.create('2018-03-01', {pixel_qa: 0, B4: 12});
+    var cloudyPixel = TestImage.create(
         '2018-03-01', {pixel_qa: Landsat8.CLOUD_BIT_MASK, B4: 100});
     var testCollection = ee.ImageCollection([clearPixel, cloudyPixel]);
     var image = Landsat8(testCollection)
@@ -48,8 +30,7 @@ withEarthEngine('Landsat8', function() {
                     .mosaic();
 
     // Verify cloud-free pixel was returned.
-    var redValue = image.select('B4').reduceRegion(ee.Reducer.first());
-    redValue.evaluate(function(actual) {
+    TestImage.reduce(image).get('B4').evaluate(function(actual) {
       expect(actual).toEqual(12);
       done();
     });

@@ -40,9 +40,9 @@ var create = function(values, opt_date) {
   return image;
 };
 
-var reduce = function(image) {
+var reduceConstant = function(image) {
   return image.reduceRegion(ee.Reducer.first(), ee.Geometry.Point(0, 0), 1);
 };
 
 exports.create = create;
-exports.reduce = reduce;
+exports.reduceConstant = reduceConstant;

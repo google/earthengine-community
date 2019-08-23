@@ -32,9 +32,11 @@ var collectBands = function(values) {
   return result;
 };
 
-var create = function(date, values) {
+var create = function(values, opt_date) {
   var image = collectBands(values || {}) || ee.Image();
-  image = image.set('system:time_start', ee.Date(date).millis());
+  if (opt_date) {
+    image = image.set('system:time_start', ee.Date(opt_date).millis());
+  }
   return image;
 };
 

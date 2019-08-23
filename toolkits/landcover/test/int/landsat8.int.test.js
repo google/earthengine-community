@@ -15,43 +15,41 @@
  * limitations under the License.
  */
 
-var lct = require('../../api.js');
-var TestImage = require('../helpers/test-image.js');
+var Landsat8 = require('../../api.js').Landsat8;
+
+var collectBands = function(values) {
+  var result;
+  for (var band in values) {
+    var img = ee.Image(values[band]).rename(band);
+    if (result) {
+      result = result.addBands(img);
+    } else {
+      result = img;
+    }
+  }
+  return result;
+};
+
+var createTestImage = function(date, values) {
+  var image = collectBands(values || {}) || ee.Image();
+  image = image.set('system:time_start', ee.Date(date).millis());
+  return image;
+};
 
 withEarthEngine('Landsat8', function() {
-  fit('fmaskCloudsAndShadows() masks cloudy pixels', function(done) {
-    var clearPixel = TestImage.create({pixel_qa: 0, B4: 12});
-    var cloudyPixel =
-        TestImage.create({pixel_qa: lct.Landsat8.CLOUD_BIT_MASK, B4: 100});
+  fit('fmaskCloudsAndShadows() masks cloud pixels', function(done) {
+    var clearPixel = createTestImage('2018-03-01', {pixel_qa: 0, B4: 12});
+    var cloudyPixel = createTestImage(
+        '2018-03-01', {pixel_qa: Landsat8.CLOUD_BIT_MASK, B4: 100});
     var testCollection = ee.ImageCollection([clearPixel, cloudyPixel]);
-    var l8 = lct.Landsat8(testCollection);
-
-    var maskedL8 = l8.fmaskCloudsAndShadows();
+    var image = Landsat8(testCollection)
+                    .fmaskCloudsAndShadows()
+                    .getImageCollection()
+                    .mosaic();
 
     // Verify cloud-free pixel was returned.
-    var image = maskedL8.getImageCollection().mosaic();
-    var value = TestImage.reduceConstant(image).get('B4');
-    value.evaluate(function(actual, error) {
-      expect(error).toBeUndefined();
-      expect(actual).toEqual(12);
-      done();
-    });
-  });
-
-  fit('fmaskCloudsAndShadows() masks shadowy pixels', function(done) {
-    var clearPixel = TestImage.create({pixel_qa: 0, B4: 12});
-    var shadowyPixel =
-        TestImage.create({pixel_qa: lct.Landsat8.CLOUD_BIT_SHADOW_MASK, B4: 4});
-    var testCollection = ee.ImageCollection([clearPixel, shadowyPixel]);
-    var l8 = lct.Landsat8(testCollection);
-
-    var maskedL8 = l8.fmaskCloudsAndShadows();
-
-    // Verify cloud shadow-free pixel was returned.
-    var image = maskedL8.getImageCollection().mosaic();
-    var value = TestImage.reduceConstant(image).get('B4');
-    value.evaluate(function(actual, error) {
-      expect(error).toBeUndefined();
+    var redValue = image.select('B4').reduceRegion(ee.Reducer.first());
+    redValue.evaluate(function(actual) {
       expect(actual).toEqual(12);
       done();
     });

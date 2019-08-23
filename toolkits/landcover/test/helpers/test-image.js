@@ -15,23 +15,14 @@
  * limitations under the License.
  */
 
-/**
- * Returns a single constant ee.Image comprised of the bands and values in the
- * specified dictionary.
- *
- * @param {*} values A dictionary containing band names as keys and
- *    corresponding numeric values. The values are used to build an ee.Image
- *    with a single constant value in each respective band.
- * @returns {!ee.Image}
- */
 var collectBands = function(values) {
   var result;
-  // Iterate over values dictionary to build Image, converting each value to
-  // the appropriate EE type.
   for (var band in values) {
     var value = values[band];
-    // If/when other types are needed they can be added here.
-    var img = ee.Image(value).rename(band).int16();
+    var img = ee.Image(value).rename(band);
+    if (!isNaN(value)) {
+      img = img.int16();
+    }
     if (result) {
       result = result.addBands(img);
     } else {
@@ -41,35 +32,15 @@ var collectBands = function(values) {
   return result;
 };
 
-/**
- * Returns a single constant ee.Image comprised of the bands and values in the
- * specified dictionary.
- *
- * @param {*} values A dictionary containing band names as keys and
- *    corresponding numeric values. The values are used to build an ee.Image
- *    with a single constant value in each respective band.
- * @param {string} opt_date An optional start date for the image, in YYYY-MM-DD
- *    format.
- * @returns {!ee.Image}
- */
-var create = function(values, opt_date) {
+var create = function(date, values) {
   var image = collectBands(values || {}) || ee.Image();
-  if (opt_date) {
-    image = image.set('system:time_start', ee.Date(opt_date).millis());
-  }
+  image = image.set('system:time_start', ee.Date(date).millis());
   return image;
 };
 
-/**
- * Reduces the specified constant ee.Image to a dictionary with one key per
- * band.
- *
- * @param {!ee.Image} image A constant ee.Image (an image with a single value).
- * @returns {*} A dictionary keyed by band name.
- */
-var reduceConstant = function(image) {
+var reduce = function(image) {
   return image.reduceRegion(ee.Reducer.first(), ee.Geometry.Point(0, 0), 1);
 };
 
 exports.create = create;
-exports.reduceConstant = reduceConstant;
+exports.reduce = reduce;

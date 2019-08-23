@@ -41,16 +41,19 @@ var QA_BAND = 'pixel_qa';
  * Returns a new Landsat 8 SR dataset instance.
  *
  * @constructor
+ * @param {ee.ImageCollection=} collection The Landsat image collection backing
+ *    this dataset. If not specified, Landsat 8 SR will be used.
  * @return {!Landsat8}
  */
-var Landsat8 = function() {
+var Landsat8 = function(collection) {
   // Constructor safety.
   if (!(this instanceof Landsat8)) {
-    return new Landsat8();
+    return new Landsat8(collection);
   }
 
-  // TODO(gino-m): Accept `type` "SR"|"TOA".
-  Dataset.call(this, 'LANDSAT/LC08/C01/T1_SR', DEFAULT_VIS_PARAMS);
+  Dataset.call(
+      this, collection || ee.ImageCollection('LANDSAT/LC08/C01/T1_SR'),
+      DEFAULT_VIS_PARAMS);
 };
 
 // Extend Dataset class. This causes Landsat8 to inherit all method and

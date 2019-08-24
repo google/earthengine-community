@@ -15,16 +15,16 @@
  * limitations under the License.
  */
 
-var Landsat8 = require('../../api.js').Landsat8;
+var lct = require('../../api.js');
 var TestImage = require('../helpers/test-image.js');
 
 withEarthEngine('Landsat8', function() {
   fit('fmaskCloudsAndShadows() masks cloudy pixels', function(done) {
     var clearPixel = TestImage.create({pixel_qa: 0, B4: 12});
     var cloudyPixel =
-        TestImage.create({pixel_qa: Landsat8.CLOUD_BIT_MASK, B4: 100});
+        TestImage.create({pixel_qa: lct.Landsat8.CLOUD_BIT_MASK, B4: 100});
     var testCollection = ee.ImageCollection([clearPixel, cloudyPixel]);
-    var l8 = Landsat8(testCollection);
+    var l8 = lct.Landsat8(testCollection);
 
     var maskedL8 = l8.fmaskCloudsAndShadows();
 
@@ -41,9 +41,9 @@ withEarthEngine('Landsat8', function() {
   fit('fmaskCloudsAndShadows() masks shadowy pixels', function(done) {
     var clearPixel = TestImage.create({pixel_qa: 0, B4: 12});
     var shadowyPixel =
-        TestImage.create({pixel_qa: Landsat8.CLOUD_BIT_SHADOW_MASK, B4: 4});
+        TestImage.create({pixel_qa: lct.Landsat8.CLOUD_BIT_SHADOW_MASK, B4: 4});
     var testCollection = ee.ImageCollection([clearPixel, shadowyPixel]);
-    var l8 = Landsat8(testCollection);
+    var l8 = lct.Landsat8(testCollection);
 
     var maskedL8 = l8.fmaskCloudsAndShadows();
 

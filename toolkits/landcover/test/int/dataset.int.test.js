@@ -15,23 +15,55 @@
  * limitations under the License.
  */
 
-var assert = require('assert');
-var lct = require('../../api.js');
+var Dataset = require('../../impl/dataset.js').Dataset;
+var TestImage = require('../helpers/test-image.js');
 
-var geometry;
-var dataset;
+// Values used to construct test dataset.
+var TEST_VALUES = {
+  B1: 1000,
+  B2: 2000,
+  B3: 3000,
+  B4: 4000,
+  B5: 5000,
+  B6: 6000,
+  B7: 7000,
+  B8: 8000,
+  B9: 9000,
+  B10: 10000,
+  B11: 11000
+};
+
+var TEST_COMMON_BAND_NAMES = {
+  'B1': 'coastal',
+  'B2': 'blue',
+  'B3': 'green',
+  'B4': 'red',
+  'B5': 'nir',
+  'B6': 'swir1',
+  'B7': 'swir2',
+  'B8': 'pan',
+  'B9': 'cirrus',
+  'B10': 'thermal1',
+  'B11': 'thermal2'
+};
+
+var TestDataset = function(values) {
+  var testImage = TestImage.create(values);
+  var testCollection = ee.ImageCollection([testImage]);
+  dataset = new Dataset(testCollection);
+  dataset.COMMON_BAND_NAMES = TEST_COMMON_BAND_NAMES;
+  return dataset;
+};
 
 withEarthEngine('Dataset', function() {
   beforeEach(function() {
     // A point in Arizona.
     geometry = ee.Geometry.Point([-111.70715, 36.0225]);
-    dataset = lct.Landsat8('SR')
-        .filterDate('2016-01-02', '2016-01-03')
-        .filterBounds(geometry);
   });
 
-  it('Generate common band names', function(done) {
-    dataset.computeCommonBandNames_(ee.List(['B4', 'B3', 'B2', 'foo']))
+  fit('computeCommonBandNames_()', function(done) {
+    TestDataset(TEST_VALUES)
+        .computeCommonBandNames_(ee.List(['B4', 'B3', 'B2', 'foo']))
         .evaluate(function(actual, error) {
           expect(error).toBeUndefined();
           expect(actual).toEqual(['red', 'green', 'blue', 'foo']);
@@ -39,16 +71,30 @@ withEarthEngine('Dataset', function() {
         });
   });
 
-  it('Add spectral indices', function(done) {
-    dataset.addBandIndices('ndvi', 'ndsi')
-        .getImageCollection()
-        .first()
-        .bandNames().evaluate(function(actual, error) {
+  fit('addBandIndices(\'ndvi\')', function(done) {
+    var l8 = TestDataset(TEST_VALUES).addBandIndices('ndvi');
+    TestImage.reduceConstant(l8.getImageCollection().first())
+        .evaluate(function(actual, error) {
           expect(error).toBeUndefined();
-          expect(actual).toContain('ndvi');
-          expect(actual).toContain('ndsi');
+          // Check calculated value.
+          expect(actual['ndvi']).toBeCloseTo(0.1111, 4 /*precision*/);
           // Make sure our original bands are still there too.
-          expect(actual).toContain('B3');
+          delete actual['ndvi'];
+          expect(actual).toEqual(TEST_VALUES);
+          done();
+        });
+  });
+
+  fit('addBandIndices(\'ndsi\')', function(done) {
+    var l8 = TestDataset(TEST_VALUES).addBandIndices('ndsi');
+    TestImage.reduceConstant(l8.getImageCollection().first())
+        .evaluate(function(actual, error) {
+          expect(error).toBeUndefined();
+          // Check calculated value.
+          expect(actual['ndsi']).toBeCloseTo(-0.3333, 4 /*precision*/);
+          // Make sure our original bands are still there too.
+          delete actual['ndsi'];
+          expect(actual).toEqual(TEST_VALUES);
           done();
         });
   });
@@ -99,7 +145,7 @@ withEarthEngine('Dataset', function() {
           expect(error).toBeUndefined();
           expect(actual['date']).toBe(1453140198110);
           expect(actual['doy']).toBe(17);
-          expect(actual['fYear']).toBeCloseTo(2016 + 17/365.0, 0.001);
+          expect(actual['fYear']).toBeCloseTo(2016 + 17 / 365.0, 0.001);
           done();
         });
   });

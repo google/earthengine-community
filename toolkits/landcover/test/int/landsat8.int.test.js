@@ -30,7 +30,9 @@ withEarthEngine('Landsat8', function() {
 
     // Verify cloud-free pixel was returned.
     var image = maskedL8.getImageCollection().mosaic();
-    TestImage.reduceConstant(image).get('B4').evaluate(function(actual) {
+    var value = TestImage.reduceConstant(image).get('B4');
+    value.evaluate(function(actual, error) {
+      expect(error).toBeUndefined();
       expect(actual).toEqual(12);
       done();
     });
@@ -47,7 +49,9 @@ withEarthEngine('Landsat8', function() {
 
     // Verify cloud shadow-free pixel was returned.
     var image = maskedL8.getImageCollection().mosaic();
-    TestImage.reduceConstant(image).get('B4').evaluate(function(actual) {
+    var value = TestImage.reduceConstant(image).get('B4');
+    value.evaluate(function(actual, error) {
+      expect(error).toBeUndefined();
       expect(actual).toEqual(12);
       done();
     });

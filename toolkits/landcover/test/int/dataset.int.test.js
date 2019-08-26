@@ -33,6 +33,12 @@ var TEST_VALUES = {
   B11: 11000
 };
 
+// Subset of indices calculated using on TEST_VALUES.
+var TEST_INDICES = {
+  ndvi: (5000 - 4000) / (5000 + 4000),
+  ndsi: (3000 - 6000) / (3000 + 6000),
+};
+
 var TEST_COMMON_BAND_NAMES = {
   'B1': 'coastal',
   'B2': 'blue',
@@ -61,7 +67,7 @@ withEarthEngine('Dataset', function() {
     geometry = ee.Geometry.Point([-111.70715, 36.0225]);
   });
 
-  fit('computeCommonBandNames_()', function(done) {
+  it('computeCommonBandNames_()', function(done) {
     TestDataset(TEST_VALUES)
         .computeCommonBandNames_(ee.List(['B4', 'B3', 'B2', 'foo']))
         .evaluate(function(actual, error) {
@@ -71,30 +77,15 @@ withEarthEngine('Dataset', function() {
         });
   });
 
-  fit('addBandIndices(\'ndvi\')', function(done) {
-    var l8 = TestDataset(TEST_VALUES).addBandIndices('ndvi');
+  fit('addBandIndices()', function(done) {
+    var l8 = TestDataset(TEST_VALUES).addBandIndices('ndvi', 'ndsi');
     TestImage.reduceConstant(l8.getImageCollection().first())
         .evaluate(function(actual, error) {
           expect(error).toBeUndefined();
-          // Check calculated value.
-          expect(actual['ndvi']).toBeCloseTo(0.1111, 4 /*precision*/);
-          // Make sure our original bands are still there too.
-          delete actual['ndvi'];
-          expect(actual).toEqual(TEST_VALUES);
-          done();
-        });
-  });
-
-  fit('addBandIndices(\'ndsi\')', function(done) {
-    var l8 = TestDataset(TEST_VALUES).addBandIndices('ndsi');
-    TestImage.reduceConstant(l8.getImageCollection().first())
-        .evaluate(function(actual, error) {
-          expect(error).toBeUndefined();
-          // Check calculated value.
-          expect(actual['ndsi']).toBeCloseTo(-0.3333, 4 /*precision*/);
-          // Make sure our original bands are still there too.
-          delete actual['ndsi'];
-          expect(actual).toEqual(TEST_VALUES);
+          // Check calculated value to ensure index expressions are correct and that original
+          // bands are still present.
+          var expected = Object.assign({}, TEST_VALUES, TEST_INDICES);
+          expect(actual).toEqual(expected);
           done();
         });
   });

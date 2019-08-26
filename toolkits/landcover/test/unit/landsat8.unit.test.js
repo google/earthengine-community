@@ -15,6 +15,19 @@
  * limitations under the License.
  */
 
-var assert = require('assert');
-var lct = require('../../api');
+var Landsat8 = require('../../api').Landsat8;
 
+withEarthEngineStub('Landsat8', function() {
+  it('applyCloudAndShadowBitMasks() updates mask', function() {
+    var originalImage = ee.Image(0);
+
+    var newImage = Landsat8.applyCloudShadowBitMasks(originalImage);
+
+    var qa = originalImage.select(Landsat8.QA_BAND);
+    var mask = qa.bitwiseAnd(Landsat8.CLOUD_SHADOW_BIT_MASK)
+                   .eq(0)
+                   .and(qa.bitwiseAnd(Landsat8.CLOUD_BIT_MASK).eq(0));
+    var expected = originalImage.updateMask(mask);
+    expect(newImage).toEqual(expected);
+  });
+});

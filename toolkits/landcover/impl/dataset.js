@@ -48,9 +48,6 @@ var Dataset = function(id, defaultVisParams) {
 Dataset.prototype.filterDate = function(start, end) {
   // TODO(gino-m): Implement month and year ranges.
   // TODO(gino-m): Implement single day/month/year.
-  // NOTE: We will probably want to either keep track of what we do to the
-  // ImageCollection, or accumulate operations and run them at the end. Keeping
-  // it simple for now until we have a better sense of what we need.
   this.collection_ = this.collection_.filterDate(start, end);
   return this;
 };
@@ -158,7 +155,7 @@ Dataset.prototype.computeCommonBandNames_ = function(bandNames) {
 Dataset.prototype.addBandIndices = function(var_names) {
   var indices = Array.prototype.slice.call(arguments);
 
-  // Compute the transformaton to common band names.
+  // Compute the transformation to common band names.
   var bandNames = this.collection_.first().bandNames();
   var commonNames = this.computeCommonBandNames_(bandNames);
 

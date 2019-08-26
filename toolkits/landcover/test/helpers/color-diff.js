@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
- var colors = require('colors/safe');
+var colors = require('colors/safe');
 var JsDiff = require('diff');
 var formatComputedObject =
     require('./format-computed-object.js').formatComputedObject;

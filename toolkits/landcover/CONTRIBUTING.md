@@ -85,7 +85,7 @@ locally (lint and unit tests) and against Earth Engine (integration tests).
         $ npm run open-coverage
 
 More details on testing, including methodology and debugging, can be found in
-[test/README.md](tests/README.md).
+[test/README.md](test/README.md).
 
 #### Submitting changes
 

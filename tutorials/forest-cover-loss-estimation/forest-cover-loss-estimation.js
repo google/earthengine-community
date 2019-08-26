@@ -68,7 +68,7 @@ var featureCollection = ee.FeatureCollection([ee.Feature(null, forestSize)]);
 
 Export.table.toDrive({
     collection: featureCollection,
-    description: 'forest_area_' + country,
+    description: 'forest_area_2000' + country,
     fileFormat: 'CSV'
 });
 
@@ -126,5 +126,42 @@ var featureCollection = ee.FeatureCollection([ee.Feature(null, lossSize)]);
 Export.table.toDrive({
     collection: featureCollection,
     description: 'loss_area_' + country,
+    fileFormat: 'CSV'
+});
+
+// Estimate subsequent tree cover (2001) with tree cover 2000 and loss 2001 (tree gain can be included if there is data)
+var minLossUnmask = minLoss.unmask();
+//var inverse = minLossUnmask.reproject(prj.atScale(scale)).select('loss2001').eq(0);
+var inverse = minLossUnmask.select('loss2001').eq(0);
+var treecoverLoss01 = minArea.and(inverse).reproject(prj.atScale(scale));
+// Apply the minimum area requirement again
+var contArea01 = treecoverLoss01.mask(treecoverLoss01).connectedPixelCount();
+var minArea01 = contArea01.gte(pixels);
+Map.addLayer(minArea01.reproject(prj.atScale(scale)), {
+    palette: ['ffffff', 'lime']
+}, '2001 tree cover (gain not considered) (light green)');
+
+var forestArea01 = minArea01.multiply(ee.Image.pixelArea()).divide(10000);
+var forestSize01 = forestArea01.reduceRegion({
+    reducer: ee.Reducer.sum(),
+    geometry: selected.geometry(),
+    scale: 30,
+    maxPixels: 1e13
+});
+print('Year 2001 tree cover (ha) \nmeeting minimum canopy cover and \nforest area thresholds \n ', forestSize01.get('treecover2000'));
+var forestAreaT01 = minArea01.reproject(prj.atScale(scale)).multiply(ee.Image.pixelArea()).divide(10000);
+var forestSizeT01 = forestAreaT01.reduceRegion({
+    reducer: ee.Reducer.sum(),
+    geometry: selected.geometry(),
+    scale: 30,
+    maxPixels: 1e13
+});
+print('Year 2001 tree cover (ha) \nmeeting minimum canopy cover and \nforest area thresholds \n ', forestSizeT01.get('treecover2000'));
+
+var featureCollection = ee.FeatureCollection([ee.Feature(null, forestSize01)]);
+
+Export.table.toDrive({
+    collection: featureCollection,
+    description: 'forest_area_2001_' + country,
     fileFormat: 'CSV'
 });

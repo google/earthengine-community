@@ -82,7 +82,7 @@ withEarthEngine('Dataset', function() {
     TestImage.reduceConstant(l8.getImageCollection().first())
         .evaluate(function(actual, error) {
           expect(error).toBeUndefined();
-          // Check calculated value to ensure index expressions are correct and that original
+          // Check calculated values to ensure index expressions are correct and that original
           // bands are still present.
           var expected = Object.assign({}, TEST_VALUES, TEST_INDICES);
           expect(actual).toEqual(expected);

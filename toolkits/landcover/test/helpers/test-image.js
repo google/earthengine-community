@@ -22,38 +22,12 @@
  * @param {*} values A dictionary containing band names as keys and
  *    corresponding numeric values. The values are used to build an ee.Image
  *    with a single constant value in each respective band.
- * @returns {!ee.Image}
- */
-var collectBands = function(values) {
-  var result;
-  // Iterate over values dictionary to build Image, converting each value to
-  // the appropriate EE type.
-  for (var band in values) {
-    var value = values[band];
-    // If/when other types are needed they can be added here.
-    var img = ee.Image(value).rename(band).int16();
-    if (result) {
-      result = result.addBands(img);
-    } else {
-      result = img;
-    }
-  }
-  return result;
-};
-
-/**
- * Returns a single constant ee.Image comprised of the bands and values in the
- * specified dictionary.
- *
- * @param {*} values A dictionary containing band names as keys and
- *    corresponding numeric values. The values are used to build an ee.Image
- *    with a single constant value in each respective band.
  * @param {string} opt_date An optional start date for the image, in YYYY-MM-DD
  *    format.
  * @returns {!ee.Image}
  */
 var create = function(values, opt_date) {
-  var image = collectBands(values || {}) || ee.Image();
+  var image = ee.Dictionary(values).toImage().int16();
   if (opt_date) {
     image = image.set('system:time_start', ee.Date(opt_date).millis());
   }

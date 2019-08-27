@@ -64,7 +64,7 @@ We can estimate the tree cover after the loss by subtracting them (you can also 
 1. Apply the minimum area requirement (minimum canopy cover threshold is already applied by using the derived tree cover)
 1. Quantify the above tree over area
 
-## Option: land use categories
+## Land use categories
 
 You can also exclude certain tree areas such as tree plantations or agricultural plantations with tree crops, if you have spatial data for these areas (e.g. masking, assigning values, etc. - not included in this tutorial). 
 

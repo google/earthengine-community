@@ -134,9 +134,9 @@ Export.table.toDrive({
 var minLossUnmask = minLoss.unmask();
 // Switch the binary value of the loss (0, 1) to (1, 0). Please advice which one I should use below.
 //var inverse = minLossUnmask.reproject(prj.atScale(scale)).select('loss2001').eq(0); // option 1
-var inverse = minLossUnmask.select('loss2001').eq(0); // option 2
+var notLoss = minLossUnmask.select('loss2001').eq(0); // option 2
 // Combine the derived tree cover and loss (not loss). 
-var treecoverLoss01 = minArea.and(inverse).reproject(prj.atScale(scale));
+var treecoverLoss01 = minArea.and(notLoss).reproject(prj.atScale(scale));
 // Apply the minimum area requirement in order to qualify as a forest.
 var contArea01 = treecoverLoss01.mask(treecoverLoss01).connectedPixelCount();
 var minArea01 = contArea01.gte(pixels);

@@ -26,10 +26,10 @@ GFC dataset uses 30x30m pixels. Therefore, 6 pixels (>5,000/(30x30)) is used for
 
 Currently, Google Earth Engine has several tree cover datasets in the catalogue, including the Global Forest Change (year 2000) and GLCF: Landsat Tree Cover Continuous Fields (2000, 2005, and 2010). Here, we use the Global Forest Change dataset.  
 
-1. Select 'treecover2000'
-1. Define canopy cover percentage (e.g. greater than equal to 10%)
-1. Define minimum area using connectedPixelCount (e.g. greater than equal to 6)
-1. Quantify the tree cover area that satify the above two
+1. Select 'treecover2000' in the Global Forest Change dataset
+1. Apply the minimum canopy cover percentage (e.g. greater than equal to 10%)
+1. Apply the minimum area requirement using connectedPixelCount (e.g. greater than equal to 6)
+1. Quantify the tree cover area (ha) that satify the above two
 1. Calculate the actual average minimum forest area used (e.g. 6 pixels = 0.51 ha in case of Bolivia)
 
 <img src="treecover.png" width="300">
@@ -42,9 +42,9 @@ Currently, Google Earth Engine has several tree cover datasets in the catalogue,
 
 We use the Global Forest Change dataset (year 2001) to demonstrate how to estimate tree loss based on forest definition.
 
-1. Select tree loss that are inside 'forests' (meeting minimum canopy and area requirements)
-1. Define minimum area using connectedPixelCount (aka minimum mapping unit, typically the same as the minimum forest area)
-1. Quantify the tree loss area that satify the above two
+1. Select tree loss pixels that are inside the derived tree cover (meeting minimum canopy and area requirements)
+1. Apply the minimum area requirement using connectedPixelCount (aka minimum mapping unit, typically same as the minimum forest area)
+1. Quantify the tree loss area (ha) that satify the above two
 
 <img src="loss.png" width="300">
 
@@ -59,10 +59,10 @@ Tree loss over tree cover layer
 
 We can estimate the tree cover after the loss by subtracting them (you can also add tree gain if you have data).
 
-1. Use the defined tree cover and tree loss from the previous steps
-1. Create a new tree cover where the loss did not occur
-1. Apply the minimum area requirement (minimum canopy cover threshold is already applied by using the derived tree cover)
-1. Quantify the above tree over area
+1. Use the derived tree cover and tree loss from the previous steps
+1. Create a new tree cover by removing the tree loss
+1. Apply the minimum area requirement to the above tree cover (minimum canopy cover threshold is already applied by using the derived tree cover)
+1. Quantify the tree over area (ha)
 
 ## Land use categories
 

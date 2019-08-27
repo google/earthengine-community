@@ -6,13 +6,13 @@ tags: forest, deforestation, mmu, ghg, redd, mrv, frel, frl
 date_published: 2019-08-31
 ---
 
-When estimating forest cover, deforestation, or emissions from land-use change at the national level, countries use forest definitions. In this tutorial, you will learn how to extract such forest area by applying technical thresholds of canopy cover and minimum area requirements. 
+When estimating forest cover, deforestation, or emissions from land-use change at the national level, countries use forest definitions. In this tutorial, you will learn how to extract forest area by applying technical thresholds of canopy cover and minimum area requirements. 
 
 ## Context
 
 FAO defines forests as "Land spanning more than 0.5 hectares with trees higher than 5 meters and a canopy cover of more than 10 percent, or trees able to reach these thresholds in situ. It does not include land that is predominantly under agricultural or urban land use" (FRA 2015). 
 
-In this tutorial, we focus on the technical threshold of this definition, specifically the minimum area size and minimum canopy cover. In various reporting of forest and/or land-use related data, countries may have different forest definitions, including these parameters, forest types or land use categories. 
+In various reporting of forest and/or land-use related data, countries may have different forest definitions, including these parameters, forest types or land use categories. 
 
 ## Instructions
 ### Select a country and set parameters
@@ -55,7 +55,21 @@ We use the Global Forest Change dataset (year 2001) to demonstrate how to estima
 <img src="treeloss.png" width="300">
 Tree loss over tree cover layer
 
+### Subsequent tree cover
 
-## Land use
+We can estimate the tree cover after the loss by subtracting them (you can also add tree gain if you have data).
+
+1. Use the defined tree cover and tree loss from the previous steps
+1. Create a new tree cover where the loss did not occur
+1. Apply the minimum area requirement (minimum canopy cover threshold is already applied by using the derived tree cover)
+1. Estimate the tree over
+
+## Option: land use categories
 
 You can also exclude certain tree areas such as tree plantations or agricultural plantations with tree crops, if you have spatial data for these areas (e.g. masking, assigning values, etc. - not included in this tutorial). 
+
+## References
+- GOFC-GOLD 2013 A sourcebook of methods and procedures for monitoring and reporting anthropogenic greenhouse gas emissions and removals associated with deforestation, gains and losses of carbon stocks in forests remaining forests, and forestation p 126 GOFC-GOLD Report (version COP22-1)
+- FAO 2018 From reference levels to results reporting: REDD+ under the UNFCCC 2018 update (Food and Agriculture Organization of the United Nations) (http://fao.org/3/CA0176EN/ca0176en.pdf)
+- Forest Resources Assessment Programme (FAO) 2015 Global forest resources assessment 2015 (http://fao.org/3/a-i4808e.pdf)
+- Nomura, K., Mitchard, E.T., Bowers, S.J. and Patenaude, G., 2019. Missed carbon emissions from forests: comparing countries' estimates submitted to UNFCCC to biophysical estimates. Environmental Research Letters.

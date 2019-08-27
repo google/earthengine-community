@@ -29,7 +29,7 @@ Currently, Google Earth Engine has several tree cover datasets in the catalogue,
 1. Select 'treecover2000'
 1. Define canopy cover percentage (e.g. greater than equal to 10%)
 1. Define minimum area using connectedPixelCount (e.g. greater than equal to 6)
-1. Estimate the tree cover that satify the above two
+1. Quantify the tree cover area that satify the above two
 1. Calculate the actual average minimum forest area used (e.g. 6 pixels = 0.51 ha in case of Bolivia)
 
 <img src="treecover.png" width="300">
@@ -44,7 +44,7 @@ We use the Global Forest Change dataset (year 2001) to demonstrate how to estima
 
 1. Select tree loss that are inside 'forests' (meeting minimum canopy and area requirements)
 1. Define minimum area using connectedPixelCount (aka minimum mapping unit, typically the same as the minimum forest area)
-1. Estimate the tree loss that satify the above two
+1. Quantify the tree loss area that satify the above two
 
 <img src="loss.png" width="300">
 
@@ -62,7 +62,7 @@ We can estimate the tree cover after the loss by subtracting them (you can also 
 1. Use the defined tree cover and tree loss from the previous steps
 1. Create a new tree cover where the loss did not occur
 1. Apply the minimum area requirement (minimum canopy cover threshold is already applied by using the derived tree cover)
-1. Estimate the tree over
+1. Quantify the above tree over area
 
 ## Option: land use categories
 

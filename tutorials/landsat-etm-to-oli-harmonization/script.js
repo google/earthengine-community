@@ -29,16 +29,16 @@ var coefficients = {
 // Define function to get and rename bands of interest from OLI.
 function renameOLI(img) {
   return img.select(
-		['B2', 'B3', 'B4', 'B5', 'B6', 'B7', 'pixel_qa'],
-		['Blue', 'Green', 'Red', 'NIR', 'SWIR1', 'SWIR2', 'pixel_qa']
-	);
+    ['B2', 'B3', 'B4', 'B5', 'B6', 'B7', 'pixel_qa'],
+    ['Blue', 'Green', 'Red', 'NIR', 'SWIR1', 'SWIR2', 'pixel_qa']
+  );
 }
 
 // Define function to get and rename bands of interest from ETM+.
 function renameETM(img) {
   return img.select(
-		['B1', 'B2', 'B3', 'B4', 'B5', 'B7', 'pixel_qa'],
-		['Blue', 'Green', 'Red', 'NIR', 'SWIR1', 'SWIR2', 'pixel_qa']
+    ['B1', 'B2', 'B3', 'B4', 'B5', 'B7', 'pixel_qa'],
+    ['Blue', 'Green', 'Red', 'NIR', 'SWIR1', 'SWIR2', 'pixel_qa']
   );
 }
 

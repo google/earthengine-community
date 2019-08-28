@@ -50,12 +50,12 @@ continuous record from 1984 to the present, at a cadence of 16 days
 per sensor with 30 meter spatial resolution. The Multispectral Scanner
 instrument extends the Landsat record back to 1972, but is not used in this tutorial.
 Its data are quite different, making integration with later sensors challenging. See
-[Savage et al. (2018)](#ref03) and [Vogeler et al. (2018)](#ref05) for examples
+[Savage et al. (2018)](#references) and [Vogeler et al. (2018)](#references) for examples
 of harmonization across all sensors.
 
 ## Why harmonization
 
-[Roy et al. (2016)](#ref02)
+[Roy et al. (2016)](#references)
 demonstrate that there are small, but potentially significant differences between
 the spectral characteristics of Landsat ETM+ and OLI, depending on application.
 Reasons you might want to harmonize datasets include: producing a long time series
@@ -76,7 +76,7 @@ this tutorial to visualize the spectral-temporal history of a pixel.
 
 Harmonization is achieved via linear transformation of ETM+ spectral space to OLI
 spectral space according to coefficients presented in
-[Roy et al. (2016)](#ref02) Table 2 OLS regression coefficients. Band-respective
+[Roy et al. (2016)](#references) Table 2 OLS regression coefficients. Band-respective
 coefficients are defined in the following dictionary with slope (`slopes`) and
 intercept (`itcps`) image constants. Note that the y-intercept values are multiplied
 by 10,000 to match the scaling of USGS Landsat surface reflectance data.
@@ -130,7 +130,7 @@ function etm2oli(img) {
 #### Cloud and shadow masking
 
 Analysis ready data should have clouds and cloud shadows masked out. The following
-function uses the CFmask ([Zhu et al., 2015](#ref06))
+function uses the CFmask ([Zhu et al., 2015](#references))
 `pixel_qa` band included with each Landsat USGS surface reflectance image to set
 pixels identified as cloud and cloud shadow to null.
 
@@ -149,7 +149,7 @@ function fmask(img) {
 
 The forthcoming application uses the normalized burn ratio (NBR) spectral
 index to represent the spectral history of a forested pixel affected by wildfire.
-NBR is used because [Cohen et al. (2018)](#ref01)
+NBR is used because [Cohen et al. (2018)](#references)
 found that among 13 spectral indices/bands, NBR had the greatest signal to
 noise ratio with regard to forest disturbance (signal) throughout the US.
 It is calculated by the following function.
@@ -443,7 +443,7 @@ July through August and are filtered for high quality._
 
 ### Alternative transformation functions
 
-[Roy et al. (2016)](#ref02) Table 2 provides OLS and RMA regression coefficients
+[Roy et al. (2016)](#references) Table 2 provides OLS and RMA regression coefficients
 to transform ETM+ surface reflectance to OLI surface reflectance and vice
 versa. The above tutorial demonstrates only ETM+ to OLI transformation by OLS
 regression. Functions for all translation options can be found in the
@@ -455,19 +455,19 @@ or the [GitHub source script](script.js).
 The fire mentioned in this tutorial is the Dollar Lake fire, which occurred
 mid-September, 2011 on the northern slopes of Mt Hood, OR, USA. Visit this
 [blog post](https://wyeastblog.org/2016/10/22/dollar-lake-fire-five-years-after/)
-and see [Varner et al. (2015)](#ref04)
+and see [Varner et al. (2015)](#references)
 for more information about it.
 
 ## References
 
-<a name='ref01'></a>[Cohen, W. B., Yang, Z., Healey, S. P., Kennedy, R. E., & Gorelick, N. (2018). A LandTrendr multispectral ensemble for forest disturbance detection. Remote sensing of environment, 205, 131-140.](https://www.fs.fed.us/rm/pubs_journals/2018/rmrs_2018_cohen_w001.pdf)
+[Cohen, W. B., Yang, Z., Healey, S. P., Kennedy, R. E., & Gorelick, N. (2018). A LandTrendr multispectral ensemble for forest disturbance detection. Remote sensing of environment, 205, 131-140.](https://www.fs.fed.us/rm/pubs_journals/2018/rmrs_2018_cohen_w001.pdf)
 
-<a name='ref02'></a>[Roy, D. P., Kovalskyy, V., Zhang, H. K., Vermote, E. F., Yan, L., Kumar, S. S., & Egorov, A. (2016). Characterization of Landsat-7 to Landsat-8 reflective wavelength and normalized difference vegetation index continuity. Remote sensing of Environment, 185, 57-70.](https://openprairie.sdstate.edu/cgi/viewcontent.cgi?referer=https://scholar.google.com/&httpsredir=1&article=1035&context=gsce_pubs)
+[Roy, D. P., Kovalskyy, V., Zhang, H. K., Vermote, E. F., Yan, L., Kumar, S. S., & Egorov, A. (2016). Characterization of Landsat-7 to Landsat-8 reflective wavelength and normalized difference vegetation index continuity. Remote sensing of Environment, 185, 57-70.](https://openprairie.sdstate.edu/cgi/viewcontent.cgi?referer=https://scholar.google.com/&httpsredir=1&article=1035&context=gsce_pubs)
 
-<a name='ref03'></a>[Savage, S., Lawrence, R., Squires, J., Holbrook, J., Olson, L., Braaten, J., & Cohen, W. (2018). Shifts in forest structure in northwest Montana from 1972 to 2015 using the Landsat archive from Multispectral Scanner to Operational Land Imager. Forests, 9(4), 157.](https://www.mdpi.com/1999-4907/9/4/157)
+[Savage, S., Lawrence, R., Squires, J., Holbrook, J., Olson, L., Braaten, J., & Cohen, W. (2018). Shifts in forest structure in northwest Montana from 1972 to 2015 using the Landsat archive from Multispectral Scanner to Operational Land Imager. Forests, 9(4), 157.](https://www.mdpi.com/1999-4907/9/4/157)
 
-<a name='ref04'></a>[Varner, J., Lambert, M. S., Horns, J. J., Laverty, S., Dizney, L., Beever, E. A., & Dearing, M. D. (2015). Too hot to trot? Evaluating the effects of wildfire on patterns of occupancy and abundance for a climate-sensitive habitat specialist. International Journal of Wildland Fire, 24(7), 921-932.](http://dearing.biology.utah.edu/Lab/pdf/2015_varner_too_hot_trot.pdf)
+[Varner, J., Lambert, M. S., Horns, J. J., Laverty, S., Dizney, L., Beever, E. A., & Dearing, M. D. (2015). Too hot to trot? Evaluating the effects of wildfire on patterns of occupancy and abundance for a climate-sensitive habitat specialist. International Journal of Wildland Fire, 24(7), 921-932.](http://dearing.biology.utah.edu/Lab/pdf/2015_varner_too_hot_trot.pdf)
 
-<a name='ref05'></a>[Vogeler, J. C., Braaten, J. D., Slesak, R. A., & Falkowski, M. J. (2018). Extracting the full value of the Landsat archive: Inter-sensor harmonization for the mapping of Minnesota forest canopy cover (1973–2015). Remote sensing of environment, 209, 363-374.](https://www.sciencedirect.com/science/article/abs/pii/S0034425718300579)
+[Vogeler, J. C., Braaten, J. D., Slesak, R. A., & Falkowski, M. J. (2018). Extracting the full value of the Landsat archive: Inter-sensor harmonization for the mapping of Minnesota forest canopy cover (1973–2015). Remote sensing of environment, 209, 363-374.](https://www.sciencedirect.com/science/article/abs/pii/S0034425718300579)
 
-<a name='ref06'></a>[Zhu, Z., Wang, S., & Woodcock, C. E. (2015). Improvement and expansion of the Fmask algorithm: Cloud, cloud shadow, and snow detection for Landsats 4–7, 8, and Sentinel 2 images. Remote Sensing of Environment, 159, 269-277.](https://www.sciencedirect.com/science/article/abs/pii/S0034425714005069)
+[Zhu, Z., Wang, S., & Woodcock, C. E. (2015). Improvement and expansion of the Fmask algorithm: Cloud, cloud shadow, and snow detection for Landsats 4–7, 8, and Sentinel 2 images. Remote Sensing of Environment, 159, 269-277.](https://www.sciencedirect.com/science/article/abs/pii/S0034425714005069)

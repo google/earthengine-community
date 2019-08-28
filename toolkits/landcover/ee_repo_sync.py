@@ -23,6 +23,25 @@ GIT_BASE_URL = 'https://earthengine.googlesource.com'
 ORIGINAL_REQUIRE_PATH = 'users/google/toolkits:landcover/'
 SOURCE_PATHS = ['api.js', 'impl', 'examples']
 
+
+def search_replace(start_path, ext, original, replacement):
+    for dir_name, dirs, files in os.walk(start_path):
+        if dir_name == '.git':
+            continue
+        for file in files:
+            if not file.endswith(ext):
+                continue
+            path = os.path.join(dir_name, file)
+            original_file = ''
+            with open(path) as f:
+                original_file = f.read()
+            updated_file = original_file.replace(
+                original, replacement)
+            if (original_file != updated_file):
+                with open(path, 'w') as f:
+                    f.write(updated_file)
+
+
 # Declare args and help text
 parser = argparse.ArgumentParser(
     description='''
@@ -39,22 +58,23 @@ parser.add_argument('--target_path',
                     help='Destination path in target repo (default: root)')
 args = parser.parse_args()
 
+# Build paths
 repo = args.target_repo
 target_path = args.target_path
 repo_url = GIT_BASE_URL + '/' + repo
 clone_path = os.path.expanduser(os.path.join(WORK_PATH, repo))
 write_path = os.path.join(clone_path, target_path)
-new_require_path = repo + ":"
+new_require_path = repo + ':'
 if (target_path):
-    new_require_path += target_path + "/"
+    new_require_path += target_path + '/'
 
 # Clone or pull repo to home dir
 if not os.path.isdir(clone_path):
-    subprocess.call(["git", "clone", repo_url, clone_path])
+    subprocess.call(['git', 'clone', repo_url, clone_path])
 else:
-    subprocess.call(["git", "-C", clone_path, "pull"])
+    subprocess.call(['git', '-C', clone_path, 'pull'])
 
-subprocess.call(["mkdir", "-p", write_path])
+subprocess.call(['mkdir', '-p', write_path])
 
 # Copy selected files to local clone
 for source in SOURCE_PATHS:
@@ -64,12 +84,11 @@ for source in SOURCE_PATHS:
                      source,
                      write_path])
 
-# Search and replace paths
-os.system("find %s -name '*.js' -exec sed -i '' 's|%s|%s|g' {} \;" %
-          (write_path, ORIGINAL_REQUIRE_PATH, new_require_path))
+# Search and replace paths in source files
+search_replace(write_path, '.js', ORIGINAL_REQUIRE_PATH, new_require_path)
 
 # Commit and push changes
 subprocess.call(["git", "-C", clone_path, "add", clone_path])
 subprocess.call(["git", "-C", clone_path, "commit", "-m",
-                 "Automated commit by ee_repo_sync.py"])
+ "Automated commit by ee_repo_sync.py"])
 subprocess.call(["git", "-C", clone_path, "push"])

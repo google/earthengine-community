@@ -21,8 +21,8 @@ As an example, this tutorial selected Bolivia, with the minimum canopy cover of 
 ```
 var country = 'Bolivia'; // selected country (e.g. Bolivia)
 var cc = ee.Number(10); // canopy cover percentage
-var pixels = ee.Number(6); // minimum forest size in pixels (approximately 0.5 ha in this example)
-var lossPixels = ee.Number(6); // minimum mapping area for tree loss
+var pixels = ee.Number(6); // minimum forest area in pixels (approximately 0.5 ha in case of Bolivia)
+var lossPixels = ee.Number(6); // minimum mapping area for tree loss (usually same as the minimum forest area)
 ```
 
 Depending on the location of the country, the number of pixels that make up for 0.5 ha would differ. You can adjust this by calculating the actual minimum areas you were using (see the last step of the next subsection).
@@ -92,14 +92,14 @@ The GFC dataset uses 30x30m pixels. Therefore, 6 pixels (>5,000/(30x30)) is used
 
 We use the Global Forest Change dataset (year 2001) to demonstrate how to estimate tree loss based on forest definition.
 
-### 1. Select tree loss pixels that are inside the derived tree cover (meeting minimum canopy and area requirements)
+### 1. Select tree loss pixels that are inside the derived tree cover
 ```
 var treeLoss = gfc2018.select(['lossyear']);
 var treeLoss01 = treeLoss.eq(1); // tree loss in year 2001
 // Select the tree loss within the derived tree cover (>= canopy cover and area requirements).
 var treecoverLoss01 = minArea.and(treeLoss01).rename('loss2001').selfMask();
 ```
-### 2. Apply the minimum area requirement using connectedPixelCount (aka minimum mapping unit, typically same as the minimum forest area)
+### 2. Apply the minimum mapping unit using connectedPixelCount
 ```
 // Create connectedPixelCount() to get contiguous area.
 var contLoss = treecoverLoss01.connectedPixelCount();

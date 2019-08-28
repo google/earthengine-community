@@ -83,7 +83,8 @@ by 10,000 to match the scaling of USGS Landsat surface reflectance data.
 
 ```js
 var coefficients = {
-  itcps: ee.Image.constant([0.0003, 0.0088, 0.0061, 0.0412, 0.0254, 0.0172]).multiply(10000),
+  itcps: ee.Image.constant([0.0003, 0.0088, 0.0061, 0.0412, 0.0254, 0.0172])
+             .multiply(10000),
   slopes: ee.Image.constant([0.8474, 0.8483, 0.9047, 0.8462, 0.8937, 0.9071])
 };
 ```
@@ -95,19 +96,17 @@ wavelength range they represent.
 
 ```js
 // Function to get and rename bands of interest from OLI.
-function renameOLI(img) {
+function renameOli(img) {
   return img.select(
-		['B2', 'B3', 'B4', 'B5', 'B6', 'B7', 'pixel_qa'],
-		['Blue', 'Green', 'Red', 'NIR', 'SWIR1', 'SWIR2', 'pixel_qa']
-	);
+      ['B2', 'B3', 'B4', 'B5', 'B6', 'B7', 'pixel_qa'],
+      ['Blue', 'Green', 'Red', 'NIR', 'SWIR1', 'SWIR2', 'pixel_qa']);
 }
 
 // Function to get and rename bands of interest from ETM+.
-function renameETM(img) {
+function renameEtm(img) {
   return img.select(
-		['B1', 'B2', 'B3', 'B4', 'B5', 'B7', 'pixel_qa'],
-		['Blue', 'Green', 'Red', 'NIR', 'SWIR1', 'SWIR2', 'pixel_qa']
-  );
+      ['B1', 'B2', 'B3', 'B4', 'B5', 'B7', 'pixel_qa'],
+      ['Blue', 'Green', 'Red', 'NIR', 'SWIR1', 'SWIR2', 'pixel_qa']);
 }
 ```
 
@@ -116,14 +115,13 @@ casts data type as `Int16` for consistency with OLI, and reattaches the `pixel_q
 later use in cloud and shadow masking.
 
 ```js
-function etm2oli(img) {
+function etmToOli(img) {
   return img.select(['Blue', 'Green', 'Red', 'NIR', 'SWIR1', 'SWIR2'])
-    .multiply(coefficients.slopes)
-    .add(coefficients.itcps)
-    .round()
-    .toShort()
-    .addBands(img.select('pixel_qa')
-  );
+      .multiply(coefficients.slopes)
+      .add(coefficients.itcps)
+      .round()
+      .toShort()
+      .addBands(img.select('pixel_qa'));
 }
 ```
 
@@ -139,8 +137,9 @@ function fmask(img) {
   var cloudShadowBitMask = 1 << 3;
   var cloudsBitMask = 1 << 5;
   var qa = img.select('pixel_qa');
-  var mask = qa.bitwiseAnd(cloudShadowBitMask).eq(0)
-    .and(qa.bitwiseAnd(cloudsBitMask).eq(0));
+  var mask = qa.bitwiseAnd(cloudShadowBitMask)
+                 .eq(0)
+                 .and(qa.bitwiseAnd(cloudsBitMask).eq(0));
   return img.updateMask(mask);
 }
 ```
@@ -155,7 +154,7 @@ noise ratio with regard to forest disturbance (signal) throughout the US.
 It is calculated by the following function.
 
 ```js
-function calcNBR(img) {
+function calcNbr(img) {
   return img.normalizedDifference(['NIR', 'SWIR2']).rename('NBR');
 }
 ```
@@ -170,21 +169,21 @@ for convenience in applying them to their respective image collections.
 
 ```js
 // Define function to prepare OLI images.
-function prepOLI(img) {
+function prepOli(img) {
   var orig = img;
-  img = renameOLI(img);
+  img = renameOli(img);
   img = fmask(img);
-  img = calcNBR(img);
+  img = calcNbr(img);
   return ee.Image(img.copyProperties(orig, orig.propertyNames()));
 }
 
 // Define function to prepare ETM+ images.
-function prepETM(img) {
+function prepEtm(img) {
   var orig = img;
-  img = renameETM(img);
+  img = renameEtm(img);
   img = fmask(img);
-  img = etm2oli(img);
-  img = calcNBR(img);
+  img = etmToOli(img);
+  img = calcNbr(img);
   return ee.Image(img.copyProperties(orig, orig.propertyNames()));
 }
 ```
@@ -194,21 +193,21 @@ functions as needed.
 
 ### Time series example
 
-The `prepOLI` and `prepETM` wrapper functions above can be mapped over Landsat
+The `prepOli` and `prepEtm` wrapper functions above can be mapped over Landsat
 surface reflectance collections to create cross-sensor analysis-ready data to visualize
 the spectral chronology of a pixel or region of pixels. In this example, you will
 create a 35+ year time series and display the spectral history for a single pixel.
-This particular pixel relates the recent history of a mature pacific northwest
+This particular pixel relates the recent history of a mature Pacific Northwest
 conifer forest patch (Figure 1) that experienced some perturbation in the 1980's and
 90's and a high magnitude burn in 2011.
 
 ![Area of interest](area-of-interest.jpg)
 
-_Figure 1. Location and site character for example area of interest. Mature pacific
-northwest conifer forest on the north slope of Mt Hood, OR, USA. Images courtesy of:
+_Figure 1. Location and site character for example area of interest. Mature Pacific
+Northwest conifer forest on the north slope of Mt Hood, OR, USA. Images courtesy of:
 Google Earth, USDA Forest Service, Landsat, and Copernicus._
 
-#### Define an area of interest
+#### Define an area of interest (AOI)
 
 The result of this application is a time series of Landsat observations for a pixel.
 An `ee.Geometry.Point` object is used to define the pixel's location.
@@ -235,8 +234,8 @@ Visit the links to learn more about each dataset.
 
 ```js
 var oliCol = ee.ImageCollection('LANDSAT/LC08/C01/T1_SR');
-var etmCol= ee.ImageCollection('LANDSAT/LE07/C01/T1_SR');
-var tmCol= ee.ImageCollection('LANDSAT/LT05/C01/T1_SR');
+var etmCol = ee.ImageCollection('LANDSAT/LE07/C01/T1_SR');
+var tmCol = ee.ImageCollection('LANDSAT/LT05/C01/T1_SR');
 ```
 
 #### Define an image collection filter
@@ -246,19 +245,15 @@ of the area of interest, peak photosynthesis season, and quality.
 
 ```js
 var colFilter = ee.Filter.and(
-  ee.Filter.bounds(aoi),
-  ee.Filter.calendarRange(182, 244, 'day_of_year'),
-  ee.Filter.lt('CLOUD_COVER', 50),
-  ee.Filter.lt('GEOMETRIC_RMSE_MODEL', 10),
-  ee.Filter.or(
-    ee.Filter.eq('IMAGE_QUALITY', 9),
-    ee.Filter.eq('IMAGE_QUALITY_OLI', 9)
-  )
-);
+    ee.Filter.bounds(aoi), ee.Filter.calendarRange(182, 244, 'day_of_year'),
+    ee.Filter.lt('CLOUD_COVER', 50), ee.Filter.lt('GEOMETRIC_RMSE_MODEL', 10),
+    ee.Filter.or(
+        ee.Filter.eq('IMAGE_QUALITY', 9),
+        ee.Filter.eq('IMAGE_QUALITY_OLI', 9)));
 ```
 
 Alter these filtering criteria as you wish. Identify other properties to filter
-by under the 'Images Properties' tab of the data description pages linked above.
+by under the "Images Properties" tab of the data description pages linked above.
 
 #### Prepare the collections
 
@@ -269,14 +264,12 @@ criteria, and are processed to analysis-ready NBR.
 
 ```js
 // Filter collections and prepare them for merging.
-oliCol = oliCol.filter(colFilter).map(prepOLI);
-etmCol= etmCol.filter(colFilter).map(prepETM);
-tmCol= tmCol.filter(colFilter).map(prepETM);
+oliCol = oliCol.filter(colFilter).map(prepOli);
+etmCol = etmCol.filter(colFilter).map(prepEtm);
+tmCol = tmCol.filter(colFilter).map(prepEtm);
 
 // Merge the collections.
-var col = oliCol
-  .merge(etmCol)
-  .merge(tmCol);
+var col = oliCol.merge(etmCol).merge(tmCol);
 ```
 
 #### Make a times series chart displaying all observations
@@ -289,11 +282,8 @@ median of all pixels intersecting the AOI and sets the result as an image proper
 
 ```js
 var allObs = col.map(function(img) {
-  var obs = img.reduceRegion({
-    geometry: aoi,
-    reducer: ee.Reducer.median(),
-    scale: 30
-  });
+  var obs = img.reduceRegion(
+      {geometry: aoi, reducer: ee.Reducer.median(), scale: 30});
   return img.set('NBR', obs.get('NBR'));
 });
 ```
@@ -315,19 +305,18 @@ Finally, set the grouping (series) variable to 'SATELLITE', to which distinct co
 are assigned.
 
 ```js
-var chartAllObs = ui.Chart.feature.groups(
-  allObs, 'system:time_start', 'NBR', 'SATELLITE'
-)
-.setChartType('ScatterChart')
-.setSeriesNames(['TM', 'ETM+', 'OLI'])
-.setOptions({
-  title: 'All Observations',
-  colors: ['f8766d', '00ba38', '619cff'],
-  hAxis: {title: 'Date'},
-  vAxis: {title: 'NBR'},
-  pointSize: 6,
-  dataOpacity: 0.5
-});
+var chartAllObs =
+    ui.Chart.feature.groups(allObs, 'system:time_start', 'NBR', 'SATELLITE')
+        .setChartType('ScatterChart')
+        .setSeriesNames(['TM', 'ETM+', 'OLI'])
+        .setOptions({
+          title: 'All Observations',
+          colors: ['f8766d', '00ba38', '619cff'],
+          hAxis: {title: 'Date'},
+          vAxis: {title: 'NBR'},
+          pointSize: 6,
+          dataOpacity: 0.5
+        });
 print(chartAllObs);
 ```
 
@@ -366,7 +355,7 @@ The first step is to group images by year. Add a new 'year' property to each ima
 mapping over the collection setting 'year' from each image's `ee.Image.Date`.
 
 ```js
-col = col.map(function(img) {
+var col = col.map(function(img) {
   return img.set('year', img.date().get('year'));
 });
 ```
@@ -396,11 +385,9 @@ var joinCol = ee.ImageCollection(join.apply(distinctYearCol, col, filter));
 
 // Apply median reduction among matching year collections.
 var medianComp = joinCol.map(function(img) {
-  var yearCol = ee.ImageCollection.fromImages(
-    img.get('year_matches')
-  );
+  var yearCol = ee.ImageCollection.fromImages(img.get('year_matches'));
   return yearCol.reduce(ee.Reducer.median())
-    .set('system:time_start', img.date().update({month:8, day:1}));
+      .set('system:time_start', img.date().update({month: 8, day: 1}));
 });
 ```
 
@@ -411,21 +398,22 @@ Finally, create a chart that displays the median NBR values from sets of
 inta-annual summer observations. Change the region reduction statistic as you like.
 
 ```js
-var chartMedianComp = ui.Chart.image.series({
-  imageCollection: medianComp,
-  region: aoi,
-  reducer: ee.Reducer.median(),
-  scale: 30,
-  xProperty: 'system:time_start',
-})
-.setSeriesNames(['NBR Median'])
-.setOptions({
-  title: 'Intra-annual Median',
-  colors: ['619cff'],
-  hAxis: {title: 'Date'},
-  vAxis: {title: 'NBR'},
-  lineWidth: 6
-});
+var chartMedianComp = ui.Chart.image
+                          .series({
+                            imageCollection: medianComp,
+                            region: aoi,
+                            reducer: ee.Reducer.median(),
+                            scale: 30,
+                            xProperty: 'system:time_start',
+                          })
+                          .setSeriesNames(['NBR Median'])
+                          .setOptions({
+                            title: 'Intra-annual Median',
+                            colors: ['619cff'],
+                            hAxis: {title: 'Date'},
+                            vAxis: {title: 'NBR'},
+                            lineWidth: 6
+                          });
 print(chartMedianComp);
 ```
 

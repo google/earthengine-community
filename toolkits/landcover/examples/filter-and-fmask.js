@@ -20,7 +20,7 @@
  */
 
 // TODO(gino-m): Replace with shared code repo.
-var lct = require('users/gmiceli/ee-lct:api.js');
+var lct = require('users/google/toolkits:landcover/api.js');
 
 // Create a new dataset, filter by date, country, and mask clouds and shadows.
 var dataset = lct.Landsat8()

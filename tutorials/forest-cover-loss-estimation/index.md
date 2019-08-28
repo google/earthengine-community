@@ -42,14 +42,14 @@ var canopyCover = gfc2018.select(['treecover2000']).selfMask();
 ```
 var canopyCover10 = canopyCover.gte(cc);
 ```
-### 3. Apply the minimum area requirement using connectedPixelCount (e.g. greater than equal to 6)
+### 3. Apply the minimum area requirement using connectedPixelCount (e.g. greater than equal to 0.5 ha)
 ```
 // Use connectedPixelCount() to get contiguous area.
 var contArea = canopyCover10.connectedPixelCount();
 // Apply the minimum area requirement. 
 var minArea = contArea.gte(pixels);
 ```
-### 4. Scale the results in nominal value based on to the units of GFC projection
+### 4. Scale the results in nominal value based on to the dataset's projection
 ```
 var prj = gfc2018.projection();
 var scale = prj.nominalScale();
@@ -58,7 +58,7 @@ Map.addLayer(minArea.reproject(prj.atScale(scale)), {
     palette: ['orange', 'green']
 }, '>= min canopy cover and area size', false);
 ```
-### 5. Quantify the tree cover area (ha) that satify the above two
+### 5. Quantify the tree cover area (ha)
 ```
 var forestArea = minArea.multiply(ee.Image.pixelArea()).divide(10000);
 var forestSize = forestArea.reduceRegion({
@@ -69,7 +69,7 @@ var forestSize = forestArea.reduceRegion({
 });
 print('Year 2000 tree cover (ha) \nmeeting minimum canopy cover and \nforest area thresholds \n ', forestSize.get('treecover2000'));
 ```
-### 6. Calculate the actual average minimum forest area used (e.g. 6 pixels = 0.51 ha in case of Bolivia)
+### 6. Calculate the actual average minimum forest area used
 ```
 var pixelCount = minArea.reduceRegion({
     reducer: ee.Reducer.count(),
@@ -106,7 +106,7 @@ var contLoss = treecoverLoss01.connectedPixelCount();
 // Apply the minimum area requirement. 
 var minLoss = contLoss.gte(lossPixels);
 ```
-### 3. Quantify the tree loss area (ha) that satify the above two
+### 3. Quantify the tree loss area (ha)
 ```
 var lossArea = minLoss.multiply(ee.Image.pixelArea()).divide(10000);
 var lossSize = lossArea.reduceRegion({
@@ -148,7 +148,7 @@ Map.addLayer(minArea01.reproject(prj.atScale(scale)), {
     palette: ['ffffff', 'lime']
 }, '2001 tree cover (gain not considered) (light green)');
 ```
-### 4. Quantify the tree over area (ha)
+### 4. Quantify the new tree cover area (ha)
 ```
 var forestArea01 = minArea01.multiply(ee.Image.pixelArea()).divide(10000);
 var forestSize01 = forestArea01.reduceRegion({

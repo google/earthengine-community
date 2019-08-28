@@ -28,21 +28,21 @@ var coefficients = {
 };
 
 // Define function to get and rename bands of interest from OLI.
-function renameOLI(img) {
+function renameOli(img) {
   return img.select(
       ['B2', 'B3', 'B4', 'B5', 'B6', 'B7', 'pixel_qa'],
       ['Blue', 'Green', 'Red', 'NIR', 'SWIR1', 'SWIR2', 'pixel_qa']);
 }
 
 // Define function to get and rename bands of interest from ETM+.
-function renameETM(img) {
+function renameEtm(img) {
   return img.select(
       ['B1', 'B2', 'B3', 'B4', 'B5', 'B7', 'pixel_qa'],
       ['Blue', 'Green', 'Red', 'NIR', 'SWIR1', 'SWIR2', 'pixel_qa']);
 }
 
 // Define function to apply harmonization transformation.
-function etm2oli(img) {
+function etmToOli(img) {
   return img.select(['Blue', 'Green', 'Red', 'NIR', 'SWIR1', 'SWIR2'])
       .multiply(coefficients.slopes)
       .add(coefficients.itcps)
@@ -63,26 +63,26 @@ function fmask(img) {
 }
 
 // Define function to calculate NBR.
-function calcNBR(img) {
+function calcNbr(img) {
   return img.normalizedDifference(['NIR', 'SWIR2']).rename('NBR');
 }
 
 // Define function to prepare OLI images.
-function prepOLI(img) {
+function prepOli(img) {
   var orig = img;
-  img = renameOLI(img);
+  img = renameOli(img);
   img = fmask(img);
-  img = calcNBR(img);
+  img = calcNbr(img);
   return ee.Image(img.copyProperties(orig, orig.propertyNames()));
 }
 
 // Define function to prepare ETM+ images.
-function prepETM(img) {
+function prepEtm(img) {
   var orig = img;
-  img = renameETM(img);
+  img = renameEtm(img);
   img = fmask(img);
-  img = etm2oli(img);
-  img = calcNBR(img);
+  img = etmToOli(img);
+  img = calcNbr(img);
   return ee.Image(img.copyProperties(orig, orig.propertyNames()));
 }
 
@@ -113,9 +113,9 @@ var colFilter = ee.Filter.and(
         ee.Filter.eq('IMAGE_QUALITY_OLI', 9)));
 
 // Filter collections and prepare them for merging.
-oliCol = oliCol.filter(colFilter).map(prepOLI);
-etmCol = etmCol.filter(colFilter).map(prepETM);
-tmCol = tmCol.filter(colFilter).map(prepETM);
+oliCol = oliCol.filter(colFilter).map(prepOli);
+etmCol = etmCol.filter(colFilter).map(prepEtm);
+tmCol = tmCol.filter(colFilter).map(prepEtm);
 
 // Merge the collections.
 var col = oliCol.merge(etmCol).merge(tmCol);
@@ -199,19 +199,19 @@ print(chartMedianComp);
 // to transform ETM+ surface reflectance to OLI surface reflectance and vice
 // versa. The above tutorial demonstrates only ETM+ to OLI transformation by OLS
 // regression. Below are functions for all transformation options. Modify the
-// above `prepOLI` and `prepETM` wrapper functions as needed to
+// above `prepOli` and `prepEtm` wrapper functions as needed to
 // add/remove/replace transformation functions. Additionally, use the below
 // `coefficients` dictionary instead of the one defined above (the following one
 // includes all sets of coefficients).
 
 // Define OLS and RMA surface regression coefficients.
 var coefficients = {
-  etm2oli_ols: {
+  etmToOliOls: {
     itcps: ee.Image.constant([0.0003, 0.0088, 0.0061, 0.0412, 0.0254, 0.0172])
                .multiply(10000),
     slopes: ee.Image.constant([0.8474, 0.8483, 0.9047, 0.8462, 0.8937, 0.9071])
   },
-  oli2etm_ols: {
+  oliToEtmOls: {
     itcps: ee.Image.constant([0.0183, 0.0123, 0.0123, 0.0448, 0.0306, 0.0116])
                .multiply(10000),
     slopes: ee.Image.constant([0.885, 0.9317, 0.9372, 0.8339, 0.8639, 0.9165])
@@ -225,20 +225,20 @@ var coefficients = {
 };
 
 // Define function to apply OLS ETM+ to OLI transformation.
-function etm2oli_ols(img) {
+function etmToOliOls(img) {
   return img.select(['Blue', 'Green', 'Red', 'NIR', 'SWIR1', 'SWIR2'])
-      .multiply(coefficients.etm2oli_ols.slopes)
-      .add(coefficients.etm2oli_ols.itcps)
+      .multiply(coefficients.etmToOliOls.slopes)
+      .add(coefficients.etmToOliOls.itcps)
       .round()
       .toShort()
       .addBands(img.select('pixel_qa'));
 }
 
 // Define function to apply OLS OLI to ETM+ transformation.
-function oli2etm_ols(img) {
+function oliToEtmOls(img) {
   return ee.Image(img.select(['Blue', 'Green', 'Red', 'NIR', 'SWIR1', 'SWIR2'])
-                      .multiply(coefficients.oli2etm_ols.slopes)
-                      .add(coefficients.oli2etm_ols.itcps)
+                      .multiply(coefficients.oliToEtmOls.slopes)
+                      .add(coefficients.oliToEtmOls.itcps)
                       .round()
                       .toShort()
                       .addBands(img.select('pixel_qa'))
@@ -246,7 +246,7 @@ function oli2etm_ols(img) {
 }
 
 // Define function to apply RMA OLI to ETM+ transformation.
-function oli2etm_rma(img) {
+function oliToEtmRma(img) {
   return ee.Image(img.select(['Blue', 'Green', 'Red', 'NIR', 'SWIR1', 'SWIR2'])
                       .subtract(coefficients.rma.itcps)
                       .divide(coefficients.rma.slopes)
@@ -257,7 +257,7 @@ function oli2etm_rma(img) {
 }
 
 // Define function to apply RMA ETM+ to OLI transformation.
-function etm2oli_rma(img) {
+function etmToOliRma(img) {
   return ee.Image(img.select(['Blue', 'Green', 'Red', 'NIR', 'SWIR1', 'SWIR2'])
                       .multiply(coefficients.rma.slopes)
                       .add(coefficients.rma.itcps)

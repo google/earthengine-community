@@ -15,6 +15,7 @@
  * limitations under the License.
  */
 
+var Composites = require('../../impl/composites.js').Composites;
 var Dataset = require('../../impl/dataset.js').Dataset;
 var TestImage = require('../helpers/test-image.js');
 
@@ -77,29 +78,47 @@ withEarthEngine('Dataset', function() {
         });
   });
 
-  fit('addBandIndices()', function(done) {
+  it('addBandIndices()', function(done) {
     var l8 = TestDataset(TEST_VALUES).addBandIndices('ndvi', 'ndsi');
     TestImage.reduceConstant(l8.getImageCollection().first())
         .evaluate(function(actual, error) {
           expect(error).toBeUndefined();
-          // Check calculated values to ensure index expressions are correct and that original
-          // bands are still present.
+          // Check calculated values to ensure index expressions are correct and
+          // that original bands are still present.
           var expected = Object.assign({}, TEST_VALUES, TEST_INDICES);
           expect(actual).toEqual(expected);
           done();
         });
   });
 
-  it('Make temporalComposites', function(done) {
-    lct.Landsat8('SR')
-        .filterBounds(geometry)
-        .createTemporalComposites('2016-01-01', 12, 7, 'day')
-        .getImageCollection()
+  fit('createTemporalComposites()', function(done) {
+    var testCollection = ee.ImageCollection([
+      TestImage.create({value: 20151201}, '2015-12-01'),
+      TestImage.create({value: 20151215}, '2015-12-15'),
+      TestImage.create({value: 20160101}, '2016-01-01'),
+      TestImage.create({value: 20160115}, '2016-01-15'),
+      TestImage.create({value: 20160201}, '2016-02-01'),
+      TestImage.create({value: 20160215}, '2016-02-15'),
+      TestImage.create({value: 20160301}, '2016-03-01'),
+      TestImage.create({value: 20160315}, '2016-03-15'),
+      TestImage.create({value: 20160401}, '2016-04-01'),
+      TestImage.create({value: 20160415}, '2016-04-15')
+    ]);
+
+    var result = Composites.createTemporalComposites(
+        testCollection,
+        /* startDate= */ '2016-01-01',
+        /* count= */ 3,
+        /* interval= */ 1,
+        /* intervalUnits= */ 'month', ee.Reducer.max());
+
+    result.toList(10)
+        .map(function(img) {
+          return TestImage.reduceConstant(ee.Image(img)).get('value');
+        })
         .evaluate(function(actual, error) {
           expect(error).toBeUndefined();
-          // About 1/2 of the dates have no images.
-          expect(actual.features.length).toBe(5);
-          expect(actual.features[0]['id']).toBe('20160101');
+          expect(actual).toEqual([20160115, 20160215, 20160315]);
           done();
         });
   });

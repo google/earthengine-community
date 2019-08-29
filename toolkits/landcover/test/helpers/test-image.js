@@ -27,7 +27,7 @@
  * @returns {!ee.Image}
  */
 var create = function(values, startDate) {
-  var image = ee.Dictionary(values).toImage().int16();
+  var image = ee.Dictionary(values).toImage().int64();
   if (startDate) {
     image = image.set('system:time_start', ee.Date(startDate).millis());
   }

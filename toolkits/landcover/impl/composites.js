@@ -46,7 +46,7 @@ function createTemporalComposites(
     var begin = startDate.advance(interval.multiply(n), intervalUnits);
     var end = begin.advance(interval, intervalUnits);
     // Add a date band and mask it to the union of masks of input bands.
-    var images = collection.filterDate(begin, end).map(function (img) {
+    var images = collection.filterDate(begin, end).map(function(img) {
       var date = ee.Image.constant(img.date().millis()).rename('date').long();
       var mask = img.mask().reduce(ee.Reducer.max());
       return img.addBands(date.updateMask(mask));
@@ -67,16 +67,15 @@ function createTemporalComposites(
     // We count the 'date' band because it's been masked by all the others.
     var count = images.select('date').count().rename('observations');
 
-    return mosaic
-        .addBands(count)
+    return mosaic.addBands(count)
         .set('system:time_start', begin.millis())
         .set('system:id', begin.format('YYYYMMdd'))
         .set('system:index', begin.format('YYYYMMdd'));
   });
 
   // Filter out empty dates (no date band).
-  var filtered = ee.ImageCollection.fromImages(images)
-      .filter(ee.Filter.listContains('system:band_names', 'date'));
+  var filtered = ee.ImageCollection.fromImages(images).filter(
+      ee.Filter.listContains('system:band_names', 'date'));
   return filtered;
 }
 
@@ -95,11 +94,13 @@ function createMedioidComposite(collection, indexBand) {
   indexBand = indexBand === undefined ? 0 : indexBand;
   var median = collection.select(indexBand).median();
 
-  var mosaic = collection.map(function(img) {
-    var diff = median.subtract(img.select(indexBand)).abs();
-    var index = ee.Image(0).subtract(diff);
-    return img.addBands(index.rename('medioid_index_'));
-  }).qualityMosaic('medioid_index_');
+  var mosaic = collection
+                   .map(function(img) {
+                     var diff = median.subtract(img.select(indexBand)).abs();
+                     var index = ee.Image(0).subtract(diff);
+                     return img.addBands(index.rename('medioid_index_'));
+                   })
+                   .qualityMosaic('medioid_index_');
 
   return mosaic.select(mosaic.bandNames().remove('medioid_index_'));
 }

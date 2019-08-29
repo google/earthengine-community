@@ -13,11 +13,10 @@ Find out how you can contribute your own tutorials at
 * [Submit a tutorial][write]
 
 Files added to the [`tutorials/`][folder] will appear at
-[developers.google.com/earth-engine/tutorials/community][tutorials].
+[developers.google.com/earth-engine/tutorials][tutorials].
 
 [folder]: https://github.com/google/earthengine-community/tree/master/tutorials
-[community]: http://developers.google.com/earth-engine/tutorialscommunity
-[tutorials]: https://developers.google.com/earth-engine/tutorials/community/
+[tutorials]: https://developers.google.com/earth-engine/tutorials/
 [contribute]: https://developers.google.com/earth-engine/tutorials/community/write
 [request]: https://github.com/google/earthengine-community/issues/new?title=Tutorial%20Request:%20<title>&body=Description%0A%0ATechnical%20Level%0Abeginner%20%7C%20intermediate%20%7C%20advanced%0A%0ALength%0Ashort%20(<%20250%20words)%20%7C%20medium%20(250-500%20words)%20%7C%20long%20(1000%20words+)%0A
 [write]: https://developers.google.com/earth-engine/tutorials/community/write

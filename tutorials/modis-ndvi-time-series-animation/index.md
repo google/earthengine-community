@@ -3,7 +3,7 @@ title: MODIS NDVI Times Series Animation
 description: Generate an animated GIF representing 20-year median NDVI for serial 16-day MODIS composites spanning January 1st through December 31st.
 author: jdbcode
 tags: modis, ndvi, animation, join, reduce, composite, gif, africa, visualization
-date_published: 2019-08-07
+date_published: 2019-08-14
 ---
 <!--
 Copyright 2019 Google LLC

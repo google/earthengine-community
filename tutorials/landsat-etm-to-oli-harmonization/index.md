@@ -3,7 +3,7 @@ title: Landsat ETM+ to OLI Harmonization
 description: Inter-sensor Landsat harmonization and time series visualization application.
 author: jdbcode
 tags: landsat, etm+, oli, tm, harmonization, time-series, join, reduce, visualization, fmask, cloud-mask, analysis-ready-data, ard
-date_published: 2019-08-16
+date_published: 2019-08-29
 ---
 <!--
 Copyright 2019 Google LLC

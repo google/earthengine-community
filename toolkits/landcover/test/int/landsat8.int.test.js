@@ -19,7 +19,7 @@ var lct = require('../../api.js');
 var TestImage = require('../helpers/test-image.js');
 
 withEarthEngine('Landsat8', function() {
-  fit('fmaskCloudsAndShadows() masks cloudy pixels', function(done) {
+  it('fmaskCloudsAndShadows() masks cloudy pixels', function(done) {
     var clearPixel = TestImage.create({pixel_qa: 0, B4: 12});
     var cloudyPixel =
         TestImage.create({pixel_qa: lct.Landsat8.CLOUD_BIT_MASK, B4: 100});
@@ -38,7 +38,7 @@ withEarthEngine('Landsat8', function() {
     });
   });
 
-  fit('fmaskCloudsAndShadows() masks shadowy pixels', function(done) {
+  it('fmaskCloudsAndShadows() masks shadowy pixels', function(done) {
     var clearPixel = TestImage.create({pixel_qa: 0, B4: 12});
     var shadowyPixel =
         TestImage.create({pixel_qa: lct.Landsat8.CLOUD_SHADOW_BIT_MASK, B4: 4});

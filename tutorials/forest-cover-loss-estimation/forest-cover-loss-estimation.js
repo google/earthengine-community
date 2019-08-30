@@ -60,7 +60,7 @@ var forestSize = forestArea.reduceRegion({
 });
 print('Year 2000 tree cover (ha) \nmeeting minimum canopy cover and \nforest area thresholds \n ', forestSize.get('treecover2000'));
 
-// If the country is large, you may need to export the result.
+// Export the result, if the country is large.
 var featureCollection = ee.FeatureCollection([ee.Feature(null, forestSize)]);
 
 Export.table.toDrive({
@@ -78,7 +78,17 @@ var pixelCount = minArea.reduceRegion({
     maxPixels: 1e13
 });
 var onePixel = forestSize.getNumber('treecover2000').divide(pixelCount.getNumber('treecover2000'));
-print('Minimum forest area used (ha)\n ', onePixel.multiply(pixels));
+var minAreaUsed = onePixel.multiply(pixels);
+print('Minimum forest area used (ha)\n ', minAreaUsed);
+
+// Export if necessary.
+var featureCollection = ee.FeatureCollection([ee.Feature(null, {result: minAreaUsed})]);
+
+Export.table.toDrive({
+    collection: featureCollection,
+    description: 'min_area_used_' + country,
+    fileFormat: 'CSV'
+});
 
 // Estimate tree loss.
 var treeLoss = gfc2018.select(['lossyear']);

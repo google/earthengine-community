@@ -15,6 +15,9 @@
  * limitations under the License.
  */
 
+// Maximum number of constant images to fetch when processing test data
+// collections.
+var MAX_TEST_COLLECTION_SIZE = 15;
 /**
  * Returns a single constant ee.Image comprised of the bands and values in the
  * specified dictionary.
@@ -46,5 +49,18 @@ var reduceConstant = function(image) {
       ee.Reducer.first(), ee.Geometry.Point(0, 0), 1);
 };
 
+/**
+ * Reduces a collection of constant ee.Image instances  to an array of
+ * dictionaries keyed by band.
+ *
+ * @param {!ee.ImageCollection} collection A collection containing only constant
+ *     ee.Image instances (images with a single value).
+ * @returns {Array} An array of dictionaries keyed by band name.
+ */
+var reduceConstants = function(collection) {
+  return collection.toList(MAX_TEST_COLLECTION_SIZE).map(reduceConstant);
+};
+
 exports.create = create;
 exports.reduceConstant = reduceConstant;
+exports.reduceConstants = reduceConstants;

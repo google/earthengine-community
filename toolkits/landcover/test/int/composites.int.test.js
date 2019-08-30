@@ -40,14 +40,11 @@ withEarthEngine('Composites', function() {
         /* interval= */ 1,
         /* intervalUnits= */ 'month', ee.Reducer.mean());
 
-    result.toList(10)
-        .map(function(img) {
-          return TestImage.reduceConstant(img).get('value');
-        })
+    TestImage.reduceConstants(result.select('value'))
         .evaluate(function(actual, error) {
           expect(error).toBeUndefined();
           // Mean value in each valid 3 month range..
-          expect(actual).toEqual([225, 325, 425]);
+          expect(actual).toEqual([{value: 225}, {value: 325}, {value: 425}]);
           done();
         });
   });
@@ -97,16 +94,12 @@ withEarthEngine('Composites', function() {
         /* interval= */ 31,
         /* intervalUnits= */ 'day', compositor);
 
-    result.toList(10)
-        .map(function(img) {
-          return TestImage.reduceConstant(img);
-        })
-        .evaluate(function(actual, error) {
-          expect(error).toBeUndefined();
-          // Mean value in each valid 3 month range..
-          expect(actual).toEqual(
-              [{date: 1451779200000, idx: 3, observations: 5, value: 103}]);
-          done();
-        });
+    TestImage.reduceConstants(result).evaluate(function(actual, error) {
+      expect(error).toBeUndefined();
+      // Mean value in each valid 3 month range..
+      expect(actual).toEqual(
+          [{date: 1451779200000, idx: 3, observations: 5, value: 103}]);
+      done();
+    });
   });
 });

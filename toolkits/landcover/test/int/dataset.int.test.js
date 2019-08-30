@@ -62,11 +62,6 @@ var TestDataset = function(values) {
 };
 
 withEarthEngine('Dataset', function() {
-  beforeEach(function() {
-    // A point in Arizona.
-    geometry = ee.Geometry.Point([-111.70715, 36.0225]);
-  });
-
   it('computeCommonBandNames_()', function(done) {
     TestDataset(TEST_VALUES)
         .computeCommonBandNames_(ee.List(['B4', 'B3', 'B2', 'foo']))

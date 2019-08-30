@@ -146,7 +146,7 @@ var contArea01 = treecoverLoss01.connectedPixelCount();
 var minArea01 = contArea01.gte(pixels);
 Map.addLayer(minArea01.reproject(prj.atScale(scale)), {
     palette: ['#168039']
-}, 'tree cover 2001 (gain not considered) (light green)');
+}, 'tree cover 2001 (gain not considered) (dark green)');
 
 // Calculate the tree cover in hectare. 
 var forestArea01 = minArea01.multiply(ee.Image.pixelArea()).divide(10000);

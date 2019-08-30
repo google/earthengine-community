@@ -114,7 +114,7 @@ withEarthEngine('Dataset', function() {
 
     result.toList(10)
         .map(function(img) {
-          return TestImage.reduceConstant(ee.Image(img)).get('value');
+          return TestImage.reduceConstant(img).get('value');
         })
         .evaluate(function(actual, error) {
           expect(error).toBeUndefined();

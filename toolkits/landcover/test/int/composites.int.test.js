@@ -21,16 +21,16 @@ var TestImage = require('../helpers/test-image.js');
 withEarthEngine('Composites', function() {
   fit('createTemporalComposites()', function(done) {
     var testCollection = ee.ImageCollection([
-      TestImage.create({value: 20151201}, '2015-12-01'),
-      TestImage.create({value: 20151215}, '2015-12-15'),
-      TestImage.create({value: 20160101}, '2016-01-01'),
-      TestImage.create({value: 20160115}, '2016-01-15'),
-      TestImage.create({value: 20160201}, '2016-02-01'),
-      TestImage.create({value: 20160215}, '2016-02-15'),
-      TestImage.create({value: 20160301}, '2016-03-01'),
-      TestImage.create({value: 20160315}, '2016-03-15'),
-      TestImage.create({value: 20160401}, '2016-04-01'),
-      TestImage.create({value: 20160415}, '2016-04-15')
+      TestImage.create({value: 100}, '2015-12-01'),
+      TestImage.create({value: 150}, '2015-12-15'),
+      TestImage.create({value: 200}, '2016-01-01'),
+      TestImage.create({value: 250}, '2016-01-15'),
+      TestImage.create({value: 300}, '2016-02-01'),
+      TestImage.create({value: 350}, '2016-02-15'),
+      TestImage.create({value: 400}, '2016-03-01'),
+      TestImage.create({value: 450}, '2016-03-15'),
+      TestImage.create({value: 500}, '2016-04-01'),
+      TestImage.create({value: 550}, '2016-04-15')
     ]);
 
     var result = Composites.createTemporalComposites(
@@ -38,7 +38,7 @@ withEarthEngine('Composites', function() {
         /* startDate= */ '2016-01-01',
         /* count= */ 3,
         /* interval= */ 1,
-        /* intervalUnits= */ 'month', ee.Reducer.max());
+        /* intervalUnits= */ 'month', ee.Reducer.mean());
 
     result.toList(10)
         .map(function(img) {
@@ -46,7 +46,8 @@ withEarthEngine('Composites', function() {
         })
         .evaluate(function(actual, error) {
           expect(error).toBeUndefined();
-          expect(actual).toEqual([20160115, 20160215, 20160315]);
+          // Mean value in each valid 3 month range..
+          expect(actual).toEqual([225, 325, 425]);
           done();
         });
   });
@@ -68,7 +69,7 @@ withEarthEngine('Composites', function() {
   });
 
   it('MedioidFunction in temporalComposites', function(done) {
-    // With 1 composite,this should be equivalent to the
+    // With 1 composite, this should be equivalent to the
     // medioidComposite test.
     var compositor = lct.Composites.createMedioidFunction('date');
     lct.Landsat8('SR')

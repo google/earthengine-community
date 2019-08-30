@@ -15,7 +15,6 @@
  * limitations under the License.
  */
 
-var Composites = require('../../impl/composites.js').Composites;
 var Dataset = require('../../impl/dataset.js').Dataset;
 var TestImage = require('../helpers/test-image.js');
 
@@ -87,75 +86,6 @@ withEarthEngine('Dataset', function() {
           // that original bands are still present.
           var expected = Object.assign({}, TEST_VALUES, TEST_INDICES);
           expect(actual).toEqual(expected);
-          done();
-        });
-  });
-
-  fit('createTemporalComposites()', function(done) {
-    var testCollection = ee.ImageCollection([
-      TestImage.create({value: 20151201}, '2015-12-01'),
-      TestImage.create({value: 20151215}, '2015-12-15'),
-      TestImage.create({value: 20160101}, '2016-01-01'),
-      TestImage.create({value: 20160115}, '2016-01-15'),
-      TestImage.create({value: 20160201}, '2016-02-01'),
-      TestImage.create({value: 20160215}, '2016-02-15'),
-      TestImage.create({value: 20160301}, '2016-03-01'),
-      TestImage.create({value: 20160315}, '2016-03-15'),
-      TestImage.create({value: 20160401}, '2016-04-01'),
-      TestImage.create({value: 20160415}, '2016-04-15')
-    ]);
-
-    var result = Composites.createTemporalComposites(
-        testCollection,
-        /* startDate= */ '2016-01-01',
-        /* count= */ 3,
-        /* interval= */ 1,
-        /* intervalUnits= */ 'month', ee.Reducer.max());
-
-    result.toList(10)
-        .map(function(img) {
-          return TestImage.reduceConstant(img).get('value');
-        })
-        .evaluate(function(actual, error) {
-          expect(error).toBeUndefined();
-          expect(actual).toEqual([20160115, 20160215, 20160315]);
-          done();
-        });
-  });
-
-  it('Compute medioidComposite', function(done) {
-    lct.Landsat8('SR')
-        .filterBounds(geometry)
-        .filterDate('2016-01-01', '2016-01-31')
-        .addDayOfYearBand()
-        .createMedioidComposite('doy')
-        .getImageCollection()
-        .first()
-        .reduceRegion(ee.Reducer.first(), geometry, 1)
-        .evaluate(function(actual, error) {
-          expect(error).toBeUndefined();
-          expect(actual['doy']).toBe(17);
-          done();
-        });
-  });
-
-  it('MedioidFunction in temporalComposites', function(done) {
-    // With 1 composite,this should be equivalent to the
-    // medioidComposite test.
-    var compositor = lct.Composites.createMedioidFunction('date');
-    lct.Landsat8('SR')
-        .filterBounds(geometry)
-        .addDayOfYearBand()
-        .addFractionalYearBand()
-        .createTemporalComposites('2016-01-01', 1, 31, 'day', compositor)
-        .getImageCollection()
-        .first()
-        .reduceRegion(ee.Reducer.first(), geometry, 1)
-        .evaluate(function(actual, error) {
-          expect(error).toBeUndefined();
-          expect(actual['date']).toBe(1453140198110);
-          expect(actual['doy']).toBe(17);
-          expect(actual['fYear']).toBeCloseTo(2016 + 17 / 365.0, 0.001);
           done();
         });
   });

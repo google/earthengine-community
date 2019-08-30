@@ -116,7 +116,7 @@ print('Year 2001 tree loss (ha) \nmeeting minimum canopy cover and \nforest area
 ```
 ![](allloss.png)  |  ![](losstreecover.png) |  ![](lossmin.png)
 :-------------------------:|:-------------------------:|:-------------------------:
-All tree loss (black)             |  Loss inside tree cover (purple)        |  Loss inside tree cover & >= min tree area >=0.5 ha
+All tree loss (black), tree cover (green)             |  Loss inside tree cover (purple)        |  Loss inside tree cover & >= min tree area
 
 
 ### Subsequent tree cover

@@ -1,7 +1,7 @@
 // Enter a country name and set parameters for forest definition.
 // County name must match an entry in Large Scale International Boundary (LSIB) dataset.
 var country = 'Bolivia'; // selected country (e.g. Bolivia)
-var cc = ee.Number(10); // canopy cover percentage(e.g. 10%)
+var cc = ee.Number(10); // canopy cover percentage (e.g. 10%)
 var pixels = ee.Number(6); // minimum forest size in pixels (e.g. 6 pixels, approximately 0.5 ha in this example)
 var lossPixels = ee.Number(6); // minimum mapping area for tree loss (usually same as the minimum forest area)
 

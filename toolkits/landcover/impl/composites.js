@@ -94,13 +94,15 @@ function createMedioidComposite(collection, indexBand) {
   indexBand = indexBand === undefined ? 0 : indexBand;
   var median = collection.select(indexBand).median();
 
-  var mosaic = collection
-                   .map(function(img) {
-                     var diff = median.subtract(img.select(indexBand)).abs();
-                     var index = ee.Image(0).subtract(diff);
-                     return img.addBands(index.rename('medioid_index_'));
-                   })
-                   .qualityMosaic('medioid_index_');
+  // Add a band containing the difference between the index band value for each
+  // pixel and the median of the index band across all pixels in the collection.
+  var indexedCollection = collection.map(function(img) {
+    var diff = median.subtract(img.select(indexBand)).abs();
+    var index = ee.Image(0).subtract(diff);
+    return img.addBands(index.rename('medioid_index_'));
+  });
+
+  var mosaic = indexedCollection.qualityMosaic('medioid_index_');
 
   return mosaic.select(mosaic.bandNames().remove('medioid_index_'));
 }

@@ -18,11 +18,18 @@
 var lct = require('../../api.js');
 var TestImage = require('../helpers/test-image.js');
 
+// Arbitrary test value to be used for cloud-free pixels.
+var CLEAR_PIXEL_VALUE = 12;
+// Arbitrary test value to be used for cloudy pixels.
+var CLOUDY_PIXEL_VALUE = 100;
+// Arbitrary test value to be used for cloud-shadow pixels.
+var SHADOWY_PIXEL_VALUE = 4;
+
 withEarthEngine('Landsat8', function() {
   it('fmaskCloudsAndShadows() masks cloudy pixels', function(done) {
-    var clearPixel = TestImage.create({pixel_qa: 0, B4: 12});
-    var cloudyPixel =
-        TestImage.create({pixel_qa: lct.Landsat8.CLOUD_BIT_MASK, B4: 100});
+    var clearPixel = TestImage.create({pixel_qa: 0, B4: CLEAR_PIXEL_VALUE});
+    var cloudyPixel = TestImage.create(
+        {pixel_qa: lct.Landsat8.CLOUD_BIT_MASK, B4: CLOUDY_PIXEL_VALUE});
     var testCollection = ee.ImageCollection([clearPixel, cloudyPixel]);
     var l8 = lct.Landsat8(testCollection);
 
@@ -33,15 +40,17 @@ withEarthEngine('Landsat8', function() {
     var value = TestImage.reduceConstant(image).get('B4');
     value.evaluate(function(actual, error) {
       expect(error).toBeUndefined();
-      expect(actual).toEqual(12);
+      expect(actual).toEqual(CLEAR_PIXEL_VALUE);
       done();
     });
   });
 
   it('fmaskCloudsAndShadows() masks shadowy pixels', function(done) {
-    var clearPixel = TestImage.create({pixel_qa: 0, B4: 12});
-    var shadowyPixel =
-        TestImage.create({pixel_qa: lct.Landsat8.CLOUD_SHADOW_BIT_MASK, B4: 4});
+    var clearPixel = TestImage.create({pixel_qa: 0, B4: CLEAR_PIXEL_VALUE});
+    var shadowyPixel = TestImage.create({
+      pixel_qa: lct.Landsat8.CLOUD_SHADOW_BIT_MASK,
+      B4: SHADOWY_PIXEL_VALUE
+    });
     var testCollection = ee.ImageCollection([clearPixel, shadowyPixel]);
     var l8 = lct.Landsat8(testCollection);
 
@@ -52,7 +61,7 @@ withEarthEngine('Landsat8', function() {
     var value = TestImage.reduceConstant(image).get('B4');
     value.evaluate(function(actual, error) {
       expect(error).toBeUndefined();
-      expect(actual).toEqual(12);
+      expect(actual).toEqual(CLEAR_PIXEL_VALUE);
       done();
     });
   });

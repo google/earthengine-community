@@ -42,7 +42,8 @@ var create = function(values, startDate) {
  * @returns {*} A dictionary keyed by band name.
  */
 var reduceConstant = function(image) {
-  return image.reduceRegion(ee.Reducer.first(), ee.Geometry.Point(0, 0), 1);
+  return ee.Image(image).reduceRegion(
+      ee.Reducer.first(), ee.Geometry.Point(0, 0), 1);
 };
 
 exports.create = create;

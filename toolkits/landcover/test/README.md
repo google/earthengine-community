@@ -10,7 +10,7 @@ framework. General usage and examples can be found on the Jasmine website.
 
 Note: Some tests and utils in this package rely on a common testing technique
 called _test doubles_ ([TotT: Know Your Test Doubles][tott-doubles]). Tests use
-these only when necessary, preferring instread to rely on public APIs whenever
+these only when necessary, preferring instead to rely on public APIs whenever
 possible ([xUnit Patterns Principle: Use the Front Door
 First][front-door-first]).
 

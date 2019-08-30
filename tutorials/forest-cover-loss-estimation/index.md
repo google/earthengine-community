@@ -83,7 +83,7 @@ The GFC dataset uses 30x30m pixels. Therefore, 6 pixels (>5,000/(30x30)) is used
 
 ![](alltrees.png)  |  ![](cc10.png) |  ![](treecover00.png)
 :-------------------------:|:-------------------------:|:-------------------------:
-All trees (yellow)             |  Canopy cover >= 10% (orange)        |  Canopy cover >= 10% & min tree area >=0.5 ha (light green)
+All trees (yellow)             |  >= min canopy cover (orange)        |  >= min canopy cover & tree area (light green)
 
 ### Tree loss
 

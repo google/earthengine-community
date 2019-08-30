@@ -22,6 +22,10 @@
 var ee = require('@google/earthengine');
 var Module = require('module');
 
+// Base path of shared repo containing toolkit source. Replaced with relative
+// paths when running tests.
+var SHARED_REPO_PREFIX_REGEX = /^.*:landcover\//;
+
 // Make ee namespace available to all modules.
 global.ee = ee;
 
@@ -37,7 +41,7 @@ var _require = Module.prototype.require;
  * @return {!Module} The required module.
  */
 Module.prototype.require = function(path) {
-  path = path.replace(/^.*:/, __dirname + '/../../');
+  path = path.replace(SHARED_REPO_PREFIX_REGEX, __dirname + '/../../');
   path = Module._resolveFilename(path, this);
   return _require.call(this, path);
 };

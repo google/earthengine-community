@@ -15,8 +15,8 @@
  * limitations under the License.
  */
 
-var Composites = require('users/gmiceli/ee-lct:impl/composites.js').Composites;
-var Bands = require('users/gmiceli/ee-lct:impl/bands.js').Bands;
+var Composites = require('users/google/toolkits:landcover/impl/composites.js').Composites;
+var Bands = require('users/google/toolkits:landcover/impl/bands.js').Bands;
 
 /**
  * Returns a new dataset instance for an arbitrary image collection.

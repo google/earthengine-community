@@ -135,7 +135,7 @@ var treecoverLoss01 = minArea.and(notLoss).selfMask();
 ```
 3. Apply the minimum area requirement to the above tree cover (minimum canopy cover threshold is already applied by using the derived tree cover). Reproject in nominal scale when displaying on the map. 
 ```js
-var contArea01 = treecoverLoss01.selfMask().connectedPixelCount();
+var contArea01 = treecoverLoss01.connectedPixelCount();
 var minArea01 = contArea01.gte(pixels);
 Map.addLayer(minArea01.reproject(prj.atScale(scale)), {
     palette: ['#168039']

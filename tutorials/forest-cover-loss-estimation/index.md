@@ -20,8 +20,8 @@ In various reporting of forest and/or land-use related data, countries may have 
 This tutorial selected Bolivia as an example, with the minimum canopy cover of 10% and minimum forest area of 0.5 ha (the national definition may be different). 
 ```js
 var country = 'Bolivia'; // selected country (e.g. Bolivia)
-var cc = ee.Number(10); // canopy cover percentage
-var pixels = ee.Number(6); // minimum forest area in pixels (approximately 0.5 ha in this example)
+var cc = ee.Number(10); // canopy cover percentage (e.g. 10%)
+var pixels = ee.Number(6); // minimum forest area in pixels (e.g. 6 pixels, approximately 0.5 ha in this example)
 var lossPixels = ee.Number(6); // minimum mapping area for tree loss (usually same as the minimum forest area)
 ```
 

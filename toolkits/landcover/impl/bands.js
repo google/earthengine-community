@@ -73,7 +73,7 @@ function getSpectralIndices(image, indices) {
   // We can't check the existence of the specified indices if they're EEObjects.
   if (!(indices instanceof ee.ComputedObject)) {
     // Check that all the specified indexes exist.
-    indices.forEach(function (name) {
+    indices.forEach(function(name) {
       if (!(name in SPECTRAL_INDEX_EXPRESSIONS)) {
         throw Error('Unrecognized spectral index: ' + name);
       }
@@ -95,9 +95,8 @@ function getSpectralIndices(image, indices) {
  * @return {!ee.ImageCollection}
  */
 function addDateBand(collection) {
-  return collection.map(function (img) {
-    var date = ee.Image.constant(img.date().millis())
-        .rename('date').long();
+  return collection.map(function(img) {
+    var date = ee.Image.constant(img.date().millis()).rename('date').long();
     return img.addBands(date);
   });
 }
@@ -110,9 +109,10 @@ function addDateBand(collection) {
  * @return {!ee.ImageCollection}
  */
 function addDayOfYearBand(collection) {
-  return collection.map(function (img) {
+  return collection.map(function(img) {
     var doy = ee.Image.constant(img.date().getRelative('day', 'year'))
-        .rename('doy').int();
+                  .rename('doy')
+                  .int();
     return img.addBands(doy);
   });
 }
@@ -125,7 +125,7 @@ function addDayOfYearBand(collection) {
  * @return {!ee.ImageCollection}
  */
 function addFractionalYearBand(collection) {
-  return collection.map(function (img) {
+  return collection.map(function(img) {
     var date = img.date();
     var fYear = date.get('year').double().add(img.date().getFraction('year'));
     var band = ee.Image.constant(fYear).rename('fYear').double();

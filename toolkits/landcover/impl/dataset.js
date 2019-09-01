@@ -15,11 +15,15 @@
  * limitations under the License.
  */
 
-var Composites = require('users/google/toolkits:landcover/impl/composites.js').Composites;
+var Composites =
+    require('users/google/toolkits:landcover/impl/composites.js').Composites;
 var Bands = require('users/google/toolkits:landcover/impl/bands.js').Bands;
 
 /**
- * Returns a new dataset instance for an arbitrary image collection.
+ * Returns a new dataset instance for an arbitrary image collection. Like
+ * `ee.ImageCollection` and other API objects, instances of this class and
+ * subclasses are immutable; methods on these classes will return a new
+ * instance.
  *
  * @constructor
  * @param {!ee.ImageCollection} collection The collection backing this dataset.
@@ -31,6 +35,16 @@ var Bands = require('users/google/toolkits:landcover/impl/bands.js').Bands;
 var Dataset = function(collection, defaultVisParams) {
   this.collection_ = collection;
   this.defaultVisParams_ = defaultVisParams;
+};
+
+/**
+ * Returns a copy of this dataset, copying all related state. This must be
+ * overridden by subclasses to allow builder methods to preserve immutability.
+ *
+ * @return {!Dataset}
+ */
+Dataset.prototype.clone_ = function() {
+  return new Dataset(this.collection_, this.defaultVisParams_);
 };
 
 /**
@@ -47,8 +61,9 @@ var Dataset = function(collection, defaultVisParams) {
 Dataset.prototype.filterDate = function(start, end) {
   // TODO(gino-m): Implement month and year ranges.
   // TODO(gino-m): Implement single day/month/year.
-  this.collection_ = this.collection_.filterDate(start, end);
-  return this;
+  var dataset = this.clone_();
+  dataset.collection_ = dataset.collection_.filterDate(start, end);
+  return dataset;
 };
 
 /**
@@ -64,8 +79,9 @@ Dataset.prototype.filterDate = function(start, end) {
  * @return {!Dataset}
  */
 Dataset.prototype.filterBounds = function(geometry) {
-  this.collection_ = this.collection_.filterBounds(geometry);
-  return this;
+  var dataset = this.clone_();
+  dataset.collection_ = dataset.collection_.filterBounds(geometry);
+  return dataset;
 };
 
 /**
@@ -103,12 +119,12 @@ Dataset.prototype.getDefaultVisParams = function() {
  *        each time period. Defaults to using a median reducer.
  * @return {!ee.ImageCollection}
  */
-Dataset.prototype.createTemporalComposites =
-    function(startDate, count, interval, intervalUnits, reducer) {
-  this.collection_ =
-      Composites.createTemporalComposites(
-          this.collection_, startDate, count, interval, intervalUnits, reducer);
-  return this;
+Dataset.prototype.createTemporalComposites = function(
+    startDate, count, interval, intervalUnits, reducer) {
+  var dataset = this.clone_();
+  dataset.collection_ = Composites.createTemporalComposites(
+      dataset.collection_, startDate, count, interval, intervalUnits, reducer);
+  return dataset;
 };
 
 /**
@@ -121,10 +137,10 @@ Dataset.prototype.createTemporalComposites =
  * @return {!ee.ImageCollection}
  */
 Dataset.prototype.createMedioidComposite = function(band) {
-  this.collection_ = ee.ImageCollection([
-      Composites.createMedioidComposite(this.collection_, band)
-  ]);
-  return this;
+  var dataset = this.clone_();
+  dataset.collection_ = ee.ImageCollection(
+      [Composites.createMedioidComposite(dataset.collection_, band)]);
+  return dataset;
 };
 
 /**
@@ -152,23 +168,23 @@ Dataset.prototype.computeCommonBandNames_ = function(bandNames) {
  * @return {!Dataset}
  */
 Dataset.prototype.addBandIndices = function(var_names) {
+  var dataset = this.clone_();
   var indices = Array.prototype.slice.call(arguments);
 
   // Compute the transformation to common band names.
-  var bandNames = this.collection_.first().bandNames();
+  var bandNames = dataset.collection_.first().bandNames();
   var commonNames = this.computeCommonBandNames_(bandNames);
 
-  var output = this.collection_.map(function(image) {
+  var output = dataset.collection_.map(function(image) {
     // Rename the bands and compute the spectral indices.
     var renamed = image.select(bandNames, commonNames);
     var bands = Bands.getSpectralIndices(renamed, indices);
     return image.addBands(bands);
   });
 
-  this.collection_ = output;
-  return this;
+  dataset.collection_ = output;
+  return dataset;
 };
-
 
 /**
  * Adds a band (date) to each image in the dataset's collection,
@@ -177,8 +193,9 @@ Dataset.prototype.addBandIndices = function(var_names) {
  * @return {!Dataset}
  */
 Dataset.prototype.addDateBand = function() {
-  this.collection_ = Bands.addDateBand(this.collection_);
-  return this;
+  var dataset = this.clone_();
+  dataset.collection_ = Bands.addDateBand(dataset.collection_);
+  return dataset;
 };
 
 /**
@@ -188,8 +205,9 @@ Dataset.prototype.addDateBand = function() {
  * @return {!Dataset}
  */
 Dataset.prototype.addDayOfYearBand = function() {
-  this.collection_ = Bands.addDayOfYearBand(this.collection_);
-  return this;
+  var dataset = this.clone_();
+  dataset.collection_ = Bands.addDayOfYearBand(dataset.collection_);
+  return dataset;
 };
 
 /**
@@ -199,9 +217,9 @@ Dataset.prototype.addDayOfYearBand = function() {
  * @return {!Dataset}
  */
 Dataset.prototype.addFractionalYearBand = function() {
-  this.collection_ = Bands.addFractionalYearBand(this.collection_);
-  return this;
+  var dataset = this.clone_();
+  dataset.collection_ = Bands.addFractionalYearBand(dataset.collection_);
+  return dataset;
 };
-
 
 exports.Dataset = Dataset;

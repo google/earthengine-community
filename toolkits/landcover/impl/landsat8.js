@@ -15,7 +15,8 @@
  * limitations under the License.
  */
 
-var Dataset = require('users/google/toolkits:landcover/impl/dataset.js').Dataset;
+var Dataset =
+    require('users/google/toolkits:landcover/impl/dataset.js').Dataset;
 
 var COMMON_BAND_NAMES = {
   'B1': 'coastal',
@@ -60,18 +61,16 @@ Landsat8.prototype = Object.create(Dataset.prototype);
 Landsat8.prototype.COMMON_BAND_NAMES = COMMON_BAND_NAMES;
 
 /**
- * Masks clouds and shadows using relevant bits in the `pixel_qa` band generated
- * by the CFMASK algorithm.
+ * Masks clouds and shadows using relevant bits in the `pixel_qa` band. In
+ * Landsat 8 datasets, the pixel QA bits are generated using the CFMASK
+ * algorithm.
  *
- * Returns the modified dataset.
+ * Returns the dataset with the masks applied.
  *
  * @return {!Landsat8}
  */
-Landsat8.prototype.fmaskCloudsAndShadows = function() {
-  // TODO(gorelick): Is BQA in TOA calculated using Fmask as well? If so, how do
-  // we model and/or abstract this for the user?
-  // TODO(gino-m): Do something different or fail for type != 'SR'.
-  this.collection_ = this.collection_.map(Landsat8.applyCloudShadowBitMasks);
+Landsat8.prototype.maskCloudsAndShadows = function() {
+  this.collection_ = this.collection_.map(Landsat8.maskCloudsAndShadows);
   return this;
 };
 
@@ -84,7 +83,7 @@ Landsat8.prototype.fmaskCloudsAndShadows = function() {
  * @param {!ee.Image} image The image to be masked.
  * @return {!ee.Image}
  */
-Landsat8.applyCloudShadowBitMasks = function(image) {
+Landsat8.maskCloudsAndShadows = function(image) {
   var qa = image.select(QA_BAND);
   // Both flags should be set to zero, indicating clear conditions.
   var mask = qa.bitwiseAnd(CLOUD_SHADOW_BIT_MASK)

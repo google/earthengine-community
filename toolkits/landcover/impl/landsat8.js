@@ -67,6 +67,7 @@ Landsat8.prototype.COMMON_BAND_NAMES = COMMON_BAND_NAMES;
  *
  * Returns the dataset with the masks applied.
  *
+ * @override
  * @return {!Landsat8}
  */
 Landsat8.prototype.maskCloudsAndShadows = function() {

@@ -15,7 +15,8 @@
  * limitations under the License.
  */
 
-var Composites = require('users/google/toolkits:landcover/impl/composites.js').Composites;
+var Composites =
+    require('users/google/toolkits:landcover/impl/composites.js').Composites;
 var Bands = require('users/google/toolkits:landcover/impl/bands.js').Bands;
 
 /**
@@ -104,11 +105,10 @@ Dataset.prototype.getDefaultVisParams = function() {
  *        each time period. Defaults to using a median reducer.
  * @return {!ee.ImageCollection}
  */
-Dataset.prototype.createTemporalComposites =
-    function(startDate, count, interval, intervalUnits, reducer) {
-  this.collection_ =
-      Composites.createTemporalComposites(
-          this.collection_, startDate, count, interval, intervalUnits, reducer);
+Dataset.prototype.createTemporalComposites = function(
+    startDate, count, interval, intervalUnits, reducer) {
+  this.collection_ = Composites.createTemporalComposites(
+      this.collection_, startDate, count, interval, intervalUnits, reducer);
   return this;
 };
 
@@ -122,9 +122,8 @@ Dataset.prototype.createTemporalComposites =
  * @return {!ee.ImageCollection}
  */
 Dataset.prototype.createMedioidComposite = function(band) {
-  this.collection_ = ee.ImageCollection([
-      Composites.createMedioidComposite(this.collection_, band)
-  ]);
+  this.collection_ = ee.ImageCollection(
+      [Composites.createMedioidComposite(this.collection_, band)]);
   return this;
 };
 
@@ -204,5 +203,18 @@ Dataset.prototype.addFractionalYearBand = function() {
   return this;
 };
 
+/**
+ * Generic interface for applying clouds and shadow shadow masks to a
+ * collection. Subclasses that support this operation should override this
+ * method to provide a default implementation (e.g., CFMASK). Subclasses may
+ * also specify additional arguments to control which methodology is used and
+ * related parameters.
+ *
+ * Subclasses must return a new instance of the dataset with the masks
+ * applied.
+ */
+Dataset.prototype.maskCloudsAndShadows = function() {
+  throw new Error('Unimplemented method');
+};
 
 exports.Dataset = Dataset;

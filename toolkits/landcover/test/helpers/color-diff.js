@@ -42,6 +42,7 @@ var formatDiff = function(diff) {
  *
  * @param {*} jasmineMatcher The original matcher being decorated.
  * @param {*} desc The textual hint to be displayed in error messages.
+ * @return {!Function<*,*>} A Jasmine decorator function.
  */
 var decorateMatcher = function(jasmineMatcher, desc) {
   return function(util, customEqualityTesters) {

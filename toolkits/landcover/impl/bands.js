@@ -69,6 +69,13 @@ var SPECTRAL_INDEX_EXPRESSIONS = {
  * @return {!ee.Image} The computed indices.
  */
 
+/**
+ * Computes and adds the specified set of spectral indices to an image.
+ *
+ * @param {ee.Image} image The source image.
+ * @param {!Array} indices The list of indices to calculate.
+ * @return {ee.Image} The updated image.
+ */
 function getSpectralIndices(image, indices) {
   // We can't check the existence of the specified indices if they're EEObjects.
   if (!(indices instanceof ee.ComputedObject)) {
@@ -80,7 +87,7 @@ function getSpectralIndices(image, indices) {
     });
   }
 
-  // TODO(gorelick): Change this to Dictonary.get once cl/261133093 lands.
+  // TODO(gorelick): Change this to Dictionary.get once supported.
   return indices.map(function(name) {
     var expr = SPECTRAL_INDEX_EXPRESSIONS[name];
     return image.expression(expr, {b: image}).rename([name]);

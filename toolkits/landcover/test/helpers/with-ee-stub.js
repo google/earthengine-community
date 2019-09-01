@@ -27,7 +27,8 @@ var algorithms = require('../unit/algorithms.json');
  */
 var warnNoNetwork = function() {
   fail(
-      'Remote server calls not allowed in unit tests. Be sure to mock relevant functions.');
+      'Remote server calls not allowed in unit tests; ' +
+      'all functions that make remote calls must be mocked.');
 };
 
 /**

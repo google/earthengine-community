@@ -204,7 +204,7 @@ Dataset.prototype.addFractionalYearBand = function() {
 };
 
 /**
- * Generic interface for applying clouds and shadow shadow masks to a
+ * Generic interface for applying cloud and shadow shadow masks to a
  * collection. Subclasses that support this operation should override this
  * method to provide a default implementation (e.g., CFMASK). Subclasses may
  * also specify additional arguments to control which methodology is used and

@@ -21,7 +21,7 @@ var lct = require('../../api.js');
 withEarthEngine('Landsat8', function() {
   it('Filter and mask SR data', function(done) {
     var point = ee.Geometry.Point(36.17819452553215, -4.826158059877228);
-    var image = lct.Landsat8('SR')
+    var image = lct.Landsat8()
                     .filterDate('2018-01-01', '2018-04-01')
                     .filterBounds(point)
                     .fmaskCloudsAndShadows()

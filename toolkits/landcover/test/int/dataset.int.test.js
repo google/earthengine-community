@@ -25,7 +25,7 @@ withEarthEngine('Dataset', function() {
   beforeEach(function() {
     // A point in Arizona.
     geometry = ee.Geometry.Point([-111.70715, 36.0225]);
-    dataset = lct.Landsat8('SR')
+    dataset = lct.Landsat8()
         .filterDate('2016-01-02', '2016-01-03')
         .filterBounds(geometry);
   });
@@ -54,7 +54,7 @@ withEarthEngine('Dataset', function() {
   });
 
   it('Make temporalComposites', function(done) {
-    lct.Landsat8('SR')
+    lct.Landsat8()
         .filterBounds(geometry)
         .createTemporalComposites('2016-01-01', 12, 7, 'day')
         .getImageCollection()
@@ -68,7 +68,7 @@ withEarthEngine('Dataset', function() {
   });
 
   it('Compute medioidComposite', function(done) {
-    lct.Landsat8('SR')
+    lct.Landsat8()
         .filterBounds(geometry)
         .filterDate('2016-01-01', '2016-01-31')
         .addDayOfYearBand()
@@ -87,7 +87,7 @@ withEarthEngine('Dataset', function() {
     // With 1 composite,this should be equivalent to the
     // medioidComposite test.
     var compositor = lct.Composites.createMedioidFunction('date');
-    lct.Landsat8('SR')
+    lct.Landsat8()
         .filterBounds(geometry)
         .addDayOfYearBand()
         .addFractionalYearBand()

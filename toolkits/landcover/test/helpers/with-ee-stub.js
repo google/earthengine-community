@@ -35,7 +35,6 @@ var warnNoNetwork = function() {
  */
 var mockNetworkCalls = function() {
   spyOn(ee.data, 'send_').and.callFake(warnNoNetwork);
-  spyOn(ee.data, 'sendCloudApiRequest_').and.callFake(warnNoNetwork);
   spyOn(ee.data, 'getAlgorithms').and.callFake(function() {
     return algorithms;
   });

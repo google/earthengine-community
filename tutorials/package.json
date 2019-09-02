@@ -1,12 +1,14 @@
 {
   "name": "earthengine-community-tutorials",
-  "description": "Earth Engine Community Tutorial tests",
+  "description": "Tests for Earth Engine Community Tutorials",
   "private": true,
   "scripts": {
-    "lint": "./node_modules/.bin/eslint ."
+    "lint": "./node_modules/.bin/eslint .",
+    "test": "jasmine --config=test/jasmine.json"
   },
   "devDependencies": {
     "eslint": "^6.1.0",
-    "eslint-config-google": "^0.13.0"
+    "eslint-config-google": "^0.13.0",
+    "jasmine": "^3.4.0"
   }
 }

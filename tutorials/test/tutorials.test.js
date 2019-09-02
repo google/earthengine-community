@@ -36,20 +36,17 @@ const files = fs.readdirSync(TUTORIALS_PATH)
 
 describe('tutorials/', () => {
   files.forEach((entry, i) => {
+    const dir = path.join(TUTORIALS_PATH, "/", entry);
+    const stats = fs.statSync(dir);
+    if (!stats.isDirectory() || entry == "test" || entry == "node_modules") {
+      return;
+    }
+
     describe(entry, () => {
-      let content, filename;
-      const dir = path.join(TUTORIALS_PATH, '/', entry);
-      const stats = fs.statSync(dir);
+      const filename = path.join(dir, 'index.md');
+      let content;
 
-      if (stats.isDirectory()) {
-        filename = path.join(dir, 'index.md');
-      } else if (stats.isFile()) {
-        filename = dir;
-      } else {
-        throw new Error(`Unrecognized file: ${entry}`);
-      }
-
-      before((done) => {
+      beforeAll((done) => {
         fs.readFile(filename, { encoding: 'utf8' }, (err, _content) => {
           if (err) {
             done(err);
@@ -57,24 +54,6 @@ describe('tutorials/', () => {
           }
           content = _content;
           done();
-        });
-      });
-
-      it.skip('tests pass, if any', (done) => {
-        // TODO: Handle tests for other languages
-        fs.stat(path.join(dir, 'package.json'), (err, stats) => {
-          if (err) {
-            // Ignore error
-            done();
-            return;
-          }
-
-          utils.runAsync('npm install', dir)
-            .then(() => utils.runAsync('npm test', dir))
-            .then((output) => {
-              console.log(output);
-              done();
-            }).catch(done);
         });
       });
 

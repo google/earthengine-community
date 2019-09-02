@@ -13,41 +13,60 @@
  * limitations under the License.
  */
 
-'use strict';
+var assert = require('assert');
+var fs = require('fs');
+var path = require('path');
 
-const assert = require('assert');
-const fs = require('fs');
-const path = require('path');
-const utils = require('./utils');
-const {
-  FILENAME_REGEXP,
-  DIR_REGEXP,
-  TUTORIAL_YAML_REGEXP,
-  TITLE_REGEXP,
-  DESCRIPTION_REGEXP,
-  GITHUB_REGEXP,
-  TAGS_REGEXP,
-  DATE_REGEXP,
-  TUTORIALS_PATH
-} = utils;
+// Regex patterns for validating paths, filenames, and text:
 
-const files = fs.readdirSync(TUTORIALS_PATH)
-  .filter((name) => !name.startsWith('.'));
+// e.g. modis-ndvi-time-series.md
+var FILENAME_REGEXP = /^[a-z0-9-]+\.md$/;
+// e.g. using-nodejs-to-calculate-the-size-of-a-bigquery-dataset
+var DIR_REGEXP = /^[a-z0-9-]+$/;
+// e.g. How to Set Up PostgreSQL on Compute Engine
+var TITLE_REGEXP = /^[a-zA-Z0-9\s.+\-()&:'"/!]+$/;
+// e.g. Learn how to get PostgreSQL running on Compute Engine
+var DESCRIPTION_REGEXP = /^[a-zA-Z0-9\s.,\-()&#'"/!]+\.$/;
+// e.g. larry-p
+var GITHUB_REGEXP = /^[a-zA-Z0-9-,]+$/;
+// e.g. Earth Engine, NDVI
+var TAGS_REGEXP = /^[a-zA-Z0-9.+,#\s-']+$/;
+// e.g. 2016-03-31
+var DATE_REGEXP = /^\d{4}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])$/;
 
-describe('tutorials/', () => {
-  files.forEach((entry, i) => {
-    const dir = path.join(TUTORIALS_PATH, "/", entry);
-    const stats = fs.statSync(dir);
-    if (!stats.isDirectory() || entry == "test" || entry == "node_modules") {
+// e.g.
+//
+// ---
+// title: Landsat ETM+ to OLI Harmonization
+// description: Inter-sensor Landsat harmonization and time series...
+// author: jdbcode
+// tags: landsat, etm+, oli, tm, harmonization, time-series, join, reduce, ...
+// date_published: 2019-08-29
+// ---
+// eslint-disable-next-line max-len
+var TUTORIAL_YAML_REGEXP = /^---\ntitle: (.+)\ndescription: (.+)\nauthor: (.+)\ntags: (.+)\ndate_published: (.+)\n---\n/;
+
+// Base path of tutorials (tutorials/).
+var tutorialsPath = path.join(__dirname, '..');
+
+var files = fs.readdirSync(tutorialsPath).filter(function(name) {
+  return !name.startsWith('.');
+});
+
+describe('tutorials/', function() {
+  files.forEach(function(entry, i) {
+    var dir = path.join(tutorialsPath, '/', entry);
+    var stats = fs.statSync(dir);
+    if (!stats.isDirectory() || entry == 'test' || entry == 'node_modules') {
       return;
     }
 
-    describe(entry, () => {
-      const filename = path.join(dir, 'index.md');
-      let content;
+    describe(entry, function() {
+      var filename = path.join(dir, 'index.md');
+      var content;
 
-      beforeAll((done) => {
-        fs.readFile(filename, { encoding: 'utf8' }, (err, _content) => {
+      beforeAll(function(done) {
+        fs.readFile(filename, {encoding: 'utf8'}, function(err, _content) {
           if (err) {
             done(err);
             return;
@@ -57,31 +76,82 @@ describe('tutorials/', () => {
         });
       });
 
-      it('filename', () => {
+      it('filename', function() {
         if (stats.isDirectory()) {
-          assert(DIR_REGEXP.test(entry), `filename should be of the form ${DIR_REGEXP}. Actual: ${entry}.`);
+          assert(
+              DIR_REGEXP.test(entry),
+              'filename should be of the form ' +
+              DIR_REGEXP +
+              '. Actual: ' +
+              entry +
+              '.'
+          );
         } else {
-          assert(FILENAME_REGEXP.test(entry), `filename should be of the form ${FILENAME_REGEXP}. Actual: ${entry}.`);
+          assert(
+              FILENAME_REGEXP.test(entry),
+              'filename should be of the form ' +
+              FILENAME_REGEXP +
+              '. Actual: ' +
+              entry +
+              '.'
+          );
         }
       });
 
-      it('frontmatter', () => {
-        const matches = TUTORIAL_YAML_REGEXP.exec(content);
-        assert(TUTORIAL_YAML_REGEXP.test(content), `frontmatter should be of the form ${TUTORIAL_YAML_REGEXP}. Actual: ${content}`);
-        const [
-          ,
-          title,
-          description,
-          author,
-          tags,
-          datePublished
-        ] = matches;
+      it('frontmatter', function() {
+        var matches = TUTORIAL_YAML_REGEXP.exec(content);
+        assert(
+            TUTORIAL_YAML_REGEXP.test(content),
+            'frontmatter should be of the form ' +
+            TUTORIAL_YAML_REGEXP +
+            '. Actual: ' +
+            content +
+            ''
+        );
+        var title = matches[1];
+        var description = matches[2];
+        var author = matches[3];
+        var tags = matches[4];
+        var datePublished = matches[5];
 
-        assert(TITLE_REGEXP.test(title), `title should be of the form ${TITLE_REGEXP}. Actual: ${title}.`);
-        assert(DESCRIPTION_REGEXP.test(description), `description should be of the form ${DESCRIPTION_REGEXP}. Actual: ${description}.`);
-        assert(GITHUB_REGEXP.test(author), `author should be of the form ${GITHUB_REGEXP}. Actual: ${author}.`);
-        assert(TAGS_REGEXP.test(tags), `tags should be of the form ${TAGS_REGEXP}. Actual: ${tags}.`);
-        assert(DATE_REGEXP.test(datePublished), `datePublished should be of the form YYYY-MM-DD. Actual: ${datePublished}.`);
+        assert(
+            TITLE_REGEXP.test(title),
+            'title should be of the form ' +
+            TITLE_REGEXP +
+            '. Actual: ' +
+            title +
+            '.'
+        );
+        assert(
+            DESCRIPTION_REGEXP.test(description),
+            'description should be of the form ' +
+            DESCRIPTION_REGEXP +
+            '. Actual: ' +
+            description +
+            '.'
+        );
+        assert(
+            GITHUB_REGEXP.test(author),
+            'author should be of the form ' +
+            GITHUB_REGEXP +
+            '. Actual: ' +
+            author +
+            '.'
+        );
+        assert(
+            TAGS_REGEXP.test(tags),
+            'tags should be of the form ' +
+            TAGS_REGEXP +
+            '. Actual: ' +
+            tags +
+            '.'
+        );
+        assert(
+            DATE_REGEXP.test(datePublished),
+            'datePublished should be of the form YYYY-MM-DD. Actual: ' +
+            datePublished +
+            '.'
+        );
       });
     });
   });

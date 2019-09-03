@@ -10,7 +10,7 @@ When estimating forest cover, deforestation, or emissions from land-use change a
 
 ## Context
 
-"The Food and Agriculture Organization of the United Nations (FAO)" defines forests as "Land spanning more than 0.5 hectares with trees higher than 5 meters and a canopy cover of more than 10 percent, or trees able to reach these thresholds in situ. It does not include land that is predominantly under agricultural or urban land use" (FAO 2015). 
+The Food and Agriculture Organization of the United Nations (FAO) defines forests as "Land spanning more than 0.5 hectares with trees higher than 5 meters and a canopy cover of more than 10 percent, or trees able to reach these thresholds in situ. It does not include land that is predominantly under agricultural or urban land use" (FAO 2015). 
 
 In various reporting of forest and/or land-use related data, countries may have different forest definitions, including these parameters, forest types or land use categories. 
 

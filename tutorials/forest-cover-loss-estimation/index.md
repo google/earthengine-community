@@ -10,7 +10,7 @@ When estimating forest cover, deforestation, or emissions from land-use change a
 
 ## Context
 
-FAO defines forests as "Land spanning more than 0.5 hectares with trees higher than 5 meters and a canopy cover of more than 10 percent, or trees able to reach these thresholds in situ. It does not include land that is predominantly under agricultural or urban land use" (FAO 2015). 
+"The Food and Agriculture Organization of the United Nations (FAO)" defines forests as "Land spanning more than 0.5 hectares with trees higher than 5 meters and a canopy cover of more than 10 percent, or trees able to reach these thresholds in situ. It does not include land that is predominantly under agricultural or urban land use" (FAO 2015). 
 
 In various reporting of forest and/or land-use related data, countries may have different forest definitions, including these parameters, forest types or land use categories. 
 
@@ -34,15 +34,15 @@ Currently, Google Earth Engine has several tree cover datasets in the catalogue,
 var gfc2018 = ee.Image('UMD/hansen/global_forest_change_2018_v1_6');
 ```
 
-1. Select 'treecover2000' in the Global Forest Change dataset. Use selfMask() to mask value zero 
+1. Select 'treecover2000' in the Global Forest Change dataset
 ```js
-var canopyCover = gfc2018.select(['treecover2000']).selfMask();
+var canopyCover = gfc2018.select(['treecover2000']);
 ```
-2. Apply the minimum canopy cover percentage (e.g. greater than or equal to 10%)
+2. Apply the minimum canopy cover percentage (e.g. greater than or equal to 10%). Use `selfMask()` to mask value zero
 ```js
-var canopyCover10 = canopyCover.gte(cc);
+var canopyCover10 = canopyCover.gte(cc).selfMask();
 ```
-3. Apply the minimum area requirement using connectedPixelCount (e.g. greater than or equal to 6 pixels)
+3. Apply the minimum area requirement using `connectedPixelCount` (e.g. greater than or equal to 6 pixels). Note that if no kernel is passed to `connectedPixelCount`, 8 neighbor adjacency is used to determine connectivity
 ```js
 // Use connectedPixelCount() to get contiguous area.
 var contArea = canopyCover10.connectedPixelCount();
@@ -77,7 +77,8 @@ var pixelCount = minArea.reduceRegion({
     maxPixels: 1e13
 });
 var onePixel = forestSize.getNumber('treecover2000').divide(pixelCount.getNumber('treecover2000'));
-print('Minimum forest area used (ha)\n ', onePixel.multiply(pixels));
+var minAreaUsed = onePixel.multiply(pixels);
+print('Minimum forest area used (ha)\n ', minAreaUsed);
 ```
 The GFC dataset uses 30x30m pixels. Therefore, 6 pixels (>5,000/(30x30)) is used for this exercise. This can be used for countries near the equator. For countries in higher or lower latitudes, you would need to increase the number of pixels. 
 
@@ -96,7 +97,7 @@ var treeLoss01 = treeLoss.eq(1).selfMask(); // tree loss in year 2001
 // Select the tree loss within the derived tree cover (>= canopy cover and area requirements).
 var treecoverLoss01 = minArea.and(treeLoss01).rename('loss2001').selfMask();
 ```
-2. Apply the minimum mapping unit using connectedPixelCount
+2. Apply the minimum mapping unit using `connectedPixelCount`
 ```js
 // Create connectedPixelCount() to get contiguous area.
 var contLoss = treecoverLoss01.connectedPixelCount();
@@ -121,7 +122,7 @@ All tree loss (black), tree cover (green)             |  Loss inside tree cover 
 
 ### Subsequent tree cover
 
-We can estimate the tree cover after the loss by subtracting them (you can also add tree gain if you have data).
+You can estimate the tree cover after the loss by subtracting the loss from the previous tree cover. You can also add tree gain if you have data.
 
 1. Use the derived tree cover and tree loss from the previous steps
 2. Create a new tree cover by removing the tree loss

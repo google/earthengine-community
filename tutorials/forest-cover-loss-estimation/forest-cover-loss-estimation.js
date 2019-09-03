@@ -5,6 +5,12 @@ var cc = ee.Number(10); // canopy cover percentage (e.g. 10%)
 var pixels = ee.Number(6); // minimum forest size in pixels (e.g. 6 pixels, approximately 0.5 ha in this example)
 var lossPixels = ee.Number(6); // minimum mapping area for tree loss (usually same as the minimum forest area)
 
+// Load country features from Large Scale International Boundary (LSIB) dataset.
+var countries = ee.FeatureCollection('USDOS/LSIB_SIMPLE/2017');
+var selected = countries.filter(ee.Filter.eq('country_na', ee.String(country)));
+// Center the map to the selected country.
+Map.centerObject(selected, 14);
+
 print('Country: ', country);
 print('Minimum canopy cover (%):', cc);
 print('Minimum forest area (pixel): ', pixels);
@@ -14,8 +20,8 @@ print('Minimum mapping unit for tree loss (pixel): ', pixels);
 var gfc2018 = ee.Image('UMD/hansen/global_forest_change_2018_v1_6');
 
 // Select 'treecover2000'.
-var canopyCover = gfc2018.select(['treecover2000']).selfMask();
-Map.addLayer(canopyCover, {
+var canopyCover = gfc2018.select(['treecover2000']);
+Map.addLayer(canopyCover.selfMask(), {
     palette: ['#F3DE8A'],
     min: 1,
     max: 100
@@ -42,15 +48,8 @@ Map.addLayer(minArea.reproject(prj.atScale(scale)), {
     palette: ['#96ED89']
 }, 'tree cover: >= min canopy cover & area (light green)');
 
-// Load country features from Large Scale International Boundary (LSIB) dataset.
-var countries = ee.FeatureCollection('USDOS/LSIB_SIMPLE/2017');
-var selected = countries.filter(ee.Filter.eq('country_na', ee.String(country)));
-// Center the map to the selected country.
-Map.centerObject(selected, 14);
-Map.addLayer(selected, null, 'selected country', false);
-
 // Calculate the derived tree area for the selected country.
-// Convert to hectare from square metres by dividing by 10,000
+// Convert to hectare from square metres by dividing by 10,000.
 var forestArea = minArea.multiply(ee.Image.pixelArea()).divide(10000);
 var forestSize = forestArea.reduceRegion({
     reducer: ee.Reducer.sum(),
@@ -81,7 +80,7 @@ var onePixel = forestSize.getNumber('treecover2000').divide(pixelCount.getNumber
 var minAreaUsed = onePixel.multiply(pixels);
 print('Minimum forest area used (ha)\n ', minAreaUsed);
 
-// Export if necessary.
+// Export the result if not printed.
 var featureCollection = ee.FeatureCollection([ee.Feature(null, {result: minAreaUsed})]);
 
 Export.table.toDrive({
@@ -134,7 +133,7 @@ Export.table.toDrive({
     fileFormat: 'CSV'
 });
 
-// Calculate the subsequent tree cover (tree cover 2000 minus loss 2001, tree gain can be included if there is data).
+// Calculate the subsequent tree cover (tree cover 2000 minus loss 2001)
 // Unmask the derived loss.
 var minLossUnmask = minLoss.unmask();
 // Switch the binary value of the loss (0, 1) to (1, 0).
@@ -165,3 +164,6 @@ Export.table.toDrive({
     description: 'forest_area_2001_' + country,
     fileFormat: 'CSV'
 });
+
+// Display the selected country area.
+Map.addLayer(selected.draw({color: '#000000', strokeWidth: 5}), {opacity: 0.3}, 'selected country', false);

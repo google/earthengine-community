@@ -23,7 +23,7 @@
 // surface reflectance to OLI surface reflectance.
 var coefficients = {
   itcps: ee.Image.constant([0.0003, 0.0088, 0.0061, 0.0412, 0.0254, 0.0172])
-      .multiply(10000),
+             .multiply(10000),
   slopes: ee.Image.constant([0.8474, 0.8483, 0.9047, 0.8462, 0.8937, 0.9071])
 };
 
@@ -57,8 +57,8 @@ function fmask(img) {
   var cloudsBitMask = 1 << 5;
   var qa = img.select('pixel_qa');
   var mask = qa.bitwiseAnd(cloudShadowBitMask)
-      .eq(0)
-      .and(qa.bitwiseAnd(cloudsBitMask).eq(0));
+                 .eq(0)
+                 .and(qa.bitwiseAnd(cloudsBitMask).eq(0));
   return img.updateMask(mask);
 }
 
@@ -174,21 +174,21 @@ var medianComp = joinCol.map(function(img) {
 
 // Make a chart that displays the annual median NBR composite.
 var chartMedianComp = ui.Chart.image
-    .series({
-      imageCollection: medianComp,
-      region: aoi,
-      reducer: ee.Reducer.median(),
-      scale: 30,
-      xProperty: 'system:time_start',
-    })
-    .setSeriesNames(['NBR Median'])
-    .setOptions({
-      title: 'Intra-annual Median',
-      colors: ['619cff'],
-      hAxis: {title: 'Date'},
-      vAxis: {title: 'NBR'},
-      lineWidth: 6
-    });
+                          .series({
+                            imageCollection: medianComp,
+                            region: aoi,
+                            reducer: ee.Reducer.median(),
+                            scale: 30,
+                            xProperty: 'system:time_start',
+                          })
+                          .setSeriesNames(['NBR Median'])
+                          .setOptions({
+                            title: 'Intra-annual Median',
+                            colors: ['619cff'],
+                            hAxis: {title: 'Date'},
+                            vAxis: {title: 'NBR'},
+                            lineWidth: 6
+                          });
 print(chartMedianComp);
 
 // ################################################################
@@ -208,12 +208,12 @@ print(chartMedianComp);
 var coefficients = {
   etmToOliOls: {
     itcps: ee.Image.constant([0.0003, 0.0088, 0.0061, 0.0412, 0.0254, 0.0172])
-        .multiply(10000),
+               .multiply(10000),
     slopes: ee.Image.constant([0.8474, 0.8483, 0.9047, 0.8462, 0.8937, 0.9071])
   },
   oliToEtmOls: {
     itcps: ee.Image.constant([0.0183, 0.0123, 0.0123, 0.0448, 0.0306, 0.0116])
-        .multiply(10000),
+               .multiply(10000),
     slopes: ee.Image.constant([0.885, 0.9317, 0.9372, 0.8339, 0.8639, 0.9165])
   },
   rma: {
@@ -237,32 +237,32 @@ function etmToOliOls(img) {
 // Define function to apply OLS OLI to ETM+ transformation.
 function oliToEtmOls(img) {
   return ee.Image(img.select(['Blue', 'Green', 'Red', 'NIR', 'SWIR1', 'SWIR2'])
-      .multiply(coefficients.oliToEtmOls.slopes)
-      .add(coefficients.oliToEtmOls.itcps)
-      .round()
-      .toShort()
-      .addBands(img.select('pixel_qa'))
-      .copyProperties(img, ['system:time_start']));
+                      .multiply(coefficients.oliToEtmOls.slopes)
+                      .add(coefficients.oliToEtmOls.itcps)
+                      .round()
+                      .toShort()
+                      .addBands(img.select('pixel_qa'))
+                      .copyProperties(img, ['system:time_start']));
 }
 
 // Define function to apply RMA OLI to ETM+ transformation.
 function oliToEtmRma(img) {
   return ee.Image(img.select(['Blue', 'Green', 'Red', 'NIR', 'SWIR1', 'SWIR2'])
-      .subtract(coefficients.rma.itcps)
-      .divide(coefficients.rma.slopes)
-      .round()
-      .toShort()
-      .addBands(img.select('pixel_qa'))
-      .copyProperties(img, ['system:time_start']));
+                      .subtract(coefficients.rma.itcps)
+                      .divide(coefficients.rma.slopes)
+                      .round()
+                      .toShort()
+                      .addBands(img.select('pixel_qa'))
+                      .copyProperties(img, ['system:time_start']));
 }
 
 // Define function to apply RMA ETM+ to OLI transformation.
 function etmToOliRma(img) {
   return ee.Image(img.select(['Blue', 'Green', 'Red', 'NIR', 'SWIR1', 'SWIR2'])
-      .multiply(coefficients.rma.slopes)
-      .add(coefficients.rma.itcps)
-      .round()
-      .toShort()
-      .addBands(img.select('pixel_qa'))
-      .copyProperties(img, ['system:time_start']));
+                      .multiply(coefficients.rma.slopes)
+                      .add(coefficients.rma.itcps)
+                      .round()
+                      .toShort()
+                      .addBands(img.select('pixel_qa'))
+                      .copyProperties(img, ['system:time_start']));
 }

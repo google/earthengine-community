@@ -84,7 +84,7 @@ by 10,000 to match the scaling of USGS Landsat surface reflectance data.
 ```js
 var coefficients = {
   itcps: ee.Image.constant([0.0003, 0.0088, 0.0061, 0.0412, 0.0254, 0.0172])
-      .multiply(10000),
+             .multiply(10000),
   slopes: ee.Image.constant([0.8474, 0.8483, 0.9047, 0.8462, 0.8937, 0.9071])
 };
 ```
@@ -138,8 +138,8 @@ function fmask(img) {
   var cloudsBitMask = 1 << 5;
   var qa = img.select('pixel_qa');
   var mask = qa.bitwiseAnd(cloudShadowBitMask)
-      .eq(0)
-      .and(qa.bitwiseAnd(cloudsBitMask).eq(0));
+                 .eq(0)
+                 .and(qa.bitwiseAnd(cloudsBitMask).eq(0));
   return img.updateMask(mask);
 }
 ```
@@ -399,21 +399,21 @@ inta-annual summer observations. Change the region reduction statistic as you li
 
 ```js
 var chartMedianComp = ui.Chart.image
-    .series({
-      imageCollection: medianComp,
-      region: aoi,
-      reducer: ee.Reducer.median(),
-      scale: 30,
-      xProperty: 'system:time_start',
-    })
-    .setSeriesNames(['NBR Median'])
-    .setOptions({
-      title: 'Intra-annual Median',
-      colors: ['619cff'],
-      hAxis: {title: 'Date'},
-      vAxis: {title: 'NBR'},
-      lineWidth: 6
-    });
+                          .series({
+                            imageCollection: medianComp,
+                            region: aoi,
+                            reducer: ee.Reducer.median(),
+                            scale: 30,
+                            xProperty: 'system:time_start',
+                          })
+                          .setSeriesNames(['NBR Median'])
+                          .setOptions({
+                            title: 'Intra-annual Median',
+                            colors: ['619cff'],
+                            hAxis: {title: 'Date'},
+                            vAxis: {title: 'NBR'},
+                            lineWidth: 6
+                          });
 print(chartMedianComp);
 ```
 

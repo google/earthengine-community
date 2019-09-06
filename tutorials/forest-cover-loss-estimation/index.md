@@ -23,6 +23,10 @@ var country = 'Bolivia'; // selected country (e.g. Bolivia)
 var cc = ee.Number(10); // canopy cover percentage (e.g. 10%)
 var pixels = ee.Number(6); // minimum forest area in pixels (e.g. 6 pixels, approximately 0.5 ha in this example)
 var lossPixels = ee.Number(6); // minimum mapping area for tree loss (usually same as the minimum forest area)
+
+// Load country features from Large Scale International Boundary (LSIB) dataset.
+var countries = ee.FeatureCollection('USDOS/LSIB_SIMPLE/2017');
+var selected = countries.filter(ee.Filter.eq('country_na', ee.String(country)));
 ```
 
 Depending on the location of the country, the number of pixels that make up for 0.5 ha would differ. You can adjust this by calculating the actual minimum areas you were using (see step 6 below).

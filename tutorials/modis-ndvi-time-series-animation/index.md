@@ -77,15 +77,15 @@ and import them as `ee.Geometry` objects.
 ```js
 // Define a mask to clip the NDVI data by.
 var mask = ee.FeatureCollection('USDOS/LSIB_SIMPLE/2017')
-  .filter(ee.Filter.eq('wld_rgn', 'Africa'));
+    .filter(ee.Filter.eq('wld_rgn', 'Africa'));
 
 // Define the regional bounds of animation frames.
 var region = ee.Geometry.Polygon(
-  [[[-18.698368046353494, 38.1446395611524],
-    [-18.698368046353494, -36.16300755581617],
-    [52.229366328646506, -36.16300755581617],
-    [52.229366328646506, 38.1446395611524]]], 
-  null, false
+    [[[-18.698368046353494, 38.1446395611524],
+      [-18.698368046353494, -36.16300755581617],
+      [52.229366328646506, -36.16300755581617],
+      [52.229366328646506, 38.1446395611524]]],
+    null, false
 );
 ```
 
@@ -99,7 +99,7 @@ by. Day-of-year (DOY) is a fine format and can be derived from the ubiquitous `s
 using the `getRelative` method.
 
 ```js
-col = col.map(function(img){
+col = col.map(function(img) {
   var doy = ee.Date(img.get('system:time_start')).getRelative('day', 'year');
   return img.set('doy', doy);
 });
@@ -122,13 +122,14 @@ Complete the join by:
 
 ```js
 // Define a filter that identifies which images from the complete collection
-// match the DOY from the distinct DOY collection. 
+// match the DOY from the distinct DOY collection.
 var filter = ee.Filter.equals({leftField: 'doy', rightField: 'doy'});
 
 // Define a join.
 var join = ee.Join.saveAll('doy_matches');
 
-// Apply the join and convert the resulting FeatureCollection to an ImageCollection.
+// Apply the join and convert the resulting FeatureCollection to an
+// ImageCollection.
 var joinCol = ee.ImageCollection(join.apply(distinctDOY, col, filter));
 ```
 
@@ -148,7 +149,7 @@ outliers (i.e. the animation is less noisy).
 // Apply median reduction among matching DOY collections.
 var comp = joinCol.map(function(img) {
   var doyCol = ee.ImageCollection.fromImages(
-    img.get('doy_matches')
+      img.get('doy_matches')
   );
   return doyCol.reduce(ee.Reducer.median());
 });
@@ -176,7 +177,7 @@ var visParams = {
 };
 
 // Create RGB visualization images for use as animation frames.
-var rgbVis = comp.map(function(img){
+var rgbVis = comp.map(function(img) {
   return img.visualize(visParams).clip(mask);
 });
 ```

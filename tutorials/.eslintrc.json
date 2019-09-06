@@ -8,13 +8,14 @@
   "extends": [
       "google"
   ],
+  "plugins": ["markdown"],
   "globals": {
       "Atomics": "readonly",
       "SharedArrayBuffer": "readonly"
   },
   "parserOptions": {
       "ecmaVersion": 5,
-      "impliedStrict": true
+      "impliedStrict": false
   },
   "rules": {
       "comma-dangle": "off",
@@ -24,6 +25,6 @@
       "prefer-const": "off",
       "prefer-rest-params": "off",
       "require-jsdoc": "off",
-      "no-unused-vars": "warn"
+      "no-unused-vars": "off"
   }
 }

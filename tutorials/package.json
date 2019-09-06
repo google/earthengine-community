@@ -3,13 +3,14 @@
   "description": "Tests for Earth Engine Community Tutorials",
   "private": true,
   "scripts": {
-    "lint": "eslint .",
-    "fix": "eslint --fix .",
+    "lint": "eslint --ext js,md .",
+    "fix": "eslint --ext js,md --fix .",
     "test": "eslint . && jasmine --config=test/jasmine.json"
   },
   "devDependencies": {
     "eslint": "^6.3.0",
     "eslint-config-google": "^0.13.0",
+    "eslint-plugin-markdown": "^1.0.0",
     "jasmine": "^3.4.0"
   }
 }

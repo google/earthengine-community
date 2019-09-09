@@ -49,15 +49,15 @@ var join = ee.Join.saveAll('doy_matches');
 
 // Apply the join and convert the resulting FeatureCollection to an
 // ImageCollection.
-var joinCol = ee.ImageCollection(join.apply(distinctDOY, col, filter));
+   var joinCol = ee.ImageCollection(join.apply(distinctDOY, col, filter));
 
 // Apply median reduction among matching DOY collections.
-var comp = joinCol.map(function(img) {
+var comp = joinCol.map(function( img) {
   var doyCol = ee.ImageCollection.fromImages(
     img.get('doy_matches')
   );
   return doyCol.reduce(ee.Reducer.median());
-});
+})
 
 // Define RGB visualization parameters.
 var visParams = {

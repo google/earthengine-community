@@ -57,7 +57,7 @@ var comp = joinCol.map(function( img) {
     img.get('doy_matches')
   );
   return doyCol.reduce(ee.Reducer.median());
-})
+});
 
 // Define RGB visualization parameters.
 var visParams = {

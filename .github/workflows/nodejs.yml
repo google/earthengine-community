@@ -1,4 +1,4 @@
-name: Community Tutorials lint check
+name: Node CI
 
 on: [push, pull_request]
 

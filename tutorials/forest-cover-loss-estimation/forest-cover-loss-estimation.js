@@ -2,9 +2,10 @@
 // County name must match an entry in Large Scale International Boundary (LSIB) dataset.
 var country = 'Bolivia'; // selected country (e.g. Bolivia)
 var cc = ee.Number(10); // canopy cover percentage (e.g. 10%)
-var pixels = ee.Number(6); // minimum forest size in pixels (e.g. 6 pixels, approximately 0.5 ha in this example)
-var lossPixels = ee.Number(6); // minimum mapping area for tree loss (usually same as the minimum forest area)
-
+// minimum forest size in pixels (e.g. 6 pixels, approximately 0.5 ha in this example)
+var pixels = ee.Number(6);
+// minimum mapping area for tree loss (usually same as the minimum forest area)
+var lossPixels = ee.Number(6);
 // Load country features from Large Scale International Boundary (LSIB) dataset.
 var countries = ee.FeatureCollection('USDOS/LSIB_SIMPLE/2017');
 var selected = countries.filter(ee.Filter.eq('country_na', ee.String(country)));
@@ -57,7 +58,8 @@ var forestSize = forestArea.reduceRegion({
     scale: 30,
     maxPixels: 1e13
 });
-print('Year 2000 tree cover (ha) \nmeeting minimum canopy cover and \nforest area thresholds \n ', forestSize.get('treecover2000'));
+print('Year 2000 tree cover (ha) \nmeeting minimum canopy cover and \nforest area thresholds \n ',
+    forestSize.get('treecover2000'));
 
 // Export the result, if the country is large.
 var featureCollection = ee.FeatureCollection([ee.Feature(null, forestSize)]);
@@ -76,12 +78,15 @@ var pixelCount = minArea.reduceRegion({
     scale: 30,
     maxPixels: 1e13
 });
-var onePixel = forestSize.getNumber('treecover2000').divide(pixelCount.getNumber('treecover2000'));
+var onePixel = forestSize.getNumber('treecover2000').divide(pixelCount
+    .getNumber('treecover2000'));
 var minAreaUsed = onePixel.multiply(pixels);
 print('Minimum forest area used (ha)\n ', minAreaUsed);
 
 // Export the result if not printed.
-var featureCollection = ee.FeatureCollection([ee.Feature(null, {result: minAreaUsed})]);
+var featureCollection = ee.FeatureCollection([ee.Feature(null, {
+    result: minAreaUsed
+})]);
 
 Export.table.toDrive({
     collection: featureCollection,
@@ -122,7 +127,8 @@ var lossSize = lossArea.reduceRegion({
     scale: 30,
     maxPixels: 1e13
 });
-print('Year 2001 tree loss (ha) \nmeeting minimum canopy cover and \nforest area thresholds \n ', lossSize.get('loss2001'));
+print('Year 2001 tree loss (ha) \nmeeting minimum canopy cover and \nforest area thresholds \n ',
+    lossSize.get('loss2001'));
 
 // If the country is large, you may need to export the result.
 var featureCollection = ee.FeatureCollection([ee.Feature(null, lossSize)]);
@@ -137,7 +143,7 @@ Export.table.toDrive({
 // Unmask the derived loss.
 var minLossUnmask = minLoss.unmask();
 // Switch the binary value of the loss (0, 1) to (1, 0).
-var notLoss = minLossUnmask.select('loss2001').eq(0); 
+var notLoss = minLossUnmask.select('loss2001').eq(0);
 // Combine the derived tree cover and not-loss with 'and'.
 var treecoverLoss01 = minArea.and(notLoss).selfMask();
 // Apply the minimum area requirement in order to qualify as a forest.
@@ -155,7 +161,8 @@ var forestSize01 = forestArea01.reduceRegion({
     scale: 30,
     maxPixels: 1e13
 });
-print('Year 2001 tree cover (ha) \nmeeting minimum canopy cover and \nforest area thresholds \n ', forestSize01.get('treecover2000'));
+print('Year 2001 tree cover (ha) \nmeeting minimum canopy cover and \nforest area thresholds \n ',
+    forestSize01.get('treecover2000'));
 
 var featureCollection = ee.FeatureCollection([ee.Feature(null, forestSize01)]);
 
@@ -166,4 +173,9 @@ Export.table.toDrive({
 });
 
 // Display the selected country area.
-Map.addLayer(selected.draw({color: '#000000', strokeWidth: 5}), {opacity: 0.3}, 'selected country', false);
+Map.addLayer(selected.draw({
+    color: '#000000',
+    strokeWidth: 5
+}), {
+    opacity: 0.3
+}, 'selected country', false);

@@ -5,6 +5,7 @@ author: nkeikon
 tags: forest, deforestation, mmu, ghg, redd, mrv, frel, frl
 date_published: 2019-08-31
 ---
+[Open In Code Editor](https://code.earthengine.google.com/cfa3d7a6599d5c26f65337b8a73ddaaa)
 
 When estimating forest cover, deforestation, or emissions from land-use change at the national level, countries use forest definitions. In this tutorial, you will learn how to extract forest area by applying technical thresholds of canopy cover and minimum area requirements. 
 

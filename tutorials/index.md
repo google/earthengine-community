@@ -37,6 +37,8 @@ var ug = ee.FeatureCollection('ft:1tdSwUL7MVpOauSgRzqVTOwdfy17KDbw-1d9omPw')
 
 Map.addLayer(ug)
 ```
+2. Read in land surface data.
+
 Now, we need to read in land surface temperature data. 'ImageCollection' objects store collections of images. Using the Earth Engine Data Catalog, we can find different image collections. The 'ImageCollection' we are reading in here contains the LST data, but we can read in a different 'ImageCollection' for other types of data (e.g. vegetation index, or rain fall, light at night).
 Our code applies filters to restrict images for Uganda, within January to December 2015.
 
@@ -51,6 +53,8 @@ var mod11a2 = modis.
 var modLSTday = mod11a2.select('LST_Day_1km'); // pull just 1km day LST
 
 ```
+3. Create a function to convert temperature units.
+
 We then need to convert temperature from Kelvin to Celsius. We can do this by writing a function to do the conversion, and then by mapping over the data.
 
 ```
@@ -59,6 +63,8 @@ var modLSTc = modLSTday.map(function(img) {
 }); 
 
 ```
+4. Describe land surface temperature data using time series.
+
 It can be helpful to describe your data using a time series graph. We can plot the mean land surface temperature over the year using the following code:
 
 ```
@@ -71,6 +77,9 @@ var TS1 = ui.Chart.image.series(modLSTc, ug,
  print(TS1);
 
 ```
+
+5. Visualize processed data on a map.
+
 Now, we may want to visualize our data. We can take the mean LST in celsius, and clip to Uganda. This code will produce a map of the mean temperatures for us to view in the map window.
 
 ```
@@ -80,6 +89,7 @@ var clippedLSTc = modLSTc.mean().clip(ug);
 Map.addLayer(clippedLSTc, {'min': 0, 'max': 40, 'palette':"0000ff,32cd32,ffff00,ff8c00,ff0000 "});
 
 ```
+6. Export data for further analysis.
 
 Finally, we need to export our raster image file to perform further analysis (e.g. link to participant or clinic data). We can use the export command to download the processed image data to our Google Drive folder.
 

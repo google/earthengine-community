@@ -61,7 +61,7 @@ var modLSTc = modLSTday.map(function(img) {
 ```
 It can be helpful to describe your data using a time series graph. We can plot the mean land surface temperature over the year using the following code:
 
-
+```
 // Charts Long-term Time Series
 var TS1 = ui.Chart.image.series(modLSTc, ug,
  ee.Reducer.mean(), 1000, 'system:time_start').setOptions({
@@ -70,44 +70,29 @@ var TS1 = ui.Chart.image.series(modLSTc, ug,
  });
  print(TS1);
 
-
-Break up your tutorial into manageable sections.
-
-With one or more paragraphs, separated by a blank line.
-
-Inside your sections, you can also:
-
-1. Use numbered lists
-1. ..when the order..
-1. ..of items is important.
-
-And:
-
-- This is a bulleted list.
-- Use bulleted lists when items are not strictly ordered.
-
-..and even:
-
-Use     | tables   | to organize | content
-------- | -------- | ----------- | -------
-Your    | tables   | can         | also
-contain | multiple | rows        | ...
-
-## Section heading 2
-
-Use separate sections for related, but discrete, groups of steps.
-
-Use code blocks to show users how to do something after describing it:
+```
+Now, we may want to visualize our data. We can take the mean LST in celsius, and clip to Uganda. This code will produce a map of the mean temperatures for us to view in the map window.
 
 ```
-// Use comments to describe details that can't be easily expressed in code.
-// Always try making code more self descriptive before adding a comment.
-// Similarly, avoid repeating verbatim what's already said in code
-// (e.g., "assign ImageCollection to variable 'coll'").
-var coll = ee.ImageCollection('LANDSAT/LC08/C01/T1_TOA');
+
+var clippedLSTc = modLSTc.mean().clip(ug);
+// Add clipped image layer to map
+Map.addLayer(clippedLSTc, {'min': 0, 'max': 40, 'palette':"0000ff,32cd32,ffff00,ff8c00,ff0000 "});
+
 ```
 
-### Use subsections if appropriate
+Finally, we need to export our raster image file to perform further analysis (e.g. link to participant or clinic data). We can use the export command to download the processed image data to our Google Drive folder.
 
-Consider breaking longer sections that cover multiple topics or span multiple
-pages into subsections.
+```
+
+Export.image.toDrive({
+        image: clippedLSTc,
+        description: 'LST_Celsius_ug',
+        region: ug,
+        scale: 1000,
+        crs: 'EPSG:4326',
+        maxPixels: 1e10,
+      });
+      
+```
+With that, we have successfully described, processed, and exported land surface temperature data for 2015 in Uganda.

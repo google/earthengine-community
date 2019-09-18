@@ -206,7 +206,7 @@ var Road_network =[{stylers: [ {saturation: -100} ]},
 Map.setOptions('Road_network',{'Icon_change': Icon_change, 'Road_network':Road_network});
 ```
 
-![Road](https://github.com/TC25/Geospatial_workshop_EE/blob/master/images/points-vector.png "Road")
+![Road](https://github.com/TC25/earthengine-community/blob/patch-2/tutorials/BaseMaps/Road.PNG?raw=true "Road")
 
 ##Cheat codes
 
@@ -460,6 +460,6 @@ Map.setOptions('Snazzy_black',{'Snazzy_black':Snazzy_black,'Snazzy_color':Snazzy
 
 ```
 
-![Dark](https://github.com/TC25/Geospatial_workshop_EE/blob/master/images/points-vector.png "Dark")
+![Dark](https://github.com/TC25/earthengine-community/blob/patch-2/tutorials/BaseMaps/Snazzy_black.PNG?raw=true "Dark")
 
 You can find out more about all the options in Google Map API here: https://developers.google.com/maps/documentation/javascript/reference#MapTypeStyle

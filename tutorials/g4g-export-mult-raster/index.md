@@ -1,7 +1,7 @@
 ---
 title: Using Earth Engine to export multiple rasters based on user-defined dates
 description: In this tutorial, we will learn how to export multiple land surface temperature rasters for the same month over multiple years.
-author: hiyer20
+author: hiyer09
 tags: comma-separated, lowercase, list, of, related, keywords
 date_published: 2019-09-18
 ---

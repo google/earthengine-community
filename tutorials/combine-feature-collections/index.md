@@ -12,7 +12,7 @@ This basic tutorial shows how users can combine two `ee.FeatureCollection`s into
 
 ## Create two `ee.FeatureCollection` objects
 
-Let's begin by generating two sets of random points within the boundary of Utah state in USA. First, define the boundary of Utah as a geometry. Then, 
+Let's begin by generating two sets of random points within the boundary of Utah state in USA. First, define the boundary of Utah as a geometry.
 
 ```
 var UtahGEOMETRY = ee.Geometry.Polygon([

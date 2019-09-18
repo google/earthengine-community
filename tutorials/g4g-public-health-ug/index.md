@@ -1,7 +1,7 @@
 ---
 title: Earth Engine for Public Health Land Surface Temperature Example Uganda
 description: This tutorial shows how to describe, visualize, and export Earth Engine exposure data for public health research.
-author: hiyer20
+author: hiyer09
 tags: comma-separated, lowercase, list, of, related, keywords
 date_published: 2019-09-17
 ---

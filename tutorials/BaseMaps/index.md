@@ -208,7 +208,7 @@ Map.setOptions('Road_network',{'Icon_change': Icon_change, 'Road_network':Road_n
 
 ![Road](https://github.com/TC25/earthengine-community/blob/patch-2/tutorials/BaseMaps/Road.PNG?raw=true "Road")
 
-##Cheat codes
+## Cheat codes
 
 There is a way to create almost any basemap you want without the hassle of tweaking any options. Enter https://snazzymaps.com/
 Copy any of the javascript properties from that website and it will show up on Earth Engine. Consider the two examples below:

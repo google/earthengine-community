@@ -1,6 +1,6 @@
 ---
-title: Creating your own Base Maps on Earth Engine
-description: If you are getting bored of looking at the same two default basemaps in Earth Engine, or need to use a specific visualization for functionality/convenience, this tutorial will show you how to create your own base map, and edit all of its characteristics. 
+title: Editing the Base Map in Earth Engine
+description: If you are getting bored of looking at the same two default basemaps in Earth Engine, or need to use a specific visualization for functionality/convenience, this tutorial will show you how to edit all of its characteristics. 
 author: TC25
 tags: Earth Engine, Base Map, UI, Widgets
 date_published: 2019-09-16
@@ -8,7 +8,7 @@ date_published: 2019-09-16
 
 [Open In Code Editor](https://code.earthengine.google.com/d5008ced995fc0e16e5434fa2b47e21c)
 
-The user is going to learn how to change the options of the map object to create new web maps
+The user is going to learn how to change the options of the map object to create new base maps
 
 ## The default maps in Earth Engine
 

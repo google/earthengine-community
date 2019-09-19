@@ -6,8 +6,10 @@ tags: introductory, GIS, remote sensing, Google Earth Engine
 date_published: 2019-09-14
 ---
 
-[Geometries - Open In Code Editor](https://code.earthengine.google.com/2f8ac6fe92f8fa7aff23eedb087c7d12)
+[Geometries - Open In Code Editor](https://code.earthengine.google.com/2f8ac6fe92f8fa7aff23eedb087c7d12) 
+
 [Features - Open In Code Editor](https://code.earthengine.google.com/1cd4cb760f71a56dce1cabcf44feec27)
+
 [Images - Open In Code Editor - Geometries](https://code.earthengine.google.com/b2ddaa87c13ec42b7c122eab8310a611)
 
  We will introduce types of geospatial data, using these data on the Earth Engine platforms, and discuss a host of functionality to visualize and analyze these.

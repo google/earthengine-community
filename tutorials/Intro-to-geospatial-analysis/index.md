@@ -12,12 +12,12 @@ date_published: 2019-09-14
 
 [Images - Open In Code Editor - Geometries](https://code.earthengine.google.com/b2ddaa87c13ec42b7c122eab8310a611)
 
- We will introduce types of geospatial data, using these data on the Earth Engine platforms, and discuss a host of functionality to visualize and analyze these.
+ We will introduce types of geospatial data, using these data on the Earth Engine platforms, and discuss a host of functionality to visualize and analyze them.
 
-# Introduction
+## Introduction
 Collection, visualization, and analysis of geographical or spatial data.
 
-# Data types
+## Data types
 
 - Vector data represent lat-long coordinates
 
@@ -45,7 +45,7 @@ Collection, visualization, and analysis of geographical or spatial data.
 
 ---
 
-# Google Earth Engine platform
+## Google Earth Engine platform
 
 [Introductory video](https://www.youtube.com/watch?v=gKGOeTFHnKY&feature=youtu.be, "Video")
 
@@ -54,7 +54,7 @@ Collection, visualization, and analysis of geographical or spatial data.
 - Cloud-based platform for planetary scale geospatial analysis
 - Uses Google's computational resources to reduce processing time
 - Massive archive of remote sensing data 
-- 200 public datasets 
+- 200+ public datasets 
 - greater than 4000 new images every day 
 - greater than 5 million images 
 - greater than 5 petabytes of data
@@ -67,12 +67,14 @@ Source: Google Earth Engine User summit
 
 ---
 
-# Basic Functions
+## Basic Functions
 
 ### Declaring variables 
 ```javascript
 var varname = Containerforvariabletype(variable name); 
 ```
+A container (in the form ee.variabletype) is used to wrap up a native javascript object type so that Google's server can recognize its structure and perform operations on it
+
 ###  Centering map
 ```javascript
 Map.setCenter(long, lat, zoom level);
@@ -83,6 +85,8 @@ Map.setCenter(long, lat, zoom level);
 ```javascript
 print(variable name) 
 ```
+You cannot print more than 5000 elements at once
+
 ### Adding a layer to the map
 ```javascript
 Map.addLayer(VARIABLENAME);
@@ -90,7 +94,7 @@ Map.addLayer(VARIABLENAME);
 
 ---
 
-# Variable types in Earth Engine
+## Variable types in Earth Engine
 
 ### Strings  
 
@@ -125,7 +129,7 @@ var var_Dictionary = ee.Dictionary({five: 5 , six: 6});
 
 ---
 
-# Geometries – declaration and types
+## Geometries – declaration and types
 
 ### Points
 ```javascript
@@ -162,7 +166,7 @@ var var_MultiPolygon = ee.Geometry.MultiPolygon([ee.Geometry.Polygon([[0, 0], [6
 
 ---
 
-# Features and Feature Collections
+## Features and Feature Collections
 
 - Features are geometries associated with specific properties
 - Feature Collections are groups of features
@@ -172,7 +176,7 @@ var var_MultiPolygon = ee.Geometry.MultiPolygon([ee.Geometry.Polygon([[0, 0], [6
 
 ---
 
-# Functions and mapping
+## Functions and mapping
 
 - A set of instructions to perform a specific task
 ```javascript
@@ -187,11 +191,12 @@ var result = function_Name(Input);
 ```javascript
 var result = Input.map(function_Name);
 ```
+Mapping a function over a collection sends the each element of the collection to a different server to be processes. 
 
 ---
 
 
-# Operations on Geometries
+## Operations on Geometries
 
 [Geometry operations](https://code.earthengine.google.com/2f8ac6fe92f8fa7aff23eedb087c7d12 "EE Geometry operations")
 
@@ -199,6 +204,9 @@ var result = Input.map(function_Name);
 ```javascript
 var Geometry_area = var_Geometry.area();
 ```
+
+All units in Earth Engine are in meters
+
 ### Find length of line
 ```javascript
 var Line_length = var_LineString.length();
@@ -237,7 +245,7 @@ var Inter_geometry = var_Geometry1.intersection(var_Geometry2);
 var Union_geometry = var_Geometry1.union(var_Geometry2);
 ```
 ---
-# Operations on Features
+## Operations on Features
 
 [Feature operations](https://code.earthengine.google.com/1cd4cb760f71a56dce1cabcf44feec27 "EE Feature operations")
 
@@ -255,7 +263,7 @@ var values = var_Feature.get(''Size'');
 ```
 ---
 
-# Filters
+## Filters
 
 ### Creator a filter for values of a property 
 
@@ -316,7 +324,7 @@ var NewFilter=ee.Filter.or(Listoffilters);
 var inverseFilter = ee.Filter.not(filter);
 ```
 ---
-# Operations on Images
+## Operations on Images
 
 [Image operations](https://code.earthengine.google.com/b2ddaa87c13ec42b7c122eab8310a611 "EE Image operations")
 
@@ -329,6 +337,7 @@ var band = var_Image.select(band name);
 var mask =var_Image.eq(value); 
 ```
 >or .neq or .gt or .gte or .lt or .lte
+
 ### Applying masks
 ```javascript
 var masked =var_Image.mask(mask);
@@ -391,7 +400,7 @@ var sumofimages = var_ImCollection.sum();
 var mosaicofimages = var_ImCollection.mosaic();       
 ```
 ---
-# Importing and exporting data
+## Importing and exporting data
 
 [Image to table example](https://code.earthengine.google.com/31ca9a8d6ba853db8a74fbdb214626f5 "Image to table example")
 
@@ -414,7 +423,7 @@ Export.image.toDrive({
 
 ---
 
-# Example Applications
+## Example Applications
 
  What can you do with Google Earth Engine?
 
@@ -426,3 +435,14 @@ Export.image.toDrive({
 
 ### [Stratifi - cloud-based stratification](https://sabrinaszeto.users.earthengine.app/view/stratifi "Stratifi - cloud-based stratification")
 ---
+
+## Resources
+
+
+[Geospatial Software Design](https://environment.yale.edu/courses/2018-2019/detail/754/ "Geospatial Software Design")
+
+[Google Earth Engine API documentation](https://developers.google.com/earth-engine/ "Google Earth Engine API documentation")
+
+[Google Earth Engine Developers forum](https://groups.google.com/forum/#!forum/google-earth-engine-developers "Google Earth Engine Developers forum")
+
+[Example scripts from Prof. Dana Tomlin's handouts for his course on Geospatial Software Design](https://github.com/EEYale/example-scripts "Example scripts from Prof. Dana Tomlin's handouts for his course on Geospatial Software Design")

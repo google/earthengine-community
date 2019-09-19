@@ -206,7 +206,7 @@ var Road_network =[{stylers: [ {saturation: -100} ]},
 Map.setOptions('Road_network',{'Icon_change': Icon_change, 'Road_network':Road_network});
 ```
 
-![Road](/Road.PNG?raw=true "Road")
+![Road](../Road.png)
 
 ## Cheat codes
 
@@ -460,6 +460,6 @@ Map.setOptions('Snazzy_black',{'Snazzy_black':Snazzy_black,'Snazzy_color':Snazzy
 
 ```
 
-![Dark](/Snazzy_black.PNG?raw=true "Dark")
+![Dark](../Snazzy_black.png)
 
 You can find out more about all the options in Google Map API here: https://developers.google.com/maps/documentation/javascript/reference#MapTypeStyle

@@ -1,5 +1,5 @@
 ---
-title: An Introduction to Geospatial Analysis Using Google Earth Engine
+title: An Introduction to Geospatial Analysis
 description: This workshop provides a fundamental overview of remote sensing and geospatial analysis using the JavaScript API of Earth Engine.
 author: TC25
 tags: introductory, GIS, remote sensing, Google Earth Engine
@@ -99,25 +99,25 @@ Map.addLayer(VARIABLENAME);
 ### Strings  
 
 ```javascript
-var var_String = ee.String("This is a string. Or is it? It is."); 
+var str = ee.String("This is a string. Or is it? It is."); 
 ```
 ### Numbers
 ```javascript
-var var_Numbers = ee.Number(5);
+var num = ee.Number(5);
 ```
 
 ### Arrays
 ```javascript
-var var_Array = ee.Array([[5, 2, 3],  [-2, 7, 10],  [6, 6, 9]]); 
+var arr = ee.Array([[5, 2, 3],  [-2, 7, 10],  [6, 6, 9]]); 
 ```
 
 ### Lists
 ```javascript
-var var_List = ee.List([5, "five" , 6, "six"]); 
+var lis = ee.List([5, "five" , 6, "six"]); 
 ```
 ### Dictionaries
 ```javascript
-var var_Dictionary = ee.Dictionary({five: 5 , six: 6}); 
+var dict = ee.Dictionary({five: 5 , six: 6}); 
 ```
 
 ### And the fun stuff
@@ -133,35 +133,35 @@ var var_Dictionary = ee.Dictionary({five: 5 , six: 6});
 
 ### Points
 ```javascript
-var var_Point = ee.Geometry.Point(0, 45);
+var poi = ee.Geometry.Point(0, 45);
 ```
 ### Multi Points
 ```javascript
-var var_MultiPoint = ee.Geometry.MultiPoint(0, 45, 5,6, 70,-56);
+var multi = ee.Geometry.MultiPoint(0, 45, 5,6, 70,-56);
 ```
 ### Line String
 ```javascript
-var var_LineString = ee.Geometry.LineString([[0, 45], [5,6], [70,-56]]);
+var linestr = ee.Geometry.LineString([[0, 45], [5,6], [70,-56]]);
 ```
 ### Multi Line String
 ```javascript
-var var_MultiLineString = ee.Geometry.MultiLineString([[[0, 45], [5,6], [70,-56]], [[0, -45], [-5,-6], [-70,56]]]);
+var mlinestr = ee.Geometry.MultiLineString([[[0, 45], [5,6], [70,-56]], [[0, -45], [-5,-6], [-70,56]]]);
 ```
 ### Linear Ring
 ```javascript
-var var_LinearRing = ee.Geometry.LinearRing(0, 45, 5,6, 70,-56, 0,45);
+var linrin = ee.Geometry.LinearRing(0, 45, 5,6, 70,-56, 0,45);
 ```
 ### Rectangle
 ```javascript
-var var_Rectangle = ee.Geometry.Rectangle(0, 0, 60,30);
+var rect = ee.Geometry.Rectangle(0, 0, 60,30);
 ```
 ### Polygon
 ```javascript
-var var_Polygon = ee.Geometry.Polygon([[[0, 0], [6,3], [5, 5], [-30,2], [0,0]]]);
+var poly = ee.Geometry.Polygon([[[0, 0], [6,3], [5, 5], [-30,2], [0,0]]]);
 ```
 ### Multi Polygon
 ```javascript
-var var_MultiPolygon = ee.Geometry.MultiPolygon([ee.Geometry.Polygon([[0, 0], [6, 3], [5, 5], [-30, 2], [0,0]]), ee.Geometry.Polygon([[0, 0], [-6, -3], [-5, -5], [30, -2], [0, 0]])]);
+var multiploy = ee.Geometry.MultiPolygon([ee.Geometry.Polygon([[0, 0], [6, 3], [5, 5], [-30, 2], [0,0]]), ee.Geometry.Polygon([[0, 0], [-6, -3], [-5, -5], [30, -2], [0, 0]])]);
 ```
 
 ---
@@ -202,47 +202,47 @@ Mapping a function over a collection sends the each element of the collection to
 
 ### Find area of geometry
 ```javascript
-var Geometry_area = var_Geometry.area();
+var geo_area = var_Geometry.area();
 ```
 
 All units in Earth Engine are in meters
 
 ### Find length of line
 ```javascript
-var Line_length = var_LineString.length();
+var lin_len = var_LineString.length();
 ```
 ### Find perimeter of geometry
 ```javascript
-var Geometry_perimeter = var_Geometry.perimeter();
+var geo_peri = var_Geometry.perimeter();
 ```
 
 ### Reduce number of vertices in geometry
 ```javascript
-var SimplifiedGeometry = var_Geometry.simplify(100);
+var simp_geo = var_Geometry.simplify(100);
 ```
 ### Find centroid of geometry
 ```javascript
-var Centroid = var_Geometry.centroid();
+var centr = var_Geometry.centroid();
 ```
 ### Create buffer around geometry
 ```javascript
-var Buffer = var_Geometry.buffer(100);
+var buff = var_Geometry.buffer(100);
 ```
 ### Find bounded rectangle of the Geometry
 ```javascript
-var BoundedGeometry = var_Geometry.bounds();
+var boun_geo = var_Geometry.bounds();
 ```
 ### Find the smallest envelope that can envelop the Geometry
 ```javascript
-var Convexhull_Geometry = var_Geometry.convexHull();
+var convex_geo = var_Geometry.convexHull();
 ```
 ### Find common area between two or more geometries
 ```javascript
-var Inter_geometry = var_Geometry1.intersection(var_Geometry2);
+var inter_geo = var_Geometry1.intersection(var_Geometry2);
 ```
 ### Find area that includes two or more geometries
 ```javascript
-var Union_geometry = var_Geometry1.union(var_Geometry2);
+var un_geo = var_Geometry1.union(var_Geometry2);
 ```
 ---
 ## Operations on Features
@@ -251,15 +251,15 @@ var Union_geometry = var_Geometry1.union(var_Geometry2);
 
 ### Set property name and value of geometry to create a feature
 ```javascript
-var var_Feature = ee.Feature(var_Geometry, {Name: "Feature name", Size: 500};
+var feat = ee.Feature(var_Geometry, {Name: "Feature name", Size: 500};
 ```
 ### Create a new feature from existing feature while renaming a property
 ```javascript
-var var_Featurenew = var_Feature.select(["Name"], ["Descriptor"]);
+var featnew = var_Feature.select(["Name"], ["Descriptor"]);
 ```
 ### Extract values of a property from a Feature 
 ```javascript
-var values = var_Feature.get(''Size'');
+var feat_val = var_Feature.get(''Size'');
 ```
 ---
 
@@ -268,20 +268,20 @@ var values = var_Feature.get(''Size'');
 ### Creator a filter for values of a property 
 
 ```javascript
-var BFilter = ee.Filter.eq(Property_name, Value);
+var B_filter = ee.Filter.eq(Property_name, Value);
 ```
 >or .neq , .gt , .gte , .lt , and .lte
 
 ### Create a filter based on maximum difference from a threshold
 
 ```javascript
-var DiffFilter = ee.Filter.maxDifference(threshold, Property_name, Value);
+var Diff_filter = ee.Filter.maxDifference(threshold, Property_name, Value);
 ```
 
 ### Create a text filter
 
 ```javascript
-var TxtFilter = ee.Filter.stringContains( Property_name, StringValue);  
+var Txt_filter = ee.Filter.stringContains( Property_name, StringValue);  
 ```
 
 >or .stringStartsWith, and .stringEndsWith
@@ -289,39 +289,39 @@ var TxtFilter = ee.Filter.stringContains( Property_name, StringValue);
 ### Create a range filter
 
 ```javascript
-var RangeFilter = ee.Filter.rangeContains( Property_name, StringValue, MinValue, MaxValue);
+var Range_filter = ee.Filter.rangeContains( Property_name, StringValue, MinValue, MaxValue);
 ```
   
 ### Create a list filter to check for certain values
 
 ```javascript
-var ListFilter = ee.Filter.listContains(Property_name, Value1, Property_name2, Value2); 
+var List_filter = ee.Filter.listContains(Property_name, Value1, Property_name2, Value2); 
 ```
 >.inList to test against list of values
 
 ### Create a filter of dates
 
 ```javascript
-var DateFilter = ee.Filter.calendarRange(StartDate, StopDate);
+var Date_filter = ee.Filter.calendarRange(StartDate, StopDate);
 ```
 
 ### Create a filter for particular days of the year
 
 ```javascript
-var DayFilter = ee.Filter.dayOfYear(startDay, StopDay);
+var Day_filter = ee.Filter.dayOfYear(startDay, StopDay);
 ```
 
 ### Create a filter to subset geospatial data
 
 ```javascript
-var BoundsFilter= ee.Filter.bounds(GeometryorFeature);
+var Bounds_filter= ee.Filter.bounds(GeometryorFeature);
 ```
 ### Combining and inversing filters
 
 ```javascript
-var NewFilter=ee.Filter.and(Listoffilters);
-var NewFilter=ee.Filter.or(Listoffilters);
-var inverseFilter = ee.Filter.not(filter);
+var New_filter=ee.Filter.and(Listoffilters);
+var New_filter=ee.Filter.or(Listoffilters);
+var inverse_filter = ee.Filter.not(filter);
 ```
 ---
 ## Operations on Images
@@ -374,30 +374,30 @@ var SelectedImages =var_ImCollection.limit (n, Property_name, Order);
 ### Select images in collection based on particular properties
 
 ```javascript
-var SelectedImages = var_ImCollection.filterMetadata (Property_name, Relation , Value);
+var selected_im = var_ImCollection.filterMetadata (Property_name, Relation , Value);
 ```
 >Relations could be "equals", "less_than", "greater_than", "starts_with", "ends_with", and "contains"
 
 ### Select images within date range
 ```javascript
-var SelectedImages = var_ImCollection.filterDate (StartDate, StopDate);
+var selected_im = var_ImCollection.filterDate (StartDate, StopDate);
 ```
 
 ### Select images within Geometry
 ```javascript
-var SelectedImages = var_ImCollection.filterBounds (var_Geometry);
+var selected_im = var_ImCollection.filterBounds (var_Geometry);
 ```
 
 ### Perform pixelwise calculations for all images in collection
 ```javascript
-var sumofimages = var_ImCollection.sum();       
+var sum_of_images = var_ImCollection.sum();       
 ```
 >or .product, .max, .min, .mean, .mode, .median, and .count     
 
 ### Create composite of images in collection with the last image on top
 
 ```javascript
-var mosaicofimages = var_ImCollection.mosaic();       
+var mosaic_of_images = var_ImCollection.mosaic();       
 ```
 ---
 ## Importing and exporting data

@@ -1,5 +1,5 @@
 ---
-title: Editing the Base Map in Earth Engine
+title: Customizing base map styles
 description: If you are getting bored of looking at the same two default basemaps in Earth Engine, or need to use a specific visualization for functionality/convenience, this tutorial will show you how to edit all of its characteristics. 
 author: TC25
 tags: Earth Engine, Base Map, UI, Widgets
@@ -25,22 +25,22 @@ We can start by changing the style of the base map. One easy fix is to invert th
 
 ```javascript
 
-var Base_change = [
+var baseChange = [
     stylers: [ {invert_lightness: true} ]
 ]
-Map.setOptions("Base_change",{"Base_change":Base_change})
+Map.setOptions("baseChange",{"baseChange":baseChange})
 
 ```
 The main styler options include:
 
-  - Hue: indicates the basic color
-  - lightness:indicates percentage change in brightness of element
-  - saturation: indicates percentage change in basic color of element
-  - gamma: Gamma correction of the element (0.01 and 10.0)
-  - invert_lightness: inverts the existing lightness
-  - visibility: Changes visibility options for an element (on, off, or simplified)
-  - color: Sets the color of elements (using RGB Hex Strings)
-  - weight: Sets the weight of a feature in pixels
+ - hue: indicates the basic color
+ - lightness:indicates percentage change in brightness of element
+ - saturation: indicates percentage change in basic color of element
+ - gamma: Gamma correction of the element (0.01 and 10.0)
+ - invert_lightness: inverts the existing lightness
+ - visibility: Changes visibility options for an element (on, off, or simplified)
+ - color: Sets the color of elements (using RGB Hex Strings)
+ - weight: Sets the weight of a feature in pixels
 
 
 ## Changing map elements
@@ -104,7 +104,7 @@ Let's consider a couple of examples to edit other elements and features
 
 
 //Remove icons
-var Icon_change = [
+var iconChange = [
   {   // Change map saturation.
     stylers: [ {gamma:.2} ]
 
@@ -150,7 +150,7 @@ var Icon_change = [
 //Enhanced road network visualization
 
 
-var Road_network =[{stylers: [ {saturation: -100} ]},
+var roadNetwork =[{stylers: [ {saturation: -100} ]},
     {
         "featureType": "road.highway",
         "elementType": "geometry.fill",
@@ -203,10 +203,10 @@ var Road_network =[{stylers: [ {saturation: -100} ]},
     }
 ]
 
-Map.setOptions('Road_network',{'Icon_change': Icon_change, 'Road_network':Road_network});
+Map.setOptions('roadNetwork',{'iconChange': iconChange, 'roadNetwork':roadNetwork});
 ```
 
-![Road](Road.PNG)
+![Road](road.png)
 
 ## Cheat codes
 
@@ -216,7 +216,7 @@ Copy any of the javascript properties from that website and it will show up on E
 ```javascript
 
 
-var Snazzy_black=[
+var snazzyBlack=[
     {
         "featureType": "administrative",
         "elementType": "all",
@@ -355,7 +355,7 @@ var Snazzy_black=[
 ]
 
 
-var Snazzy_color=[
+var snazzyColor=[
     {
         "elementType": "labels",
         "stylers": [
@@ -456,10 +456,10 @@ var Snazzy_color=[
 ]
 
 
-Map.setOptions('Snazzy_black',{'Snazzy_black':Snazzy_black,'Snazzy_color':Snazzy_color})
+Map.setOptions('snazzyBlack',{'snazzyBlack':snazzyBlack,'snazzyColor':snazzyColor})
 
 ```
 
-![Dark](Snazzy_black.PNG)
+![Dark](snazzy-black.png)
 
 You can find out more about all the options in Google Map API here: https://developers.google.com/maps/documentation/javascript/reference#MapTypeStyle

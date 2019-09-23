@@ -46,7 +46,6 @@ var create = function(values, startDate) {
  * @returns {*} A dictionary keyed by band name.
  */
 var reduceConstant = function(image) {
-  // DO NOT MERGE - USE .sample() INSTEAD?
   return ee.Image(image)
            .reduceRegion(ee.Reducer.first(), ee.Geometry.Point(0, 0), 1);
   };

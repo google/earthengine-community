@@ -26,7 +26,7 @@ var lct = require('users/google/toolkits:landcover/api.js');
 var dataset = lct.Landsat8()
                   .filterDate('2018-06-01', '2019-01-01')
                   .filterBounds(lct.Region.lsib('Tanzania'))
-                  .fmaskCloudsAndShadows();
+                  .maskCloudsAndShadows();
 
 // Add the resulting ImageCollection to the map, taking the median of
 // overlapping pixel values.

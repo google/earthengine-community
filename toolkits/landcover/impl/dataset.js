@@ -15,12 +15,11 @@
  * limitations under the License.
  */
 
-var Composites =
-    require('users/google/toolkits:landcover/impl/composites.js').Composites;
+var Composites = require('users/google/toolkits:landcover/impl/composites.js').Composites;
 var Bands = require('users/google/toolkits:landcover/impl/bands.js').Bands;
 
 /**
- * Returns a new dataset instance for an arbitrary image collection. Like
+ * Returns a new dataset instance for an arbitrary image collection. As with
  * `ee.ImageCollection` and other API objects, instances of this class and
  * subclasses are immutable; methods on these classes will return a new
  * instance.

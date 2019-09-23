@@ -21,7 +21,7 @@ withEarthEngineStub('Landsat8', function() {
   it('applyCloudAndShadowBitMasks() updates mask', function() {
     var originalImage = ee.Image(0);
 
-    var newImage = Landsat8.applyCloudShadowBitMasks(originalImage);
+    var newImage = Landsat8.maskCloudsAndShadows(originalImage);
 
     var qa = originalImage.select(Landsat8.QA_BAND);
     var mask = qa.bitwiseAnd(Landsat8.CLOUD_SHADOW_BIT_MASK)

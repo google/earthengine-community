@@ -15,7 +15,8 @@
  * limitations under the License.
  */
 
-var Composites = require('users/google/toolkits:landcover/impl/composites.js').Composites;
+var Composites =
+    require('users/google/toolkits:landcover/impl/composites.js').Composites;
 var Bands = require('users/google/toolkits:landcover/impl/bands.js').Bands;
 
 /**
@@ -219,6 +220,20 @@ Dataset.prototype.addFractionalYearBand = function() {
   var dataset = this.clone_();
   dataset.collection_ = Bands.addFractionalYearBand(dataset.collection_);
   return dataset;
+};
+
+/**
+ * Generic interface for applying cloud and shadow shadow masks to a
+ * collection. Subclasses that support this operation should override this
+ * method to provide a default implementation (e.g., CFMASK). Subclasses may
+ * also specify additional arguments to control which methodology is used and
+ * related parameters.
+ *
+ * Subclasses must return a new instance of the dataset with the masks
+ * applied.
+ */
+Dataset.prototype.maskCloudsAndShadows = function() {
+  throw new Error('Unimplemented method');
 };
 
 exports.Dataset = Dataset;

@@ -24,7 +24,7 @@ withEarthEngine('Landsat8', function() {
     var image = lct.Landsat8()
                     .filterDate('2018-01-01', '2018-04-01')
                     .filterBounds(point)
-                    .fmaskCloudsAndShadows()
+                    .maskCloudsAndShadows()
                     .getImageCollection()
                     .mosaic();
 

@@ -173,7 +173,7 @@ Dataset.prototype.addBandIndices = function(var_names) {
 
   // Compute the transformation to common band names.
   var bandNames = dataset.collection_.first().bandNames();
-  var commonNames = this.computeCommonBandNames_(bandNames);
+  var commonNames = dataset.computeCommonBandNames_(bandNames);
 
   var output = dataset.collection_.map(function(image) {
     // Rename the bands and compute the spectral indices.

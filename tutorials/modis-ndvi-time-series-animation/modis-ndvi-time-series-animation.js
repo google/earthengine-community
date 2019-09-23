@@ -1,7 +1,7 @@
 /**
  * @license
  * Copyright 2019 Google LLC
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -27,12 +27,12 @@ var region = ee.Geometry.Polygon(
   [[[-18.698368046353494, 38.1446395611524],
     [-18.698368046353494, -36.16300755581617],
     [52.229366328646506, -36.16300755581617],
-    [52.229366328646506, 38.1446395611524]]], 
+    [52.229366328646506, 38.1446395611524]]],
   null, false
 );
 
 // Add day-of-year (DOY) property to each image.
-col = col.map(function(img){
+col = col.map(function(img) {
   var doy = ee.Date(img.get('system:time_start')).getRelative('day', 'year');
   return img.set('doy', doy);
 });
@@ -40,14 +40,15 @@ col = col.map(function(img){
 // Get a collection of distinct images by 'doy'.
 var distinctDOY = col.filterDate('2013-01-01', '2014-01-01');
 
-// Define a filter that identifies which images from the complete 
-// collection match the DOY from the distinct DOY collection. 
+// Define a filter that identifies which images from the complete
+// collection match the DOY from the distinct DOY collection.
 var filter = ee.Filter.equals({leftField: 'doy', rightField: 'doy'});
 
 // Define a join.
 var join = ee.Join.saveAll('doy_matches');
 
-// Apply the join and convert the resulting FeatureCollection to an ImageCollection.
+// Apply the join and convert the resulting FeatureCollection to an
+// ImageCollection.
 var joinCol = ee.ImageCollection(join.apply(distinctDOY, col, filter));
 
 // Apply median reduction among matching DOY collections.
@@ -70,7 +71,7 @@ var visParams = {
 };
 
 // Create RGB visualization images for use as animation frames.
-var rgbVis = comp.map(function(img){
+var rgbVis = comp.map(function(img) {
   return img.visualize(visParams).clip(mask);
 });
 

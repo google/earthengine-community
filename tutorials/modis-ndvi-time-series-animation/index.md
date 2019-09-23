@@ -1,10 +1,3 @@
----
-title: MODIS NDVI Times Series Animation
-description: Generate an animated GIF representing 20-year median NDVI for serial 16-day MODIS composites spanning January 1st through December 31st.
-author: jdbcode
-tags: modis, ndvi, animation, join, reduce, composite, gif, africa, visualization
-date_published: 2019-08-14
----
 <!--
 Copyright 2019 Google LLC
 
@@ -19,6 +12,13 @@ distributed under the License is distributed on an "AS IS" BASIS,
 WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
+-->
+<!--
+title: MODIS NDVI Times Series Animation
+description: Generate an animated GIF representing 20-year median NDVI for serial 16-day MODIS composites spanning January 1st through December 31st.
+author: jdbcode
+tags: modis, ndvi, animation, join, reduce, composite, gif, africa, visualization
+date_published: 2019-08-14
 -->
 
 [Open In Code Editor](https://code.earthengine.google.com/0ee1513ac09808307463585f73dda77c)
@@ -84,7 +84,7 @@ var region = ee.Geometry.Polygon(
   [[[-18.698368046353494, 38.1446395611524],
     [-18.698368046353494, -36.16300755581617],
     [52.229366328646506, -36.16300755581617],
-    [52.229366328646506, 38.1446395611524]]], 
+    [52.229366328646506, 38.1446395611524]]],
   null, false
 );
 ```
@@ -99,7 +99,7 @@ by. Day-of-year (DOY) is a fine format and can be derived from the ubiquitous `s
 using the `getRelative` method.
 
 ```js
-col = col.map(function(img){
+col = col.map(function(img) {
   var doy = ee.Date(img.get('system:time_start')).getRelative('day', 'year');
   return img.set('doy', doy);
 });
@@ -122,13 +122,14 @@ Complete the join by:
 
 ```js
 // Define a filter that identifies which images from the complete collection
-// match the DOY from the distinct DOY collection. 
+// match the DOY from the distinct DOY collection.
 var filter = ee.Filter.equals({leftField: 'doy', rightField: 'doy'});
 
 // Define a join.
 var join = ee.Join.saveAll('doy_matches');
 
-// Apply the join and convert the resulting FeatureCollection to an ImageCollection.
+// Apply the join and convert the resulting FeatureCollection to an
+// ImageCollection.
 var joinCol = ee.ImageCollection(join.apply(distinctDOY, col, filter));
 ```
 
@@ -176,7 +177,7 @@ var visParams = {
 };
 
 // Create RGB visualization images for use as animation frames.
-var rgbVis = comp.map(function(img){
+var rgbVis = comp.map(function(img) {
   return img.visualize(visParams).clip(mask);
 });
 ```

@@ -61,19 +61,13 @@ var SPECTRAL_INDEX_EXPRESSIONS = {
 
 
 /**
- * Compute spectral indices for the given image.
- * Note: The image is expected to have the toolkit's "common" band names.
- *
- * @param {!ee.Image} image The input image.
- * @param {!Array<string>} indices The list of indices to create.
- * @return {!ee.Image} The computed indices.
- */
-
-/**
- * Computes and adds the specified set of spectral indices to an image.
+ * Computes and adds the specified set of spectral indices to an image. Indicies
+ * must be one of:
+ *   'ndvi', 'evi', 'savi', 'msavi', 'ndmi', 'nbr', 'nbr2', 'ndwi', 'mndwi',
+ *   'ndbi', 'ndsi'
  *
  * @param {ee.Image} image The source image.
- * @param {!Array} indices The list of indices to calculate.
+ * @param {!Array<string>} indices The list of indices to calculate.
  * @return {ee.Image} The updated image.
  */
 function getSpectralIndices(image, indices) {

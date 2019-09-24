@@ -19,6 +19,7 @@
     "rules": {
         "comma-dangle": "off",
         "guard-for-in": "off",
+        "indent": "off",        
         "new-cap": "off",
         "no-var": "off",
         "prefer-const": "off",

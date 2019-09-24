@@ -24,7 +24,7 @@ var formatComputedObject =
  * Formats an individual diff for display.
  *
  * @param {*} diff The individual diff returned by the diff library.
- * @returns {string} Diff line with markers and color codes.
+ * @return {string} Diff line with markers and color codes.
  */
 var formatDiff = function(diff) {
   if (diff.added) {
@@ -59,7 +59,7 @@ var decorateMatcher = function(jasmineMatcher, desc) {
         }
         return result;
       }
-    }
+    };
   };
 };
 

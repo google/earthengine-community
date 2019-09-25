@@ -1,5 +1,5 @@
 ---
-title: Public Health: Land Surface Temperature Uganda
+title: Studying Land Surface Temperature for Public Health Research in Uganda
 description: This tutorial shows how to describe, visualize, and export Earth Engine exposure data for public health research.
 author: hiyer09
 tags: comma-separated, lowercase, list, of, related, keywords

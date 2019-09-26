@@ -44,7 +44,7 @@ var minArea = contArea.gte(pixels).selfMask();
 // ensure pixel resolution used by the above connectedPixelCount()
 // call is not determined by the Map's zoom level.
 var prj = gfc2018.projection();
-var prj.nominalScale();
+var scale = prj.nominalScale();
 Map.addLayer(minArea.reproject(prj.atScale(scale)), {
     palette: ['#96ED89']
 }, 'tree cover: >= min canopy cover & area (light green)');
@@ -79,7 +79,7 @@ var pixelCount = minArea.reduceRegion({
     maxPixels: 1e13
 });
 var onePixel = forestSize.getNumber('treecover2000')
-    .divide(pixelCount)
+    .divide(pixelCount
     .getNumber('treecover2000'));
 var minAreaUsed = onePixel.multiply(pixels);
 print('Minimum forest area used (ha)\n ', minAreaUsed);

@@ -43,7 +43,7 @@ var gfc2018 = ee.Image('UMD/hansen/global_forest_change_2018_v1_6');
 ```js
 var canopyCover = gfc2018.select(['treecover2000']);
 ```
-2. Apply the minimum canopy cover percentage (e.g. greater than or equal to 10%). Use `selfMask()` to mask value zero
+2. Apply the minimum canopy cover percentage (e.g. greater than or equal to 10%). Use selfMask() to set other other areas transparent by assigning value zero
 ```js
 var canopyCover10 = canopyCover.gte(cc).selfMask();
 ```
@@ -54,7 +54,7 @@ var contArea = canopyCover10.connectedPixelCount();
 // Apply the minimum area requirement. 
 var minArea = contArea.gte(pixels).selfMask();
 ```
-4. Scale the results in nominal value based on to the dataset's projection to display on the map
+4. Scale the results in nominal value based on to the dataset's projection to display on the map. Reprojecting with a specified scale ensures that pixel area does not change with zoom.
 ```js
 var prj = gfc2018.projection();
 var scale = prj.nominalScale();
@@ -62,7 +62,7 @@ Map.addLayer(minArea.reproject(prj.atScale(scale)), {
     palette: ['#96ED89']
 }, 'tree cover: >= min canopy cover & area (light green)');
 ```
-5. Calculate the tree cover area (ha)
+5. Calculate the tree cover area (ha). Use pixelArea() to get the value of each pixel in square metres, divide by 10,000 to convert to hectare, and sum over the result for a measure of area
 ```js
 var forestArea = minArea.multiply(ee.Image.pixelArea()).divide(10000);
 var forestSize = forestArea.reduceRegion({
@@ -73,7 +73,7 @@ var forestSize = forestArea.reduceRegion({
 });
 print('Year 2000 tree cover (ha) \nmeeting minimum canopy cover and \nforest area thresholds \n ', forestSize.get('treecover2000'));
 ```
-6. Calculate the actual average minimum forest area used (ha) 
+6. Calculate the actual average minimum forest area used (ha). This is to make sure if the selected number of pixels for minimum area (e.g. 6) matches or comes close to the minimum area intended in hectare (e.g. 0.5 ha)
 ```js
 var pixelCount = minArea.reduceRegion({
     reducer: ee.Reducer.count(),
@@ -164,7 +164,7 @@ Tree cover 2000 (light green)             |  Tree loss 2001 (red)        |  Tree
 
 ## Land use categories
 
-You can also exclude certain tree areas such as tree plantations or agricultural plantations with tree crops, if you have spatial data for these areas (e.g. masking, assigning values, etc. - not included in this tutorial). 
+You can also exclude certain tree areas such as tree plantations or agricultural plantations with tree crops if you have spatial data for these areas (e.g. masking, assigning values, etc. - not included in this tutorial). 
 
 ## References
 - GOFC-GOLD 2013 A sourcebook of methods and procedures for monitoring and reporting anthropogenic greenhouse gas emissions and removals associated with deforestation, gains and losses of carbon stocks in forests remaining forests, and forestation p 126 GOFC-GOLD Report (version COP22-1)

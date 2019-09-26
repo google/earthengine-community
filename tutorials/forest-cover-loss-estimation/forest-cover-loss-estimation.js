@@ -8,7 +8,8 @@ var pixels = ee.Number(6);
 var lossPixels = ee.Number(6);
 // Load country features from Large Scale International Boundary (LSIB) dataset.
 var countries = ee.FeatureCollection('USDOS/LSIB_SIMPLE/2017');
-var selected = countries.filter(ee.Filter.eq('country_na', ee.String(country)));
+var selected = countries.filter(ee.Filter.eq('country_na', ee.String(
+    country)));
 // Center the map to the selected country.
 Map.centerObject(selected, 14);
 
@@ -62,7 +63,8 @@ print('Year 2000 tree cover (ha) \nmeeting minimum canopy cover and \nforest are
     forestSize.get('treecover2000'));
 
 // Export the result, in case the country is large.
-var featureCollection = ee.FeatureCollection([ee.Feature(null, forestSize)]);
+var featureCollection = ee.FeatureCollection([ee.Feature(null,
+    forestSize)]);
 
 Export.table.toDrive({
     collection: featureCollection,
@@ -103,7 +105,8 @@ Map.addLayer(treeLoss01, {
 }, 'loss: all tree loss 2001 (black)', false);
 
 // Select the tree loss within the derived tree cover (>= canopy cover and area requirements).
-var treecoverLoss01 = minArea.and(treeLoss01).rename('loss2001').selfMask();
+var treecoverLoss01 = minArea.and(treeLoss01).rename('loss2001')
+    .selfMask();
 Map.addLayer(treecoverLoss01, {
     palette: ['#9768D1']
 }, 'loss: inside tree cover (purple)', false);
@@ -132,7 +135,8 @@ print('Year 2001 tree loss (ha) \nmeeting minimum canopy cover and \nforest area
     lossSize.get('loss2001'));
 
 // If the country is large, you may need to export the result.
-var featureCollection = ee.FeatureCollection([ee.Feature(null, lossSize)]);
+var featureCollection = ee.FeatureCollection([ee.Feature(null,
+    lossSize)]);
 
 Export.table.toDrive({
     collection: featureCollection,
@@ -155,7 +159,8 @@ Map.addLayer(minArea01.reproject(prj.atScale(scale)), {
 }, 'tree cover 2001 (gain not considered) (dark green)');
 
 // Calculate the tree cover in hectare. 
-var forestArea01 = minArea01.multiply(ee.Image.pixelArea()).divide(10000);
+var forestArea01 = minArea01.multiply(ee.Image.pixelArea()).divide(
+    10000);
 var forestSize01 = forestArea01.reduceRegion({
     reducer: ee.Reducer.sum(),
     geometry: selected.geometry(),
@@ -165,7 +170,8 @@ var forestSize01 = forestArea01.reduceRegion({
 print('Year 2001 tree cover (ha) \nmeeting minimum canopy cover and \nforest area thresholds \n ',
     forestSize01.get('treecover2000'));
 
-var featureCollection = ee.FeatureCollection([ee.Feature(null, forestSize01)]);
+var featureCollection = ee.FeatureCollection([ee.Feature(null,
+    forestSize01)]);
 
 Export.table.toDrive({
     collection: featureCollection,

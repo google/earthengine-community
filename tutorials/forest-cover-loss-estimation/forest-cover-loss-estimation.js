@@ -80,7 +80,7 @@ var pixelCount = minArea.reduceRegion({
 });
 var onePixel = forestSize.getNumber('treecover2000')
     .divide(pixelCount
-    .getNumber('treecover2000'));
+        .getNumber('treecover2000'));
 var minAreaUsed = onePixel.multiply(pixels);
 print('Minimum forest area used (ha)\n ', minAreaUsed);
 

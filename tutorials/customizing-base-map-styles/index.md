@@ -154,61 +154,43 @@ var iconChange = [{ // Change map saturation.
 
 //Enhanced road network visualization
 
-
 var roadNetwork = [{
-    stylers: [{
+    "stylers": [{
       "saturation": -100
-    }]
-  },
-  {
+  }]
+}, {
     "featureType": "road.highway",
     "elementType": "geometry.fill",
     "stylers": [{
-        "color": "#000055"
-      },
-      {
-        "weight": 2.5
-      }
-    ]
-  },
-  {
+      "color": "#000055"
+}, {
+    "weight": 2.5
+  }]
+}, {
     "featureType": "road.highway",
     "elementType": "geometry.stroke",
-    "stylers": [
-
-      {
-        "color": "#000000"
-      },
-      {
-        "weight": 2
-      }
-    ]
-  },
-  {
+    "stylers": [{
+      "color": "#000000"
+}, {
+    "weight": 2
+  }]
+}, {
     "featureType": "road.arterial",
     "elementType": "geometry",
     "stylers": [{
-        "color": "#FF0000"
-      },
-      {
-        "weight": 1.8
-      }
-    ]
-  },
-  {
+      "color": "#FF0000"
+}, {
+    "weight": 1.8
+  }]
+}, {
     "featureType": "road.local",
     "elementType": "geometry",
-    "stylers": [
-
-      {
-        "color": "#00FF55"
-      },
-      {
-        "weight": 1.5
-      }
-    ]
-  }
-]
+    "stylers": [{
+      "color": "#00FF55"
+}, {
+    "weight": 1.5
+  }]
+}];
 
 Map.setOptions("roadNetwork", {
   "iconChange": iconChange,
@@ -231,190 +213,159 @@ var snazzyBlack = [{
     "elementType": "all",
     "stylers": [{
       "visibility": "off"
-    }]
-  },
-  {
+  }]
+},{
     "featureType": "administrative",
     "elementType": "labels.text.fill",
     "stylers": [{
       "color": "#444444"
-    }]
-  },
-  {
+  }]
+},{
     "featureType": "landscape",
     "elementType": "all",
     "stylers": [{
         "color": "#000000"
-      },
-      {
+},{
         "visibility": "on"
-      }
-    ]
-  },
-  {
+  }]
+},{
     "featureType": "poi",
     "elementType": "all",
     "stylers": [{
       "visibility": "off"
-    }]
-  },
-  {
+  }]
+},{
     "featureType": "road",
     "elementType": "all",
     "stylers": [{
         "saturation": -100
-      },
-      {
+},{
         "lightness": 45
-      }
-    ]
-  },
-  {
+  }]
+},{
     "featureType": "road",
     "elementType": "geometry.fill",
     "stylers": [{
       "color": "#ffffff"
-    }]
-  },
-  {
+  }]
+},{
     "featureType": "road",
     "elementType": "geometry.stroke",
     "stylers": [{
       "color": "#eaeaea"
-    }]
-  },
-  {
+  }]
+},{
     "featureType": "road",
     "elementType": "labels",
     "stylers": [{
       "visibility": "off"
-    }]
-  },
-  {
+  }]
+},{
     "featureType": "road",
     "elementType": "labels.text.fill",
     "stylers": [{
       "color": "#dedede"
-    }]
-  },
-  {
+  }]
+},{
     "featureType": "road",
     "elementType": "labels.icon",
     "stylers": [{
       "visibility": "off"
-    }]
-  },
-  {
+  }]
+},{
     "featureType": "road.highway",
     "elementType": "all",
     "stylers": [{
       "visibility": "simplified"
-    }]
-  },
-  {
+  }]
+},{
     "featureType": "road.arterial",
     "elementType": "labels.icon",
     "stylers": [{
       "visibility": "off"
-    }]
-  },
-  {
+  }]
+},{
     "featureType": "transit",
     "elementType": "all",
     "stylers": [{
       "visibility": "off"
-    }]
-  },
-  {
+  }]
+},{
     "featureType": "water",
     "elementType": "all",
     "stylers": [{
         "color": "#434343"
-      },
-      {
+},{
         "visibility": "on"
-      }
-    ]
-  }
-]
+  }]
+}];
 
 
 var snazzyColor = [{
     "elementType": "labels",
     "stylers": [{
       "visibility": "off"
-    }]
-  },
-  {
+  }]
+},{
     "featureType": "road",
     "elementType": "geometry.fill",
     "stylers": [{
       "color": "#0F0919"
-    }]
-  },
-  {
+  }]
+},{
     "featureType": "water",
     "elementType": "geometry.fill",
     "stylers": [{
       "color": "#E4F7F7"
-    }]
-  },
-  {
+  }]
+},{
     "elementType": "geometry.stroke",
     "stylers": [{
       "visibility": "off"
-    }]
-  },
-  {
+  }]
+},{
     "featureType": "poi.park",
     "elementType": "geometry.fill",
     "stylers": [{
       "color": "#002FA7"
-    }]
-  },
-  {
+  }]
+},{
     "featureType": "poi.attraction",
     "elementType": "geometry.fill",
     "stylers": [{
       "color": "#E60003"
-    }]
-  },
-  {
+  }]
+},{
     "featureType": "landscape",
     "elementType": "geometry.fill",
     "stylers": [{
       "color": "#FBFCF4"
-    }]
-  },
-  {
+  }]
+},{
     "featureType": "poi.business",
     "elementType": "geometry.fill",
     "stylers": [{
       "color": "#FFED00"
-    }]
-  },
-  {
+  }]
+},{
     "featureType": "poi.government",
     "elementType": "geometry.fill",
     "stylers": [{
       "color": "#D41C1D"
-    }]
-  },
-  {
+  }]
+},{
     "featureType": "poi.school",
     "elementType": "geometry.fill",
     "stylers": [{
       "color": "#BF0000"
-    }]
-  },
-  {
+  }]
+},{
     "featureType": "transit.line",
     "elementType": "geometry.fill",
     "stylers": [{
       "saturation": -100
-    }]
-  }
-]
+  }]
+}];
 
 
 Map.setOptions("snazzyBlack", {

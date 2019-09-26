@@ -37,14 +37,14 @@ Map.addLayer(canopyCover10, {
 
 // Use connectedPixelCount() to get contiguous area.
 var contArea = canopyCover10.connectedPixelCount();
-// Apply the minimum area requirement. 
+// Apply the minimum area requirement.
 var minArea = contArea.gte(pixels).selfMask();
 
 // Reproject with scale defined as data source's nominal scale to
 // ensure pixel resolution used by the above connectedPixelCount()
 // call is not determined by the Map's zoom level.
 var prj = gfc2018.projection();
-var scale = prj.nominalScale();
+var prj.nominalScale();
 Map.addLayer(minArea.reproject(prj.atScale(scale)), {
     palette: ['#96ED89']
 }, 'tree cover: >= min canopy cover & area (light green)');
@@ -61,7 +61,7 @@ var forestSize = forestArea.reduceRegion({
 print('Year 2000 tree cover (ha) \nmeeting minimum canopy cover and \nforest area thresholds \n ',
     forestSize.get('treecover2000'));
 
-// Export the result, if the country is large.
+// Export the result, in case the country is large.
 var featureCollection = ee.FeatureCollection([ee.Feature(null, forestSize)]);
 
 Export.table.toDrive({
@@ -78,7 +78,8 @@ var pixelCount = minArea.reduceRegion({
     scale: 30,
     maxPixels: 1e13
 });
-var onePixel = forestSize.getNumber('treecover2000').divide(pixelCount
+var onePixel = forestSize.getNumber('treecover2000')
+    .divide(pixelCount)
     .getNumber('treecover2000'));
 var minAreaUsed = onePixel.multiply(pixels);
 print('Minimum forest area used (ha)\n ', minAreaUsed);

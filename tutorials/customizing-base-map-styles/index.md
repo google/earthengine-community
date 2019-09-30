@@ -6,7 +6,7 @@ tags: Earth Engine, Base Map, UI, Widgets
 date_published: 2019-09-16
 ---
 
-[Open In Code Editor](https://code.earthengine.google.com/d5008ced995fc0e16e5434fa2b47e21c)
+[Open In Code Editor](https://code.earthengine.google.com/283c86dd3189788452b5fb64174a1b43)
 
 The user is going to learn how to change the options of the map object to create new base maps
 

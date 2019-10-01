@@ -61,26 +61,28 @@ var SPECTRAL_INDEX_EXPRESSIONS = {
 
 
 /**
- * Compute spectral indices for the given image.
- * Note: The image is expected to have the toolkit's "common" band names.
+ * Computes and adds the specified set of spectral indices to an image. Indices
+ * must be one of:
  *
- * @param {!ee.Image} image The input image.
- * @param {!Array<string>} indices The list of indices to create.
- * @return {!ee.Image} The computed indices.
+ *   'ndvi', 'evi', 'savi', 'msavi', 'ndmi', 'nbr', 'nbr2', 'ndwi', 'mndwi',
+ *   'ndbi', 'ndsi'
+ *
+ * @param {ee.Image} image The source image.
+ * @param {!Array<string>} indices The list of indices to calculate.
+ * @return {ee.Image} The updated image.
  */
-
 function getSpectralIndices(image, indices) {
   // We can't check the existence of the specified indices if they're EEObjects.
   if (!(indices instanceof ee.ComputedObject)) {
     // Check that all the specified indexes exist.
-    indices.forEach(function (name) {
+    indices.forEach(function(name) {
       if (!(name in SPECTRAL_INDEX_EXPRESSIONS)) {
         throw Error('Unrecognized spectral index: ' + name);
       }
     });
   }
 
-  // TODO(gorelick): Change this to Dictonary.get once cl/261133093 lands.
+  // TODO(gorelick): Change this to Dictionary.get once supported.
   return indices.map(function(name) {
     var expr = SPECTRAL_INDEX_EXPRESSIONS[name];
     return image.expression(expr, {b: image}).rename([name]);
@@ -95,7 +97,7 @@ function getSpectralIndices(image, indices) {
  * @return {!ee.ImageCollection}
  */
 function addDateBand(collection) {
-  return collection.map(function (img) {
+  return collection.map(function(img) {
     var date = ee.Image.constant(img.date().millis())
         .rename('date').long();
     return img.addBands(date);
@@ -110,7 +112,7 @@ function addDateBand(collection) {
  * @return {!ee.ImageCollection}
  */
 function addDayOfYearBand(collection) {
-  return collection.map(function (img) {
+  return collection.map(function(img) {
     var doy = ee.Image.constant(img.date().getRelative('day', 'year'))
         .rename('doy').int();
     return img.addBands(doy);
@@ -125,7 +127,7 @@ function addDayOfYearBand(collection) {
  * @return {!ee.ImageCollection}
  */
 function addFractionalYearBand(collection) {
-  return collection.map(function (img) {
+  return collection.map(function(img) {
     var date = img.date();
     var fYear = date.get('year').double().add(img.date().getFraction('year'));
     var band = ee.Image.constant(fYear).rename('fYear').double();

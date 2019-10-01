@@ -64,6 +64,10 @@ locally (lint and unit tests) and against Earth Engine (integration tests).
 
         $ npm run lint
 
+*   Format code and fix lint errors
+
+        $ npm run fix
+
 *   Run unit tests
 
         $ npm run test:unit

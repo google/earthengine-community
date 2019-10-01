@@ -35,8 +35,10 @@ var indent = function(level) {
  * Converts Earth Engine function invocation args into a formatted list of
  * 'key: value' pairs used to build the debug string.
  *
- * @param {*} invocation The Earth Engine API internal representation of
+ * @param {*} args The Earth Engine API internal representation of
  *    a function invocation args.
+ * @param {number} level The number of levels of function nesting, used to
+ *    calculate indentation size.
  * @return {string}
  */
 var formatFunctionInvocationArgs = function(args, level) {
@@ -55,6 +57,8 @@ var formatFunctionInvocationArgs = function(args, level) {
  *
  * @param {*} invocation The Earth Engine API internal representation of
  *    a function invocation.
+ * @param {number} level The number of levels of function nesting, used to
+ *    calculate indentation size.
  * @return {string} A formatted expression describing the specified function.
  */
 var formatFunctionInvocationValue = function(invocation, level) {
@@ -71,6 +75,8 @@ var formatFunctionInvocationValue = function(invocation, level) {
  *
  * @param {*} definition The Earth Engine API internal representation of
  *    a function definition.
+ * @param {number} level The number of levels of function nesting, used to
+ *    calculate indentation size.
  * @return {string} A formatted expression describing the specified function.
  */
 var formatFunctionDefinitionValue = function(definition, level) {
@@ -94,6 +100,8 @@ var formatConstantValue = function(value) {
  *
  * @param {*} graph The Earth Engine API internal representation of
  *    a query graph.
+ * @param {number} level The number of levels of function nesting, used to
+ *    calculate indentation size.
  * @return {string} A formatted expression describing the specified graph.
  */
 var formatGraph = function(graph, level) {

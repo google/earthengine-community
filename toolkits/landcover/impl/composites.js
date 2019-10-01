@@ -81,41 +81,45 @@ function createTemporalComposites(
 }
 
 /**
- * Computes a medioid composite by finding the median of one band
- * and returning the complete observation where that band is closest
- * to the median value.
+ * Computes a medioid composite by finding the median and returning the
+ * complete observation closest to the median value as measured by
+ * euclidiean distance over the specified band(s).
  *
  * @param {!ee.ImageCollection} collection The collection to composite.
- * @param {string|number} indexBand The name of the band which to
- *    select the median value. If omitted, the first band is used.
+ * @param {Array<string|number>|string|number} bands A band identifier
+ *    (a name, index or regexp) or a list of identifiers of the bands
+ *    to use to compute the median value. If omitted, all bands are used.
  * @return {!ee.ImageCollection}
  */
-function createMedioidComposite(collection, indexBand) {
-  // Compute the median of the index band.
-  indexBand = indexBand === undefined ? 0 : indexBand;
-  var median = collection.select(indexBand).median();
-  
-  // Add a band containing the difference between the index band value for each
-  // pixel and the median of the index band across all pixels in the collection.
-  var mosaic = collection.map(function(img) {
-    var diff = median.subtract(img.select(indexBand)).abs();
-    var index = ee.Image(0).subtract(diff);
-    return img.addBands(index.rename('medioid_index_'));
-  }).qualityMosaic('medioid_index_');
+function createMedioidComposite(collection, bands) {
+  bands = bands === undefined ? ".*" : bands;
 
-  return mosaic.select(mosaic.bandNames().remove('medioid_index_'));
+  // Compute the distance from the median of the index band.
+  var median = collection.select(bands).median();
+  var indexed = collection.map(function(img) {
+    var distance = img.select(bands)
+        .spectralDistance(median, 'sed')
+        .multiply(-1.0)
+        .rename('medioid_distance_');
+    return img.addBands(distance);
+  })
+  var mosaic = indexed.qualityMosaic('medioid_distance_');
+  var bandNames = mosaic.bandNames().remove('medioid_distance_');
+  return mosaic.select(bandNames);
 }
 
 /**
  * Returns a function that generates a medioid composite, suitable for
  * passing into temporalComposites as a reducer.
  *
- * @param {string|number} indexBand The band on which to index the medioid.
+ * @param {Array<string|number>|string|number} bands A band identifier
+ *    (a name, index or regexp) or a list of identifiers of the bands
+ *    to use to compute the median value. If omitted, all bands are used.
  * @return {function(*=): !ee.ImageCollection}
  */
-function createMedioidFunction(indexBand) {
+function createMedioidFunction(bands) {
   return function(collection) {
-    return createMedioidComposite(collection, indexBand);
+    return createMedioidComposite(collection, bands);
   };
 }
 

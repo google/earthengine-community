@@ -74,6 +74,28 @@ withEarthEngine('Composites', function() {
     });
   });
 
+  it('createMultibandMedioidComposite()', function(done) {
+    // Median idx = 3, so we expect the pixel(s) with idx closest to that
+    // value to be returned.
+    var testCollection = ee.ImageCollection([
+      // Value #1 for medioid function:
+      TestImage.create({a: 1, b: 1, c: 20, value: 200}),
+      // Value #2 for medioid function:
+      TestImage.create({a: 2, b: 1, c: 10, value: 100}),
+      // Value #3 for medioid function (medioid):
+      TestImage.create({a: 3, b: 3, c: 30, value: 300}),
+    ]);
+
+    var composite =
+        lct.Composites.createMedioidComposite(testCollection, ['a', 'b', 'c']);
+
+    TestImage.reduceConstant(composite).evaluate(function(actual, error) {
+      expect(error).toBeUndefined();
+      expect(actual).toEqual({a: 1, b: 1, c: 20, value: 200});
+      done();
+    });
+  });
+
   it('createMedioidFunction()', function(done) {
     // The first and last dates will be excluded by the temporal composite
     // criteria below. The 5 images in between will be used, with mosaic

@@ -94,7 +94,9 @@ function createMedioidComposite(collection, indexBand) {
   // Compute the median of the index band.
   indexBand = indexBand === undefined ? 0 : indexBand;
   var median = collection.select(indexBand).median();
-
+  
+  // Add a band containing the difference between the index band value for each
+  // pixel and the median of the index band across all pixels in the collection.
   var mosaic = collection.map(function(img) {
     var diff = median.subtract(img.select(indexBand)).abs();
     var index = ee.Image(0).subtract(diff);

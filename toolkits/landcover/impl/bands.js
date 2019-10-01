@@ -133,9 +133,7 @@ function addFractionalYearBand(collection) {
   });
 }
 
-exports.Bands = {
-  getSpectralIndices: getSpectralIndices,
-  addDateBand: addDateBand,
-  addDayOfYearBand: addDayOfYearBand,
-  addFractionalYearBand: addFractionalYearBand
-};
+exports.getSpectralIndices = getSpectralIndices;
+exports.addDateBand = addDateBand;
+exports.addDayOfYearBand = addDayOfYearBand;
+exports.addFractionalYearBand = addFractionalYearBand;

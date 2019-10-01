@@ -16,7 +16,7 @@
  */
 
 var Composites = require('users/google/toolkits:landcover/impl/composites.js').Composites;
-var Bands = require('users/google/toolkits:landcover/impl/bands.js').Bands;
+var Bands = require('users/google/toolkits:landcover/impl/bands.js');
 
 /**
  * Returns a new dataset instance for an arbitrary image collection.

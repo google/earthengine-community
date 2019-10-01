@@ -110,17 +110,18 @@ Dataset.prototype.createTemporalComposites = function(
 };
 
 /**
- * Computes a medioid composite by finding the median of one band
- * and returning the complete observation where that band is closest
- * to the median value.
+ * Computes a medioid composite by finding the median and returning the
+ * complete observation closest to the median value as measured by
+ * euclidiean distance over the specified band(s).
  *
- * @param {string} band The name of the band which to
- *    select the median value.
+ * @param {Array<string|number>|string|number=} bands A band identifier
+ *    (a name, index or regexp) or a list of identifiers of the bands
+ *    to use to compute the median value. If omitted, all bands are used.
  * @return {!ee.ImageCollection}
  */
-Dataset.prototype.createMedioidComposite = function(band) {
+Dataset.prototype.createMedioidComposite = function(bands) {
   this.collection_ = ee.ImageCollection(
-      [Composites.createMedioidComposite(this.collection_, band)]);
+      [Composites.createMedioidComposite(this.collection_, bands)]);
   return this;
 };
 

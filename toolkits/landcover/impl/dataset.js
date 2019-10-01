@@ -15,8 +15,7 @@
  * limitations under the License.
  */
 
-var Composites =
-    require('users/google/toolkits:landcover/impl/composites.js').Composites;
+var Composites = require('users/google/toolkits:landcover/impl/composites.js').Composites;
 var Bands = require('users/google/toolkits:landcover/impl/bands.js').Bands;
 
 /**

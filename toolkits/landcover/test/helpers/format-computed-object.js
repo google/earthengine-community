@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
- // Character used to generate indent.
+// Character used to generate indent.
 var INDENT_CHAR = ' ';
 // Number of INDENT_CHARs to render for each intent level.
 var INDENT_COUNT = 2;

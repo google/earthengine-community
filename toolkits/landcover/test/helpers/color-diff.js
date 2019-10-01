@@ -17,8 +17,7 @@
 
 var colors = require('colors/safe');
 var JsDiff = require('diff');
-var formatComputedObject =
-    require('./format-computed-object.js').formatComputedObject;
+var formatComputedObject = require('./format-computed-object.js').formatComputedObject;
 
 /**
  * Formats an individual diff for display.

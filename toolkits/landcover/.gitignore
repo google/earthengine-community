@@ -1,5 +1,5 @@
 !.gitignore
-!.eslintrc.yml
+!.eslintrc.json
 **/.*
 coverage
 node_modules

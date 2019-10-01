@@ -20,8 +20,8 @@
  * International Boundaries (LSIB) that matches the specified name or code. If
  * no boundaries match, an empty FeatureCollection is returned.
  *
- * @param {string} nameOrCode The US-recognized country or region name or the two-letter
- *     FIPS country code to match.
+ * @param {string} nameOrCode The US-recognized country or region name or the
+ *     two-letter FIPS country code to match.
  * @return {!ee.FeatureCollection}
  */
 function lsib(nameOrCode) {

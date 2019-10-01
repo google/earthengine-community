@@ -46,7 +46,7 @@ function createTemporalComposites(
     var begin = startDate.advance(interval.multiply(n), intervalUnits);
     var end = begin.advance(interval, intervalUnits);
     // Add a date band and mask it to the union of masks of input bands.
-    var images = collection.filterDate(begin, end).map(function (img) {
+    var images = collection.filterDate(begin, end).map(function(img) {
       var date = ee.Image.constant(img.date().millis()).rename('date').long();
       var mask = img.mask().reduce(ee.Reducer.max());
       return img.addBands(date.updateMask(mask));

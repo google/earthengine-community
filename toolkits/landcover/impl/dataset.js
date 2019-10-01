@@ -28,7 +28,6 @@ var Bands = require('users/google/toolkits:landcover/impl/bands.js').Bands;
  * @param {!ee.data.ImageVisualizationParameters} defaultVisParams The
  *     parameters to be used when adding the resulting collection to a layer for
  *     visualization.
- * @return {!Dataset}
  */
 var Dataset = function(id, defaultVisParams) {
   this.collection_ = ee.ImageCollection(id);
@@ -147,10 +146,11 @@ Dataset.prototype.computeCommonBandNames_ = function(bandNames) {
 
 /**
  * Add spectral indices to each image in the dataset.
- * @param {!string...} var_names The names of the spectral indexes to add.
+ * @param {...string} var_names The names of the spectral indexes to add.
  *     Must be string literals.
  * @return {!Dataset}
  */
+// eslint-disable-next-line camelcase
 Dataset.prototype.addBandIndices = function(var_names) {
   var indices = Array.prototype.slice.call(arguments);
 

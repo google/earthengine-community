@@ -24,8 +24,8 @@ var reporter = new JasmineConsoleReporter({
   colors: true,
   cleanStack: true,
   verbosity: 4,
-  listStyle: 'flat',  // "flat"|"indent"
-  timeUnit: 'ms',     // "ms"|"ns"|"s"
+  listStyle: 'flat', // "flat"|"indent"
+  timeUnit: 'ms', // "ms"|"ns"|"s"
   timeThreshold: {ok: 500, warn: 1000, ouch: 3000},
   activity: 'star',
   emoji: true,

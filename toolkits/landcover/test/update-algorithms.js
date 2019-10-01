@@ -31,8 +31,7 @@ var ALGORITHMS_PATH = 'test/unit/algorithms.json';
  *
  * @param {!Array<!Object>} algorithms The list of algorithms to be pruned.
  */
-var deleteDescriptions =
-    function(algorithms) {
+var deleteDescriptions = function(algorithms) {
   for (var key in algorithms) {
     var alg = algorithms[key];
     // Remove algorithm descriptions.
@@ -64,7 +63,7 @@ var updateAlgorithms = function() {
     deleteDescriptions(algorithms);
     var json = JSON.stringify(algorithms);
     fs.writeFile(ALGORITHMS_PATH, json, _logError);
-    console.log(`Algorithms written to ${ALGORITHMS_PATH}`);
+    console.log('Algorithms written to ' + ALGORITHMS_PATH);
   });
 };
 

@@ -61,8 +61,9 @@ var SPECTRAL_INDEX_EXPRESSIONS = {
 
 
 /**
- * Computes and adds the specified set of spectral indices to an image. Indicies
+ * Computes and adds the specified set of spectral indices to an image. Indices
  * must be one of:
+ *
  *   'ndvi', 'evi', 'savi', 'msavi', 'ndmi', 'nbr', 'nbr2', 'ndwi', 'mndwi',
  *   'ndbi', 'ndsi'
  *

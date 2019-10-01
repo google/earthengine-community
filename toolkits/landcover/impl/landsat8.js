@@ -51,7 +51,8 @@ var Landsat8 = function() {
   }
 
   // TODO(gino-m): Accept `type` "SR"|"TOA".
-  Dataset.call(this, 'LANDSAT/LC08/C01/T1_SR', DEFAULT_VIS_PARAMS);
+  Dataset.call(
+      this, ee.ImageCollection('LANDSAT/LC08/C01/T1_SR'), DEFAULT_VIS_PARAMS);
 };
 
 // Extend Dataset class. This causes Landsat8 to inherit all method and

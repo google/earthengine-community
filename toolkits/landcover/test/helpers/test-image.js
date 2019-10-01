@@ -18,6 +18,7 @@
 // Maximum number of constant images to fetch when processing test data
 // collections.
 var MAX_TEST_COLLECTION_SIZE = 15;
+
 /**
  * Returns a single constant ee.Image comprised of the bands and values in the
  * specified dictionary.

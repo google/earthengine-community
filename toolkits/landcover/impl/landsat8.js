@@ -15,8 +15,7 @@
  * limitations under the License.
  */
 
-var Dataset =
-    require('users/google/toolkits:landcover/impl/dataset.js').Dataset;
+var Dataset = require('users/google/toolkits:landcover/impl/dataset.js').Dataset;
 
 var COMMON_BAND_NAMES = {
   'B1': 'coastal',

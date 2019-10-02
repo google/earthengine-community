@@ -2,11 +2,11 @@
 title: Studying Land Surface Temperature for Public Health Research in Uganda
 description: This tutorial shows how to describe, visualize, and export Earth Engine exposure data for public health research.
 author: hiyer09
-tags: comma-separated, lowercase, list, of, related, keywords
+tags: temperature, descriptive analysis, Africa, remote sensing
 date_published: 2019-09-17
 ---
 
-[Open In Code Editor](https://code.earthengine.google.com/06a390335c67b8540d43dd469431baf6)
+[Open In Code Editor](https://code.earthengine.google.com/71e14cc3b383200c83007f89f82d1076)
 
 Learning objectives:
 * Introduce remote sensing data.

@@ -17,6 +17,7 @@
 
 var Composites = require('users/google/toolkits:landcover/impl/composites.js').Composites;
 var Bands = require('users/google/toolkits:landcover/impl/bands.js').Bands;
+var NamedArgs = require('users/google/toolkits:landcover/impl/named-args').NamedArgs;
 
 /**
  * Returns a new dataset instance for an arbitrary image collection.
@@ -104,8 +105,11 @@ Dataset.prototype.getDefaultVisParams = function() {
  */
 Dataset.prototype.createTemporalComposites = function(
     startDate, count, interval, intervalUnits, reducer) {
+  var args = NamedArgs.extractFromFunction(
+      Dataset.prototype.createTemporalComposites, arguments);
   this.collection_ = Composites.createTemporalComposites(
-      this.collection_, startDate, count, interval, intervalUnits, reducer);
+      this.collection_, args.startDate, args.count, args.interval,
+      args.intervalUnits, args.reducer);
   return this;
 };
 

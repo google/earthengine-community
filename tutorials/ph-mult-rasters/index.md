@@ -6,7 +6,7 @@ tags: comma-separated, lowercase, list, of, related, keywords
 date_published: 2019-09-18
 ---
 
-[Open In Code Editor](https://code.earthengine.google.com/7097a7dace39dbaa5025575dae46612f)
+[Open In Code Editor](https://code.earthengine.google.com/2d3ad0c07630e858f0274d86a207d994)
 
 It is desirable to pull multiple raster images for environmental public health research. Typically the research question will guide the temporal resolution, but in most cases having multiple images over the course of the year is useful to interrogate possible seasonal patterns in exposure-disease relationships.
 

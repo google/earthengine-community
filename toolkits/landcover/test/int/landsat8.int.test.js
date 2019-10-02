@@ -45,7 +45,7 @@ withEarthEngine('Landsat8', function() {
     var testCollection = ee.ImageCollection([clearPixel, cloudyPixel]);
     var l8 = TestLandsat8(testCollection);
 
-    var maskedL8 = l8.fmaskCloudsAndShadows();
+    var maskedL8 = l8.maskCloudsAndShadows();
 
     // Verify cloud-free pixel was returned.
     var image = maskedL8.getImageCollection().mosaic();
@@ -66,7 +66,7 @@ withEarthEngine('Landsat8', function() {
     var testCollection = ee.ImageCollection([clearPixel, shadowyPixel]);
     var l8 = TestLandsat8(testCollection);
 
-    var maskedL8 = l8.fmaskCloudsAndShadows();
+    var maskedL8 = l8.maskCloudsAndShadows();
 
     // Verify cloud shadow-free pixel was returned.
     var image = maskedL8.getImageCollection().mosaic();

@@ -1,6 +1,0 @@
-!.gitignore
-!.eslintrc.json
-**/.*
-coverage
-node_modules
-out

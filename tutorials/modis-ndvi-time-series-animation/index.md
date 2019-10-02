@@ -105,7 +105,7 @@ col = col.map(function(img) {
 });
 ```
 
-A join operation will be implemented that groups images by the 'doy' property just added. The join opperation 
+A join operation will be implemented that groups images by the 'doy' property just added. The join operation 
 expects two collections, in this case: a distinct DOY collection and the complete collection modified to
 include the 'doy' property. The complete collection (`col`) exists, the distinct collection needs to be defined.
 Do so by filtering the complete collection to a single year of data e.g. 2013. 

@@ -98,8 +98,8 @@ function createTemporalComposites(
  */
 function createMedioidComposite(collection, bands) {
   var args = NamedArgs.extractFromFunction(createMedioidComposite, arguments);
-  var collection = args.collection;
-  var bands = args.bands === undefined ? '.*' : args.bands;
+  collection = args.collection;
+  bands = args.bands === undefined ? '.*' : args.bands;
 
   // Compute the distance from the median of the index band.
   var median = collection.select(bands).median();
@@ -126,8 +126,9 @@ function createMedioidComposite(collection, bands) {
  */
 function createMedioidFunction(bands) {
   var args = NamedArgs.extractFromFunction(createMedioidFunction, arguments);
+  var bands = args.bands;
   return function(collection) {
-    return createMedioidComposite(collection, args.bands);
+    return createMedioidComposite(collection, bands);
   };
 }
 

@@ -38,7 +38,7 @@ function TestLandsat8(testCollection) {
 }
 
 withEarthEngine('Landsat8', function() {
-  it('fmaskCloudsAndShadows() masks cloudy pixels', function(done) {
+  it('maskCloudsAndShadows() masks cloudy pixels', function(done) {
     var clearPixel = TestImage.create({pixel_qa: 0, B4: CLEAR_PIXEL_VALUE});
     var cloudyPixel = TestImage.create(
         {pixel_qa: lct.Landsat8.CLOUD_BIT_MASK, B4: CLOUDY_PIXEL_VALUE});
@@ -57,7 +57,7 @@ withEarthEngine('Landsat8', function() {
     });
   });
 
-  it('fmaskCloudsAndShadows() masks shadowy pixels', function(done) {
+  it('maskCloudsAndShadows() masks shadowy pixels', function(done) {
     var clearPixel = TestImage.create({pixel_qa: 0, B4: CLEAR_PIXEL_VALUE});
     var shadowyPixel = TestImage.create({
       pixel_qa: lct.Landsat8.CLOUD_SHADOW_BIT_MASK,

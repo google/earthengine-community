@@ -33,14 +33,19 @@ var FUNCTION_REGEX = /^function\s*(?:.*?)\(\s*(.*)\s*\)/;
  *   specified function declaration.
  */
 function extractFromFunction(fn, originalArgs) {
+  // Functions with a single dictionary argument are assumed to have been
+  // invoked using named args. This precludes us using named args for functions
+  // that take a single dictionary as arguments. 
   if (originalArgs.length == 1 && typeof originalArgs[0] === 'object') {
     return originalArgs[0];
   }
+  // Extract arg names using heuristic regex.
   var regexMatch = fn.toString().match(FUNCTION_REGEX);
   if (!regexMatch || regexMatch.length < 2) {
     throw new Error('Unsupported function declaration:\n' + fn.toString());
   }
   var argNames = regexMatch[1].split(',');
+  // Build dictionary keyed by argument name.
   var dict = {};
   for (var i in argNames) {
     var argName = argNames[i].trim();

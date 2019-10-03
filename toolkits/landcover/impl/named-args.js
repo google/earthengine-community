@@ -31,6 +31,8 @@ var NamedArgs = {};
  * @param {!Function} fn The function declaration.
  * @param {!Array<*>} originalArgs The original arguments passed to the function
  *   call.
+ * @return {*} Dictionary with values keyed by argument names defined in the
+ *   specified function declaration.
  */
 NamedArgs.extractFromFunction = function(fn, originalArgs) {
   if (originalArgs.length == 1 && typeof originalArgs[0] === 'object') {

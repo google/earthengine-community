@@ -21,8 +21,6 @@
  */
 var FUNCTION_REGEX = /^function\s*(?:.*?)\(\s*(.*)\s*\)/;
 
-var NamedArgs = {};
-
 /**
  * Returns a dictionary of arguments keyed by function argument name. Toolkit
  * functions to simulate the "named args" feature of other popular languages
@@ -34,7 +32,7 @@ var NamedArgs = {};
  * @return {*} Dictionary with values keyed by argument names defined in the
  *   specified function declaration.
  */
-NamedArgs.extractFromFunction = function(fn, originalArgs) {
+function extractFromFunction(fn, originalArgs) {
   if (originalArgs.length == 1 && typeof originalArgs[0] === 'object') {
     return originalArgs[0];
   }
@@ -51,4 +49,6 @@ NamedArgs.extractFromFunction = function(fn, originalArgs) {
   return dict;
 };
 
-exports.NamedArgs = NamedArgs;
+exports.NamedArgs = {
+  extractFromFunction: extractFromFunction
+};

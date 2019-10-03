@@ -43,7 +43,6 @@ NamedArgs.extractFromFunction = function(fn, originalArgs) {
     throw new Error('Unsupported function declaration:\n' + fn.toString());
   }
   var argNames = regexMatch[1].split(',');
-
   var dict = {};
   for (var i in argNames) {
     var argName = argNames[i].trim();

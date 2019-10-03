@@ -76,7 +76,7 @@ var SPECTRAL_INDEX_EXPRESSIONS = {
 function getSpectralIndices(image, indices) {
   var args = NamedArgs.extractFromFunction(getSpectralIndices, arguments);
   image = args.image;
-  indicies = args.indices;
+  indices = args.indices;
   // We can't check the existence of the specified indices if they're EEObjects.
   if (!(indices instanceof ee.ComputedObject)) {
     // Check that all the specified indexes exist.

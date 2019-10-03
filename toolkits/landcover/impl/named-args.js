@@ -40,7 +40,8 @@ NamedArgs.extractFromFunction = function(fn, originalArgs) {
   if (!regexMatch || regexMatch.length < 2) {
     throw new Error('Unsupported function declaration:\n' + fn.toString());
   }
-  var argNames= regexMatch[1].split(',');
+  var argNames = regexMatch[1].split(',');
+
   var dict = {};
   for (var i in argNames) {
     var argName = argNames[i].trim();

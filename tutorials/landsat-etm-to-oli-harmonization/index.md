@@ -1,3 +1,10 @@
+---
+title: Landsat ETM+ to OLI Harmonization
+description: Inter-sensor Landsat harmonization and time series visualization application.
+author: jdbcode
+tags: landsat, etm+, oli, tm, harmonization, time-series, join, reduce, visualization, fmask, cloud-mask, analysis-ready-data, ard
+date_published: 2019-08-29
+---
 <!--
 Copyright 2019 Google LLC
 
@@ -12,13 +19,6 @@ distributed under the License is distributed on an "AS IS" BASIS,
 WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
--->
-<!--
-title: Landsat ETM+ to OLI Harmonization
-description: Inter-sensor Landsat harmonization and time series visualization application.
-author: jdbcode
-tags: landsat, etm+, oli, tm, harmonization, time-series, join, reduce, visualization, fmask, cloud-mask, analysis-ready-data, ard
-date_published: 2019-08-29
 -->
 
 [Open In Code Editor](https://code.earthengine.google.com/798ae7a268f8e2c8022433b9562785c0)

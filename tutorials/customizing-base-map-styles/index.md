@@ -1,6 +1,6 @@
 ---
 title: Customizing base map styles
-description: If you are getting bored of looking at the same two default basemaps in Earth Engine, or need to use a specific visualization for functionality/convenience, this tutorial will show you how to edit all of its characteristics. 
+description: If you are getting bored of looking at the same two default basemaps in Earth Engine, or need to use a specific visualization for functionality/convenience, this tutorial will show you how to edit all of its characteristics.
 author: TC25
 tags: Earth Engine, Base Map, UI, Widgets
 date_published: 2019-09-16

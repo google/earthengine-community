@@ -29,7 +29,7 @@ Map.addLayer(canopyCover.selfMask(), {
     max: 100
 }, 'tree cover: all trees 2000 (yellow)', false);
 
-// Extract canopy cover that meets the minimum canopy cover percentage. 
+// Extract canopy cover that meets the minimum canopy cover percentage.
 var canopyCover10 = canopyCover.gte(cc).selfMask();
 Map.addLayer(canopyCover10, {
     palette: ['#EB7F00'],
@@ -73,7 +73,7 @@ Export.table.toDrive({
 });
 
 // Check the actual minimum area size used for this estimate.
-// Adjust the number of pixels if necessary. 
+// Adjust the number of pixels if necessary.
 var pixelCount = minArea.reduceRegion({
     reducer: ee.Reducer.count(),
     geometry: selected.geometry(),
@@ -113,10 +113,10 @@ Map.addLayer(treecoverLoss01, {
 
 // Create connectedPixelCount() to get contiguous area.
 var contLoss = treecoverLoss01.connectedPixelCount();
-// Apply the minimum area requirement. 
+// Apply the minimum area requirement.
 var minLoss = contLoss.gte(lossPixels).selfMask();
 
-// Display the results in the map. 
+// Display the results in the map.
 // The areas less than the threshold are shown in brown.
 Map.addLayer(minLoss.reproject(prj.atScale(scale)), {
     min: 0,
@@ -158,7 +158,7 @@ Map.addLayer(minArea01.reproject(prj.atScale(scale)), {
     palette: ['#168039']
 }, 'tree cover 2001 (gain not considered) (dark green)');
 
-// Calculate the tree cover in hectare. 
+// Calculate the tree cover in hectare.
 var forestArea01 = minArea01.multiply(ee.Image.pixelArea()).divide(
     10000);
 var forestSize01 = forestArea01.reduceRegion({

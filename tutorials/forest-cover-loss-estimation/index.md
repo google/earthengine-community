@@ -3,7 +3,7 @@ title: Forest Cover and Loss Estimation
 description: Estimate tree area and loss by country based on minimum canopy cover and forest area definition.
 author: nkeikon
 tags: forest, deforestation, mmu, ghg, redd, mrv, frel, frl
-date_published: 2019-08-31
+date_published: 2019-10-04
 ---
 [Open In Code Editor](https://code.earthengine.google.com/b01025e5157ed6959df69f0d58dfbefc)
 

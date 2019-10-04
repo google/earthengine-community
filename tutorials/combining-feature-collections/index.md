@@ -1,12 +1,12 @@
 ---
 title: Combine FeatureCollections into a new FeatureCollection
-description: This basic tutorial shows how users can combine two FeatureCollections into one. It is targeted at beginners.
+description: This basic tutorial shows how users can combine two FeatureCollections into one. It is targeted at beginners. The format of this tutorial was based on Prof. Dana Tomlin's Earth Engine notes.
 author: sabrinaszeto
 tags: beginner, featurecollection
-date_published: 2019-09-18
+date_published: 2019-10-04
 ---
 
-[Open In Code Editor](https://code.earthengine.google.com/b4a2877c24cdd175bca2d7252cd733de)
+[Open In Code Editor](https://code.earthengine.google.com/cef3a27210b41e953a53b66cae8d26cd)
 
 This basic tutorial shows how users can combine two `ee.FeatureCollection`s into a new `ee.FeatureCollection`.
 
@@ -15,7 +15,7 @@ This basic tutorial shows how users can combine two `ee.FeatureCollection`s into
 Let's begin by generating two sets of random points within the boundary of Utah state in USA. First, define the boundary of Utah as a geometry.
 
 ```
-var UtahGEOMETRY = ee.Geometry.Polygon([
+var utahGeometry = ee.Geometry.Polygon([
     [-114.05, 37],
     [-109.05, 37],
     [-109.05, 41],
@@ -27,8 +27,8 @@ var UtahGEOMETRY = ee.Geometry.Polygon([
 
 Then, generate two sets of different random points containing 25 points each. We ensure that the points are different by using a different seed, namely 12 and 1, to generate each set.
 ```
-var NewFEATURES = ee.FeatureCollection.randomPoints(UtahGEOMETRY, 25, 12);
-var MoreNewFEATURES = ee.FeatureCollection.randomPoints(UtahGEOMETRY, 25, 1);
+var newFeatures = ee.FeatureCollection.randomPoints(utahGeometry, 25, 12);
+var moreNewFeatures = ee.FeatureCollection.randomPoints(utahGeometry, 25, 1);
 ```
 
 ## Combine the `ee.FeatureCollection` objects
@@ -36,23 +36,29 @@ var MoreNewFEATURES = ee.FeatureCollection.randomPoints(UtahGEOMETRY, 25, 1);
 Next, create a new `ee.FeatureCollection` using a list of the desired `ee.FeatureCollection`s to combine. Then, flatten them into a single `ee.FeatureCollection`.
 
 ```
-var combinedFeatureCOLLECTION = ee.FeatureCollection([NewFEATURES,MoreNewFEATURES]).flatten();
+var combinedFeatureCollection = ee.FeatureCollection([newFeatures,moreNewFeatures]).flatten();
 ```
 
 ## Visualize the Results
 
-Let's add all the `ee.FeatureCollection`s to the map. We will also print the results.
+Let's add all the `ee.FeatureCollection`s to the map. First, we set the center of the map to the coordinates defined below and set the zoom level to 6. 
 
 ```
 Map.setCenter(-111.445, 39.251, 6);
-
-Map.addLayer(NewFEATURES, {}, "New Features");
-Map.addLayer(MoreNewFEATURES,{color:'red'},"More New Features");
-Map.addLayer(combinedFeatureCOLLECTION, {color:'yellow'}, "Combined FeatureCollection");
-
-print(NewFEATURES, MoreNewFEATURES, combinedFeatureCOLLECTION);
 ```
 
-## Bonus
+Now, we add all the layers, specifying the layer labels as text strings (for example, `"New Features"`) and colors to display each layer in. We will also print the results.
 
-What happens if you don't flatten the `ee.FeatureCollection`s? Delete `.flatten()` and run the script again to find out. 
+```
+Map.addLayer(newFeatures, {}, "New Features");
+Map.addLayer(moreNewFeatures,{color:'red'},"More New Features");
+Map.addLayer(combinedFeatureCollection, {color:'yellow'}, "Combined FeatureCollection");
+
+print(newFeatures, moreNewFeatures, combinedFeatureCollection);
+```
+
+## Bonus Points
+
+- What happens if you don't flatten the `ee.FeatureCollection`s? Delete `.flatten()` and run the script again to find out. 
+- What happens if you change the zoom level in `Map.setCenter` to `3` or to `12`?
+- Try changing the layer label of `"More New Features"` to `"Red Points"`. Run the script again to see if it worked.

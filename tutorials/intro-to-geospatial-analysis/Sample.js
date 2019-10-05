@@ -75,7 +75,7 @@ Map.addLayer(mean);
 //  Image to table example
 var urban=ee.FeatureCollection('users/tirthankar25/chicago');
 //  Function to find mean of pixels in region of interest
-var regions = function(image) { return image.reduceRegions({collection: urban, reducer: ee.Reducer.mean(), scale: 1000, }); };
+var regions = function(image) {return image.reduceRegions({collection: urban, reducer: ee.Reducer.mean(), scale: 1000, }); };
 //  Load image
 var image=ee.ImageCollection('MODIS/MYD13A1').filterDate('2002-07-08', '2017-07-08').mean().select("NDVI");
 print(image)

@@ -52,7 +52,7 @@ var varFeature = ee.Feature(varGeometry, {
 //  var Arr=varFeature.get('Size');
 //  print (Arr);
 //  Select a subset of properties and rename them
-var var_Featurenew = varFeature.select(['Name'], ['Descriptor']);
+var varFeaturenew = varFeature.select(['Name'], ['Descriptor']);
 print(varFeaturenew);
 //  Images
 Map.setCenter(-88, 41.8, 9);

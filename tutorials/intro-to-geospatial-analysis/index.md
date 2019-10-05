@@ -19,9 +19,9 @@ Collection, visualization, and analysis of geographical or spatial data.
 
 ## Data types
 
-- Vector data represent lat-long coordinates
+-Vector data represent lat-long coordinates
 
-- Raster data comprises of pixels with associated values
+-Raster data comprises of pixels with associated values
 
 ---
 

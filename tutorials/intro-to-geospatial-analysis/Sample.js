@@ -9,7 +9,7 @@ function multi(feature) {
   //  Create buffer around geometry; the number represents the width of buffer in meters
   var buff = center.buffer(500);
   //  return variable from function
-  return buff
+  return buff;
 }
 //  Load Feature Collection of the dissolved boundary of Chicago stored in assets
 var Chic = ee.FeatureCollection('users/tirthankar25/chicago_diss');
@@ -45,15 +45,15 @@ Map.addLayer(Chic, {}, 'Chicago dissolved');
 var varGeometry = ee.Geometry.Polygon(0, 0, 40, 30, 20, 20, 0, 0);
 //  Create Feature from Geometry
 var varFeature = ee.Feature(varGeometry, {
-  Name: ["Feature name", "Supreme"],
+  Name: ['Feature name', 'Supreme'],
   Size: [500, 1000]
 });
 //  Get values of a property
 //  var Arr=varFeature.get('Size');
 //  print (Arr);
 //  Select a subset of properties and rename them
-var var_Featurenew = varFeature.select(["Name"], ["Descriptor"]);
-print(varFeaturenew)
+var var_Featurenew = varFeature.select(['Name'], ['Descriptor']);
+print(varFeaturenew);
 //  Images
 Map.setCenter(-88, 41.8, 9);
 var Raw = ee.ImageCollection('MODIS/006/MYD11A2');
@@ -88,8 +88,9 @@ var regions = function(image) {
   });
 };
 //  Load image
-var image = ee.ImageCollection('MODIS/MYD13A1').filterDate('2002-07-08', '2017-07-08').mean().select("NDVI");
-print(image)
+var image = ee.ImageCollection('MODIS/MYD13A1').filterDate('2002-07-08', '2017-07-08')
+              .mean().select('NDVI');
+print(image);
 //  .select("Albedo_BSA_shortwave").multiply(.001);
 //  .select('avg_rad');
 //  .select('cf_cvg');
@@ -117,7 +118,7 @@ var AllIMAGES = ee.ImageCollection('LANDSAT/LT05/C01/T1_TOA')
   .select(['B4', 'B3', 'B2'])
   //  Make the data 8 bit
   .map(function(image) {
-    return image.multiply(512).uint8()
+    return image.multiply(512).uint8();
   });
 Export.video.toDrive({
   collection: AllIMAGES,

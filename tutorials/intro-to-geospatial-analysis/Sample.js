@@ -2,14 +2,14 @@
 Map.setCenter(-88, 41.8, 9);
 
 function multi(feature) {
-  //  Reduce number of vertices in geometry; the number is to specify maximum error in meters
-  var simple = feature.simplify(1000);
-  //  Find centroid of geometry
-  var center = simple.centroid();
-  //  Create buffer around geometry; the number represents the width of buffer in meters
-  var buff = center.buffer(500);
-  //  return variable from function
-  return buff;
+ //  Reduce number of vertices in geometry; the number is to specify maximum error in meters
+ var simple = feature.simplify(1000);
+ //  Find centroid of geometry
+ var center = simple.centroid();
+ //  Create buffer around geometry; the number represents the width of buffer in meters
+ var buff = center.buffer(500);
+ //  return variable from function
+ return buff;
 }
 //  Load Feature Collection of the dissolved boundary of Chicago stored in assets
 var Chic = ee.FeatureCollection('users/tirthankar25/chicago_diss');
@@ -45,8 +45,8 @@ Map.addLayer(Chic, {}, 'Chicago dissolved');
 var varGeometry = ee.Geometry.Polygon(0, 0, 40, 30, 20, 20, 0, 0);
 //  Create Feature from Geometry
 var varFeature = ee.Feature(varGeometry, {
-  Name: ['Feature name', 'Supreme'],
-  Size: [500, 1000]
+ Name: ['Feature name', 'Supreme'],
+ Size: [500, 1000]
 });
 //  Get values of a property
 //  var Arr=varFeature.get('Size');
@@ -81,15 +81,15 @@ Map.addLayer(mean);
 var urban = ee.FeatureCollection('users/tirthankar25/chicago');
 //  Function to find mean of pixels in region of interest
 var regions = function(image) {
-  return image.reduceRegions({
-    collection: urban,
-    reducer: ee.Reducer.mean(),
-    scale: 1000,
-  });
+ return image.reduceRegions({
+  collection: urban,
+  reducer: ee.Reducer.mean(),
+  scale: 1000,
+ });
 };
 //  Load image
 var image = ee.ImageCollection('MODIS/MYD13A1').filterDate('2002-07-08', '2017-07-08')
-              .mean().select('NDVI');
+ .mean().select('NDVI');
 print(image);
 //  .select("Albedo_BSA_shortwave").multiply(.001);
 //  .select('avg_rad');
@@ -99,35 +99,35 @@ var Final = regions(image);
 //  var Final=Final.select(['mean','nbhd_code', 'nbhd'],['Albedo','nbhd_code', 'nbhd']);
 //  Export image
 Export.table.toDrive({
-  collection: Final,
-  description: 'NDVI_all',
-  fileFormat: 'CSV'
+ collection: Final,
+ description: 'NDVI_all',
+ fileFormat: 'CSV'
 });
 //  Timelapse example (based on google API example);
 var TheGEOMETRY = ee.Geometry.Rectangle([55.1, 25, 55.4, 25.4]);
 Map.addLayer(TheGEOMETRY);
 var AllIMAGES = ee.ImageCollection('LANDSAT/LT05/C01/T1_TOA')
-  //  Filter row and path such that they cover Dubai.
-  .filter(ee.Filter.eq('WRS_PATH', 160))
-  .filter(ee.Filter.eq('WRS_ROW', 43))
-  // Filter cloudy scenes
-  .filter(ee.Filter.lt('CLOUD_COVER', 30))
-  // Get required years of imagery.
-  .filterDate('1984-01-01', '2012-12-30')
-  // Select 3-band imagery for the video.
-  .select(['B4', 'B3', 'B2'])
-  //  Make the data 8 bit
-  .map(function(image) {
-    return image.multiply(512).uint8();
-  });
+ //  Filter row and path such that they cover Dubai.
+ .filter(ee.Filter.eq('WRS_PATH', 160))
+ .filter(ee.Filter.eq('WRS_ROW', 43))
+ // Filter cloudy scenes
+ .filter(ee.Filter.lt('CLOUD_COVER', 30))
+ // Get required years of imagery.
+ .filterDate('1984-01-01', '2012-12-30')
+ // Select 3-band imagery for the video.
+ .select(['B4', 'B3', 'B2'])
+ //  Make the data 8 bit
+ .map(function(image) {
+  return image.multiply(512).uint8();
+ });
 Export.video.toDrive({
-  collection: AllIMAGES,
-  //  Name of file
-  description: 'Dubai_timelapse',
-  //  Quality of video
-  dimensions: 720,
-  //  FPS of video
-  framesPerSecond: 8,
-  //  Region of export
-  region: TheGEOMETRY
+ collection: AllIMAGES,
+ //  Name of file
+ description: 'Dubai_timelapse',
+ //  Quality of video
+ dimensions: 720,
+ //  FPS of video
+ framesPerSecond: 8,
+ //  Region of export
+ region: TheGEOMETRY
 });

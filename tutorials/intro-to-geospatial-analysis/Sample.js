@@ -39,6 +39,7 @@ Map.addLayer(Chic, {}, 'Chicago dissolved');
 //  Find permeter of feature
 //  var peri=Chic.geometry().perimeter();
 //  print (peri)
+
 //  Features
 //  Create Geometry
 var varGeometry = ee.Geometry.Polygon(0, 0, 40, 30, 20, 20, 0, 0);
@@ -53,6 +54,7 @@ var varFeature = ee.Feature(varGeometry, {
 //  Select a subset of properties and rename them
 var varFeaturenew = varFeature.select(['Name'], ['Descriptor']);
 print(varFeaturenew);
+
 //  Images
 Map.setCenter(-88, 41.8, 9);
 var Raw = ee.ImageCollection('MODIS/006/MYD11A2');
@@ -76,6 +78,7 @@ Map.addLayer(mean);
 //  Map.addLayer(Masked,{min: 20, max: 30, palette: ['blue', 'green', 'red']},'LST_masked');
 //  var filtered=Raw.filterDate('2002-12-30','2004-4-27');
 //  print(filtered);
+
 //  Image to table example
 var urban = ee.FeatureCollection('users/tirthankar25/chicago');
 //  Function to find mean of pixels in region of interest
@@ -102,6 +105,7 @@ Export.table.toDrive({
  description: 'NDVI_all',
  fileFormat: 'CSV'
 });
+
 //  Timelapse example (based on google API example);
 var TheGEOMETRY = ee.Geometry.Rectangle([55.1, 25, 55.4, 25.4]);
 Map.addLayer(TheGEOMETRY);

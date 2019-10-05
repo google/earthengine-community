@@ -1,6 +1,6 @@
 //  Geometries
 Map.setCenter(-88, 41.8, 9);
-function multi(feature){
+function multi(feature) {
   //  Reduce number of vertices in geometry; the number is to specify maximum error in meters
   var simple = feature.simplify(1000);
   //  Find centroid of geometry
@@ -75,7 +75,7 @@ Map.addLayer(mean);
 //  Image to table example
 var urban=ee.FeatureCollection('users/tirthankar25/chicago');
 //  Function to find mean of pixels in region of interest
-var regions = function(image){ return image.reduceRegions({collection: urban, reducer: ee.Reducer.mean(), scale: 1000, }); };
+var regions = function(image) { return image.reduceRegions({collection: urban, reducer: ee.Reducer.mean(), scale: 1000, }); };
 //  Load image
 var image=ee.ImageCollection('MODIS/MYD13A1').filterDate('2002-07-08', '2017-07-08').mean().select("NDVI");
 print(image)

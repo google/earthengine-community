@@ -6,7 +6,7 @@ tags: introductory, GIS, remote sensing, Google Earth Engine
 date_published: 2019-10-05
 ---
 
-[Geometries - Open In Code Editor](https://code.earthengine.google.com/2f8ac6fe92f8fa7aff23eedb087c7d12) 
+[Geometries - Open In Code Editor](https://code.earthengine.google.com/2f8ac6fe92f8fa7aff23eedb087c7d12)
 
 [Features - Open In Code Editor](https://code.earthengine.google.com/1cd4cb760f71a56dce1cabcf44feec27)
 
@@ -71,7 +71,7 @@ Source: Google Earth Engine User summit
 
 ### Declaring variables
 ```javascript
-var varname = Containerforvariabletype(variable name); 
+var varName = Containerforvariabletype(variable name); 
 ```
 A container (in the form ee.variabletype) is used to wrap up a native javascript object type so that Google's server can recognize its structure and perform operations on it
 
@@ -83,13 +83,13 @@ Map.setCenter(long, lat, zoom level);
 
 ### Displaying metadata
 ```javascript
-print(variable name)
+print(varName)
 ```
 You cannot print more than 5000 elements at once
 
 ### Adding a layer to the map
 ```javascript
-Map.addLayer(VARIABLENAME);
+Map.addLayer(varName);
 ```
 
 ---

@@ -32,7 +32,7 @@ Collection, visualization, and analysis of geographical or spatial data.
 
 - Lines
 
-![Lines](line-vector.png)
+![Lines](line-vector.png, "Lines")
 
 - Polygons
 

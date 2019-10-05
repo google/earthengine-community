@@ -63,7 +63,7 @@ Source: Google Earth Engine User summit
 
 ---
 
-![Code Editor (Source: developers.google.com)](ee-editor)
+![Code Editor (Source: developers.google.com)](ee-editor.png)
 
 ---
 

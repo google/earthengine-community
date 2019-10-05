@@ -1,5 +1,5 @@
 //  Geometries
-Map.setCenter(-88, 41.8, 9)
+Map.setCenter(-88, 41.8, 9);
 function multi(feature){
   //  Reduce number of vertices in geometry; the number is to specify maximum error in meters
   var simple = feature.simplify(1000);
@@ -16,8 +16,8 @@ var Chic=ee.FeatureCollection('users/tirthankar25/chicago_diss');
 //  Map function over Feature Collection
 //  var Res=Chic_coll.map(multi);
 //  Add the layer to the map
-// Map.addLayer(Res)
-Map.addLayer(Chic, {},'Chicago dissolved')
+// Map.addLayer(Res);
+Map.addLayer(Chic, {},'Chicago dissolved');
 //  Find the rectangle that emcompasses the southernmost, westernmost, easternmost, and northernmost
 //  points of the feature
 //  var bound = Chic.geometry().bounds();
@@ -45,52 +45,52 @@ var var_Geometry=ee.Geometry.Polygon(0,0, 40,30, 20, 20, 0, 0);
 var var_Feature = ee.Feature(var_Geometry, {Name: ["Feature name","Supreme"], Size: [500, 1000]});
 //  Get values of a property
 //  var Arr=var_Feature.get('Size');
-//  print (Arr)
+//  print (Arr);
 //  Select a subset of properties and rename them
 var var_Featurenew = var_Feature.select(["Name"], ["Descriptor"]);
 print(var_Featurenew)
 //  Images
-Map.setCenter(-88, 41.8, 9)
+Map.setCenter(-88, 41.8, 9);
 var Raw = ee.ImageCollection('MODIS/006/MYD11A2');
 var ROI = ee.FeatureCollection('users/tirthankar25/chicago');
-print(Raw)
-var bandsel=Raw.select(0)
-//  var bandsel=Raw.select('LST_Day_1km')
+print(Raw);
+var bandsel=Raw.select(0);
+//  var bandsel=Raw.select('LST_Day_1km');
 //  var filtered=Raw.filterDate('2002-12-30','2004-4-27');
-//  print(filtered)
+//  print(filtered);
 //  var limited=Raw.limit(50);
-//  print(limited)
-//  print(bandsel)
+//  print(limited);
+//  print(bandsel);
 var mean=bandsel.mean();
 Map.addLayer(mean);
 //  var clipped=mean.clip(ROI);
 //  var calculate=clipped.multiply(.02).subtract(273.15);
-//  Map.addLayer(calculate,{min: 30, max: 40, palette: ['blue', 'green', 'red']},'LST')
-//  var mask=calculate.gt(30.8)
-//  Map.addLayer(mask,{},"mask")
-//  var Masked=clipped.mask(mask)
-//  Map.addLayer(Masked,{min: 20, max: 30, palette: ['blue', 'green', 'red']},'LST_masked')
+//  Map.addLayer(calculate,{min: 30, max: 40, palette: ['blue', 'green', 'red']},'LST');
+//  var mask=calculate.gt(30.8);
+//  Map.addLayer(mask,{},"mask");
+//  var Masked=clipped.mask(mask);
+//  Map.addLayer(Masked,{min: 20, max: 30, palette: ['blue', 'green', 'red']},'LST_masked');
 //  var filtered=Raw.filterDate('2002-12-30','2004-4-27');
-//  print(filtered)
+//  print(filtered);
 //  Image to table example
 var urban=ee.FeatureCollection('users/tirthankar25/chicago');
 //  Function to find mean of pixels in region of interest
-var regions = function(image){ return image.reduceRegions({collection: urban, reducer: ee.Reducer.mean(), scale: 1000, }); }
+var regions = function(image){ return image.reduceRegions({collection: urban, reducer: ee.Reducer.mean(), scale: 1000, }); };
 //  Load image
 var image=ee.ImageCollection('MODIS/MYD13A1').filterDate('2002-07-08', '2017-07-08').mean().select("NDVI");
 print(image)
-//  .select("Albedo_BSA_shortwave").multiply(.001)
-//  .select('avg_rad')
-//  .select('cf_cvg')
-//  .select('ET').multiply(.1)
+//  .select("Albedo_BSA_shortwave").multiply(.001);
+//  .select('avg_rad');
+//  .select('cf_cvg');
+//  .select('ET').multiply(.1);
 var Final = regions(image);
 //  var Final=Final.select(['mean','nbhd_code', 'nbhd'],['Albedo','nbhd_code', 'nbhd']);
 //  Export image
 Export.table.toDrive({
 collection: Final,  description: 'NDVI_all',  fileFormat: 'CSV'});
-//  Timelapse example (based on google API example)
+//  Timelapse example (based on google API example);
 var TheGEOMETRY = ee.Geometry.Rectangle([55.1, 25, 55.4, 25.4]);
-Map.addLayer(TheGEOMETRY)
+Map.addLayer(TheGEOMETRY);
 var AllIMAGES   = ee.ImageCollection('LANDSAT/LT05/C01/T1_TOA')
 //  Filter row and path such that they cover Dubai.
 .filter(ee.Filter.eq('WRS_PATH', 160))

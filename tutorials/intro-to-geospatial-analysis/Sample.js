@@ -1,6 +1,5 @@
 //  Geometries
 Map.setCenter(-88, 41.8, 9);
-
 function multi(feature) {
  //  Reduce number of vertices in geometry; the number is to specify maximum error in meters
  var simple = feature.simplify(1000);

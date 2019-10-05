@@ -19,7 +19,7 @@ var Chic=ee.FeatureCollection('users/tirthankar25/chicago_diss');
 //  Map function over Feature Collection
 //  var Res=Chic_coll.map(multi);
 //  Add the layer to the map
-/ /Map.addLayer(Res)
+// Map.addLayer(Res)
 
 Map.addLayer(Chic, {},'Chicago dissolved')
 //  Find the rectangle that emcompasses the southernmost, westernmost, easternmost, and northernmost

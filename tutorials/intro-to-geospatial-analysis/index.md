@@ -28,19 +28,19 @@ Collection, visualization, and analysis of geographical or spatial data.
 
 - Points
 
-![Points](https://github.com/TC25/Geospatial_workshop_EE/blob/master/images/points-vector.png "Points")
+![Points](points.png)
 
 - Lines
 
-![Lines](https://github.com/TC25/Geospatial_workshop_EE/blob/master/images/line-vector.png "Lines")
+![Lines](line-vector.png)
 
 - Polygons
 
-![Polygons](https://github.com/TC25/Geospatial_workshop_EE/blob/master/images/polygon-vector.png "Polygons")
+![Polygons](polygon-vector.png)
 
 - Raster layers/bands
 
-![Raster](https://github.com/TC25/Geospatial_workshop_EE/blob/master/images/Map-Algebra.png "Raster")
+![Raster](map-algebra.png)
 
 
 ---
@@ -63,7 +63,7 @@ Source: Google Earth Engine User summit
 
 ---
 
-![Code Editor](https://github.com/TC25/Geospatial_workshop_EE/blob/master/images/EE_v2.png "Code Editor (Source: developers.google.com)")
+![Code Editor (Source: developers.google.com)](ee-editor)
 
 ---
 
@@ -172,7 +172,7 @@ var multiploy = ee.Geometry.MultiPolygon([ee.Geometry.Polygon([[0, 0], [6, 3], [
 - Feature Collections are groups of features
 
 
-![Chicago map by neighborhood](https://github.com/TC25/Geospatial_workshop_EE/blob/master/images/GRC.png "Chicago Map by neighborhood")
+![Chicago map by neighborhood](chicago-census.png)
 
 ---
 
@@ -408,7 +408,7 @@ var mosaic_of_images = var_ImCollection.mosaic();
 
 [Dubai timelapse](https://www.youtube.com/watch?v=6gK4Fd-WSM4&feature=youtu.be "Dubai timelapse")
 
-![Urban growth in Dubai](https://github.com/TC25/Geospatial_workshop_EE/blob/master/images/Dubai_change.png "Dubai Change")
+![Urban growth in Dubai](dubai-change.png)
 
 
 

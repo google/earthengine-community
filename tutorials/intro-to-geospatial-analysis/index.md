@@ -12,7 +12,7 @@ date_published: 2019-10-05
 
 [Images - Open In Code Editor - Geometries](https://code.earthengine.google.com/b2ddaa87c13ec42b7c122eab8310a611)
 
- We will introduce types of geospatial data, using these data on the Earth Engine platforms, and discuss a host of functionality to visualize and analyze them.
+We will introduce types of geospatial data, using these data on the Earth Engine platforms, and discuss a host of functionality to visualize and analyze them.
 
 ## Introduction
 Collection, visualization, and analysis of geographical or spatial data.
@@ -69,7 +69,7 @@ Source: Google Earth Engine User summit
 
 ## Basic Functions
 
-### Declaring variables 
+### Declaring variables
 ```javascript
 var varname = Containerforvariabletype(variable name); 
 ```
@@ -83,7 +83,7 @@ Map.setCenter(long, lat, zoom level);
 
 ### Displaying metadata
 ```javascript
-print(variable name) 
+print(variable name)
 ```
 You cannot print more than 5000 elements at once
 
@@ -96,10 +96,10 @@ Map.addLayer(VARIABLENAME);
 
 ## Variable types in Earth Engine
 
-### Strings  
+### Strings
 
 ```javascript
-var str = ee.String("This is a string. Or is it? It is."); 
+var str = ee.String("This is a string. Or is it? It is.");
 ```
 ### Numbers
 ```javascript
@@ -108,16 +108,16 @@ var num = ee.Number(5);
 
 ### Arrays
 ```javascript
-var arr = ee.Array([[5, 2, 3],  [-2, 7, 10],  [6, 6, 9]]); 
+var arr = ee.Array([[5, 2, 3],  [-2, 7, 10],  [6, 6, 9]]);
 ```
 
 ### Lists
 ```javascript
-var lis = ee.List([5, "five" , 6, "six"]); 
+var lis = ee.List([5, "five" , 6, "six"]);
 ```
 ### Dictionaries
 ```javascript
-var dict = ee.Dictionary({five: 5 , six: 6}); 
+var dict = ee.Dictionary({five: 5 , six: 6});
 ```
 
 ### And the fun stuff
@@ -191,7 +191,7 @@ var result = function_Name(Input);
 ```javascript
 var result = Input.map(function_Name);
 ```
-Mapping a function over a collection sends the each element of the collection to a different server to be processes. 
+Mapping a function over a collection sends the each element of the collection to a different server to be processes.
 
 ---
 
@@ -257,7 +257,7 @@ var feat = ee.Feature(var_Geometry, {Name: "Feature name", Size: 500};
 ```javascript
 var featnew = var_Feature.select(["Name"], ["Descriptor"]);
 ```
-### Extract values of a property from a Feature 
+### Extract values of a property from a Feature
 ```javascript
 var feat_val = var_Feature.get(''Size'');
 ```
@@ -265,7 +265,7 @@ var feat_val = var_Feature.get(''Size'');
 
 ## Filters
 
-### Creator a filter for values of a property 
+### Creator a filter for values of a property
 
 ```javascript
 var B_filter = ee.Filter.eq(Property_name, Value);
@@ -281,7 +281,7 @@ var Diff_filter = ee.Filter.maxDifference(threshold, Property_name, Value);
 ### Create a text filter
 
 ```javascript
-var Txt_filter = ee.Filter.stringContains( Property_name, StringValue);  
+var Txt_filter = ee.Filter.stringContains( Property_name, StringValue);
 ```
 
 >or .stringStartsWith, and .stringEndsWith
@@ -295,7 +295,7 @@ var Range_filter = ee.Filter.rangeContains( Property_name, StringValue, MinValue
 ### Create a list filter to check for certain values
 
 ```javascript
-var List_filter = ee.Filter.listContains(Property_name, Value1, Property_name2, Value2); 
+var List_filter = ee.Filter.listContains(Property_name, Value1, Property_name2, Value2);
 ```
 >.inList to test against list of values
 
@@ -328,13 +328,13 @@ var inverse_filter = ee.Filter.not(filter);
 
 [Image operations](https://code.earthengine.google.com/b2ddaa87c13ec42b7c122eab8310a611 "EE Image operations")
 
-### Selecting the bands of an image 
+### Selecting the bands of an image
 ```javascript
 var band = var_Image.select(band name);
 ```
 ### Creating masks
 ```javascript
-var mask =var_Image.eq(value); 
+var mask =var_Image.eq(value);
 ```
 >or .neq or .gt or .gte or .lt or .lte
 
@@ -345,13 +345,13 @@ var masked =var_Image.mask(mask);
 
 ### Pixelwise calculation
 ```javascript
-var results =var_Image.sum(value); 
+var results =var_Image.sum(value);
 ```
->or .subtract ,    .multiply ,    .divide ,    .max , .min ,  .abs ,  .round ,  .floor ,  .ceil ,  .sqrt ,  .exp,  .log, .log10, .sin ,  .cos ,  .tan ,  .sinh ,  .cosh ,  .tanh ,  .acos, .asin 
+>or .subtract ,    .multiply ,    .divide ,    .max , .min ,  .abs ,  .round ,  .floor ,  .ceil ,  .sqrt ,  .exp,  .log, .log10, .sin ,  .cos ,  .tan ,  .sinh ,  .cosh ,  .tanh ,  .acos, .asin
 
 ### Shift pixels of an image
 ```javascript
-newImage = oldImage.leftShift(valueofshift);                       
+newImage = oldImage.leftShift(valueofshift);                   
 ```
 >or .rightShift
 
@@ -390,14 +390,14 @@ var selected_im = var_ImCollection.filterBounds (var_Geometry);
 
 ### Perform pixelwise calculations for all images in collection
 ```javascript
-var sum_of_images = var_ImCollection.sum();       
+var sum_of_images = var_ImCollection.sum();
 ```
->or .product, .max, .min, .mean, .mode, .median, and .count     
+>or .product, .max, .min, .mean, .mode, .median, and .count 
 
 ### Create composite of images in collection with the last image on top
 
 ```javascript
-var mosaic_of_images = var_ImCollection.mosaic();       
+var mosaic_of_images = var_ImCollection.mosaic();
 ```
 ---
 ## Importing and exporting data

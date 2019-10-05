@@ -3,7 +3,7 @@ title: An Introduction to Geospatial Analysis
 description: This workshop provides a fundamental overview of remote sensing and geospatial analysis using the JavaScript API of Earth Engine.
 author: TC25
 tags: introductory, GIS, remote sensing, Google Earth Engine
-date_published: 2019-09-14
+date_published: 2019-10-05
 ---
 
 [Geometries - Open In Code Editor](https://code.earthengine.google.com/2f8ac6fe92f8fa7aff23eedb087c7d12) 

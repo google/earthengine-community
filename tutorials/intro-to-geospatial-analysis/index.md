@@ -6,7 +6,7 @@ tags: introductory, GIS, remote sensing, Google Earth Engine
 date_published: 2019-10-05
 ---
 
-[Geometries - Open In Code Editor](https://code.earthengine.google.com/2f8ac6fe92f8fa7aff23eedb087c7d12)
+[Geometries - Open In Code Editor](https://code.earthengine.google.com/e9231ac879a0ae1fe80f77aa73573cd0)
 
 [Features - Open In Code Editor](https://code.earthengine.google.com/1cd4cb760f71a56dce1cabcf44feec27)
 

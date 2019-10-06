@@ -15,6 +15,11 @@ Learning objectives:
 Remote sensing (satellite-derived) data are a rich source of information about climate variables, including land cover, vegetation, rainfall, and temperature. Satellite data are available going back to the 1980s in many cases, and so they provide a means for doing historical analyses of changing geographies that can be linked with epidemiologic data for analysis.
 In this exercise, we will learn how to acquire remote sensing data from Google Earth Engine. We will learn how to perform time series analysis to study changes in climate variables over our chosen geography and time period. We will also apply some common geospatial procedures (zonal, focal statistics). Finally, we will learn how to export our Earth Engine raster files to Google Drive.
 
+![](ee-chart.png)  |  ![](ph_ug_lst.png) |
+:-------------------------:|:-------------------------:|
+Time series chart (Land Surface Temperature in Uganda)             |  Heat Map of Land Surface Temperature in Uganda        |
+
+
 
 ## Writing a simple JavaScript program to extract and process data
 

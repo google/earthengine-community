@@ -1,9 +1,9 @@
 ---
-title: Forest cover and loss estimation
-description: Estimate tree area and loss by country based on minimum canopy cover and forest area definition
+title: Forest Cover and Loss Estimation
+description: Estimate tree area and loss by country based on minimum canopy cover and forest area definition.
 author: nkeikon
 tags: forest, deforestation, mmu, ghg, redd, mrv, frel, frl
-date_published: 2019-08-31
+date_published: 2019-10-04
 ---
 [Open In Code Editor](https://code.earthengine.google.com/b01025e5157ed6959df69f0d58dfbefc)
 
@@ -20,10 +20,14 @@ In various reporting of forest and/or land-use related data, countries may have 
 
 This tutorial selected Bolivia as an example, with the minimum canopy cover of 10% and minimum forest area of 0.5 ha (the national definition may be different). 
 ```js
-var country = 'Bolivia'; // selected country (e.g. Bolivia)
-var cc = ee.Number(10); // canopy cover percentage (e.g. 10%)
-var pixels = ee.Number(6); // minimum forest area in pixels (e.g. 6 pixels, approximately 0.5 ha in this example)
-var lossPixels = ee.Number(6); // minimum mapping area for tree loss (usually same as the minimum forest area)
+// Selected country (e.g. Bolivia)
+var country = 'Bolivia';
+// Canopy cover percentage (e.g. 10%)
+var cc = ee.Number(10);
+// Minimum forest area in pixels (e.g. 6 pixels, approximately 0.5 ha in this example)
+var pixels = ee.Number(6);
+// Minimum mapping area for tree loss (usually same as the minimum forest area)
+var lossPixels = ee.Number(6);
 
 // Load country features from Large Scale International Boundary (LSIB) dataset.
 var countries = ee.FeatureCollection('USDOS/LSIB_SIMPLE/2017');
@@ -51,7 +55,7 @@ var canopyCover10 = canopyCover.gte(cc).selfMask();
 ```js
 // Use connectedPixelCount() to get contiguous area.
 var contArea = canopyCover10.connectedPixelCount();
-// Apply the minimum area requirement. 
+// Apply the minimum area requirement.
 var minArea = contArea.gte(pixels).selfMask();
 ```
 4. Scale the results in nominal value based on to the dataset's projection to display on the map. Reprojecting with a specified scale ensures that pixel area does not change with zoom.
@@ -71,7 +75,9 @@ var forestSize = forestArea.reduceRegion({
     scale: 30,
     maxPixels: 1e13
 });
-print('Year 2000 tree cover (ha) \nmeeting minimum canopy cover and \nforest area thresholds \n ', forestSize.get('treecover2000'));
+print(
+    'Year 2000 tree cover (ha) \nmeeting minimum canopy cover and \nforest area thresholds \n ',
+    forestSize.get('treecover2000'));
 ```
 6. Calculate the actual average minimum forest area used (ha). This is to make sure if the selected number of pixels for minimum area (e.g. 6) matches or comes close to the minimum area intended in hectare (e.g. 0.5 ha)
 ```js
@@ -106,7 +112,7 @@ var treecoverLoss01 = minArea.and(treeLoss01).rename('loss2001').selfMask();
 ```js
 // Create connectedPixelCount() to get contiguous area.
 var contLoss = treecoverLoss01.connectedPixelCount();
-// Apply the minimum area requirement. 
+// Apply the minimum area requirement.
 var minLoss = contLoss.gte(lossPixels).selfMask();
 ```
 3. Calculate the tree loss area (ha)
@@ -118,7 +124,9 @@ var lossSize = lossArea.reduceRegion({
     scale: 30,
     maxPixels: 1e13
 });
-print('Year 2001 tree loss (ha) \nmeeting minimum canopy cover and \nforest area thresholds \n ', lossSize.get('loss2001'));
+print(
+    'Year 2001 tree loss (ha) \nmeeting minimum canopy cover and \nforest area thresholds \n ',
+    lossSize.get('loss2001'));
 ```
 ![](allloss.png)  |  ![](losstreecover.png) |  ![](lossmin.png)
 :-------------------------:|:-------------------------:|:-------------------------:
@@ -135,8 +143,8 @@ You can estimate the tree cover after the loss by subtracting the loss from the 
 // Unmask the derived loss.
 var minLossUnmask = minLoss.unmask();
 // Switch the binary value of the loss (0, 1) to (1, 0).
-var notLoss = minLossUnmask.select('loss2001').eq(0); 
-// Combine the derived tree cover and not-loss with 'and'. 
+var notLoss = minLossUnmask.select('loss2001').eq(0);
+// Combine the derived tree cover and not-loss with 'and'.
 var treecoverLoss01 = minArea.and(notLoss).selfMask();
 ```
 3. Apply the minimum area requirement to the above tree cover (minimum canopy cover threshold is already applied by using the derived tree cover). Reproject in nominal scale when displaying on the map. 
@@ -156,7 +164,9 @@ var forestSize01 = forestArea01.reduceRegion({
     scale: 30,
     maxPixels: 1e13
 });
-print('Year 2001 tree cover (ha) \nmeeting minimum canopy cover and \nforest area thresholds \n ', forestSize01.get('treecover2000'));
+print(
+    'Year 2001 tree cover (ha) \nmeeting minimum canopy cover and \nforest area thresholds \n ',
+    forestSize01.get('treecover2000'));
 ```
 ![](treecover2000.png)  |  ![](treeloss2001.png) |  ![](treecover2001.png)
 :-------------------------:|:-------------------------:|:-------------------------:

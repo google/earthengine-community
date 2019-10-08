@@ -1,6 +1,6 @@
 ---
 title: Customizing base map styles
-description: If you are getting bored of looking at the same two default basemaps in Earth Engine, or need to use a specific visualization for functionality/convenience, this tutorial will show you how to edit all of its characteristics.
+description: This tutorial shows how to change the base map properties in Earth Engine, which is useful if you want a specific visualization for functionality/convenience.
 author: TC25
 tags: Earth Engine, Base Map, UI, Widgets
 date_published: 2019-09-16
@@ -34,69 +34,22 @@ Map.setOptions("baseChange",{"baseChange":baseChange})
 The main styler options include:
 
  - hue: indicates the basic color
- - lightness:indicates percentage change in brightness of element
- - saturation: indicates percentage change in basic color of element
- - gamma: Gamma correction of the element (0.01 and 10.0)
+ - lightness: indicates percentage change in brightness of an element
+ - saturation: indicates percentage change in basic color of an element
+ - gamma: Gamma correction of an element (0.01 and 10.0)
  - invert_lightness: inverts the existing lightness
  - visibility: Changes visibility options for an element (on, off, or simplified)
- - color: Sets the color of elements (using RGB Hex Strings)
+ - color: Sets the color of an element (using RGB Hex Strings)
  - weight: Sets the weight of a feature in pixels
 
 
 ## Changing map elements
 
-The google maps API (and by extension, Earth Engine) gives you the ability to control a huge number of map features and elements
+The Google Maps API (and by extension, Earth Engine) gives you the ability to control a huge number of map features and elements.
 
-The full list of features that you can modify:
+The full list of elements that you can modify can be found in the Google Maps documentation: https://developers.google.com/maps/documentation/javascript/style-reference
 
-- all (default) selects all features.
-- administrative selects all administrative areas. Styling affects only the labels of administrative areas, not the geographical borders or fill.
-- administrative.country selects countries.
-- administrative.land_parcel selects land parcels.
-- administrative.locality selects localities.
-- administrative.neighborhood selects neighborhoods.
-- administrative.province selects provinces.
-- landscape selects all landscapes.
-- landscape.man_made selects structures built by humans.
-- landscape.natural selects natural features.
-- landscape.natural.landcover selects landcover features.
-- landscape.natural.terrain selects terrain features.
-- poi selects all points of interest.
-- poi.attraction selects tourist attractions.
-- poi.business selects businesses.
-- poi.government selects government buildings.
-- poi.medical selects emergency services, including hospitals, pharmacies, police, doctors, and others.
-- poi.park selects parks.
-- poi.place_of_worship selects places of worship, including churches, temples, mosques, and others.
-- poi.school selects schools.
-- poi.sports_complex selects sports complexes.
-- road selects all roads.
-- road.arterial selects arterial roads.
-- road.highway selects highways.
-- road.highway.controlled_access selects highways with controlled access.
-- road.local selects local roads.
-- transit selects all transit stations and lines.
-- transit.line selects transit lines.
-- transit.station selects all transit stations.
-- transit.station.airport selects airports.
-- transit.station.bus selects bus stops.
-- transit.station.rail selects rail stations.
-- water selects bodies of water.
-
-
-The full list of features that you can modify:
-
-- all (default) selects all elements of the specified feature.
-- geometry selects all geometric elements of the specified feature.
-- geometry.fill selects only the fill of the feature's geometry.
-- geometry.stroke selects only the stroke of the feature's geometry.
-- labels selects the textual labels associated with the specified feature.
-- labels.icon selects only the icon displayed within the feature's label.
-- labels.text selects only the text of the label.
-- labels.text.fill selects only the fill of the label. The fill of a label is typically rendered as a colored outline that surrounds the label text.
-- labels.text.stroke selects only the stroke of the label's text.
-
-All styler options work with each of these features
+The full list of features (also in the Google Maps API documentation linked above) includes geometries and labels (including their texts and icons). All styler options work with each of these features.
 
 Let's consider a couple of examples to edit other elements and features
 
@@ -202,7 +155,7 @@ Map.setOptions("roadNetwork", {
 
 ## Cheat codes
 
-There is a way to create almost any basemap you want without the hassle of tweaking any options. Enter https://snazzymaps.com/
+There is a way to create almost any base map you want without the hassle of tweaking any options. Enter https://snazzymaps.com/
 Copy any of the javascript properties from that website and it will show up on Earth Engine. Consider the two examples below:
 
 ```javascript
@@ -376,4 +329,4 @@ Map.setOptions("snazzyBlack", {
 
 ![Dark](snazzy-black.png)
 
-You can find out more about all the options in Google Map API here: https://developers.google.com/maps/documentation/javascript/reference#MapTypeStyle
+You can find out more about all the options in Google Maps API here: https://developers.google.com/maps/documentation/javascript/reference#MapTypeStyle

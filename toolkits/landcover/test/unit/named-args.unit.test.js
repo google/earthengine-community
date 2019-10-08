@@ -18,6 +18,13 @@
 var NamedArgs = require('../../impl/named-args').NamedArgs;
 
 withEarthEngineStub('NamedArgs', function() {
+  it('extractFromFunction() with no args', function() {
+    var testFunction = function() {};
+    var actual = NamedArgs.extractFromFunction(testFunction, []);
+    var expected = {};
+    expect(actual).toEqual(expected);
+  });
+
   it('extractFromFunction() builds dictionary', function() {
     var testFunction = function(foo, bar, baz) {};
     var actual = NamedArgs.extractFromFunction(testFunction, [3, 141, 59]);

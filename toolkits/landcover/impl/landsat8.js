@@ -85,6 +85,7 @@ Landsat8.prototype.maskCloudsAndShadows = function() {
  * @return {!ee.Image}
  */
 Landsat8.maskCloudsAndShadows = function(image) {
+  // Named args not supported for single object arg function signatures.
   var qa = image.select(QA_BAND);
   // Both flags should be set to zero, indicating clear conditions.
   var mask = qa.bitwiseAnd(CLOUD_SHADOW_BIT_MASK)

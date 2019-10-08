@@ -33,13 +33,13 @@ withEarthEngine('Composites', function() {
       TestImage.create({value: 550}, '2016-04-15')
     ]);
 
-    // TODO(#38): Replace args with dictionary once names args is implemented.
-    var result = lct.Composites.createTemporalComposites(
-        testCollection,
-        /* startDate= */ '2016-01-01',
-        /* count= */ 3,
-        /* interval= */ 1,
-        /* intervalUnits= */ 'month', ee.Reducer.mean());
+    var result = lct.Composites.createTemporalComposites({
+        collection: testCollection,
+        startDate: '2016-01-01',
+        count: 3,
+        interval: 1,
+        intervalUnits: 'month',
+        compositor: ee.Reducer.mean()});
 
     TestImage.reduceConstants(result.select('value'))
         .evaluate(function(actual, error) {
@@ -50,7 +50,7 @@ withEarthEngine('Composites', function() {
         });
   });
 
-  it('createMedioidComposite()', function(done) {
+  it('createMedioidComposite() w/single band', function(done) {
     // Median idx = 3, so we expect the pixel(s) with idx closest to that
     // value to be returned.
     var testCollection = ee.ImageCollection([
@@ -64,8 +64,8 @@ withEarthEngine('Composites', function() {
       TestImage.create({idx: 4, value: 400})
     ]);
 
-    var composite =
-        lct.Composites.createMedioidComposite(testCollection, 'idx');
+    var composite = lct.Composites.createMedioidComposite(
+        {collection: testCollection, bands: 'idx'});
 
     TestImage.reduceConstant(composite).evaluate(function(actual, error) {
       expect(error).toBeUndefined();
@@ -74,7 +74,7 @@ withEarthEngine('Composites', function() {
     });
   });
 
-  it('createMultibandMedioidComposite()', function(done) {
+  it('createMedioidComposite() w/multiple bands', function(done) {
     // Median idx = 3, so we expect the pixel(s) with idx closest to that
     // value to be returned.
     var testCollection = ee.ImageCollection([
@@ -86,8 +86,8 @@ withEarthEngine('Composites', function() {
       TestImage.create({a: 3, b: 3, c: 30, value: 300}),
     ]);
 
-    var composite =
-        lct.Composites.createMedioidComposite(testCollection, ['a', 'b', 'c']);
+    var composite = lct.Composites.createMedioidComposite(
+        {collection: testCollection, bands: ['a', 'b', 'c']});
 
     TestImage.reduceConstant(composite).evaluate(function(actual, error) {
       expect(error).toBeUndefined();
@@ -118,13 +118,13 @@ withEarthEngine('Composites', function() {
     // With 1 composite, this should be equivalent to the
     // medioidComposite test.
     var compositor = lct.Composites.createMedioidFunction('idx');
-    // TODO(#38): Replace args with dictionary once names args is implemented.
-    var result = lct.Composites.createTemporalComposites(
-        testCollection,
-        /* startDate= */ '2016-01-01',
-        /* count= */ 1,
-        /* interval= */ 31,
-        /* intervalUnits= */ 'day', compositor);
+    var result = lct.Composites.createTemporalComposites({
+        collection: testCollection,
+        startDate: '2016-01-01',
+        count: 1,
+        interval: 31,
+        intervalUnits: 'day',
+        compositor: compositor});
 
     TestImage.reduceConstants(result).evaluate(function(actual, error) {
       expect(error).toBeUndefined();

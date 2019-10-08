@@ -17,6 +17,8 @@
  * @fileoverview Static functions for band transformations.
  */
 
+ var NamedArgs = require('users/google/toolkits:landcover/impl/named-args').NamedArgs;
+
 var SPECTRAL_INDEX_EXPRESSIONS = {
   // Note, this is a literal dictionary so we can check for the existence
   // of a given spectral index before sending the query.
@@ -72,6 +74,9 @@ var SPECTRAL_INDEX_EXPRESSIONS = {
  * @return {ee.Image} The updated image.
  */
 function getSpectralIndices(image, indices) {
+  var args = NamedArgs.extractFromFunction(getSpectralIndices, arguments);
+  image = args.image;
+  indices = args.indices;
   // We can't check the existence of the specified indices if they're EEObjects.
   if (!(indices instanceof ee.ComputedObject)) {
     // Check that all the specified indexes exist.
@@ -97,6 +102,8 @@ function getSpectralIndices(image, indices) {
  * @return {!ee.ImageCollection}
  */
 function addDateBand(collection) {
+  var args = NamedArgs.extractFromFunction(addDateBand, arguments);
+  collection = args.collection;
   return collection.map(function(img) {
     var date = ee.Image.constant(img.date().millis())
         .rename('date').long();
@@ -112,6 +119,8 @@ function addDateBand(collection) {
  * @return {!ee.ImageCollection}
  */
 function addDayOfYearBand(collection) {
+  var args = NamedArgs.extractFromFunction(addDayOfYearBand, arguments);
+  collection = args.collection;
   return collection.map(function(img) {
     var doy = ee.Image.constant(img.date().getRelative('day', 'year'))
         .rename('doy').int();
@@ -127,6 +136,8 @@ function addDayOfYearBand(collection) {
  * @return {!ee.ImageCollection}
  */
 function addFractionalYearBand(collection) {
+  var args = NamedArgs.extractFromFunction(addFractionalYearBand, arguments);
+  collection = args.collection;
   return collection.map(function(img) {
     var date = img.date();
     var fYear = date.get('year').double().add(img.date().getFraction('year'));

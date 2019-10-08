@@ -15,6 +15,8 @@
  * limitations under the License.
  */
 
+var NamedArgs = require('users/google/toolkits:landcover/impl/named-args').NamedArgs;
+
 /**
  * Returns a feature collection containing the feature in the Large Scale
  * International Boundaries (LSIB) that matches the specified name or code. If
@@ -25,6 +27,8 @@
  * @return {!ee.FeatureCollection}
  */
 function lsib(nameOrCode) {
+  var args = NamedArgs.extractFromFunction(lsib, arguments);
+  nameOrCode = args.nameOrCode;
   return ee.FeatureCollection('USDOS/LSIB_SIMPLE/2017')
       .filter(ee.Filter.or(
           ee.Filter.eq('country_na', nameOrCode),

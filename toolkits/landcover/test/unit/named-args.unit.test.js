@@ -40,6 +40,29 @@ withEarthEngineStub('NamedArgs', function() {
     expect(actual).toEqual(expected);
   });
 
+  it('extractFromFunction() with null args', function() {
+    var testFunction = function(foo, bar) {};
+    var actual = NamedArgs.extractFromFunction(testFunction, [null, null]);
+    var expected = {foo: null, bar: null};
+    expect(actual).toEqual(expected);
+  });
+
+  it('extractFromFunction() with undefined args', function() {
+    var testFunction = function(foo, bar) {};
+    var actual =
+        NamedArgs.extractFromFunction(testFunction, [undefined, undefined]);
+    var expected = {foo: undefined, bar: undefined};
+    expect(actual).toEqual(expected);
+  });
+
+  it('extractFromFunction() with too few args', function() {
+    var testFunction = function(foo, bar) {};
+    var actual =
+        NamedArgs.extractFromFunction(testFunction, [3]);
+    var expected = {foo: 3, bar: undefined};
+    expect(actual).toEqual(expected);
+  });
+
   it('extractFromFunction() fails on unsupported fn declaration', function() {
     // Create object with stubbed toString() method to simulate function
     // with invalid signature. This could happen if function signatures are

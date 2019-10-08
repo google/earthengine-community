@@ -17,6 +17,8 @@
  * @fileoverview Static functions for compositing.
  */
 
+var NamedArgs = require('users/google/toolkits:landcover/impl/named-args').NamedArgs;
+
 /**
  * Convert a collection into composite images based on fixed time intervals.
  * Adds a 'date' band to each input image that contains the date of the
@@ -37,10 +39,13 @@
  */
 function createTemporalComposites(
     collection, startDate, count, interval, intervalUnits, compositor) {
-  compositor = compositor || ee.Reducer.median();
-  count = ee.Number(count);
-  interval = ee.Number(interval);
-  startDate = ee.Date(startDate);
+  var args = NamedArgs.extractFromFunction(createTemporalComposites, arguments);
+  collection = args.collection;
+  startDate = ee.Date(args.startDate);
+  count = ee.Number(args.count);
+  interval = ee.Number(args.interval);
+  intervalUnits = args.intervalUnits;
+  compositor = args.compositor || ee.Reducer.median();
   var images = ee.List.sequence(0, count.subtract(1)).map(function(n) {
     // Compute temporal extent for one interval.
     var begin = startDate.advance(interval.multiply(n), intervalUnits);
@@ -92,7 +97,9 @@ function createTemporalComposites(
  * @return {!ee.ImageCollection}
  */
 function createMedioidComposite(collection, bands) {
-  bands = bands === undefined ? '.*' : bands;
+  var args = NamedArgs.extractFromFunction(createMedioidComposite, arguments);
+  collection = args.collection;
+  bands = args.bands === undefined ? '.*' : args.bands;
 
   // Compute the distance from the median of the index band.
   var median = collection.select(bands).median();
@@ -118,6 +125,8 @@ function createMedioidComposite(collection, bands) {
  * @return {function(*=): !ee.ImageCollection}
  */
 function createMedioidFunction(bands) {
+  var args = NamedArgs.extractFromFunction(createMedioidFunction, arguments);
+  var bands = args.bands;
   return function(collection) {
     return createMedioidComposite(collection, bands);
   };

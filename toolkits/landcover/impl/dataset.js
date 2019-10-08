@@ -17,6 +17,7 @@
 
 var Composites = require('users/google/toolkits:landcover/impl/composites.js').Composites;
 var Bands = require('users/google/toolkits:landcover/impl/bands.js').Bands;
+var NamedArgs = require('users/google/toolkits:landcover/impl/named-args').NamedArgs;
 
 /**
  * Returns a new dataset instance for an arbitrary image collection.
@@ -44,6 +45,9 @@ var Dataset = function(collection, defaultVisParams) {
  * @return {!Dataset}
  */
 Dataset.prototype.filterDate = function(start, end) {
+  var args = NamedArgs.extractFromFunction(Dataset.prototype.filterDate, arguments);
+  start = args.start;
+  end = args.end;
   // TODO(gino-m): Implement month and year ranges.
   // TODO(gino-m): Implement single day/month/year.
   this.collection_ = this.collection_.filterDate(start, end);
@@ -63,6 +67,8 @@ Dataset.prototype.filterDate = function(start, end) {
  * @return {!Dataset}
  */
 Dataset.prototype.filterBounds = function(geometry) {
+  var args = NamedArgs.extractFromFunction(Dataset.prototype.filterBounds, arguments);
+  geometry = args.geometry;
   this.collection_ = this.collection_.filterBounds(geometry);
   return this;
 };
@@ -104,6 +110,12 @@ Dataset.prototype.getDefaultVisParams = function() {
  */
 Dataset.prototype.createTemporalComposites = function(
     startDate, count, interval, intervalUnits, reducer) {
+  var args = NamedArgs.extractFromFunction(Dataset.prototype.createTemporalComposites, arguments);
+  startDate = args.startDate;
+  count = args.count;
+  interval = args.interval;
+  intervalUnits = args.intervalUnits;
+  reducer = args.reducer;
   this.collection_ = Composites.createTemporalComposites(
       this.collection_, startDate, count, interval, intervalUnits, reducer);
   return this;
@@ -120,6 +132,8 @@ Dataset.prototype.createTemporalComposites = function(
  * @return {!ee.ImageCollection}
  */
 Dataset.prototype.createMedioidComposite = function(bands) {
+  var args = NamedArgs.extractFromFunction(Dataset.prototype.createMedioidComposite, arguments);
+  bands = args.bands;
   this.collection_ = ee.ImageCollection(
       [Composites.createMedioidComposite(this.collection_, bands)]);
   return this;

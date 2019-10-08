@@ -59,16 +59,14 @@ var BLOCK_COMMENT_REGEX = /[/][*].*?[*][/]/g;
  *   specified function declaration.
  */
 function extractFromFunction(fn, originalArgs) {
-  var decl = fn.toString();
-  // Strip line comments:
-  decl = decl.replace(LINE_COMMENT_REGEX, '');
-  // Strip newlines:
-  decl = decl.replace(NEWLINE_REGEX, '');
-  // Strip block comments:
-  decl = decl.replace(BLOCK_COMMENT_REGEX, '');
+  // Strip comments and newlines:
+  var decl = fn.toString()
+                 .replace(LINE_COMMENT_REGEX, '')
+                 .replace(NEWLINE_REGEX, '')
+                 .replace(BLOCK_COMMENT_REGEX, '');
   // Functions with a single dictionary argument are assumed to have been
   // invoked using named args. This precludes us using named args for functions
-  // that take a single dictionary as arguments. 
+  // that take a single dictionary as arguments.
   if (originalArgs.length == 1 && typeof originalArgs[0] === 'object') {
     return originalArgs[0];
   }

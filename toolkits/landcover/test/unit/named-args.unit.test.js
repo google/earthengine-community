@@ -36,17 +36,46 @@ withEarthEngineStub('NamedArgs', function() {
     expect(actual).toEqual(expected);
   });
 
-  it('extractFromFunction() throws error on unsupported fn declaration',
-     function() {
-       // Create function with stubbed toString() method to simulate invalid
-       // signature. This could happen if function signatures are encountered
-       // that were not accounted for by the current implementation.
-       var badFunction = function() {};
-       badFunction.toString = function() {
-         return 'bad signature';
-       };
-       expect(function() {
-         NamedArgs.extractFromFunction(badFunction, []);
-       }).toThrow();
-     });
+  it('extractFromFunction() fails on unsupported fn declaration', function() {
+    // Create function with stubbed toString() method to simulate invalid
+    // signature. This could happen if function signatures are encountered
+    // that were not accounted for by the current implementation.
+    var badFunction = function() {};
+    badFunction.toString = function() {
+      return 'bad signature';
+    };
+    expect(function() {
+      NamedArgs.extractFromFunction(badFunction, []);
+    }).toThrow();
+  });
+
+  it('extractFromFunction() strips line comments', function() {
+    var testFunction = function(
+        arg1,  // line comment
+        arg2   // line comment 2
+    ) {};
+    var actual = NamedArgs.extractFromFunction(testFunction, ['val1', 'val2']);
+    var expected = {arg1: 'val1', arg2: 'val2'};
+    expect(actual).toEqual(expected);
+  });
+
+
+  it('extractFromFunction() strips block comments', function() {
+    var testFunction = function(
+        /* block comment 1 */ arg1,
+        /* block comment 2 */ arg2) {};
+    var actual = NamedArgs.extractFromFunction(testFunction, ['val1', 'val2']);
+    var expected = {arg1: 'val1', arg2: 'val2'};
+    expect(actual).toEqual(expected);
+  });
+
+  it('extractFromFunction() ignore dangling commas', function() {
+    var testFunction = function(
+        arg1,
+        arg2,
+    ) {};
+    var actual = NamedArgs.extractFromFunction(testFunction, ['val1', 'val2']);
+    var expected = {arg1: 'val1', arg2: 'val2'};
+    expect(actual).toEqual(expected);
+  });
 });

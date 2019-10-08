@@ -28,11 +28,25 @@
 var FUNCTION_REGEX = /^function\s*.*?\((.*?)\)/;
 
 /**
+ * Regular expression for matching line comments (all content between
+ * double-slash (//) and newline, inclusive).
+ */
+var LINE_COMMENT_REGEX = /[/][/].*\r?\n/g;
+
+/**
  * Regular expression for matching newlines. This includes both standard LFs
  * and Windows CR+LF patterns. We use this to remove newlines, working around
  * the fact that single-line mode isn't supported by JavaScript RegExp.
  */
 var NEWLINE_REGEX = /\r?\n/g;
+
+/**
+ * Regular expression for matching block comments (all content starting with
+ * slash-asterisk and ending with asterisk-slash, inclusive). Assumes newlines
+ * were already removed.
+ */
+var BLOCK_COMMENT_REGEX = /[/][*].*?[*][/]/g;
+
 /**
  * Returns a dictionary of arguments keyed by function argument name. Toolkit
  * functions to simulate the "named args" feature of other popular languages
@@ -45,7 +59,13 @@ var NEWLINE_REGEX = /\r?\n/g;
  *   specified function declaration.
  */
 function extractFromFunction(fn, originalArgs) {
-  var decl = fn.toString().replace(NEWLINE_REGEX, ' ');
+  var decl = fn.toString();
+  // Strip line comments:
+  decl = decl.replace(LINE_COMMENT_REGEX, '');
+  // Strip newlines:
+  decl = decl.replace(NEWLINE_REGEX, '');
+  // Strip block comments:
+  decl = decl.replace(BLOCK_COMMENT_REGEX, '');
   // Functions with a single dictionary argument are assumed to have been
   // invoked using named args. This precludes us using named args for functions
   // that take a single dictionary as arguments. 
@@ -62,6 +82,10 @@ function extractFromFunction(fn, originalArgs) {
   var dict = {};
   for (var i in argNames) {
     var argName = argNames[i].trim();
+    if (argName === '') {
+      // Ignore dangling commas.
+      continue;
+    }
     dict[argName] = i < originalArgs.length ? originalArgs[i] : undefined;
   }
   return dict;

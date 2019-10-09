@@ -17,7 +17,7 @@
  * @fileoverview Static functions for band transformations.
  */
 
- var NamedArgs = require('users/gorelick/toolkits:landcover/impl/named-args.js').NamedArgs;
+ var NamedArgs = require('users/google/toolkits:landcover/impl/named-args.js').NamedArgs;
 
 var SPECTRAL_INDEX_EXPRESSIONS = {
   // Note, this is a literal dictionary so we can check for the existence

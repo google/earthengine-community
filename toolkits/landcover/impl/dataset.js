@@ -15,9 +15,9 @@
  * limitations under the License.
  */
 
-var Composites = require('users/gorelick/toolkits:landcover/impl/composites.js').Composites;
-var Bands = require('users/gorelick/toolkits:landcover/impl/bands.js').Bands;
-var NamedArgs = require('users/gorelick/toolkits:landcover/impl/named-args.js').NamedArgs;
+var Composites = require('users/google/toolkits:landcover/impl/composites.js').Composites;
+var Bands = require('users/google/toolkits:landcover/impl/bands.js').Bands;
+var NamedArgs = require('users/google/toolkits:landcover/impl/named-args.js').NamedArgs;
 
 /**
  * Returns a new dataset instance for an arbitrary image collection.

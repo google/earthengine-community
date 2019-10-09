@@ -39,6 +39,7 @@ Map.addLayer(Chic, {}, 'Chicago dissolved');
 //  Find permeter of feature
 //  var peri=Chic.geometry().perimeter();
 //  print (peri)
+
 //  Features
 //  Create Geometry
 var varGeometry = ee.Geometry.Polygon(0, 0, 40, 30, 20, 20, 0, 0);

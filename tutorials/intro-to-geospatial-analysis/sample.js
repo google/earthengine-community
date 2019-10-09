@@ -1,6 +1,39 @@
 //  Geometries
 Map.setCenter(-88, 41.8, 9);
-function multi(feature) {
+//  Load Feature Collection of the dissolved boundary of Chicago stored in assets
+var chic = ee.FeatureCollection('users/tirthankar25/chicago_diss');
+//  Load Feature Collection of the neighborhood-scale Chicago data stored in assets
+var chicColl=ee.FeatureCollection('users/tirthankar25/chicago');
+//  Add the layer to the map
+// Map.addLayer(Res);
+Map.addLayer(chic, {color:'red'}, 'Chicago dissolved');
+//  Find the rectangle that emcompasses the southernmost, westernmost, easternmost, and northernmost
+//  points of the feature
+var bound = chic.geometry().bounds();
+Map.addLayer(bound, {color:'yellow'},'Bounds');
+//  Find the polygon covering the extremities of the feature
+var convex = chic.geometry().convexHull();
+Map.addLayer(convex, {color:'blue'},'Convex Hull');
+//  Find the area common to two or more features
+var intersect=bound.intersection(convex,100);
+Map.addLayer(intersect, {color:'green'},'Bound and convex intersection');
+//  Find the area encompassing two or more features; number is the maximum error in meters
+var union=bound.union(convex,100);
+Map.addLayer(union, {color:'purple'},'Bound and convex union');
+var diff=bound.difference(convex,100);
+Map.addLayer(diff, {color:'purple'},'Bound and convex difference');
+//  Find area of feature
+var ar=chic.geometry().area();
+print (ar)
+//  Find length of line geometry (You get zero since this is a polygon)
+var length=chic.geometry().length();
+print (length)
+//  Find permeter of feature
+var peri=chic.geometry().perimeter();
+print (peri)
+
+
+function performMap(feature) {
  //  Reduce number of vertices in geometry; the number is to specify maximum error in meters
  var simple = feature.simplify(1000);
  //  Find centroid of geometry
@@ -10,35 +43,9 @@ function multi(feature) {
  //  return variable from function
  return buff;
 }
-//  Load Feature Collection of the dissolved boundary of Chicago stored in assets
-var Chic = ee.FeatureCollection('users/tirthankar25/chicago_diss');
-//  Load Feature Collection of the neighborhood-scale Chicago data stored in assets
-//  var Chic_coll=ee.FeatureCollection('users/tirthankar25/chicago');
 //  Map function over Feature Collection
-//  var Res=Chic_coll.map(multi);
-//  Add the layer to the map
-// Map.addLayer(Res);
-Map.addLayer(Chic, {}, 'Chicago dissolved');
-//  Find the rectangle that emcompasses the southernmost, westernmost, easternmost, and northernmost
-//  points of the feature
-//  var bound = Chic.geometry().bounds();
-//  Find the polygon covering the extremities of the feature
-//  var convex = Chic.geometry().convexHull();
-//  Map.addLayer(bound, {},'Chicago bounds');
-//  Map.addLayer(convex, {},'Chicago convex hull');
-//  Find the area common to two or more features
-//  var Intersect=bound.intersection(convex,100);
-//  Map.addLayer(Intersect, {},'Bound and convex intersection');
-//  Find the area encompassing two or more features; number is the maximum error in meters
-//  var Union=bound.union(convex,100);
-//  Map.addLayer(Union, {},'Bound and convex union');
-//  Find area of feature
-//  var Ar=Chic.geometry().area();
-//  Find length of line geometry
-//  var length=Chic.geometry().length();
-//  Find permeter of feature
-//  var peri=Chic.geometry().perimeter();
-//  print (peri)
+var mappedCentroid=chicColl.map(performMap);
+Map.addLayer(mappedCentroid,{},"Mapped centroids")
 
 //  Features
 //  Create Geometry

@@ -3,7 +3,7 @@ title: MODIS NDVI Times Series Animation
 description: Generate an animated GIF representing 20-year median NDVI for serial 16-day MODIS composites spanning January 1st through December 31st.
 author: jdbcode
 tags: modis, ndvi, animation, join, reduce, composite, gif, africa, visualization
-date_published: 2019-08-07
+date_published: 2019-08-14
 ---
 <!--
 Copyright 2019 Google LLC
@@ -84,7 +84,7 @@ var region = ee.Geometry.Polygon(
   [[[-18.698368046353494, 38.1446395611524],
     [-18.698368046353494, -36.16300755581617],
     [52.229366328646506, -36.16300755581617],
-    [52.229366328646506, 38.1446395611524]]], 
+    [52.229366328646506, 38.1446395611524]]],
   null, false
 );
 ```
@@ -99,13 +99,13 @@ by. Day-of-year (DOY) is a fine format and can be derived from the ubiquitous `s
 using the `getRelative` method.
 
 ```js
-col = col.map(function(img){
+col = col.map(function(img) {
   var doy = ee.Date(img.get('system:time_start')).getRelative('day', 'year');
   return img.set('doy', doy);
 });
 ```
 
-A join operation will be implemented that groups images by the 'doy' property just added. The join opperation 
+A join operation will be implemented that groups images by the 'doy' property just added. The join operation 
 expects two collections, in this case: a distinct DOY collection and the complete collection modified to
 include the 'doy' property. The complete collection (`col`) exists, the distinct collection needs to be defined.
 Do so by filtering the complete collection to a single year of data e.g. 2013. 
@@ -122,13 +122,14 @@ Complete the join by:
 
 ```js
 // Define a filter that identifies which images from the complete collection
-// match the DOY from the distinct DOY collection. 
+// match the DOY from the distinct DOY collection.
 var filter = ee.Filter.equals({leftField: 'doy', rightField: 'doy'});
 
 // Define a join.
 var join = ee.Join.saveAll('doy_matches');
 
-// Apply the join and convert the resulting FeatureCollection to an ImageCollection.
+// Apply the join and convert the resulting FeatureCollection to an
+// ImageCollection.
 var joinCol = ee.ImageCollection(join.apply(distinctDOY, col, filter));
 ```
 
@@ -176,7 +177,7 @@ var visParams = {
 };
 
 // Create RGB visualization images for use as animation frames.
-var rgbVis = comp.map(function(img){
+var rgbVis = comp.map(function(img) {
   return img.visualize(visParams).clip(mask);
 });
 ```

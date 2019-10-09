@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-var NamedArgs = require('users/google/toolkits:landcover/impl/named-args').NamedArgs;
+var NamedArgs = require('users/gorelick/toolkits:landcover/impl/named-args.js').NamedArgs;
 
 /**
  * Returns a feature collection containing the feature in the Large Scale

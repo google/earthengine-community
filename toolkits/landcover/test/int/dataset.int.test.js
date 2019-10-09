@@ -84,4 +84,11 @@ withEarthEngine('Dataset', function() {
           done();
         });
   });
+
+  it('addTasseledCap()', function(done) {
+    expect(function() {
+      var l8 = TestDataset(TEST_VALUES).addTasseledCap();
+    }).toThrow();
+    done();
+  });
 });

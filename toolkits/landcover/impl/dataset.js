@@ -15,9 +15,9 @@
  * limitations under the License.
  */
 
-var Composites = require('users/google/toolkits:landcover/impl/composites.js').Composites;
-var Bands = require('users/google/toolkits:landcover/impl/bands.js').Bands;
-var NamedArgs = require('users/google/toolkits:landcover/impl/named-args').NamedArgs;
+var Composites = require('users/gorelick/toolkits:landcover/impl/composites.js').Composites;
+var Bands = require('users/gorelick/toolkits:landcover/impl/bands.js').Bands;
+var NamedArgs = require('users/gorelick/toolkits:landcover/impl/named-args.js').NamedArgs;
 
 /**
  * Returns a new dataset instance for an arbitrary image collection.
@@ -176,6 +176,42 @@ Dataset.prototype.addBandIndices = function(var_names) {
     var renamed = image.select(bandNames, commonNames);
     var bands = Bands.getSpectralIndices(renamed, indices);
     return image.addBands(bands);
+  });
+
+  this.collection_ = output;
+  return this;
+};
+
+
+/**
+ * Add the Tasseled Cap transformation to each image in the dataset.
+ *
+ * Each dataset will have it's own set of Tasseled Cap coefficients.
+ * The output bands will be named: [TC1, TC2, TC3, TC4, TC5, TC6];
+ *
+ * @return {!Dataset}
+ */
+Dataset.prototype.addTasseledCap = function() {
+  var coef = this.TASSELED_CAP_COEFFICENTS;
+  if (!coef) {
+    throw new Error('Dataset does not support Tasseled Cap transformation.');
+  }
+
+  var srcBands = ["blue", "green", "red", "nir", "swir1", "swir2"];
+  var dstBands = ["TC1", "TC2", "TC3", "TC4", "TC5", "TC6"];
+
+  // We only need a subset of the renamed bands.  Make a lookup table by
+  // inverting the dictionary of common names.
+  var common = ee.Dictionary(this.COMMON_BAND_NAMES);
+  var lookup = ee.Dictionary(common.values().zip(common.keys()).flatten());
+  var subset = srcBands.map(function(name) {
+    return lookup.get(name)
+  });
+
+  var output = this.collection_.map(function(image) {
+    // Select just the subset of bands and compute the transform.
+    var tc = Bands.computeMatrixMutliply(image.select(subset), coef, dstBands);
+    return image.addBands(tc);
   });
 
   this.collection_ = output;

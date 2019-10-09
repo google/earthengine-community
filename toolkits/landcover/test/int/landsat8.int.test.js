@@ -77,4 +77,43 @@ withEarthEngine('Landsat8', function() {
       done();
     });
   });
+
+  it('tasseledCap', function(done) {
+    var INPUT_PIXEL_VALUES = {
+      B2: 2000,
+      B3: 3000,
+      B4: 4000,
+      B5: 5000,
+      B6: 6000,
+      B7: 7000
+    };
+
+    // Output should have the input values, plus these.
+    var EXPECTED_VALUES = Object.assign({}, INPUT_PIXEL_VALUES, {
+      TC1: 10492.7,
+      TC2: -541,
+      TC3: -3550.7,
+      TC4: -658,
+      TC5: 3908.3,
+      TC6: -535
+    });
+
+    var testImage = TestImage.create(INPUT_PIXEL_VALUES);
+
+    var testCollection = ee.ImageCollection([testImage]);
+    var l8 = TestLandsat8(testCollection);
+
+    var tc = l8.addTasseledCap();
+
+    // Verify cloud shadow-free pixel was returned.
+    var image = tc.getImageCollection().mosaic();
+    var value = TestImage.reduceConstant(image);
+    value.evaluate(function (actual, error) {
+      expect(error).toBeUndefined();
+      for (key in actual) {
+        expect(actual[key]).toBeCloseTo(EXPECTED_VALUES[key]);
+      }
+      done();
+    });
+  });
 });

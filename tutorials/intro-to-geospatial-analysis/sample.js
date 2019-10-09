@@ -56,34 +56,36 @@ var varFeature = ee.Feature(varGeometry, {
  Size: [500, 1000]
 });
 //  Get values of a property
-//  var Arr=varFeature.get('Size');
-//  print (Arr);
+var arr=varFeature.get('Size');
+print (arr);
 //  Select a subset of properties and rename them
 var varFeaturenew = varFeature.select(['Name'], ['Descriptor']);
 print(varFeaturenew);
+
 //  Images
 Map.setCenter(-88, 41.8, 9);
-var Raw = ee.ImageCollection('MODIS/006/MYD11A2');
-var ROI = ee.FeatureCollection('users/tirthankar25/chicago');
-print(Raw);
-var bandsel = Raw.select(0);
-//  var bandsel=Raw.select('LST_Day_1km');
-//  var filtered=Raw.filterDate('2002-12-30','2004-4-27');
-//  print(filtered);
-//  var limited=Raw.limit(50);
-//  print(limited);
-//  print(bandsel);
-var mean = bandsel.mean();
+var raw = ee.ImageCollection('MODIS/006/MYD11A2');
+var roi = ee.FeatureCollection('users/tirthankar25/chicago');
+print(raw);
+var bandSel1 = raw.select(0);
+var bandSel2=raw.select('LST_Day_1km');
+var filtered=raw.filterDate('2002-12-30','2004-4-27');
+print(filtered);
+var limited=raw.limit(50);
+print(limited);
+print(bandSel1);
+var mean = bandSel1.mean();
 Map.addLayer(mean);
-//  var clipped=mean.clip(ROI);
-//  var calculate=clipped.multiply(.02).subtract(273.15);
-//  Map.addLayer(calculate,{min: 30, max: 40, palette: ['blue', 'green', 'red']},'LST');
-//  var mask=calculate.gt(30.8);
-//  Map.addLayer(mask,{},"mask");
-//  var Masked=clipped.mask(mask);
-//  Map.addLayer(Masked,{min: 20, max: 30, palette: ['blue', 'green', 'red']},'LST_masked');
-//  var filtered=Raw.filterDate('2002-12-30','2004-4-27');
-//  print(filtered);
+var clipped=mean.clip(roi);
+var calculate=clipped.multiply(.02).subtract(273.15);
+Map.addLayer(calculate,{min: 30, max: 40, palette: ['blue', 'green', 'red']},'LST');
+var mask=calculate.gt(30.8);
+Map.addLayer(mask,{},"mask");
+var masked=clipped.mask(mask);
+Map.addLayer(masked,{min: 20, max: 30, palette: ['blue', 'green', 'red']},'LST_masked');
+var filtered=raw.filterDate('2002-12-30','2004-4-27');
+print(filtered);
+
 //  Image to table example
 var urban = ee.FeatureCollection('users/tirthankar25/chicago');
 //  Function to find mean of pixels in region of interest
@@ -110,6 +112,7 @@ Export.table.toDrive({
  description: 'NDVI_all',
  fileFormat: 'CSV'
 });
+
 //  Timelapse example (based on google API example);
 var TheGEOMETRY = ee.Geometry.Rectangle([55.1, 25, 55.4, 25.4]);
 Map.addLayer(TheGEOMETRY);

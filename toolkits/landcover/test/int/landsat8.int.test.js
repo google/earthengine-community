@@ -98,11 +98,7 @@ withEarthEngine('Landsat8', function() {
       TC6: -535
     });
 
-    var testImage = TestImage.create(INPUT_PIXEL_VALUES);
-
-    var testCollection = ee.ImageCollection([testImage]);
-    var l8 = TestLandsat8(testCollection);
-
+    var l8 = TestLandsat8(ee.ImageCollection([TestImage.create(INPUT_PIXEL_VALUES)]));
     var tc = l8.addTasseledCap();
 
     // Verify cloud shadow-free pixel was returned.

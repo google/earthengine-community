@@ -17,7 +17,7 @@
  * @fileoverview Static functions for compositing.
  */
 
-var NamedArgs = require('users/google/toolkits:landcover/impl/named-args').NamedArgs;
+var NamedArgs = require('users/google/toolkits:landcover/impl/named-args.js').NamedArgs;
 
 /**
  * Convert a collection into composite images based on fixed time intervals.

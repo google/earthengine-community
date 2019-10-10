@@ -71,7 +71,7 @@ Source: Google Earth Engine User summit
 
 ### Declaring variables
 ```javascript
-var varName = Containerforvariabletype(variable name); 
+var variableName = ee.ContainerType(value); 
 ```
 A container (in the form ee.variabletype) is used to wrap up a native javascript object type so that Google's server can recognize its structure and perform operations on it
 
@@ -83,13 +83,13 @@ Map.setCenter(long, lat, zoom level);
 
 ### Displaying metadata
 ```javascript
-print(varName)
+print(variableName)
 ```
 You cannot print more than 5000 elements at once
 
 ### Adding a layer to the map
 ```javascript
-Map.addLayer(varName);
+Map.addLayer(variableName);
 ```
 
 ---
@@ -141,15 +141,15 @@ var multi = ee.Geometry.MultiPoint(0, 45, 5,6, 70,-56);
 ```
 ### Line String
 ```javascript
-var linestr = ee.Geometry.LineString([[0, 45], [5,6], [70,-56]]);
+var lineStr = ee.Geometry.LineString([[0, 45], [5,6], [70,-56]]);
 ```
 ### Multi Line String
 ```javascript
-var mlinestr = ee.Geometry.MultiLineString([[[0, 45], [5,6], [70,-56]], [[0, -45], [-5,-6], [-70,56]]]);
+var mlineStr = ee.Geometry.MultiLineString([[[0, 45], [5,6], [70,-56]], [[0, -45], [-5,-6], [-70,56]]]);
 ```
 ### Linear Ring
 ```javascript
-var linrin = ee.Geometry.LinearRing(0, 45, 5,6, 70,-56, 0,45);
+var linRin = ee.Geometry.LinearRing(0, 45, 5,6, 70,-56, 0,45);
 ```
 ### Rectangle
 ```javascript
@@ -161,7 +161,7 @@ var poly = ee.Geometry.Polygon([[[0, 0], [6,3], [5, 5], [-30,2], [0,0]]]);
 ```
 ### Multi Polygon
 ```javascript
-var multiploy = ee.Geometry.MultiPolygon([ee.Geometry.Polygon([[0, 0], [6, 3], [5, 5], [-30, 2], [0,0]]), ee.Geometry.Polygon([[0, 0], [-6, -3], [-5, -5], [30, -2], [0, 0]])]);
+var multiPoly = ee.Geometry.MultiPolygon([ee.Geometry.Polygon([[0, 0], [6, 3], [5, 5], [-30, 2], [0,0]]), ee.Geometry.Polygon([[0, 0], [-6, -3], [-5, -5], [30, -2], [0, 0]])]);
 ```
 
 ---
@@ -180,16 +180,16 @@ var multiploy = ee.Geometry.MultiPolygon([ee.Geometry.Polygon([[0, 0], [6, 3], [
 
 - A set of instructions to perform a specific task
 ```javascript
-function  function_Name(Arguments) {statements};
+function functionName(Arguments) {statements};
 ```
 ### Call function
 ```javascript
-var result = function_Name(Input);
+var result = functionName(input);
 ```
 
 ### Map function over Feature or Image Collection
 ```javascript
-var result = Input.map(function_Name);
+var result = input.map(functionName);
 ```
 Mapping a function over a collection sends the each element of the collection to a different server to be processes.
 
@@ -202,47 +202,47 @@ Mapping a function over a collection sends the each element of the collection to
 
 ### Find area of geometry
 ```javascript
-var geo_area = var_Geometry.area();
+var geoArea = geometry.area();
 ```
 
 All units in Earth Engine are in meters
 
 ### Find length of line
 ```javascript
-var lin_len = var_LineString.length();
+var linLen = lineString.length();
 ```
 ### Find perimeter of geometry
 ```javascript
-var geo_peri = var_Geometry.perimeter();
+var geoPeri = geometry.perimeter();
 ```
 
 ### Reduce number of vertices in geometry
 ```javascript
-var simp_geo = var_Geometry.simplify(100);
+var simpGeo = geometry.simplify(100);
 ```
 ### Find centroid of geometry
 ```javascript
-var centr = var_Geometry.centroid();
+var centrGeo = geometry.centroid();
 ```
 ### Create buffer around geometry
 ```javascript
-var buff = var_Geometry.buffer(100);
+var buffGeo = geometry.buffer(100);
 ```
 ### Find bounded rectangle of the Geometry
 ```javascript
-var boun_geo = var_Geometry.bounds();
+var bounGeo = geometry.bounds();
 ```
 ### Find the smallest envelope that can envelop the Geometry
 ```javascript
-var convex_geo = var_Geometry.convexHull();
+var convexGeo = geometry.convexHull();
 ```
 ### Find common area between two or more geometries
 ```javascript
-var inter_geo = var_Geometry1.intersection(var_Geometry2);
+var interGeo = geometry1.intersection(geometry2);
 ```
 ### Find area that includes two or more geometries
 ```javascript
-var un_geo = var_Geometry1.union(var_Geometry2);
+var unGeo = geometry1.union(geometry2);
 ```
 ---
 ## Operations on Features
@@ -251,15 +251,15 @@ var un_geo = var_Geometry1.union(var_Geometry2);
 
 ### Set property name and value of geometry to create a feature
 ```javascript
-var feat = ee.Feature(var_Geometry, {Name: "Feature name", Size: 500};
+var feat = ee.Feature(geometry, {Name: "Feature name", Size: 500};
 ```
 ### Create a new feature from existing feature while renaming a property
 ```javascript
-var featnew = var_Feature.select(["Name"], ["Descriptor"]);
+var featNew = feature.select(["Name"], ["Descriptor"]);
 ```
 ### Extract values of a property from a Feature
 ```javascript
-var feat_val = var_Feature.get(''Size'');
+var featVal = feature.get("Size");
 ```
 ---
 
@@ -268,20 +268,20 @@ var feat_val = var_Feature.get(''Size'');
 ### Creator a filter for values of a property
 
 ```javascript
-var B_filter = ee.Filter.eq(Property_name, Value);
+var bFilter = ee.Filter.eq(propertyName, value);
 ```
 >or .neq , .gt , .gte , .lt , and .lte
 
 ### Create a filter based on maximum difference from a threshold
 
 ```javascript
-var Diff_filter = ee.Filter.maxDifference(threshold, Property_name, Value);
+var diffFilter = ee.Filter.maxDifference(threshold, propertyName, value);
 ```
 
 ### Create a text filter
 
 ```javascript
-var Txt_filter = ee.Filter.stringContains( Property_name, StringValue);
+var txtFilter = ee.Filter.stringContains(propertyName, stringValue);
 ```
 
 >or .stringStartsWith, and .stringEndsWith
@@ -289,39 +289,39 @@ var Txt_filter = ee.Filter.stringContains( Property_name, StringValue);
 ### Create a range filter
 
 ```javascript
-var Range_filter = ee.Filter.rangeContains( Property_name, StringValue, MinValue, MaxValue);
+var rangeFilter = ee.Filter.rangeContains(propertyName, stringValue, minValue, maxValue);
 ```
   
 ### Create a list filter to check for certain values
 
 ```javascript
-var List_filter = ee.Filter.listContains(Property_name, Value1, Property_name2, Value2);
+var listFilter = ee.Filter.listContains(propertyName, value1, propertyName2, value2);
 ```
 >.inList to test against list of values
 
 ### Create a filter of dates
 
 ```javascript
-var Date_filter = ee.Filter.calendarRange(StartDate, StopDate);
+var dateFilter = ee.Filter.calendarRange(startDate, stopDate);
 ```
 
 ### Create a filter for particular days of the year
 
 ```javascript
-var Day_filter = ee.Filter.dayOfYear(startDay, StopDay);
+var dayFilter = ee.Filter.dayOfYear(startDay, stopDay);
 ```
 
 ### Create a filter to subset geospatial data
 
 ```javascript
-var Bounds_filter= ee.Filter.bounds(GeometryorFeature);
+var boundsFilter = ee.Filter.bounds(geometryOrFeature);
 ```
 ### Combining and inversing filters
 
 ```javascript
-var New_filter=ee.Filter.and(Listoffilters);
-var New_filter=ee.Filter.or(Listoffilters);
-var inverse_filter = ee.Filter.not(filter);
+var newFilter = ee.Filter.and(listOfFilters);
+var newFilter = ee.Filter.or(listOfFilters);
+var inverseFilter = ee.Filter.not(filter);
 ```
 ---
 ## Operations on Images
@@ -330,35 +330,35 @@ var inverse_filter = ee.Filter.not(filter);
 
 ### Selecting the bands of an image
 ```javascript
-var band = var_Image.select(band name);
+var band = var_Image.select(bandName);
 ```
 ### Creating masks
 ```javascript
-var mask =var_Image.eq(value);
+var mask = image.eq(value);
 ```
 >or .neq or .gt or .gte or .lt or .lte
 
 ### Applying masks
 ```javascript
-var masked =var_Image.mask(mask);
+var masked = image.mask(mask);
 ```
 
 ### Pixelwise calculation
 ```javascript
-var results =var_Image.sum(value);
+var results = image.sum(value);
 ```
 >or .subtract ,    .multiply ,    .divide ,    .max , .min ,  .abs ,  .round ,  .floor ,  .ceil ,  .sqrt ,  .exp,  .log, .log10, .sin ,  .cos ,  .tan ,  .sinh ,  .cosh ,  .tanh ,  .acos, .asin
 
 ### Shift pixels of an image
 ```javascript
-newImage = oldImage.leftShift(valueofshift);                   
+newImage = oldImage.leftShift(valueOfShift);                   
 ```
 >or .rightShift
 
 ### Create a single value from an image by applying a reducer based on regions of interest
 
 ```javascript
-var outputDictionary = var_Image.reduceRegion(Reducer, var_Geometry, scale);
+var outputDictionary = var_Image.reduceRegion(reducer, geometry, scale);
 ```
 
 ---
@@ -368,36 +368,36 @@ var outputDictionary = var_Image.reduceRegion(Reducer, var_Geometry, scale);
 ### Select the first n numbers of images in a collection (based on property)
 
 ```javascript
-var SelectedImages =var_ImCollection.limit (n, Property_name, Order);
+var selectedImages = imCollection.limit(n, propertyName, order);
 ```
 
 ### Select images in collection based on particular properties
 
 ```javascript
-var selected_im = var_ImCollection.filterMetadata (Property_name, Relation , Value);
+var selectedIm = imCollection.filterMetadata(propertyName, relation , value);
 ```
 >Relations could be "equals", "less_than", "greater_than", "starts_with", "ends_with", and "contains"
 
 ### Select images within date range
 ```javascript
-var selected_im = var_ImCollection.filterDate (StartDate, StopDate);
+var selectedIm = imCollection.filterDate(startDate, stopDate);
 ```
 
 ### Select images within Geometry
 ```javascript
-var selected_im = var_ImCollection.filterBounds (var_Geometry);
+var selectedIm = imCollection.filterBounds(geometry);
 ```
 
 ### Perform pixelwise calculations for all images in collection
 ```javascript
-var sum_of_images = var_ImCollection.sum();
+var sumOfImages = imCollection.sum();
 ```
 >or .product, .max, .min, .mean, .mode, .median, and .count 
 
 ### Create composite of images in collection with the last image on top
 
 ```javascript
-var mosaic_of_images = var_ImCollection.mosaic();
+var mosaicOfImages = imCollection.mosaic();
 ```
 ---
 ## Importing and exporting data
@@ -416,7 +416,7 @@ var mosaic_of_images = var_ImCollection.mosaic();
 
 ```javascript
 Export.image.toDrive({
-  collection: var_Image, description: 'FileName', region: var_Geometry, scale: 1000}
+  collection: varImage, description: 'fileName', region: geometry, scale: 1000}
 });
 ```
 >or image.toCloudStorage, image.toAsset, table.toDrive, table.toCloudStorage, video.toCloudStorage, and video.toDrive

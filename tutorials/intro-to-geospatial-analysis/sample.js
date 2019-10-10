@@ -20,6 +20,7 @@ Map.addLayer(intersect, {color:'green'},'Bound and convex intersection');
 // Find the area encompassing two or more features; number is the maximum error in meters
 var union = bound.union(convex,100);
 Map.addLayer(union, {color:'purple'},'Bound and convex union');
+// Find the difference between two geometries
 var diff=bound.difference(convex,100);
 Map.addLayer(diff, {color:'purple'},'Bound and convex difference');
 // Find area of feature
@@ -66,31 +67,40 @@ Map.setCenter(-88, 41.8, 9);
 var raw = ee.ImageCollection('MODIS/006/MYD11A2');
 var roi = ee.FeatureCollection('users/tirthankar25/chicago');
 print(raw);
+// Select a band of the image collection using either indexing or band name
 var bandSel1 = raw.select(0);
 var bandSel2=raw.select('LST_Day_1km');
+// Filter the image collection by a date range
 var filtered=raw.filterDate('2002-12-30','2004-4-27');
 print(filtered);
+// Limit the image collection to the first 50 elements
 var limited = raw.limit(50);
 print(limited);
 print(bandSel1);
+// Calculate mean of all images (pixel-by-pixel) in the collection
 var mean = bandSel1.mean();
+// Calculate image of region of interest
 var clipped = mean.clip(roi);
+// mathematical operation on image pixels to convert from digital number of satellite observations to degree Celsius
 var calculate = clipped.multiply(.02).subtract(273.15);
 Map.addLayer(calculate,{min: 20, max: 30, palette: ['blue', 'green', 'red']},'LST');
+// Select pixel in the image that are greater than 30.8
 var mask = calculate.gt(30.8);
 Map.addLayer(mask,{},"mask");
+// Use selected pixels to mask the whole image
 var masked = clipped.mask(mask);
 Map.addLayer(masked,{min: 10, max: 30, palette: ['blue', 'green', 'red']},'LST_masked');
-var filtered = raw.filterDate('2002-12-30','2004-4-27');
-print(filtered);
 
 // Image to table example
 var urban = ee.FeatureCollection('users/tirthankar25/chicago');
 // Function to find mean of pixels in region of interest
 var getRegions = function(image) {
  return image.reduceRegions({
+  // Collection to run operation over
   collection: urban,
+  // Reducer to use
   reducer: ee.Reducer.mean(),
+  // Pixel resolution used for the calculations
   scale: 1000,
  });
 };
@@ -98,8 +108,9 @@ var getRegions = function(image) {
 var image = ee.ImageCollection('MODIS/MYD13A1').filterDate('2002-07-08', '2017-07-08')
  .mean().select('NDVI');
 print(image);
+// Call function
 var Final = getRegions(image);
-// Export image
+// Export image to Google Drive
 Export.table.toDrive({
  collection: Final,
  description: 'NDVI_all',
@@ -110,14 +121,14 @@ Export.table.toDrive({
 var geometry = ee.Geometry.Rectangle([55.1, 25, 55.4, 25.4]);
 Map.addLayer(geometry);
 var allImages = ee.ImageCollection('LANDSAT/LT05/C01/T1_TOA')
- // Filter row and path such that they cover Dubai.
+ // Filter row and path such that they cover Dubai
  .filter(ee.Filter.eq('WRS_PATH', 160))
  .filter(ee.Filter.eq('WRS_ROW', 43))
  // Filter cloudy scenes
  .filter(ee.Filter.lt('CLOUD_COVER', 30))
- // Get required years of imagery.
+ // Get required years of imagery
  .filterDate('1984-01-01', '2012-12-30')
- // Select 3-band imagery for the video.
+ // Select 3-band imagery for the video
  .select(['B4', 'B3', 'B2'])
  // Make the data 8 bit
  .map(function(image) {

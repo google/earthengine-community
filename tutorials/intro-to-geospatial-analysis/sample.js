@@ -75,14 +75,13 @@ var limited=raw.limit(50);
 print(limited);
 print(bandSel1);
 var mean = bandSel1.mean();
-Map.addLayer(mean);
 var clipped=mean.clip(roi);
 var calculate=clipped.multiply(.02).subtract(273.15);
-Map.addLayer(calculate,{min: 30, max: 40, palette: ['blue', 'green', 'red']},'LST');
+Map.addLayer(calculate,{min: 20, max: 30, palette: ['blue', 'green', 'red']},'LST');
 var mask=calculate.gt(30.8);
 Map.addLayer(mask,{},"mask");
 var masked=clipped.mask(mask);
-Map.addLayer(masked,{min: 20, max: 30, palette: ['blue', 'green', 'red']},'LST_masked');
+Map.addLayer(masked,{min: 10, max: 30, palette: ['blue', 'green', 'red']},'LST_masked');
 var filtered=raw.filterDate('2002-12-30','2004-4-27');
 print(filtered);
 

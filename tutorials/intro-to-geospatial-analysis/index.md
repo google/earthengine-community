@@ -251,15 +251,15 @@ var unGeo = geometry1.union(geometry2);
 
 ### Set property name and value of geometry to create a feature
 ```javascript
-var feat = ee.Feature(geometry, {Name: "Feature name", Size: 500};
+var feat = ee.Feature(geometry, {Name: "featureName", Size: 500};
 ```
 ### Create a new feature from existing feature while renaming a property
 ```javascript
-var featNew = feature.select(["Name"], ["Descriptor"]);
+var featNew = feature.select(["name"], ["descriptor"]);
 ```
 ### Extract values of a property from a Feature
 ```javascript
-var featVal = feature.get("Size");
+var featVal = feature.get("size");
 ```
 ---
 

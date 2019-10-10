@@ -3,7 +3,7 @@ title: Customizing base map styles
 description: This tutorial shows how to change the base map properties in Earth Engine, which is useful if you want a specific visualization for functionality/convenience.
 author: TC25
 tags: Earth Engine, Base Map, UI, Widgets
-date_published: 2019-09-16
+date_published: 2019-10-09
 ---
 
 [Open In Code Editor](https://code.earthengine.google.com/283c86dd3189788452b5fb64174a1b43)
@@ -28,6 +28,7 @@ We can start by changing the style of the base map. One easy fix is to invert th
 var baseChange = [
   "stylers": [ {"invert_lightness": true} ]
 ]
+
 Map.setOptions("baseChange",{"baseChange":baseChange})
 
 ```
@@ -36,11 +37,11 @@ The main styler options include:
  - hue: indicates the basic color
  - lightness: indicates percentage change in brightness of an element
  - saturation: indicates percentage change in basic color of an element
- - gamma: Gamma correction of an element (0.01 and 10.0)
+ - gamma: gamma correction of an element (0.01 and 10.0)
  - invert_lightness: inverts the existing lightness
- - visibility: Changes visibility options for an element (on, off, or simplified)
- - color: Sets the color of an element (using RGB Hex Strings)
- - weight: Sets the weight of a feature in pixels
+ - visibility: changes visibility options for an element (on, off, or simplified)
+ - color: sets the color of an element (using RGB Hex Strings)
+ - weight: sets the weight of a feature in pixels
 
 
 ## Changing map elements
@@ -319,7 +320,6 @@ var snazzyColor = [{
       "saturation": -100
   }]
 }];
-
 
 Map.setOptions("snazzyBlack", {
   "snazzyBlack": snazzyBlack,

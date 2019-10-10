@@ -92,12 +92,13 @@ var masked = clipped.mask(mask);
 Map.addLayer(masked,{min: 10, max: 30, palette: ['blue', 'green', 'red']},'LST_masked');
 
 // Image to table example
-var urban = ee.FeatureCollection('users/tirthankar25/chicago');
 // Function to find mean of pixels in region of interest
 var getRegions = function(image) {
+  // Load feature collection
+  var urban = ee.FeatureCollection('users/tirthankar25/chicago');
  return image.reduceRegions({
   // Collection to run operation over
-  collection: urban,
+    collection: urban,
   // Reducer to use
   reducer: ee.Reducer.mean(),
   // Pixel resolution used for the calculations

@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-var NamedArgs = require('../../impl/named-args').NamedArgs;
+var NamedArgs = require('../../impl/named-args.js').NamedArgs;
 
 withEarthEngineStub('NamedArgs', function() {
   it('extractFromFunction() with no args', function() {

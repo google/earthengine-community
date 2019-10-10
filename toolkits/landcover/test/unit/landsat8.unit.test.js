@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-var Landsat8 = require('../../api').Landsat8;
+var Landsat8 = require('../../api.js').Landsat8;
 
 withEarthEngineStub('Landsat8', function() {
   it('applyCloudAndShadowBitMasks() updates mask', function() {

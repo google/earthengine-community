@@ -17,7 +17,7 @@
 
 var Composites = require('users/google/toolkits:landcover/impl/composites.js').Composites;
 var Bands = require('users/google/toolkits:landcover/impl/bands.js').Bands;
-var NamedArgs = require('users/google/toolkits:landcover/impl/named-args').NamedArgs;
+var NamedArgs = require('users/google/toolkits:landcover/impl/named-args.js').NamedArgs;
 
 /**
  * Returns a new dataset instance for an arbitrary image collection.

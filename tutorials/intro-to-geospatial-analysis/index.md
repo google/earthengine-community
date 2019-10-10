@@ -402,7 +402,7 @@ var mosaicOfImages = imCollection.mosaic();
 ---
 ## Importing and exporting data
 
-[Image to table example](https://code.earthengine.google.com/35e2ab37e5fac0ddef5dadaf9f2531a7 "Image to table example")
+[Image to table example](https://code.earthengine.google.com/14c8472c1dae0833fef900a3b8f2d690 "Image to table example")
 
 [Timelapse example](https://code.earthengine.google.com/6433694cdf717b0c1875c49c50016dc2 "Timelapse example")
 

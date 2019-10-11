@@ -31,26 +31,7 @@ var COMMON_BAND_NAMES = {
   'B11': 'thermal2'
 };
 
-/**
- * The TasseledCap transformation specific to Landsat 8.
- *
- * Muhammad Hasan Ali Baig, Lifu Zhang, Tong Shuai & Qingxi Tong (2014)
- * Derivation of a tasselled cap transformation based on Landsat 8 at-satellite
- * reflectance, Remote Sensing Letters, DOI: 10.1080/2150704X.2014.915434
- *
- * Coefficients are in the order: [blue, green, red, nir, swir1, swir2]
- */
-var TASSELED_CAP_COEFFICENTS = [
-  [0.3029, 0.2786, 0.4733, 0.5599, 0.5080, 0.1872], // Brightness
-  [-0.2941, -0.2430, -0.5424, 0.7276, 0.0713, -0.160], // Greenness
-  [0.1511, 0.1973, 0.3283, 0.3407, -0.7117, -0.4559], // Wetness
-  [-0.8239, 0.0849, 0.4396, -0.0580, 0.2013, -0.2773], // TC4
-  [-0.3294, 0.0557, 0.1056, 0.1855, -0.4349, 0.8085], // TC5
-  [0.1079, -0.9023, 0.4119, 0.0575, -0.0259, 0.0252] // TC6
-];
-
-var DEFAULT_VIS_PARAMS =
-    {bands: ['B4', 'B3', 'B2'], min: 0, max: 3000, gamma: 1.4};
+var DEFAULT_VIS_PARAMS = {bands: ['B4', 'B3', 'B2'], min: 0, max: 3000, gamma: 1.4};
 var CLOUD_SHADOW_BIT_MASK = 1 << 3;
 var CLOUD_BIT_MASK = 1 << 5;
 var QA_BAND = 'pixel_qa';
@@ -77,7 +58,6 @@ var Landsat8 = function() {
 Landsat8.prototype = Object.create(Dataset.prototype);
 
 Landsat8.prototype.COMMON_BAND_NAMES = COMMON_BAND_NAMES;
-Landsat8.prototype.TASSELED_CAP_COEFFICENTS = TASSELED_CAP_COEFFICENTS;
 
 /**
  * Masks clouds and shadows using relevant bits in the `pixel_qa` band. In
@@ -112,6 +92,28 @@ Landsat8.maskCloudsAndShadows = function(image) {
                  .and(qa.bitwiseAnd(CLOUD_BIT_MASK).eq(0));
   return image.updateMask(mask);
 };
+
+/**
+ * Returns the TasseledCap coefficients specific to Landsat 8.
+ *
+ * See: Muhammad Hasan Ali Baig, Lifu Zhang, Tong Shuai & Qingxi Tong (2014)
+ * Derivation of a tasselled cap transformation based on Landsat 8 at-satellite
+ * reflectance, Remote Sensing Letters, http://doi.org/10.1080/2150704X.2014.915434
+ *
+ * Coefficients are in the order: [blue, green, red, nir, swir1, swir2]
+ * @override
+ */
+Landsat8.prototype.getTasseledCapCoefficients = function() {
+  return [
+    [0.3029, 0.2786, 0.4733, 0.5599, 0.5080, 0.1872], // Brightness
+    [-0.2941, -0.2430, -0.5424, 0.7276, 0.0713, -0.160], // Greenness
+    [0.1511, 0.1973, 0.3283, 0.3407, -0.7117, -0.4559], // Wetness
+    [-0.8239, 0.0849, 0.4396, -0.0580, 0.2013, -0.2773], // TC4
+    [-0.3294, 0.0557, 0.1056, 0.1855, -0.4349, 0.8085], // TC5
+    [0.1079, -0.9023, 0.4119, 0.0575, -0.0259, 0.0252] // TC6
+  ];
+};
+
 
 Landsat8.QA_BAND = QA_BAND;
 Landsat8.CLOUD_SHADOW_BIT_MASK = CLOUD_SHADOW_BIT_MASK;

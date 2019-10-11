@@ -62,33 +62,44 @@ var TestDataset = function(values) {
 };
 
 withEarthEngine('Dataset', function() {
-  it('computeCommonBandNames_()', function(done) {
-    TestDataset(TEST_VALUES)
-        .computeCommonBandNames_(ee.List(['B4', 'B3', 'B2', 'foo']))
+  it('lookupCommonBandNames()', function(done) {
+    TestDataset(TEST_VALUES).lookupCommonBandNames(["red", "green", "blue", 'foo'])
+      .evaluate(function(actual, error) {
+        expect(error).toBeUndefined();
+        expect(actual).toEqual(['B4', 'B3', 'B2', 'foo']);
+        done();
+      });
+  });
+
+  it('lookupCommonBandNames with existing bands', function(done) {
+    TestDataset(TEST_VALUES).lookupCommonBandNames(
+        ["red", "green", "blue", 'foo'], ["red", "foo"])
         .evaluate(function(actual, error) {
           expect(error).toBeUndefined();
-          expect(actual).toEqual(['red', 'green', 'blue', 'foo']);
+          expect(actual).toEqual(['red', 'B3', 'B2', 'foo']);
           done();
         });
+  });
+
+  it('getCommonBandNames()', function(done) {
+    TestDataset(TEST_VALUES).getCommonBandNames()
+      .evaluate(function(actual, error) {
+        expect(error).toBeUndefined();
+        expect(actual.sort()).toEqual(Object.values(TEST_COMMON_BAND_NAMES).sort());
+        done();
+      });
   });
 
   it('addBandIndices()', function(done) {
     var l8 = TestDataset(TEST_VALUES).addBandIndices('ndvi', 'ndsi');
     TestImage.reduceConstant(l8.getImageCollection().first())
-        .evaluate(function(actual, error) {
-          expect(error).toBeUndefined();
-          // Check calculated values to ensure index expressions are correct and
-          // that original bands are still present.
-          var expected = Object.assign({}, TEST_VALUES, TEST_INDICES);
-          expect(actual).toEqual(expected);
-          done();
-        });
-  });
-
-  it('addTasseledCap()', function(done) {
-    expect(function() {
-      var l8 = TestDataset(TEST_VALUES).addTasseledCap();
-    }).toThrow();
-    done();
+      .evaluate(function(actual, error) {
+        expect(error).toBeUndefined();
+        // Check calculated values to ensure index expressions are correct and
+        // that original bands are still present.
+        var expected = Object.assign({}, TEST_VALUES, TEST_INDICES);
+        expect(actual).toEqual(expected);
+        done();
+      });
   });
 });

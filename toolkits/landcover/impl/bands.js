@@ -2,14 +2,14 @@
  * @license
  * Copyright 2019 Google LLC
  *
- * Licensed under the Apache License, Version 2.0 (the "License");
+ * Licensed under the Apache License, Version 2.0 (the 'License');
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
  *    https://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
+ * distributed under the License is distributed on an 'AS IS' BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
@@ -157,15 +157,15 @@ function addFractionalYearBand(collection) {
  * the coefficients matrix.
  *
  * @param {!ee.Image} image The image on which to compute the transformation.
- * @param {!Array<Array<number>>} coef The matrix to apply to the image.
- * @param {?Array<string>} bandNames An optional list of output band names.
+ * @param {!Array<!Array<number>>} coef The matrix to apply to the image.
+ * @param {Array<string>=} bandNames An optional list of output band names.
  * @return {!ee.Image} The transformed bands.
  */
-function computeMatrixMutliply(image, coef, bandNames) {
+function matrixMultiply(image, coef, bandNames) {
   // Create some default band names if none were specified.
-  bandNames = bandNames || defaultBandNames("mmult", image.bandNames().length());
+  bandNames = bandNames || generateBandNames('mmult', image.bandNames().length());
 
-  // make an Array Image with a 2-D Array per pixel.
+  // Make an Array Image with a 2-D Array per pixel.
   var arrayImage = image.toArray().toArray(1);
   return ee.Image(ee.Array(coef))
       .matrixMultiply(arrayImage)
@@ -173,10 +173,15 @@ function computeMatrixMutliply(image, coef, bandNames) {
       .arrayFlatten([bandNames]);
 }
 
-/** Generate a series of band names of the form prefixN */
-function defaultBandNames(prefix, count) {
+/**
+ * Generate a series of band names of the form prefixN.
+ * @param {!string} prefix The prefix to prepend.
+ * @param {!number} count How many bands to generate, starting from 0.
+ * @return {*}
+ */
+function generateBandNames(prefix, count) {
   return ee.List.sequence(1, count).map(function(n) {
-    return ee.Number(n).format(ee.String(prefix).cat("%d"));
+    return ee.Number(n).format(ee.String(prefix).cat('%d'));
   });
 }
 
@@ -185,5 +190,5 @@ exports.Bands = {
   addDateBand: addDateBand,
   addDayOfYearBand: addDayOfYearBand,
   addFractionalYearBand: addFractionalYearBand,
-  computeMatrixMutliply: computeMatrixMutliply
+  matrixMultiply: matrixMultiply
 };

@@ -47,6 +47,7 @@ var NEWLINE_REGEX = /\r?\n/g;
  */
 var BLOCK_COMMENT_REGEX = /[/][*].*?[*][/]/g;
 
+
 /**
  * Returns a dictionary of arguments keyed by function argument name. Toolkit
  * functions to simulate the "named args" feature of other popular languages
@@ -67,7 +68,7 @@ function extractFromFunction(fn, originalArgs) {
   // Functions with a single dictionary argument are assumed to have been
   // invoked using named args. This precludes us using named args for functions
   // that take a single dictionary as arguments.
-  if (originalArgs.length == 1 && typeof originalArgs[0] === 'object') {
+  if (originalArgs.length == 1 && originalArgs[0].constructor == Object) {
     return originalArgs[0];
   }
   // Extract arg names using heuristic regex.

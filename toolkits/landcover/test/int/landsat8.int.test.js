@@ -104,7 +104,7 @@ withEarthEngine('Landsat8', function() {
     // Verify cloud shadow-free pixel was returned.
     var image = tc.getImageCollection().mosaic();
     var value = TestImage.reduceConstant(image);
-    value.evaluate(function (actual, error) {
+    value.evaluate(function(actual, error) {
       expect(error).toBeUndefined();
       for (key in actual) {
         expect(actual[key]).toBeCloseTo(EXPECTED_VALUES[key], 1e-3);

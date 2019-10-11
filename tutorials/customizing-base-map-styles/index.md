@@ -3,7 +3,7 @@ title: Customizing base map styles
 description: This tutorial shows how to change the base map properties in Earth Engine, which is useful if you want a specific visualization for functionality/convenience.
 author: TC25
 tags: Earth Engine, Base Map, UI, Widgets
-date_published: 2019-10-09
+date_published: 2019-10-11
 ---
 
 [Open In Code Editor](https://code.earthengine.google.com/283c86dd3189788452b5fb64174a1b43)

@@ -156,7 +156,7 @@ Map.setOptions("roadNetwork", {
 
 ## Cheat codes
 
-There is a way to create almost any base map you want without the hassle of tweaking any options. Enter [Snazzy Maps](https://snazzymaps.com), which is a community project for creating and sharing great styles for Google Maps. Copy any of the javascript properties from that website and it will show up on Earth Engine. Consider the two examples below:
+There is a way to create almost any base map you want without the hassle of tweaking any options. Enter [Snazzy Maps](https://snazzymaps.com), a community project for creating and sharing great styles for Google Maps. Copy any of the javascript properties from that website and it will show up on Earth Engine. Consider the two examples below:
 
 ```javascript
 

@@ -67,7 +67,8 @@ function extractFromFunction(fn, originalArgs) {
   // Functions with a single dictionary argument are assumed to have been
   // invoked using named args. This precludes us using named args for functions
   // that take a single dictionary as arguments.
-  if (originalArgs.length == 1 && typeof originalArgs[0] === 'object') {
+  if (originalArgs.length == 1 && typeof originalArgs[0] === 'object' &&
+      !(originalArgs[0] instanceof ee.ComputedObject)) {
     return originalArgs[0];
   }
   // Extract arg names using heuristic regex.

@@ -48,6 +48,22 @@ withEarthEngineStub('NamedArgs', function() {
     expect(actual).toEqual(expected);
   });
 
+  it('extractFromFunction() builds dict for arrays', function() {
+    var testFunction = function(foo) {};
+    var testArray = [1, 2, 3];
+    var actual = NamedArgs.extractFromFunction(testFunction, [testArray]);
+    var expected = {foo: testArray};
+    expect(actual).toEqual(expected);
+  });
+
+  it('extractFromFunction() builds dict for Dates', function() {
+    var testFunction = function(foo) {};
+    var testDate = new Date();
+    var actual = NamedArgs.extractFromFunction(testFunction, [testDate]);
+    var expected = {foo: testDate};
+    expect(actual).toEqual(expected);
+  });
+
   it('extractFromFunction() with null args', function() {
     var testFunction = function(foo, bar) {};
     var actual = NamedArgs.extractFromFunction(testFunction, [null, null]);

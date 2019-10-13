@@ -25,12 +25,12 @@ withEarthEngine('Bands', function() {
 
     var mult = Bands.matrixMultiply(image, coef);
     TestImage.reduceConstant(mult)
-    .evaluate(function(actual, error) {
-      expect(actual).toEqual({
-        'mmult1': 5,
-        'mmult2': 4
+      .evaluate(function(actual, error) {
+        expect(actual).toEqual({
+          'mmult1': 5,
+          'mmult2': 4
+        });
+        done();
       });
-      done()
-    });
   });
 });

@@ -141,6 +141,7 @@ Dataset.prototype.createMedioidComposite = function(bands) {
 
 /**
  * Returns the list of 'common' band names.
+ * @return {Array<string>} the list of band names.
  */
 Dataset.prototype.getCommonBandNames = function() {
   return ee.Dictionary(this.COMMON_BAND_NAMES).values();
@@ -148,9 +149,10 @@ Dataset.prototype.getCommonBandNames = function() {
 
 /**
  * Get the list of bands names corresponding to a list of wanted 'common' bands.
- * If the wanted bands are in have, they're used directly, otherwise they're renamed.
+ * If the wanted bands are in "have", they're used directly, otherwise they're renamed.
  *
- * @param {Array<string>=} want The 'common' bands that are wanted.  If undefined, uses all common bands.
+ * @param {Array<string>=} want The 'common' bands that are wanted.  If undefined, uses
+ *     all common bands.
  * @param {Array<string>=} have The bands already available.  If undefined, no bands are assumed.
  * @return {Array<string>} The list of band names to use to get the wanted common bands.
  */
@@ -217,7 +219,6 @@ Dataset.prototype.addTasseledCap = function() {
   if (!coef) {
     throw new Error('Dataset does not support Tasseled Cap transformation.');
   }
-
   var srcBands = ['blue', 'green', 'red', 'nir', 'swir1', 'swir2'];
   var dstBands = ['TC1', 'TC2', 'TC3', 'TC4', 'TC5', 'TC6'];
 
@@ -285,6 +286,9 @@ Dataset.prototype.maskCloudsAndShadows = function() {
 /**
  * Interface for fetching Tasseled Cap Coefficients.
  * Returns null so the caller can check for support.
+ *
+ * @protected
+ * @return {?Array<Array<number>>} The coefficients specific to this dataset.
  */
 Dataset.prototype.getTasseledCapCoefficients = function() {
   return null;

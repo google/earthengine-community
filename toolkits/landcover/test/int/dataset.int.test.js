@@ -63,7 +63,7 @@ var TestDataset = function(values) {
 
 withEarthEngine('Dataset', function() {
   it('lookupCommonBandNames()', function(done) {
-    TestDataset(TEST_VALUES).lookupCommonBandNames(["red", "green", "blue", 'foo'])
+    TestDataset(TEST_VALUES).lookupCommonBandNames(['red', 'green', 'blue', 'foo'])
       .evaluate(function(actual, error) {
         expect(error).toBeUndefined();
         expect(actual).toEqual(['B4', 'B3', 'B2', 'foo']);
@@ -73,7 +73,7 @@ withEarthEngine('Dataset', function() {
 
   it('lookupCommonBandNames with existing bands', function(done) {
     TestDataset(TEST_VALUES).lookupCommonBandNames(
-        ["red", "green", "blue", 'foo'], ["red", "foo"])
+        ['red', 'green', 'blue', 'foo'], ['red', 'foo'])
         .evaluate(function(actual, error) {
           expect(error).toBeUndefined();
           expect(actual).toEqual(['red', 'B3', 'B2', 'foo']);
@@ -102,4 +102,36 @@ withEarthEngine('Dataset', function() {
         done();
       });
   });
+
+  fit('addTasseledCap()', function(done) {
+    // Fake a dataset with TCC that are constants per band.
+    var d = TestDataset(TEST_VALUES);
+    d.getTasseledCapCoefficients = function() {
+      return [
+        [1, 1, 1, 1, 1, 1],
+        [2, 2, 2, 2, 2, 2],
+        [3, 3, 3, 3, 3, 3],
+        [4, 4, 4, 4, 4, 4],
+        [5, 5, 5, 5, 5, 5],
+        [6, 6, 6, 6, 6, 6]];
+    };
+
+    var sumOfBands = (2 + 3 + 4 + 5 + 6 + 7) * 1000;
+    var TC_RESULT = {
+      'TC1': sumOfBands,
+      'TC2': sumOfBands * 2,
+      'TC3': sumOfBands * 3,
+      'TC4': sumOfBands * 4,
+      'TC5': sumOfBands * 5,
+      'TC6': sumOfBands * 6,
+    };
+    var result = d.addTasseledCap().getImageCollection().first();
+    TestImage.reduceConstant(result)
+      .evaluate(function(actual, error) {
+        expect(error).toBeUndefined();
+        var expected = Object.assign({}, TEST_VALUES, TC_RESULT);
+        expect(actual).toEqual(expected);
+        done();
+      });
+    });
 });

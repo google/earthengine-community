@@ -40,7 +40,7 @@ withEarthEngineStub('NamedArgs', function() {
     expect(actual).toEqual(expected);
   });
 
-  fit('extractFromFunction() builds dict for EE objects', function() {
+  it('extractFromFunction() builds dict for EE objects', function() {
     var testFunction = function(foo) {};
     var testImage = ee.Image([0]);
     var actual = NamedArgs.extractFromFunction(testFunction, [testImage]);

@@ -16,8 +16,6 @@
  */
 
 var Bands = require('../../impl/bands.js').Bands;
-var formatComputedObject =
-    require('../helpers/format-computed-object.js').formatComputedObject;
 
 var createImage = function(values, startDate) {
   var image = ee.Dictionary(values).toImage().int64();

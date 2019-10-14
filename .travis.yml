@@ -11,6 +11,7 @@ jobs:
       install:
         - npm install
       script:
+        - npm run lint
         - npm run test
     - stage: "Landcover Toolkit"
       name: "landcover-toolkit"
@@ -20,4 +21,5 @@ jobs:
       install:
         - npm install
       script:
+        - npm run lint
         - npm run test

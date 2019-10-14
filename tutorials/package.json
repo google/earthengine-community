@@ -5,7 +5,7 @@
   "scripts": {
     "lint": "eslint --ext js,md .",
     "fix": "eslint --ext js,md --fix .",
-    "test": "eslint . && jasmine --config=test/jasmine.json"
+    "test": "jasmine --config=test/jasmine.json"
   },
   "devDependencies": {
     "eslint": "^6.3.0",

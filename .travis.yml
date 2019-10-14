@@ -1,0 +1,15 @@
+language: node_js
+node_js:
+  - 10
+
+jobs:
+  include:
+    - stage: "Community Tutorials"
+      name: "tutorials"
+      before_install:
+        - cd tutorials
+      install:
+        - npm install
+      script:
+        - npm run lint
+        - npm run test

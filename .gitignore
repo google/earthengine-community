@@ -4,3 +4,4 @@ node_modules
 out
 !.gitignore
 !.eslintrc.json
+!.travis.yml

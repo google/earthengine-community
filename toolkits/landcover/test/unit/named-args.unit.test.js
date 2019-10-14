@@ -79,8 +79,8 @@ withEarthEngineStub('NamedArgs', function() {
 
     it('extractFromFunction() strips line comments', function() {
       var testFunction = function(
-          arg1, // line comment
-          arg2 // line comment 2
+          arg1,  // line comment
+          arg2   // line comment 2
       ) {};
       var actual =
           NamedArgs.extractFromFunction(testFunction, ['val1', 'val2']);

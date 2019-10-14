@@ -17,14 +17,6 @@
 
 var Bands = require('../../impl/bands.js').Bands;
 
-var createImage = function(values, startDate) {
-  var image = ee.Dictionary(values).toImage().int64();
-  if (startDate) {
-    image = image.set('system:time_start', ee.Date(startDate).millis());
-  }
-  return image;
-};
-
 withEarthEngineStub('Bands', function() {
   it('getSpectralIndices()', function() {
     var testImage = ee.Image([0]);

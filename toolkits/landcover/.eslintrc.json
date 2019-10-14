@@ -19,7 +19,7 @@
     "rules": {
         "comma-dangle": "off",
         "guard-for-in": "off",
-        "indent": "off",        
+        "indent": "off",
         "new-cap": "off",
         "max-len": ["error", {
             "code": 100

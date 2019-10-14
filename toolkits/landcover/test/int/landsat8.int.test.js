@@ -29,7 +29,8 @@ var SHADOWY_PIXEL_VALUE = 4;
  * Create an instance of lct.Landsat8, replacing the backing collection with the
  * specified one.
  *
- * @param {ee.ImageCollection} testCollection 
+ * @param {ee.ImageCollection} testCollection
+ * @return {!lct.Landsat8}
  */
 function TestLandsat8(testCollection) {
   var l8 = lct.Landsat8();

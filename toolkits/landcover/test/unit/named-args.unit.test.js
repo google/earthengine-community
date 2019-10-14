@@ -103,8 +103,8 @@ withEarthEngineStub('NamedArgs', function() {
 
     it('extractFromFunction() strips line comments', function() {
       var testFunction = function(
-          arg1,  // line comment
-          arg2   // line comment 2
+          arg1, // line comment
+          arg2 // line comment 2
       ) {};
       var actual =
           NamedArgs.extractFromFunction(testFunction, ['val1', 'val2']);
@@ -126,7 +126,7 @@ withEarthEngineStub('NamedArgs', function() {
     it('extractFromFunction() ignore dangling commas', function() {
       var testFunction = function(
           arg1,
-          arg2,
+          arg2
       ) {};
       var actual =
           NamedArgs.extractFromFunction(testFunction, ['val1', 'val2']);

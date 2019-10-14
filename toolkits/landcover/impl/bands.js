@@ -69,29 +69,23 @@ var SPECTRAL_INDEX_EXPRESSIONS = {
  *   'ndbi', 'ndsi'
  *
  * @param {ee.Image} image The source image.
- * @param {!Array<string>|!ee.List} indices The list of indices to calculate.
+ * @param {!Array<string>} indices The list of indices to calculate.
  * @return {!ee.Image} An new image with both the original and calculated bands.
  */
 function getSpectralIndices(image, indices) {
   var args = NamedArgs.extractFromFunction(getSpectralIndices, arguments);
   image = args.image;
   indices = args.indices;
-  // We can't check the existence of the specified indices for ee.List, which
-  // is only evaluated server-side.
-  if (Array.isArray(indices)) {
-    // Check that all the specified indexes exist.
-    indices.forEach(function(name) {
-      if (!(name in SPECTRAL_INDEX_EXPRESSIONS)) {
-        throw Error('Unrecognized spectral index: ' + name);
-      }
-    });
-  }
 
-  // TODO(gorelick): Change this to Dictionary.get once supported.
   return ee.Image(indices.map(function(name) {
     var expr = SPECTRAL_INDEX_EXPRESSIONS[name];
+    // Check that the specified indices exist.
+    if (!expr) {
+      throw Error('Unrecognized spectral index: ' + name);
+    }
     return image.expression(expr, {b: image}).rename([name]);
   }));
+
 }
 
 /**

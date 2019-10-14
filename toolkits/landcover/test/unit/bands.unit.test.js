@@ -32,11 +32,4 @@ withEarthEngineStub('Bands', function() {
       Bands.getSpectralIndices(testImage, testIndices);
     }).toThrow();
   });
-
-  it('getSpectralIndices() with ee.List', function() {
-    var testImage = ee.Image([0]);
-    var testIndices = ee.List(['ndvi', 'evi']);
-    var result = Bands.getSpectralIndices(testImage, testIndices);
-    expect(result.name()).toEqual('Image');
-  });  
 });

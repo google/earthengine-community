@@ -71,7 +71,7 @@ var SPECTRAL_INDEX_EXPRESSIONS = {
  *
  * @param {ee.Image} image The source image.
  * @param {!Array<string>} indices The list of indices to calculate.
- * @return {ee.Image} The updated image.
+ * @return {!Array<!ee.Image>} The new spectral index bands.
  */
 function getSpectralIndices(image, indices) {
   var args = NamedArgs.extractFromFunction(getSpectralIndices, arguments);

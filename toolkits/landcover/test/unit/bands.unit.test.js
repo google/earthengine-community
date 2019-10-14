@@ -32,9 +32,7 @@ withEarthEngineStub('Bands', function() {
     var testImage = ee.Image([0]);
     var testIndices = ['ndvi', 'evi'];
     var result = Bands.getSpectralIndices(testImage, testIndices);
-    expect(result.length).toEqual(2);
-    expect(result[0].name()).toEqual('Image');
-    expect(result[1].name()).toEqual('Image');
+    expect(result.name()).toEqual('Image');
   });
 
   it('getSpectralIndices() fails on bad index name', function() {
@@ -45,11 +43,10 @@ withEarthEngineStub('Bands', function() {
     }).toThrow();
   });
 
-  fit('getSpectralIndices() fails on bad index name', function() {
+  it('getSpectralIndices() with ee.List', function() {
     var testImage = ee.Image([0]);
-    var testIndices = ee.Array(['ndvi', 'foo']);
-    // expect(function() {
-      Bands.getSpectralIndices(testImage, testIndices);
-    // }).toThrow();
+    var testIndices = ee.List(['ndvi', 'evi']);
+    var result = Bands.getSpectralIndices(testImage, testIndices);
+    expect(result.name()).toEqual('Image');
   });  
 });

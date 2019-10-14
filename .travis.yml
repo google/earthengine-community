@@ -7,7 +7,7 @@ jobs:
     - stage: "Community Tutorials"
       name: "tutorials"
       before_install:
-        - bash ./.travis/require-changes.sh tutorials
+        - bash ./.travis/require-changes.sh tutorials || travis_terminate 0
         - cd tutorials
       install:
         - npm install
@@ -17,7 +17,7 @@ jobs:
     - stage: "Landcover Toolkit"
       name: "landcover-toolkit"
       before_install:
-        - bash ./.travis/require-changes.sh toolkits/landcover
+        - bash ./.travis/require-changes.sh toolkits/landcover || travis_terminate 0
         - cd toolkits/landcover
         - openssl aes-256-cbc -K $encrypted_b99e9b2db4c0_key -iv $encrypted_b99e9b2db4c0_iv -in test/.private-key.json.enc -out test/.private-key.json -d
       install:

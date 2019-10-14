@@ -5,5 +5,5 @@ out
 !.gitignore
 !.eslintrc.yml
 !.private-key.json.enc
+!.travis
 !.travis.yml
-!.travis-ci

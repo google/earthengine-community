@@ -1,0 +1,22 @@
+language: node_js
+node_js:
+  - 10
+
+jobs:
+  include:
+    - stage: "Community Tutorials"
+      name: "tutorials"
+      before_install:
+        - cd tutorials
+      install:
+        - npm install
+      script:
+        - npm run test
+    - stage: "Landcover Toolkit"
+      name: "landcover-toolkit"
+      before_install:
+        - cd toolkits/landcover
+      install:
+        - npm install
+      script:
+        - npm run test

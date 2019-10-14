@@ -4,3 +4,5 @@ node_modules
 out
 !.gitignore
 !.eslintrc.yml
+!.travis.yml
+!.travis-ci

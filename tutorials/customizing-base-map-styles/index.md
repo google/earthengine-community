@@ -61,7 +61,7 @@ styler options work with each of these features.
 Let's consider a couple of examples to edit other elements and features
 
 ```javascript
-// Remove icons
+// Remove icons.
 var iconChange = [
   {
     // Change map saturation.
@@ -93,7 +93,7 @@ var iconChange = [
     ]
   },
   {
-    // Change road labels
+    // Change road labels.
     featureType: 'road',
     elementType: 'labels',
     stylers: [
@@ -103,7 +103,7 @@ var iconChange = [
     ]
   },
   {
-    // Change icon properties
+    // Change icon properties.
     elementType: 'labels.icon',
     stylers: [
       {
@@ -112,7 +112,7 @@ var iconChange = [
     ]
   },
   {
-    // Change POI options
+    // Change POI options.
     featureType: 'poi',
     elementType: 'all',
     stylers: [
@@ -141,7 +141,7 @@ var iconChange = [
   }
 ];
 
-// Enhanced road network visualization
+// Enhanced road network visualization.
 
 var roadNetwork = [
   {

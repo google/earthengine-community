@@ -26,6 +26,9 @@ jobs:
         - npm run test:unit
     - stage: "Landcover Toolkit Integration Tests"
       name: "landcover-toolkit-integration"
+      if: |
+        env(encrypted_44af26ab0da9_key) IS present AND \
+        env(encrypted_44af26ab0da9_iv) IS present
       before_install:
         - bash ./.travis/require-changes.sh toolkits/landcover || travis_terminate 0
         - cd toolkits/landcover

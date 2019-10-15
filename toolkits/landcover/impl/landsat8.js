@@ -103,7 +103,7 @@ Landsat8.maskCloudsAndShadows = function(image) {
  * Coefficients are in the order: [blue, green, red, nir, swir1, swir2]
  * @override
  */
-Landsat8.prototype.getTasseledCapCoefficients = function() {
+Landsat8.prototype.getTasseledCapCoefficients_ = function() {
   return [
     [0.3029, 0.2786, 0.4733, 0.5599, 0.5080, 0.1872], // Brightness
     [-0.2941, -0.2430, -0.5424, 0.7276, 0.0713, -0.160], // Greenness

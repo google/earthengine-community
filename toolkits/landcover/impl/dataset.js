@@ -215,7 +215,7 @@ Dataset.prototype.addBandIndices = function(var_names) {
  * @return {!Dataset}
  */
 Dataset.prototype.addTasseledCap = function() {
-  var coef = this.getTasseledCapCoefficients();
+  var coef = this.getTasseledCapCoefficients_();
   if (!coef) {
     throw new Error('Dataset does not support Tasseled Cap transformation.');
   }
@@ -290,7 +290,7 @@ Dataset.prototype.maskCloudsAndShadows = function() {
  * @protected
  * @return {?Array<Array<number>>} The coefficients specific to this dataset.
  */
-Dataset.prototype.getTasseledCapCoefficients = function() {
+Dataset.prototype.getTasseledCapCoefficients_ = function() {
   return null;
 };
 

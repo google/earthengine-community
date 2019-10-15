@@ -106,7 +106,7 @@ withEarthEngine('Dataset', function() {
   fit('addTasseledCap()', function(done) {
     // Fake a dataset with TCC that are constants per band.
     var d = TestDataset(TEST_VALUES);
-    d.getTasseledCapCoefficients = function() {
+    d.getTasseledCapCoefficients_ = function() {
       return [
         [1, 1, 1, 1, 1, 1],
         [2, 2, 2, 2, 2, 2],

@@ -19,7 +19,7 @@ jobs:
       before_install:
         - bash ./.travis/require-changes.sh toolkits/landcover || travis_terminate 0
         - cd toolkits/landcover
-        - openssl aes-256-cbc -K $encrypted_b99e9b2db4c0_key -iv $encrypted_b99e9b2db4c0_iv -in test/.private-key.json.enc -out test/.private-key.json -d
+        - openssl aes-256-cbc -K $encrypted_44af26ab0da9_key -iv $encrypted_44af26ab0da9_iv -in test/.private-key.json.enc -out test/.private-key.json -d
       install:
         - npm install
       script:

@@ -207,7 +207,7 @@ Map.setOptions('roadNetwork', {
 });
 ```
 
-![Road](https://github.com/TC25/earthengine-community/blob/patch-2/tutorials/customizing-base-map-styles/road.png?raw=true)
+![Road](https://storage.googleapis.com/earthengine-community/tutorials/customizing-base-map-styles/road.png)
 
 ## Cheat codes
 
@@ -462,7 +462,7 @@ Map.setOptions('snazzyBlack', {
 });
 ```
 
-![Dark](https://github.com/TC25/earthengine-community/blob/patch-2/tutorials/customizing-base-map-styles/snazzy-black.png?raw=true)
+![Dark](https://storage.googleapis.com/earthengine-community/tutorials/customizing-base-map-styles/snazzy-black.png)
 
 You can find out more about all the options in Google Maps API here:
 https://developers.google.com/maps/documentation/javascript/reference#MapTypeStyle

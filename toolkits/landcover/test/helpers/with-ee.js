@@ -19,10 +19,6 @@
  * Automatically executed by Jasmine before tests are run.
  */
 
-// TODO(gino-m): Add private key into Travis encrypted environment variables:
-// https://docs.travis-ci.com/user/environment-variables/#defining-variables-in-repository-settings
-var privateKey = require('../.private-key.json');
-
 /**
  * Authenticates against live Earth Engine server using service account private
  * key stored in ../.private-key.json. On failure, logs an error and exits with
@@ -32,6 +28,7 @@ var privateKey = require('../.private-key.json');
  *     successful.
  */
 var authenticate = function(onSuccess) {
+  var privateKey = require('../.private-key.json');
   ee.data.authenticateViaPrivateKey(privateKey, onSuccess, fail);
 };
 

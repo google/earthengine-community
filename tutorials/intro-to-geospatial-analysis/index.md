@@ -23,7 +23,6 @@ Collection, visualization, and analysis of geographical or spatial data.
 
 - Raster data comprises of pixels with associated values
 
-Image sources: https://gisgeography.com/spatial-data-types-vector-raster/
 ---
 
 
@@ -43,6 +42,7 @@ Image sources: https://gisgeography.com/spatial-data-types-vector-raster/
 
 ![Raster](map-algebra.png)
 
+Image sources: https://gisgeography.com/spatial-data-types-vector-raster/
 
 ---
 

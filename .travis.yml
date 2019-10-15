@@ -11,11 +11,10 @@ node_js:
 
 jobs:
   include:
-    - stage: test
-      name: "Community Tutorials Tests"
-      script: bash ./tutorials/run-tests.sh
-      name: "Landcover Toolkit Tests"
-      script: bash ./toolkits/landcover/run-tests.sh
+    name: "Community Tutorials Tests"
+    script: bash ./tutorials/run-tests.sh
+    name: "Landcover Toolkit Tests"
+    script: bash ./toolkits/landcover/run-tests.sh
 #     - stage: "Community Tutorials"
 #       name: "tutorials"
 #       before_install:

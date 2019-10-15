@@ -103,7 +103,7 @@ withEarthEngine('Dataset', function() {
       });
   });
 
-  fit('addTasseledCap()', function(done) {
+  it('addTasseledCap()', function(done) {
     // Fake a dataset with TCC that are constants per band.
     var d = TestDataset(TEST_VALUES);
     d.getTasseledCapCoefficients_ = function() {

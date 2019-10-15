@@ -8,11 +8,11 @@ node_js:
 #   - name: landcover-toolkit-integration
 #     if: env(encrypted_44af26ab0da9_key) IS present AND env(encrypted_44af26ab0da9_iv) IS present
 
-script: ./tutorials/run-tests.sh
-script: ./toolkits/landcover/run-tests.sh
 
-# jobs:
-#   include:    
+jobs:
+  include:
+    script: ./tutorials/run-tests.sh
+    script: ./toolkits/landcover/run-tests.sh
 #     - stage: "Community Tutorials"
 #       name: "tutorials"
 #       before_install:

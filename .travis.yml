@@ -12,10 +12,12 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+# Define environment.
 language: node_js
 node_js:
   - 10
 
+# The jobs defined here are run in parallel:
 jobs:
   include:
     - script: bash ./tutorials/run-tests.sh

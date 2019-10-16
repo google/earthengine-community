@@ -22,7 +22,7 @@ DIR="toolkits/landcover"
 
 # For PRs, skip tests if no changes.
 if [[ "${TRAVIS_EVENT_TYPE}" == "pull_request" ]]; then
-  ./.travis/require-changes.sh "${DIR}" || exit 0
+  bash ./.travis/require-changes.sh "${DIR}" || exit 0
 fi
 
 # Setup/

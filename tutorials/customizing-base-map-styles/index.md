@@ -28,11 +28,11 @@ We can start by changing the style of the base map. One easy fix is to invert
 the lightness to get a darker background, like so:
 
 ```javascript
-var baseChange = [
-  "stylers": [ {"invert_lightness": true} ]
-]
+var baseChange = {
+  'stylers': [{'invert_lightness': true}]
+};
 
-Map.setOptions("baseChange",{"baseChange":baseChange})
+Map.setOptions('baseChange', {'baseChange': baseChange});
 
 ```
 
@@ -75,69 +75,69 @@ var iconChange = [
   },
   {
     // Change label properties.
-    elementType: "labels",
+    elementType: 'labels',
     stylers: [
       {
-        visibility: "off",
-        color: "#000055"
+        visibility: 'off',
+        color: '#000055'
       }
     ]
   },
   {
     // Change road properties.
-    featureType: "road",
-    elementType: "geometry",
+    featureType: 'road',
+    elementType: 'geometry',
     stylers: [
       {
-        visibility: "off",
-        color: "#000055"
+        visibility: 'off',
+        color: '#000055'
       }
     ]
   },
   {
     // Change road labels
-    featureType: "road",
-    elementType: "labels",
+    featureType: 'road',
+    elementType: 'labels',
     stylers: [
       {
-        visibility: "off"
+        visibility: 'off'
       }
     ]
   },
   {
     // Change icon properties
-    elementType: "labels.icon",
+    elementType: 'labels.icon',
     stylers: [
       {
-        visibility: "off"
+        visibility: 'off'
       }
     ]
   },
   {
     // Change POI options
-    featureType: "poi",
-    elementType: "all",
+    featureType: 'poi',
+    elementType: 'all',
     stylers: [
       {
-        visibility: "off"
+        visibility: 'off'
       }
     ]
   },
   {
-    featureType: "administrative",
-    elementType: "geometry.fill",
+    featureType: 'administrative',
+    elementType: 'geometry.fill',
     stylers: [
       {
-        visibility: "off"
+        visibility: 'off'
       }
     ]
   },
   {
-    featureType: "administrative",
-    elementType: "geometry.stroke",
+    featureType: 'administrative',
+    elementType: 'geometry.stroke',
     stylers: [
       {
-        visibility: "off"
+        visibility: 'off'
       }
     ]
   }
@@ -153,11 +153,11 @@ var roadNetwork = [
     ]
   },
   {
-    featureType: "road.highway",
-    elementType: "geometry.fill",
+    featureType: 'road.highway',
+    elementType: 'geometry.fill',
     stylers: [
       {
-        color: "#000055"
+        color: '#000055'
       },
       {
         weight: 2.5
@@ -165,11 +165,11 @@ var roadNetwork = [
     ]
   },
   {
-    featureType: "road.highway",
-    elementType: "geometry.stroke",
+    featureType: 'road.highway',
+    elementType: 'geometry.stroke',
     stylers: [
       {
-        color: "#000000"
+        color: '#000000'
       },
       {
         weight: 2
@@ -177,11 +177,11 @@ var roadNetwork = [
     ]
   },
   {
-    featureType: "road.arterial",
-    elementType: "geometry",
+    featureType: 'road.arterial',
+    elementType: 'geometry',
     stylers: [
       {
-        color: "#FF0000"
+        color: '#FF0000'
       },
       {
         weight: 1.8
@@ -189,11 +189,11 @@ var roadNetwork = [
     ]
   },
   {
-    featureType: "road.local",
-    elementType: "geometry",
+    featureType: 'road.local',
+    elementType: 'geometry',
     stylers: [
       {
-        color: "#00FF55"
+        color: '#00FF55'
       },
       {
         weight: 1.5
@@ -202,7 +202,7 @@ var roadNetwork = [
   }
 ];
 
-Map.setOptions("roadNetwork", {
+Map.setOptions('roadNetwork', {
   iconChange: iconChange,
   roadNetwork: roadNetwork
 });
@@ -223,47 +223,47 @@ Consider the two examples:
 ```javascript
 var snazzyBlack = [
   {
-    featureType: "administrative",
-    elementType: "all",
+    featureType: 'administrative',
+    elementType: 'all',
     stylers: [
       {
-        visibility: "off"
+        visibility: 'off'
       }
     ]
   },
   {
-    featureType: "administrative",
-    elementType: "labels.text.fill",
+    featureType: 'administrative',
+    elementType: 'labels.text.fill',
     stylers: [
       {
-        color: "#444444"
+        color: '#444444'
       }
     ]
   },
   {
-    featureType: "landscape",
-    elementType: "all",
+    featureType: 'landscape',
+    elementType: 'all',
     stylers: [
       {
-        color: "#000000"
+        color: '#000000'
       },
       {
-        visibility: "on"
+        visibility: 'on'
       }
     ]
   },
   {
-    featureType: "poi",
-    elementType: "all",
+    featureType: 'poi',
+    elementType: 'all',
     stylers: [
       {
-        visibility: "off"
+        visibility: 'off'
       }
     ]
   },
   {
-    featureType: "road",
-    elementType: "all",
+    featureType: 'road',
+    elementType: 'all',
     stylers: [
       {
         saturation: -100
@@ -274,86 +274,86 @@ var snazzyBlack = [
     ]
   },
   {
-    featureType: "road",
-    elementType: "geometry.fill",
+    featureType: 'road',
+    elementType: 'geometry.fill',
     stylers: [
       {
-        color: "#ffffff"
+        color: '#ffffff'
       }
     ]
   },
   {
-    featureType: "road",
-    elementType: "geometry.stroke",
+    featureType: 'road',
+    elementType: 'geometry.stroke',
     stylers: [
       {
-        color: "#eaeaea"
+        color: '#eaeaea'
       }
     ]
   },
   {
-    featureType: "road",
-    elementType: "labels",
+    featureType: 'road',
+    elementType: 'labels',
     stylers: [
       {
-        visibility: "off"
+        visibility: 'off'
       }
     ]
   },
   {
-    featureType: "road",
-    elementType: "labels.text.fill",
+    featureType: 'road',
+    elementType: 'labels.text.fill',
     stylers: [
       {
-        color: "#dedede"
+        color: '#dedede'
       }
     ]
   },
   {
-    featureType: "road",
-    elementType: "labels.icon",
+    featureType: 'road',
+    elementType: 'labels.icon',
     stylers: [
       {
-        visibility: "off"
+        visibility: 'off'
       }
     ]
   },
   {
-    featureType: "road.highway",
-    elementType: "all",
+    featureType: 'road.highway',
+    elementType: 'all',
     stylers: [
       {
-        visibility: "simplified"
+        visibility: 'simplified'
       }
     ]
   },
   {
-    featureType: "road.arterial",
-    elementType: "labels.icon",
+    featureType: 'road.arterial',
+    elementType: 'labels.icon',
     stylers: [
       {
-        visibility: "off"
+        visibility: 'off'
       }
     ]
   },
   {
-    featureType: "transit",
-    elementType: "all",
+    featureType: 'transit',
+    elementType: 'all',
     stylers: [
       {
-        visibility: "off"
+        visibility: 'off'
       }
     ]
   },
   {
-    featureType: "water",
-    elementType: "all",
+    featureType: 'water',
+    elementType: 'all',
     stylers: [
       {
-        color: "#434343"
+        color: '#434343'
       },
       {
-        visibility: "on"
+        visibility: 'on'
       }
     ]
   }
@@ -361,96 +361,96 @@ var snazzyBlack = [
 
 var snazzyColor = [
   {
-    elementType: "labels",
+    elementType: 'labels',
     stylers: [
       {
-        visibility: "off"
+        visibility: 'off'
       }
     ]
   },
   {
-    featureType: "road",
-    elementType: "geometry.fill",
+    featureType: 'road',
+    elementType: 'geometry.fill',
     stylers: [
       {
-        color: "#0F0919"
+        color: '#0F0919'
       }
     ]
   },
   {
-    featureType: "water",
-    elementType: "geometry.fill",
+    featureType: 'water',
+    elementType: 'geometry.fill',
     stylers: [
       {
-        color: "#E4F7F7"
+        color: '#E4F7F7'
       }
     ]
   },
   {
-    elementType: "geometry.stroke",
+    elementType: 'geometry.stroke',
     stylers: [
       {
-        visibility: "off"
+        visibility: 'off'
       }
     ]
   },
   {
-    featureType: "poi.park",
-    elementType: "geometry.fill",
+    featureType: 'poi.park',
+    elementType: 'geometry.fill',
     stylers: [
       {
-        color: "#002FA7"
+        color: '#002FA7'
       }
     ]
   },
   {
-    featureType: "poi.attraction",
-    elementType: "geometry.fill",
+    featureType: 'poi.attraction',
+    elementType: 'geometry.fill',
     stylers: [
       {
-        color: "#E60003"
+        color: '#E60003'
       }
     ]
   },
   {
-    featureType: "landscape",
-    elementType: "geometry.fill",
+    featureType: 'landscape',
+    elementType: 'geometry.fill',
     stylers: [
       {
-        color: "#FBFCF4"
+        color: '#FBFCF4'
       }
     ]
   },
   {
-    featureType: "poi.business",
-    elementType: "geometry.fill",
+    featureType: 'poi.business',
+    elementType: 'geometry.fill',
     stylers: [
       {
-        color: "#FFED00"
+        color: '#FFED00'
       }
     ]
   },
   {
-    featureType: "poi.government",
-    elementType: "geometry.fill",
+    featureType: 'poi.government',
+    elementType: 'geometry.fill',
     stylers: [
       {
-        color: "#D41C1D"
+        color: '#D41C1D'
       }
     ]
   },
   {
-    featureType: "poi.school",
-    elementType: "geometry.fill",
+    featureType: 'poi.school',
+    elementType: 'geometry.fill',
     stylers: [
       {
-        color: "#BF0000"
+        color: '#BF0000'
       }
     ]
   },
   {
-    featureType: "transit.line",
-    elementType: "geometry.fill",
+    featureType: 'transit.line',
+    elementType: 'geometry.fill',
     stylers: [
       {
         saturation: -100
@@ -459,7 +459,7 @@ var snazzyColor = [
   }
 ];
 
-Map.setOptions("snazzyBlack", {
+Map.setOptions('snazzyBlack', {
   snazzyBlack: snazzyBlack,
   snazzyColor: snazzyColor
 });

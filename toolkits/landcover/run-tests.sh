@@ -14,7 +14,7 @@
 # limitations under the License.
 
 # Exit on error.
-set -ev
+set -e
 
 DIR="toolkits/landcover"
 KEY_FILE_ENC="test/.private-key.json.enc"

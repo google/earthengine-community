@@ -14,7 +14,7 @@
 # limitations under the License.
 
 # Exit on error.
-set -ev
+set -e
 
 # Path to check for changes.
 DIR="$1"

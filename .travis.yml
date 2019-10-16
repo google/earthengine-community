@@ -17,6 +17,7 @@ language: node_js
 node_js:
   - 10
 
+# Jobs defined here are run in parallel:
 jobs:
   include:
     - script: bash ./tutorials/run-tests.sh

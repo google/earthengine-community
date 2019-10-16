@@ -219,7 +219,7 @@ project for creating and sharing great styles for Google Maps. Their website
 provides JavaScript snippets that can be copied from their website and pasted into
 Earth Engine to quickly create alternate base map styles.
 
-To apply Snazzy Maps styles, once might do the following:
+To apply Snazzy Maps styles, one might do the following:
 
 ```javascript
 var snazzyBlack = [

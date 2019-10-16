@@ -58,7 +58,8 @@ The full list of features (also in the Google Maps API documentation linked
 above) includes geometries, labels, icons, and more. All styler options work
 with each of these features.
 
-Let's consider a few examples:
+For example, to remove icons and customize road map styles, one could define
+the styles as follows:
 
 ```javascript
 // Remove icons.
@@ -142,7 +143,6 @@ var iconChange = [
 ];
 
 // Enhanced road network visualization.
-
 var roadNetwork = [
   {
     stylers: [
@@ -207,6 +207,8 @@ Map.setOptions('roadNetwork', {
 });
 ```
 
+The map would then be restyled as shown here:
+
 ![Road](https://storage.googleapis.com/earthengine-community/tutorials/customizing-base-map-styles/road.png)
 
 ## Cheat codes
@@ -217,7 +219,7 @@ project for creating and sharing great styles for Google Maps. Their website
 provides JavaScript snippets that can be copied from their website and pasted into
 Earth Engine to quickly create alternate base map styles.
 
-Consider these two examples:
+To apply Snazzy Maps styles, once might do the following:
 
 ```javascript
 var snazzyBlack = [
@@ -463,6 +465,8 @@ Map.setOptions('snazzyBlack', {
   snazzyColor: snazzyColor
 });
 ```
+
+The resulting map would then use the Snazzy Maps styles as shown here:
 
 ![Dark](https://storage.googleapis.com/earthengine-community/tutorials/customizing-base-map-styles/snazzy-black.png)
 

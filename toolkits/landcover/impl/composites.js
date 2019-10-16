@@ -109,7 +109,7 @@ function createMedioidComposite(collection, bands) {
         .multiply(-1.0)
         .rename('medioid_distance_');
     return img.addBands(distance);
-  })
+  });
   var mosaic = indexed.qualityMosaic('medioid_distance_');
   var bandNames = mosaic.bandNames().remove('medioid_distance_');
   return mosaic.select(bandNames);

@@ -102,7 +102,7 @@ withEarthEngineStub('NamedArgs', function() {
     it('extractFromFunction() ignore dangling commas', function() {
       var testFunction = function(
           arg1,
-          arg2,
+          arg2
       ) {};
       var actual =
           NamedArgs.extractFromFunction(testFunction, ['val1', 'val2']);

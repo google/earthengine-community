@@ -1,3 +1,4 @@
+#!/bin/bash
 # Copyright 2019 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -12,12 +13,17 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-# Define environment.
-language: node_js
-node_js:
-  - 10
+# Exit on error.
+set -e
 
-jobs:
-  include:
-    - script: bash ./tutorials/run-tests.sh
-      name: "Community Tutorials Tests"
+DIR="tutorials"
+
+# For PRs, skip tests if no changes.
+if [[ "${TRAVIS_EVENT_TYPE}" == "pull_request" ]]; then
+  bash ./.travis/require-changes.sh "${DIR}" || exit 0
+fi
+
+cd "${DIR}"
+npm install
+npm run lint
+npm run test

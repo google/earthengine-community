@@ -1,3 +1,4 @@
+#!/bin/bash
 # Copyright 2019 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -12,12 +13,22 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-# Define environment.
-language: node_js
-node_js:
-  - 10
+# Exit on error.
+set -e
 
-jobs:
-  include:
-    - script: bash ./tutorials/run-tests.sh
-      name: "Community Tutorials Tests"
+# Path to check for changes.
+DIR="$1"
+
+echo "Checking for changes in ${DIR} in commits ${TRAVIS_COMMIT_RANGE}"
+
+# Changed files in this pull request in the specified dir.
+CHANGES=`git diff --name-only ${TRAVIS_COMMIT_RANGE} ${DIR}`
+
+# Fail if no changes, causing travis.yml to skip running tests.
+if [ -z "$CHANGES" ]; then
+  echo "No changes in ${DIR}, skipping tests..."
+  exit 1
+else
+  echo "Changed files:"
+  echo "${CHANGES}"
+fi

@@ -4,7 +4,7 @@ description:
   This tutorial shows how to change the base map properties in Earth Engine. This is useful ii you want to highlight specific map features or otherwise tweak the appearance of your map.
 author: TC25
 tags: Earth Engine, Base Map, UI, Widgets
-date_published: 2019-10-11
+date_published: 2019-10-16
 ---
 
 [Open In Code Editor](https://code.earthengine.google.com/283c86dd3189788452b5fb64174a1b43)
@@ -33,7 +33,6 @@ var baseChange = {
 };
 
 Map.setOptions('baseChange', {'baseChange': baseChange});
-
 ```
 
 The main styler options include:
@@ -63,7 +62,7 @@ with each of these features.
 Let's consider a few examples:
 
 ```javascript
-// Remove icons
+// Remove icons.
 var iconChange = [
   {
     // Change map saturation.
@@ -95,7 +94,7 @@ var iconChange = [
     ]
   },
   {
-    // Change road labels
+    // Change road labels.
     featureType: 'road',
     elementType: 'labels',
     stylers: [
@@ -105,7 +104,7 @@ var iconChange = [
     ]
   },
   {
-    // Change icon properties
+    // Change icon properties.
     elementType: 'labels.icon',
     stylers: [
       {
@@ -114,7 +113,7 @@ var iconChange = [
     ]
   },
   {
-    // Change POI options
+    // Change POI options.
     featureType: 'poi',
     elementType: 'all',
     stylers: [
@@ -143,7 +142,8 @@ var iconChange = [
   }
 ];
 
-// Enhanced road network visualization
+// Enhanced road network visualization.
+
 var roadNetwork = [
   {
     stylers: [
@@ -208,7 +208,7 @@ Map.setOptions('roadNetwork', {
 });
 ```
 
-![Road](https://github.com/TC25/earthengine-community/blob/patch-2/tutorials/customizing-base-map-styles/road.png?raw=true)
+![Road](https://storage.googleapis.com/earthengine-community/tutorials/customizing-base-map-styles/road.png)
 
 ## Cheat codes
 
@@ -465,7 +465,7 @@ Map.setOptions('snazzyBlack', {
 });
 ```
 
-![Dark](https://github.com/TC25/earthengine-community/blob/patch-2/tutorials/customizing-base-map-styles/snazzy-black.png?raw=true)
+![Dark](https://storage.googleapis.com/earthengine-community/tutorials/customizing-base-map-styles/snazzy-black.png)
 
 You can find all the map styling options provided in Google Maps API at:
 https://developers.google.com/maps/documentation/javascript/reference#MapTypeStyle

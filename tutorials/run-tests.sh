@@ -16,7 +16,14 @@
 # Exit on error.
 set -e
 
-cd tutorials
+DIR="tutorials"
+
+# For PRs, skip tests if no changes.
+if [[ "${TRAVIS_EVENT_TYPE}" == "pull_request" ]]; then
+  bash ./.travis/require-changes.sh "${DIR}" || exit 0
+fi
+
+cd "${DIR}"
 npm install
 npm run lint
 npm run test

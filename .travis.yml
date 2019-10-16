@@ -11,7 +11,6 @@ node_js:
 
 jobs:
   include:
-    # - stage: test
     - script: bash ./tutorials/run-tests.sh
       name: "Community Tutorials Tests"
     - script: bash ./toolkits/landcover/run-tests.sh

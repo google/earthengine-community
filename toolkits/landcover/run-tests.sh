@@ -16,6 +16,9 @@
 # Exit on error.
 set -ev
 
+echo Commit range: ${TRAVIS_COMMIT_RANGE}
+echo Pull request: ${TRAVIS_PULL_REQUEST}
+
 cd toolkits/landcover
 npm install
 npm run lint

@@ -16,9 +16,11 @@
 # Exit on error.
 set -ev
 
-echo Commit range: ${TRAVIS_COMMIT_RANGE}
-echo Pull request: ${TRAVIS_PULL_REQUEST}
 DIR="toolkits/landcover"
+KEY_FILE_ENC="test/.private-key.json.enc"
+KEY_FILE="test/.private-key.json.enc"
+KEY="${encrypted_44af26ab0da9_key}"
+IV="${encrypted_44af26ab0da9_iv}"
 
 # For PRs, skip tests if no changes.
 if [[ "${TRAVIS_EVENT_TYPE}" == "pull_request" ]]; then
@@ -34,11 +36,9 @@ npm run lint
 npm run test:unit
 
 # Run integration tests if private keys set in environment.
-KEY_FILE_ENC="test/.private-key.json.enc"
-KEY_FILE="test/.private-key.json.enc"
-KEY="${encrypted_44af26ab0da9_key}"
-IV="${encrypted_44af26ab0da9_iv}"
 if [[ -n "${KEY}" ]] && [[ -n "${IV}" ]]; then
   openssl aes-256-cbc -K "${KEY}" -iv "${IV}" -in "${KEY_FILE_ENC} -out "${KEY_FILE} -d
   npm run test:int
+else
+  echo "No keys; skipping integration tests."
 fi

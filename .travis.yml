@@ -2,46 +2,9 @@ language: node_js
 node_js:
   - 10
 
-# stages:
-#   - tutorials
-#   - landcover-toolkit
-#   - name: landcover-toolkit-integration
-#     if: env(encrypted_44af26ab0da9_key) IS present AND env(encrypted_44af26ab0da9_iv) IS present
-
-
 jobs:
   include:
     - script: bash ./tutorials/run-tests.sh
       name: "Community Tutorials Tests"
     - script: bash ./toolkits/landcover/run-tests.sh
       name: "Landcover Toolkit Tests"
-#     - stage: "Community Tutorials"
-#       name: :"tutorials"
-#       before_install:
-#         - bash ./.travis/require-changes.sh tutorials || travis_terminate 0
-#         - cd tutorials
-#       install:
-#         - npm install
-#       script:
-#         - npm run lint
-#         - npm run test
-#     - stage: "Landcover Toolkit"
-#       name: "landcover-toolkit"
-#       before_install:
-#         - bash ./.travis/require-changes.sh toolkits/landcover || travis_terminate 0
-#         - cd toolkits/landcover
-#       install:
-#         - npm install
-#       script:
-#         - npm run lint
-#         - npm run test:unit
-#     - stage: "Landcover Toolkit Integration Tests"
-#       name: "landcover-toolkit-integration"
-#       before_install:
-#         - bash ./.travis/require-changes.sh toolkits/landcover || travis_terminate 0
-#         - cd toolkits/landcover
-#         - openssl aes-256-cbc -K $encrypted_44af26ab0da9_key -iv $encrypted_44af26ab0da9_iv -in test/.private-key.json.enc -out test/.private-key.json -d
-#       install:
-#         - npm install
-#       script:
-#         - npm run test:int

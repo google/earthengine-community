@@ -217,7 +217,7 @@ project for creating and sharing great styles for Google Maps. Their website
 provides JavaScript snippetscan be copies from their website and pasted intp
 Earth Engine to quickly create beautiful base map styles.
 
-Consider the two examples:
+Consider these two examples:
 
 ```javascript
 var snazzyBlack = [

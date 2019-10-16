@@ -16,7 +16,7 @@ jobs:
     - script: bash ./toolkits/landcover/run-tests.sh
       name: "Landcover Toolkit Tests"
 #     - stage: "Community Tutorials"
-#       name: "tutorials"
+#       name: :"tutorials"
 #       before_install:
 #         - bash ./.travis/require-changes.sh tutorials || travis_terminate 0
 #         - cd tutorials

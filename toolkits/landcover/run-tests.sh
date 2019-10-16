@@ -18,8 +18,27 @@ set -ev
 
 echo Commit range: ${TRAVIS_COMMIT_RANGE}
 echo Pull request: ${TRAVIS_PULL_REQUEST}
+DIR="toolkits/landcover"
 
-cd toolkits/landcover
+# For PRs, skip tests if no changes.
+if [[ "${TRAVIS_EVENT_TYPE}" == "pull_request" ]]; then
+  ./.travis/require-changes.sh "${DIR}" || exit 0
+fi
+
+# Setup/
+cd "${DIR}"
 npm install
+
+# Run lint and unit tests.
 npm run lint
 npm run test:unit
+
+# Run integration tests if private keys set in environment.
+KEY_FILE_ENC="test/.private-key.json.enc"
+KEY_FILE="test/.private-key.json.enc"
+KEY="${encrypted_44af26ab0da9_key}"
+IV="${encrypted_44af26ab0da9_iv}"
+if [[ -n "${KEY}" ]] && [[ -n "${IV}" ]]; then
+  openssl aes-256-cbc -K "${KEY}" -iv "${IV}" -in "${KEY_FILE_ENC} -out "${KEY_FILE} -d
+  npm run test:int
+fi

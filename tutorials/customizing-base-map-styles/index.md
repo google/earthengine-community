@@ -214,7 +214,7 @@ Map.setOptions('roadNetwork', {
 There is also an easy way to create custom base map styles without
 tweaking any options: enter [Snazzy Maps](https://snazzymaps.com), a community
 project for creating and sharing great styles for Google Maps. Their website
-provides JavaScript snippetscan be copies from their website and pasted intp
+provides JavaScript snippets that can be copied from their website and pasted into
 Earth Engine to quickly create beautiful base map styles.
 
 Consider these two examples:

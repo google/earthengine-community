@@ -26,7 +26,7 @@ var MAX_TEST_COLLECTION_SIZE = 15;
  * @param {*} values A dictionary containing band names as keys and
  *    corresponding numeric values. The values are used to build an ee.Image
  *    with a single constant value in each respective band.
- * @param {string} startDate An optional start date for the image, in YYYY-MM-DD
+ * @param {string=} startDate An optional start date for the image, in YYYY-MM-DD
  *    format.
  * @return {!ee.Image}
  */

@@ -47,6 +47,7 @@ var NEWLINE_REGEX = /\r?\n/g;
  */
 var BLOCK_COMMENT_REGEX = /[/][*].*?[*][/]/g;
 
+
 /**
  * Returns true iff the provided value is a JavaScript dictionary, as opposed
  * to a scalar or a typed class instance.

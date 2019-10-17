@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-var NamedArgs = require('../../impl/named-args').NamedArgs;
+var NamedArgs = require('../../impl/named-args.js').NamedArgs;
 
 withEarthEngineStub('NamedArgs', function() {
   it('extractFromFunction() with no args', function() {
@@ -37,6 +37,30 @@ withEarthEngineStub('NamedArgs', function() {
     var actual = NamedArgs.extractFromFunction(
         testFunction, [{foo: 3, bar: 141, baz: 59}]);
     var expected = {foo: 3, bar: 141, baz: 59};
+    expect(actual).toEqual(expected);
+  });
+
+  it('extractFromFunction() builds dict for EE objects', function() {
+    var testFunction = function(foo) {};
+    var testImage = ee.Image([0]);
+    var actual = NamedArgs.extractFromFunction(testFunction, [testImage]);
+    var expected = {foo: testImage};
+    expect(actual).toEqual(expected);
+  });
+
+  it('extractFromFunction() builds dict for arrays', function() {
+    var testFunction = function(foo) {};
+    var testArray = [1, 2, 3];
+    var actual = NamedArgs.extractFromFunction(testFunction, [testArray]);
+    var expected = {foo: testArray};
+    expect(actual).toEqual(expected);
+  });
+
+  it('extractFromFunction() builds dict for Dates', function() {
+    var testFunction = function(foo) {};
+    var testDate = new Date();
+    var actual = NamedArgs.extractFromFunction(testFunction, [testDate]);
+    var expected = {foo: testDate};
     expect(actual).toEqual(expected);
   });
 

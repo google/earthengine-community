@@ -470,7 +470,7 @@ The resulting map would then use the Snazzy Maps styles as shown here:
 
 ![Dark](https://storage.googleapis.com/earthengine-community/tutorials/customizing-base-map-styles/snazzy-black.png)
 
-Finally, to get visual feedback while creating custom styles for the base map, one can also use [mapstyle] https://mapstyle.withgoogle.com/, import the JavaScript snippet, and paste it into the Google Earth Engine JavaScript editor, like so:
+Finally, to get visual feedback while creating custom styles for the base map, one can also use [mapstyle] (https://mapstyle.withgoogle.com/), import the JavaScript snippet, and paste it into the Google Earth Engine JavaScript editor, like so:
 
 ```javascript
 var mapStyle=[
@@ -776,7 +776,7 @@ Map.setOptions('mapStyle', {
 });
 ```
 
-The resulting base map would look like:
+The resulting base map would look like this:
 
 ![MapStyle](map-style.png)
 

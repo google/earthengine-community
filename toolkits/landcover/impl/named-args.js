@@ -18,11 +18,11 @@
 /**
  * Regular expression used to extract argument names from string represention
  * of a function. This does the following:
- * 
+ *
  *  1. Match only when declaration starts with "function".
  *  2. Ignores optional space and function name up to first "(".
  *  3. Captures the contents all the way up to the next ")".
- * 
+ *
  * This expression assume newlines have already been stripped.
  */
 var FUNCTION_REGEX = /^function\s*.*?\((.*?)\)/;
@@ -46,6 +46,7 @@ var NEWLINE_REGEX = /\r?\n/g;
  * were already removed.
  */
 var BLOCK_COMMENT_REGEX = /[/][*].*?[*][/]/g;
+
 
 /**
  * Returns true iff the provided value is a JavaScript dictionary, as opposed

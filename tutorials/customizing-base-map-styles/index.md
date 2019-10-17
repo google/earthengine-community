@@ -1,15 +1,15 @@
 ---
 title: Customizing base map styles
-description: This tutorial shows how to change the base map properties in Earth Engine, which is useful if you want a specific visualization for functionality/convenience.
+description: This tutorial shows how to change the base map properties in Earth Engine. This is useful if you want to highlight specific map features or otherwise tweak the appearance of your map.
 author: TC25
 tags: Earth Engine, Base Map, UI, Widgets
 date_published: 2019-10-16
 ---
 
-[Open In Code Editor](https://code.earthengine.google.com/283c86dd3189788452b5fb64174a1b43)
+[Open In Code Editor](https://code.earthengine.google.com/f1c5033e7487203404b174cef5f1be49)
 
-The user is going to learn how to change the options of the map object to create
-new base maps
+In this tutorial, you'll learn how to change the options of the `Map` object to
+define your our styles for the underlying base map.
 
 ## The default maps in Earth Engine
 
@@ -27,9 +27,12 @@ We can start by changing the style of the base map. One easy fix is to invert
 the lightness to get a darker background, like so:
 
 ```javascript
-var baseChange = {
-  'stylers': [{'invert_lightness': true}]
-};
+var baseChange = [{
+  featureType: 'all',
+  stylers: [{
+    invert_lightness: true
+  }]
+}];
 
 Map.setOptions('baseChange', {'baseChange': baseChange});
 ```
@@ -48,17 +51,18 @@ The main styler options include:
 ## Changing map elements
 
 The Google Maps API (and by extension, Earth Engine) gives you the ability to
-control a huge number of map features and elements.
+control a large number of map features and elements.
 
 The full list of elements that you can modify can be found in the Google Maps
 documentation:
 https://developers.google.com/maps/documentation/javascript/style-reference
 
 The full list of features (also in the Google Maps API documentation linked
-above) includes geometries and labels (including their texts and icons). All
-styler options work with each of these features.
+above) includes geometries, labels, icons, and more. All styler options work
+with each of these features.
 
-Let's consider a couple of examples to edit other elements and features
+For example, to remove icons and customize road map styles, one could define
+the styles as follows:
 
 ```javascript
 // Remove icons.
@@ -142,7 +146,6 @@ var iconChange = [
 ];
 
 // Enhanced road network visualization.
-
 var roadNetwork = [
   {
     stylers: [
@@ -207,15 +210,19 @@ Map.setOptions('roadNetwork', {
 });
 ```
 
+The map would then be restyled as shown here:
+
 ![Road](https://storage.googleapis.com/earthengine-community/tutorials/customizing-base-map-styles/road.png)
 
 ## Cheat codes
 
-There is a way to create almost any base map you want without the hassle of
-tweaking any options. Enter [Snazzy Maps](https://snazzymaps.com), a community
-project for creating and sharing great styles for Google Maps. Copy any of the
-javascript properties from that website and it will show up on Earth Engine.
-Consider the two examples below:
+There is also an easy way to create custom base map styles without
+tweaking any options: enter [Snazzy Maps](https://snazzymaps.com), a community
+project for creating and sharing great styles for Google Maps. Their website
+provides JavaScript snippets that can be copied from their website and pasted into
+Earth Engine to quickly create alternate base map styles.
+
+To apply Snazzy Maps styles, one might do the following:
 
 ```javascript
 var snazzyBlack = [
@@ -462,7 +469,9 @@ Map.setOptions('snazzyBlack', {
 });
 ```
 
+The resulting map would then use the Snazzy Maps styles as shown here:
+
 ![Dark](https://storage.googleapis.com/earthengine-community/tutorials/customizing-base-map-styles/snazzy-black.png)
 
-You can find out more about all the options in Google Maps API here:
+You can find all the map styling options provided in Google Maps API at:
 https://developers.google.com/maps/documentation/javascript/reference#MapTypeStyle

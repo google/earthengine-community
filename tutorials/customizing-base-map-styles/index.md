@@ -6,7 +6,7 @@ tags: Earth Engine, Base Map, UI, Widgets
 date_published: 2019-10-16
 ---
 
-[Open In Code Editor](https://code.earthengine.google.com/283c86dd3189788452b5fb64174a1b43)
+[Open In Code Editor](https://code.earthengine.google.com/f1c5033e7487203404b174cef5f1be49)
 
 In this tutorial, you'll learn how to change the options of the `Map` object to
 define your our styles for the underlying base map.

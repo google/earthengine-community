@@ -27,9 +27,12 @@ We can start by changing the style of the base map. One easy fix is to invert
 the lightness to get a darker background, like so:
 
 ```javascript
-var baseChange = {
-  'stylers': [{'invert_lightness': true}]
-};
+var baseChange = [{
+  featureType: 'all',
+  stylers: [{
+    invert_lightness: true
+  }]
+}];
 
 Map.setOptions('baseChange', {'baseChange': baseChange});
 ```

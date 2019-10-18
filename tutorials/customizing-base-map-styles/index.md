@@ -424,7 +424,7 @@ Map.setOptions('mapStyle', {mapStyle: mapStyle});
 
 The resulting base map would look like this:
 
-![MapStyle](map-style.png)
+![MapStyle](https://storage.googleapis.com/earthengine-community/tutorials/customizing-base-map-styles/map-style.png)
 
 You can find all the map styling options provided in Google Maps API at:
 https://developers.google.com/maps/documentation/javascript/reference#MapTypeStyle

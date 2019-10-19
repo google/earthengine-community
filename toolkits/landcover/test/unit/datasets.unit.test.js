@@ -23,4 +23,8 @@ withEarthEngineStub('Datasets', function() {
       new Dataset().addTasseledCap();
     }).toThrow();
   });
+
+  it('getTasseledCapCoefficients_() returns null', function() {
+    expect(new Dataset().getTasseledCapCoefficients_()).toEqual(null);
+  });
 });

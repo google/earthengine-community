@@ -63,8 +63,7 @@ var SPECTRAL_INDEX_EXPRESSIONS = {
 
 
 /**
- * Computes and adds the specified set of spectral indices to an image. Indices
- * must be one of:
+ * Computes the specified set of spectral indices. Indices must be one of:
  *
  *   'ndvi', 'evi', 'savi', 'msavi', 'ndmi', 'nbr', 'nbr2', 'ndwi', 'mndwi',
  *   'ndbi', 'ndsi'
@@ -73,27 +72,22 @@ var SPECTRAL_INDEX_EXPRESSIONS = {
  *
  * @param {ee.Image} image The source image.
  * @param {!Array<string>} indices The list of indices to calculate.
- * @return {ee.Image} The updated image.
+ * @return {!ee.Image} A new image containing the calculated bands.
  */
 function getSpectralIndices(image, indices) {
   var args = NamedArgs.extractFromFunction(getSpectralIndices, arguments);
   image = args.image;
   indices = args.indices;
-  // We can't check the existence of the specified indices if they're EEObjects.
-  if (!(indices instanceof ee.ComputedObject)) {
-    // Check that all the specified indexes exist.
-    indices.forEach(function(name) {
-      if (!(name in SPECTRAL_INDEX_EXPRESSIONS)) {
-        throw Error('Unrecognized spectral index: ' + name);
-      }
-    });
-  }
 
-  // TODO(gorelick): Change this to Dictionary.get once supported.
-  return indices.map(function(name) {
+  return ee.Image(indices.map(function(name) {
     var expr = SPECTRAL_INDEX_EXPRESSIONS[name];
+    // Check that the specified indices exist.
+    if (!expr) {
+      throw Error('Unrecognized spectral index: ' + name);
+    }
     return image.expression(expr, {b: image}).rename([name]);
-  });
+  }));
+
 }
 
 /**

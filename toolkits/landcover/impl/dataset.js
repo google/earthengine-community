@@ -2,14 +2,14 @@
  * @license
  * Copyright 2019 Google LLC
  *
- * Licensed under the Apache License, Version 2.0 (the "License");
+ * Licensed under the Apache License, Version 2.0 (the 'License');
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
  *    https://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
+ * distributed under the License is distributed on an 'AS IS' BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
@@ -140,21 +140,44 @@ Dataset.prototype.createMedioidComposite = function(bands) {
 };
 
 /**
- * Computes the list of new band names to rename to common band names.
- * @param {!Array<string>} bandNames The input band names.
- * @return {!Array<string>} The modified band names in the same order as the
- *     input names.  Unknown bands are unmodified.
- *
- * @private
+ * Returns the list of 'common' band names.
+ * @return {Array<string>} the list of band names.
  */
-Dataset.prototype.computeCommonBandNames_ = function(bandNames) {
-  // Start with a lookup from oldname to newname using all the old names,
-  // and augment it with the entries from this dataset's COMMON_BAND_NAMES.
-  var commonNames = ee.Dictionary(bandNames.zip(bandNames).flatten());
-  var lookup = commonNames.combine(this.COMMON_BAND_NAMES, true);
-  return bandNames.map(function(name) {
+Dataset.prototype.getCommonBandNames = function() {
+  return ee.Dictionary(this.COMMON_BAND_NAMES).values();
+};
+
+/**
+ * Get the list of bands names corresponding to a list of wanted 'common' bands.
+ * If the wanted bands are in "have", they're used directly, otherwise they're renamed.
+ *
+ * @param {Array<string>=} want The 'common' bands that are wanted.  If undefined, uses
+ *     all common bands.
+ * @param {Array<string>=} have The bands already available.  If undefined, no bands are assumed.
+ * @return {Array<string>} The list of band names to use to get the wanted common bands.
+ */
+Dataset.prototype.lookupCommonBandNames = function(want, have) {
+  var args = NamedArgs.extractFromFunction(Dataset.prototype.lookupCommonBandNames, arguments);
+  var common = ee.Dictionary(this.COMMON_BAND_NAMES);
+  want = args.want || common.values();
+  have = args.have || [];
+
+  // Generate the reverse lookup table.
+  var lookup = ee.Dictionary.fromLists(common.values(), common.keys());
+
+  var unwanted = ee.List(have).removeAll(want);
+  var alreadyHave = ee.List(have).removeAll(unwanted);
+
+  // If a desired band already exists, overwrite the lookup table with the same band name.
+  lookup = lookup.combine(ee.Dictionary.fromLists(alreadyHave, alreadyHave), true);
+  // Everything else in want just maps to itself, if it's not already there.
+  lookup = lookup.combine(ee.Dictionary.fromLists(want, want), false);
+
+  // Do the lookup.
+  var bandsToUse = ee.List(want).map(function(name) {
     return lookup.get(name);
   });
+  return bandsToUse;
 };
 
 /**
@@ -168,14 +191,44 @@ Dataset.prototype.addBandIndices = function(var_names) {
   var indices = Array.prototype.slice.call(arguments);
 
   // Compute the transformation to common band names.
-  var bandNames = this.collection_.first().bandNames();
-  var commonNames = this.computeCommonBandNames_(bandNames);
+  var dstBands = this.getCommonBandNames();
+  var srcBands = this.lookupCommonBandNames(dstBands, this.collection_.first().bandNames());
 
   var output = this.collection_.map(function(image) {
-    // Rename the bands and compute the spectral indices.
-    var renamed = image.select(bandNames, commonNames);
+    // Get the 'common' bands and compute the spectral indices.
+    var renamed = image.select(srcBands, dstBands);
     var bands = Bands.getSpectralIndices(renamed, indices);
     return image.addBands(bands);
+  });
+
+  this.collection_ = output;
+  return this;
+};
+
+/**
+ * Add the Tasseled Cap transformation to each image in the dataset.
+ * See http://doi.org/10.1080/2150704X.2014.915434 for more information about Tasseled Cap.
+ *
+ * Each dataset subclass will have its own set of Tasseled Cap coefficients if it's supported.
+ * The output bands will be named: [TC1, TC2, TC3, TC4, TC5, TC6];
+ *
+ * @return {!Dataset}
+ */
+Dataset.prototype.addTasseledCap = function() {
+  var coef = this.getTasseledCapCoefficients_();
+  if (!coef) {
+    throw new Error('Dataset does not support Tasseled Cap transformation.');
+  }
+  var srcBands = ['blue', 'green', 'red', 'nir', 'swir1', 'swir2'];
+  var dstBands = ['TC1', 'TC2', 'TC3', 'TC4', 'TC5', 'TC6'];
+
+  // Figure out which bands correspond to the desired srcBands.
+  var subset = this.lookupCommonBandNames(srcBands, this.collection_.first().bandNames());
+
+  var output = this.collection_.map(function(image) {
+    // Select the subset of bands needed and compute the transform.
+    var tc = Bands.matrixMultiply(image.select(subset), coef, dstBands);
+    return image.addBands(tc);
   });
 
   this.collection_ = output;
@@ -228,6 +281,17 @@ Dataset.prototype.addFractionalYearBand = function() {
  */
 Dataset.prototype.maskCloudsAndShadows = function() {
   throw new Error('Unimplemented method');
+};
+
+/**
+ * Interface for fetching Tasseled Cap Coefficients.
+ * Returns null so the caller can check for support.
+ *
+ * @protected
+ * @return {?Array<Array<number>>} The coefficients specific to this dataset.
+ */
+Dataset.prototype.getTasseledCapCoefficients_ = function() {
+  return null;
 };
 
 exports.Dataset = Dataset;

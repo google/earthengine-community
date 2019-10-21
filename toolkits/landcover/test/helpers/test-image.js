@@ -26,9 +26,9 @@ var MAX_TEST_COLLECTION_SIZE = 15;
  * @param {*} values A dictionary containing band names as keys and
  *    corresponding numeric values. The values are used to build an ee.Image
  *    with a single constant value in each respective band.
- * @param {string} startDate An optional start date for the image, in YYYY-MM-DD
+ * @param {string=} startDate An optional start date for the image, in YYYY-MM-DD
  *    format.
- * @returns {!ee.Image}
+ * @return {!ee.Image}
  */
 var create = function(values, startDate) {
   var image = ee.Dictionary(values).toImage().int64();
@@ -44,20 +44,20 @@ var create = function(values, startDate) {
  * band.
  *
  * @param {!ee.Image} image A constant ee.Image (an image with a single value).
- * @returns {*} A dictionary keyed by band name.
+ * @return {*} A dictionary keyed by band name.
  */
 var reduceConstant = function(image) {
   return ee.Image(image)
            .reduceRegion(ee.Reducer.first(), ee.Geometry.Point(0, 0), 1);
   };
-  
+
 /**
- * Reduces a collection of constant ee.Image instances to a list of    
+ * Reduces a collection of constant ee.Image instances to a list of
  * dictionaries keyed by band.
  *
  * @param {!ee.ImageCollection} collection A collection containing only constant
  *     ee.Image instances (images with a single value).
- * @returns {Array} An array of dictionaries keyed by band name.
+ * @return {Array} An array of dictionaries keyed by band name.
  */
 var reduceConstants = function(collection) {
   return collection.toList(MAX_TEST_COLLECTION_SIZE).map(reduceConstant);

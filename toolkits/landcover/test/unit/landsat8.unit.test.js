@@ -31,8 +31,8 @@ withEarthEngineStub('Landsat8', function() {
     expect(newImage).toEqual(expected);
   });
 
-  it('getTasseledCapCoefficients() returns coefficients.', function() {
+  it('getTasseledCapCoefficients_() returns coefficients', function() {
     // There are 6 bands in the TC transformation.  There should be 6 coefficients.
-    expect(new Landsat8('SR').getTasseledCapCoefficients().length).toEqual(6);
+    expect(new Landsat8('SR').getTasseledCapCoefficients_().length).toEqual(6);
   });
 });

@@ -24,7 +24,7 @@ withEarthEngineStub('Datasets', function() {
     }).toThrow();
   });
 
-  it('check getTasseledCapCoefficients is unsupported on the baseclass.', function() {
-    expect(new Dataset().getTasseledCapCoefficients()).toEqual(null);
+  it('getTasseledCapCoefficients_() returns null', function() {
+    expect(new Dataset().getTasseledCapCoefficients_()).toEqual(null);
   });
 });

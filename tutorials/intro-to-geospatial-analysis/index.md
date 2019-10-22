@@ -109,7 +109,7 @@ var num = ee.Number(5);
 
 ### Arrays
 ```javascript
-var arr = ee.Array([[5, 2, 3],[-2, 7, 10],[6, 6, 9]]);
+var arr = ee.Array([[5, 2, 3], [-2, 7, 10], [6, 6, 9]]);
 ```
 
 ### Lists

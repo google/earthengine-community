@@ -84,7 +84,7 @@ Map.setCenter(long, lat, zoomLevel);
 
 ### Displaying metadata
 ```javascript
-print(variableName)
+print(variableName);
 ```
 You cannot print more than 5000 elements at once
 
@@ -109,7 +109,7 @@ var num = ee.Number(5);
 
 ### Arrays
 ```javascript
-var arr = ee.Array([[5, 2, 3], [-2, 7, 10], [6, 6, 9]]);
+var arr = ee.Array([[5, 2, 3],[-2, 7, 10],[6, 6, 9]]);
 ```
 
 ### Lists
@@ -142,7 +142,7 @@ var multi = ee.Geometry.MultiPoint(0, 45, 5, 6, 70, -56);
 ```
 ### Line String
 ```javascript
-var lineStr = ee.Geometry.LineString([[0, 45], [5,6], [70,-56]]);
+var lineStr = ee.Geometry.LineString([[0, 45], [5, 6], [70, -56]]);
 ```
 ### Multi Line String
 ```javascript
@@ -155,11 +155,11 @@ var linRin = ee.Geometry.LinearRing(0, 45, 5, 6, 70, -56, 0, 45);
 ```
 ### Rectangle
 ```javascript
-var rect = ee.Geometry.Rectangle(0, 0, 60,30);
+var rect = ee.Geometry.Rectangle(0, 0, 60, 30);
 ```
 ### Polygon
 ```javascript
-var poly = ee.Geometry.Polygon([[[0, 0], [6,3], [5, 5], [-30,2], [0,0]]]);
+var poly = ee.Geometry.Polygon([[[0, 0], [6, 3], [5, 5], [-30, 2], [0, 0]]]);
 ```
 ### Multi Polygon
 ```javascript
@@ -357,7 +357,7 @@ var results = image.sum(value);
 
 ### Shift pixels of an image
 ```javascript
-newImage = oldImage.leftShift(valueOfShift);                   
+newImage = oldImage.leftShift(valueOfShift);
 ```
 >or .rightShift
 

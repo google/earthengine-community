@@ -6,7 +6,7 @@ tags: temperature, descriptive-analysis, africa, remote sensing, chart, time-ser
 date_published: 2019-10-06
 ---
 
-[Open In Code Editor](https://code.earthengine.google.com/0528cae42124f257071ac224a44f4202)
+[Open In Code Editor](https://code.earthengine.google.com/fbc4637defa31a712ece636868428a9b)
 
 Objectives:
 
@@ -126,7 +126,7 @@ var modLSTc = modLSTday.map(function(img) {
   return img
     .multiply(0.02)
     .subtract(273.15)
-    .copyProperties(img,['system:time_start']);
+    .copyProperties(img, ['system:time_start']);
 });
 ```
 

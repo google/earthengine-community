@@ -70,7 +70,7 @@ var modLSTc = modLSTday.map(function(img) {
   return img
     .multiply(0.02)
     .subtract(273.15)
-    .copyProperties(img,['system:time_start']);
+    .copyProperties(img, ['system:time_start']);
 });
 
 

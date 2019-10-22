@@ -202,3 +202,4 @@ Export.image.toDrive({
 
 With that, you have successfully described, processed, and exported land surface
 temperature data for 2015 in Uganda.
+

@@ -31,19 +31,19 @@ Collection, visualization, and analysis of geographical or spatial data.
 
 - Points
 
-- ![Points](points.png)
+ ![Points](points.png)
 
 - Lines
 
-- ![Lines](line-vector.png)
+ ![Lines](line-vector.png)
 
 - Polygons
 
-- ![Polygons](polygon-vector.png)
+ ![Polygons](polygon-vector.png)
 
 - Raster layers/bands
 
-- ![Raster](map-algebra.png)
+ ![Raster](map-algebra.png)
 
 Image sources: https://gisgeography.com/spatial-data-types-vector-raster/
 
@@ -59,11 +59,11 @@ Image sources: https://gisgeography.com/spatial-data-types-vector-raster/
 - Uses Google's computational resources to reduce processing time
 - Massive archive of remote sensing data 
 - 200+ public datasets 
-- greater than 4000 new images every day 
-- greater than 5 million images 
-- greater than 5 petabytes of data
+- over 4000 new images every day 
+- over 5 million images 
+- over 30 petabytes of data
 
-Source: Google Earth Engine User summit
+Source: Google Earth Engine User Summit
 
 ---
 
@@ -89,7 +89,7 @@ Map.setCenter(long, lat, zoomLevel);
 ```javascript
 print(variableName);
 ```
-You cannot print more than 5000 elements at once
+You cannot print more than 5000 elements at once.
 
 ### Adding a layer to the map
 ```javascript
@@ -367,7 +367,7 @@ newImage = oldImage.leftShift(valueOfShift);
 ### Create a single value from an image by applying a reducer based on regions of interest
 
 ```javascript
-var outputDictionary = var_Image.reduceRegion(reducer, geometry, scale);
+var outputDictionary = varImage.reduceRegion(reducer, geometry, scale);
 ```
 
 ---

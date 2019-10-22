@@ -6,11 +6,15 @@ tags: introductory, GIS, remote sensing, Google Earth Engine
 date_published: 2019-10-09
 ---
 
-[Geometries - Open In Code Editor](https://code.earthengine.google.com/9d0bd55b88c3588dd189c3b512378a0b)
+[Geometries - Open In Code Editor](https://code.earthengine.google.com/ba6e7ca46d2e45fddf7f9664fcb48cdf)
 
-[Features - Open In Code Editor](https://code.earthengine.google.com/bb1980ff4b6ddab0262de00956f89dcb)
+[Features - Open In Code Editor](https://code.earthengine.google.com/13db5b332a6f1ddbd525d47e6cf18984)
 
-[Images - Open In Code Editor - Geometries](https://code.earthengine.google.com/234ba0ab11dd82112602de05c0bc3bd8)
+[Images - Open In Code Editor](https://code.earthengine.google.com/2e87b1f45b6649e03da5ba010b2f158a)
+
+[Image to Table - Open in Code Editor](https://code.earthengine.google.com/2d2c310bb72b4e90a5d2f4c58a004823)
+
+[Timelapse - Open in Code Editor](https://code.earthengine.google.com/3e4120cdeb8fa951080db296bb3fdff4)
 
 We will introduce types of geospatial data, using these data on the Earth Engine platforms, and discuss a host of functionality to visualize and analyze them. This workshop was originally created for a workshop during Yale-NUS Data 2.0 hackathon and then updated for Yale GIS Day 2018. 
 
@@ -204,7 +208,7 @@ Mapping a function over a collection sends the each element of the collection to
 
 ## Operations on Geometries
 
-[Geometry operations](https://code.earthengine.google.com/9d0bd55b88c3588dd189c3b512378a0b "EE Geometry operations")
+[Geometry operations](https://code.earthengine.google.com/ba6e7ca46d2e45fddf7f9664fcb48cdf "EE Geometry operations")
 
 ### Find area of geometry
 ```javascript
@@ -253,7 +257,7 @@ var unGeo = geometry1.union(geometry2);
 ---
 ## Operations on Features
 
-[Feature operations](https://code.earthengine.google.com/bb1980ff4b6ddab0262de00956f89dcb "EE Feature operations")
+[Feature operations](https://code.earthengine.google.com/13db5b332a6f1ddbd525d47e6cf18984 "EE Feature operations")
 
 ### Set property name and value of geometry to create a feature
 ```javascript
@@ -332,7 +336,7 @@ var inverseFilter = ee.Filter.not(filter);
 ---
 ## Operations on Images
 
-[Image operations](https://code.earthengine.google.com/234ba0ab11dd82112602de05c0bc3bd8 "EE Image operations")
+[Image operations](https://code.earthengine.google.com/2e87b1f45b6649e03da5ba010b2f158a "EE Image operations")
 
 ### Selecting the bands of an image
 ```javascript
@@ -408,9 +412,9 @@ var mosaicOfImages = imCollection.mosaic();
 ---
 ## Importing and exporting data
 
-[Image to table example](https://code.earthengine.google.com/14c8472c1dae0833fef900a3b8f2d690 "Image to table example")
+[Image to table example](https://code.earthengine.google.com/2d2c310bb72b4e90a5d2f4c58a004823 "Image to table example")
 
-[Timelapse example](https://code.earthengine.google.com/6433694cdf717b0c1875c49c50016dc2 "Timelapse example")
+[Timelapse example](https://code.earthengine.google.com/3e4120cdeb8fa951080db296bb3fdff4 "Timelapse example")
 
 [Dubai timelapse](https://www.youtube.com/watch?v=6gK4Fd-WSM4&feature=youtu.be "Dubai timelapse")
 

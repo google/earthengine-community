@@ -30,6 +30,7 @@ var SHADOWY_PIXEL_VALUE = 4;
  * specified one.
  *
  * @param {ee.ImageCollection} testCollection
+ * @return {!lct.Landsat8}
  */
 function TestLandsat8(testCollection) {
   var l8 = lct.Landsat8();

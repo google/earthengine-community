@@ -87,7 +87,6 @@ function getSpectralIndices(image, indices) {
     }
     return image.expression(expr, {b: image}).rename([name]);
   }));
-
 }
 
 /**

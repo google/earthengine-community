@@ -1,106 +1,204 @@
 ---
-title: Studying Land Surface Temperature for Public Health Research in Uganda
-description: This tutorial shows how to describe, visualize, and export Earth Engine exposure data for public health research.
+title: Land Surface Temperature in Uganda
+description: Learn how to chart a temperature time series and make a map of mean temperature for display and export.
 author: hiyer09
-tags: temperature, descriptive analysis, Africa, remote sensing
+tags: temperature, descriptive-analysis, africa, remote sensing, chart, time-series, uganda, modis,
 date_published: 2019-10-06
 ---
 
-[Open In Code Editor](https://code.earthengine.google.com/f65e9a496bbafa257147730d06081c61)
+[Open In Code Editor](https://code.earthengine.google.com/0528cae42124f257071ac224a44f4202)
 
-Learning objectives:
-* Introduce remote sensing data.
-* Learn how to obtain and process raster climate data in Google Earth Engine.
+Objectives:
 
-Remote sensing (satellite-derived) data are a rich source of information about climate variables, including land cover, vegetation, rainfall, and temperature. Satellite data are available going back to the 1980s in many cases, and so they provide a means for doing historical analyses of changing geographies that can be linked with epidemiologic data for analysis.
-In this exercise, you will learn how to acquire remote sensing data from Google Earth Engine. You will learn how to perform time series analysis to study changes in climate variables over our chosen geography and time period. You will also apply some common geospatial procedures (zonal, focal statistics). Finally, you will learn how to export our Earth Engine raster files to Google Drive.
+* Import land surface temperature (LST) data for one year in Uganda.
+* Observe temporal patterns in temperature using a time series chart.
+* Calculate mean annual temperature for display and export.
 
-![](ee-chart-v2.png)  |  ![](ph_ug_lst.png) |
-:-------------------------:|:-------------------------:|
-Time series chart (Land Surface Temperature in Uganda)             |  Heat Map of Land Surface Temperature in Uganda        |
+Remote sensing (satellite-derived) data are a rich source of information about
+land cover, vegetation, rainfall, temperature, and other climate variables.
+Satellite data are available going back to the 1980s in many cases, and so
+provide a means for doing historical analyses of changing geographies.
 
+In this exercise, you will learn how to acquire remote sensing data from Google
+Earth Engine. You will learn how to perform time series analysis to study
+changes in climate variables over a selected geography and time period. You will
+also apply some common geospatial procedures (zonal, focal statistics). Finally,
+you will learn how to export Earth Engine raster files to Google Drive.
 
+![Chart](https://storage.googleapis.com/earthengine-community/tutorials/ph-ug-temp/ee-chart-v2.png) | ![Map](https://storage.googleapis.com/earthengine-community/tutorials/ph-ug-temp/ph_ug_lst.png) |
+:-: | :-:|
+Time series of land surface temperature in Uganda | Mean 8-day land surface temperature in Uganda |
 
-## Writing a simple JavaScript program to extract and process data
+## A workflow to explore spatiotemporal temperature patterns
 
-You will analyze Land Surface Temperature (LST) data collected using the Moderate Resolution Imaging Spectroradiometer ([MODIS](https://lpdaac.usgs.gov/products/mod11a2v006/)) satellite. This satellite captures images of the Earth’s surface in 1-2 day intervals, with spatial resolution of 1000m. Data are available from March 5, 2000 to present. In addition to temperature, the MODIS satellite captures data on other climate and Earth-based variables (e.g. vegetation indices).
-Using the Earth Engine Code Editor, users can manipulate these data over a shorter time period. The tool provides LST long-term and short-term time series for user-defined regions and time periods. This tool will restrict data from March 5, 2000 to present.
+You will analyze land surface temperature (LST) data derived from the
+Moderate Resolution Imaging Spectroradiometer
+([MODIS](https://lpdaac.usgs.gov/products/mod11a2v006/)) satellites. This
+dataset represents an 8-day composite of 1-2 day observation intervals, with
+spatial resolution of 1000m. Data are available from March 5, 2000 to present.
 
-### 1. Pull in shape file of Uganda 
+In addition to temperature, there are many other MODIS products available in
+the [Earth Engine Data Catalog](https://developers.google.com/earth-engine/datasets/catalog/modis).
+These datasets can be filtered to your preference of date range and region.
+This example will restrict data to all observations in 2015 and focus on
+the region of Uganda.
 
-In these lines of code, you are creating a new variable called "region". Concretely, you are pulling in a `FeatureCollection` object, and filtering by ‘Country’ to select ‘Uganda.’ FeatureCollections are groups of features (spatial data and attributes). `Filter` is the command to extract a specific set of feature data from a feature collection. You then map it using `Map.addLayer()`.
+### 1. Define the border of Uganda as a feature
+
+In the following code snippet, you will create a new variable called "region".
+Concretely, you are importing a `FeatureCollection` object, and filtering
+by "Country" to select "Uganda". FeatureCollections are groups of features
+(spatial data and attributes). `Filter` is the method to extract a specific
+set of features from a feature collection. You then display it to the map
+it using `Map.addLayer()`.
+
 ```javascript
-// Import vector file with country boundaries from Earth Engine
-var dataset = ee.FeatureCollection('USDOS/LSIB_SIMPLE/2017'); // All countries
-var uganda_border = dataset.filter(ee.Filter.eq("country_na","Uganda")); 
-// apply filter where "country names" equals "Uganda"
-print(uganda_border); 
-// print to ensure that new "uganda_border" object just contains polygon for Uganda
+// Import country boundaries feature collection.
+var dataset = ee.FeatureCollection('USDOS/LSIB_SIMPLE/2017');
 
-// Add region outline to layer - for selected countries
-Map.addLayer(uganda_border);
+// Apply filter where country name equals Uganda.
+var ugandaBorder = dataset.filter(ee.Filter.eq('country_na', 'Uganda'));
+
+// Print new "ugandaBorder" object and explorer features and properties.
+// There should only be one feature representing Uganda.
+print(ugandaBorder);
+
+// Add Uganda outline to the Map as a layer.
+Map.centerObject(ugandaBorder, 6);
+Map.addLayer(ugandaBorder);
 ```
-### 2. Read in land surface data
 
-Next, you need to read in land surface f data. `ImageCollection` objects store collections of images. Using the Earth Engine Data Catalog, you can find different image collections. The `ImageCollection` you are reading in here contains the LST data, but you can read in a different `ImageCollection` for other types of data (e.g. vegetation index, or rain fall, light at night).
-The code below applies filters to restrict images for Uganda, within January to December 2015, inclusive.
+### 2. Import land surface temperature data
+
+Next, you need to import land surface temperature data. It is organized as an
+`ImageCollection` object, which is a container for a collection of individual
+images. The `ImageCollection` you are importing in the following code snippet is
+the LST data, but you can use the same method to import an `ImageCollection` for
+other types of data (e.g., vegetation index, or rainfall, light at night).
+The code below applies a date filter to restrict images to observations within
+2015.
+
 ```javascript
-var modis = ee.ImageCollection('MODIS/MOD11A2'); // read in image collection
-var start = ee.Date('2015-01-01'); // set start date
+// Import LST image collection.
+var modis = ee.ImageCollection('MODIS/MOD11A2');
+
+// Define a date range of interest; here, a start date is defined and the end
+// date is determined by advancing 1 year from the start date.
+var start = ee.Date('2015-01-01');
 var dateRange = ee.DateRange(start, start.advance(1, 'year'));
-// set end date 1 year
-var mod11a2 = modis.filterDate(dateRange).filterBounds(uganda_border);
-// apply filter on date range, uganda boundary
 
-var modLSTday = mod11a2.select('LST_Day_1km'); // pull just 1km day LST
+// Filter the LST collection to include only images intersecting the desired
+// date range.
+var mod11a2 = modis.filterDate(dateRange);
+
+// Select only the 1km day LST data band.
+var modLSTday = mod11a2.select('LST_Day_1km');
 ```
-### 3. Create function to convert temperature units
 
-Converting temperature from Kelvin to Celsius will make results easier to interpret. Note that for remote sensing data, sometimes equations required to convert between different units require data-specific scaling factors, so you should always make sure to check the appropriate documentation. In this case, you should refer to the MODIS LST User Guide [documentation](https://icess.eri.ucsb.edu/modis/LstUsrGuide/usrguide_mod11.html#sds) for the specific product you are using when doing conversions.   After referring to the documentation, you will learn that in addition to subtracting 273.15, you must multiply the Kelvin value from the MODIS data by a factor of 0.02.
+### 3. Define a function to convert temperature units
 
-In addition, you will want to keep information about the start and end time for each image in the collection so that the time series can be plotted.
+Converting temperature from Kelvin to Celsius will make results easier to
+interpret. Note that for remote sensing data, sometimes equations required
+to convert between different units have data-specific scaling factors, so
+you should always refer to appropriate documentation. In this
+case, refer to the MODIS LST User Guide
+[documentation](https://icess.eri.ucsb.edu/modis/LstUsrGuide/usrguide_mod11.html#sds).
+After referring to the documentation, you will learn that this particular MODIS
+data must be multiplied by 0.02 to return the units to Kelvin. Subtract 273.15
+to convert Kelvin to Celsius.
 
-Both steps can be accomplished together by writing a function to do the conversion, keeping the start and end times using the `copyProperties()` function, and then by mapping over the `ImageCollection`. Running this code will generate a new `ImageCollection` called 'modLSTc' (MODIS LST converted) with LST in Celsius, along with the specific time periods needed for the chart.
+In addition, you will need to set the image acquisition time as a property of
+the resulting raster. Most image operations generate a new image with only an
+index property, so adding additional properties is often a necessary step.
+The image acquisition time will serve as the x-axis variable in time series
+plotting.
+
+Both steps can be accomplished together by wrapping them in a single
+function that performs the conversion, and sets the start times using the
+`copyProperties()` image method. Map the function over the `ImageCollection` to
+apply it to all images. Running this code will generate a new `ImageCollection`
+called "modLSTc" (MODIS LST converted) with LST in Celsius, along with the
+specific start time needed for the chart.
+
 ```javascript
-// convert from Kelvin to Celsius and keep start and end times
+// Scale to Kelvin and convert to Celsius, set image acquisition time.
 var modLSTc = modLSTday.map(function(img) {
-  return img.multiply(0.02).subtract(273.15).copyProperties(img,['system:time_start','system:time_end']);
-}); // this will apply the correction
+  return img
+    .multiply(0.02)
+    .subtract(273.15)
+    .copyProperties(img,['system:time_start']);
+});
 ```
-### 4. Describe land surface temperature data using time series
 
-It can be helpful to describe your data using a time series graph. You can plot the mean land surface temperature over the year using the following code. Specifically, you will create a new chart called 'TS1' (time series chart 1) using the `ui.Chart.image.series()` function. This function takes several arguments. First, you bring in your converted `ImageCollection` (modLSTc). Next, you specify the geographic area by calling your 'ug' feature defining the boundary you are interested in. Next, you apply the `ee.Reducer.mean()` function to calculate the mean LST for each image. Specify '1000' as a scale (the LST data have 1km resolution). You should then specify the 'system:time_start' as the x-axis for your chart.
+### 4. Chart land surface temperature as a time series
 
-Calling the `setOptions` function allows you to specify labels for the title and y-axis of the chart.
+It can be helpful to describe your data using a time series graph. You can plot
+the mean land surface temperature over the year using the following code.
+Specifically, you will create a new chart called "TS1" (time series chart 1)
+using the `ui.Chart.image.series()` function. This function takes several
+arguments. First, you provide your converted `ImageCollection` (modLSTc). Next,
+you specify the geographic area by calling your `ugandaBorder` feature defining
+the boundary you are interested in. Next, you apply the `ee.Reducer.mean()`
+function to calculate the mean LST for each image. Specify 1000 (meters) as the
+scale (the LST data have 1km resolution). You should then specify the
+`'system:time_start'` as the x-axis for your chart.
+
+Calling the `setOptions` method allows you to specify labels for the title
+and y-axis of the chart.
+
 ```javascript
-// Charts Long-term Time Series
-var ts1 = ui.Chart.image.series(modLSTc, uganda_border,
- ee.Reducer.mean(), 1000, 'system:time_start').setOptions({
-   title: 'LST Long-Term Time Series',
-   vAxis: {title: 'LST Celsius'},
- });
- print(ts1);
+// Chart time series of LST for Uganda in 2015.
+var ts1 = ui.Chart.image.series({
+  imageCollection: modLSTc,
+  region: ugandaBorder,
+  reducer: ee.Reducer.mean(),
+  scale: 1000,
+  xProperty: 'system:time_start'})
+  .setOptions({
+     title: 'LST 2015 Time Series',
+     vAxis: {title: 'LST Celsius'}});
+print(ts1);
 ```
 
-### 5. Visualize processed data on map
+### 5. Visualize temperature data on the map
 
-The previous step allowed you to generate a descriptive time series chart. In addition, you may want to visualize your data on the map. You can take the mean LST in celsius, and clip to Uganda. This code produces a map of the mean temperatures that can be viewed in the map window.
+The previous step generated a descriptive time series chart. In
+addition, you may want to visualize your data on the map. You can take the mean
+LST in Celsius, and clip it to Uganda. The following code produces a map of
+mean temperature.
+
 ```javascript
-var clippedLSTc = modLSTc.mean().clip(uganda_border);
-// Add clipped image layer to map
-Map.addLayer(clippedLSTc, {'min': 0, 'max': 40, 'palette':"blue,limegreen,yellow,darkorange,red"});
+// Calculate 8-day mean temperature for Uganda in 2015.
+var clippedLSTc = modLSTc.mean().clip(ugandaBorder);
+
+// Add clipped image layer to the map.
+Map.addLayer(clippedLSTc, {
+  min: 20, max: 40,
+  palette: ['blue', 'limegreen', 'yellow', 'darkorange', 'red']},
+  'Mean temperature, 2015');
 ```
+
 ### 6. Export data for further analysis
 
-Finally, you can export your raster image file to perform further analysis (e.g. link to participant or clinic data). You can use the export command below to download the processed image data to your Google Drive folder. Concretely, calling `Export.image.toDrive()` will allow the user to save the exported image in their Google Drive folder. You can specify the location when downloading the image from the "Tasks" window in the console. As you have named the "description" 'LST_Celsius_ug', this will be the name of the exported file. You can change the name by changing the 'description'.
+Finally, you can export your raster image file to perform further analysis in a
+GIS. You can use the export command below to export the processed image data to
+your Google Drive account. Concretely, calling `Export.image.toDrive()` will
+allow you to save the exported image in a Google Drive folder. The location
+is specified by the `folder` argument. As you have defined the `description` as
+"LST_Celsius_ug", this will be the name of the exported file. You can change the
+name by changing the `description` argument.
+
 ```javascript
+// Export the image to your Google Drive account.
 Export.image.toDrive({
-        image: clippedLSTc,
-        description: 'LST_Celsius_ug',
-        region: uganda_border,
-        scale: 1000,
-        crs: 'EPSG:4326',
-        maxPixels: 1e10
-      });    
+  image: clippedLSTc,
+  description: 'LST_Celsius_ug',
+  folder: 'my_folder',
+  region: ugandaBorder,
+  scale: 1000,
+  crs: 'EPSG:4326',
+  maxPixels: 1e10});
 ```
-With that, you have successfully described, processed, and exported land surface temperature data for 2015 in Uganda.
+
+With that, you have successfully described, processed, and exported land surface
+temperature data for 2015 in Uganda.

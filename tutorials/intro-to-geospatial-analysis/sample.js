@@ -15,24 +15,23 @@ Map.addLayer(bound, {color: 'yellow'}, 'Bounds');
 var convex = chic.geometry().convexHull();
 Map.addLayer(convex, {color: 'blue'}, 'Convex Hull');
 // Find the area common to two or more features
-var intersect = bound.intersection(convex,100);
+var intersect = bound.intersection(convex, 100);
 Map.addLayer(intersect, {color: 'green'}, 'Bound and convex intersection');
 // Find the area encompassing two or more features; number is the maximum error in meters
-var union = bound.union(convex,100);
+var union = bound.union(convex, 100);
 Map.addLayer(union, {color: 'purple'}, 'Bound and convex union');
 // Find the difference between two geometries
-var diff=bound.difference(convex,100);
+var diff=bound.difference(convex, 100);
 Map.addLayer(diff, {color: 'purple'}, 'Bound and convex difference');
 // Find area of feature
 var ar = chic.geometry().area();
-print (ar)
+print(ar);
 // Find length of line geometry (You get zero since this is a polygon)
 var length = chic.geometry().length();
-print (length)
+print (length);
 // Find permeter of feature
 var peri = chic.geometry().perimeter();
-print (peri)
-
+print(peri);
 function performMap(feature) {
  // Reduce number of vertices in geometry; the number is to specify maximum error in meters
  var simple = feature.simplify(1000);
@@ -45,7 +44,7 @@ function performMap(feature) {
 }
 // Map function over Feature Collection
 var mappedCentroid = chicColl.map(performMap);
-Map.addLayer(mappedCentroid,{},'Mapped centroids')
+Map.addLayer(mappedCentroid, {}, 'Mapped centroids');
 
 // Features
 // Create Geometry
@@ -57,7 +56,7 @@ var varFeature = ee.Feature(varGeometry, {
 });
 // Get values of a property
 var arr=varFeature.get('Size');
-print (arr);
+print(arr);
 // Select a subset of properties and rename them
 var varFeaturenew = varFeature.select(['Name'], ['Descriptor']);
 print(varFeaturenew);
@@ -71,7 +70,7 @@ print(raw);
 var bandSel1 = raw.select(0);
 var bandSel2=raw.select('LST_Day_1km');
 // Filter the image collection by a date range
-var filtered=raw.filterDate('2002-12-30','2004-4-27');
+var filtered=raw.filterDate('2002-12-30', '2004-4-27');
 print(filtered);
 // Limit the image collection to the first 50 elements
 var limited = raw.limit(50);
@@ -81,10 +80,10 @@ print(bandSel1);
 var mean = bandSel1.mean();
 // Calculate image of region of interest
 var clipped = mean.clip(roi);
-// mathematical operation on image pixels to convert from digital number 
+// mathematical operation on image pixels to convert from digital number
 // of satellite observations to degree Celsius
 var calculate = clipped.multiply(.02).subtract(273.15);
-Map.addLayer(calculate, {min: 20, max: 30, palette: ['blue', 'green', 'red']},'LST');
+Map.addLayer(calculate, {min: 20, max: 30, palette: ['blue', 'green', 'red']}, 'LST');
 // Select pixel in the image that are greater than 30.8
 var mask = calculate.gt(30.8);
 Map.addLayer(mask, {}, 'mask');

@@ -72,13 +72,13 @@ Source: Google Earth Engine User summit
 
 ### Declaring variables
 ```javascript
-var variableName = ee.ContainerType(value); 
+var variableName = ee.ContainerType(value);
 ```
 A container (in the form ee.variabletype) is used to wrap up a native javascript object type so that Google's server can recognize its structure and perform operations on it
 
 ###  Centering map
 ```javascript
-Map.setCenter(long, lat, zoom level);
+Map.setCenter(long, lat, zoomLevel);
 ```
 >Zoom level varies from 0 (no zoom) to 20 (highest zoom level)
 
@@ -100,7 +100,7 @@ Map.addLayer(variableName);
 ### Strings
 
 ```javascript
-var str = ee.String("This is a string. Or is it? It is.");
+var str = ee.String('This is a string. Or is it? It is.');
 ```
 ### Numbers
 ```javascript
@@ -109,16 +109,16 @@ var num = ee.Number(5);
 
 ### Arrays
 ```javascript
-var arr = ee.Array([[5, 2, 3],  [-2, 7, 10],  [6, 6, 9]]);
+var arr = ee.Array([[5, 2, 3], [-2, 7, 10], [6, 6, 9]]);
 ```
 
 ### Lists
 ```javascript
-var lis = ee.List([5, "five" , 6, "six"]);
+var lis = ee.List([5, 'five', 6, 'six']);
 ```
 ### Dictionaries
 ```javascript
-var dict = ee.Dictionary({five: 5 , six: 6});
+var dict = ee.Dictionary({five: 5, six: 6});
 ```
 
 ### And the fun stuff
@@ -138,7 +138,7 @@ var poi = ee.Geometry.Point(0, 45);
 ```
 ### Multi Points
 ```javascript
-var multi = ee.Geometry.MultiPoint(0, 45, 5,6, 70,-56);
+var multi = ee.Geometry.MultiPoint(0, 45, 5, 6, 70, -56);
 ```
 ### Line String
 ```javascript
@@ -146,11 +146,12 @@ var lineStr = ee.Geometry.LineString([[0, 45], [5,6], [70,-56]]);
 ```
 ### Multi Line String
 ```javascript
-var mlineStr = ee.Geometry.MultiLineString([[[0, 45], [5,6], [70,-56]], [[0, -45], [-5,-6], [-70,56]]]);
+var mlineStr =
+ee.Geometry.MultiLineString([[[0, 45], [5, 6], [70, -56]], [[0, -45], [-5, -6], [-70, 56]]]);
 ```
 ### Linear Ring
 ```javascript
-var linRin = ee.Geometry.LinearRing(0, 45, 5,6, 70,-56, 0,45);
+var linRin = ee.Geometry.LinearRing(0, 45, 5, 6, 70, -56, 0, 45);
 ```
 ### Rectangle
 ```javascript
@@ -162,7 +163,9 @@ var poly = ee.Geometry.Polygon([[[0, 0], [6,3], [5, 5], [-30,2], [0,0]]]);
 ```
 ### Multi Polygon
 ```javascript
-var multiPoly = ee.Geometry.MultiPolygon([ee.Geometry.Polygon([[0, 0], [6, 3], [5, 5], [-30, 2], [0,0]]), ee.Geometry.Polygon([[0, 0], [-6, -3], [-5, -5], [30, -2], [0, 0]])]);
+var multiPoly =
+ee.Geometry.MultiPolygon([ee.Geometry.Polygon([[0, 0], [6, 3], [5, 5], [-30, 2], [0, 0]]),
+ee.Geometry.Polygon([[0, 0], [-6, -3], [-5, -5], [30, -2], [0, 0]])]);
 ```
 
 ---
@@ -181,7 +184,9 @@ var multiPoly = ee.Geometry.MultiPolygon([ee.Geometry.Polygon([[0, 0], [6, 3], [
 
 - A set of instructions to perform a specific task
 ```javascript
-function functionName(Arguments) {statements};
+function functionName(Arguments) {
+statements;
+};
 ```
 ### Call function
 ```javascript
@@ -252,15 +257,15 @@ var unGeo = geometry1.union(geometry2);
 
 ### Set property name and value of geometry to create a feature
 ```javascript
-var feat = ee.Feature(geometry, {Name: "featureName", Size: 500};
+var feat = ee.Feature(geometry, {Name: 'featureName', Size: 500});
 ```
 ### Create a new feature from existing feature while renaming a property
 ```javascript
-var featNew = feature.select(["name"], ["descriptor"]);
+var featNew = feature.select(['name'], ['descriptor']);
 ```
 ### Extract values of a property from a Feature
 ```javascript
-var featVal = feature.get("size");
+var featVal = feature.get('size');
 ```
 ---
 
@@ -375,7 +380,7 @@ var selectedImages = imCollection.limit(n, propertyName, order);
 ### Select images in collection based on particular properties
 
 ```javascript
-var selectedIm = imCollection.filterMetadata(propertyName, relation , value);
+var selectedIm = imCollection.filterMetadata(propertyName, relation, value);
 ```
 >Relations could be "equals", "less_than", "greater_than", "starts_with", "ends_with", and "contains"
 
@@ -417,7 +422,7 @@ var mosaicOfImages = imCollection.mosaic();
 
 ```javascript
 Export.image.toDrive({
-  collection: varImage, description: 'fileName', region: geometry, scale: 1000}
+  collection: varImage, description: 'fileName', region: geometry, scale: 1000
 });
 ```
 >or image.toCloudStorage, image.toAsset, table.toDrive, table.toCloudStorage, video.toCloudStorage, and video.toDrive

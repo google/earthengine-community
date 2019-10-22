@@ -63,35 +63,31 @@ var SPECTRAL_INDEX_EXPRESSIONS = {
 
 
 /**
- * Computes and adds the specified set of spectral indices to an image. Indices
- * must be one of:
+ * Computes the specified set of spectral indices. Indices must be one of:
  *
  *   'ndvi', 'evi', 'savi', 'msavi', 'ndmi', 'nbr', 'nbr2', 'ndwi', 'mndwi',
  *   'ndbi', 'ndsi'
  *
+ * This function assumes that the image bands are using the 'common' naming.
+ *
  * @param {ee.Image} image The source image.
  * @param {!Array<string>} indices The list of indices to calculate.
- * @return {ee.Image} The updated image.
+ * @return {!ee.Image} A new image containing the calculated bands.
  */
 function getSpectralIndices(image, indices) {
   var args = NamedArgs.extractFromFunction(getSpectralIndices, arguments);
   image = args.image;
   indices = args.indices;
-  // We can't check the existence of the specified indices if they're EEObjects.
-  if (!(indices instanceof ee.ComputedObject)) {
-    // Check that all the specified indexes exist.
-    indices.forEach(function(name) {
-      if (!(name in SPECTRAL_INDEX_EXPRESSIONS)) {
-        throw Error('Unrecognized spectral index: ' + name);
-      }
-    });
-  }
 
-  // TODO(gorelick): Change this to Dictionary.get once supported.
-  return indices.map(function(name) {
+  return ee.Image(indices.map(function(name) {
     var expr = SPECTRAL_INDEX_EXPRESSIONS[name];
+    // Check that the specified indices exist.
+    if (!expr) {
+      throw Error('Unrecognized spectral index: ' + name);
+    }
     return image.expression(expr, {b: image}).rename([name]);
-  });
+  }));
+
 }
 
 /**
@@ -146,9 +142,47 @@ function addFractionalYearBand(collection) {
   });
 }
 
+
+/**
+ * Compute a matrix multiply between the given image and a set of coefficients
+ * such as an eigenvector rotation or a Tasseled Cap transformation.
+ *
+ * The input image is expected to have the same number of bands as the width of
+ * the coefficients matrix.
+ *
+ * @param {!ee.Image} image The image on which to compute the transformation.
+ * @param {!Array<!Array<number>>} coef The matrix to apply to the image.
+ * @param {Array<string>=} bandNames An optional list of output band names.
+ * @return {!ee.Image} The transformed bands.
+ */
+function matrixMultiply(image, coef, bandNames) {
+  // Create some default band names if none were specified.
+  bandNames = bandNames || generateBandNames('mmult', image.bandNames().length());
+
+  // Make an Array Image with a 2-D Array per pixel.
+  var arrayImage = image.toArray().toArray(1);
+  return ee.Image(ee.Array(coef))
+      .matrixMultiply(arrayImage)
+      .arrayProject([0]) // get rid of the extra dimensions
+      .arrayFlatten([bandNames]);
+}
+
+/**
+ * Generate a series of band names of the form prefixN.
+ * @param {!string} prefix The prefix to prepend.
+ * @param {!number} count How many bands to generate, starting from 0.
+ * @return {*}
+ */
+function generateBandNames(prefix, count) {
+  return ee.List.sequence(1, count).map(function(n) {
+    return ee.Number(n).format(ee.String(prefix).cat('%d'));
+  });
+}
+
 exports.Bands = {
   getSpectralIndices: getSpectralIndices,
   addDateBand: addDateBand,
   addDayOfYearBand: addDayOfYearBand,
-  addFractionalYearBand: addFractionalYearBand
+  addFractionalYearBand: addFractionalYearBand,
+  matrixMultiply: matrixMultiply
 };

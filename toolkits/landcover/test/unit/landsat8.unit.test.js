@@ -30,4 +30,9 @@ withEarthEngineStub('Landsat8', function() {
     var expected = originalImage.updateMask(mask);
     expect(newImage).toEqual(expected);
   });
+
+  it('getTasseledCapCoefficients_() returns coefficients', function() {
+    // There are 6 bands in the TC transformation.  There should be 6 coefficients.
+    expect(new Landsat8('SR').getTasseledCapCoefficients_().length).toEqual(6);
+  });
 });

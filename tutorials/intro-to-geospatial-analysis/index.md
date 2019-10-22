@@ -24,7 +24,6 @@ Collection, visualization, and analysis of geographical or spatial data.
 ## Data types
 
 - Vector data represent lat-long coordinates
-
 - Raster data comprises of pixels with associated values
 
 ---
@@ -32,19 +31,19 @@ Collection, visualization, and analysis of geographical or spatial data.
 
 - Points
 
-![Points](points.png)
+- ![Points](points.png)
 
 - Lines
 
-![Lines](line-vector.png)
+- ![Lines](line-vector.png)
 
 - Polygons
 
-![Polygons](polygon-vector.png)
+- ![Polygons](polygon-vector.png)
 
 - Raster layers/bands
 
-![Raster](map-algebra.png)
+- ![Raster](map-algebra.png)
 
 Image sources: https://gisgeography.com/spatial-data-types-vector-raster/
 

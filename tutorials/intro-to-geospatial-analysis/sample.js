@@ -28,7 +28,7 @@ var ar = chic.geometry().area();
 print(ar);
 // Find length of line geometry (You get zero since this is a polygon)
 var length = chic.geometry().length();
-print (length);
+print(length);
 // Find permeter of feature
 var peri = chic.geometry().perimeter();
 print(peri);

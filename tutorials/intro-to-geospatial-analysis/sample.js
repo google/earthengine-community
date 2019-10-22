@@ -81,7 +81,8 @@ print(bandSel1);
 var mean = bandSel1.mean();
 // Calculate image of region of interest
 var clipped = mean.clip(roi);
-// mathematical operation on image pixels to convert from digital number of satellite observations to degree Celsius
+// mathematical operation on image pixels to convert from digital number 
+// of satellite observations to degree Celsius
 var calculate = clipped.multiply(.02).subtract(273.15);
 Map.addLayer(calculate, {min: 20, max: 30, palette: ['blue', 'green', 'red']},'LST');
 // Select pixel in the image that are greater than 30.8

@@ -6,23 +6,23 @@ var chic = ee.FeatureCollection('users/tirthankar25/chicago_diss');
 var chicColl = ee.FeatureCollection('users/tirthankar25/chicago');
 // Add the layer to the map
 // Map.addLayer(Res);
-Map.addLayer(chic, {color:'red'}, 'Chicago dissolved');
+Map.addLayer(chic, {color: 'red'}, 'Chicago dissolved');
 // Find the rectangle that emcompasses the southernmost, westernmost, easternmost, and northernmost
 // points of the feature
 var bound = chic.geometry().bounds();
-Map.addLayer(bound, {color:'yellow'},'Bounds');
+Map.addLayer(bound, {color: 'yellow'}, 'Bounds');
 // Find the polygon covering the extremities of the feature
 var convex = chic.geometry().convexHull();
-Map.addLayer(convex, {color:'blue'},'Convex Hull');
+Map.addLayer(convex, {color: 'blue'}, 'Convex Hull');
 // Find the area common to two or more features
 var intersect = bound.intersection(convex,100);
-Map.addLayer(intersect, {color:'green'},'Bound and convex intersection');
+Map.addLayer(intersect, {color: 'green'}, 'Bound and convex intersection');
 // Find the area encompassing two or more features; number is the maximum error in meters
 var union = bound.union(convex,100);
-Map.addLayer(union, {color:'purple'},'Bound and convex union');
+Map.addLayer(union, {color: 'purple'}, 'Bound and convex union');
 // Find the difference between two geometries
 var diff=bound.difference(convex,100);
-Map.addLayer(diff, {color:'purple'},'Bound and convex difference');
+Map.addLayer(diff, {color: 'purple'}, 'Bound and convex difference');
 // Find area of feature
 var ar = chic.geometry().area();
 print (ar)
@@ -45,7 +45,7 @@ function performMap(feature) {
 }
 // Map function over Feature Collection
 var mappedCentroid = chicColl.map(performMap);
-Map.addLayer(mappedCentroid,{},"Mapped centroids")
+Map.addLayer(mappedCentroid,{},'Mapped centroids')
 
 // Features
 // Create Geometry
@@ -83,13 +83,13 @@ var mean = bandSel1.mean();
 var clipped = mean.clip(roi);
 // mathematical operation on image pixels to convert from digital number of satellite observations to degree Celsius
 var calculate = clipped.multiply(.02).subtract(273.15);
-Map.addLayer(calculate,{min: 20, max: 30, palette: ['blue', 'green', 'red']},'LST');
+Map.addLayer(calculate, {min: 20, max: 30, palette: ['blue', 'green', 'red']},'LST');
 // Select pixel in the image that are greater than 30.8
 var mask = calculate.gt(30.8);
-Map.addLayer(mask,{},"mask");
+Map.addLayer(mask, {}, 'mask');
 // Use selected pixels to mask the whole image
 var masked = clipped.mask(mask);
-Map.addLayer(masked,{min: 10, max: 30, palette: ['blue', 'green', 'red']},'LST_masked');
+Map.addLayer(masked, {min: 10, max: 30, palette: ['blue', 'green', 'red']}, 'LST_masked');
 
 // Image to table example
 // Function to find mean of pixels in region of interest

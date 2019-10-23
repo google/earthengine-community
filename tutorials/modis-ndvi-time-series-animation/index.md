@@ -1,3 +1,10 @@
+---
+title: MODIS NDVI Times Series Animation
+description: Generate an animated GIF representing 20-year median NDVI for serial 16-day MODIS composites spanning January 1st through December 31st.
+author: jdbcode
+tags: modis, ndvi, animation, join, reduce, composite, gif, africa, visualization
+date_published: 2019-08-14
+---
 <!--
 Copyright 2019 Google LLC
 
@@ -12,13 +19,6 @@ distributed under the License is distributed on an "AS IS" BASIS,
 WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
--->
-<!--
-title: MODIS NDVI Times Series Animation
-description: Generate an animated GIF representing 20-year median NDVI for serial 16-day MODIS composites spanning January 1st through December 31st.
-author: jdbcode
-tags: modis, ndvi, animation, join, reduce, composite, gif, africa, visualization
-date_published: 2019-08-14
 -->
 
 [Open In Code Editor](https://code.earthengine.google.com/0ee1513ac09808307463585f73dda77c)
@@ -105,7 +105,7 @@ col = col.map(function(img) {
 });
 ```
 
-A join operation will be implemented that groups images by the 'doy' property just added. The join opperation 
+A join operation will be implemented that groups images by the 'doy' property just added. The join operation 
 expects two collections, in this case: a distinct DOY collection and the complete collection modified to
 include the 'doy' property. The complete collection (`col`) exists, the distinct collection needs to be defined.
 Do so by filtering the complete collection to a single year of data e.g. 2013. 

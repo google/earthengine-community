@@ -1,5 +1,5 @@
 ---
-title: Combine FeatureCollections into a new FeatureCollection
+title: Combine two FeatureCollections into a new FeatureCollection
 description: This basic tutorial shows how users can combine two FeatureCollections into one. It is targeted at beginners. The format of this tutorial was based on Prof. Dana Tomlin's Earth Engine notes.
 author: sabrinaszeto
 tags: beginner, featurecollection

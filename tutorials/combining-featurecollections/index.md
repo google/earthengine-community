@@ -6,13 +6,13 @@ tags: beginner, featurecollection
 date_published: 2019-10-04
 ---
 
-[Open In Code Editor](https://code.earthengine.google.com/cef3a27210b41e953a53b66cae8d26cd)
+[Open In Code Editor](https://code.earthengine.google.com/ec43ba0f9d49a4c5a2bf29853c32274a)
 
 This basic tutorial shows how users can combine two `ee.FeatureCollection`s into a new `ee.FeatureCollection`.
 
 ## Create two `ee.FeatureCollection` objects
 
-Let's begin by generating two sets of random points within the boundary of Utah state in USA. First, define the boundary of Utah as a geometry.
+Let's begin by generating two sets of random points within the boundary of Utah state in the USA. First, define the boundary of Utah as a geometry.
 
 ```
 var utahGeometry = ee.Geometry.Polygon([
@@ -47,12 +47,12 @@ Let's add all the `ee.FeatureCollection`s to the map. First, we set the center o
 Map.setCenter(-111.445, 39.251, 6);
 ```
 
-Now, we add all the layers, specifying the layer labels as text strings (for example, `"New Features"`) and colors to display each layer in. We will also print the results.
+Now, we add all the layers, specifying the layer labels as text strings (for example, `'New Features'`) and colors to display each layer in. We will also print the results.
 
 ```
-Map.addLayer(newFeatures, {}, "New Features");
-Map.addLayer(moreNewFeatures,{color:'red'},"More New Features");
-Map.addLayer(combinedFeatureCollection, {color:'yellow'}, "Combined FeatureCollection");
+Map.addLayer(newFeatures, {}, 'New Features');
+Map.addLayer(moreNewFeatures,{color:'red'},'More New Features');
+Map.addLayer(combinedFeatureCollection, {color:'yellow'}, 'Combined FeatureCollection');
 
 print(newFeatures, moreNewFeatures, combinedFeatureCollection);
 ```
@@ -61,4 +61,4 @@ print(newFeatures, moreNewFeatures, combinedFeatureCollection);
 
 - What happens if you don't flatten the `ee.FeatureCollection`s? Delete `.flatten()` and run the script again to find out. 
 - What happens if you change the zoom level in `Map.setCenter` to 3 or to 12?
-- Try changing the layer label of `"More New Features"` to `"Red Points"`. Run the script again to see if it worked.
+- Try changing the layer label of `'More New Features'` to `'Red Points'`. Run the script again to see if it worked.

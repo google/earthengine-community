@@ -36,7 +36,7 @@ var moreNewFeatures = ee.FeatureCollection.randomPoints(utahGeometry, 25, 1);
 Next, create a new `ee.FeatureCollection` using a list of the desired `ee.FeatureCollection`s to combine. Then, flatten them into a single `ee.FeatureCollection`.
 
 ```
-var combinedFeatureCollection = ee.FeatureCollection([newFeatures,moreNewFeatures]).flatten();
+var combinedFeatureCollection = ee.FeatureCollection([newFeatures, moreNewFeatures]).flatten();
 ```
 
 ## Visualize the Results
@@ -51,8 +51,8 @@ Now, we add all the layers, specifying the layer labels as text strings (for exa
 
 ```
 Map.addLayer(newFeatures, {}, 'New Features');
-Map.addLayer(moreNewFeatures,{color:'red'},'More New Features');
-Map.addLayer(combinedFeatureCollection, {color:'yellow'}, 'Combined FeatureCollection');
+Map.addLayer(moreNewFeatures, {color: 'red'}, 'More New Features');
+Map.addLayer(combinedFeatureCollection, {color: 'yellow'}, 'Combined FeatureCollection');
 
 print(newFeatures, moreNewFeatures, combinedFeatureCollection);
 ```

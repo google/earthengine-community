@@ -25,9 +25,9 @@ changes in climate variables over a selected geography and time period. You will
 also apply some common geospatial procedures (zonal, focal statistics). Finally,
 you will learn how to export Earth Engine raster files to Google Drive.
 
-![Chart](https://storage.googleapis.com/earthengine-community/tutorials/ph-ug-temp/ee-chart-v2.png) | ![Map](https://storage.googleapis.com/earthengine-community/tutorials/ph-ug-temp/ph_ug_lst.png) |
-:-: | :-:|
-Time series of land surface temperature in Uganda | Mean 8-day land surface temperature in Uganda |
+| ![Chart](https://storage.googleapis.com/earthengine-community/tutorials/ph-ug-temp/ph-ug-temp-chart.png) | ![Map](https://storage.googleapis.com/earthengine-community/tutorials/ph-ug-temp/ph-ug-temp-map.png) |
+| :---: | :---: |
+| Time series of land surface temperature in Uganda | Mean 8-day land surface temperature in Uganda |
 
 ## A workflow to explore spatiotemporal temperature patterns
 

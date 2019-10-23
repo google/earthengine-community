@@ -3,7 +3,7 @@ title: Land Surface Temperature in Uganda
 description: Learn how to chart a temperature time series and make a map of mean temperature for display and export.
 author: hiyer09
 tags: temperature, descriptive-analysis, africa, remote sensing, chart, time-series, uganda, modis,
-date_published: 2019-10-06
+date_published: 2019-10-23
 ---
 <!--
 Copyright 2019 The Google Earth Engine Community Authors

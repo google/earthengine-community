@@ -16,8 +16,8 @@ var combinedFeatureCollection = ee.FeatureCollection([newFeatures,moreNewFeature
 
 Map.setCenter(-111.445, 39.251, 6);
 
-Map.addLayer(newFeatures, {}, "New Features");
-Map.addLayer(moreNewFeatures,{color:'red'},"More New Features");
-Map.addLayer(combinedFeatureCollection, {color:'yellow'}, "Combined FeatureCollection");
+Map.addLayer(newFeatures, {}, 'New Features');
+Map.addLayer(moreNewFeatures,{color:'red'},'More New Features');
+Map.addLayer(combinedFeatureCollection, {color:'yellow'}, 'Combined FeatureCollection');
 
 print(newFeatures, moreNewFeatures, combinedFeatureCollection);

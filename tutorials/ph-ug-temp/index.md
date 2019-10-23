@@ -6,7 +6,7 @@ tags: temperature, descriptive-analysis, africa, remote sensing, chart, time-ser
 date_published: 2019-10-06
 ---
 
-[Open In Code Editor](https://code.earthengine.google.com/4e9e76f1846173261afa5a985f953de1)
+[Open In Code Editor](https://code.earthengine.google.com/e702b27b6e794cc496e4e64a7d958435)
 
 Objectives:
 

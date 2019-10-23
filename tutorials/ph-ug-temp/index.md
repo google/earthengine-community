@@ -5,8 +5,23 @@ author: hiyer09
 tags: temperature, descriptive-analysis, africa, remote sensing, chart, time-series, uganda, modis,
 date_published: 2019-10-06
 ---
+<!--
+Copyright 2019 The Google Earth Engine Community Authors
 
-[Open In Code Editor](https://code.earthengine.google.com/4e9e76f1846173261afa5a985f953de1)
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+-->
+
+[Open In Code Editor](https://code.earthengine.google.com/e702b27b6e794cc496e4e64a7d958435)
 
 Objectives:
 
@@ -25,9 +40,9 @@ changes in climate variables over a selected geography and time period. You will
 also apply some common geospatial procedures (zonal, focal statistics). Finally,
 you will learn how to export Earth Engine raster files to Google Drive.
 
-![Chart](https://storage.googleapis.com/earthengine-community/tutorials/ph-ug-temp/ee-chart-v2.png) | ![Map](https://storage.googleapis.com/earthengine-community/tutorials/ph-ug-temp/ph_ug_lst.png) |
-:-: | :-:|
-Time series of land surface temperature in Uganda | Mean 8-day land surface temperature in Uganda |
+| ![Chart](https://storage.googleapis.com/earthengine-community/tutorials/ph-ug-temp/ph-ug-temp-chart.png) | ![Map](https://storage.googleapis.com/earthengine-community/tutorials/ph-ug-temp/ph-ug-temp-map.png) |
+| :---: | :---: |
+| Time series of land surface temperature in Uganda | Mean 8-day land surface temperature in Uganda |
 
 ## A workflow to explore spatiotemporal temperature patterns
 

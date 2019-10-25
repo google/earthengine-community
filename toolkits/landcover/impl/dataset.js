@@ -108,7 +108,7 @@ Dataset.prototype.getDefaultVisParams = function() {
  *        each time period. Defaults to using a median reducer.
  * @return {!ee.ImageCollection}
  */
-Dataset.prototype.toTemporalCompositeCollection = function(
+Dataset.prototype.toTemporalComposites = function(
     startDate, count, interval, intervalUnits, reducer) {
   var args = NamedArgs.extractFromFunction(Dataset.prototype.createTemporalComposites, arguments);
   startDate = args.startDate;

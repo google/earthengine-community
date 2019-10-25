@@ -23,7 +23,6 @@ GIT_BASE_URL = 'https://earthengine.googlesource.com'
 ORIGINAL_REQUIRE_PATH = 'users/google/toolkits:landcover/'
 SOURCE_PATHS = ['api.js', 'impl', 'examples']
 
-
 def search_replace(start_path, ext, original, replacement):
     for dir_name, dirs, files in os.walk(start_path):
         if dir_name == '.git':
@@ -69,10 +68,12 @@ if (target_path):
     new_require_path += target_path + '/'
 
 # Clone or pull repo to home dir
-if not os.path.isdir(clone_path):
-    subprocess.call(['git', 'clone', repo_url, clone_path])
-else:
+if os.path.isdir(clone_path):
+    print('%s exists. Pulling latest from remote.')
     subprocess.call(['git', '-C', clone_path, 'pull'])
+else:
+    print('%s not found. Cloning remote.')
+    subprocess.call(['git', 'clone', repo_url, clone_path])
 
 subprocess.call(['mkdir', '-p', write_path])
 

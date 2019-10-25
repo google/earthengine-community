@@ -35,7 +35,7 @@ var Dataset = function(collection, defaultVisParams) {
 
 /**
  * Apply a filter to this dataset.
- * 
+ *
  * @param {!ee.Filter} filter A filter to apply to this dataset.
  * @return {!Dataset}
  */

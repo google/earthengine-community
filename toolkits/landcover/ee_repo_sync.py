@@ -18,7 +18,8 @@ import argparse
 import subprocess
 import os
 
-WORK_PATH = '~/.ee_repo_sync'
+SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
+WORK_PATH = '%s/.gob' % SCRIPT_DIR
 GIT_BASE_URL = 'https://earthengine.googlesource.com'
 ORIGINAL_REQUIRE_PATH = 'users/google/toolkits:landcover/'
 SOURCE_PATHS = ['api.js', 'impl', 'examples']
@@ -57,6 +58,12 @@ parser.add_argument('--target_path',
                     help='Destination path in target repo (default: root)')
 args = parser.parse_args()
 
+print('''
+    NOTE: If you receive PERMISSION_DENIED errors, be sure you have access
+    to the specified repo, and that you have logged in following instructions
+    at https://www.googlesource.com/new-password and try again.
+''')
+
 # Build paths
 repo = args.target_repo
 target_path = args.target_path
@@ -69,10 +76,10 @@ if (target_path):
 
 # Clone or pull repo to home dir
 if os.path.isdir(clone_path):
-    print('%s exists. Pulling latest from remote.')
-    subprocess.call(['git', '-C', clone_path, 'pull'])
+    print('%s exists. Pulling latest from remote.' % clone_path)
+    subprocess.call(['git', '-C', clone_path, 'pull', '--quiet'])
 else:
-    print('%s not found. Cloning remote.')
+    print('%s not found. Cloning remote.' % clone_path)
     subprocess.call(['git', 'clone', repo_url, clone_path])
 
 subprocess.call(['mkdir', '-p', write_path])
@@ -91,5 +98,5 @@ search_replace(write_path, '.js', ORIGINAL_REQUIRE_PATH, new_require_path)
 # Commit and push changes
 subprocess.call(["git", "-C", clone_path, "add", clone_path])
 subprocess.call(["git", "-C", clone_path, "commit", "-m",
- "Automated commit by ee_repo_sync.py"])
+                 "Automated commit by ee_repo_sync.py"])
 subprocess.call(["git", "-C", clone_path, "push"])

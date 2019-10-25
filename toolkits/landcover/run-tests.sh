@@ -33,7 +33,7 @@ npm run test:unit
 
 # Run integration tests if private keys set in environment.
 if [[ -n "${KEY}" ]] && [[ -n "${IV}" ]]; then
-  openssl aes-256-cbc -K "${KEY}" -iv "${IV}" -in "${KEY_FILE_ENC} -out "${KEY_FILE} -d
+  openssl aes-256-cbc -K "${KEY}" -iv "${IV}" -in "${KEY_FILE_ENC} -out "${KEY_FILE}" -d
   npm run test:int
 else
   echo "No keys; skipping integration tests."

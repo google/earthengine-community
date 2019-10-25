@@ -93,7 +93,7 @@ Dataset.prototype.getDefaultVisParams = function() {
 };
 
 /**
- * Convert a collection into composite images based on fixed time intervals.
+ * Creates a collection of composite images based on fixed time intervals.
  * Adds a 'date' band to each input image that contains the date of the
  * observation and an 'observations' band to the composite that contains the
  * number of observations that went into each pixel.
@@ -108,7 +108,7 @@ Dataset.prototype.getDefaultVisParams = function() {
  *        each time period. Defaults to using a median reducer.
  * @return {!ee.ImageCollection}
  */
-Dataset.prototype.createTemporalComposites = function(
+Dataset.prototype.toTemporalCompositeCollection = function(
     startDate, count, interval, intervalUnits, reducer) {
   var args = NamedArgs.extractFromFunction(Dataset.prototype.createTemporalComposites, arguments);
   startDate = args.startDate;
@@ -116,9 +116,8 @@ Dataset.prototype.createTemporalComposites = function(
   interval = args.interval;
   intervalUnits = args.intervalUnits;
   reducer = args.reducer;
-  this.collection_ = Composites.createTemporalComposites(
+  return Composites.createTemporalComposites(
       this.collection_, startDate, count, interval, intervalUnits, reducer);
-  return this;
 };
 
 /**

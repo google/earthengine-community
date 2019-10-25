@@ -130,7 +130,7 @@ Dataset.prototype.toTemporalCompositeCollection = function(
  *    to use to compute the median value. If omitted, all bands are used.
  * @return {!ee.Image}
  */
-Dataset.prototype.createMedioidComposite = function(bands) {
+Dataset.prototype.toMedioidComposite = function(bands) {
   var args = NamedArgs.extractFromFunction(Dataset.prototype.createMedioidComposite, arguments);
   bands = args.bands;
   return Composites.createMedioidComposite(this.collection_, bands);

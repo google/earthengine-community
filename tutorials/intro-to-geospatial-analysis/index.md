@@ -325,8 +325,6 @@ var inverseFilter = ee.Filter.not(filter);
 ---
 ## Operations on Images
 
-[Image operations](https://code.earthengine.google.com/2e87b1f45b6649e03da5ba010b2f158a "EE Image operations")
-
 ### Selecting the bands of an image
 ```javascript
 var band = var_Image.select(bandName);
@@ -398,6 +396,21 @@ var sumOfImages = imCollection.sum();
 ```javascript
 var mosaicOfImages = imCollection.mosaic();
 ```
+
+
+### Geometry operations example
+```javascript
+// Set map center over the state of CT
+Map.setCenter(-88, 41.8, 9);
+// Load US county dataset
+countyData=ee.FeatureCollection("TIGER/2018/Counties");
+// Filter the counties that are in Connecticut
+var countyConnect=countyData.filter(ee.Filter.metadata('STATEFP','equals','09'))
+// Dissolve all the counties to 
+
+```
+
+
 ---
 ## Importing and exporting data
 

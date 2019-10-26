@@ -6,17 +6,7 @@ tags: introductory, GIS, remote sensing, Google Earth Engine
 date_published: 2019-10-09
 ---
 
-[Geometries - Open In Code Editor](https://code.earthengine.google.com/ba6e7ca46d2e45fddf7f9664fcb48cdf)
-
-[Features - Open In Code Editor](https://code.earthengine.google.com/13db5b332a6f1ddbd525d47e6cf18984)
-
-[Images - Open In Code Editor](https://code.earthengine.google.com/2e87b1f45b6649e03da5ba010b2f158a)
-
-[Image to Table - Open in Code Editor](https://code.earthengine.google.com/2d2c310bb72b4e90a5d2f4c58a004823)
-
-[Timelapse - Open in Code Editor](https://code.earthengine.google.com/3e4120cdeb8fa951080db296bb3fdff4)
-
-We will introduce types of geospatial data, using these data on the Earth Engine platforms, and discuss a host of functionality to visualize and analyze them. This workshop was originally created for a workshop during Yale-NUS Data 2.0 hackathon and then updated for Yale GIS Day 2018. 
+We will introduce types of geospatial data, using these data on the Earth Engine platforms, and discuss a host of functionality to visualize and analyze them. This workshop was originally created for a workshop during Yale-NUS Data 2.0 hackathon and then updated for Yale GIS Day 2018 and 2019. 
 
 ## Introduction
 Collection, visualization, and analysis of geographical or spatial data.
@@ -53,7 +43,7 @@ Image sources: https://gisgeography.com/spatial-data-types-vector-raster/
 
 [Introductory video](https://www.youtube.com/watch?v=gKGOeTFHnKY&feature=youtu.be, "Video")
 
-[Code Editor](https://code.earthengine.google.com/ "Earth Engine Code Editor")
+[Code Editor](https://code.earthengine.google.com/)
 
 - Cloud-based platform for planetary scale geospatial analysis
 - Uses Google's computational resources to reduce processing time
@@ -354,7 +344,7 @@ var masked = image.mask(mask);
 
 ### Pixelwise calculation
 ```javascript
-var results = image.sum(value);
+var results = image.add(value);
 ```
 >or .subtract ,    .multiply ,    .divide ,    .max , .min ,  .abs ,  .round ,  .floor ,  .ceil ,  .sqrt ,  .exp,  .log, .log10, .sin ,  .cos ,  .tan ,  .sinh ,  .cosh ,  .tanh ,  .acos, .asin
 

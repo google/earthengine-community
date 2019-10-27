@@ -197,8 +197,6 @@ Mapping a function over a collection sends the each element of the collection to
 
 ## Operations on geometries
 
-[Geometry operations](https://code.earthengine.google.com/ba6e7ca46d2e45fddf7f9664fcb48cdf "EE Geometry operations")
-
 ### Find area of geometry
 ```javascript
 var geoArea = geometry.area();
@@ -324,7 +322,7 @@ Map.addLayer(mappedCentroid, {color: 'blue'}, 'Mapped buffed centroids');
 ```
 
 ---
-## Operations on Features
+## Operations on features
 
 ### Set property name and value of geometry to create a feature
 ```javascript
@@ -340,6 +338,8 @@ var featVal = feature.get('size');
 ```
 
 #### Feature operations example
+
+- Let's create a feature from scratch and play around with its properties
 
 ```javascript
 // Create geometry
@@ -496,6 +496,7 @@ var sumOfImages = imCollection.sum();
 var mosaicOfImages = imCollection.mosaic();
 ```
 #### Image and image collections operations example
+- Let's analyze images over a region of interest (the counties of Connecticut). Images and image collections cover the bulk of Earth Engine's data archives.
 
 ```javascript
 // Set map center over the state of CT
@@ -588,14 +589,17 @@ Export.table.toDrive({
 // Print final collection
 print(Final)
 ```
-
+---
 
 ## Bonus: Timelapse example
 
 ```javascript
 // Timelapse example (based on google API example);
+// Create rectangle over Dubai
 var geometry = ee.Geometry.Rectangle([55.1, 25, 55.4, 25.4]);
+// Add layer to map
 Map.addLayer(geometry);
+// Load Landsat image collection
 var allImages = ee.ImageCollection('LANDSAT/LT05/C01/T1_TOA')
  // Filter row and path such that they cover Dubai
  .filter(ee.Filter.eq('WRS_PATH', 160))
@@ -629,7 +633,7 @@ Export.video.toDrive({
 
 
 
-
+---
 
 ## Example Applications
 

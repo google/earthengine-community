@@ -472,6 +472,13 @@ var selectedImages = imCollection.limit(n, propertyName, order);
 ```javascript
 var selectedIm = imCollection.filterMetadata(propertyName, relation, value);
 ```
+
+or preferably
+
+```javascript
+var selectedIm = imCollection.filter(ee.Filter.metadata(propertyName, relation, value));
+```
+
 >Relations could be "equals", "less_than", "greater_than", "starts_with", "ends_with", and "contains"
 
 ### Select images within date range
@@ -488,12 +495,21 @@ var selectedIm = imCollection.filterBounds(geometry);
 ```javascript
 var sumOfImages = imCollection.sum();
 ```
+or, using reducers:
+```javascript
+var sumOfImages = imCollection.reduce(ee.Reducer.sum());
+```
+
 >or .product, .max, .min, .mean, .mode, .median, and .count 
 
 ### Create composite of images in collection with the last image on top
 
 ```javascript
 var mosaicOfImages = imCollection.mosaic();
+```
+or, using reducers:
+```javascript
+var sumOfImages = imCollection.reduce(ee.Reducer.first());
 ```
 #### Image and image collections operations example
 - Let's analyze images over a region of interest (the counties of Connecticut). Images and image collections cover the bulk of Earth Engine's data archives.

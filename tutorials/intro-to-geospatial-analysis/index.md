@@ -43,7 +43,7 @@ Image sources: https://gisgeography.com/spatial-data-types-vector-raster/
 
 [Introductory video](https://www.youtube.com/watch?v=gKGOeTFHnKY&feature=youtu.be, "Video")
 
-[Code Editor](https://code.earthengine.google.com/)
+[Code editor](https://code.earthengine.google.com/)
 
 - Cloud-based platform for planetary scale geospatial analysis
 - Uses Google's computational resources to reduce processing time
@@ -53,7 +53,7 @@ Image sources: https://gisgeography.com/spatial-data-types-vector-raster/
 - over 5 million images 
 - over 30 petabytes of data
 
-Source: Google Earth Engine User Summit
+Source: Google Earth Engine user summit
 
 ---
 
@@ -61,7 +61,7 @@ Source: Google Earth Engine User Summit
 
 ---
 
-## Basic Functions
+## Basic functions
 
 ### Declaring variables
 ```javascript
@@ -117,9 +117,9 @@ var dict = ee.Dictionary({five: 5, six: 6});
 ### And the fun stuff
 - Geometries
 - Features
-- Feature Collections
+- Feature collections
 - Images
-- Image Collections
+- Image collections
 
 ---
 
@@ -166,7 +166,7 @@ ee.Geometry.Polygon([[0, 0], [-6, -3], [-5, -5], [30, -2], [0, 0]])]);
 ## Features and feature collections
 
 - Features are geometries associated with specific properties
-- Feature Collections are groups of features
+- Feature collections are groups of features
 
 
 ![Counties in the contiguous United States](county-features.png)

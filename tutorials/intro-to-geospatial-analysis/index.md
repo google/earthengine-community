@@ -129,15 +129,15 @@ var dict = ee.Dictionary({five: 5, six: 6});
 ```javascript
 var poi = ee.Geometry.Point(0, 45);
 ```
-### Multi Points
+### Multi points
 ```javascript
 var multi = ee.Geometry.MultiPoint(0, 45, 5, 6, 70, -56);
 ```
-### Line String
+### Line string
 ```javascript
 var lineStr = ee.Geometry.LineString([[0, 45], [5, 6], [70, -56]]);
 ```
-### Multi Line String
+### Multi line string
 ```javascript
 var mlineStr =
 ee.Geometry.MultiLineString([[[0, 45], [5, 6], [70, -56]], [[0, -45], [-5, -6], [-70, 56]]]);
@@ -154,7 +154,7 @@ var rect = ee.Geometry.Rectangle(0, 0, 60, 30);
 ```javascript
 var poly = ee.Geometry.Polygon([[[0, 0], [6, 3], [5, 5], [-30, 2], [0, 0]]]);
 ```
-### Multi Polygon
+### Multi polygon
 ```javascript
 var multiPoly =
 ee.Geometry.MultiPolygon([ee.Geometry.Polygon([[0, 0], [6, 3], [5, 5], [-30, 2], [0, 0]]),
@@ -163,13 +163,13 @@ ee.Geometry.Polygon([[0, 0], [-6, -3], [-5, -5], [30, -2], [0, 0]])]);
 
 ---
 
-## Features and Feature Collections
+## Features and feature collections
 
 - Features are geometries associated with specific properties
 - Feature Collections are groups of features
 
 
-![Chicago map by neighborhood](chicago-census.png)
+![Counties in the contiguous United States](county-features.png)
 
 ---
 
@@ -186,16 +186,16 @@ statements;
 var result = functionName(input);
 ```
 
-### Map function over Feature or Image Collection
+### Map function over feature or image collection
 ```javascript
 var result = input.map(functionName);
 ```
-Mapping a function over a collection sends the each element of the collection to a different server to be processes.
+Mapping a function over a collection sends the each element of the collection to a different server to be processed.
 
 ---
 
 
-## Operations on Geometries
+## Operations on geometries
 
 [Geometry operations](https://code.earthengine.google.com/ba6e7ca46d2e45fddf7f9664fcb48cdf "EE Geometry operations")
 
@@ -227,11 +227,11 @@ var centrGeo = geometry.centroid();
 ```javascript
 var buffGeo = geometry.buffer(100);
 ```
-### Find bounded rectangle of the Geometry
+### Find bounded rectangle of the geometry
 ```javascript
 var bounGeo = geometry.bounds();
 ```
-### Find the smallest envelope that can envelop the Geometry
+### Find the smallest envelope that can envelop the geometry
 ```javascript
 var convexGeo = geometry.convexHull();
 ```
@@ -243,10 +243,88 @@ var interGeo = geometry1.intersection(geometry2);
 ```javascript
 var unGeo = geometry1.union(geometry2);
 ```
+
+#### Geometry operations example
+
+- Let's run of some these operations over the the state of Connecticut, US using geometries of the public US counties feature collection available on Earth Engine
+
+```javascript
+// Set map center over the state of CT
+Map.setCenter(-72.6978, 41.6798, 8);
+// Load US county dataset
+var countyData=ee.FeatureCollection("TIGER/2018/Counties");
+// Filter the counties that are in Connecticut (more on filters later)
+var countyConnect=countyData.filter(ee.Filter.metadata('STATEFP','equals','09'));
+// Get the union of all the county geometries in Connecticut
+var countyConnectDiss=countyConnect.union();
+// Add the layer to the map with a specified color and layer name
+Map.addLayer(countyConnectDiss, {color: 'red'}, 'Chicago dissolved');
+// Find the rectangle that emcompasses the southernmost, westernmost, easternmost, and northernmost
+// points of the feature
+var bound = countyConnectDiss.geometry().bounds();
+// Add the layer to the map with a specified color and layer name
+Map.addLayer(bound, {color: 'yellow'}, 'Bounds');
+// Find the polygon covering the extremities of the feature
+var convex = countyConnectDiss.geometry().convexHull();
+// Add the layer to the map with a specified color and layer name
+Map.addLayer(convex, {color: 'blue'}, 'Convex Hull');
+// Find the area common to two or more features
+var intersect = bound.intersection(convex, 100);
+// Add the layer to the map with a specified color and layer name
+Map.addLayer(intersect, {color: 'green'}, 'Bound and convex intersection');
+// Find the area encompassing two or more features; number is the maximum error in meters
+var union = bound.union(convex, 100);
+// Add the layer to the map with a specified color and layer name
+Map.addLayer(union, {color: 'purple'}, 'Bound and convex union');
+// Find the difference between two geometries
+var diff=bound.difference(convex, 100);
+// Add the layer to the map with a specified color and layer name
+Map.addLayer(diff, {color: 'purple'}, 'Bound and convex difference');
+// Find area of feature
+var ar = countyConnectDiss.geometry().area();
+print(ar);
+// Find length of line geometry (You get zero since this is a polygon)
+var length = countyConnectDiss.geometry().length();
+print(length);
+// Find permeter of feature
+var peri = countyConnectDiss.geometry().perimeter();
+print(peri);
+```
+
+#### Mapping over a feature collection example
+
+- By mapping over a collection, one can apply the same operation on every element in a collection. For instance, let's run the same geometry operations on every county in Connecticut
+
+```javascript
+// Set map center over the state of CT
+Map.setCenter(-72.6978, 41.6798, 8);
+// Load US county dataset
+var countyData=ee.FeatureCollection("TIGER/2018/Counties");
+// Filter the counties that are in Connecticut
+var countyConnect=countyData.filter(ee.Filter.metadata('STATEFP','equals','09'))
+// Add the layer to the map with a specified color and layer name
+Map.addLayer(countyConnect, {color: 'red'}, 'Original Collection');
+// Define function
+function performMap(feature) {
+ // Reduce number of vertices in geometry; the number is to specify maximum error in meters
+ // This is only for illustrative purposes since Earth Engine can handle up to 1 million vertices
+ var simple = feature.simplify(10000);
+ // Find centroid of geometry
+ var center = simple.centroid();
+ // Create buffer around geometry; the number represents the width of buffer in meters
+ var buff = center.buffer(5000);
+ // return variable from function
+ // Change the returned variable to visualize what each sequential geometry operation does
+ return buff;
+}
+// Map function over feature collection
+var mappedCentroid = countyConnect.map(performMap);
+// Add the layer to the map with a specified color and layer name
+Map.addLayer(mappedCentroid, {color: 'blue'}, 'Mapped buffed centroids');
+```
+
 ---
 ## Operations on Features
-
-[Feature operations](https://code.earthengine.google.com/13db5b332a6f1ddbd525d47e6cf18984 "EE Feature operations")
 
 ### Set property name and value of geometry to create a feature
 ```javascript
@@ -260,6 +338,27 @@ var featNew = feature.select(['name'], ['descriptor']);
 ```javascript
 var featVal = feature.get('size');
 ```
+
+#### Feature operations example
+
+```javascript
+// Create geometry
+var varGeometry = ee.Geometry.Polygon(0, 0, 40, 30, 20, 20, 0, 0);
+// Create feature from geometry
+var varFeature = ee.Feature(varGeometry, {
+ Name: ['Feature name', 'Supreme'],
+ Size: [500, 1000]
+});
+// Get values of a property
+var arr=varFeature.get('Size');
+// Print variable
+print(arr);
+// Select a subset of properties and rename them
+var varFeaturenew = varFeature.select(['Name'], ['Descriptor']);
+// Print variable
+print(varFeaturenew);
+```
+
 ---
 
 ## Filters
@@ -360,7 +459,7 @@ var outputDictionary = varImage.reduceRegion(reducer, geometry, scale);
 
 ---
 
-# Operations on Image Collections
+## Operations on Image Collections
 
 ### Select the first n numbers of images in a collection (based on property)
 
@@ -380,7 +479,7 @@ var selectedIm = imCollection.filterMetadata(propertyName, relation, value);
 var selectedIm = imCollection.filterDate(startDate, stopDate);
 ```
 
-### Select images within Geometry
+### Select images within geometry
 ```javascript
 var selectedIm = imCollection.filterBounds(geometry);
 ```
@@ -396,35 +495,54 @@ var sumOfImages = imCollection.sum();
 ```javascript
 var mosaicOfImages = imCollection.mosaic();
 ```
+#### Image and image collections operations example
 
-
-### Geometry operations example
 ```javascript
 // Set map center over the state of CT
-Map.setCenter(-88, 41.8, 9);
+Map.setCenter(-72.6978, 41.6798, 8);
+// Load the MODIS MYD11A2 (8-day LST) image collection
+var raw = ee.ImageCollection('MODIS/006/MYD11A2');
 // Load US county dataset
-countyData=ee.FeatureCollection("TIGER/2018/Counties");
+var countyData=ee.FeatureCollection("TIGER/2018/Counties");
 // Filter the counties that are in Connecticut
-var countyConnect=countyData.filter(ee.Filter.metadata('STATEFP','equals','09'))
-// Dissolve all the counties to 
-
+// This will be the region of interest for the image operations
+var roi=countyData.filter(ee.Filter.metadata('STATEFP','equals','09'))
+// Examine image collection
+print(raw);
+// Select a band of the image collection using either indexing or band name
+var bandSel1 = raw.select(0);
+var bandSel2=raw.select('LST_Day_1km');
+// Filter the image collection by a date range
+var filtered=raw.filterDate('2002-12-30', '2004-4-27');
+// Print filtered collection
+print(filtered);
+// Limit the image collection to the first 50 elements
+var limited = raw.limit(50);
+// Print collections
+print(limited);
+print(bandSel1);
+// Calculate mean of all images (pixel-by-pixel) in the collection
+var mean = bandSel1.mean();
+// Isolate image to region of interest
+var clipped = mean.clip(roi);
+// mathematical operation on image pixels to convert from digital number
+// of satellite observations to degree Celsius
+var calculate = clipped.multiply(.02).subtract(273.15);
+// Add the layer to the map with a specified color palette and layer name
+Map.addLayer(calculate, {min: 15, max: 20, palette: ['blue', 'green', 'red']}, 'LST');
+// Select pixels in the image that are greater than 30.8
+var mask = calculate.gt(18);
+// Add the mask to the map with a layer name
+Map.addLayer(mask, {}, 'mask');
+// Use selected pixels to update the mask of the whole image
+var masked = clipped.updateMask(mask);
+// Add the final layer to the map with a specified color palette and layer name
+Map.addLayer(masked, {min: 10, max: 30, palette: ['blue', 'green', 'red']}, 'LST_masked');
 ```
 
-
 ---
-## Importing and exporting data
 
-[Image to table example](https://code.earthengine.google.com/2d2c310bb72b4e90a5d2f4c58a004823 "Image to table example")
-
-[Timelapse example](https://code.earthengine.google.com/3e4120cdeb8fa951080db296bb3fdff4 "Timelapse example")
-
-[Dubai timelapse](https://www.youtube.com/watch?v=6gK4Fd-WSM4&feature=youtu.be "Dubai timelapse")
-
-![Urban growth in Dubai](dubai-change.png)
-
-
-
-### Export image, video or table to Google Drive, Asset, or Google Cloud
+## Export image, video or table to Google Drive, Asset, or Google Cloud
 
 ```javascript
 Export.image.toDrive({
@@ -433,7 +551,85 @@ Export.image.toDrive({
 ```
 >or image.toCloudStorage, image.toAsset, table.toDrive, table.toCloudStorage, video.toCloudStorage, and video.toDrive
 
----
+#### Importing and exporting data example
+
+```javascript
+
+// Function to find mean of pixels in region of interest
+var getRegions = function(image) {
+// Load US county dataset
+var countyData=ee.FeatureCollection("TIGER/2018/Counties");
+// Filter the counties that are in Connecticut
+// This will be the region of interest for the operations
+var roi=countyData.filter(ee.Filter.metadata('STATEFP','equals','09'))
+return image.reduceRegions({
+ // Collection to run operation over
+ collection: roi,
+ // Reducer to use
+ reducer: ee.Reducer.mean(),
+ // Pixel resolution used for the calculations
+ scale: 1000,
+ });
+};
+// Load image collection, filter collection to date range, select band of interest,
+// calculate mean of all images in collection, and multiply by scaling factor
+var image = ee.ImageCollection('MODIS/MYD13A1').filterDate('2002-07-08', '2017-07-08')
+.select('NDVI').mean().multiply(.0001);
+// print final image
+print(image);
+// Call function
+var Final = getRegions(image);
+// Export image to Google Drive
+Export.table.toDrive({
+ collection: Final,
+ description: 'NDVI_all',
+ fileFormat: 'CSV'
+});
+// Print final collection
+print(Final)
+```
+
+
+## Bonus: Timelapse example
+
+```javascript
+// Timelapse example (based on google API example);
+var geometry = ee.Geometry.Rectangle([55.1, 25, 55.4, 25.4]);
+Map.addLayer(geometry);
+var allImages = ee.ImageCollection('LANDSAT/LT05/C01/T1_TOA')
+ // Filter row and path such that they cover Dubai
+ .filter(ee.Filter.eq('WRS_PATH', 160))
+ .filter(ee.Filter.eq('WRS_ROW', 43))
+ // Filter cloudy scenes
+ .filter(ee.Filter.lt('CLOUD_COVER', 30))
+ // Get required years of imagery
+ .filterDate('1984-01-01', '2012-12-30')
+ // Select 3-band imagery for the video
+ .select(['B4', 'B3', 'B2'])
+ // Make the data 8 bit
+ .map(function(image) {
+  return image.multiply(512).uint8();
+ });
+Export.video.toDrive({
+ collection: allImages,
+ // Name of file
+ description: 'dubaiTimelapse',
+ // Quality of video
+ dimensions: 720,
+ // FPS of video
+ framesPerSecond: 8,
+ // Region of export
+ region: geometry
+});
+```
+
+[Dubai timelapse](https://www.youtube.com/watch?v=6gK4Fd-WSM4&feature=youtu.be "Dubai timelapse")
+
+![Urban growth in Dubai](dubai-change.png)
+
+
+
+
 
 ## Example Applications
 

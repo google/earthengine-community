@@ -250,9 +250,9 @@ var unGeo = geometry1.union(geometry2);
 // Set map center over the state of CT
 Map.setCenter(-72.6978, 41.6798, 8);
 // Load US county dataset
-var countyData=ee.FeatureCollection("TIGER/2018/Counties");
+var countyData=ee.FeatureCollection('TIGER/2018/Counties');
 // Filter the counties that are in Connecticut (more on filters later)
-var countyConnect=countyData.filter(ee.Filter.metadata('STATEFP','equals','09'));
+var countyConnect=countyData.filter(ee.Filter.metadata('STATEFP', 'equals', '09'));
 // Get the union of all the county geometries in Connecticut
 var countyConnectDiss=countyConnect.union();
 // Add the layer to the map with a specified color and layer name
@@ -297,9 +297,9 @@ print(peri);
 // Set map center over the state of CT
 Map.setCenter(-72.6978, 41.6798, 8);
 // Load US county dataset
-var countyData=ee.FeatureCollection("TIGER/2018/Counties");
+var countyData=ee.FeatureCollection('TIGER/2018/Counties');
 // Filter the counties that are in Connecticut
-var countyConnect=countyData.filter(ee.Filter.metadata('STATEFP','equals','09'))
+var countyConnect=countyData.filter(ee.Filter.metadata('STATEFP', 'equals', '09'));
 // Add the layer to the map with a specified color and layer name
 Map.addLayer(countyConnect, {color: 'red'}, 'Original Collection');
 // Define function
@@ -521,10 +521,10 @@ Map.setCenter(-72.6978, 41.6798, 8);
 // Load the MODIS MYD11A2 (8-day LST) image collection
 var raw = ee.ImageCollection('MODIS/006/MYD11A2');
 // Load US county dataset
-var countyData=ee.FeatureCollection("TIGER/2018/Counties");
+var countyData=ee.FeatureCollection('TIGER/2018/Counties');
 // Filter the counties that are in Connecticut
 // This will be the region of interest for the image operations
-var roi=countyData.filter(ee.Filter.metadata('STATEFP','equals','09'))
+var roi=countyData.filter(ee.Filter.metadata('STATEFP', 'equals', '09'));
 // Examine image collection
 print(raw);
 // Select a band of the image collection using either indexing or band name
@@ -576,10 +576,10 @@ Export.image.toDrive({
 // Function to find mean of pixels in region of interest
 var getRegions = function(image) {
 // Load US county dataset
-var countyData=ee.FeatureCollection("TIGER/2018/Counties");
+var countyData=ee.FeatureCollection('TIGER/2018/Counties');
 // Filter the counties that are in Connecticut
 // This will be the region of interest for the operations
-var roi=countyData.filter(ee.Filter.metadata('STATEFP','equals','09'))
+var roi=countyData.filter(ee.Filter.metadata('STATEFP', 'equals', '09'));
 return image.reduceRegions({
  // Collection to run operation over
  collection: roi,
@@ -604,7 +604,7 @@ Export.table.toDrive({
  fileFormat: 'CSV'
 });
 // Print final collection
-print(Final)
+print(Final);
 ```
 ---
 

@@ -495,19 +495,20 @@ var selectedIm = imCollection.filterBounds(geometry);
 ```javascript
 var sumOfImages = imCollection.sum();
 ```
-or, using reducers:
+
+>or .product, .max, .min, .mean, .mode, .median, and .count 
+
+Alternatively, using reducers:
 ```javascript
 var sumOfImages = imCollection.reduce(ee.Reducer.sum());
 ```
-
->or .product, .max, .min, .mean, .mode, .median, and .count 
 
 ### Create composite of images in collection with the last image on top
 
 ```javascript
 var mosaicOfImages = imCollection.mosaic();
 ```
-or, using reducers:
+Alternatively, using reducers:
 ```javascript
 var sumOfImages = imCollection.reduce(ee.Reducer.first());
 ```

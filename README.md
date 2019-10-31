@@ -1,4 +1,4 @@
-# Google Earth Engine Community
+# Google Earth Engine Community ![](https://travis-ci.org/google/earthengine-community.svg?branch=master)
 
 This repository contains content submitted and/or maintained by the Earth Engine
 user community.

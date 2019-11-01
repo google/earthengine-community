@@ -21,7 +21,7 @@
     "indent": "off",
     "max-len": ["error", {
         "code": 100
-    }],      
+    }],
     "new-cap": "off",
     "no-var": "off",
     "prefer-const": "off",

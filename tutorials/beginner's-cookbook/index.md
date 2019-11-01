@@ -1,20 +1,20 @@
 ---
-title: An Introduction to Geospatial Analysis
-description: This workshop provides a fundamental overview of remote sensing and geospatial analysis using the JavaScript API of Earth Engine.
+title: Beginner's Cookbook for Geospatial Analysis
+description: This tutorial provides a fundamental overview of remote sensing and geospatial analysis using the Earth Engine JavaScript API.
 author: TC25
-tags: introductory, GIS, remote sensing, Google Earth Engine
-date_published: 2019-10-09
+tags: introductory, GIS, remote sensing
+date_published: 2019-11-01
 ---
 
-We will introduce types of geospatial data, using these data on the Earth Engine platforms, and discuss a host of functionality to visualize and analyze them. This workshop was originally created for a workshop during Yale-NUS Data 2.0 hackathon and then updated for Yale GIS Day 2018 and 2019. 
+In this tutorial, we will introduce several types of geospatial data, and enumerate key Earth Engine functions for analyzing and visualizing them. This cookbook was originally created as a workshop during Yale-NUS Data 2.0 hackathon and then updated for Yale GIS Day 2018 and 2019. 
 
 ## Introduction
-Collection, visualization, and analysis of geographical or spatial data.
+GIS or Geographic Information System is the collection, visualization, and analysis of geographical or spatial data. In this section, we will cover the data types commonly used in GIS applications.
 
 ## Data types
 
-- Vector data represent lat-long coordinates
-- Raster data comprises of pixels with associated values
+- Vector data represent lat-long coordinates.
+- Raster data comprise of pixels with associated values.
 
 ---
 
@@ -48,10 +48,10 @@ Image sources: https://gisgeography.com/spatial-data-types-vector-raster/
 - Cloud-based platform for planetary scale geospatial analysis
 - Uses Google's computational resources to reduce processing time
 - Massive archive of remote sensing data 
-- 200+ public datasets 
-- over 4000 new images every day 
-- over 5 million images 
-- over 30 petabytes of data
+  - 200+ public datasets 
+  - over 4000 new images every day 
+  - over 5 million images 
+  - over 30 petabytes of data
 
 Source: Google Earth Engine user summit
 
@@ -67,7 +67,7 @@ Source: Google Earth Engine user summit
 ```javascript
 var variableName = ee.ContainerType(value);
 ```
-A container (in the form ee.variabletype) is used to wrap up a native javascript object type so that Google's server can recognize its structure and perform operations on it
+A container (in the form ee.variabletype) is used to wrap up a native javascript object type so that Google's server can recognize its structure and perform operations on it.
 
 ###  Centering map
 ```javascript
@@ -139,7 +139,7 @@ var lineStr = ee.Geometry.LineString([[0, 45], [5, 6], [70, -56]]);
 ```
 ### Multi line string
 ```javascript
-var mlineStr =
+var mLineStr =
 ee.Geometry.MultiLineString([[[0, 45], [5, 6], [70, -56]], [[0, -45], [-5, -6], [-70, 56]]]);
 ```
 ### Linear Ring
@@ -165,8 +165,8 @@ ee.Geometry.Polygon([[0, 0], [-6, -3], [-5, -5], [30, -2], [0, 0]])]);
 
 ## Features and feature collections
 
-- Features are geometries associated with specific properties
-- Feature collections are groups of features
+- Features are geometries associated with specific properties.
+- Feature collections are groups of features.
 
 
 ![Counties in the contiguous United States](county-features.png)
@@ -175,7 +175,7 @@ ee.Geometry.Polygon([[0, 0], [-6, -3], [-5, -5], [30, -2], [0, 0]])]);
 
 ## Functions and mapping
 
-- A set of instructions to perform a specific task
+- A function is a set of instructions to perform a specific task.
 ```javascript
 function functionName(Arguments) {
 statements;
@@ -202,7 +202,7 @@ Mapping a function over a collection sends the each element of the collection to
 var geoArea = geometry.area();
 ```
 
-All units in Earth Engine are in meters
+By default, all units in Earth Engine are in meters.
 
 ### Find length of line
 ```javascript
@@ -244,7 +244,7 @@ var unGeo = geometry1.union(geometry2);
 
 #### Geometry operations example
 
-- Let's run of some these operations over the the state of Connecticut, US using geometries of the public US counties feature collection available on Earth Engine
+Let's run of some these operations over the the state of Connecticut, US using geometries of the public US counties feature collection available on Earth Engine:
 
 ```javascript
 // Set map center over the state of CT
@@ -291,7 +291,7 @@ print(peri);
 
 #### Mapping over a feature collection example
 
-- By mapping over a collection, one can apply the same operation on every element in a collection. For instance, let's run the same geometry operations on every county in Connecticut
+By mapping over a collection, one can apply the same operation on every element in a collection. For instance, let's run the same geometry operations on every county in Connecticut:
 
 ```javascript
 // Set map center over the state of CT
@@ -339,7 +339,7 @@ var featVal = feature.get('size');
 
 #### Feature operations example
 
-- Let's create a feature from scratch and play around with its properties
+Let's create a feature from scratch and play around with its properties:
 
 ```javascript
 // Create geometry
@@ -417,8 +417,8 @@ var boundsFilter = ee.Filter.bounds(geometryOrFeature);
 ### Combining and inversing filters
 
 ```javascript
-var newFilter = ee.Filter.and(listOfFilters);
-var newFilter = ee.Filter.or(listOfFilters);
+var newFilterAnd = ee.Filter.and(listOfFilters);
+var newFilterOr = ee.Filter.or(listOfFilters);
 var inverseFilter = ee.Filter.not(filter);
 ```
 ---
@@ -513,7 +513,7 @@ Alternatively, using reducers:
 var sumOfImages = imCollection.reduce(ee.Reducer.first());
 ```
 #### Image and image collections operations example
-- Let's analyze images over a region of interest (the counties of Connecticut). Images and image collections cover the bulk of Earth Engine's data archives.
+Let's analyze images over a region of interest (the counties of Connecticut). Images and image collections cover the bulk of Earth Engine's data archives.
 
 ```javascript
 // Set map center over the state of CT
@@ -656,22 +656,22 @@ Export.video.toDrive({
 
  What can you do with Google Earth Engine?
 
-### [EE Population Explorer](https://code.earthengine.google.com/f5c100f29958f6fe82ba5d0dcf6421a4 "EE Population Explorer")
+- [EE Population Explorer](https://code.earthengine.google.com/f5c100f29958f6fe82ba5d0dcf6421a4 "EE Population Explorer")
 
-### [EE Ocean Time Series Investigator](https://code.earthengine.google.com/901e5a356ef3d260a5ff542598667044 "EE Ocean Time Series Investigator")
+- [EE Ocean Time Series Investigator](https://code.earthengine.google.com/901e5a356ef3d260a5ff542598667044 "EE Ocean Time Series Investigator")
 
-### [Global Surface UHI Explorer](https://yceo.users.earthengine.app/view/uhimap "Global Surface UHI Explorer")
+- [Global Surface UHI Explorer](https://yceo.users.earthengine.app/view/uhimap "Global Surface UHI Explorer")
 
-### [Stratifi - cloud-based stratification](https://sabrinaszeto.users.earthengine.app/view/stratifi "Stratifi - cloud-based stratification")
+- [Stratifi - cloud-based stratification](https://sabrinaszeto.users.earthengine.app/view/stratifi "Stratifi - cloud-based stratification")
 ---
 
 ## Resources
 
 
-### [Geospatial Software Design](https://environment.yale.edu/courses/2018-2019/detail/754/ "Geospatial Software Design")
+- [Geospatial Software Design](https://environment.yale.edu/courses/2018-2019/detail/754/ "Geospatial Software Design")
 
-### [Google Earth Engine API documentation](https://developers.google.com/earth-engine/ "Google Earth Engine API documentation")
+- [Google Earth Engine API documentation](https://developers.google.com/earth-engine/ "Google Earth Engine API documentation")
 
-### [Google Earth Engine Developers forum](https://groups.google.com/forum/#!forum/google-earth-engine-developers "Google Earth Engine Developers forum")
+- [Google Earth Engine Developers forum](https://groups.google.com/forum/#!forum/google-earth-engine-developers "Google Earth Engine Developers forum")
 
-### [Example scripts from Prof. Dana Tomlin's handouts for his course on Geospatial Software Design](https://github.com/EEYale/example-scripts "Example scripts from Prof. Dana Tomlin's handouts for his course on Geospatial Software Design")
+- [Example scripts from Prof. Dana Tomlin's handouts for his course on Geospatial Software Design](https://github.com/EEYale/example-scripts "Example scripts from Prof. Dana Tomlin's handouts for his course on Geospatial Software Design")

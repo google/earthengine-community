@@ -5,8 +5,23 @@ author: TC25
 tags: Earth Engine, Base Map, UI, Widgets
 date_published: 2019-10-16
 ---
+<!--
+Copyright 2019 The Google Earth Engine Community Authors
 
-[Open In Code Editor](https://code.earthengine.google.com/b380a565fc5a4b13e9e1abefb9f516b6)
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+-->
+
+[Open In Code Editor](https://code.earthengine.google.com/887084c4b82c71545bf009902974aac9)
 
 In this tutorial, you'll learn how to change the options of the `Map` object to
 define your own styles for the underlying base map.

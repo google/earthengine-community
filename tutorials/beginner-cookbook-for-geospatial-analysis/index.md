@@ -656,9 +656,9 @@ Export.video.toDrive({
 
  What can you do with Google Earth Engine?
 
-- [EE Population Explorer](https://code.earthengine.google.com/f5c100f29958f6fe82ba5d0dcf6421a4)
+- [EE Population Explorer](https://google.earthengine.app/view/population-explorer)
 
-- [EE Ocean Time Series Investigator](https://code.earthengine.google.com/901e5a356ef3d260a5ff542598667044)
+- [EE Ocean Time Series Investigator](https://google.earthengine.app/view/ocean)
 
 - [Global Surface UHI Explorer](https://yceo.users.earthengine.app/view/uhimap)
 

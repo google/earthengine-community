@@ -17,8 +17,10 @@ language: node_js
 node_js:
   - 10
 
-# Jobs defined here are run in parallel:
+# The jobs defined here are run in parallel:
 jobs:
   include:
     - script: bash ./tutorials/run-tests.sh
       name: "Community Tutorials Tests"
+    - script: bash ./toolkits/landcover/run-tests.sh
+      name: "Landcover Toolkit Tests"

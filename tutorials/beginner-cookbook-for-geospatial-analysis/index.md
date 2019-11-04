@@ -39,11 +39,11 @@ A series of points (vertices) that define the outer edge of a region.
 Example: Outlines of cities, countries, continents, etc. 
 
  ![Polygons](polygon-vector.png)
+
+- Raster layers/bands
  
 A raster is an image with a matrix of values, representing some variable on/of the Earth's surface. Bands of a raster correspond to different variables, usually using the same matrix structure. 
 Example: Spatial variability of temperature, elevation, rainfall, etc. over a region. 
-
-- Raster layers/bands
 
  ![Raster](map-algebra.png)
 
@@ -53,7 +53,7 @@ Image sources: https://gisgeography.com/spatial-data-types-vector-raster/
 
 ## Google Earth Engine platform
 
-[Introductory video](https://www.youtube.com/watch?v=gKGOeTFHnKY&feature=youtu.be, "Video")
+[Introductory video](https://www.youtube.com/watch?v=gKGOeTFHnKY&feature=youtu.be)
 
 [Code editor](https://code.earthengine.google.com/)
 

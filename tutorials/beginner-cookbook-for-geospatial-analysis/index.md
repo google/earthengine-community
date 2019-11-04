@@ -13,23 +13,35 @@ GIS or Geographic Information System is the collection, visualization, and analy
 
 ## Data types
 
-- Vector data represent lat-long coordinates.
-- Raster data comprise of pixels with associated values.
+- Vector data represent objects on the Earth's surface using their longitude and latitude, as well as combinations of the pairs of coordinates (lines, polylines, polygons, etc.).
+- Raster data represent objects/variables on the Earth's surface as a matrix of values, in the form of pixels, cells, or grids.
 
 ---
 
 
 - Points
 
+A pair of coordinates (longitude, latitude), that represents the location of points on the Earth's surface. 
+Example: Location of drop boxes, landmarks, etc. 
+
  ![Points](points.png)
 
 - Lines
+
+A series of points that represents a line (straight or otherwise) on the Earth's surface.
+Example: Center of roads, rivers, etc. 
 
  ![Lines](line-vector.png)
 
 - Polygons
 
+A series of points (vertices) that define the outer edge of a region.
+Example: Outlines of cities, countries, continents, etc. 
+
  ![Polygons](polygon-vector.png)
+ 
+A raster is an image with a matrix of values, representing some variable on/of the Earth's surface. Bands of a raster correspond to different variables, usually using the same matrix structure. 
+Example: Spatial variability of temperature, elevation, rainfall, etc. over a region. 
 
 - Raster layers/bands
 
@@ -79,7 +91,7 @@ Map.setCenter(long, lat, zoomLevel);
 ```javascript
 print(variableName);
 ```
-The print operation is also useful for printing data and getting debugging info. You cannot print more than 5,000 elements at once.
+The `print` operation is also useful for printing data and getting debugging info. You cannot print more than 5,000 elements at once.
 
 ### Adding a layer to the map
 ```javascript

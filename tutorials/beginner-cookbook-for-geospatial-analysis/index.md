@@ -49,7 +49,7 @@ Image sources: https://gisgeography.com/spatial-data-types-vector-raster/
 - Uses Google's computational resources to reduce processing time
 - Massive archive of remote sensing data 
   - 200+ public datasets 
-  - over 4000 new images every day 
+  - over 4,000 new images every day 
   - over 5 million images 
   - over 30 petabytes of data
 
@@ -67,7 +67,7 @@ Source: Google Earth Engine user summit
 ```javascript
 var variableName = ee.ContainerType(value);
 ```
-A container (in the form ee.variabletype) is used to wrap up a native javascript object type so that Google's server can recognize its structure and perform operations on it.
+A container (in the form ee.variabletype) is used to wrap up a native JavaScript object so that Google's server can perform operations on it.
 
 ###  Centering map
 ```javascript
@@ -79,7 +79,7 @@ Map.setCenter(long, lat, zoomLevel);
 ```javascript
 print(variableName);
 ```
-You cannot print more than 5000 elements at once.
+The print operation is also useful for printing data and getting debugging info. You cannot print more than 5,000 elements at once.
 
 ### Adding a layer to the map
 ```javascript
@@ -181,7 +181,7 @@ function functionName(Arguments) {
 statements;
 };
 ```
-### Call function
+### Call a function
 ```javascript
 var result = functionName(input);
 ```
@@ -190,7 +190,7 @@ var result = functionName(input);
 ```javascript
 var result = input.map(functionName);
 ```
-Mapping a function over a collection sends the each element of the collection to a different server to be processed.
+Mapping a function over a collection applies the function to every element in the collection.
 
 ---
 
@@ -644,7 +644,7 @@ Export.video.toDrive({
 });
 ```
 
-[Dubai timelapse](https://www.youtube.com/watch?v=6gK4Fd-WSM4&feature=youtu.be "Dubai timelapse")
+[Dubai timelapse](https://www.youtube.com/watch?v=6gK4Fd-WSM4&feature=youtu.be)
 
 ![Urban growth in Dubai](dubai-change.png)
 
@@ -656,22 +656,22 @@ Export.video.toDrive({
 
  What can you do with Google Earth Engine?
 
-- [EE Population Explorer](https://code.earthengine.google.com/f5c100f29958f6fe82ba5d0dcf6421a4 "EE Population Explorer")
+- [EE Population Explorer](https://code.earthengine.google.com/f5c100f29958f6fe82ba5d0dcf6421a4)
 
-- [EE Ocean Time Series Investigator](https://code.earthengine.google.com/901e5a356ef3d260a5ff542598667044 "EE Ocean Time Series Investigator")
+- [EE Ocean Time Series Investigator](https://code.earthengine.google.com/901e5a356ef3d260a5ff542598667044)
 
-- [Global Surface UHI Explorer](https://yceo.users.earthengine.app/view/uhimap "Global Surface UHI Explorer")
+- [Global Surface UHI Explorer](https://yceo.users.earthengine.app/view/uhimap)
 
-- [Stratifi - cloud-based stratification](https://sabrinaszeto.users.earthengine.app/view/stratifi "Stratifi - cloud-based stratification")
+- [Stratifi - cloud-based stratification](https://sabrinaszeto.users.earthengine.app/view/stratifi)
 ---
 
 ## Resources
 
 
-- [Geospatial Software Design](https://environment.yale.edu/courses/2018-2019/detail/754/ "Geospatial Software Design")
+- [Geospatial Software Design](https://environment.yale.edu/courses/2018-2019/detail/754/)
 
-- [Google Earth Engine API documentation](https://developers.google.com/earth-engine/ "Google Earth Engine API documentation")
+- [Google Earth Engine API documentation](https://developers.google.com/earth-engine/)
 
-- [Google Earth Engine Developers forum](https://groups.google.com/forum/#!forum/google-earth-engine-developers "Google Earth Engine Developers forum")
+- [Google Earth Engine Developers forum](https://groups.google.com/forum/#!forum/google-earth-engine-developers)
 
-- [Example scripts from Prof. Dana Tomlin's handouts for his course on Geospatial Software Design](https://github.com/EEYale/example-scripts "Example scripts from Prof. Dana Tomlin's handouts for his course on Geospatial Software Design")
+- [Example scripts from Prof. Dana Tomlin's handouts for his course on Geospatial Software Design](https://github.com/EEYale/example-scripts)

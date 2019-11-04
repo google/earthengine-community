@@ -67,7 +67,7 @@ Source: Google Earth Engine user summit
 ```javascript
 var variableName = ee.ContainerType(value);
 ```
-A container (in the form ee.variabletype) is used to wrap up a native JavaScript object so that Google's server can perform operations on it.
+A container (in the form `ee.variabletype`) is used to wrap up a native JavaScript object so that Google's server can perform operations on it.
 
 ###  Centering map
 ```javascript

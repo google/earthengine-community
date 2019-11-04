@@ -529,9 +529,9 @@ var roi=countyData.filter(ee.Filter.metadata('STATEFP', 'equals', '09'));
 print(raw);
 // Select a band of the image collection using either indexing or band name
 var bandSel1 = raw.select(0);
-var bandSel2=raw.select('LST_Day_1km');
+var bandSel2 = raw.select('LST_Day_1km');
 // Filter the image collection by a date range
-var filtered=raw.filterDate('2002-12-30', '2004-4-27');
+var filtered = raw.filterDate('2002-12-30', '2004-4-27');
 // Print filtered collection
 print(filtered);
 // Limit the image collection to the first 50 elements
@@ -576,7 +576,7 @@ Export.image.toDrive({
 // Function to find mean of pixels in region of interest
 var getRegions = function(image) {
 // Load US county dataset
-var countyData=ee.FeatureCollection('TIGER/2018/Counties');
+var countyData = ee.FeatureCollection('TIGER/2018/Counties');
 // Filter the counties that are in Connecticut
 // This will be the region of interest for the operations
 var roi=countyData.filter(ee.Filter.metadata('STATEFP', 'equals', '09'));

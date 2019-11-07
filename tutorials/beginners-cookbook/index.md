@@ -71,9 +71,7 @@ What is Earth Engine?
 
 Source: Google Earth Engine user summit
 
-The Earth Engine Code Editor:
-
-![Code Editor (Source: developers.google.com)](https://storage.googleapis.com/earthengine-community/tutorials/beginners-cookbook/ee-editor.png)
+![The Earth Engine Code Editor (source: developers.google.com)](https://storage.googleapis.com/earthengine-community/tutorials/beginners-cookbook/ee-editor.png)
 
 ## Basic functions
 

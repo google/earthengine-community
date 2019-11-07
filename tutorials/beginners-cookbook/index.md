@@ -22,7 +22,7 @@ A pair of coordinates (longitude, latitude), that represents the location of poi
 
 Example: Location of drop boxes, landmarks, etc.
 
- ![Points](points.png)
+ ![Points](https://storage.googleapis.com/earthengine-community/tutorials/beginners-cookbook/points.png)
 
 ### Lines
 
@@ -30,14 +30,14 @@ A series of points that represents a line (straight or otherwise) on the Earth's
 
 Example: Center of roads, rivers, etc.
 
- ![Lines](line-vector.png)
+ ![Lines](https://storage.googleapis.com/earthengine-community/tutorials/beginners-cookbook/line-vector.png)
 
 ### Polygons
 
 A series of points (vertices) that define the outer edge of a region.
 Example: Outlines of cities, countries, continents, etc.
 
- ![Polygons](polygon-vector.png)
+ ![Polygons](https://storage.googleapis.com/earthengine-community/tutorials/beginners-cookbook/polygon-vector.png)
 
 ## Raster data
 
@@ -49,7 +49,7 @@ A raster is an image with a matrix of values representing the values of some obs
 
 Example: Spatial variability of temperature, elevation, rainfall, etc. over a region.
 
- ![Raster](map-algebra.png)
+ ![Raster](https://storage.googleapis.com/earthengine-community/tutorials/beginners-cookbook/map-algebra.png)
 
 Image sources: https://gisgeography.com/spatial-data-types-vector-raster/
 
@@ -73,7 +73,7 @@ Source: Google Earth Engine user summit
 
 The Earth Engine Code Editor:
 
-![Code Editor (Source: developers.google.com)](ee-editor.png)
+![Code Editor (Source: developers.google.com)](https://storage.googleapis.com/earthengine-community/tutorials/beginners-cookbook/ee-editor.png)
 
 ## Basic functions
 
@@ -201,7 +201,7 @@ ee.Geometry.Polygon([[0, 0], [-6, -3], [-5, -5], [30, -2], [0, 0]])]);
 - Features are geometries associated with specific properties.
 - Feature collections are groups of features.
 
-![Counties in the contiguous United States](county-features.png)
+![Counties in the contiguous United States](https://storage.googleapis.com/earthengine-community/tutorials/beginners-cookbook/county-features.png)
 
 ## Functions and mapping
 
@@ -716,7 +716,7 @@ Export.video.toDrive({
 
 [Dubai timelapse](https://www.youtube.com/watch?v=6gK4Fd-WSM4&feature=youtu.be)
 
-![Urban growth in Dubai](dubai-change.png)
+![Urban growth in Dubai](https://storage.googleapis.com/earthengine-community/tutorials/beginners-cookbook/dubai-change.png)
 
 ## Example applications
 

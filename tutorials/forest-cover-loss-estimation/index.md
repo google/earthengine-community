@@ -5,7 +5,23 @@ author: nkeikon
 tags: forest, deforestation, mmu, ghg, redd, mrv, frel, frl
 date_published: 2019-10-04
 ---
-[Open In Code Editor](https://code.earthengine.google.com/b01025e5157ed6959df69f0d58dfbefc)
+<!--
+Copyright 2019 The Google Earth Engine Community Authors
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+-->
+
+[Open In Code Editor](https://code.earthengine.google.com/09a2542381c5d7d79a772ba049b4b63d)
 
 When estimating forest cover, deforestation, or emissions from land-use change at the national level, countries use forest definitions. In this tutorial, you will learn how to extract forest area by applying technical thresholds of canopy cover and minimum area requirements. 
 
@@ -93,7 +109,7 @@ print('Minimum forest area used (ha)\n ', minAreaUsed);
 ```
 The GFC dataset uses 30x30m pixels. Therefore, 6 pixels (>5,000/(30x30)) is used for this exercise. This can be used for countries near the equator. For countries in higher or lower latitudes, you would need to increase the number of pixels. 
 
-![](alltrees.png)  |  ![](cc10.png) |  ![](treecover00.png)
+![](https://storage.googleapis.com/earthengine-community/tutorials/forest-cover-loss-estimation/alltrees.png)  |  ![](https://storage.googleapis.com/earthengine-community/tutorials/forest-cover-loss-estimation/cc10.png) |  ![](https://storage.googleapis.com/earthengine-community/tutorials/forest-cover-loss-estimation/treecover00.png)
 :-------------------------:|:-------------------------:|:-------------------------:
 All trees (yellow)             |  >= min canopy cover (orange)        |  >= min canopy cover & tree area (light green)
 
@@ -128,7 +144,7 @@ print(
     'Year 2001 tree loss (ha) \nmeeting minimum canopy cover and \nforest area thresholds \n ',
     lossSize.get('loss2001'));
 ```
-![](allloss.png)  |  ![](losstreecover.png) |  ![](lossmin.png)
+![](https://storage.googleapis.com/earthengine-community/tutorials/forest-cover-loss-estimation/allloss.png)  |  ![](https://storage.googleapis.com/earthengine-community/tutorials/forest-cover-loss-estimation/losstreecover.png) |  ![](https://storage.googleapis.com/earthengine-community/tutorials/forest-cover-loss-estimation/lossmin.png)
 :-------------------------:|:-------------------------:|:-------------------------:
 All tree loss (black), tree cover (green)             |  Loss inside tree cover (purple)        |  Loss inside tree cover & >= min tree area (red)
 
@@ -168,7 +184,7 @@ print(
     'Year 2001 tree cover (ha) \nmeeting minimum canopy cover and \nforest area thresholds \n ',
     forestSize01.get('treecover2000'));
 ```
-![](treecover2000.png)  |  ![](treeloss2001.png) |  ![](treecover2001.png)
+![](https://storage.googleapis.com/earthengine-community/tutorials/forest-cover-loss-estimation/treecover2000.png)  |  ![](https://storage.googleapis.com/earthengine-community/tutorials/forest-cover-loss-estimation/treeloss2001.png) |  ![](https://storage.googleapis.com/earthengine-community/tutorials/forest-cover-loss-estimation/treecover2001.png)
 :-------------------------:|:-------------------------:|:-------------------------:
 Tree cover 2000 (light green)             |  Tree loss 2001 (red)        |  Tree cover 2001 (dark green)
 

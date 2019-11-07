@@ -556,7 +556,7 @@ var selectedIm = imCollection.filterBounds(geometry);
 var sumOfImages = imCollection.sum();
 ```
 
-> or .product, .max, .min, .mean, .mode, .median, and .count
+> or `product()`, `max()`, `min()`, `mean()`, `mode()`, `median()`, `count()`.
 
 Alternatively, using reducers:
 
@@ -632,8 +632,9 @@ Export.image.toDrive({
   collection: varImage, description: 'fileName', region: geometry, scale: 1000
 });
 ```
-> or image.toCloudStorage, image.toAsset, table.toDrive, table.toCloudStorage,
-> video.toCloudStorage, and video.toDrive
+> or `Export.image.toCloudStorage()`, `Export.image.toAsset()`,
+> `Export.table.toDrive()`, `Export..table.toCloudStorage()`,
+> `Export.video.toCloudStorage()`, `Export.video.toDrive()`.
 
 #### Example: Importing and exporting data
 

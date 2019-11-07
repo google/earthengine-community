@@ -6,8 +6,6 @@ tags: beginner, featurecollection
 date_published: 2019-10-04
 ---
 
-[Open In Code Editor](https://code.earthengine.google.com/ec43ba0f9d49a4c5a2bf29853c32274a)
-
 This basic tutorial shows how users can combine two `ee.FeatureCollection`s into a new `ee.FeatureCollection`.
 
 ## Create two `ee.FeatureCollection` objects

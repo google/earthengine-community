@@ -535,8 +535,8 @@ var selectedIm = imCollection.filter(
   ee.Filter.metadata(propertyName, relation, value));
 ```
 
-> Relations could be "equals", "less_than", "greater_than", "starts_with",
-> "ends_with", and "contains"
+> Relations could be `equals`, `less_than`, `greater_than`, `starts_with`,
+> `ends_with`, and `contains`.
 
 ### Selecting images within date range
 

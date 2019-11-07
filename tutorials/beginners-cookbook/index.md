@@ -18,9 +18,9 @@ Vector data represent objects on the Earth's surface using their longitude and l
 
 ### Point data
 
-A pair of coordinates (longitude, latitude), that represents the location of points on the Earth's surface. 
+A pair of coordinates (longitude, latitude), that represents the location of points on the Earth's surface.
 
-Example: Location of drop boxes, landmarks, etc. 
+Example: Location of drop boxes, landmarks, etc.
 
  ![Points](points.png)
 
@@ -28,14 +28,14 @@ Example: Location of drop boxes, landmarks, etc.
 
 A series of points that represents a line (straight or otherwise) on the Earth's surface.
 
-Example: Center of roads, rivers, etc. 
+Example: Center of roads, rivers, etc.
 
  ![Lines](line-vector.png)
 
 ### Polygons
 
 A series of points (vertices) that define the outer edge of a region.
-Example: Outlines of cities, countries, continents, etc. 
+Example: Outlines of cities, countries, continents, etc.
 
  ![Polygons](polygon-vector.png)
 
@@ -44,10 +44,10 @@ Example: Outlines of cities, countries, continents, etc.
 Raster data represent objects/variables on the Earth's surface as a matrix of values, in the form of pixels, cells, or grids.
 
 ### Layers and bands
- 
+
 A raster is an image with a matrix of values representing the values of some observed attribute. Bands of a raster correspond to different variables, usually using the same matrix structure.
 
-Example: Spatial variability of temperature, elevation, rainfall, etc. over a region. 
+Example: Spatial variability of temperature, elevation, rainfall, etc. over a region.
 
  ![Raster](map-algebra.png)
 
@@ -63,10 +63,10 @@ What is Earth Engine?
 
 - A cloud-based platform for planetary scale geospatial analysis
 - Uses Google's computational resources to reduce processing time
-- A massive archive of remote sensing data 
-  - 200+ public datasets 
-  - over 4,000 new images every day 
-  - over 5 million images 
+- A massive archive of remote sensing data
+  - 200+ public datasets
+  - over 4,000 new images every day
+  - over 5 million images
   - over 30 petabytes of data
 
 Source: Google Earth Engine user summit
@@ -556,7 +556,7 @@ var selectedIm = imCollection.filterBounds(geometry);
 var sumOfImages = imCollection.sum();
 ```
 
-> or .product, .max, .min, .mean, .mode, .median, and .count 
+> or .product, .max, .min, .mean, .mode, .median, and .count
 
 Alternatively, using reducers:
 

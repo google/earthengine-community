@@ -63,13 +63,7 @@ What is Earth Engine?
 
 - A cloud-based platform for planetary scale geospatial analysis
 - Uses Google's computational resources to reduce processing time
-- A massive archive of remote sensing data
-  - 200+ public datasets
-  - over 4,000 new images every day
-  - over 5 million images
-  - over 30 petabytes of data
-
-Source: Google Earth Engine user summit
+- A massive [archive](https://developers.google.com/earth-engine/datasets/catalog/) of remote sensing data
 
 ![The Earth Engine Code Editor (source: developers.google.com)](https://storage.googleapis.com/earthengine-community/tutorials/beginners-cookbook/ee-editor.png)
 
@@ -104,7 +98,7 @@ The `print` operation is also useful for printing data and getting debugging inf
 Map.addLayer(variableName);
 ```
 
-## Earth Engine data types
+## Common Earth Engine data types
 
 ### Strings
 
@@ -224,7 +218,7 @@ var result = input.map(functionName);
 
 Mapping a function over a collection applies the function to every element in the collection.
 
-## Operations on geometries
+## Common operations on geometries
 
 ### Finding the area of a geometry
 
@@ -260,13 +254,13 @@ var centrGeo = geometry.centroid();
 var buffGeo = geometry.buffer(100);
 ```
 
-### Finding thing bounding rectangle of the geometry
+### Finding the bounding rectangle of a geometry
 
 ```javascript
 var bounGeo = geometry.bounds();
 ```
 
-### Finding the smallest polygon that can envelop the geometry
+### Finding the smallest polygon that can envelope a geometry
 
 ```javascript
 var convexGeo = geometry.convexHull();
@@ -294,13 +288,13 @@ Map.setCenter(-72.6978, 41.6798, 8);
 // Load US county dataset.
 var countyData=ee.FeatureCollection('TIGER/2018/Counties');
 // Filter the counties that are in Connecticut (more on filters later).
-var countyConnect=countyData.filter(ee.Filter.metadata('STATEFP', 'equals', '09'));
+var countyConnect=countyData.filter(ee.Filter.eq('STATEFP', '09'));
 // Get the union of all the county geometries in Connecticut.
 var countyConnectDiss=countyConnect.union();
 // Add the layer to the map with a specified color and layer name.
 Map.addLayer(countyConnectDiss, {color: 'red'}, 'Chicago dissolved');
 // Find the rectangle that emcompasses the southernmost, westernmost,
-// easternmost, and northernmost points of the feature
+// easternmost, and northernmost points of the feature.
 var bound = countyConnectDiss.geometry().bounds();
 // Add the layer to the map with a specified color and layer name.
 Map.addLayer(bound, {color: 'yellow'}, 'Bounds');
@@ -321,7 +315,7 @@ Map.addLayer(union, {color: 'purple'}, 'Bound and convex union');
 var diff=bound.difference(convex, 100);
 // Add the layer to the map with a specified color and layer name.
 Map.addLayer(diff, {color: 'purple'}, 'Bound and convex difference');
-// Find area of feature,
+// Find area of feature.
 var ar = countyConnectDiss.geometry().area();
 print(ar);
 // Find length of line geometry (You get zero since this is a polygon).
@@ -345,7 +339,7 @@ Map.setCenter(-72.6978, 41.6798, 8);
 var countyData=ee.FeatureCollection('TIGER/2018/Counties');
 // Filter the counties that are in Connecticut.
 var countyConnect=countyData.filter(
-  ee.Filter.metadata('STATEFP', 'equals', '09'));
+  ee.Filter.eq('STATEFP', '09'));
 // Add the layer to the map with a specified color and layer name.
 Map.addLayer(countyConnect, {color: 'red'}, 'Original Collection');
 // Define function.
@@ -455,7 +449,7 @@ var dateFilter = ee.Filter.calendarRange(startDate, stopDate);
 var dayFilter = ee.Filter.dayOfYear(startDay, stopDay);
 ```
 
-### Filteing by a bounding area
+### Filtering by a bounding area
 
 ```javascript
 var boundsFilter = ee.Filter.bounds(geometryOrFeature);
@@ -473,7 +467,7 @@ var inverseFilter = ee.Filter.not(filter);
 ### Selecting the bands of an image
 
 ```javascript
-var band = var_Image.select(bandName);
+var band = image.select(bandName);
 ```
 
 ### Creating masks
@@ -487,7 +481,7 @@ var mask = image.eq(value);
 ### Applying image masks
 
 ```javascript
-var masked = image.mask(mask);
+var masked = image.updateMask(mask);
 ```
 
 ### Performing pixelwise calculations
@@ -505,7 +499,7 @@ newImage = oldImage.leftShift(valueOfShift);
 
 > or .rightShift
 
-### Reducing an image down to a single value for particular area of interest
+### Reducing an image to a statistic for an area of interest
 
 ```javascript
 var outputDictionary = varImage.reduceRegion(reducer, geometry, scale);
@@ -523,20 +517,14 @@ var selectedImages = imCollection.limit(n, propertyName, order);
 ### Selecting images based on particular properties
 
 ```javascript
-var selectedIm = imCollection.filterMetadata(propertyName, relation, value);
+var selectedIm = imCollection.filterMetadata(propertyName, operator, value);
 ```
 
-Or preferably:
+> Operators include: "equals", "less_than", "greater_than", "not_equals",
+"not_less_than", "not_greater_than", "starts_with", "ends_with", "not_starts_with",
+"not_ends_with", "contains", "not_contains".
 
-```javascript
-var selectedIm = imCollection.filter(
-  ee.Filter.metadata(propertyName, relation, value));
-```
-
-> Relations could be `equals`, `less_than`, `greater_than`, `starts_with`,
-> `ends_with`, and `contains`.
-
-### Selecting images within date range
+### Selecting images within a date range
 
 ```javascript
 var selectedIm = imCollection.filterDate(startDate, stopDate);
@@ -548,7 +536,7 @@ var selectedIm = imCollection.filterDate(startDate, stopDate);
 var selectedIm = imCollection.filterBounds(geometry);
 ```
 
-### Performing pixelwise calculations for all images in acollection
+### Performing pixelwise calculations for all images in a collection
 
 ```javascript
 var sumOfImages = imCollection.sum();
@@ -577,7 +565,6 @@ var sumOfImages = imCollection.reduce(ee.Reducer.first());
 #### Example: Image and image collection operations
 
 Let's analyze images over a region of interest (the counties of Connecticut).
-Images and image collections cover the bulk of Earth Engine's data archives.
 
 ```javascript
 // Set map center over the state of CT.
@@ -588,7 +575,7 @@ var raw = ee.ImageCollection('MODIS/006/MYD11A2');
 var countyData=ee.FeatureCollection('TIGER/2018/Counties');
 // Filter the counties that are in Connecticut.
 // This will be the region of interest for the image operations.
-var roi=countyData.filter(ee.Filter.metadata('STATEFP', 'equals', '09'));
+var roi=countyData.filter(ee.Filter.eq('STATEFP', '09'));
 // Examine image collection.
 print(raw);
 // Select a band of the image collection using either indexing or band name.
@@ -609,7 +596,7 @@ var mean = bandSel1.mean();
 var clipped = mean.clip(roi);
 // mathematical operation on image pixels to convert from digital number
 // of satellite observations to degree Celsius.
-var calculate = clipped.multiply(.02).subtract(273.15);
+var calculate = clipped.multiply(0.02).subtract(273.15);
 // Add the layer to the map with a specified color palette and layer name.
 Map.addLayer(calculate, {min: 15, max: 20, palette: ['blue', 'green', 'red']}, 'LST');
 // Select pixels in the image that are greater than 30.8.
@@ -631,7 +618,7 @@ Export.image.toDrive({
 });
 ```
 > or `Export.image.toCloudStorage()`, `Export.image.toAsset()`,
-> `Export.table.toDrive()`, `Export..table.toCloudStorage()`,
+> `Export.table.toDrive()`, `Export.table.toCloudStorage()`,
 > `Export.video.toCloudStorage()`, `Export.video.toDrive()`.
 
 #### Example: Importing and exporting data
@@ -643,11 +630,11 @@ var getRegions = function(image) {
   var countyData = ee.FeatureCollection('TIGER/2018/Counties');
   // Filter the counties that are in Connecticut.
   // This will be the region of interest for the operations.
-  var roi=countyData.filter(ee.Filter.metadata('STATEFP', 'equals', '09'));
+  var roi=countyData.filter(ee.Filter.eq('STATEFP', '09'));
   return image.reduceRegions({
     // Collection to run operation over.
     collection: roi,
-    // Take mean of all pixels in region.
+    // Calculate mean of all pixels in region.
     reducer: ee.Reducer.mean(),
     // Pixel resolution used for the calculations.
     scale: 1000
@@ -727,7 +714,7 @@ Export.video.toDrive({
 
 ## Additional resources
 
-- [Geospatial Software Design](https://environment.yale.edu/courses/2018-2019/detail/754/)
+- [Geospatial Software Design](https://environment.yale.edu/courses/detail/754)
 - [Google Earth Engine API documentation](https://developers.google.com/earth-engine/)
 - [Google Earth Engine Developers forum](https://groups.google.com/forum/#!forum/google-earth-engine-developers)
 - [Example scripts from Prof. Dana Tomlin's handouts for his course on Geospatial Software Design](https://github.com/EEYale/example-scripts)

@@ -18,7 +18,7 @@ set -e
 
 DIR="toolkits/landcover"
 KEY_FILE_ENC="test/.private-key.json.enc"
-KEY_FILE="test/.private-key.json.enc"
+KEY_FILE="test/.private-key.json"
 KEY="${encrypted_44af26ab0da9_key}"
 IV="${encrypted_44af26ab0da9_iv}"
 

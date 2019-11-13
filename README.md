@@ -14,7 +14,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 -->
 
-# Google Earth Engine Community ![Build status badge](https://travis-ci.org/google/earthengine-community.svg?branch=master)
+# Google Earth Engine Community [![Build Status](https://travis-ci.org/google/earthengine-community.svg?branch=master)](https://travis-ci.org/google/earthengine-community)
 
 This repository contains content submitted and/or maintained by the Earth Engine
 user community.

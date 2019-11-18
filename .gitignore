@@ -3,7 +3,7 @@ coverage
 node_modules
 out
 !.gitignore
-!.eslintrc.yml
+!.eslintrc.json
 !.private-key.json.enc
 !.travis
 !.travis.yml

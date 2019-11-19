@@ -70,7 +70,7 @@ var SPECTRAL_INDEX_EXPRESSIONS = {
  *
  * This function assumes that the image bands are using the 'common' naming.
  *
- * @param {ee.Image} image The source image.
+ * @param {!ee.Image} image The source image.
  * @param {!Array<string>} indices The list of indices to calculate.
  * @return {!ee.Image} A new image containing the calculated bands.
  */
@@ -143,30 +143,6 @@ function addFractionalYearBand(collection) {
 
 
 /**
- * Compute a matrix multiply between the given image and a set of coefficients
- * such as an eigenvector rotation or a Tasseled Cap transformation.
- *
- * The input image is expected to have the same number of bands as the width of
- * the coefficients matrix.
- *
- * @param {!ee.Image} image The image on which to compute the transformation.
- * @param {!Array<!Array<number>>} coef The matrix to apply to the image.
- * @param {Array<string>=} bandNames An optional list of output band names.
- * @return {!ee.Image} The transformed bands.
- */
-function matrixMultiply(image, coef, bandNames) {
-  // Create some default band names if none were specified.
-  bandNames = bandNames || generateBandNames('mmult', image.bandNames().length());
-
-  // Make an Array Image with a 2-D Array per pixel.
-  var arrayImage = image.toArray().toArray(1);
-  return ee.Image(ee.Array(coef))
-      .matrixMultiply(arrayImage)
-      .arrayProject([0]) // get rid of the extra dimensions
-      .arrayFlatten([bandNames]);
-}
-
-/**
  * Generate a series of band names of the form prefixN.
  * @param {!string} prefix The prefix to prepend.
  * @param {!number} count How many bands to generate, starting from 0.
@@ -183,5 +159,4 @@ exports.Bands = {
   addDateBand: addDateBand,
   addDayOfYearBand: addDayOfYearBand,
   addFractionalYearBand: addFractionalYearBand,
-  matrixMultiply: matrixMultiply
 };

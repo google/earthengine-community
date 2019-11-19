@@ -226,9 +226,14 @@ Dataset.prototype.addTasseledCap = function() {
   var subset = this.lookupCommonBandNames(srcBands, this.collection_.first().bandNames());
 
   var output = this.collection_.map(function(image) {
-    // Select the subset of bands needed and compute the transform.
-    var tc = Bands.matrixMultiply(image.select(subset), coef, dstBands);
-    return image.addBands(tc);
+    var bands = image.select(subset);
+    var output = [];
+    // Each output band is the sum of the input bands multiplied by coefficients[i].
+    for (var i = 0; i < dstBands.length; i++) {
+      var tc = bands.multiply(coef[i]).reduce(ee.Reducer.sum());
+      output.push(tc.rename(dstBands[i]));
+    }
+    return image.addBands(ee.Image.cat(output));
   });
 
   this.collection_ = output;

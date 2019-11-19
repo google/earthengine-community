@@ -13,24 +13,12 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
+ *
+ * @fileoverview Allows alternate test runners to set up global env.
  */
 
-var Bands = require('../../impl/bands.js').Bands;
-var TestImage = require('../helpers/test-image.js');
-
-withEarthEngine('Bands', function() {
-  it('matrixMultiply()', function(done) {
-    var image = ee.Image([1, 2]);
-    var coef = [[1, 2], [2, 1]];
-
-    var mult = Bands.matrixMultiply(image, coef);
-    TestImage.reduceConstant(mult)
-      .evaluate(function(actual, error) {
-        expect(actual).toEqual({
-          'mmult1': 5,
-          'mmult2': 4
-        });
-        done();
-      });
-  });
-});
+module.exports = {
+  beforeJasmine: function() {
+    return Promise.resolve();
+  }
+};

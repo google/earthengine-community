@@ -114,6 +114,5 @@ Landsat5.QA_BAND = QA_BAND;
 Landsat5.CLOUD_SHADOW_BIT_MASK = CLOUD_SHADOW_BIT_MASK;
 Landsat5.CLOUD_BIT_MASK = CLOUD_BIT_MASK;
 
-
-
 exports.Landsat5 = Landsat5;
+

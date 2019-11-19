@@ -100,12 +100,12 @@ Landsat5.maskCloudsAndShadows = function(image) {
  */
 Landsat5.prototype.getTasseledCapCoefficients_ = function() {
   return [
-	[0.3037, 0.2793, 0.4743, 0.5585, 0.5082, 0.1863], // Brightness
-	[-0.2848, -0.2435, -0.5436, 0.7243, 0.0840, -0.1800], // Greenness
-	[0.1509, 0.1973, 0.3279, 0.3406, -0.7112, -0.4572], // Wetness
-	[-0.8242, 0.0849, 0.4392, -0.0580, 0.2012, -0.2768], // TC4
-	[-0.3280, 0.0549, 0.1075, 0.1855, -0.4357, 0.8085], // TC5
-	[0.1084, -0.9022, 0.4120, 0.0573, -0.0251, 0.0238] // TC6
+    [0.3037, 0.2793, 0.4743, 0.5585, 0.5082, 0.1863], // Brightness
+    [-0.2848, -0.2435, -0.5436, 0.7243, 0.0840, -0.1800], // Greenness
+    [0.1509, 0.1973, 0.3279, 0.3406, -0.7112, -0.4572], // Wetness
+    [-0.8242, 0.0849, 0.4392, -0.0580, 0.2012, -0.2768], // TC4
+    [-0.3280, 0.0549, 0.1075, 0.1855, -0.4357, 0.8085], // TC5
+    [0.1084, -0.9022, 0.4120, 0.0573, -0.0251, 0.0238] // TC6
   ];
 };
 
@@ -113,5 +113,7 @@ Landsat5.prototype.getTasseledCapCoefficients_ = function() {
 Landsat5.QA_BAND = QA_BAND;
 Landsat5.CLOUD_SHADOW_BIT_MASK = CLOUD_SHADOW_BIT_MASK;
 Landsat5.CLOUD_BIT_MASK = CLOUD_BIT_MASK;
+
+
 
 exports.Landsat5 = Landsat5;

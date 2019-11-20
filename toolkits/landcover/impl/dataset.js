@@ -93,7 +93,7 @@ Dataset.prototype.getDefaultVisParams = function() {
 };
 
 /**
- * Convert a collection into composite images based on fixed time intervals.
+ * Creates a collection of composite images based on fixed time intervals.
  * Adds a 'date' band to each input image that contains the date of the
  * observation and an 'observations' band to the composite that contains the
  * number of observations that went into each pixel.
@@ -108,7 +108,7 @@ Dataset.prototype.getDefaultVisParams = function() {
  *        each time period. Defaults to using a median reducer.
  * @return {!ee.ImageCollection}
  */
-Dataset.prototype.createTemporalComposites = function(
+Dataset.prototype.toTemporalComposites = function(
     startDate, count, interval, intervalUnits, reducer) {
   var args = NamedArgs.extractFromFunction(Dataset.prototype.createTemporalComposites, arguments);
   startDate = args.startDate;
@@ -116,27 +116,24 @@ Dataset.prototype.createTemporalComposites = function(
   interval = args.interval;
   intervalUnits = args.intervalUnits;
   reducer = args.reducer;
-  this.collection_ = Composites.createTemporalComposites(
+  return Composites.createTemporalComposites(
       this.collection_, startDate, count, interval, intervalUnits, reducer);
-  return this;
 };
 
 /**
- * Computes a medioid composite by finding the median and returning the
+ * Computes a medioid composite by finding the median and returns the
  * complete observation closest to the median value as measured by
  * euclidiean distance over the specified band(s).
  *
  * @param {Array<string|number>|string|number=} bands A band identifier
  *    (a name, index or regexp) or a list of identifiers of the bands
  *    to use to compute the median value. If omitted, all bands are used.
- * @return {!ee.ImageCollection}
+ * @return {!ee.Image}
  */
-Dataset.prototype.createMedioidComposite = function(bands) {
+Dataset.prototype.toMedioidComposite = function(bands) {
   var args = NamedArgs.extractFromFunction(Dataset.prototype.createMedioidComposite, arguments);
   bands = args.bands;
-  this.collection_ = ee.ImageCollection(
-      [Composites.createMedioidComposite(this.collection_, bands)]);
-  return this;
+  return Composites.createMedioidComposite(this.collection_, bands);
 };
 
 /**

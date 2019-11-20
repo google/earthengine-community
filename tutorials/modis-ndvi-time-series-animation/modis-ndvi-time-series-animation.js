@@ -20,7 +20,7 @@ var col = ee.ImageCollection('MODIS/006/MOD13A2').select('NDVI');
 
 // Define a mask to clip the NDVI data by.
 var mask = ee.FeatureCollection('USDOS/LSIB_SIMPLE/2017')
-  .filter(ee.Filter.eq('wld_rgn', 'Europe'));
+  .filter(ee.Filter.eq('wld_rgn', 'Africa'));
 
 // Define the regional bounds of animation frames.
 var region = ee.Geometry.Polygon(
@@ -86,3 +86,6 @@ var gifParams = {
 
 // Print the GIF URL to the console.
 print(rgbVis.getVideoThumbURL(gifParams));
+
+// Render the GIF animation in the console.
+print(ui.Thumbnail(rgbVis, gifParams));

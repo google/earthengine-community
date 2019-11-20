@@ -70,7 +70,7 @@ var SPECTRAL_INDEX_EXPRESSIONS = {
  *
  * This function assumes that the image bands are using the 'common' naming.
  *
- * @param {ee.Image} image The source image.
+ * @param {!ee.Image} image The source image.
  * @param {!Array<string>} indices The list of indices to calculate.
  * @return {!ee.Image} A new image containing the calculated bands.
  */

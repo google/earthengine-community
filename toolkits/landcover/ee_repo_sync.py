@@ -79,26 +79,33 @@ if (target_path):
 # Clone or pull repo to home dir
 if os.path.isdir(clone_path):
     print('%s exists. Pulling latest from remote.' % clone_path)
-    subprocess.call(['git', '-C', clone_path, 'pull', '--quiet'])
+    subprocess.check_output(['git', '-C', clone_path, 'pull', '--quiet'])
 else:
-    print('%s not found. Cloning remote.' % clone_path)
-    subprocess.call(['git', 'clone', repo_url, clone_path])
+    print("%s doesn't already exist." % clone_path)
+    subprocess.check_output(['git', 'clone', repo_url, clone_path])
 
-subprocess.call(['mkdir', '-p', write_path])
+subprocess.check_output(['mkdir', '-p', write_path])
 
 # Copy selected files to local clone
 for source in SOURCE_PATHS:
-    subprocess.call(['rsync', '--archive', '--delete-excluded',
-                     "--include='*.js'",
-                     "--exclude='*'",
-                     source,
-                     write_path])
+    subprocess.check_output(['rsync', '--archive', '--delete-excluded',
+                             "--include='*.js'",
+                             "--exclude='*'",
+                             source,
+                             write_path])
 
 # Search and replace paths in source files
 search_replace(write_path, '.js', ORIGINAL_REQUIRE_PATH, new_require_path)
 
 # Commit and push changes
-subprocess.call(["git", "-C", clone_path, "add", clone_path])
-subprocess.call(["git", "-C", clone_path, "commit", "-m",
-                 "Automated commit by ee_repo_sync.py"])
-subprocess.call(["git", "-C", clone_path, "push"])
+subprocess.check_output(
+    ["git", "-C", clone_path, "add", clone_path])
+
+# Only proceed if there are staged changes
+if subprocess.run(["git", "-C", clone_path, "diff-index", "--quiet", "HEAD"]
+                  ).returncode == 0:
+    exit(0)
+
+subprocess.check_output(["git", "-C", clone_path, "commit", "-m",
+                         "Automated commit by ee_repo_sync.py"])
+subprocess.check_output(["git", "-C", clone_path, "push"])

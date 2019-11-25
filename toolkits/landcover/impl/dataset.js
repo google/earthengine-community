@@ -40,7 +40,7 @@ var Dataset = function(collection, defaultVisParams) {
  * @return {!Dataset}
  */
 Dataset.prototype.filter = function(filter) {
-  var args = NamedArgs.extractFromFunction(Dataset.prototype.filterDate, arguments);
+  var args = NamedArgs.extractFromFunction(Dataset.prototype.filter, arguments);
   filter = args.filter;
   this.collection_ = this.collection_.filter(filter);
   return this;

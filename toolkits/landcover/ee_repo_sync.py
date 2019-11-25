@@ -19,7 +19,8 @@ import os
 import subprocess
 
 SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
-WORK_PATH = '%s/.gob' % SCRIPT_DIR
+# Temporary local directory where Git repository will be cloned.
+WORK_PATH = '%s/.ee_repo_sync' % SCRIPT_DIR
 GIT_BASE_URL = 'https://earthengine.googlesource.com'
 ORIGINAL_REQUIRE_PATH = 'users/google/toolkits:landcover/'
 SOURCE_PATHS = ['api.js', 'impl', 'examples']

@@ -27,8 +27,9 @@ if [[ "${TRAVIS_EVENT_TYPE}" == "pull_request" ]]; then
   bash ./.travis/require-changes.sh "${DIR}" || exit 0
 fi
 
-# Setup/
 cd "${DIR}"
+
+# Install dependencies.
 npm install
 
 # Run lint and unit tests.

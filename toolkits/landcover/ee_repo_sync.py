@@ -15,8 +15,8 @@
 """Pushes required toolkit source to an Earth Engine repo."""
 
 import argparse
-import subprocess
 import os
+import subprocess
 
 SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
 WORK_PATH = '%s/.gob' % SCRIPT_DIR

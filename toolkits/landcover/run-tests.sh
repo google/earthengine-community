@@ -26,8 +26,12 @@ if [[ "${TRAVIS_EVENT_TYPE}" == "pull_request" ]]; then
   bash `git rev-parse --show-toplevel`/.travis/require-changes.sh . || exit 0
 fi
 
-# Run lint and unit tests.
+cd "${DIR}"
+
+# Install dependencies.
 npm install
+
+# Run lint and unit tests.
 npm run lint
 npm run test:unit
 

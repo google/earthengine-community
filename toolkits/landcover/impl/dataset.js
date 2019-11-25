@@ -34,6 +34,19 @@ var Dataset = function(collection, defaultVisParams) {
 };
 
 /**
+ * Apply a filter to this dataset.
+ *
+ * @param {!ee.Filter} filter A filter to apply to this dataset.
+ * @return {!Dataset}
+ */
+Dataset.prototype.filter = function(filter) {
+  var args = NamedArgs.extractFromFunction(Dataset.prototype.filter, arguments);
+  filter = args.filter;
+  this.collection_ = this.collection_.filter(filter);
+  return this;
+};
+
+/**
  * Filters the dataset by the specified date range.
  *
  * Returns the filtered dataset.

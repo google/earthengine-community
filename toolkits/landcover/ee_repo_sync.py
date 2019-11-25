@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 # Copyright 2019 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -24,6 +24,7 @@ WORK_PATH = '%s/.ee_repo_sync' % SCRIPT_DIR
 GIT_BASE_URL = 'https://earthengine.googlesource.com'
 ORIGINAL_REQUIRE_PATH = 'users/google/toolkits:landcover/'
 SOURCE_PATHS = ['api.js', 'impl', 'examples']
+
 
 def search_replace(start_path, ext, original, replacement):
     for dir_name, dirs, files in os.walk(start_path):

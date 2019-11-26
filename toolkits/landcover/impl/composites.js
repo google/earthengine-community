@@ -86,7 +86,7 @@ function createTemporalComposites(
 }
 
 /**
- * Computes a medioid composite by finding the median and returning the
+ * Computes a medioid composite by finding the median and returns the
  * complete observation closest to the median value as measured by
  * euclidiean distance over the specified band(s).
  *
@@ -94,7 +94,7 @@ function createTemporalComposites(
  * @param {Array<string|number>|string|number=} bands A band identifier
  *    (a name, index or regexp) or a list of identifiers of the bands
  *    to use to compute the median value. If omitted, all bands are used.
- * @return {!ee.ImageCollection}
+ * @return {!ee.Image}
  */
 function createMedioidComposite(collection, bands) {
   var args = NamedArgs.extractFromFunction(createMedioidComposite, arguments);
@@ -122,7 +122,7 @@ function createMedioidComposite(collection, bands) {
  * @param {Array<string|number>|string|number=} bands A band identifier
  *    (a name, index or regexp) or a list of identifiers of the bands
  *    to use to compute the median value. If omitted, all bands are used.
- * @return {function(*=): !ee.ImageCollection}
+ * @return {function(*=): !ee.Image}
  */
 function createMedioidFunction(bands) {
   var args = NamedArgs.extractFromFunction(createMedioidFunction, arguments);

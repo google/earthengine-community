@@ -18,6 +18,7 @@
  *
  * Automatically executed by Jasmine before tests are run.
  */
+var os = require('os');
 
 /**
  * Authenticates against live Earth Engine server using service account private
@@ -45,6 +46,9 @@ global.withEarthEngine = function(testDescription, test) {
   describe(testDescription + ' [remote]', function() {
     // Authenticate service account and initialize before running tests.
     beforeAll(function(done) {
+      // Change working directory to ensure the current process has permission
+      // to write temp files.
+      process.chdir(os.tmpdir());
       authenticate(function() {
         ee.initialize(null, null, done);
       });

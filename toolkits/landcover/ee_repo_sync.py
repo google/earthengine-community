@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 # Copyright 2019 The Google Earth Engine Community Authors
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -15,10 +15,12 @@
 """Pushes required toolkit source to an Earth Engine repo."""
 
 import argparse
-import subprocess
 import os
+import subprocess
 
-WORK_PATH = '~/.ee_repo_sync'
+SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
+# Temporary local directory where Git repository will be cloned.
+WORK_PATH = '%s/.ee_repo_sync' % SCRIPT_DIR
 GIT_BASE_URL = 'https://earthengine.googlesource.com'
 ORIGINAL_REQUIRE_PATH = 'users/google/toolkits:landcover/'
 SOURCE_PATHS = ['api.js', 'impl', 'examples']
@@ -58,6 +60,12 @@ parser.add_argument('--target_path',
                     help='Destination path in target repo (default: root)')
 args = parser.parse_args()
 
+print('''
+    NOTE: If you receive PERMISSION_DENIED errors, be sure you have access
+    to the specified repo, and that you have logged in following instructions
+    at https://www.googlesource.com/new-password and try again.
+''')
+
 # Build paths
 repo = args.target_repo
 target_path = args.target_path
@@ -69,26 +77,35 @@ if (target_path):
     new_require_path += target_path + '/'
 
 # Clone or pull repo to home dir
-if not os.path.isdir(clone_path):
-    subprocess.call(['git', 'clone', repo_url, clone_path])
+if os.path.isdir(clone_path):
+    print('%s exists. Pulling latest from remote.' % clone_path)
+    subprocess.check_output(['git', '-C', clone_path, 'pull', '--quiet'])
 else:
-    subprocess.call(['git', '-C', clone_path, 'pull'])
+    print("%s doesn't already exist." % clone_path)
+    subprocess.check_output(['git', 'clone', repo_url, clone_path])
 
-subprocess.call(['mkdir', '-p', write_path])
+subprocess.check_output(['mkdir', '-p', write_path])
 
 # Copy selected files to local clone
 for source in SOURCE_PATHS:
-    subprocess.call(['rsync', '--archive', '--delete-excluded',
-                     "--include='*.js'",
-                     "--exclude='*'",
-                     source,
-                     write_path])
+    subprocess.check_output(['rsync', '--archive', '--delete-excluded',
+                             "--include='*.js'",
+                             "--exclude='*'",
+                             source,
+                             write_path])
 
 # Search and replace paths in source files
 search_replace(write_path, '.js', ORIGINAL_REQUIRE_PATH, new_require_path)
 
 # Commit and push changes
-subprocess.call(["git", "-C", clone_path, "add", clone_path])
-subprocess.call(["git", "-C", clone_path, "commit", "-m",
- "Automated commit by ee_repo_sync.py"])
-subprocess.call(["git", "-C", clone_path, "push"])
+subprocess.check_output(
+    ["git", "-C", clone_path, "add", clone_path])
+
+# Only proceed if there are staged changes
+if subprocess.run(["git", "-C", clone_path, "diff-index", "--quiet", "HEAD"]
+                  ).returncode == 0:
+    exit(0)
+
+subprocess.check_output(["git", "-C", clone_path, "commit", "-m",
+                         "Automated commit by ee_repo_sync.py"])
+subprocess.check_output(["git", "-C", clone_path, "push"])

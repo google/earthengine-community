@@ -16,19 +16,19 @@
 # Exit on error.
 set -e
 
-DIR="toolkits/landcover"
 KEY_FILE_ENC="test/.private-key.json.enc"
-KEY_FILE="test/.private-key.json.enc"
+KEY_FILE="test/.private-key.json"
 KEY="${encrypted_44af26ab0da9_key}"
 IV="${encrypted_44af26ab0da9_iv}"
 
 # For PRs, skip tests if no changes.
 if [[ "${TRAVIS_EVENT_TYPE}" == "pull_request" ]]; then
-  bash ./.travis/require-changes.sh "${DIR}" || exit 0
+  bash `git rev-parse --show-toplevel`/.travis/require-changes.sh . || exit 0
 fi
 
-# Setup/
 cd "${DIR}"
+
+# Install dependencies.
 npm install
 
 # Run lint and unit tests.
@@ -37,7 +37,7 @@ npm run test:unit
 
 # Run integration tests if private keys set in environment.
 if [[ -n "${KEY}" ]] && [[ -n "${IV}" ]]; then
-  openssl aes-256-cbc -K "${KEY}" -iv "${IV}" -in "${KEY_FILE_ENC} -out "${KEY_FILE} -d
+  openssl aes-256-cbc -K "${KEY}" -iv "${IV}" -in "${KEY_FILE_ENC}" -out "${KEY_FILE}" -d
   npm run test:int
 else
   echo "No keys; skipping integration tests."

@@ -6,7 +6,7 @@ tags: landsat, etm+, oli, tm, harmonization, time-series, join, reduce, visualiz
 date_published: 2019-08-29
 ---
 <!--
-Copyright 2019 Google LLC
+Copyright 2019 The Google Earth Engine Community Authors
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.

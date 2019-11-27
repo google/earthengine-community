@@ -99,7 +99,7 @@ function extractFromFunction(fn, originalArgs) {
     dict[argName] = i < originalArgs.length ? originalArgs[i] : undefined;
   }
   return dict;
-};
+}
 
 exports.NamedArgs = {
   extractFromFunction: extractFromFunction

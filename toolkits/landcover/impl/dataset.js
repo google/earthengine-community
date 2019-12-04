@@ -134,7 +134,7 @@ Dataset.prototype.toTemporalComposites = function(
 };
 
 /**
- * Computes a medioid composite by finding the median and returns the
+ * Computes a medoid composite by finding the median and returns the
  * complete observation closest to the median value as measured by
  * euclidiean distance over the specified band(s).
  *
@@ -143,10 +143,10 @@ Dataset.prototype.toTemporalComposites = function(
  *    to use to compute the median value. If omitted, all bands are used.
  * @return {!ee.Image}
  */
-Dataset.prototype.toMedioidComposite = function(bands) {
-  var args = NamedArgs.extractFromFunction(Dataset.prototype.createMedioidComposite, arguments);
+Dataset.prototype.toMedoidComposite = function(bands) {
+  var args = NamedArgs.extractFromFunction(Dataset.prototype.createMedoidComposite, arguments);
   bands = args.bands;
-  return Composites.createMedioidComposite(this.collection_, bands);
+  return Composites.createMedoidComposite(this.collection_, bands);
 };
 
 /**

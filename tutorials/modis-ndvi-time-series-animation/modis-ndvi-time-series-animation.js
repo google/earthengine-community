@@ -1,6 +1,6 @@
 /**
  * @license
- * Copyright 2019 Google LLC
+ * Copyright 2019 The Google Earth Engine Community Authors
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -86,3 +86,6 @@ var gifParams = {
 
 // Print the GIF URL to the console.
 print(rgbVis.getVideoThumbURL(gifParams));
+
+// Render the GIF animation in the console.
+print(ui.Thumbnail(rgbVis, gifParams));

@@ -1,0 +1,32 @@
+{
+    "env": {
+        "browser": true,
+        "commonjs": true,
+        "es6": true,
+        "node": true
+    },
+    "extends": [
+        "google"
+    ],
+    "globals": {
+        "Atomics": "readonly",
+        "SharedArrayBuffer": "readonly"
+    },
+    "parserOptions": {
+        "ecmaVersion": 5,
+        "impliedStrict": true
+    },
+    "rules": {
+        "comma-dangle": "off",
+        "guard-for-in": "off",
+        "indent": "off",
+        "new-cap": "off",
+        "max-len": ["error", {
+            "code": 100
+        }],
+        "no-multi-spaces": "off",
+        "no-var": "off",
+        "prefer-const": "off",
+        "prefer-rest-params": "off"
+    }
+}

@@ -19,49 +19,49 @@ var lct = require('../../api.js');
 var TestImage = require('../helpers/test-image.js');
 
 /**
- * Create an instance of lct.Landsat8, replacing the backing collection with the
+ * Create an instance of lct.Landsat5, replacing the backing collection with the
  * specified one.
  *
  * @param {ee.ImageCollection} testCollection
- * @return {!lct.Landsat8}
+ * @return {!lct.Landsat5}
  */
-function TestLandsat8(testCollection) {
-  var l8 = lct.Landsat8();
-  l8.collection_ = testCollection;
-  return l8;
+function TestLandsat5(testCollection) {
+  var l5 = lct.Landsat5();
+  l5.collection_ = testCollection;
+  return l5;
 }
 
-withEarthEngine('Landsat8', function() {
+withEarthEngine('Landsat5', function() {
   it('tasseledCap', function(done) {
     var INPUT_PIXEL_VALUES = {
-      B2: 2000,
-      B3: 3000,
-      B4: 4000,
-      B5: 5000,
-      B6: 6000,
+      B1: 2000,
+      B2: 3000,
+      B3: 4000,
+      B4: 5000,
+      B5: 6000,
       B7: 7000
     };
 
     // Output should have the input values, plus these.
     var EXPECTED_VALUES = Object.assign({}, INPUT_PIXEL_VALUES, {
-      TC1: 10492.7,
-      TC2: -541,
-      TC3: -3550.7,
-      TC4: -658,
-      TC5: 3908.3,
-      TC6: -535
+      TC1: 10222.6,
+      TC2: -180.9,
+      TC3: 2514.4,
+      TC4: -1528.5,
+      TC5: 1731.7,
+      TC6: 242.8
     });
 
-    var l8 = TestLandsat8(ee.ImageCollection([TestImage.create(INPUT_PIXEL_VALUES)]));
-    var tc = l8.addTasseledCap();
+    var l5 = TestLandsat5(ee.ImageCollection([TestImage.create(INPUT_PIXEL_VALUES)]));
+    var tc = l5.addTasseledCap();
 
-    // Verify cloud shadow-free pixel was returned.
+    // Verify expected TC values.
     var image = tc.getImageCollection().mosaic();
     var value = TestImage.reduceConstant(image);
     value.evaluate(function(actual, error) {
       expect(error).toBeUndefined();
       for (key in actual) {
-        expect(actual[key]).toBeCloseTo(EXPECTED_VALUES[key], 1e-3);
+        expect(actual[key]).toBeCloseTo(EXPECTED_VALUES[key], 1);
       }
       done();
     });

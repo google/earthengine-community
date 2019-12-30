@@ -19,17 +19,14 @@ var Dataset = require('users/google/toolkits:landcover/impl/dataset.js').Dataset
 var FMask = require('users/google/toolkits:landcover/impl/fmask.js');
 
 var COMMON_BAND_NAMES = {
-  'B1': 'coastal',
-  'B2': 'blue',
-  'B3': 'green',
-  'B4': 'red',
-  'B5': 'nir',
-  'B6': 'swir1',
+  'B1': 'blue',
+  'B2': 'green',
+  'B3': 'red',
+  'B4': 'nir',
+  'B5': 'swir1',
+  'B6': 'thermal',
   'B7': 'swir2',
   'B8': 'pan',
-  'B9': 'cirrus',
-  'B10': 'thermal1',
-  'B11': 'thermal2'
 };
 
 var DEFAULT_VIS_PARAMS = {bands: ['B4', 'B3', 'B2'], min: 0, max: 3000, gamma: 1.4};
@@ -38,24 +35,24 @@ var DEFAULT_VIS_PARAMS = {bands: ['B4', 'B3', 'B2'], min: 0, max: 3000, gamma: 1
  * Returns a new Landsat 8 SR dataset instance.
  *
  * @constructor
- * @return {!Landsat8}
+ * @return {!Landsat5}
  */
-var Landsat8 = function() {
+var Landsat5 = function() {
   // Constructor safety.
-  if (!(this instanceof Landsat8)) {
-    return new Landsat8();
+  if (!(this instanceof Landsat5)) {
+    return new Landsat5();
   }
 
   // TODO(gino-m): Accept `type` "SR"|"TOA".
   Dataset.call(
-      this, ee.ImageCollection('LANDSAT/LC08/C01/T1_SR'), DEFAULT_VIS_PARAMS);
+      this, ee.ImageCollection('LANDSAT/LT05/C01/T1_SR'), DEFAULT_VIS_PARAMS);
 };
 
-// Extend Dataset class. This causes Landsat8 to inherit all method and
+// Extend Dataset class. This causes Landsat5 to inherit all method and
 // properties of Dataset.
-Landsat8.prototype = Object.create(Dataset.prototype);
+Landsat5.prototype = Object.create(Dataset.prototype);
 
-Landsat8.prototype.COMMON_BAND_NAMES = COMMON_BAND_NAMES;
+Landsat5.prototype.COMMON_BAND_NAMES = COMMON_BAND_NAMES;
 
 /**
  * Masks clouds and shadows using relevant bits in the `pixel_qa` band. In
@@ -65,13 +62,12 @@ Landsat8.prototype.COMMON_BAND_NAMES = COMMON_BAND_NAMES;
  * Returns the dataset with the masks applied.
  *
  * @override
- * @return {!Landsat8}
+ * @return {!Landsat5}
  */
-Landsat8.prototype.maskCloudsAndShadows = function() {
+Landsat5.prototype.maskCloudsAndShadows = function() {
   this.collection_ = this.collection_.map(FMask.maskCloudsAndShadows);
   return this;
 };
-
 
 /**
  * Returns the TasseledCap coefficients specific to Landsat 8.
@@ -83,15 +79,15 @@ Landsat8.prototype.maskCloudsAndShadows = function() {
  * Coefficients are in the order: [blue, green, red, nir, swir1, swir2]
  * @override
  */
-Landsat8.prototype.getTasseledCapCoefficients_ = function() {
+Landsat5.prototype.getTasseledCapCoefficients_ = function() {
   return [
-    [0.3029, 0.2786, 0.4733, 0.5599, 0.5080, 0.1872], // Brightness
-    [-0.2941, -0.2430, -0.5424, 0.7276, 0.0713, -0.160], // Greenness
-    [0.1511, 0.1973, 0.3283, 0.3407, -0.7117, -0.4559], // Wetness
-    [-0.8239, 0.0849, 0.4396, -0.0580, 0.2013, -0.2773], // TC4
-    [-0.3294, 0.0557, 0.1056, 0.1855, -0.4349, 0.8085], // TC5
-    [0.1079, -0.9023, 0.4119, 0.0575, -0.0259, 0.0252] // TC6
-  ];
+        [0.2043, 0.4158, 0.5524, 0.5741, 0.3124, 0.2303],      //  Brightness
+        [-0.1603, -0.2819, -0.4934, 0.7940, 0.0002, -0.1446],  //  Greenness
+        [0.0315, 0.2021, 0.3102, 0.1594, 0.6806, -0.6109],     //  Wetness
+        [-0.2117, -0.0284, 0.1302, -0.1007, 0.6529, -0.7078],  //  TC4
+        [-0.8669, -0.1835, 0.3856, 0.0408, 0.1132, 0.2272],    //  TC5
+        [0.3677, -0.8200, 0.4354, 0.0518, 0.0066, -0.0104],    //  TC6
+      ];
 };
 
-exports.Landsat8 = Landsat8;
+exports.Landsat5 = Landsat5;

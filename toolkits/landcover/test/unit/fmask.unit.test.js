@@ -15,11 +15,19 @@
  * limitations under the License.
  */
 
-var Landsat8 = require('../../api.js').Landsat8;
+var FMask = require('../../impl/fmask.js');
 
-withEarthEngineStub('Landsat8', function() {
-  it('getTasseledCapCoefficients_() returns coefficients', function() {
-    // There are 6 bands in the TC transformation.  There should be 6 coefficients.
-    expect(new Landsat8('SR').getTasseledCapCoefficients_().length).toEqual(6);
+withEarthEngineStub('FMask', function() {
+  it('applyCloudAndShadowBitMasks() updates mask', function() {
+    var originalImage = ee.Image(0);
+
+    var newImage = FMask.maskCloudsAndShadows(originalImage);
+
+    var qa = originalImage.select(FMask.QA_BAND);
+    var mask = qa.bitwiseAnd(FMask.CLOUD_SHADOW_BIT_MASK)
+                   .eq(0)
+                   .and(qa.bitwiseAnd(FMask.CLOUD_BIT_MASK).eq(0));
+    var expected = originalImage.updateMask(mask);
+    expect(newImage).toEqual(expected);
   });
 });

@@ -34,12 +34,12 @@ function TestLandsat5(testCollection) {
 withEarthEngine('Landsat5', function() {
   it('tasseledCap', function(done) {
     var INPUT_PIXEL_VALUES = {
-      B1: 2000,
-      B2: 3000,
-      B3: 4000,
-      B4: 5000,
-      B5: 6000,
-      B7: 7000
+      blue: 2000,
+      green: 3000,
+      red: 4000,
+      nir: 5000,
+      swir1: 6000,
+      swir2: 7000
     };
 
     // Output should have the input values, plus these.

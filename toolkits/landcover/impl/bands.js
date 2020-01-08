@@ -19,6 +19,10 @@
 
 var NamedArgs = require('users/google/toolkits:landcover/impl/named-args.js').NamedArgs;
 
+var DATE_BANDNAME = 'date';
+var DAY_OF_YEAR_BANDNAME = 'doy';
+var FRACTIONAL_YEAR_BANDNAME = 'fyear';
+
 var SPECTRAL_INDEX_EXPRESSIONS = {
   // Note, this is a literal dictionary so we can check for the existence
   // of a given spectral index before sending the query.
@@ -101,7 +105,7 @@ function addDateBand(collection) {
   collection = args.collection;
   return collection.map(function(img) {
     var date = ee.Image.constant(img.date().millis())
-        .rename('date').long();
+        .rename(DATE_BANDNAME).long();
     return img.addBands(date);
   });
 }
@@ -118,7 +122,7 @@ function addDayOfYearBand(collection) {
   collection = args.collection;
   return collection.map(function(img) {
     var doy = ee.Image.constant(img.date().getRelative('day', 'year'))
-        .rename('doy').int();
+        .rename(DAY_OF_YEAR_BANDNAME).int();
     return img.addBands(doy);
   });
 }
@@ -136,7 +140,7 @@ function addFractionalYearBand(collection) {
   return collection.map(function(img) {
     var date = img.date();
     var fYear = date.get('year').double().add(img.date().getFraction('year'));
-    var band = ee.Image.constant(fYear).rename('fYear').double();
+    var band = ee.Image.constant(fYear).rename(FRACTIONAL_YEAR_BANDNAME).double();
     return img.addBands(band);
   });
 }
@@ -155,6 +159,8 @@ function addFractionalYearBand(collection) {
  * @return {!ee.Image} The transformed bands.
  */
 function matrixMultiply(image, coef, bandNames) {
+  // TODO(gorelick): Should this also return bandnames for Dataset.bands?
+
   // Create some default band names if none were specified.
   bandNames = bandNames || generateBandNames('mmult', image.bandNames().length());
 
@@ -179,9 +185,12 @@ function generateBandNames(prefix, count) {
 }
 
 exports.Bands = {
+  DATE_BANDNAME: DATE_BANDNAME,
+  DAY_OF_YEAR_BANDNAME: DAY_OF_YEAR_BANDNAME,
+  FRACTIONAL_YEAR_BANDNAME: FRACTIONAL_YEAR_BANDNAME,
   getSpectralIndices: getSpectralIndices,
   addDateBand: addDateBand,
   addDayOfYearBand: addDayOfYearBand,
   addFractionalYearBand: addFractionalYearBand,
-  matrixMultiply: matrixMultiply
+  matrixMultiply: matrixMultiply,
 };

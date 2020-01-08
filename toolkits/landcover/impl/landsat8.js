@@ -2,76 +2,62 @@
  * @license
  * Copyright 2019 The Google Earth Engine Community Authors
  *
- * Licensed under the Apache License, Version 2.0 (the "License");
+ * Licensed under the Apache License, Version 2.0 (the 'License');
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
  *    https://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
+ * distributed under the License is distributed on an 'AS IS' BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
 
-var Dataset = require('users/google/toolkits:landcover/impl/dataset.js').Dataset;
-var FMask = require('users/google/toolkits:landcover/impl/fmask.js');
-
-var COMMON_BAND_NAMES = {
-  'B1': 'coastal',
-  'B2': 'blue',
-  'B3': 'green',
-  'B4': 'red',
-  'B5': 'nir',
-  'B6': 'swir1',
-  'B7': 'swir2',
-  'B8': 'pan',
-  'B9': 'cirrus',
-  'B10': 'thermal1',
-  'B11': 'thermal2'
-};
-
-var DEFAULT_VIS_PARAMS = {bands: ['B4', 'B3', 'B2'], min: 0, max: 3000, gamma: 1.4};
+var Landsat = require('users/gorelick/toolkits:landcover/impl/landsat.js').Landsat;
 
 /**
  * Returns a new Landsat 8 SR dataset instance.
- *
  * @constructor
+ * @param {!ee.ImageCollection} collection The collection backing this dataset.
  * @return {!Landsat8}
  */
-var Landsat8 = function() {
+var Landsat8 = function(collection) {
   // Constructor safety.
   if (!(this instanceof Landsat8)) {
-    return new Landsat8();
+    return new Landsat8(collection);
   }
 
-  // TODO(gino-m): Accept `type` "SR"|"TOA".
-  Dataset.call(
-      this, ee.ImageCollection('LANDSAT/LC08/C01/T1_SR'), DEFAULT_VIS_PARAMS);
+  // TODO(gino-m): Accept `type` 'SR'|'TOA'.
+  collection = collection || ee.ImageCollection('LANDSAT/LC08/C01/T1_SR');
+  Landsat.call(this, collection);
 };
 
-// Extend Dataset class. This causes Landsat8 to inherit all method and
-// properties of Dataset.
-Landsat8.prototype = Object.create(Dataset.prototype);
+// Extend Landsat class.
+Landsat8.prototype = Object.create(Landsat.prototype);
 
-Landsat8.prototype.COMMON_BAND_NAMES = COMMON_BAND_NAMES;
+/** QA values indicating clear or water pixels, no clouds. */
+Landsat8.prototype.VALID_QA_VALUES = [322, 386, 324, 388, 836, 900];
 
-/**
- * Masks clouds and shadows using relevant bits in the `pixel_qa` band. In
- * Landsat 8 datasets, the pixel QA bits are generated using the CFMASK
- * algorithm.
- *
- * Returns the dataset with the masks applied.
- *
- * @override
- * @return {!Landsat8}
- */
-Landsat8.prototype.maskCloudsAndShadows = function() {
-  this.collection_ = this.collection_.map(FMask.maskCloudsAndShadows);
-  return this;
+/** All bands in this dataset */
+Landsat8.prototype.bands = [
+    'B1', 'B2', 'B3', 'B4', 'B5', 'B6', 'B7', 'B10', 'B11',
+    'pixel_qa', 'sr_aerosol', 'radsat_qa'
+];
+
+/** The 'common' band names and their scaling factors. */
+Landsat8.prototype.COMMON_BANDS = {
+  'B1': {commonName: 'coastal', scaling: 0.0001},
+  'B2': {commonName: 'blue', scaling: 0.0001},
+  'B3': {commonName: 'green', scaling: 0.0001},
+  'B4': {commonName: 'red', scaling: 0.0001},
+  'B5': {commonName: 'nir', scaling: 0.0001},
+  'B6': {commonName: 'swir1', scaling: 0.0001},
+  'B7': {commonName: 'swir2', scaling: 0.0001},
+  'B10': {commonName: 'thermal1', scaling: 0.1},
+  'B11': {commonName: 'thermal2', scaling: 0.1},
 };
-
 
 /**
  * Returns the TasseledCap coefficients specific to Landsat 8.

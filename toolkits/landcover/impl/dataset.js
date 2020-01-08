@@ -22,16 +22,21 @@ var NamedArgs = require('users/google/toolkits:landcover/impl/named-args.js').Na
 /**
  * Returns a new dataset instance for an arbitrary image collection.
  *
+ * Datasets are convenience wrappers on top of ImageCollection with pass-through
+ * functions into other modules.  They also attemnpt to keep track of the expected
+ * bandnames in the collection.
+ *
  * @constructor
  * @param {!ee.ImageCollection} collection The collection backing this dataset.
- * @param {!ee.data.ImageVisualizationParameters} defaultVisParams The
- *     parameters to be used when adding the resulting collection to a layer for
- *     visualization.
+ * @param {!Array} optBands A list of band names expected in the collection.
  */
-var Dataset = function(collection, defaultVisParams) {
+var Dataset = function(collection, optBands) {
   this.collection_ = collection;
-  this.defaultVisParams_ = defaultVisParams;
+  this.bands = optBands || this.bands || [];
 };
+
+/** The expected list of the bands in this dataset. */
+Dataset.prototype.bands = [];
 
 /**
  * Apply a filter to this dataset.
@@ -96,16 +101,6 @@ Dataset.prototype.getImageCollection = function() {
 };
 
 /**
- * Returns the default visualization params to be used when displaying this
- * dataset on a map.
- *
- * @return {!ee.data.ImageVisualizationParameters}
- */
-Dataset.prototype.getDefaultVisParams = function() {
-  return this.defaultVisParams_;
-};
-
-/**
  * Creates a collection of composite images based on fixed time intervals.
  * Adds a 'date' band to each input image that contains the date of the
  * observation and an 'observations' band to the composite that contains the
@@ -145,49 +140,8 @@ Dataset.prototype.toTemporalComposites = function(
  */
 Dataset.prototype.toMedoidComposite = function(bands) {
   var args = NamedArgs.extractFromFunction(Dataset.prototype.createMedoidComposite, arguments);
-  bands = args.bands;
+  bands = ee.List(args.bands);
   return Composites.createMedoidComposite(this.collection_, bands);
-};
-
-/**
- * Returns the list of 'common' band names.
- * @return {Array<string>} the list of band names.
- */
-Dataset.prototype.getCommonBandNames = function() {
-  return ee.Dictionary(this.COMMON_BAND_NAMES).values();
-};
-
-/**
- * Get the list of bands names corresponding to a list of wanted 'common' bands.
- * If the wanted bands are in "have", they're used directly, otherwise they're renamed.
- *
- * @param {Array<string>=} want The 'common' bands that are wanted.  If undefined, uses
- *     all common bands.
- * @param {Array<string>=} have The bands already available.  If undefined, no bands are assumed.
- * @return {Array<string>} The list of band names to use to get the wanted common bands.
- */
-Dataset.prototype.lookupCommonBandNames = function(want, have) {
-  var args = NamedArgs.extractFromFunction(Dataset.prototype.lookupCommonBandNames, arguments);
-  var common = ee.Dictionary(this.COMMON_BAND_NAMES);
-  want = args.want || common.values();
-  have = args.have || [];
-
-  // Generate the reverse lookup table.
-  var lookup = ee.Dictionary.fromLists(common.values(), common.keys());
-
-  var unwanted = ee.List(have).removeAll(want);
-  var alreadyHave = ee.List(have).removeAll(unwanted);
-
-  // If a desired band already exists, overwrite the lookup table with the same band name.
-  lookup = lookup.combine(ee.Dictionary.fromLists(alreadyHave, alreadyHave), true);
-  // Everything else in want just maps to itself, if it's not already there.
-  lookup = lookup.combine(ee.Dictionary.fromLists(want, want), false);
-
-  // Do the lookup.
-  var bandsToUse = ee.List(want).map(function(name) {
-    return lookup.get(name);
-  });
-  return bandsToUse;
 };
 
 /**
@@ -200,51 +154,15 @@ Dataset.prototype.lookupCommonBandNames = function(want, have) {
 Dataset.prototype.addBandIndices = function(var_names) {
   var indices = Array.prototype.slice.call(arguments);
 
-  // Compute the transformation to common band names.
-  var dstBands = this.getCommonBandNames();
-  var srcBands = this.lookupCommonBandNames(dstBands, this.collection_.first().bandNames());
-
   var output = this.collection_.map(function(image) {
-    // Get the 'common' bands and compute the spectral indices.
-    var renamed = image.select(srcBands, dstBands);
-    var bands = Bands.getSpectralIndices(renamed, indices);
-    return image.addBands(bands);
+    var results = Bands.getSpectralIndices(image, indices);
+    return image.addBands(results);
   });
 
+  this.bands = ee.List(this.bands).cat(indices);
   this.collection_ = output;
   return this;
 };
-
-/**
- * Add the Tasseled Cap transformation to each image in the dataset.
- * See http://doi.org/10.1080/2150704X.2014.915434 for more information about Tasseled Cap.
- *
- * Each dataset subclass will have its own set of Tasseled Cap coefficients if it's supported.
- * The output bands will be named: [TC1, TC2, TC3, TC4, TC5, TC6];
- *
- * @return {!Dataset}
- */
-Dataset.prototype.addTasseledCap = function() {
-  var coef = this.getTasseledCapCoefficients_();
-  if (!coef) {
-    throw new Error('Dataset does not support Tasseled Cap transformation.');
-  }
-  var srcBands = ['blue', 'green', 'red', 'nir', 'swir1', 'swir2'];
-  var dstBands = ['TC1', 'TC2', 'TC3', 'TC4', 'TC5', 'TC6'];
-
-  // Figure out which bands correspond to the desired srcBands.
-  var subset = this.lookupCommonBandNames(srcBands, this.collection_.first().bandNames());
-
-  var output = this.collection_.map(function(image) {
-    // Select the subset of bands needed and compute the transform.
-    var tc = Bands.matrixMultiply(image.select(subset), coef, dstBands);
-    return image.addBands(tc);
-  });
-
-  this.collection_ = output;
-  return this;
-};
-
 
 /**
  * Adds a band (date) to each image in the dataset's collection,
@@ -254,6 +172,7 @@ Dataset.prototype.addTasseledCap = function() {
  */
 Dataset.prototype.addDateBand = function() {
   this.collection_ = Bands.addDateBand(this.collection_);
+  this.bands = ee.List(this.bands).push(Bands.DATE_BANDNAME);
   return this;
 };
 
@@ -265,6 +184,7 @@ Dataset.prototype.addDateBand = function() {
  */
 Dataset.prototype.addDayOfYearBand = function() {
   this.collection_ = Bands.addDayOfYearBand(this.collection_);
+  this.bands = ee.List(this.bands).push(Bands.DAY_OF_YEAR_BANDNAME);
   return this;
 };
 
@@ -276,32 +196,27 @@ Dataset.prototype.addDayOfYearBand = function() {
  */
 Dataset.prototype.addFractionalYearBand = function() {
   this.collection_ = Bands.addFractionalYearBand(this.collection_);
+  this.bands = ee.List(this.bands).push(Bands.FRACTIONAL_YEAR_BANDNAME);
   return this;
 };
 
 /**
- * Generic interface for applying cloud and shadow shadow masks to a
- * collection. Subclasses that support this operation should override this
- * method to provide a default implementation (e.g., CFMASK). Subclasses may
- * also specify additional arguments to control which methodology is used and
- * related parameters.
+ * Merge two datasets, producing a new generic dataset.
+ * Any bands that are not in both datasets are removed before the merge.
  *
- * Subclasses must return a new instance of the dataset with the masks
- * applied.
+ * @param {!Dataset} other The Dataset to merge with this one.
+ * @return {!Dataset}
  */
-Dataset.prototype.maskCloudsAndShadows = function() {
-  throw new Error('Unimplemented method');
-};
+Dataset.prototype.merge = function(other) {
+  var other = NamedArgs.extractFromFunction(Dataset.prototype.merge, arguments).other;
 
-/**
- * Interface for fetching Tasseled Cap Coefficients.
- * Returns null so the caller can check for support.
- *
- * @protected
- * @return {?Array<Array<number>>} The coefficients specific to this dataset.
- */
-Dataset.prototype.getTasseledCapCoefficients_ = function() {
-  return null;
+  /** Find the intersection of elements between the two lists of bandnames. */
+  var common = ee.List(this.bands).filter(ee.Filter.inList('item', other.bands));
+  var c1 = this.getImageCollection().select(common);
+  var c2 = other.getImageCollection().select(common);
+  var dataset = new Dataset(c1.merge(c2));
+  dataset.bands = common;
+  return dataset;
 };
 
 exports.Dataset = Dataset;

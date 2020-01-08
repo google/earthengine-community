@@ -26,20 +26,18 @@ var TestImage = require('../helpers/test-image.js');
  * @return {!lct.Landsat8}
  */
 function TestLandsat8(testCollection) {
-  var l8 = lct.Landsat8();
-  l8.collection_ = testCollection;
-  return l8;
+  return lct.Landsat8(testCollection);
 }
 
 withEarthEngine('Landsat8', function() {
   it('tasseledCap', function(done) {
     var INPUT_PIXEL_VALUES = {
-      B2: 2000,
-      B3: 3000,
-      B4: 4000,
-      B5: 5000,
-      B6: 6000,
-      B7: 7000
+      blue: 2000,
+      green: 3000,
+      red: 4000,
+      nir: 5000,
+      swir1: 6000,
+      swir2: 7000
     };
 
     // Output should have the input values, plus these.

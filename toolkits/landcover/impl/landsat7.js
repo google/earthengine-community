@@ -2,71 +2,59 @@
  * @license
  * Copyright 2019 The Google Earth Engine Community Authors
  *
- * Licensed under the Apache License, Version 2.0 (the "License");
+ * Licensed under the Apache License, Version 2.0 (the 'License');
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
  *    https://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
+ * distributed under the License is distributed on an 'AS IS' BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
 
-var Dataset = require('users/google/toolkits:landcover/impl/dataset.js').Dataset;
-var FMask = require('users/google/toolkits:landcover/impl/fmask.js');
-
-var COMMON_BAND_NAMES = {
-  'B1': 'blue',
-  'B2': 'green',
-  'B3': 'red',
-  'B4': 'nir',
-  'B5': 'swir1',
-  'B6': 'thermal',
-  'B7': 'swir2',
-  'B8': 'pan',
-};
-
-var DEFAULT_VIS_PARAMS = {bands: ['B3', 'B2', 'B1'], min: 0, max: 3000, gamma: 1.4};
+var Landsat = require('users/gorelick/toolkits:landcover/impl/landsat.js').Landsat;
 
 /**
  * Returns a new Landsat 7 SR dataset instance.
  *
  * @constructor
+ * @param {!ee.ImageCollection} collection The collection backing this dataset.
  * @return {!Landsat7}
  */
-var Landsat7 = function() {
+var Landsat7 = function(collection) {
   // Constructor safety.
   if (!(this instanceof Landsat7)) {
-    return new Landsat7();
+    return new Landsat7(collection);
   }
 
-  // TODO(gino-m): Accept `type` "SR"|"TOA".
-  Dataset.call(
-      this, ee.ImageCollection('LANDSAT/LE07/C01/T1_SR'), DEFAULT_VIS_PARAMS);
+  // TODO(gino-m): Accept `type` 'SR'|'TOA'.
+  collection = collection || ee.ImageCollection('LANDSAT/LE07/C01/T1_SR');
+  Landsat.call(this, collection);
 };
 
-// Extend Dataset class. This causes Landsat7 to inherit all method and
-// properties of Dataset.
-Landsat7.prototype = Object.create(Dataset.prototype);
+// Extend Landsat class.
+Landsat7.prototype = Object.create(Landsat.prototype);
 
-Landsat7.prototype.COMMON_BAND_NAMES = COMMON_BAND_NAMES;
+/** QA values indicating clear or water pixels, no clouds. */
+Landsat7.prototype.VALID_QA_VALUES = [66, 130, 68, 132];
 
-/**
- * Masks clouds and shadows using relevant bits in the `pixel_qa` band. In
- * Landsat 7 datasets, the pixel QA bits are generated using the CFMASK
- * algorithm.
- *
- * Returns the dataset with the masks applied.
- *
- * @override
- * @return {!Landsat7}
- */
-Landsat7.prototype.maskCloudsAndShadows = function() {
-  this.collection_ = this.collection_.map(FMask.maskCloudsAndShadows);
-  return this;
+/** All bands in this dataset */
+Landsat7.prototype.bands = [
+  'B1', 'B2', 'B3', 'B4', 'B5', 'B6', 'B7',
+  'sr_atmos_opacity', 'sr_cloud_qa', 'pixel_qa', 'radsat_qa'
+];
+
+Landsat7.prototype.COMMON_BANDS = {
+  'B1': {commonName: 'blue', scaling: 0.0001},
+  'B2': {commonName: 'green', scaling: 0.0001},
+  'B3': {commonName: 'red', scaling: 0.0001},
+  'B4': {commonName: 'nir', scaling: 0.0001},
+  'B5': {commonName: 'swir1', scaling: 0.0001},
+  'B6': {commonName: 'thermal1', scaling: 0.1},
+  'B7': {commonName: 'swir2', scaling: 0.0001},
 };
 
 /**

@@ -27,9 +27,9 @@ Time series animations of Earth observation imagery are captivating and
 engaging. In this tutorial, you'll learn how to generate an animated GIF
 representing 20-year median NDVI for serial 16-day MODIS composites spanning
 January 1st through December 31st. The following image is an example of the
-resulting animation. 
+resulting animation.
 
-![MODIS NDVI GIF](https://storage.googleapis.com/earthengine-community/tutorials/modis-ndvi-time-series-animation/modis-ndvi-time-series-animation.gif)
+![MODIS NDVI GIF](modis-ndvi-time-series-animation.gif)
 
 ## Context
 

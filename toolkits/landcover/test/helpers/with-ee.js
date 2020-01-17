@@ -52,12 +52,14 @@ global.withEarthEngine = function(testDescription, test) {
       authenticate(function() {
         ee.initialize(null, null, done);
       });
+      if (test.beforeAll) test.beforeAll();
     });
 
     beforeEach(function() {
       // The maximum time an individual remote test case is allowed to run
       // before it fails with a timeout.
       jasmine.DEFAULT_TIMEOUT_INTERVAL = 5000;
+      if (test.beforeEach) test.beforeEach();
     });
 
     // Run the provided test suite.

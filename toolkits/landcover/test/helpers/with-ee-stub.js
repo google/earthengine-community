@@ -56,6 +56,11 @@ global.withEarthEngineStub = function(testDescription, test) {
     beforeAll(function() {
       mockNetworkCalls();
       ee.initialize();
+      if (test.beforeAll) test.beforeAll();
+    });
+
+    beforeEach(function() {
+      if (test.beforeEach) test.beforeEach();
     });
 
     // Invoke the test or set of tests.

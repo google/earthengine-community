@@ -314,42 +314,36 @@ Map.addLayer(countyConnectDiss, {color: 'red'}, 'CT dissolved');
 Map.addLayer(circle, {color: 'orange'}, 'Circle');
 ```
 
-Using the bounds function, we can find the rectangle that emcompasses the southernmost, westernmost, easternmost, and northernmost points of the geometry.
+Using the `bounds()` function, we can find the rectangle that emcompasses the southernmost, westernmost, easternmost, and northernmost points of the geometry.
 ```javascript
-// Find the rectangle that emcompasses the southernmost, westernmost,
-// easternmost, and northernmost points of the geometry.
 var bound = countyConnectDiss.geometry().bounds();
 // Add the layer to the map with a specified color and layer name.
 Map.addLayer(bound, {color: 'yellow'}, 'Bounds');
 ```
 
-In the same vein, but not restricting ourselves to a rectangle, a convex hull is a polygon covering the extremities of the geometry.
+In the same vein, but not restricting ourselves to a rectangle, a convex hull (`convexHull()`) is a polygon covering the extremities of the geometry.
 ```javascript
-// Find the polygon covering the extremities of the geometry.
 var convex = countyConnectDiss.geometry().convexHull();
 // Add the layer to the map with a specified color and layer name.
 Map.addLayer(convex, {color: 'blue'}, 'Convex Hull');
 ```
 
-Moving on to some basic operations to combine multiple geometries, the intersection is the area common to two or more geometries.
+Moving on to some basic operations to combine multiple geometries, the intersection (`intersection()`) is the area common to two or more geometries.
 ```javascript
-// Find the area common to two or more geometries.
 var intersect = convex.intersection(circle, 100);
 // Add the layer to the map with a specified color and layer name.
 Map.addLayer(intersect, {color: 'green'}, 'Circle and convex intersection');
 ```
-The union is the area encompassing two or more features.
+The union (`union()`) is the area encompassing two or more features.
 ```javascript
-// Find the area encompassing two or more features; number is the maximum
-// error in meters.
+// number is the maximum error in meters.
 var union = convex.union(circle, 100);
 // Add the layer to the map with a specified color and layer name.
 Map.addLayer(union, {color: 'purple'}, 'Circle and convex union');
 ```
 
-We can also find the spatial difference between two geometries.
+We can also find the spatial difference (`difference()`) between two geometries.
 ```javascript
-// Find the difference between two geometries
 var diff=convex.difference(circle, 100);
 // Add the layer to the map with a specified color and layer name.
 Map.addLayer(diff, {color: 'purple'}, 'Circle and convex difference');
@@ -363,7 +357,7 @@ print(ar);
 // Find length of line geometry (You get zero since this is a polygon).
 var length = countyConnectDiss.geometry().length();
 print(length);
-// Find permeter of feature.
+// Find perimeter of feature.
 var peri = countyConnectDiss.geometry().perimeter();
 print(peri);
 ```

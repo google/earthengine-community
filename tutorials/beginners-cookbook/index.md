@@ -179,6 +179,7 @@ ee.Geometry.MultiLineString([[[0, 45], [5, 6], [70, -56]], [[0, -45], [-5, -6], 
 ```
 
 ### Linear ring
+
 ```javascript
 var linRin = ee.Geometry.LinearRing(0, 45, 5, 6, 70, -56, 0, 45);
 ```
@@ -227,6 +228,7 @@ var result = functionName(input);
 ```
 
 ### Mapping a function over a collection
+
 ```javascript
 var result = input.map(functionName);
 ```
@@ -382,10 +384,13 @@ Map.addLayer(mappedCentroid, {color: 'blue'}, 'Mapped buffed centroids');
 ```javascript
 var feat = ee.Feature(geometry, {Name: 'featureName', Size: 500});
 ```
+
 ### Creating a feature from an existing feature, renaming a property
+
 ```javascript
 var featNew = feature.select(['name'], ['descriptor']);
 ```
+
 ### Extracting values of a property from a Feature
 
 ```javascript
@@ -519,6 +524,7 @@ newImage = oldImage.leftShift(valueOfShift);
 ```javascript
 var outputDictionary = varImage.reduceRegion(reducer, geometry, scale);
 ```
+
 ---
 
 ## Operations on image collections
@@ -624,9 +630,11 @@ var masked = clipped.updateMask(mask);
 Map.addLayer(masked,
   {min: 10, max: 30, palette: ['blue', 'green', 'red']}, 'LST_masked');
 ```
+
 ## Exporting data
 
 ### Exporting a collection to Google Drive, Earth Engine Asset, or Google Cloud
+
 ```javascript
 Export.image.toDrive({
   collection: varImage, description: 'fileName', region: geometry, scale: 1000

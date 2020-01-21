@@ -293,10 +293,11 @@ var interGeo = geometry1.intersection(geometry2);
 var unGeo = geometry1.union(geometry2);
 ```
 
-#### Example: Geometry operations [[Open In Code Editor](https://code.earthengine.google.com/7af6670af1400dbfbdfd457094cce392)]
+#### Example: Geometry operations [[Open In Code Editor](https://code.earthengine.google.com/566107f2dbdefbb82f4ef797e5d5c938)]
 
 Let's run of some these operations over the the state of Connecticut, US using geometries of the public US counties feature collection available on Earth Engine:
 
+We begin by zooming to the region of interest and loading/creating the geometries of interest
 ```javascript
 // Set map center over the state of CT.
 Map.setCenter(-72.6978, 41.6798, 8);
@@ -306,30 +307,56 @@ var countyData=ee.FeatureCollection('TIGER/2018/Counties');
 var countyConnect=countyData.filter(ee.Filter.eq('STATEFP', '09'));
 // Get the union of all the county geometries in Connecticut.
 var countyConnectDiss=countyConnect.union();
-// Add the layer to the map with a specified color and layer name.
-Map.addLayer(countyConnectDiss, {color: 'red'}, 'Chicago dissolved');
+//Create a circular area using the first county in the Connecticut  FeatureCollection.
+var circle=ee.Feature(countyConnect.first()).geometry().centroid().buffer(50000)
+// Add the layers to the map with a specified color and layer name.
+Map.addLayer(countyConnectDiss, {color: 'red'}, 'CT dissolved');
+Map.addLayer(circle, {color: 'orange'}, 'Circle');
+```
+
+Using the bounds function, we can find the rectangle that emcompasses the southernmost, westernmost, easternmost, and northernmost points of the geometry, which extract from the countyConnectDiss feature.
+```javascript
 // Find the rectangle that emcompasses the southernmost, westernmost,
-// easternmost, and northernmost points of the feature.
+// easternmost, and northernmost points of the geometry.
 var bound = countyConnectDiss.geometry().bounds();
 // Add the layer to the map with a specified color and layer name.
 Map.addLayer(bound, {color: 'yellow'}, 'Bounds');
-// Find the polygon covering the extremities of the feature.
+```
+
+In the same vein, but not restricting ourselves to a rectangle, a convex hull is a polygon covering the extremities of the geometry.
+```javascript
+// Find the polygon covering the extremities of the geometry.
 var convex = countyConnectDiss.geometry().convexHull();
 // Add the layer to the map with a specified color and layer name.
 Map.addLayer(convex, {color: 'blue'}, 'Convex Hull');
-// Find the area common to two or more features.
-var intersect = bound.intersection(convex, 100);
+```
+
+Moving on to some basic operations to combine multiple geometries, the intersection is the area common to two or more geometries.
+```javascript
+// Find the area common to two or more geometries.
+var intersect = convex.intersection(circle, 100);
 // Add the layer to the map with a specified color and layer name.
-Map.addLayer(intersect, {color: 'green'}, 'Bound and convex intersection');
+Map.addLayer(intersect, {color: 'green'}, 'Circle and convex intersection');
+```
+The union is the area encompassing two or more features.
+```javascript
 // Find the area encompassing two or more features; number is the maximum
 // error in meters.
-var union = bound.union(convex, 100);
+var union = convex.union(circle, 100);
 // Add the layer to the map with a specified color and layer name.
-Map.addLayer(union, {color: 'purple'}, 'Bound and convex union');
+Map.addLayer(union, {color: 'purple'}, 'Circle and convex union');
+```
+
+We can also find the spatial difference between two geometries.
+```javascript
 // Find the difference between two geometries
-var diff=bound.difference(convex, 100);
+var diff=convex.difference(circle, 100);
 // Add the layer to the map with a specified color and layer name.
-Map.addLayer(diff, {color: 'purple'}, 'Bound and convex difference');
+Map.addLayer(diff, {color: 'purple'}, 'Circle and convex difference');
+```
+Finally, we can calculate and display the area, length, permimeter, etc. of our geometries.
+
+```javascript
 // Find area of feature.
 var ar = countyConnectDiss.geometry().area();
 print(ar);

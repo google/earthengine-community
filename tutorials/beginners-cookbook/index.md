@@ -297,7 +297,7 @@ var unGeo = geometry1.union(geometry2);
 
 Let's run of some these operations over the the state of Connecticut, US using geometries of the public US counties feature collection available on Earth Engine:
 
-We begin by zooming to the region of interest and loading/creating the geometries of interest
+We begin by zooming to the region of interest and loading/creating the geometries of interest by extracting them from the corresponding features.
 ```javascript
 // Set map center over the state of CT.
 Map.setCenter(-72.6978, 41.6798, 8);
@@ -314,7 +314,7 @@ Map.addLayer(countyConnectDiss, {color: 'red'}, 'CT dissolved');
 Map.addLayer(circle, {color: 'orange'}, 'Circle');
 ```
 
-Using the bounds function, we can find the rectangle that emcompasses the southernmost, westernmost, easternmost, and northernmost points of the geometry, which extract from the countyConnectDiss feature.
+Using the bounds function, we can find the rectangle that emcompasses the southernmost, westernmost, easternmost, and northernmost points of the geometry.
 ```javascript
 // Find the rectangle that emcompasses the southernmost, westernmost,
 // easternmost, and northernmost points of the geometry.

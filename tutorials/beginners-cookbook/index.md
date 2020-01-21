@@ -293,7 +293,7 @@ var interGeo = geometry1.intersection(geometry2);
 var unGeo = geometry1.union(geometry2);
 ```
 
-#### Example: Geometry operations [[Open In Code Editor](https://code.earthengine.google.com/bc578b92521c5bdd140f09feaa2e9377)]
+#### Example: Geometry operations [[Open In Code Editor](https://code.earthengine.google.com/7af6670af1400dbfbdfd457094cce392)]
 
 Let's run of some these operations over the the state of Connecticut, US using geometries of the public US counties feature collection available on Earth Engine:
 

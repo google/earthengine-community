@@ -334,6 +334,7 @@ var intersect = convex.intersection(circle, 100);
 // Add the layer to the map with a specified color and layer name.
 Map.addLayer(intersect, {color: 'green'}, 'Circle and convex intersection');
 ```
+
 The union (`union()`) is the area encompassing two or more features.
 ```javascript
 // number is the maximum error in meters.
@@ -348,8 +349,8 @@ var diff=convex.difference(circle, 100);
 // Add the layer to the map with a specified color and layer name.
 Map.addLayer(diff, {color: 'purple'}, 'Circle and convex difference');
 ```
-Finally, we can calculate and display the area, length, perimeter, etc. of our geometries.
 
+Finally, we can calculate and display the area, length, perimeter, etc. of our geometries.
 ```javascript
 // Find area of feature.
 var ar = countyConnectDiss.geometry().area();
@@ -362,7 +363,7 @@ var peri = countyConnectDiss.geometry().perimeter();
 print(peri);
 ```
 
-#### Example: Mapping over a feature collection [[Open In Code Editor (https://code.earthengine.google.com/73456705983d6801864fabd1c3b9ec50)]
+#### Example: Mapping over a feature collection [[Open In Code Editor](https://code.earthengine.google.com/73456705983d6801864fabd1c3b9ec50)]
 
 By mapping over a collection, one can apply the same operation on every element
 in a collection. For instance, let's run the same geometry operations on every
@@ -382,8 +383,7 @@ var countyConnect=countyData.filter(
 Map.addLayer(countyConnect, {color: 'red'}, 'Original Collection');
 ```
 
-We define the function, which will perform the operation on the geometry
-
+We define the function, which will perform the geometry operation on a feature. Try changing the operation being performed within the function to test what it does to the final output.
 ```javascript
 function performMap(feature) {
  // Reduce number of vertices in geometry; the number is to specify maximum
@@ -397,6 +397,7 @@ function performMap(feature) {
  return center.buffer(5000);
 }
 ```
+
 Finally, we map the defined function over all the features in the collection. This parallelization is generally much faster than performing operations sequentially over each element of the collection.
 ```javascript
 var mappedCentroid = countyConnect.map(performMap);

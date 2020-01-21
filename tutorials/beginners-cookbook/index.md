@@ -422,7 +422,7 @@ var featNew = feature.select(['name'], ['descriptor']);
 var featVal = feature.get('size');
 ```
 
-#### Example: Feature operations
+#### Example: Feature operations [[Open In Code Editor](https://code.earthengine.google.com/043cc41ccb2332494a7d0fbb2bc4d5bc)]
 
 Let's create a feature from scratch and play around with its properties:
 
@@ -607,9 +607,11 @@ Alternatively, using reducers:
 var sumOfImages = imCollection.reduce(ee.Reducer.first());
 ```
 
-#### Example: Image and image collection operations
+#### Example: Image and image collection operations [[Open In Code Editor](https://code.earthengine.google.com/49fabcffcfc92963e51e5dc76d6f4c00)]
 
-Let's analyze images over a region of interest (the counties of Connecticut).
+Let's analyze images over a region of interest (the counties of Connecticut):
+
+As before, we start by loading in the feature and image collections of intersest.
 
 ```javascript
 // Set map center over the state of CT.
@@ -623,6 +625,10 @@ var countyData=ee.FeatureCollection('TIGER/2018/Counties');
 var roi=countyData.filter(ee.Filter.eq('STATEFP', '09'));
 // Examine image collection.
 print(raw);
+```
+
+We select the bands and images in the collection we are interested in.
+```javascript
 // Select a band of the image collection using either indexing or band name.
 var bandSel1 = raw.select(0);
 var bandSel2 = raw.select('LST_Day_1km');
@@ -635,6 +641,10 @@ var limited = raw.limit(50);
 // Print collections.
 print(limited);
 print(bandSel1);
+```
+
+We calculate the mean of all the images in the collection, clip it to the geometry of interest and scale it to convert it from Digital Number to degree Celsius.
+```javascript
 // Calculate mean of all images (pixel-by-pixel) in the collection.
 var mean = bandSel1.mean();
 // Isolate image to region of interest.
@@ -644,6 +654,10 @@ var clipped = mean.clip(roi);
 var calculate = clipped.multiply(0.02).subtract(273.15);
 // Add the layer to the map with a specified color palette and layer name.
 Map.addLayer(calculate, {min: 15, max: 20, palette: ['blue', 'green', 'red']}, 'LST');
+```
+
+We mask out parts of the image to display regions above and below certain temperature thresholds.
+```javascript
 // Select pixels in the image that are greater than 30.8.
 var mask = calculate.gt(18);
 // Add the mask to the map with a layer name.

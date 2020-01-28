@@ -775,10 +775,10 @@ Export.video.toDrive({
 - [EE Ocean Time Series Investigator](https://google.earthengine.app/view/ocean)
 - [Global Surface UHI Explorer](https://yceo.users.earthengine.app/view/uhimap)
 - [Stratifi - cloud-based stratification](https://sabrinaszeto.users.earthengine.app/view/stratifi)
+- [And hundreds more...](https://philippgaertner.github.io/2019/04/earth-engine-apps-inventory/)
 
 ## Additional resources
 
-- [Geospatial Software Design](https://environment.yale.edu/courses/detail/754)
 - [Google Earth Engine API documentation](https://developers.google.com/earth-engine/)
 - [Google Earth Engine Developers forum](https://groups.google.com/forum/#!forum/google-earth-engine-developers)
 - [Example scripts from Prof. Dana Tomlin's handouts for his course on Geospatial Software Design](https://github.com/EEYale/example-scripts)

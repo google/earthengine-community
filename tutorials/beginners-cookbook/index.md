@@ -680,7 +680,8 @@ Export.image.toDrive({
 > `Export.table.toDrive()`, `Export.table.toCloudStorage()`,
 > `Export.video.toCloudStorage()`, `Export.video.toDrive()`.
 
-#### Example: Exporting data
+#### Example: Exporting data [[Open In Code Editor]
+(https://code.earthengine.google.com/0d24f79c87dd148a9d76d09eb7f36300)]
 
 1. Define a function to find the mean value of pixels in each feature of a collection.
 ```javascript
@@ -727,7 +728,8 @@ Export.table.toDrive({
 print(coll);
 ```
 
-## Bonus: Timelapse example
+## Bonus: Timelapse example [[Open In Code Editor]
+(https://code.earthengine.google.com/fe801a6c86891d4e5eee260b85b0e716)]
 
 ```javascript
 // Timelapse example (based on google API example);

@@ -369,7 +369,7 @@ By mapping over a collection, one can apply the same operation on every element
 in a collection. For instance, let's run the same geometry operations on every
 county in Connecticut:
 
-Similar to the previous example, we start by zooming into the map and loading the feature collection of CT counties.
+1. Similar to the previous example, we start by zooming into the map and loading the feature collection of CT counties.
 
 ```javascript
 // Set map center over the state of CT.
@@ -383,7 +383,7 @@ var countyConnect=countyData.filter(
 Map.addLayer(countyConnect, {color: 'red'}, 'Original Collection');
 ```
 
-We define the function, which will perform the geometry operation on a feature. Try changing the operation being performed within the function to test what it does to the final output.
+2. We define the function, which will perform the geometry operation on a feature. Try changing the operation being performed within the function to test what it does to the final output.
 ```javascript
 function performMap(feature) {
  // Reduce number of vertices in geometry; the number is to specify maximum
@@ -398,7 +398,7 @@ function performMap(feature) {
 }
 ```
 
-Finally, we map the defined function over all the features in the collection. This parallelization is generally much faster than performing operations sequentially over each element of the collection.
+3. Finally, we map the defined function over all the features in the collection. This parallelization is generally much faster than performing operations sequentially over each element of the collection.
 ```javascript
 var mappedCentroid = countyConnect.map(performMap);
 // Add the layer to the map with a specified color and layer name.
@@ -611,7 +611,7 @@ var sumOfImages = imCollection.reduce(ee.Reducer.first());
 
 Let's analyze images over a region of interest (the counties of Connecticut):
 
-As before, we start by loading in the feature and image collections of intersest.
+1. As before, we start by loading in the feature and image collections of intersest.
 
 ```javascript
 // Set map center over the state of CT.
@@ -627,7 +627,7 @@ var roi=countyData.filter(ee.Filter.eq('STATEFP', '09'));
 print(raw);
 ```
 
-We select the bands and images in the collection we are interested in.
+2. We select the bands and images in the collection we are interested in.
 ```javascript
 // Select a band of the image collection using either indexing or band name.
 var bandSel1 = raw.select(0);
@@ -643,7 +643,7 @@ print(limited);
 print(bandSel1);
 ```
 
-We calculate the mean of all the images in the collection, clip it to the geometry of interest and scale it to convert it from Digital Number to degree Celsius.
+3. We calculate the mean of all the images in the collection, clip it to the geometry of interest and scale it to convert it from Digital Number to degree Celsius.
 ```javascript
 // Calculate mean of all images (pixel-by-pixel) in the collection.
 var mean = bandSel1.mean();
@@ -656,7 +656,7 @@ var calculate = clipped.multiply(0.02).subtract(273.15);
 Map.addLayer(calculate, {min: 15, max: 20, palette: ['blue', 'green', 'red']}, 'LST');
 ```
 
-We mask out parts of the image to display regions above and below certain temperature thresholds.
+4. We mask out parts of the image to display regions above and below certain temperature thresholds.
 ```javascript
 // Select pixels in the image that are greater than 30.8.
 var mask = calculate.gt(18);
@@ -680,8 +680,9 @@ Export.image.toDrive({
 > `Export.table.toDrive()`, `Export.table.toCloudStorage()`,
 > `Export.video.toCloudStorage()`, `Export.video.toDrive()`.
 
-#### Example: Importing and exporting data
+#### Example: Exporting data
 
+1. Define a function to find the mean value of pixels in each feature of a collection.
 ```javascript
 // Function to find mean of pixels in region of interest.
 var getRegions = function(image) {
@@ -699,9 +700,10 @@ var getRegions = function(image) {
     scale: 1000
   });
 };
-// Load image collection, filter collection to date range, select band of
-// interest, calculate mean of all images in collection, and multiply by
-// scaling factor.
+```
+
+2. Load image collection, filter collection to date range, select band of interest, calculate mean of all images in collection, and multiply by scaling factor.
+```javascript
 var image =
   ee.ImageCollection('MODIS/MYD13A1')
     .filterDate('2002-07-08', '2017-07-08')
@@ -712,7 +714,10 @@ var image =
 print(image);
 // Call function.
 var coll = getRegions(image);
-// Export image to Google Drive.
+```
+
+3. Export the table created to your Google Drive
+```javascript
 Export.table.toDrive({
  collection: coll,
  description: 'NDVI_all',

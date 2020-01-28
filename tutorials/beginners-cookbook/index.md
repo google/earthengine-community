@@ -297,7 +297,7 @@ var unGeo = geometry1.union(geometry2);
 
 Let's run of some these operations over the the state of Connecticut, US using geometries of the public US counties feature collection available on Earth Engine:
 
-We begin by zooming to the region of interest and loading/creating the geometries of interest by extracting them from the corresponding features.
+1. We begin by zooming to the region of interest and loading/creating the geometries of interest by extracting them from the corresponding features.
 ```javascript
 // Set map center over the state of CT.
 Map.setCenter(-72.6978, 41.6798, 8);
@@ -314,28 +314,28 @@ Map.addLayer(countyConnectDiss, {color: 'red'}, 'CT dissolved');
 Map.addLayer(circle, {color: 'orange'}, 'Circle');
 ```
 
-Using the `bounds()` function, we can find the rectangle that emcompasses the southernmost, westernmost, easternmost, and northernmost points of the geometry.
+2. Using the `bounds()` function, we can find the rectangle that emcompasses the southernmost, westernmost, easternmost, and northernmost points of the geometry.
 ```javascript
 var bound = countyConnectDiss.geometry().bounds();
 // Add the layer to the map with a specified color and layer name.
 Map.addLayer(bound, {color: 'yellow'}, 'Bounds');
 ```
 
-In the same vein, but not restricting ourselves to a rectangle, a convex hull (`convexHull()`) is a polygon covering the extremities of the geometry.
+3. In the same vein, but not restricting ourselves to a rectangle, a convex hull (`convexHull()`) is a polygon covering the extremities of the geometry.
 ```javascript
 var convex = countyConnectDiss.geometry().convexHull();
 // Add the layer to the map with a specified color and layer name.
 Map.addLayer(convex, {color: 'blue'}, 'Convex Hull');
 ```
 
-Moving on to some basic operations to combine multiple geometries, the intersection (`intersection()`) is the area common to two or more geometries.
+4. Moving on to some basic operations to combine multiple geometries, the intersection (`intersection()`) is the area common to two or more geometries.
 ```javascript
 var intersect = convex.intersection(circle, 100);
 // Add the layer to the map with a specified color and layer name.
 Map.addLayer(intersect, {color: 'green'}, 'Circle and convex intersection');
 ```
 
-The union (`union()`) is the area encompassing two or more features.
+5. The union (`union()`) is the area encompassing two or more features.
 ```javascript
 // number is the maximum error in meters.
 var union = convex.union(circle, 100);
@@ -343,14 +343,14 @@ var union = convex.union(circle, 100);
 Map.addLayer(union, {color: 'purple'}, 'Circle and convex union');
 ```
 
-We can also find the spatial difference (`difference()`) between two geometries.
+6. We can also find the spatial difference (`difference()`) between two geometries.
 ```javascript
 var diff=convex.difference(circle, 100);
 // Add the layer to the map with a specified color and layer name.
 Map.addLayer(diff, {color: 'purple'}, 'Circle and convex difference');
 ```
 
-Finally, we can calculate and display the area, length, perimeter, etc. of our geometries.
+7. Finally, we can calculate and display the area, length, perimeter, etc. of our geometries.
 ```javascript
 // Find area of feature.
 var ar = countyConnectDiss.geometry().area();

@@ -584,16 +584,10 @@ var outputDictionary = reduceColumns(reducer, selectors);
 var outputImage = reduceNeighborhood(reducer, kernel);
 ```
 
-### Applying a reducer to the neighborhoods of each pixel
-
-```javascript
-var outputImage = reduceNeighborhood(reducer, kernel);
-```
-
 ### Applying a reducer to each element of an array pixel
 
 ```javascript
-var outputImage =arrayAccum(axis, reducer);
+var outputImage = arrayAccum(axis, reducer);
 ```
 
 ### Convert the properties of a vector into a raster

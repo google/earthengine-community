@@ -611,7 +611,7 @@ Alternatively, using reducers:
 var sumOfImages = imCollection.reduce(ee.Reducer.first());
 ```
 
-#### Example: Image and image collection operations [[Open In Code Editor](https://code.earthengine.google.com/18c4b9fee324a0cb70ea6838dde89af8)]
+#### Example: Image and image collection operations [[Open In Code Editor](https://code.earthengine.google.com/bf30f4db0ba76d5d320f8ce183f60eb8)]
 
 Let's analyze images over a region of interest (the counties of Connecticut):
 
@@ -667,10 +667,10 @@ var mask = calculate.gt(18);
 // Add the mask to the map with a layer name.
 Map.addLayer(mask, {}, 'mask');
 // Use selected pixels to update the mask of the whole image.
-var masked = clipped.updateMask(mask);
+var masked = calculate.updateMask(mask);
 // Add the final layer to the map with a specified color palette and layer name.
 Map.addLayer(masked,
-  {min: 10, max: 30, palette: ['blue', 'green', 'red']}, 'LST_masked');
+  {min: 18, max: 25, palette: ['blue', 'green', 'red']}, 'LST_masked');
 ```
 ## Exporting data
 

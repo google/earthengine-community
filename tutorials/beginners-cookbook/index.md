@@ -351,10 +351,14 @@ Map.addLayer(diff, {color: 'brown'}, 'Circle and convex difference');
 ```
 
 <p float="left">
-  <img src="Intersect.png" width="250" />
-  <img src="Union.png" width="250" /> 
-  <img src="Diff.png" width="250" />
+  <img src="Intersect.png" width="300" />
+  <img src="Union.png" width="300" /> 
+  <img src="Diff.png" width="300" />
 </p>
+
+Intersection             |  Union                      | Difference
+:-------------------------:|:-------------------------:|:-------------------------:
+![](Intersect.png)  |  ![](Union.png) |  ![](Diff.png)
 
 **7.** Finally, we can calculate and display the area, length, perimeter, etc. of our geometries.
 ```javascript

@@ -352,7 +352,7 @@ Map.addLayer(diff, {color: 'brown'}, 'Circle and convex difference');
 
 Intersection             |  Union                      | Difference
 :-------------------------:|:-------------------------:|:-------------------------:
-![](Intersect.png)  |  ![](Union.png) |  ![](Diff.png)
+![](intersect.png)  |  ![](union.png) |  ![](diff.png)
 
 **7.** Finally, we can calculate and display the area, length, perimeter, etc. of our geometries.
 ```javascript
@@ -672,6 +672,9 @@ var masked = calculate.updateMask(mask);
 Map.addLayer(masked,
   {min: 18, max: 25, palette: ['blue', 'green', 'red']}, 'LST_masked');
 ```
+![Masked LST image](masked-image.png)
+
+
 ## Exporting data
 
 ### Exporting a collection to Google Drive, Earth Engine Asset, or Google Cloud

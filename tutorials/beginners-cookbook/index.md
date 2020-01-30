@@ -293,7 +293,7 @@ var interGeo = geometry1.intersection(geometry2);
 var unGeo = geometry1.union(geometry2);
 ```
 
-#### Example: Geometry operations [[Open In Code Editor](https://code.earthengine.google.com/fd1629e894ded396e52600de6d7a6d7e)]
+#### Example: Geometry operations [[Open In Code Editor](https://code.earthengine.google.com/7f6026c7a838456212287e7e19589fcf)]
 
 Let's run of some these operations over the the state of Connecticut, US using geometries of the public US counties feature collection available on Earth Engine:
 
@@ -347,7 +347,7 @@ Map.addLayer(union, {color: 'purple'}, 'Circle and convex union');
 ```javascript
 var diff=convex.difference(circle, 100);
 // Add the layer to the map with a specified color and layer name.
-Map.addLayer(diff, {color: 'purple'}, 'Circle and convex difference');
+Map.addLayer(diff, {color: 'brown'}, 'Circle and convex difference');
 ```
 
 **7.** Finally, we can calculate and display the area, length, perimeter, etc. of our geometries.

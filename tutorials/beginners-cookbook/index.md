@@ -350,7 +350,7 @@ var diff=convex.difference(circle, 100);
 Map.addLayer(diff, {color: 'brown'}, 'Circle and convex difference');
 ```
 
-![Geometry Ops](Intersect.png)(Union.png)(Diff.png)
+![Intersect](Intersect.png)![Union](Union.png)![Diff](Diff.png)
 
 
 **7.** Finally, we can calculate and display the area, length, perimeter, etc. of our geometries.

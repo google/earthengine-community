@@ -611,7 +611,7 @@ Alternatively, using reducers:
 var sumOfImages = imCollection.reduce(ee.Reducer.first());
 ```
 
-#### Example: Image and image collection operations [[Open In Code Editor](https://code.earthengine.google.com/49fabcffcfc92963e51e5dc76d6f4c00)]
+#### Example: Image and image collection operations [[Open In Code Editor](https://code.earthengine.google.com/18c4b9fee324a0cb70ea6838dde89af8)]
 
 Let's analyze images over a region of interest (the counties of Connecticut):
 

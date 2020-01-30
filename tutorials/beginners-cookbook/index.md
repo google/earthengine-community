@@ -548,11 +548,66 @@ newImage = oldImage.leftShift(valueOfShift);
 
 > or .rightShift
 
+## Reducers
+
+Reducers are objects in Earth Engine for data aggregation. They can be used for aggregating across time, space, bands, properties, etc. Reducers range from basic statistical indices (like `ee.Reducer.mean()`, `ee.Reducer.stdDev()`, `ee.Reducer.max()`, etc.), to standard measures of covariance (like `ee.Reducer.linearFit()`,`ee.Reducer.spearmansCorrelation()`, `ee.Reducer.spearmansCorrelation()`, etc.), to descriptors of variable distributions (like `ee.Reducer.skew()`, `ee.Reducer.frequencyHistogram()`,`ee.Reducer.kurtosis()`, etc.).
+
+### Reducing an image collection to an image
+
+```javascript
+var outputImage = imCollection.reduce(reducer);
+```
+
 ### Reducing an image to a statistic for an area of interest
 
 ```javascript
 var outputDictionary = varImage.reduceRegion(reducer, geometry, scale);
 ```
+
+Alternatively, `reduceRegions` can be used to compute image statistics for all element of a collection at once:
+
+```javascript
+var outputCollection = varImage.reduceRegions(reducer, collection, scale);
+```
+
+Note that for large collections, this will be less efficient than mapping over the collection and using `reduceRegion`
+
+### Applying a reducer to each element of a collection
+
+```javascript
+var outputDictionary = reduceColumns(reducer, selectors);
+```
+
+### Applying a reducer to the neighborhoods of each pixel
+
+```javascript
+var outputImage = reduceNeighborhood(reducer, kernel);
+```
+
+### Applying a reducer to the neighborhoods of each pixel
+
+```javascript
+var outputImage = reduceNeighborhood(reducer, kernel);
+```
+
+### Applying a reducer to each element of an array pixel
+
+```javascript
+var outputImage =arrayAccum(axis, reducer);
+```
+
+### Convert the properties of a vector into a raster
+
+```javascript
+var outputImage = reduceToImage(properties, reducer);
+```
+
+### Convert a raster into a vector
+
+```javascript
+var outputCollection = reduceToVectors(reducer);
+```
+
 ---
 
 ## Operations on image collections

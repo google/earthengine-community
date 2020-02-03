@@ -293,7 +293,7 @@ var interGeo = geometry1.intersection(geometry2);
 var unGeo = geometry1.union(geometry2);
 ```
 
-#### Example: Geometry operations [[Open In Code Editor](https://code.earthengine.google.com/7f6026c7a838456212287e7e19589fcf)]
+#### Example: Geometry operations [[Open In Code Editor](https://code.earthengine.google.com/1be1b2180867ebf3c5ccb0accefbf9af)]
 
 Let's run of some these operations over the the state of Connecticut, US using geometries of the public US counties feature collection available on Earth Engine:
 
@@ -302,13 +302,13 @@ Let's run of some these operations over the the state of Connecticut, US using g
 // Set map center over the state of CT.
 Map.setCenter(-72.6978, 41.6798, 8);
 // Load US county dataset.
-var countyData=ee.FeatureCollection('TIGER/2018/Counties');
+var countyData = ee.FeatureCollection('TIGER/2018/Counties');
 // Filter the counties that are in Connecticut (more on filters later).
-var countyConnect=countyData.filter(ee.Filter.eq('STATEFP', '09'));
+var countyConnect = countyData.filter(ee.Filter.eq('STATEFP', '09'));
 // Get the union of all the county geometries in Connecticut.
 var countyConnectDiss=countyConnect.union();
-//Create a circular area using the first county in the Connecticut  FeatureCollection.
-var circle=ee.Feature(countyConnect.first()).geometry().centroid().buffer(50000)
+// Create a circular area using the first county in the Connecticut  FeatureCollection.
+var circle = ee.Feature(countyConnect.first()).geometry().centroid().buffer(50000)
 // Add the layers to the map with a specified color and layer name.
 Map.addLayer(countyConnectDiss, {color: 'red'}, 'CT dissolved');
 Map.addLayer(circle, {color: 'orange'}, 'Circle');
@@ -345,7 +345,7 @@ Map.addLayer(union, {color: 'purple'}, 'Circle and convex union');
 
 **6.** We can also find the spatial difference (`difference()`) between two geometries.
 ```javascript
-var diff=convex.difference(circle, 100);
+var diff = convex.difference(circle, 100);
 // Add the layer to the map with a specified color and layer name.
 Map.addLayer(diff, {color: 'brown'}, 'Circle and convex difference');
 ```
@@ -564,13 +564,13 @@ var outputImage = imCollection.reduce(reducer);
 var outputDictionary = varImage.reduceRegion(reducer, geometry, scale);
 ```
 
-Alternatively, `reduceRegions` can be used to compute image statistics for all element of a collection at once:
+Alternatively, `reduceRegions` can be used to compute image statistics for all elements of a collection at once:
 
 ```javascript
 var outputCollection = varImage.reduceRegions(reducer, collection, scale);
 ```
 
-Note that for large collections, this will be less efficient than mapping over the collection and using `reduceRegion`
+Note that for large collections, this will be less efficient than mapping over the collection and using `reduceRegion`.
 
 ### Applying a reducer to each element of a collection
 
@@ -664,7 +664,7 @@ var sumOfImages = imCollection.reduce(ee.Reducer.first());
 
 Let's analyze images over a region of interest (the counties of Connecticut):
 
-**1.** As before, we start by loading in the feature and image collections of intersest.
+**1.** As before, we start by loading in the feature and image collections of interest.
 
 ```javascript
 // Set map center over the state of CT.
@@ -696,7 +696,7 @@ print(limited);
 print(bandSel1);
 ```
 
-**3.** We calculate the mean of all the images in the collection, clip it to the geometry of interest and scale it to convert it from Digital Number to degree Celsius.
+**3.** We calculate the mean of all the images in the collection, clip it to the geometry of interest and scale it to convert it from digital number to degree Celsius.
 ```javascript
 // Calculate mean of all images (pixel-by-pixel) in the collection.
 var mean = bandSel1.mean();

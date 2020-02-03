@@ -550,7 +550,7 @@ newImage = oldImage.leftShift(valueOfShift);
 
 ## Reducers
 
-Reducers are objects in Earth Engine for data aggregation. They can be used for aggregating across time, space, bands, properties, etc. Reducers range from basic statistical indices (like `ee.Reducer.mean()`, `ee.Reducer.stdDev()`, `ee.Reducer.max()`, etc.), to standard measures of covariance (like `ee.Reducer.linearFit()`,`ee.Reducer.spearmansCorrelation()`, `ee.Reducer.spearmansCorrelation()`, etc.), to descriptors of variable distributions (like `ee.Reducer.skew()`, `ee.Reducer.frequencyHistogram()`,`ee.Reducer.kurtosis()`, etc.).
+Reducers are objects in Earth Engine for data aggregation. They can be used for aggregating across time, space, bands, properties, etc. Reducers range from basic statistical indices (like `ee.Reducer.mean()`, `ee.Reducer.stdDev()`, `ee.Reducer.max()`, etc.), to standard measures of covariance (like `ee.Reducer.linearFit()`,`ee.Reducer.spearmansCorrelation()`, `ee.Reducer.spearmansCorrelation()`, etc.), to descriptors of variable distributions (like `ee.Reducer.skew()`, `ee.Reducer.frequencyHistogram()`,`ee.Reducer.kurtosis()`, etc.). To get the first (or only) value for a property, use `ee.Reducer.first()`.
 
 ### Reducing an image collection to an image
 

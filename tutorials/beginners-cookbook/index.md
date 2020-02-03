@@ -293,7 +293,7 @@ var interGeo = geometry1.intersection(geometry2);
 var unGeo = geometry1.union(geometry2);
 ```
 
-#### Example: Geometry operations [[Open In Code Editor](https://code.earthengine.google.com/1be1b2180867ebf3c5ccb0accefbf9af)]
+#### Example: Geometry operations [[Open In Code Editor](https://code.earthengine.google.com/f50a903f93c04aec85de795d9210842b)]
 
 Let's run of some these operations over the the state of Connecticut, US using geometries of the public US counties feature collection available on Earth Engine:
 
@@ -306,9 +306,9 @@ var countyData = ee.FeatureCollection('TIGER/2018/Counties');
 // Filter the counties that are in Connecticut (more on filters later).
 var countyConnect = countyData.filter(ee.Filter.eq('STATEFP', '09'));
 // Get the union of all the county geometries in Connecticut.
-var countyConnectDiss=countyConnect.union();
+var countyConnectDiss = countyConnect.union();
 // Create a circular area using the first county in the Connecticut  FeatureCollection.
-var circle = ee.Feature(countyConnect.first()).geometry().centroid().buffer(50000)
+var circle = ee.Feature(countyConnect.first()).geometry().centroid().buffer(50000);
 // Add the layers to the map with a specified color and layer name.
 Map.addLayer(countyConnectDiss, {color: 'red'}, 'CT dissolved');
 Map.addLayer(circle, {color: 'orange'}, 'Circle');
@@ -367,7 +367,7 @@ var peri = countyConnectDiss.geometry().perimeter();
 print(peri);
 ```
 
-#### Example: Mapping over a feature collection [[Open In Code Editor](https://code.earthengine.google.com/73456705983d6801864fabd1c3b9ec50)]
+#### Example: Mapping over a feature collection [[Open In Code Editor](https://code.earthengine.google.com/85d4b819e1931239efce79d28e42d2f4)]
 
 By mapping over a collection, one can apply the same operation on every element
 in a collection. For instance, let's run the same geometry operations on every
@@ -379,9 +379,9 @@ county in Connecticut:
 // Set map center over the state of CT.
 Map.setCenter(-72.6978, 41.6798, 8);
 // Load US county dataset.
-var countyData=ee.FeatureCollection('TIGER/2018/Counties');
+var countyData = ee.FeatureCollection('TIGER/2018/Counties');
 // Filter the counties that are in Connecticut.
-var countyConnect=countyData.filter(
+var countyConnect = countyData.filter(
   ee.Filter.eq('STATEFP', '09'));
 // Add the layer to the map with a specified color and layer name.
 Map.addLayer(countyConnect, {color: 'red'}, 'Original Collection');
@@ -426,7 +426,7 @@ var featNew = feature.select(['name'], ['descriptor']);
 var featVal = feature.get('size');
 ```
 
-#### Example: Feature operations [[Open In Code Editor](https://code.earthengine.google.com/043cc41ccb2332494a7d0fbb2bc4d5bc)]
+#### Example: Feature operations [[Open In Code Editor](https://code.earthengine.google.com/9990f79926f06b34acef48dff64c1adb)]
 
 Let's create a feature from scratch and play around with its properties:
 
@@ -439,7 +439,7 @@ var varFeature = ee.Feature(varGeometry, {
  size: [500, 1000]
 });
 // Get values of a property.
-var arr=varFeature.get('size');
+var arr = varFeature.get('size');
 // Print variable.
 print(arr);
 // Select a subset of properties and rename them.
@@ -672,10 +672,10 @@ Map.setCenter(-72.6978, 41.6798, 8);
 // Load the MODIS MYD11A2 (8-day LST) image collection.
 var raw = ee.ImageCollection('MODIS/006/MYD11A2');
 // Load US county dataset.
-var countyData=ee.FeatureCollection('TIGER/2018/Counties');
+var countyData = ee.FeatureCollection('TIGER/2018/Counties');
 // Filter the counties that are in Connecticut.
 // This will be the region of interest for the image operations.
-var roi=countyData.filter(ee.Filter.eq('STATEFP', '09'));
+var roi = countyData.filter(ee.Filter.eq('STATEFP', '09'));
 // Examine image collection.
 print(raw);
 ```
@@ -736,7 +736,7 @@ Export.image.toDrive({
 > `Export.table.toDrive()`, `Export.table.toCloudStorage()`,
 > `Export.video.toCloudStorage()`, `Export.video.toDrive()`.
 
-#### Example: Exporting data [[Open In Code Editor](https://code.earthengine.google.com/0d24f79c87dd148a9d76d09eb7f36300)]
+#### Example: Exporting data [[Open In Code Editor](https://code.earthengine.google.com/0e54f89ba1867cded5c73b890dc9491a)]
 
 **1.** Define a function to find the mean value of pixels in each feature of a collection.
 ```javascript
@@ -760,8 +760,7 @@ var getRegions = function(image) {
 
 **2.** Load image collection, filter collection to date range, select band of interest, calculate mean of all images in collection, and multiply by scaling factor.
 ```javascript
-var image =
-  ee.ImageCollection('MODIS/MYD13A1')
+var image = ee.ImageCollection('MODIS/MYD13A1')
     .filterDate('2002-07-08', '2017-07-08')
     .select('NDVI')
     .mean()

@@ -293,7 +293,7 @@ var interGeo = geometry1.intersection(geometry2);
 var unGeo = geometry1.union(geometry2);
 ```
 
-#### Example: Geometry operations [[Open In Code Editor](https://code.earthengine.google.com/f50a903f93c04aec85de795d9210842b)]
+#### Example: Geometry operations
 
 Let's run of some these operations over the the state of Connecticut, US using geometries of the public US counties feature collection available on Earth Engine:
 
@@ -367,7 +367,7 @@ var peri = countyConnectDiss.geometry().perimeter();
 print(peri);
 ```
 
-#### Example: Mapping over a feature collection [[Open In Code Editor](https://code.earthengine.google.com/85d4b819e1931239efce79d28e42d2f4)]
+#### Example: Mapping over a feature collection
 
 By mapping over a collection, one can apply the same operation on every element
 in a collection. For instance, let's run the same geometry operations on every
@@ -426,7 +426,7 @@ var featNew = feature.select(['name'], ['descriptor']);
 var featVal = feature.get('size');
 ```
 
-#### Example: Feature operations [[Open In Code Editor](https://code.earthengine.google.com/9990f79926f06b34acef48dff64c1adb)]
+#### Example: Feature operations
 
 Let's create a feature from scratch and play around with its properties:
 
@@ -660,7 +660,7 @@ Alternatively, using reducers:
 var sumOfImages = imCollection.reduce(ee.Reducer.first());
 ```
 
-#### Example: Image and image collection operations [[Open In Code Editor](https://code.earthengine.google.com/bf30f4db0ba76d5d320f8ce183f60eb8)]
+#### Example: Image and image collection operations
 
 Let's analyze images over a region of interest (the counties of Connecticut):
 
@@ -736,7 +736,7 @@ Export.image.toDrive({
 > `Export.table.toDrive()`, `Export.table.toCloudStorage()`,
 > `Export.video.toCloudStorage()`, `Export.video.toDrive()`.
 
-#### Example: Exporting data [[Open In Code Editor](https://code.earthengine.google.com/0e54f89ba1867cded5c73b890dc9491a)]
+#### Example: Exporting data
 
 **1.** Define a function to find the mean value of pixels in each feature of a collection.
 ```javascript
@@ -782,7 +782,7 @@ Export.table.toDrive({
 print(coll);
 ```
 
-## Bonus: Timelapse example [[Open In Code Editor](https://code.earthengine.google.com/fe801a6c86891d4e5eee260b85b0e716)]
+## Bonus: Timelapse example
 
 ```javascript
 // Timelapse example (based on google API example);

@@ -238,7 +238,7 @@ Mapping a function over a collection applies the function to every element in th
 ### Finding the area of a geometry
 
 ```javascript
-var geoArea = geometry.area();
+var geoArea = geometry.area(maxError);
 ```
 
 By default, all units in Earth Engine are in meters.
@@ -246,51 +246,51 @@ By default, all units in Earth Engine are in meters.
 ### Finding the length of a line
 
 ```javascript
-var linLen = lineString.length();
+var linLen = lineString.length(maxError);
 ```
 ### Finding the perimeter of a geometry
 ```javascript
-var geoPeri = geometry.perimeter();
+var geoPeri = geometry.perimeter(maxError);
 ```
 
 ### Reducing number of vertices in geometry
 ```javascript
-var simpGeo = geometry.simplify(100);
+var simpGeo = geometry.simplify(maxError);
 ```
 ### Finding the centroid of a geometry
 
 ```javascript
-var centrGeo = geometry.centroid();
+var centrGeo = geometry.centroid(maxError);
 ```
 
 ### Creating buffer around a geometry
 
 ```javascript
-var buffGeo = geometry.buffer(100);
+var buffGeo = geometry.buffer(radius, maxError);
 ```
 
 ### Finding the bounding rectangle of a geometry
 
 ```javascript
-var bounGeo = geometry.bounds();
+var bounGeo = geometry.bounds(maxError);
 ```
 
 ### Finding the smallest polygon that can envelope a geometry
 
 ```javascript
-var convexGeo = geometry.convexHull();
+var convexGeo = geometry.convexHull(maxError);
 ```
 
 ### Finding common areas between two or more geometries
 
 ```javascript
-var interGeo = geometry1.intersection(geometry2);
+var interGeo = geometry1.intersection(geometry2, maxError);
 ```
 
 ### Finding the area that includes two or more geometries
 
 ```javascript
-var unGeo = geometry1.union(geometry2);
+var unGeo = geometry1.union(geometry2, maxError);
 ```
 
 #### Example: Geometry operations
@@ -306,9 +306,9 @@ var countyData = ee.FeatureCollection('TIGER/2018/Counties');
 // Filter the counties that are in Connecticut (more on filters later).
 var countyConnect = countyData.filter(ee.Filter.eq('STATEFP', '09'));
 // Get the union of all the county geometries in Connecticut.
-var countyConnectDiss = countyConnect.union();
+var countyConnectDiss = countyConnect.union(100);
 // Create a circular area using the first county in the Connecticut  FeatureCollection.
-var circle = ee.Feature(countyConnect.first()).geometry().centroid().buffer(50000);
+var circle = ee.Feature(countyConnect.first()).geometry().centroid(100).buffer(50000, 100);
 // Add the layers to the map with a specified color and layer name.
 Map.addLayer(countyConnectDiss, {color: 'red'}, 'CT dissolved');
 Map.addLayer(circle, {color: 'orange'}, 'Circle');
@@ -316,14 +316,14 @@ Map.addLayer(circle, {color: 'orange'}, 'Circle');
 
 **2.** Using the `bounds()` function, we can find the rectangle that emcompasses the southernmost, westernmost, easternmost, and northernmost points of the geometry.
 ```javascript
-var bound = countyConnectDiss.geometry().bounds();
+var bound = countyConnectDiss.geometry().bounds(100);
 // Add the layer to the map with a specified color and layer name.
 Map.addLayer(bound, {color: 'yellow'}, 'Bounds');
 ```
 
 **3.** In the same vein, but not restricting ourselves to a rectangle, a convex hull (`convexHull()`) is a polygon covering the extremities of the geometry.
 ```javascript
-var convex = countyConnectDiss.geometry().convexHull();
+var convex = countyConnectDiss.geometry().convexHull(100);
 // Add the layer to the map with a specified color and layer name.
 Map.addLayer(convex, {color: 'blue'}, 'Convex Hull');
 ```
@@ -357,13 +357,13 @@ Intersection             |  Union                      | Difference
 **7.** Finally, we can calculate and display the area, length, perimeter, etc. of our geometries.
 ```javascript
 // Find area of feature.
-var ar = countyConnectDiss.geometry().area();
+var ar = countyConnectDiss.geometry().area(100);
 print(ar);
 // Find length of line geometry (You get zero since this is a polygon).
-var length = countyConnectDiss.geometry().length();
+var length = countyConnectDiss.geometry().length(100);
 print(length);
 // Find perimeter of feature.
-var peri = countyConnectDiss.geometry().perimeter();
+var peri = countyConnectDiss.geometry().perimeter(100);
 print(peri);
 ```
 
@@ -395,10 +395,10 @@ function performMap(feature) {
  // can handle up to 1 million vertices.
  var simple = feature.simplify(10000);
  // Find centroid of geometry.
- var center = simple.centroid();
+ var center = simple.centroid(100);
  // Return buffer around geometry; the number represents the width of buffer,
  // in meters.
- return center.buffer(5000);
+ return center.buffer(5000,100);
 }
 ```
 
@@ -570,7 +570,7 @@ Alternatively, `reduceRegions` can be used to compute image statistics for all e
 var outputCollection = varImage.reduceRegions(reducer, collection, scale);
 ```
 
-Note that for large collections, this will be less efficient than mapping over the collection and using `reduceRegion`.
+Note that for large collections, this may be less efficient than mapping over the collection and using `reduceRegion`.
 
 ### Applying a reducer to each element of a collection
 

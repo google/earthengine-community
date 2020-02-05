@@ -17,12 +17,14 @@
  * @fileoverview Main entry point for toolkit.
  */
 
-var Composites =
-    require('users/google/toolkits:landcover/impl/composites.js').Composites;
-var Landsat8 =
-    require('users/google/toolkits:landcover/impl/landsat8.js').Landsat8;
+var Composites = require('users/google/toolkits:landcover/impl/composites.js').Composites;
+var Landsat5 = require('users/google/toolkits:landcover/impl/landsat5.js').Landsat5;
+var Landsat7 = require('users/google/toolkits:landcover/impl/landsat7.js').Landsat7;
+var Landsat8 = require('users/google/toolkits:landcover/impl/landsat8.js').Landsat8;
 var Region = require('users/google/toolkits:landcover/impl/region.js').Region;
 
 exports.Composites = Composites;
+exports.Landsat5 = Landsat5;
+exports.Landsat7 = Landsat7;
 exports.Landsat8 = Landsat8;
 exports.Region = Region;

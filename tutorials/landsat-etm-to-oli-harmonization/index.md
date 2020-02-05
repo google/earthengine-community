@@ -201,7 +201,7 @@ This particular pixel relates the recent history of a mature Pacific Northwest
 conifer forest patch (Figure 1) that experienced some perturbation in the 1980's and
 90's and a high magnitude burn in 2011.
 
-![Area of interest](https://storage.googleapis.com/earthengine-community/tutorials/landsat-etm-to-oli-harmonization/area-of-interest.jpg)
+![Area of interest](area-of-interest.jpg)
 
 _Figure 1. Location and site character for example area of interest. Mature Pacific
 Northwest conifer forest on the north slope of Mt Hood, OR, USA. Images courtesy of:
@@ -339,7 +339,7 @@ observation, which could be the next year or later.
 - Vegetation recovery (increasing NBR response) begins two years after the major NBR
 loss is detected.
 
-![Time series all observations](https://storage.googleapis.com/earthengine-community/tutorials/landsat-etm-to-oli-harmonization/ts-all-obs.png)
+![Time series all observations](ts-all-obs.png)
 
 _Figure 2. Spectral response time series chart for a single pixel
 with representation from Landsat TM, ETM+, and OLI. TM and ETM+ images
@@ -420,7 +420,7 @@ print(chartMedianComp);
 A chart similar to Figure 3 will appear in the console after some processing
 time.
 
-![Time series median](https://storage.googleapis.com/earthengine-community/tutorials/landsat-etm-to-oli-harmonization/ts-median-obs.png)
+![Time series median](ts-median-obs.png)
 
 _Figure 3. Median summer spectral response time series chart for a
 single pixel with representation from Landsat TM, ETM+, and OLI. TM and ETM+

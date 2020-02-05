@@ -3,7 +3,7 @@ title: Beginner's Cookbook
 description: This cookbook provides a fundamental overview of the data and tools commonly used in geospatial analysis using the Earth Engine JavaScript API.
 author: TC25
 tags: introductory, GIS, remote sensing
-date_published: 2019-11-01
+date_published: 2019-11-11
 ---
 <!--
 Copyright 2019 The Google Earth Engine Community Authors
@@ -37,7 +37,7 @@ A pair of coordinates (longitude, latitude), that represents the location of poi
 
 Example: Location of drop boxes, landmarks, etc.
 
- ![Points](https://storage.googleapis.com/earthengine-community/tutorials/beginners-cookbook/points.png)
+ ![Points](points.png)
 
 ### Lines
 
@@ -45,14 +45,14 @@ A series of points that represents a line (straight or otherwise) on the Earth's
 
 Example: Center of roads, rivers, etc.
 
- ![Lines](https://storage.googleapis.com/earthengine-community/tutorials/beginners-cookbook/line-vector.png)
+ ![Lines](line-vector.png)
 
 ### Polygons
 
 A series of points (vertices) that define the outer edge of a region.
 Example: Outlines of cities, countries, continents, etc.
 
- ![Polygons](https://storage.googleapis.com/earthengine-community/tutorials/beginners-cookbook/polygon-vector.png)
+ ![Polygons](polygon-vector.png)
 
 ## Raster data
 
@@ -64,7 +64,7 @@ A raster is an image with a matrix of values representing the values of some obs
 
 Example: Spatial variability of temperature, elevation, rainfall, etc. over a region.
 
- ![Raster](https://storage.googleapis.com/earthengine-community/tutorials/beginners-cookbook/map-algebra.png)
+ ![Raster](map-algebra.png)
 
 Image sources: https://gisgeography.com/spatial-data-types-vector-raster/
 
@@ -80,7 +80,7 @@ What is Earth Engine?
 - Uses Google's computational resources to reduce processing time
 - A massive [archive](https://developers.google.com/earth-engine/datasets/catalog/) of remote sensing data
 
-![The Earth Engine Code Editor (source: developers.google.com)](https://storage.googleapis.com/earthengine-community/tutorials/beginners-cookbook/ee-editor.png)
+![The Earth Engine Code Editor (source: developers.google.com)](ee-editor.png)
 
 ## Basic functions
 
@@ -179,6 +179,7 @@ ee.Geometry.MultiLineString([[[0, 45], [5, 6], [70, -56]], [[0, -45], [-5, -6], 
 ```
 
 ### Linear ring
+
 ```javascript
 var linRin = ee.Geometry.LinearRing(0, 45, 5, 6, 70, -56, 0, 45);
 ```
@@ -208,7 +209,7 @@ ee.Geometry.Polygon([[0, 0], [-6, -3], [-5, -5], [30, -2], [0, 0]])]);
 - Features are geometries associated with specific properties.
 - Feature collections are groups of features.
 
-![Counties in the contiguous United States](https://storage.googleapis.com/earthengine-community/tutorials/beginners-cookbook/county-features.png)
+![Counties in the contiguous United States](county-features.png)
 
 ## Functions and mapping
 
@@ -227,6 +228,7 @@ var result = functionName(input);
 ```
 
 ### Mapping a function over a collection
+
 ```javascript
 var result = input.map(functionName);
 ```
@@ -416,10 +418,13 @@ Map.addLayer(mappedCentroid, {color: 'blue'}, 'Mapped buffed centroids');
 ```javascript
 var feat = ee.Feature(geometry, {Name: 'featureName', Size: 500});
 ```
+
 ### Creating a feature from an existing feature, renaming a property
+
 ```javascript
 var featNew = feature.select(['name'], ['descriptor']);
 ```
+
 ### Extracting values of a property from a Feature
 
 ```javascript
@@ -563,6 +568,7 @@ var outputImage = imCollection.reduce(reducer);
 ```javascript
 var outputDictionary = varImage.reduceRegion(reducer, geometry, scale);
 ```
+
 
 Alternatively, `reduceRegions` can be used to compute image statistics for all elements of a collection at once:
 
@@ -721,12 +727,14 @@ var masked = calculate.updateMask(mask);
 Map.addLayer(masked,
   {min: 18, max: 25, palette: ['blue', 'green', 'red']}, 'LST_masked');
 ```
+
 ![Masked LST image](masked-image.png)
 
 
 ## Exporting data
 
 ### Exporting a collection to Google Drive, Earth Engine Asset, or Google Cloud
+
 ```javascript
 Export.image.toDrive({
   collection: varImage, description: 'fileName', region: geometry, scale: 1000
@@ -820,7 +828,7 @@ Export.video.toDrive({
 
 [Dubai timelapse](https://www.youtube.com/watch?v=6gK4Fd-WSM4&feature=youtu.be)
 
-![Urban growth in Dubai](https://storage.googleapis.com/earthengine-community/tutorials/beginners-cookbook/dubai-change.png)
+![Urban growth in Dubai](dubai-change.png)
 
 ## Example applications
 

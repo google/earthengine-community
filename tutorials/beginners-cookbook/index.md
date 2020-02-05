@@ -400,7 +400,7 @@ function performMap(feature) {
  var center = simple.centroid(100);
  // Return buffer around geometry; the number represents the width of buffer,
  // in meters.
- return center.buffer(5000,100);
+ return center.buffer(5000, 100);
 }
 ```
 

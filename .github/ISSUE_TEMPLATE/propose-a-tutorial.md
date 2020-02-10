@@ -2,8 +2,8 @@
 name: Propose a tutorial
 about: Submit an idea for a new Earth Engine community tutorial
 title: "[Tutorial proposal] Your tutorial title here"
-labels: ''
-assignees: tylere, gino-m
+labels: tutorial proposal
+assignees: gino-m, tylere
 
 ---
 

@@ -7,7 +7,6 @@ assignees: gino-m, tylere
 
 ---
 
-Template content:
 **What is the objective of the proposed tutorial?**
 A clear and concise description of what users can expect to learn from your tutorial.
 

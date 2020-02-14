@@ -85,6 +85,7 @@ What is Earth Engine?
 ## Basic functions
 
 ### Declaring variables
+
 ```javascript
 var variableName = ee.ContainerType(value);
 ```
@@ -167,6 +168,7 @@ var multi = ee.Geometry.MultiPoint(0, 45, 5, 6, 70, -56);
 ```
 
 ### Line string
+
 ```javascript
 var lineStr = ee.Geometry.LineString([[0, 45], [5, 6], [70, -56]]);
 ```
@@ -250,15 +252,19 @@ By default, all units in Earth Engine are in meters.
 ```javascript
 var linLen = lineString.length(maxError);
 ```
+
 ### Finding the perimeter of a geometry
+
 ```javascript
 var geoPeri = geometry.perimeter(maxError);
 ```
 
 ### Reducing number of vertices in geometry
+
 ```javascript
 var simpGeo = geometry.simplify(maxError);
 ```
+
 ### Finding the centroid of a geometry
 
 ```javascript
@@ -300,6 +306,7 @@ var unGeo = geometry1.union(geometry2, maxError);
 Let's run of some these operations over the the state of Connecticut, US using geometries of the public US counties feature collection available on Earth Engine:
 
 **1.** We begin by zooming to the region of interest and loading/creating the geometries of interest by extracting them from the corresponding features.
+
 ```javascript
 // Set map center over the state of CT.
 Map.setCenter(-72.6978, 41.6798, 8);
@@ -317,6 +324,7 @@ Map.addLayer(circle, {color: 'orange'}, 'Circle');
 ```
 
 **2.** Using the `bounds()` function, we can find the rectangle that emcompasses the southernmost, westernmost, easternmost, and northernmost points of the geometry.
+
 ```javascript
 var bound = countyConnectDiss.geometry().bounds(100);
 // Add the layer to the map with a specified color and layer name.
@@ -324,6 +332,7 @@ Map.addLayer(bound, {color: 'yellow'}, 'Bounds');
 ```
 
 **3.** In the same vein, but not restricting ourselves to a rectangle, a convex hull (`convexHull()`) is a polygon covering the extremities of the geometry.
+
 ```javascript
 var convex = countyConnectDiss.geometry().convexHull(100);
 // Add the layer to the map with a specified color and layer name.
@@ -331,6 +340,7 @@ Map.addLayer(convex, {color: 'blue'}, 'Convex Hull');
 ```
 
 **4.** Moving on to some basic operations to combine multiple geometries, the intersection (`intersection()`) is the area common to two or more geometries.
+
 ```javascript
 var intersect = convex.intersection(circle, 100);
 // Add the layer to the map with a specified color and layer name.
@@ -338,6 +348,7 @@ Map.addLayer(intersect, {color: 'green'}, 'Circle and convex intersection');
 ```
 
 **5.** The union (`union()`) is the area encompassing two or more features.
+
 ```javascript
 // number is the maximum error in meters.
 var union = convex.union(circle, 100);
@@ -346,6 +357,7 @@ Map.addLayer(union, {color: 'purple'}, 'Circle and convex union');
 ```
 
 **6.** We can also find the spatial difference (`difference()`) between two geometries.
+
 ```javascript
 var diff = convex.difference(circle, 100);
 // Add the layer to the map with a specified color and layer name.
@@ -357,6 +369,7 @@ Intersection             |  Union                      | Difference
 ![](intersect.png)  |  ![](union.png) |  ![](diff.png)
 
 **7.** Finally, we can calculate and display the area, length, perimeter, etc. of our geometries.
+
 ```javascript
 // Find area of feature.
 var ar = countyConnectDiss.geometry().area(100);
@@ -390,6 +403,7 @@ Map.addLayer(countyConnect, {color: 'red'}, 'Original Collection');
 ```
 
 **2.** We define the function, which will perform the geometry operation on a feature. Try changing the operation being performed within the function to test what it does to the final output.
+
 ```javascript
 function performMap(feature) {
  // Reduce number of vertices in geometry; the number is to specify maximum
@@ -405,6 +419,7 @@ function performMap(feature) {
 ```
 
 **3.** Finally, we map the defined function over all the features in the collection. This parallelization is generally much faster than performing operations sequentially over each element of the collection.
+
 ```javascript
 var mappedCentroid = countyConnect.map(performMap);
 // Add the layer to the map with a specified color and layer name.
@@ -687,6 +702,7 @@ print(raw);
 ```
 
 **2.** We select the bands and images in the collection we are interested in.
+
 ```javascript
 // Select a band of the image collection using either indexing or band name.
 var bandSel1 = raw.select(0);
@@ -703,6 +719,7 @@ print(bandSel1);
 ```
 
 **3.** We calculate the mean of all the images in the collection, clip it to the geometry of interest and scale it to convert it from digital number to degree Celsius.
+
 ```javascript
 // Calculate mean of all images (pixel-by-pixel) in the collection.
 var mean = bandSel1.mean();
@@ -716,6 +733,7 @@ Map.addLayer(calculate, {min: 15, max: 20, palette: ['blue', 'green', 'red']}, '
 ```
 
 **4.** We mask out parts of the image to display regions above and below certain temperature thresholds.
+
 ```javascript
 // Select pixels in the image that are greater than 30.8.
 var mask = calculate.gt(18);
@@ -747,6 +765,7 @@ Export.image.toDrive({
 #### Example: Exporting data
 
 **1.** Define a function to find the mean value of pixels in each feature of a collection.
+
 ```javascript
 // Function to find mean of pixels in region of interest.
 var getRegions = function(image) {
@@ -767,6 +786,7 @@ var getRegions = function(image) {
 ```
 
 **2.** Load image collection, filter collection to date range, select band of interest, calculate mean of all images in collection, and multiply by scaling factor.
+
 ```javascript
 var image = ee.ImageCollection('MODIS/MYD13A1')
     .filterDate('2002-07-08', '2017-07-08')
@@ -780,6 +800,7 @@ var coll = getRegions(image);
 ```
 
 **3.** Export the table created to your Google Drive
+
 ```javascript
 Export.table.toDrive({
  collection: coll,

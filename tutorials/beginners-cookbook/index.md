@@ -240,7 +240,7 @@ Mapping a function over a collection applies the function to every element in th
 ### Finding the area of a geometry
 
 ```javascript
-var geoArea = geometry.area();
+var geoArea = geometry.area(maxError);
 ```
 
 By default, all units in Earth Engine are in meters.
@@ -248,98 +248,124 @@ By default, all units in Earth Engine are in meters.
 ### Finding the length of a line
 
 ```javascript
-var linLen = lineString.length();
+var linLen = lineString.length(maxError);
 ```
 ### Finding the perimeter of a geometry
 ```javascript
-var geoPeri = geometry.perimeter();
+var geoPeri = geometry.perimeter(maxError);
 ```
 
 ### Reducing number of vertices in geometry
 ```javascript
-var simpGeo = geometry.simplify(100);
+var simpGeo = geometry.simplify(maxError);
 ```
 ### Finding the centroid of a geometry
 
 ```javascript
-var centrGeo = geometry.centroid();
+var centrGeo = geometry.centroid(maxError);
 ```
 
 ### Creating buffer around a geometry
 
 ```javascript
-var buffGeo = geometry.buffer(100);
+var buffGeo = geometry.buffer(radius, maxError);
 ```
 
 ### Finding the bounding rectangle of a geometry
 
 ```javascript
-var bounGeo = geometry.bounds();
+var bounGeo = geometry.bounds(maxError);
 ```
 
 ### Finding the smallest polygon that can envelope a geometry
 
 ```javascript
-var convexGeo = geometry.convexHull();
+var convexGeo = geometry.convexHull(maxError);
 ```
 
 ### Finding common areas between two or more geometries
 
 ```javascript
-var interGeo = geometry1.intersection(geometry2);
+var interGeo = geometry1.intersection(geometry2, maxError);
 ```
 
 ### Finding the area that includes two or more geometries
 
 ```javascript
-var unGeo = geometry1.union(geometry2);
+var unGeo = geometry1.union(geometry2, maxError);
 ```
 
 #### Example: Geometry operations
 
 Let's run of some these operations over the the state of Connecticut, US using geometries of the public US counties feature collection available on Earth Engine:
 
+**1.** We begin by zooming to the region of interest and loading/creating the geometries of interest by extracting them from the corresponding features.
 ```javascript
 // Set map center over the state of CT.
 Map.setCenter(-72.6978, 41.6798, 8);
 // Load US county dataset.
-var countyData=ee.FeatureCollection('TIGER/2018/Counties');
+var countyData = ee.FeatureCollection('TIGER/2018/Counties');
 // Filter the counties that are in Connecticut (more on filters later).
-var countyConnect=countyData.filter(ee.Filter.eq('STATEFP', '09'));
+var countyConnect = countyData.filter(ee.Filter.eq('STATEFP', '09'));
 // Get the union of all the county geometries in Connecticut.
-var countyConnectDiss=countyConnect.union();
-// Add the layer to the map with a specified color and layer name.
-Map.addLayer(countyConnectDiss, {color: 'red'}, 'Chicago dissolved');
-// Find the rectangle that emcompasses the southernmost, westernmost,
-// easternmost, and northernmost points of the feature.
-var bound = countyConnectDiss.geometry().bounds();
+var countyConnectDiss = countyConnect.union(100);
+// Create a circular area using the first county in the Connecticut  FeatureCollection.
+var circle = ee.Feature(countyConnect.first()).geometry().centroid(100).buffer(50000, 100);
+// Add the layers to the map with a specified color and layer name.
+Map.addLayer(countyConnectDiss, {color: 'red'}, 'CT dissolved');
+Map.addLayer(circle, {color: 'orange'}, 'Circle');
+```
+
+**2.** Using the `bounds()` function, we can find the rectangle that emcompasses the southernmost, westernmost, easternmost, and northernmost points of the geometry.
+```javascript
+var bound = countyConnectDiss.geometry().bounds(100);
 // Add the layer to the map with a specified color and layer name.
 Map.addLayer(bound, {color: 'yellow'}, 'Bounds');
-// Find the polygon covering the extremities of the feature.
-var convex = countyConnectDiss.geometry().convexHull();
+```
+
+**3.** In the same vein, but not restricting ourselves to a rectangle, a convex hull (`convexHull()`) is a polygon covering the extremities of the geometry.
+```javascript
+var convex = countyConnectDiss.geometry().convexHull(100);
 // Add the layer to the map with a specified color and layer name.
 Map.addLayer(convex, {color: 'blue'}, 'Convex Hull');
-// Find the area common to two or more features.
-var intersect = bound.intersection(convex, 100);
+```
+
+**4.** Moving on to some basic operations to combine multiple geometries, the intersection (`intersection()`) is the area common to two or more geometries.
+```javascript
+var intersect = convex.intersection(circle, 100);
 // Add the layer to the map with a specified color and layer name.
-Map.addLayer(intersect, {color: 'green'}, 'Bound and convex intersection');
-// Find the area encompassing two or more features; number is the maximum
-// error in meters.
-var union = bound.union(convex, 100);
+Map.addLayer(intersect, {color: 'green'}, 'Circle and convex intersection');
+```
+
+**5.** The union (`union()`) is the area encompassing two or more features.
+```javascript
+// number is the maximum error in meters.
+var union = convex.union(circle, 100);
 // Add the layer to the map with a specified color and layer name.
-Map.addLayer(union, {color: 'purple'}, 'Bound and convex union');
-// Find the difference between two geometries
-var diff=bound.difference(convex, 100);
+Map.addLayer(union, {color: 'purple'}, 'Circle and convex union');
+```
+
+**6.** We can also find the spatial difference (`difference()`) between two geometries.
+```javascript
+var diff = convex.difference(circle, 100);
 // Add the layer to the map with a specified color and layer name.
-Map.addLayer(diff, {color: 'purple'}, 'Bound and convex difference');
+Map.addLayer(diff, {color: 'brown'}, 'Circle and convex difference');
+```
+
+Intersection             |  Union                      | Difference
+:-------------------------:|:-------------------------:|:-------------------------:
+![](intersect.png)  |  ![](union.png) |  ![](diff.png)
+
+**7.** Finally, we can calculate and display the area, length, perimeter, etc. of our geometries.
+```javascript
 // Find area of feature.
-var ar = countyConnectDiss.geometry().area();
+var ar = countyConnectDiss.geometry().area(100);
 print(ar);
 // Find length of line geometry (You get zero since this is a polygon).
-var length = countyConnectDiss.geometry().length();
+var length = countyConnectDiss.geometry().length(100);
 print(length);
-// Find permeter of feature.
-var peri = countyConnectDiss.geometry().perimeter();
+// Find perimeter of feature.
+var peri = countyConnectDiss.geometry().perimeter(100);
 print(peri);
 ```
 
@@ -349,29 +375,37 @@ By mapping over a collection, one can apply the same operation on every element
 in a collection. For instance, let's run the same geometry operations on every
 county in Connecticut:
 
+**1.** Similar to the previous example, we start by zooming into the map and loading the feature collection of CT counties.
+
 ```javascript
 // Set map center over the state of CT.
 Map.setCenter(-72.6978, 41.6798, 8);
 // Load US county dataset.
-var countyData=ee.FeatureCollection('TIGER/2018/Counties');
+var countyData = ee.FeatureCollection('TIGER/2018/Counties');
 // Filter the counties that are in Connecticut.
-var countyConnect=countyData.filter(
+var countyConnect = countyData.filter(
   ee.Filter.eq('STATEFP', '09'));
 // Add the layer to the map with a specified color and layer name.
 Map.addLayer(countyConnect, {color: 'red'}, 'Original Collection');
-// Define function.
+```
+
+**2.** We define the function, which will perform the geometry operation on a feature. Try changing the operation being performed within the function to test what it does to the final output.
+```javascript
 function performMap(feature) {
  // Reduce number of vertices in geometry; the number is to specify maximum
  // error in meters. This is only for illustrative purposes, since Earth Engine
  // can handle up to 1 million vertices.
  var simple = feature.simplify(10000);
  // Find centroid of geometry.
- var center = simple.centroid();
+ var center = simple.centroid(100);
  // Return buffer around geometry; the number represents the width of buffer,
  // in meters.
- return center.buffer(5000);
+ return center.buffer(5000, 100);
 }
-// Map function over feature collection.
+```
+
+**3.** Finally, we map the defined function over all the features in the collection. This parallelization is generally much faster than performing operations sequentially over each element of the collection.
+```javascript
 var mappedCentroid = countyConnect.map(performMap);
 // Add the layer to the map with a specified color and layer name.
 Map.addLayer(mappedCentroid, {color: 'blue'}, 'Mapped buffed centroids');
@@ -410,7 +444,7 @@ var varFeature = ee.Feature(varGeometry, {
  size: [500, 1000]
 });
 // Get values of a property.
-var arr=varFeature.get('size');
+var arr = varFeature.get('size');
 // Print variable.
 print(arr);
 // Select a subset of properties and rename them.
@@ -519,10 +553,59 @@ newImage = oldImage.leftShift(valueOfShift);
 
 > or .rightShift
 
+## Reducers
+
+Reducers are objects in Earth Engine for data aggregation. They can be used for aggregating across time, space, bands, properties, etc. Reducers range from basic statistical indices (like `ee.Reducer.mean()`, `ee.Reducer.stdDev()`, `ee.Reducer.max()`, etc.), to standard measures of covariance (like `ee.Reducer.linearFit()`,`ee.Reducer.spearmansCorrelation()`, `ee.Reducer.spearmansCorrelation()`, etc.), to descriptors of variable distributions (like `ee.Reducer.skew()`, `ee.Reducer.frequencyHistogram()`,`ee.Reducer.kurtosis()`, etc.). To get the first (or only) value for a property, use `ee.Reducer.first()`.
+
+### Reducing an image collection to an image
+
+```javascript
+var outputImage = imCollection.reduce(reducer);
+```
+
 ### Reducing an image to a statistic for an area of interest
 
 ```javascript
 var outputDictionary = varImage.reduceRegion(reducer, geometry, scale);
+```
+
+
+Alternatively, `reduceRegions` can be used to compute image statistics for all elements of a collection at once:
+
+```javascript
+var outputCollection = varImage.reduceRegions(reducer, collection, scale);
+```
+
+Note that for large collections, this may be less efficient than mapping over the collection and using `reduceRegion`.
+
+### Applying a reducer to each element of a collection
+
+```javascript
+var outputDictionary = reduceColumns(reducer, selectors);
+```
+
+### Applying a reducer to the neighborhoods of each pixel
+
+```javascript
+var outputImage = reduceNeighborhood(reducer, kernel);
+```
+
+### Applying a reducer to each element of an array pixel
+
+```javascript
+var outputImage = arrayAccum(axis, reducer);
+```
+
+### Convert the properties of a vector into a raster
+
+```javascript
+var outputImage = reduceToImage(properties, reducer);
+```
+
+### Convert a raster into a vector
+
+```javascript
+var outputCollection = reduceToVectors(reducer);
 ```
 
 ---
@@ -585,7 +668,9 @@ var sumOfImages = imCollection.reduce(ee.Reducer.first());
 
 #### Example: Image and image collection operations
 
-Let's analyze images over a region of interest (the counties of Connecticut).
+Let's analyze images over a region of interest (the counties of Connecticut):
+
+**1.** As before, we start by loading in the feature and image collections of interest.
 
 ```javascript
 // Set map center over the state of CT.
@@ -593,12 +678,16 @@ Map.setCenter(-72.6978, 41.6798, 8);
 // Load the MODIS MYD11A2 (8-day LST) image collection.
 var raw = ee.ImageCollection('MODIS/006/MYD11A2');
 // Load US county dataset.
-var countyData=ee.FeatureCollection('TIGER/2018/Counties');
+var countyData = ee.FeatureCollection('TIGER/2018/Counties');
 // Filter the counties that are in Connecticut.
 // This will be the region of interest for the image operations.
-var roi=countyData.filter(ee.Filter.eq('STATEFP', '09'));
+var roi = countyData.filter(ee.Filter.eq('STATEFP', '09'));
 // Examine image collection.
 print(raw);
+```
+
+**2.** We select the bands and images in the collection we are interested in.
+```javascript
 // Select a band of the image collection using either indexing or band name.
 var bandSel1 = raw.select(0);
 var bandSel2 = raw.select('LST_Day_1km');
@@ -611,6 +700,10 @@ var limited = raw.limit(50);
 // Print collections.
 print(limited);
 print(bandSel1);
+```
+
+**3.** We calculate the mean of all the images in the collection, clip it to the geometry of interest and scale it to convert it from digital number to degree Celsius.
+```javascript
 // Calculate mean of all images (pixel-by-pixel) in the collection.
 var mean = bandSel1.mean();
 // Isolate image to region of interest.
@@ -620,16 +713,23 @@ var clipped = mean.clip(roi);
 var calculate = clipped.multiply(0.02).subtract(273.15);
 // Add the layer to the map with a specified color palette and layer name.
 Map.addLayer(calculate, {min: 15, max: 20, palette: ['blue', 'green', 'red']}, 'LST');
+```
+
+**4.** We mask out parts of the image to display regions above and below certain temperature thresholds.
+```javascript
 // Select pixels in the image that are greater than 30.8.
 var mask = calculate.gt(18);
 // Add the mask to the map with a layer name.
 Map.addLayer(mask, {}, 'mask');
 // Use selected pixels to update the mask of the whole image.
-var masked = clipped.updateMask(mask);
+var masked = calculate.updateMask(mask);
 // Add the final layer to the map with a specified color palette and layer name.
 Map.addLayer(masked,
-  {min: 10, max: 30, palette: ['blue', 'green', 'red']}, 'LST_masked');
+  {min: 18, max: 25, palette: ['blue', 'green', 'red']}, 'LST_masked');
 ```
+
+![Masked LST image](masked-image.png)
+
 
 ## Exporting data
 
@@ -644,8 +744,9 @@ Export.image.toDrive({
 > `Export.table.toDrive()`, `Export.table.toCloudStorage()`,
 > `Export.video.toCloudStorage()`, `Export.video.toDrive()`.
 
-#### Example: Importing and exporting data
+#### Example: Exporting data
 
+**1.** Define a function to find the mean value of pixels in each feature of a collection.
 ```javascript
 // Function to find mean of pixels in region of interest.
 var getRegions = function(image) {
@@ -663,11 +764,11 @@ var getRegions = function(image) {
     scale: 1000
   });
 };
-// Load image collection, filter collection to date range, select band of
-// interest, calculate mean of all images in collection, and multiply by
-// scaling factor.
-var image =
-  ee.ImageCollection('MODIS/MYD13A1')
+```
+
+**2.** Load image collection, filter collection to date range, select band of interest, calculate mean of all images in collection, and multiply by scaling factor.
+```javascript
+var image = ee.ImageCollection('MODIS/MYD13A1')
     .filterDate('2002-07-08', '2017-07-08')
     .select('NDVI')
     .mean()
@@ -676,7 +777,10 @@ var image =
 print(image);
 // Call function.
 var coll = getRegions(image);
-// Export image to Google Drive.
+```
+
+**3.** Export the table created to your Google Drive
+```javascript
 Export.table.toDrive({
  collection: coll,
  description: 'NDVI_all',
@@ -734,10 +838,10 @@ Export.video.toDrive({
 - [EE Ocean Time Series Investigator](https://google.earthengine.app/view/ocean)
 - [Global Surface UHI Explorer](https://yceo.users.earthengine.app/view/uhimap)
 - [Stratifi - cloud-based stratification](https://sabrinaszeto.users.earthengine.app/view/stratifi)
+- [And hundreds more...](https://philippgaertner.github.io/2019/04/earth-engine-apps-inventory/)
 
 ## Additional resources
 
-- [Geospatial Software Design](https://environment.yale.edu/courses/detail/754)
 - [Google Earth Engine API documentation](https://developers.google.com/earth-engine/)
 - [Google Earth Engine Developers forum](https://groups.google.com/forum/#!forum/google-earth-engine-developers)
 - [Example scripts from Prof. Dana Tomlin's handouts for his course on Geospatial Software Design](https://github.com/EEYale/example-scripts)

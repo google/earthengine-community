@@ -352,7 +352,7 @@ var diff = convex.difference(circle, 100);
 Map.addLayer(diff, {color: 'brown'}, 'Circle and convex difference');
 ```
 
-Intersection             |  Union                      | Difference
+Difference             |  Union                      | Intersection
 :-------------------------:|:-------------------------:|:-------------------------:
 ![](intersect.png)  |  ![](union.png) |  ![](diff.png)
 

@@ -1,3 +1,11 @@
+---
+name: Propose a tutorial
+about: Submit an idea for a new Earth Engine community tutorial
+title: "[Tutorial proposal] Your tutorial title here"
+labels: tutorial proposal
+assignees: gino-m, tylere
+---
+
 **What is the objective of the proposed tutorial?**
 A clear and concise description of what users can expect to learn from your tutorial.
 

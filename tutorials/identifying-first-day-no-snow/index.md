@@ -192,7 +192,7 @@ Map.setCenter(-95.78, 59.451, 5);
 Map.addLayer(firstDayNoSnow2018, visArgs, 'First day of with snow, 2018');
 ```
 
-Running this code produces something similar to Figure X. Color represents day-of-year when zero percent snow cover was first experienced (blue is early, yellow is late).  One can notice a number of interesting patterns. Frozen lakes have been shown to decrease air temperatures in adjacent pixels, resulting in delayed snow melt (Rouse et al. 1997, Wang et al. 2008). Additionally, the protected estuaries of the Northwest Passages have earlier dates of no snow compared to the landscapes exposed to the currents and winds of the Northern Atlantic. Latitude, elevation and proximity to ocean currents are the strongest determinants in this region.
+Running this code produces something similar to Figure 2. Color represents day-of-year when zero percent snow cover was first experienced (blue is early, yellow is late).  One can notice a number of interesting patterns. Frozen lakes have been shown to decrease air temperatures in adjacent pixels, resulting in delayed snow melt (Rouse et al. 1997, Wang et al. 2008). Additionally, the protected estuaries of the Northwest Passages have earlier dates of no snow compared to the landscapes exposed to the currents and winds of the Northern Atlantic. Latitude, elevation and proximity to ocean currents are the strongest determinants in this region.
 Areas with adjacent pixels of early and late dates of no snow tend to be associated with glaciers and ice caps.
 
 
@@ -227,8 +227,8 @@ Map.addLayer(dif, visArgs, '2019-2006 first day no snow dif');
 Running this code produces something similar to Figure 3. Color represents the difference between the 2019 and 2002 day-of-year when zero percent snow cover was first experienced (red is a negative change/an earlier no snow date in 2019, blue is a positive change/a later no snow date in 2019, white is no change/negligible change in no snow date in 2019). This map shows that areas of negative change tend to be associated with higher elevations while areas of positive change are associated with lower elevations. 
 
 
-![img-name.png](img-name.png)<br>
-Figure 3. Year-to-year (2002 - 2019) difference map of the Himalayan Mountains on the Nepal-China border. Color grades from red to blue, with red indicating an earlier date of no snow and blue indicating a later date of no snow. White areas indicate little no change. 
+![himalayan-mountains-alt1.png](himalayan-mountains-alt1.png)<br>
+Figure 3. Year-to-year (2002 - 2019) difference map of the Himalayan Mountains on the Nepal-China border. Color grades from red to blue, with red indicating an earlier date of no snow and blue indicating a later date of no snow. White areas indicate little or no change. 
 ### Trend analysis map
 
 It is also possible to identify trends in the shifting first DOY with no snow by calculating the slope through a pixel’s time series points. Here, the slope for each pixel is calculated with year as the x variable and y as first DOY with no snow.

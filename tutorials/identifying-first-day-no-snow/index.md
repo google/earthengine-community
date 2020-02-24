@@ -1,6 +1,6 @@
 ---
 title: Identifying Annual First Day of No Snow Cover
-description: Using MODIS NDSI to map the annual first day of no snow cover
+description: Using MODIS NDSI to map the annual first day of no snow cover.
 author: aharmstrong
 tags: snow-fraction, snow-cover, snow-melt, snow, modis-ndsi, ndsi
 date_published: 2020-02-20

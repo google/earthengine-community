@@ -165,7 +165,7 @@ Import the MODIS water/land mask dataset, select the ‘water_mask’ band, and
 set all land pixels to value 1.
 
 ```js
-var analysisMask = ee.Image("MODIS/MOD44W/MOD44W_005_2000_02_24")
+var analysisMask = ee.Image('MODIS/MOD44W/MOD44W_005_2000_02_24')
   .select('water_mask')
   .not();
 ```
@@ -183,13 +183,17 @@ Mask pixels based on frequency of snow cover.
 ```js
 // Pixels must have been 10% snow covered for at least 2 weeks in 2018.
 var snowCoverEphem = completeCol.filterDate('2018-01-01', '2019-01-01')
-  .map(function(img) {return img.gte(10)})
+  .map(function(img) {
+    return img.gte(10);
+  })
   .sum()
   .gte(14);
 
 // Pixels must not be 10% snow covered more than 124 days in 2018.
 var snowCoverConst = completeCol.filterDate('2018-01-01', '2019-01-01')
-  .map(function(img) {return img.gte(10)})
+  .map(function(img) {
+    return img.gte(10);
+  })
   .sum()
   .lt(125);
 ```
@@ -224,7 +228,7 @@ complete image mosaic.
 An `ee.List` of images is returned.
 
 ```js
-var annualList = years.map(function(year){
+var annualList = years.map(function(year) {
   // Set the global startYear variable as the year being worked on so that
   // it will be accessible to the addDateBands mapped to the collection below.
   startYear = year;
@@ -436,8 +440,8 @@ var aoi = ee.Geometry.Point(-94.242, 65.79).buffer(1e4);
 Map.addLayer(aoi, null, 'Area of interest');
 
 // Calculate annual mean DOY of AOI.
-var annualAoiMean = annualCol.select('calDoy').map(function(img){
-   var summary = img.reduceRegion({
+var annualAoiMean = annualCol.select('calDoy').map(function(img) {
+  var summary = img.reduceRegion({
     reducer: ee.Reducer.mean(),
     geometry: aoi,
     scale: 1e3,
@@ -445,7 +449,8 @@ var annualAoiMean = annualCol.select('calDoy').map(function(img){
     maxPixels: 1e14,
     tileScale: 4,
   });
-  return ee.Feature(null, summary).set('year', img.get('year'))});
+  return ee.Feature(null, summary).set('year', img.get('year'));
+});
 
 // Print chart to console.
 var chart = ui.Chart.feature.byFeature(annualAoiMean, 'year', 'calDoy')
@@ -454,7 +459,7 @@ var chart = ui.Chart.feature.byFeature(annualAoiMean, 'year', 'calDoy')
     legend: {position: 'none'},
     hAxis: {
       title: 'Year',
-      format:'####'
+      format: '####'
     },
     vAxis: {title: 'Day-of-year'}});
 print(chart);

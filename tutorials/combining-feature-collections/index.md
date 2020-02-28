@@ -47,10 +47,10 @@ var moreNewFeatures = ee.FeatureCollection.randomPoints(utahGeometry, 25, 1);
 
 ## Combine the `ee.FeatureCollection` objects
 
-Next, create a new `ee.FeatureCollection` using a list of the desired `ee.FeatureCollection`s to combine. Then, flatten them into a single `ee.FeatureCollection`.
+Next, create a new `ee.FeatureCollection` by merging `newFeatures` and `moreNewFeatures`.
 
 ```js
-var combinedFeatureCollection = ee.FeatureCollection([newFeatures, moreNewFeatures]).flatten();
+var combinedFeatureCollection = newFeatures.merge(moreNewFeatures);
 ```
 
 ## Visualize the Results
@@ -73,6 +73,5 @@ print(newFeatures, moreNewFeatures, combinedFeatureCollection);
 
 ## Bonus Points
 
-- What happens if you don't flatten the `ee.FeatureCollection`s? Delete `.flatten()` and run the script again to find out.
 - What happens if you change the zoom level in `Map.setCenter` to 3 or to 12?
 - Try changing the layer label of `'More New Features'` to `'Red Points'`. Run the script again to see if it worked.

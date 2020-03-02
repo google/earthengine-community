@@ -165,13 +165,17 @@ Import the MODIS water/land mask dataset, select the ‘water_mask’ band, and
 set all land pixels to value 1.
 
 ```js
-var analysisMask = ee.Image('MODIS/MOD44W/MOD44W_005_2000_02_24')
+var waterMask = ee.Image('MODIS/MOD44W/MOD44W_005_2000_02_24')
   .select('water_mask')
   .not();
 ```
 
 Import the MODIS Snow Cover Daily Global 500m product and select the
 'NDSI_Snow_Cover' band.
+
+**Note that this dataset is used in following
+sections. If you decide not to do any analysis masking, you must still
+include and run this line before the start of the next section**.
 
 ```js
 var completeCol = ee.ImageCollection('MODIS/006/MOD10A1')

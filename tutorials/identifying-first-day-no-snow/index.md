@@ -26,10 +26,10 @@ within a year where a given pixel reaches zero percent snow cover and provides
 suggestions for summarizing and visualizing the results over time and space.
 
 ![arctic-first-doy-no-snow-polar-proj.jpg](arctic-first-doy-no-snow-polar-proj.jpg)<br>
-Patterns of snowmelt timing represented by the first day of 2018 having no snow
+_Patterns of snowmelt timing represented by the first day of 2018 having no snow
 according to the MODIS daily snow cover product. Color grades from purple to
 yellow as the first day of the year with zero percent snow fraction increases
-(Arctic Polar Stereographic projection).
+(Arctic Polar Stereographic projection)._
 
 ## Context
 
@@ -340,8 +340,8 @@ Areas with adjacent pixels of early and late dates of no snow tend to be
 associated with glaciers and ice caps.
 
 ![first-doy-no-snow-2018-map.jpg](first-doy-no-snow-2018-map.jpg)<br>
-Figure 2. Thematic map representing the first day-of-year with zero percent
-snow cover. Color grades from blue to yellow as day-of-year increases.
+_Figure 2. Thematic map representing the first day-of-year with zero percent
+snow cover. Color grades from blue to yellow as day-of-year increases._
 
 ###  Year-to-year difference map
 
@@ -379,10 +379,10 @@ in 2015, blue is a positive change/a later no snow date in 2015, white is no
 change/negligible change in no snow date in 2015).
 
 ![himalayan-mountains.jpg](himalayan-mountains.jpg)<br>
-Figure 3. Year-to-year (2015 - 2005) difference map of the Himalayan
+_Figure 3. Year-to-year (2015 - 2005) difference map of the Himalayan
 Mountains on the Nepal-China border. Color grades from red to blue, with red
 indicating an earlier date of no snow in 2015 and blue indicating a later date
-of no snow in 2015. White areas indicate little or no change.
+of no snow in 2015. White areas indicate little or no change._
 
 ### Trend analysis map
 
@@ -422,10 +422,10 @@ investigated using a time series chart (see the next section). Inter-annual
 variability can be influenced by masked pixels, as described above.
 
 ![per-pixel-time-series-slope-map.jpg](per-pixel-time-series-slope-map.jpg)<br>
-Figure 4. Map representing the slope of first DOY with no snow cover between
+_Figure 4. Map representing the slope of first DOY with no snow cover between
 2000 and 2019. The slope represents the overall trend. Color grades from red
 to blue as the slope in DOY increases. White indicates areas of little to no
-change.
+change._
 
 ###  Time series chart
 
@@ -469,7 +469,7 @@ As is evident by the displayed results, the first date of no snow was mostly
 stable from 2000 to 2012. Following this, the dates have become more erratic.
 
 ![point-doy-time-series-chart.png](point-doy-time-series-chart.png)<br>
-Figure 5. Regional annual mean first DOY with no snow time series.
+_Figure 5. Regional annual mean first DOY with no snow time series._
 
 ## Acknowledgements
 

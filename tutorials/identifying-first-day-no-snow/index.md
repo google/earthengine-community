@@ -26,9 +26,10 @@ within a year where a given pixel reaches zero percent snow cover and provides
 suggestions for summarizing and visualizing the results over time and space.
 
 ![arctic-first-doy-no-snow-polar-proj.jpg](arctic-first-doy-no-snow-polar-proj.jpg)<br>
-_Patterns of snowmelt timing represented by the first day of 2018 having no snow
-according to the MODIS daily snow cover product. Color grades from purple to
-yellow as the first day of the year with zero percent snow fraction increases
+_Patterns of snowmelt timing are represented here by the first day in 2018 where
+each pixel no longer contained snow, as detected by the MODIS daily snow cover
+product. The color grades from purple (earlier) to yellow (later) as the first
+day of the year with zero percent snow per pixel increases
 (Arctic Polar Stereographic projection)._
 
 ## Context
@@ -275,13 +276,6 @@ Convert the `ee.List` of images to an image collection.
 var annualCol = ee.ImageCollection.fromImages(annualList);
 ```
 
-**Note** that MODIS cloud masking can influence results. If there are a number
-of sequentially masked image pixel observations (clouds, poor quality), the
-actual date of the first observation with zero percent snow cover may be earlier
-than identified in the image time series. Regional patterns may be less
-influenced by this bias than local results. For local results, please inspect
-image masks to understand their influence on the dates near snowmelt timing.
-
 ## Data summary and visualization
 
 The following are a series of examples for how to display and explore the
@@ -300,6 +294,13 @@ to view map data interactively with a relatively high zoom level. Additionally,
 for any analysis where a function provides a scale parameter, it is best to
 define it with the native resolution of the dataset (500m), which can include
 region reduction and exporting results.
+
+- MODIS cloud masking can influence results. If there are a number
+of sequentially masked image pixel observations (clouds, poor quality), the
+actual date of the first observation with zero percent snow cover may be earlier
+than identified in the image time series. Regional patterns may be less
+influenced by this bias than local results. For local results, please inspect
+image masks to understand their influence on the dates near snowmelt timing.
 
 ### Single-year map
 
@@ -340,8 +341,12 @@ dates of no snow compared to the landscapes exposed to the currents and winds
 of the Northern Atlantic. Latitude, elevation and proximity to ocean currents
 are the strongest determinants in this region.
 
-Areas with adjacent pixels of early and late dates of no snow tend to be
-associated with glaciers and ice caps.
+**Note**: pixels representing glaciers that did not get removed by the analysis
+mask can produce anomalies in the data. Since glaciers are generally snow
+covered, the day-of-year with the least snow cover (according to the MODIS snow
+cover product) is presented in the map. In the image below, this is evident in
+the abrupt transition from yellow to blue in alpine areas of Baffin island
+(blue pixels are glaciers in this case).
 
 ![first-doy-no-snow-2018-map.jpg](first-doy-no-snow-2018-map.jpg)<br>
 _Figure 2. Thematic map representing the first day-of-year with zero percent
@@ -478,8 +483,9 @@ _Figure 5. Regional annual mean first DOY with no snow time series._
 ## Acknowledgements
 
 Amanda Armstrong devised and directed tutorial development. Justin Braaten
-assisted in method implementation. Morgan Shelby provided text and analysis
-examples.
+assisted in method implementation. Morgan Shelby asked the initial question that
+lead to the development of the dataset and subsequent tutorial. All contributors
+provided text, code and analysis examples.
 
 ## References
 

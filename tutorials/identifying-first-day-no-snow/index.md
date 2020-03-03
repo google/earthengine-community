@@ -249,9 +249,9 @@ var annualList = years.map(function(year) {
   var endDate = startDate.advance(1, 'year').advance(1, 'day');
   // Filter the complete collection by the start and end dates just defined.
   var yearCol = completeCol.filterDate(startDate, endDate);
-  // Return an image where pixels represent the first day within the date range
-  // that zero percent snow cover is observed.
-  return yearCol
+  // Construct an image where pixels represent the first day within the date range
+  // that the lowest snow fraction is observed.
+  var noSnowImg = yearCol
     // Add date bands to all images in this particular collection.
     .map(addDateBands)
     // Sort the images by time.
@@ -262,11 +262,15 @@ var annualList = years.map(function(year) {
     // image.
     .reduce(ee.Reducer.min(5))
     // Rename the bands - band names were altered by previous operation.
-    .rename(['NDSI_Snow_Cover', 'calDoy', 'relDay', 'millis', 'year'])
+    .rename(['snowCover', 'calDoy', 'relDay', 'millis', 'year'])
     // Apply the mask.
     .updateMask(analysisMask)
     // Set the year as a property for filtering by later.
     .set('year', year);
+    
+  // Mask by minimum snow fraction - only include pixels that reach 0
+  // percent cover. Return the resulting image.
+  return noSnowImg.updateMask(noSnowImg.select('snowCover').eq(0));
 });
 ```
 

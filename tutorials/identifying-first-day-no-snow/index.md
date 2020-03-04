@@ -67,7 +67,7 @@ snowmelt to occur earlier (Barnhart et al., 2016; Clow, 2010; Harpold et al.,
 2012).
 
 This tutorial calculates the first day of no snow annually at the pixel
-level, providing the user with the ability track the seasonal and interannual
+level, providing the user with the ability to track the seasonal and interannual
 variability in the timing of snowmelt toward a better understanding of how
 the hydrological cycles of higher latitude and mountainous regions are
 responding to climate change.
@@ -83,7 +83,7 @@ The general workflow is as follows:
 1. Define the date ranges to consider for analysis.
 2. Define a function that adds date information as bands to snow cover images.
 3. Define an analysis mask.
-4. Loop through years; for each year:
+4. For each year:
     1. Filter the image collection to observations from the given year.
     2. Add date bands to the filtered images.
     3. Identify the first day of the year without any snow per pixel.
@@ -163,7 +163,7 @@ mask out pixels that are snow covered for a good deal of the year
 (e.g., glaciers).
 
 Import the MODIS water/land mask dataset, select the ‘water_mask’ band, and
-set all land pixels to value 1.
+set all land pixels to value 1:
 
 ```js
 var waterMask = ee.Image('MODIS/MOD44W/MOD44W_005_2000_02_24')
@@ -183,7 +183,7 @@ var completeCol = ee.ImageCollection('MODIS/006/MOD10A1')
   .select('NDSI_Snow_Cover');
 ```
 
-Mask pixels based on frequency of snow cover.
+Mask pixels based on frequency of snow cover:
 
 ```js
 // Pixels must have been 10% snow covered for at least 2 weeks in 2018.
@@ -200,10 +200,10 @@ var snowCoverConst = completeCol.filterDate('2018-01-01', '2019-01-01')
     return img.gte(10);
   })
   .sum()
-  .lt(125);
+  .lte(124);
 ```
 
-Combine the water mask and the snow cover frequency masks.
+Combine the water mask and the snow cover frequency masks:
 
 ```js
 var analysisMask = waterMask.multiply(snowCoverEphem).multiply(snowCoverConst);
@@ -211,7 +211,7 @@ var analysisMask = waterMask.multiply(snowCoverEphem).multiply(snowCoverConst);
 
 ### 4\. Identify the first day of the year without snow per pixel, per year
 
-Make a list of the years to process; input variables were defined in step 1.
+Make a list of the years to process; input variables were defined in step 1:
 
 ```js
 var years = ee.List.sequence(startYear, endYear);
@@ -219,7 +219,7 @@ var years = ee.List.sequence(startYear, endYear);
 
 Map the following function over the list of years. For each year, identify
 the first day with zero percent snow cover.
- 
+
 1. Define the start and end dates to filter the dataset for the given year.
 2. Filter the image collection by the date range.
 3. Add the date bands to each image in the filtered collection.
@@ -229,7 +229,7 @@ snow cover. Since the collection is sorted by date, the first image with 0
 snow cover is selected. This operation is conducted per-pixel to build the
 complete image mosaic.
 6. Apply the analysis mask to the resulting mosaic.
- 
+
 An `ee.List` of images is returned.
 
 ```js
@@ -267,14 +267,14 @@ var annualList = years.map(function(year) {
     .updateMask(analysisMask)
     // Set the year as a property for filtering by later.
     .set('year', year);
-    
+
   // Mask by minimum snow fraction - only include pixels that reach 0
   // percent cover. Return the resulting image.
   return noSnowImg.updateMask(noSnowImg.select('snowCover').eq(0));
 });
 ```
 
-Convert the `ee.List` of images to an image collection.
+Convert the `ee.List` of images to an image collection:
 
 ```js
 var annualCol = ee.ImageCollection.fromImages(annualList);
@@ -284,8 +284,8 @@ var annualCol = ee.ImageCollection.fromImages(annualList);
 
 The following are a series of examples for how to display and explore the
 first DOY with no snow dataset you just generated.
- 
-**Note**: 
+
+**Note**:
 
 - These examples refer to the calendar date (`calDoy` band) when
 displaying and incorporating date information in calculations. If you are
@@ -478,8 +478,8 @@ var chart = ui.Chart.feature.byFeature(annualAoiMean, 'year', 'calDoy')
 print(chart);
 ```
 
-As is evident by the displayed results, the first date of no snow was mostly
-stable from 2000 to 2012. Following this, the dates have become more erratic.
+As is evident by the displayed results, the first day of no snow was mostly
+stable from 2000 to 2012. Following this, the day has become more erratic.
 
 ![point-doy-time-series-chart.png](point-doy-time-series-chart.png)<br>
 _Figure 5. Regional annual mean first DOY with no snow time series._
@@ -488,7 +488,7 @@ _Figure 5. Regional annual mean first DOY with no snow time series._
 
 Amanda Armstrong devised and directed tutorial development. Justin Braaten
 assisted in method implementation. Morgan Shelby asked the initial question that
-lead to the development of the dataset and subsequent tutorial. All contributors
+led to the development of the dataset and subsequent tutorial. All contributors
 provided text, code and analysis examples.
 
 ## References

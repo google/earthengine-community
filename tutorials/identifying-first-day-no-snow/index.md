@@ -295,9 +295,9 @@ may want to replace `calDoy` with `relDoy` in all cases below.
 - Results may appear different as you zoom in and out of the map because of
 [tile aggregation](https://developers.google.com/earth-engine/scale). It is best
 to view map data interactively with a relatively high zoom level. Additionally,
-for any analysis where a function provides a scale parameter, it is best to
-define it with the native resolution of the dataset (500m), which can include
-region reduction and exporting results.
+for any analysis where a function provides a scale parameter (e.g., region
+reduction, exporting results), it is best to define it with the native
+resolution of the dataset (500m).
 
 - MODIS cloud masking can influence results. If there are a number
 of sequentially masked image pixel observations (clouds, poor quality), the

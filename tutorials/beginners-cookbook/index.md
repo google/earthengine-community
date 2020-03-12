@@ -818,7 +818,7 @@ print(coll);
 // Create rectangle over Dubai.
 var geometry = ee.Geometry.Rectangle([55.1, 25, 55.4, 25.4]);
 // Add layer to map.
-Map.addLayer(geometry, 3);
+Map.addLayer(geometry);
 Map.centerObject(geometry);
 // Load Landsat image collection.
 var allImages = ee.ImageCollection('LANDSAT/LT05/C01/T1_TOA')

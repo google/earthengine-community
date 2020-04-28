@@ -140,10 +140,10 @@ var chartPanel = ui.Panel({
   style:
       {height: '235px', width: '600px', position: 'bottom-right', shown: false}
 });
-
 ```
 
 2\. Add the panel to the `Map`.
+
 ```js
 Map.add(chartPanel);
 ```
@@ -212,13 +212,13 @@ drawingTools.onEdit(ui.util.debounce(chartNdviTimeSeries, 500));
 
 ## User interface
 
-This section defines the drawing control, which contains instructions and
+This section defines the drawing control panel, which contains instructions and
 drawing tool buttons.
 
 1\. Define a dictionary of symbols to augment the text label for each of the
 geometry buttons defined in the following step. The symbols are kept separate
 from the text to avoid unexpected cursor behavior when mixing symbols and
-text. The symbols will be concatenated with text in the following step.
+text.
 
 ```js
 var symbol = {
@@ -274,7 +274,7 @@ Map.add(controlPanel);
 ## Result
 
 The following animation is the result of putting the entire script together and
-publishing it as an Earth Engine App. The simplicity of the custom drawing
+publishing it as an Earth Engine App. The simplicity of this custom drawing
 tool interface and automatic clearing of the previous drawing and
 plot will allow you and your app users to focus on exploring data instead of
 geometry management.

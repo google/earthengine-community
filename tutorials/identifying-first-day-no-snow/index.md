@@ -147,7 +147,7 @@ function addDateBands(img) {
   var millis = date.millis();
   // Add all of the above date info as bands to the snow fraction image.
   var dateBands = ee.Image.constant([calDoy, relDoy, millis, startYear])
-    .rename(['calDoy', 'relDay', 'millis', 'year']);
+    .rename(['calDoy', 'relDoy', 'millis', 'year']);
   return img.addBands(dateBands).toInt16().set('millis', millis);
 }
 ```
@@ -262,7 +262,7 @@ var annualList = years.map(function(year) {
     // image.
     .reduce(ee.Reducer.min(5))
     // Rename the bands - band names were altered by previous operation.
-    .rename(['snowCover', 'calDoy', 'relDay', 'millis', 'year'])
+    .rename(['snowCover', 'calDoy', 'relDoy', 'millis', 'year'])
     // Apply the mask.
     .updateMask(analysisMask)
     // Set the year as a property for filtering by later.
@@ -338,7 +338,8 @@ Running this code produces something similar to Figure 2. Color represents
 day-of-year when zero percent snow cover was first experienced (blue is
 early, yellow is late).  One can notice a number of interesting patterns.
 Frozen lakes have been shown to decrease air temperatures in adjacent pixels,
-resulting in delayed snow melt (Rouse et al., 1997; Wang et al., 2008).
+resulting in delayed snow melt (Rouse et al., 1997; Salomonson and Appel, 2004;
+Wang and Derksen, 2007).
 
 Additionally, the protected estuaries of the Northwest Passages have earlier
 dates of no snow compared to the landscapes exposed to the currents and winds
@@ -513,4 +514,8 @@ provided text, code and analysis examples.
 
 [Musselman, K.N., Clark, M.P., Liu, C., Ikeda, K. and Rasmussen, R., 2017. Slower snowmelt in a warmer world. Nature Climate Change, 7(3), pp.214-219.](https://www.nature.com/articles/nclimate3225)
 
-[Wang, 1.R., Nisoli, C., Freitas, R.S.D., Li, J., McConville, W., Cooley, B.J., Lund, M.S., Samarth, N., Leighton, C., Crespi, V.H. and Schiffer, P., 2006. Artificial ‘spin ice’ in a geometrically frustrated lattice of nanoscale ferromagnetic islands. Nature, 439(7074), pp.303-306.](https://www.nature.com/articles/nature04447)
+[Rouse, W.R., Douglas, M.S., Hecky, R.E., Hershey, A.E., Kling, G.W., Lesack, L., Marsh, P., McDonald, M., Nicholson, B.J., Roulet, N.T. and Smol, J.P., 1997. Effects of climate change on the freshwaters of arctic and subarctic North America. Hydrological processes, 11(8), pp.873-902.](https://onlinelibrary.wiley.com/doi/abs/10.1002/(SICI)1099-1085(19970630)11:8%3C873::AID-HYP510%3E3.0.CO;2-6)
+
+[Salomonson, V.V. and Appel, I., 2004. Estimating fractional snow cover from MODIS using the normalized difference snow index. Remote sensing of environment, 89(3), pp.351-360.](https://www.sciencedirect.com/science/article/abs/pii/S0034425703002864)
+
+[Wang, L. and Derksen, C., 2007. Detection of Pan-Arctic Terrestrial Snowmelt Onset from QuikSCAT, 2000–2005. In Proceedings of the 64th Eastern Snow Conference (pp. 37-43).](http://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.503.5315&rep=rep1&type=pdf)

@@ -1,0 +1,37 @@
+html,
+body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  width: 100%;
+  font-family: 'Google Sans', Arial, sans-serif;
+  background-color: var(--background-color);
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p {
+  margin: 0px;
+  padding: 0px;
+}
+
+:root {
+  /* theme properties */
+  --primary-color: white;
+  --accent-color: #202124;
+  --background-color: #f5f6f9;
+  --app-title-suffix-color: #5f6368;
+  --light-border: 0.6px solid rgba(0, 0, 0, 0.3);
+  --paper-tabs-selection-bar-color: var(--accent-color);
+
+  /* spacing */
+  --extra-tight: 4px;
+  --tight: 8px;
+  --regular: 16px;
+  --loose: 24px;
+  --extra-loose: 32px;
+}

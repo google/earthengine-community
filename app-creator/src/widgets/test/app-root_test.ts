@@ -13,7 +13,7 @@ suite('app-root', () => {
     assert.instanceOf(el, AppRoot);
   });
 
-  test('renders with default values', async () => {
+  test('renders widget', async () => {
     const el = await fixture(html`<app-root></app-root>`);
     expect(el.shadowRoot!.childNodes.length).to.be.greaterThan(0);
   });

@@ -13,7 +13,7 @@ suite('tool-bar', () => {
     assert.instanceOf(el, ToolBar);
   });
 
-  test('renders with default values', async () => {
+  test('renders widget', async () => {
     const el = await fixture(html`<tool-bar></tool-bar>`);
     expect(el.shadowRoot!.textContent).to.include(ToolBar.prefix);
     expect(el.shadowRoot!.textContent).to.include(ToolBar.suffix);

@@ -1,5 +1,7 @@
 # Earth Engine App Creator
 
+The EE App Creator is a platform that allows users to create Earth Engine apps using an intuitive user interface. Some app examples can be found here https://www.earthengine.app/.
+
 ## Setup
 
 Install dependencies:

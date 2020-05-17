@@ -1,8 +1,15 @@
-import {LitElement, html, customElement, css} from 'lit-element';
+/**
+ *  @fileoverview The tool bar widget is the header component
+ *  which contains the app title and export actions
+ */
+import { LitElement, html, customElement, css } from 'lit-element';
 import '@polymer/paper-button/paper-button.js';
 
 @customElement('tool-bar')
 export class ToolBar extends LitElement {
+  static prefix = 'Google Earth Engine';
+  static suffix = 'App Creator';
+
   static styles = css`
     #container {
       height: 35px;
@@ -34,8 +41,8 @@ export class ToolBar extends LitElement {
     return html`
       <div id="container">
         <h3>
-          <strong id="app-title-prefix">Google Earth Engine</strong>
-          <span id="app-title-suffix">App Creator</span>
+          <strong id="app-title-prefix">${ToolBar.prefix}</strong>
+          <span id="app-title-suffix">${ToolBar.suffix}</span>
         </h3>
       </div>
     `;

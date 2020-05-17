@@ -1,4 +1,8 @@
-import {LitElement, html, customElement, css} from 'lit-element';
+/**
+ *  @fileoverview The app-root widget is the starting point of our application
+ *  in which all other widgets are rendered
+ */
+import { LitElement, html, customElement, css } from 'lit-element';
 import './tool-bar/tool-bar';
 
 @customElement('app-root')

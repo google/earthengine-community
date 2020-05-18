@@ -7,3 +7,5 @@ out
 !.private-key.json.enc
 !.travis
 !.travis.yml
+package-lock.json
+app-creator/widgets

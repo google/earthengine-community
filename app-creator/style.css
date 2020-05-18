@@ -34,4 +34,7 @@ p {
   --regular: 16px;
   --loose: 24px;
   --extra-loose: 32px;
+
+  /* sizes */
+  --actions-panel-width: 300px;
 }

@@ -4,6 +4,8 @@
  */
 import { LitElement, html, customElement, css } from 'lit-element';
 import './tool-bar/tool-bar';
+import './actions-panel/actions-panel';
+import './tab-container/tab-container';
 
 @customElement('app-root')
 export class AppRoot extends LitElement {
@@ -24,7 +26,9 @@ export class AppRoot extends LitElement {
     return html`
       <div id="app">
         <tool-bar></tool-bar>
-        <div id="container"></div>
+        <div id="container">
+          <actions-panel></actions-panel>
+        </div>
       </div>
     `;
   }

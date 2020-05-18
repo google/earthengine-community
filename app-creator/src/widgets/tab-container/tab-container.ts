@@ -1,5 +1,5 @@
 /**
- *  @fileoverview The tab container is used as a wrapper for the different tabs
+ *  @fileoverview The tab-container is used as a wrapper for the different tabs
  *  in the actions panel
  */
 import { LitElement, html, customElement, css, property } from 'lit-element';
@@ -8,7 +8,7 @@ import { LitElement, html, customElement, css, property } from 'lit-element';
 export class TabContainer extends LitElement {
   static styles = css`
     #container {
-      height: 100%;
+      height: calc(100vh - 67.57px - 80px);
       width: 100%;
       overflow-y: scroll;
       padding: var(--regular);

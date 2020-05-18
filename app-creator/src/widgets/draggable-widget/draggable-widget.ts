@@ -1,5 +1,9 @@
-import {LitElement, html, customElement, css} from 'lit-element';
+/**
+ *  @fileoverview The draggable widget wraps around other widgets to make them draggable
+ */
+import { LitElement, html, customElement, css } from 'lit-element';
 import '../tab-container/tab-container';
+import '@polymer/iron-icons/editor-icons.js';
 
 @customElement('draggable-widget')
 export class DraggableWidget extends LitElement {
@@ -7,25 +11,28 @@ export class DraggableWidget extends LitElement {
     #container {
       border: 0.8px dashed rgba(0, 0, 0, 0.3);
       border-radius: var(--tight);
-      cursor: move;
       width: 90%;
       margin: var(--tight) 0px;
+      position: relative;
+      cursor: move;
+    }
+
+    .overlay {
+      height: 100%;
+      width: 100%;
+      position: absolute;
+      top: 0;
+      left: 0;
     }
   `;
 
   render() {
-    return html`<div
-      id="container"
-      draggable="true"
-      @dragstart="${(e: DragEvent) => {
-        console.log('dragstart', e.target);
-      }}"
-      @dragend="${(e: DragEvent) => {
-        e.preventDefault();
-      }}"
-    >
-      <slot></slot>
-    </div> `;
+    return html`
+      <div id="container" draggable="true">
+        <slot></slot>
+        <div class="overlay"></div>
+      </div>
+    `;
   }
 }
 

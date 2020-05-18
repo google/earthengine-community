@@ -1,5 +1,5 @@
 /**
- *  @fileoverview The tool bar widget is the header component
+ *  @fileoverview The tool-bar widget is the header component
  *  which contains the app title and export actions
  */
 import { LitElement, html, customElement, css } from 'lit-element';

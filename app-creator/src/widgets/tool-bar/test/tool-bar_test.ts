@@ -3,9 +3,7 @@
  *  which contains the app title and export actions
  */
 import { ToolBar } from '../tool-bar';
-import { fixture, html, expect } from '@open-wc/testing';
-
-const assert = chai.assert;
+import { fixture, html, expect, assert } from '@open-wc/testing';
 
 suite('tool-bar', () => {
   test('is defined', () => {

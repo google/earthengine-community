@@ -3,9 +3,7 @@
  *  which is the root level component of our application
  */
 import { AppRoot } from '../app-root.js';
-import { fixture, html, expect } from '@open-wc/testing';
-
-const assert = chai.assert;
+import { fixture, html, expect, assert } from '@open-wc/testing';
 
 suite('app-root', () => {
   test('is defined', () => {

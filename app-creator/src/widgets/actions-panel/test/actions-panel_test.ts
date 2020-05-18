@@ -1,7 +1,10 @@
-import {ActionsPanel} from '../actions-panel';
-import {fixture, html} from '@open-wc/testing';
-
-const assert = chai.assert;
+/**
+ *  @fileoverview This file tests the actions panel widget which is
+ *  the left side panel that contains the different actions that a user can take.
+ *  These actions include selecting templates, adding widgets, and editting different attributes.
+ */
+import { ActionsPanel } from '../actions-panel';
+import { fixture, html, expect, assert } from '@open-wc/testing';
 
 suite('actions-panel', () => {
   test('is defined', () => {
@@ -9,18 +12,8 @@ suite('actions-panel', () => {
     assert.instanceOf(el, ActionsPanel);
   });
 
-  test('renders with default values', async () => {
+  test('renders widget', async () => {
     const el = await fixture(html`<actions-panel></actions-panel>`);
-    assert.shadowDom.equal(
-      el,
-      `
-      <div id="container">
-        <h3>
-          <strong id="app-title-prefix">Google Earth Engine</strong>
-          <span id="app-title-suffix">App Creator</span>
-        </h3>
-      </div>
-    `
-    );
+    expect(el.shadowRoot!.childNodes.length).to.be.greaterThan(0);
   });
 });

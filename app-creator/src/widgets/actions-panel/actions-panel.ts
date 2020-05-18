@@ -1,3 +1,8 @@
+/**
+ *  @fileoverview The actions-panel widget is the left side panel in which
+ *  all template actions are taking place. This includes selecting templates,
+ *  adding widgets, and editing widget attributes.
+ */
 import { LitElement, html, customElement, css, property } from 'lit-element';
 import { IronIconElement } from '@polymer/iron-icon';
 import '@polymer/paper-tabs/paper-tabs.js';

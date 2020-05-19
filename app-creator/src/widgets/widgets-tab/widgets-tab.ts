@@ -9,6 +9,7 @@ import '../ui-label/ui-label';
 import '../ui-button/ui-button';
 import '../ui-select/ui-select';
 import '../ui-checkbox/ui-checkbox';
+import '../ui-textbox/ui-textbox';
 
 @customElement('widgets-tab')
 export class WidgetsTab extends LitElement {
@@ -42,6 +43,10 @@ export class WidgetsTab extends LitElement {
             .items=${['Item 1', 'Item 2']}
             placeholder="Select Item"
           ></ui-select>
+        </draggable-widget>
+        <h5 class="subtitle">Textbox</h5>
+        <draggable-widget>
+          <ui-textbox label="Enter text"></ui-textbox>
         </draggable-widget>
         <h5 class="subtitle">Checkbox</h5>
         <draggable-widget .hasOverlay=${false}>

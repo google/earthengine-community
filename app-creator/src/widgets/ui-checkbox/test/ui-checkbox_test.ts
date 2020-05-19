@@ -1,6 +1,6 @@
 /**
  *  @fileoverview This file tests the ui-checkbox widget
- *  which is used to add text to the user's template
+ *  which is used to add a checkbox component to the user's template
  */
 import { Checkbox } from '../ui-checkbox';
 import { fixture, html, expect, assert } from '@open-wc/testing';

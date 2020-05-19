@@ -1,5 +1,5 @@
 /**
- *  @fileoverview The ui-checkbox widget
+ *  @fileoverview The ui-checkbox widget lets users add a checkbox component to their templates
  */
 import '@polymer/paper-checkbox/paper-checkbox.js';
 import { css, customElement, html, LitElement, property } from 'lit-element';

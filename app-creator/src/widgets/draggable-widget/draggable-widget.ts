@@ -1,7 +1,7 @@
 /**
  *  @fileoverview The draggable widget wraps around other widgets to make them draggable
  */
-import { LitElement, html, customElement, css } from 'lit-element';
+import { LitElement, html, customElement, css, property } from 'lit-element';
 import '../tab-container/tab-container';
 import '@polymer/iron-icons/editor-icons.js';
 
@@ -26,11 +26,17 @@ export class DraggableWidget extends LitElement {
     }
   `;
 
+  @property({ type: Boolean })
+  hasOverlay = true;
+
   render() {
+    const { hasOverlay } = this;
+
+    const overlay = hasOverlay ? html`<div class="overlay"></div>` : null;
     return html`
       <div id="container" draggable="true">
         <slot></slot>
-        <div class="overlay"></div>
+        ${overlay}
       </div>
     `;
   }

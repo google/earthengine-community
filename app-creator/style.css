@@ -28,6 +28,8 @@ p {
   --light-border: 0.6px solid rgba(0, 0, 0, 0.3);
   --paper-tabs-selection-bar-color: var(--accent-color);
   --paper-checkbox-checked-color: var(--accent-color);
+  --paper-slider-knob-color: var(--accent-color);
+  --paper-slider-active-color: var(--accent-color);
 
   /* spacing */
   --extra-tight: 4px;

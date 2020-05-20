@@ -10,6 +10,8 @@ import '../ui-button/ui-button';
 import '../ui-select/ui-select';
 import '../ui-checkbox/ui-checkbox';
 import '../ui-textbox/ui-textbox';
+import '../ui-slider/ui-slider';
+import '../ui-panel/ui-panel';
 
 @customElement('widgets-tab')
 export class WidgetsTab extends LitElement {
@@ -47,9 +49,17 @@ export class WidgetsTab extends LitElement {
         <draggable-widget>
           <ui-textbox label="Enter text"></ui-textbox>
         </draggable-widget>
+        <h5 class="subtitle">Panel</h5>
+        <draggable-widget>
+          <ui-panel isRaised></ui-panel>
+        </draggable-widget>
         <h5 class="subtitle">Checkbox</h5>
         <draggable-widget .hasOverlay=${false}>
           <ui-checkbox label="Item"></ui-checkbox>
+        </draggable-widget>
+        <h5 class="subtitle">Slider</h5>
+        <draggable-widget>
+          <ui-slider label="Item"></ui-slider>
         </draggable-widget>
       </tab-container>
     `;

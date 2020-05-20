@@ -9,3 +9,4 @@ out
 !.travis.yml
 package-lock.json
 app-creator/widgets
+app-creator/app.yaml

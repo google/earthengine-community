@@ -1,6 +1,5 @@
 /**
- *  @fileoverview This file tests the ui-textbox widget
- *  which is used to add user input to the user's template
+ *  @fileoverview This file tests the ui-textbox widget.
  */
 import { Textbox } from '../ui-textbox';
 import { fixture, html, assert } from '@open-wc/testing';
@@ -18,7 +17,6 @@ suite('ui-textbox', () => {
       el,
       `
     <paper-input
-      always-float-label=""
       aria-disabled="false"
       label="${label}"
       style=""

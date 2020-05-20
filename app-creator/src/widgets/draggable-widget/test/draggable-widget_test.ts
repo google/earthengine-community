@@ -1,6 +1,5 @@
 /**
- *  @fileoverview This file tests the draggable-widget which wraps
- *  other widgets to make them draggable
+ *  @fileoverview This file tests the draggable-widget.
  */
 import { DraggableWidget } from '../draggable-widget';
 import { fixture, html, expect, assert } from '@open-wc/testing';

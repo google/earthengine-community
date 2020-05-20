@@ -1,7 +1,5 @@
 /**
- *  @fileoverview This file tests the actions panel widget which is
- *  the left side panel that contains the different actions that a user can take.
- *  These actions include selecting templates, adding widgets, and editting different attributes.
+ *  @fileoverview This file tests the actions-panel widget.
  */
 import { ActionsPanel } from '../actions-panel';
 import { fixture, html, expect, assert } from '@open-wc/testing';

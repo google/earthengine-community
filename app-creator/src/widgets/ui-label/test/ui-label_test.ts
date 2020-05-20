@@ -1,6 +1,5 @@
 /**
- *  @fileoverview This file tests the ui-label widget
- *  which is used to add text to the user's template
+ *  @fileoverview This file tests the ui-label widget.
  */
 import { Label } from '../ui-label';
 import { fixture, html, expect, assert } from '@open-wc/testing';

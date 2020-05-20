@@ -1,6 +1,5 @@
 /**
- *  @fileoverview This file tests the tab container widget which
- *  is a wrapper to a set of elements displayed on a selected tab
+ *  @fileoverview This file tests the tab-container widget.
  */
 import { TabContainer } from '../tab-container';
 import { fixture, html, expect, assert } from '@open-wc/testing';
@@ -29,14 +28,6 @@ suite('tab-container', () => {
     const el = await fixture(
       html`<tab-container title="${title}"></tab-container>`
     );
-    assert.shadowDom.equal(
-      el,
-      `
-      <div id="container">
-        <h5>${title}</h5>
-        <slot></slot>
-      </div>
-      `
-    );
+    expect(el.shadowRoot!.textContent).to.include(title);
   });
 });

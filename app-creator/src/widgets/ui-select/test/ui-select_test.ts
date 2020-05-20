@@ -1,5 +1,5 @@
 /**
- *  @fileoverview
+ *  @fileoverview This tests the ui-select widget.
  */
 import { Select } from '../ui-select';
 import { fixture, html, expect, assert } from '@open-wc/testing';

@@ -1,5 +1,5 @@
 /**
- *  @fileoverview The ui-checkbox widget lets users add a checkbox component to their templates
+ *  @fileoverview The ui-checkbox widget lets users add a checkbox component to their templates.
  */
 import '@polymer/paper-checkbox/paper-checkbox.js';
 import { css, customElement, html, LitElement, property } from 'lit-element';
@@ -13,12 +13,24 @@ export class Checkbox extends LitElement {
     }
   `;
 
+  /**
+   * Additional custom styles for the button.
+   */
   @property({ type: Object }) styles = {};
 
+  /**
+   * Sets checkbox label.
+   */
   @property({ type: String }) label = '';
 
+  /**
+   * If true, the user cannot interact with this element.
+   */
   @property({ type: Boolean }) disabled = false;
 
+  /**
+   * If true, checkbox displays a checkmark.
+   */
   @property({ type: Boolean })
   checked = false;
 

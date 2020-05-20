@@ -13,25 +13,21 @@ export class Textbox extends LitElement {
     }
   `;
 
+  /**
+   * Additional custom styles.
+   */
   @property({ type: Object }) styles = {};
 
+  /**
+   * Sets textbox label.
+   */
   @property({ type: String }) label = '';
 
-  @property({ type: Boolean }) alwaysFloatLabel = true;
-
   render() {
-    const { label, styles, alwaysFloatLabel } = this;
+    const { label, styles } = this;
     return html`
-      <paper-input
-        style=${styleMap(styles)}
-        ?always-float-label=${alwaysFloatLabel}
-        label="${label}"
-      ></paper-input>
+      <paper-input style=${styleMap(styles)} label="${label}"></paper-input>
     `;
-  }
-
-  getAlwaysFloatLabel() {
-    return this.alwaysFloatLabel;
   }
 
   getLabel() {

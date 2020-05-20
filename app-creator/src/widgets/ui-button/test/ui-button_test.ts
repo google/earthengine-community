@@ -1,5 +1,5 @@
 /**
- *  @fileoverview This file tests the ui-button widget which enables users to add a buttons to their templates
+ *  @fileoverview This file tests the ui-button widget.
  */
 import { Button } from '../ui-button';
 import { fixture, html, expect, assert } from '@open-wc/testing';

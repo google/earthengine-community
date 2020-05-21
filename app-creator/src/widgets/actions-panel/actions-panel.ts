@@ -41,6 +41,10 @@ export class ActionsPanel extends LitElement {
       width: 100%;
       overflow-x: hidden;
     }
+
+    paper-tabs {
+      border-bottom: var(--light-border);
+    }
   `;
 
   /**

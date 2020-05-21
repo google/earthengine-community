@@ -21,13 +21,16 @@ p {
 
 :root {
   /* theme properties */
-  --primary-color: white;
   --accent-color: #202124;
-  --background-color: #f5f6f9;
   --app-title-suffix-color: #5f6368;
-  --light-border: 0.6px solid rgba(0, 0, 0, 0.3);
-  --paper-tabs-selection-bar-color: var(--accent-color);
+  --background-color: #f5f6f9;
+  --border-gray: rgba(0, 0, 0, 0.3);
+  --light-border: 0.6px solid var(--border-gray);
   --paper-checkbox-checked-color: var(--accent-color);
+  --paper-slider-knob-color: var(--accent-color);
+  --paper-slider-active-color: var(--accent-color);
+  --paper-tabs-selection-bar-color: var(--accent-color);
+  --primary-color: white;
 
   /* spacing */
   --extra-tight: 4px;
@@ -38,4 +41,7 @@ p {
 
   /* sizes */
   --actions-panel-width: 300px;
+
+  /* utils */
+  --raised-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
 }

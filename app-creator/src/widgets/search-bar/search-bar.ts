@@ -1,10 +1,16 @@
 /**
- *  @fileoverview The ui-searchbar widget allows users to filter through different elements
+ *  @fileoverview The search-bar widget allows users to filter through different elements
  *  using a search query.
  */
 import { css, customElement, html, LitElement, property } from 'lit-element';
 import { styleMap } from 'lit-html/directives/style-map';
 import { debounce } from '../../utils/debounce';
+
+export interface onSearchEvent {
+  detail: {
+    query: string;
+  };
+}
 
 @customElement('search-bar')
 export class Searchbar extends LitElement {

@@ -23,17 +23,12 @@ import '../ui-textbox/ui-textbox';
 import '../ui-slider/ui-slider';
 import '../ui-panel/ui-panel';
 import '../search-bar/search-bar';
+import { onSearchEvent } from '../search-bar/search-bar';
 
 interface WidgetItem {
   id: string;
   name: string;
   markup: TemplateResult;
-}
-
-interface onSearchEvent {
-  detail: {
-    query: string;
-  };
 }
 
 @customElement('widgets-tab')
@@ -169,7 +164,10 @@ export class WidgetsTab extends LitElement {
   filterWidgets(query: string): WidgetItem[] {
     return WidgetsTab.widgets.filter(({ id, name }) => {
       const lowerCasedQuery = query.toLowerCase();
-      return id.includes(lowerCasedQuery) || name.includes(lowerCasedQuery);
+      return (
+        id.toLowerCase().includes(lowerCasedQuery) ||
+        name.toLowerCase().includes(lowerCasedQuery)
+      );
     });
   }
 

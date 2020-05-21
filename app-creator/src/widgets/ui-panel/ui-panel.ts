@@ -4,6 +4,7 @@
  */
 import { css, customElement, html, LitElement, property } from 'lit-element';
 import { styleMap } from 'lit-html/directives/style-map';
+import { classMap } from 'lit-html/directives/class-map';
 
 @customElement('ui-panel')
 export class Panel extends LitElement {
@@ -36,9 +37,12 @@ export class Panel extends LitElement {
   @property({ type: Object }) styles = {};
 
   /**
-   * Sets alignment of children.
+   * Sets the flex direction of child widgets.
+   * Options available are 'column' and 'row'.
+   * column direction will append widgets below the last child element.
+   * row direction will append widgets to the right of the last child element.
    */
-  @property({ type: String }) direction = 'column'; // ['column', 'row']
+  @property({ type: String }) direction = 'column';
 
   /**
    * Adds a border and shadow to panel.
@@ -47,11 +51,10 @@ export class Panel extends LitElement {
 
   render() {
     const { direction, isRaised, styles } = this;
-    const raised = isRaised ? 'raised' : '';
     return html`
       <div
         id="container"
-        class="${direction} ${raised}"
+        class="${classMap({ direction, raised: isRaised })}"
         style="${styleMap(styles)}"
       ></div>
     `;

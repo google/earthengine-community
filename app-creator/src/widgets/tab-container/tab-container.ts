@@ -12,9 +12,14 @@ export class TabContainer extends LitElement {
   static styles = css`
     #container {
       height: calc(100vh - 67.57px - 80px);
-      width: 100%;
+      width: calc(var(--actions-panel-width) - 2 * var(--regular));
       overflow-y: scroll;
       padding: var(--regular);
+    }
+
+    h4 {
+      margin-top: var(--extra-tight);
+      margin-bottom: var(--regular);
     }
   `;
 
@@ -28,7 +33,7 @@ export class TabContainer extends LitElement {
     const { title } = this;
     return html`
       <div id="container">
-        <h5>${title}</h5>
+        <h4>${title}</h4>
         <slot></slot>
       </div>
     `;

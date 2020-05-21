@@ -15,7 +15,7 @@ export class DraggableWidget extends LitElement {
     #container {
       border: 0.8px dashed rgba(0, 0, 0, 0.3);
       border-radius: var(--tight);
-      width: 90%;
+      width: 100%;
       margin: var(--tight) 0px;
       position: relative;
       cursor: move;

@@ -1,0 +1,19 @@
+added search bar and debouncer
+
+# Please enter the commit message for your changes. Lines starting
+# with '#' will be ignored, and an empty message aborts the commit.
+#
+# Date:      Thu May 21 00:47:28 2020 -0400
+#
+# On branch additional-widgets
+# Changes to be committed:
+#	modified:   .gitignore
+#	new file:   app-creator/src/utils/debounce.ts
+#	modified:   app-creator/src/widgets/actions-panel/actions-panel.ts
+#	new file:   app-creator/src/widgets/search-bar/search-bar.ts
+#	new file:   app-creator/src/widgets/search-bar/test/search-bar_test.ts
+#	modified:   app-creator/src/widgets/tab-container/tab-container.ts
+#	modified:   app-creator/src/widgets/ui-panel/ui-panel.ts
+#	modified:   app-creator/src/widgets/widgets-tab/widgets-tab.ts
+#	modified:   app-creator/style.css
+#

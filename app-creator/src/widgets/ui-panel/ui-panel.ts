@@ -1,6 +1,6 @@
 /**
  *  @fileoverview The ui-panel widget lets users add a panel to their templates. Panels
- *  are essentially containers that can align its children vertically, horizontally, and in a grid.
+ *  are essentially containers that can align their children vertically, horizontally, and in a grid.
  */
 import { css, customElement, html, LitElement, property } from 'lit-element';
 import { styleMap } from 'lit-html/directives/style-map';
@@ -26,7 +26,7 @@ export class Panel extends LitElement {
     }
 
     .raised {
-      box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+      box-shadow: var(--raised-shadow);
     }
   `;
 

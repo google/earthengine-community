@@ -11,3 +11,4 @@ package-lock.json
 app-creator/widgets
 app-creator/utils
 app-creator/app.yaml
+app-creator/store

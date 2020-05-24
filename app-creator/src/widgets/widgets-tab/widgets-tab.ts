@@ -68,10 +68,11 @@ export class WidgetsTab extends LitElement {
       name: 'text',
       markup: html`<h5 class="subtitle">Text</h5>
         <draggable-widget>
-          <ui-label type="title" value="Title"></ui-label>
+          <ui-label id="label" type="title" value="Title"></ui-label>
         </draggable-widget>
         <draggable-widget>
           <ui-label
+            id="label"
             type="paragraph"
             value="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat."
           ></ui-label>
@@ -82,7 +83,7 @@ export class WidgetsTab extends LitElement {
       name: 'button',
       markup: html`<h5 class="subtitle">Button</h5>
         <draggable-widget .hasOverlay=${false}>
-          <ui-button label="Button"></ui-button>
+          <ui-button id="button" label="Button"></ui-button>
         </draggable-widget>`,
     },
     {
@@ -91,6 +92,7 @@ export class WidgetsTab extends LitElement {
       markup: html`<h5 class="subtitle">Select</h5>
         <draggable-widget>
           <ui-select
+            id="select"
             .items=${['Item 1', 'Item 2']}
             placeholder="Select Item"
           ></ui-select>
@@ -101,15 +103,15 @@ export class WidgetsTab extends LitElement {
       name: 'textbox',
       markup: html`<h5 class="subtitle">Textbox</h5>
         <draggable-widget>
-          <ui-textbox label="Enter text"></ui-textbox>
+          <ui-textbox id="textbox" label="Enter text"></ui-textbox>
         </draggable-widget>`,
     },
     {
       id: 'ui-panel',
       name: 'panel',
       markup: html`<h5 class="subtitle">Panel</h5>
-        <draggable-widget>
-          <ui-panel isRaised></ui-panel>
+        <draggable-widget .hasOverlay=${false}>
+          <ui-panel id="panel" isRaised></ui-panel>
         </draggable-widget>`,
     },
     {
@@ -117,7 +119,7 @@ export class WidgetsTab extends LitElement {
       name: 'slider',
       markup: html`<h5 class="subtitle">Slider</h5>
         <draggable-widget>
-          <ui-slider label="Item"></ui-slider>
+          <ui-slider id="slider" label="Item"></ui-slider>
         </draggable-widget>`,
     },
     {
@@ -125,7 +127,7 @@ export class WidgetsTab extends LitElement {
       name: 'checkbox',
       markup: html`<h5 class="subtitle">Checkbox</h5>
         <draggable-widget .hasOverlay=${false}>
-          <ui-checkbox label="Item"></ui-checkbox>
+          <ui-checkbox id="checkbox" label="Item"></ui-checkbox>
         </draggable-widget>`,
     },
   ];

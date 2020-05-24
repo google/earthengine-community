@@ -5,6 +5,7 @@
 import { css, customElement, html, LitElement, property } from 'lit-element';
 import { styleMap } from 'lit-html/directives/style-map';
 import { classMap } from 'lit-html/directives/class-map';
+import '../dropzone-widget/dropzone-widget';
 
 @customElement('ui-panel')
 export class Panel extends LitElement {
@@ -12,7 +13,7 @@ export class Panel extends LitElement {
     #container {
       display: flex;
       flex-wrap: wrap;
-      min-height: 50px;
+      min-height: 100px;
       min-width: 50px;
       padding: var(--tight);
       margin: var(--tight);
@@ -28,6 +29,10 @@ export class Panel extends LitElement {
 
     .raised {
       box-shadow: var(--raised-shadow);
+    }
+
+    dropzone-widget {
+      width: 100%;
     }
   `;
 
@@ -56,7 +61,9 @@ export class Panel extends LitElement {
         id="container"
         class="${classMap({ direction, raised: isRaised })}"
         style="${styleMap(styles)}"
-      ></div>
+      >
+        <dropzone-widget></dropzone-widget>
+      </div>
     `;
   }
 

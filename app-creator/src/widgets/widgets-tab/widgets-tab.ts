@@ -110,8 +110,8 @@ export class WidgetsTab extends LitElement {
       id: 'ui-panel',
       name: 'panel',
       markup: html`<h5 class="subtitle">Panel</h5>
-        <draggable-widget .hasOverlay=${false}>
-          <ui-panel id="panel" isRaised></ui-panel>
+        <draggable-widget>
+          <ui-panel id="panel"></ui-panel>
         </draggable-widget>`,
     },
     {

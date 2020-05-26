@@ -7,6 +7,8 @@ import '../tab-container/tab-container';
 import '@polymer/iron-icons/editor-icons.js';
 import { store } from '../../store';
 
+export const PLACEHOLDER_ID = 'empty-placeholder';
+
 @customElement('draggable-widget')
 export class DraggableWidget extends LitElement {
   /**
@@ -17,7 +19,7 @@ export class DraggableWidget extends LitElement {
       border: var(--light-dashed-border);
       border-radius: var(--tight);
       width: 100%;
-      margin: var(--tight) 0px;
+      margin: var(--extra-tight) 0px;
       position: relative;
       cursor: move;
     }
@@ -59,7 +61,7 @@ export class DraggableWidget extends LitElement {
   hasOverlay = true;
 
   /**
-   * Adds edit and trash actions to draggable widget.
+   * Adds edit and trash actions to the draggable widget.
    */
   @property({ type: Boolean })
   editable = false;
@@ -101,6 +103,10 @@ export class DraggableWidget extends LitElement {
     `;
   }
 
+  /**
+   * Triggered when the trash icon is clicked. If the widget is the last in the dropzone,
+   * we display the empty placeholder and center the container's flex alignments.
+   */
   handleRemoveWidget() {
     const parent = this.parentElement;
     if (parent == null) {
@@ -111,50 +117,61 @@ export class DraggableWidget extends LitElement {
 
     const childrenCount = parent.childElementCount;
 
+    // We never really remove the placeholder div (we just hide it with display='none').
+    // When the children count is 1 after removing a widget, we want to unhide the placeholder.
     if (childrenCount === 1) {
-      const placeholder = parent.querySelector(
-        '#empty-placeholder'
-      ) as HTMLElement;
-      if (placeholder == null) {
-        return;
-      }
-      placeholder.style.display = 'flex';
-      parent.style.alignItems = 'center';
+      this.showPlaceholder(parent);
     }
   }
 
+  /**
+   * Callback triggered on the beginning of a drag action. We use it to reference the currently
+   * dragged element in a global state.
+   * @param e dragstart event
+   */
   handleDragstart(e: Event) {
     const target = e.target as HTMLDivElement;
     if (target == null) {
       return;
     }
 
+    // We want to unwrap the draggable wrapper and only reference the the inner element.
     const widget = target?.querySelector('slot')?.assignedElements()[0];
     if (widget == null) {
       return;
     }
 
+    // Referencing the currently dragged element in global state.
     store.draggingElement = widget;
   }
 
-  handleDragend(e: Event) {
-    const target = e.target as HTMLDivElement;
-    if (target == null) {
-      return;
-    }
-
+  /**
+   * Callback triggered on the end of a drag action. We use it to clear the reference
+   * of a currently dragged element and increment a widget id if necessary.
+   * @param e dragend event
+   */
+  handleDragend() {
     const draggingElement = store.draggingElement;
-    if (draggingElement == null) {
-      return;
-    }
-
-    if (store.elementAdded && !store.reordering) {
+    if (draggingElement && store.elementAdded && !store.reordering) {
       store.widgetIDs[draggingElement.id]++;
     }
+    store.resetDraggingValues();
+  }
 
-    store.draggingElement = null;
-    store.reordering = false;
-    store.elementAdded = false;
+  /**
+   * Displays placeholder by changing display property from 'none' to 'flex'.
+   * @param parent: element containing placeholder content
+   */
+  showPlaceholder(parent: HTMLElement) {
+    const placeholder = parent.querySelector(
+      `#${PLACEHOLDER_ID}`
+    ) as HTMLElement;
+    if (placeholder == null) {
+      return;
+    }
+    placeholder.style.display = 'flex';
+    parent.style.alignItems = 'center';
+    parent.style.justifyContent = 'center';
   }
 }
 

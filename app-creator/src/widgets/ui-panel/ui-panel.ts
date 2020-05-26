@@ -15,8 +15,8 @@ export class Panel extends LitElement {
       flex-wrap: wrap;
       min-height: 100px;
       min-width: 50px;
-      padding: var(--tight);
-      margin: var(--tight);
+      padding: var(--extra-tight);
+      margin: var(--extra-tight);
     }
 
     .column {

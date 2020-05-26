@@ -38,19 +38,14 @@ var kelvin = ee.Image('LANDSAT/LC08/C01/T1_TOA/LC08_044034_20140318')
 Map.centerObject(point, 13);
 Map.addLayer(kelvin, {min: 288, max: 305}, 'Kelvin');
 
-// Threshold the thermal band to set hot pixels as value 1 and not as 0.
+// Threshold the thermal band to set hot pixels as value 1, mask all else.
 var hotspots = kelvin.gt(303)
-  // Mask the cold pixels (value 0).
   .selfMask()
   .rename('hotspots');
 
 // Display the thermal hotspots on the Map.
 Map.addLayer(hotspots, {palette: 'FF0000'}, 'Hotspots');
 // [END earthengine__images18__example_setup]
-
-
-
-
 
 // [START earthengine__images18__label_objects]
 // Uniquely label the hotspot image objects.
@@ -63,10 +58,6 @@ var objectId = hotspots.connectedComponents({
 Map.addLayer(objectId.randomVisualizer(), null, 'Objects');
 // [END earthengine__images18__label_objects]
 
-
-
-
-
 // [START earthengine__images18__object_size]
 // Compute the number of pixels in each object defined by the "labels" band.
 var objectSize = objectId.select('labels')
@@ -77,10 +68,6 @@ var objectSize = objectId.select('labels')
 // Display object pixel count to the Map.
 Map.addLayer(objectSize, null, 'Object n pixels');
 // [END earthengine__images18__object_size]
-
-
-
-
 
 // [START earthengine__images18__object_area]
 // Get a pixel area image.
@@ -95,10 +82,6 @@ var objectArea = objectSize.multiply(pixelArea);
 Map.addLayer(objectArea, null, 'Object area m^2');
 // [END earthengine__images18__object_area]
 
-
-
-
-
 // [START earthengine__images18__area_mask]
 // Threshold the `objectArea` image to define a mask that will mask out
 // objects below a given size (1 hectare in this case).
@@ -109,10 +92,6 @@ var areaMask = objectArea.gte(10000);
 objectId = objectId.updateMask(areaMask);
 Map.addLayer(objectId, null, 'Large hotspots');
 // [END earthengine__images18__area_mask]
-
-
-
-
 
 // [START earthengine__images18__reduce_objects]
 // Make a suitable image for `reduceConnectedComponents()` by adding a label

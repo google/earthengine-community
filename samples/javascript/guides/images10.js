@@ -48,12 +48,12 @@ Map.addLayer(edgy,
 
 // [START earthengine__images10__fixed]
 // Create a list of weights for a 9x9 kernel.
-var list = [1, 1, 1, 1, 1, 1, 1, 1, 1];
+var row = [1, 1, 1, 1, 1, 1, 1, 1, 1];
 // The center of the kernel is zero.
-var centerList = [1, 1, 1, 1, 0, 1, 1, 1, 1];
+var centerRow = [1, 1, 1, 1, 0, 1, 1, 1, 1];
 // Assemble a list of lists: the 9x9 kernel weights as a 2-D matrix.
-var lists = [list, list, list, list, centerList, list, list, list, list];
+var rows = [row, row, row, row, centerRow, row, row, row, row];
 // Create the kernel from the weights.
-var kernel = ee.Kernel.fixed(9, 9, lists, -4, -4, false);
+var kernel = ee.Kernel.fixed(9, 9, rows, -4, -4, false);
 print(kernel);
 // [END earthengine__images10__fixed]

@@ -8,6 +8,7 @@ out
 !.travis
 !.travis.yml
 package-lock.json
+app-creator/store
 app-creator/widgets
 app-creator/utils
 app-creator/app.yaml

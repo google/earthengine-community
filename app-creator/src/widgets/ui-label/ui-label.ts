@@ -15,11 +15,11 @@ export class Label extends LitElement {
     }
 
     .paragraph {
-      font-size: 1rem;
+      font-size: 0.8rem;
     }
 
     .title {
-      font-size: 1.6rem;
+      font-size: 1.4rem;
       font-weight: 600;
     }
   `;

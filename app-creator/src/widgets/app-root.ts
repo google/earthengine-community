@@ -6,6 +6,7 @@ import { LitElement, html, customElement, css } from 'lit-element';
 import './tool-bar/tool-bar';
 import './actions-panel/actions-panel';
 import './tab-container/tab-container';
+import './story-board/story-board';
 
 @customElement('app-root')
 export class AppRoot extends LitElement {
@@ -20,6 +21,20 @@ export class AppRoot extends LitElement {
       width: 100%;
       height: calc(100vh - 67.57px);
     }
+
+    #storyboard {
+      height: 90%;
+      width: 90%;
+    }
+
+    #storyboard-container {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      height: 100%;
+      width: 100%;
+    }
   `;
 
   render() {
@@ -28,6 +43,9 @@ export class AppRoot extends LitElement {
         <tool-bar></tool-bar>
         <div id="container">
           <actions-panel></actions-panel>
+          <div id="storyboard-container">
+            <story-board id="storyboard"></story-board>
+          </div>
         </div>
       </div>
     `;

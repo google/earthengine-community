@@ -5,12 +5,11 @@ import { css, customElement, html, LitElement, property } from 'lit-element';
 import { styleMap } from 'lit-html/directives/style-map';
 import '@polymer/iron-icon/iron-icon.js';
 import { store } from '../../store';
-import {
-  DraggableWidget,
-  PLACEHOLDER_ID,
-} from '../draggable-widget/draggable-widget';
+import { DraggableWidget } from '../draggable-widget/draggable-widget';
+import '../empty-notice/empty-notice';
+import { EMPTY_NOTICE_ID } from '../empty-notice/empty-notice';
 
-const CONTAINER_ID = 'container';
+export const CONTAINER_ID = 'container';
 
 @customElement('dropzone-widget')
 export class Dropzone extends LitElement {
@@ -33,15 +32,15 @@ export class Dropzone extends LitElement {
       font-size: 0.8rem;
     }
 
-    #empty-placeholder-icon {
+    #empty-notice-icon {
       color: var(--border-gray);
     }
 
-    #empty-placeholder-text {
+    #empty-notice-text {
       color: var(--border-gray);
     }
 
-    #empty-placeholder {
+    #empty-notice {
       display: flex;
       align-items: center;
       justify-content: center;
@@ -57,16 +56,6 @@ export class Dropzone extends LitElement {
   render() {
     const { styles, handleDragOver, handleDragenter, handleDrageleave } = this;
 
-    const emptyPlaceholder = html`
-      <div id="${PLACEHOLDER_ID}">
-        <iron-icon
-          id="${PLACEHOLDER_ID}-icon"
-          icon="icons:system-update-alt"
-        ></iron-icon>
-        <p id="${PLACEHOLDER_ID}-text">Drop widgets here</p>
-      </div>
-    `;
-
     return html`
       <div
         id="${CONTAINER_ID}"
@@ -75,7 +64,11 @@ export class Dropzone extends LitElement {
         @dragover=${handleDragOver}
         style="${styleMap(styles)}"
       >
-        ${emptyPlaceholder}
+        <empty-notice
+          id="${EMPTY_NOTICE_ID}"
+          icon="icons:system-update-alt"
+          message="Drop widgets here"
+        ></empty-notice>
       </div>
     `;
   }
@@ -134,20 +127,20 @@ export class Dropzone extends LitElement {
     // We use this to correctly increment the widget id.
     store.elementAdded = true;
 
-    // We hide the placeholder if it exists.
-    this.hidePlaceholder();
+    // We hide the empty notice if it exists.
+    this.hideEmptyNotice();
   }
 
   /**
-   * Hides placeholder content by changing display property from 'flex' to 'none'.
+   * Hides empty notice content by changing display property from 'flex' to 'none'.
    */
-  hidePlaceholder() {
-    const placeholder = this.shadowRoot?.getElementById(PLACEHOLDER_ID);
-    if (placeholder == null) {
+  hideEmptyNotice() {
+    const emptyNotice = this.shadowRoot?.getElementById(EMPTY_NOTICE_ID);
+    if (emptyNotice == null) {
       return;
     }
 
-    placeholder.style.display = 'none';
+    emptyNotice.style.display = 'none';
   }
 
   /**

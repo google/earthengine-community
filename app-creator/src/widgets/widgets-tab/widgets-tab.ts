@@ -23,6 +23,7 @@ import '../ui-textbox/ui-textbox';
 import '../ui-slider/ui-slider';
 import '../ui-panel/ui-panel';
 import '../search-bar/search-bar';
+import '../empty-notice/empty-notice';
 import { onSearchEvent } from '../search-bar/search-bar';
 
 interface WidgetItem {
@@ -36,26 +37,6 @@ export class WidgetsTab extends LitElement {
   static styles = css`
     .subtitle {
       margin: var(--regular) 0px var(--tight) 0px;
-    }
-
-    #empty-notice {
-      min-height: 300px;
-      width: 100%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      flex-direction: column;
-    }
-
-    #empty-notice-icon {
-      --iron-icon-height: 75px;
-      --iron-icon-width: 75px;
-      color: var(--border-gray);
-    }
-
-    #empty-notice-message {
-      color: var(--border-gray);
-      text-align: center;
     }
   `;
 
@@ -143,12 +124,13 @@ export class WidgetsTab extends LitElement {
     const emptyNotice =
       filteredWidgets.length === 0
         ? html`
-            <div id="empty-notice">
-              <iron-icon id="empty-notice-icon" icon="search"></iron-icon>
-              <h4 id="empty-notice-message">
-                No widgets available. Please search again.
-              </h4>
-            </div>
+            <empty-notice
+              id="empty-notice"
+              icon="search"
+              message="No widgets available. Please search again."
+              size="large"
+              bold
+            ></empty-notice>
           `
         : nothing;
 

@@ -13,6 +13,7 @@ import '@polymer/iron-icons/iron-icons.js';
 import '@polymer/iron-icons/device-icons.js';
 import '@polymer/iron-icons/image-icons.js';
 import '../widgets-tab/widgets-tab';
+import '../attributes-tab/attributes-tab';
 
 @customElement('actions-panel')
 export class ActionsPanel extends LitElement {
@@ -82,6 +83,9 @@ export class ActionsPanel extends LitElement {
     const widgetsMarkup =
       selectedTab === 1 ? html`<widgets-tab></widgets-tab>` : nothing;
 
+    const attributesMarkup =
+      selectedTab === 2 ? html`<attributes-tab></attributes-tab>` : nothing;
+
     return html`
       <div id="container">
         <div id="panel">
@@ -96,7 +100,7 @@ export class ActionsPanel extends LitElement {
               <iron-icon icon="image:tune"></iron-icon>
             </paper-tab>
           </paper-tabs>
-          ${widgetsMarkup}
+          ${widgetsMarkup} ${attributesMarkup}
         </div>
         <iron-icon
           @click=${this.togglePanel}

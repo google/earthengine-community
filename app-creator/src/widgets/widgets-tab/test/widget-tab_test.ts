@@ -1,7 +1,5 @@
 /**
- *  @fileoverview This file tests the widgets tab component
- *  which displays a list of widgets that the user can add
- *  to their templates
+ *  @fileoverview This file tests the widgets-tab.
  */
 import { WidgetsTab } from '../widgets-tab';
 import { fixture, html, expect, assert } from '@open-wc/testing';

@@ -8,6 +8,11 @@ class Store {
   draggingElement: Element | null;
 
   /**
+   * Reference to widget selected for editing.
+   */
+  editingElement: Element | null;
+
+  /**
    * Lets us know if a widget has been added to a dropzone. In that case, we will increment the widget id, if not, we keep the id as is.
    */
   elementAdded: boolean;
@@ -24,6 +29,7 @@ class Store {
 
   constructor() {
     this.draggingElement = null;
+    this.editingElement = null;
     this.elementAdded = false;
     this.reordering = false;
     this.widgetIDs = {

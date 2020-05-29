@@ -27,11 +27,17 @@ class Store {
    */
   widgetIDs: { [key: string]: number };
 
+  /**
+   * Object of events with their associated callbacks.
+   */
+  events: { [key: string]: [Object, Function][] };
+
   constructor() {
     this.draggingElement = null;
     this.editingElement = null;
     this.elementAdded = false;
     this.reordering = false;
+    this.events = {};
     this.widgetIDs = {
       label: 0,
       button: 0,
@@ -41,6 +47,30 @@ class Store {
       slider: 0,
       checkbox: 0,
     };
+  }
+
+  on(eventName: string, context: Object, callback: Function) {
+    if (this.events[eventName] == null) {
+      this.events[eventName] = [[context, callback]];
+    } else {
+      this.events[eventName].push([context, callback]);
+    }
+  }
+
+  remove(eventName: string, context: Object, callback: Function) {
+    if (this.events[eventName]) {
+      this.events[eventName].filter(
+        ([ctx, cb]) => ctx !== context && cb !== callback
+      );
+    }
+  }
+
+  dispatch(eventName: string, ...rest: any[]) {
+    if (this.events[eventName] != null) {
+      this.events[eventName].forEach(([ctx, cb]) => {
+        cb.apply(ctx, rest);
+      });
+    }
   }
 
   /**

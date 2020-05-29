@@ -116,19 +116,15 @@ export class DraggableWidget extends LitElement {
     const container = this.shadowRoot?.getElementById(
       CONTAINER_ID
     ) as HTMLElement;
+
     const widget = this.extractChildWidget(container);
     if (widget == null) {
       return;
     }
 
-    console.log('dispatching...');
-    this.dispatchEvent(
-      new CustomEvent('edit-widget', {
-        detail: { widget },
-        bubbles: true,
-        cancelable: true,
-      })
-    );
+    store.editingElement = widget;
+
+    store.dispatch('edit-widget');
   }
 
   /**
@@ -145,6 +141,20 @@ export class DraggableWidget extends LitElement {
    * we display the empty empty notice and center the container's flex alignments.
    */
   handleRemoveWidget() {
+    const container = this.shadowRoot?.getElementById(
+      CONTAINER_ID
+    ) as HTMLElement;
+
+    const widget = this.extractChildWidget(container);
+    if (widget == null) {
+      return;
+    }
+
+    if (widget === store.editingElement) {
+      store.editingElement = null;
+      store.dispatch('edit-widget');
+    }
+
     const parent = this.parentElement;
     if (parent == null) {
       return;
@@ -171,8 +181,6 @@ export class DraggableWidget extends LitElement {
     if (target == null) {
       return;
     }
-
-    console.log({ target });
 
     // We want to unwrap the draggable wrapper and only reference the the inner element.
     const widget = this.extractChildWidget(target);

@@ -14,6 +14,7 @@ import '@polymer/iron-icons/device-icons.js';
 import '@polymer/iron-icons/image-icons.js';
 import '../widgets-tab/widgets-tab';
 import '../attributes-tab/attributes-tab';
+import { store } from '../../store';
 
 @customElement('actions-panel')
 export class ActionsPanel extends LitElement {
@@ -56,6 +57,20 @@ export class ActionsPanel extends LitElement {
 
   handleTabSwitch(id: number) {
     this.selectedTab = id;
+  }
+
+  handleEditWidget() {
+    this.handleTabSwitch(2);
+  }
+
+  connectedCallback() {
+    super.connectedCallback();
+    store.on('edit-widget', this, this.handleEditWidget);
+  }
+
+  disconnectedCallback() {
+    super.disconnectedCallback();
+    store.remove('edit-widget', this, this.handleEditWidget);
   }
 
   /**

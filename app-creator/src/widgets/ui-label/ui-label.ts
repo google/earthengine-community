@@ -22,6 +22,11 @@ export class Label extends LitElement {
       font-size: 1.4rem;
       font-weight: 600;
     }
+
+    a {
+      text-decoration: none;
+      color: inherit;
+    }
   `;
 
   /**
@@ -47,6 +52,7 @@ export class Label extends LitElement {
   type = 'paragraph';
 
   render() {
+    console.log('rendering..');
     const { type } = this;
     return html`
       <iron-label class=${type} style=${styleMap(this.styles)}>

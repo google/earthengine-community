@@ -4,10 +4,11 @@
 import { css, customElement, html, LitElement, property } from 'lit-element';
 import { styleMap } from 'lit-html/directives/style-map';
 import '@polymer/iron-icon/iron-icon.js';
-import { store } from '../../store';
 import { DraggableWidget } from '../draggable-widget/draggable-widget';
 import '../empty-notice/empty-notice';
 import { EMPTY_NOTICE_ID } from '../empty-notice/empty-notice';
+import { store } from '../../redux/store';
+import { setElementAdded, setReordering } from '../../redux/actions';
 
 export const CONTAINER_ID = 'container';
 
@@ -84,8 +85,8 @@ export class Dropzone extends LitElement {
     }
 
     // Get widget that's currently being dragged.
-    const widget = store.draggingElement as HTMLElement;
-    const widgetWrapper = widget.parentElement;
+    const widget = store.getState().draggingWidget;
+    const widgetWrapper = widget?.parentElement;
     if (widget == null || widgetWrapper == null) {
       return;
     }
@@ -101,12 +102,16 @@ export class Dropzone extends LitElement {
       } else {
         container.insertBefore(widgetWrapper, nextElement);
       }
+      // set the global reordering state to true so we know that we don't increment the current widget id
+      if (!store.getState().reordering) {
+        store.dispatch(setReordering(true));
+      }
       return;
     }
 
     // Making clone with new id.
     const clone = widget.cloneNode(true) as HTMLElement;
-    clone.id += `-${store.widgetIDs[widget.id]}`;
+    clone.id += `-${store.getState().widgetIDs[widget.id]}`;
 
     // Check if the element already exists.
     // This is necessary because the event is fired multiple times consecutively.
@@ -125,7 +130,7 @@ export class Dropzone extends LitElement {
     }
 
     // We use this to correctly increment the widget id.
-    store.elementAdded = true;
+    store.dispatch(setElementAdded(true));
 
     // We hide the empty notice if it exists.
     this.hideEmptyNotice();
@@ -161,7 +166,7 @@ export class Dropzone extends LitElement {
    * @param widget widget currently being dragged.
    * @param y the y coordinate of the triggered event.
    */
-  getNextElement(widget: HTMLElement, y: number): Element | null {
+  getNextElement(widget: Element, y: number): Element | null {
     const container = this.shadowRoot?.getElementById(CONTAINER_ID);
     if (container == null) {
       return null;
@@ -169,7 +174,8 @@ export class Dropzone extends LitElement {
 
     const children = Array.from(container.children).filter(
       (child) =>
-        child.id !== `${widget.id}-${store.widgetIDs[widget.id]}-wrapper`
+        child.id !==
+        `${widget.id}-${store.getState().widgetIDs[widget.id]}-wrapper`
     );
 
     const closest = children.reduce(

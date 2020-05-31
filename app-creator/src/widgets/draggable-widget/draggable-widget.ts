@@ -5,9 +5,15 @@ import { LitElement, html, customElement, css, property } from 'lit-element';
 import { nothing } from 'lit-html';
 import '../tab-container/tab-container';
 import '@polymer/iron-icons/editor-icons.js';
-import { store } from '../../store';
 import { EMPTY_NOTICE_ID } from '../empty-notice/empty-notice';
 import { CONTAINER_ID } from '../dropzone-widget/dropzone-widget';
+import { store } from '../../redux/store';
+import {
+  setEditingWidget,
+  setDraggingWidget,
+  resetDraggingValues,
+  incrementWidgetID,
+} from '../../redux/actions';
 
 @customElement('draggable-widget')
 export class DraggableWidget extends LitElement {
@@ -122,9 +128,7 @@ export class DraggableWidget extends LitElement {
       return;
     }
 
-    store.editingElement = widget;
-
-    store.dispatch('edit-widget');
+    store.dispatch(setEditingWidget(widget));
   }
 
   /**
@@ -150,9 +154,9 @@ export class DraggableWidget extends LitElement {
       return;
     }
 
-    if (widget === store.editingElement) {
-      store.editingElement = null;
-      store.dispatch('edit-widget');
+    if (widget === store.getState().editingWidget) {
+      // clearing editing widget state
+      store.dispatch(setEditingWidget(null));
     }
 
     const parent = this.parentElement;
@@ -189,7 +193,7 @@ export class DraggableWidget extends LitElement {
     }
 
     // Referencing the currently dragged element in global state.
-    store.draggingElement = widget;
+    store.dispatch(setDraggingWidget(widget));
   }
 
   /**
@@ -198,11 +202,15 @@ export class DraggableWidget extends LitElement {
    * @param e dragend event
    */
   handleDragend() {
-    const draggingElement = store.draggingElement;
-    if (draggingElement && store.elementAdded && !store.reordering) {
-      store.widgetIDs[draggingElement.id]++;
+    const draggingWidget = store.getState().draggingWidget;
+    if (
+      draggingWidget &&
+      store.getState().elementAdded &&
+      !store.getState().reordering
+    ) {
+      store.dispatch(incrementWidgetID(draggingWidget.id));
     }
-    store.resetDraggingValues();
+    store.dispatch(resetDraggingValues());
   }
 
   /**

@@ -14,10 +14,14 @@ import '@polymer/iron-icons/device-icons.js';
 import '@polymer/iron-icons/image-icons.js';
 import '../widgets-tab/widgets-tab';
 import '../attributes-tab/attributes-tab';
-import { store } from '../../store';
+import { store } from '../../redux/store';
+import { connect } from 'pwa-helpers';
+import { AppCreatorStore } from '../../redux/reducer';
+import { setSelectedTab } from '../../redux/actions';
+import { Tab } from '../../redux/types/actions';
 
 @customElement('actions-panel')
-export class ActionsPanel extends LitElement {
+export class ActionsPanel extends connect(store)(LitElement) {
   static styles = css`
     #container {
       width: var(--actions-panel-width);
@@ -49,28 +53,18 @@ export class ActionsPanel extends LitElement {
     }
   `;
 
+  stateChanged(state: AppCreatorStore) {
+    this.selectedTab = state.selectedTab;
+  }
+
   /**
    * Sets the currently selected tab.
    */
   @property({ type: Number })
   selectedTab = 1;
 
-  handleTabSwitch(id: number) {
-    this.selectedTab = id;
-  }
-
-  handleEditWidget() {
-    this.handleTabSwitch(2);
-  }
-
-  connectedCallback() {
-    super.connectedCallback();
-    store.on('edit-widget', this, this.handleEditWidget);
-  }
-
-  disconnectedCallback() {
-    super.disconnectedCallback();
-    store.remove('edit-widget', this, this.handleEditWidget);
+  handleTabSwitch(index: Tab) {
+    store.dispatch(setSelectedTab(index));
   }
 
   /**
@@ -105,13 +99,13 @@ export class ActionsPanel extends LitElement {
       <div id="container">
         <div id="panel">
           <paper-tabs selected="${selectedTab}" noink>
-            <paper-tab @click=${() => this.handleTabSwitch(0)}>
+            <paper-tab @click=${() => this.handleTabSwitch(Tab.templates)}>
               <iron-icon icon="image:filter-none"></iron-icon>
             </paper-tab>
-            <paper-tab @click=${() => this.handleTabSwitch(1)}>
+            <paper-tab @click=${() => this.handleTabSwitch(Tab.widgets)}>
               <iron-icon icon="device:widgets"></iron-icon>
             </paper-tab>
-            <paper-tab @click=${() => this.handleTabSwitch(2)}>
+            <paper-tab @click=${() => this.handleTabSwitch(Tab.attributes)}>
               <iron-icon icon="image:tune"></iron-icon>
             </paper-tab>
           </paper-tabs>

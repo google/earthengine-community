@@ -88,14 +88,6 @@ export class WidgetsTab extends LitElement {
         </draggable-widget>`,
     },
     {
-      id: 'ui-panel',
-      name: 'panel',
-      markup: html`<h5 class="subtitle">Panel</h5>
-        <draggable-widget>
-          <ui-panel id="panel"></ui-panel>
-        </draggable-widget>`,
-    },
-    {
       id: 'ui-slider',
       name: 'slider',
       markup: html`<h5 class="subtitle">Slider</h5>

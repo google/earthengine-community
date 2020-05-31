@@ -52,7 +52,6 @@ export class Label extends LitElement {
   type = 'paragraph';
 
   render() {
-    console.log('rendering..');
     const { type } = this;
     return html`
       <iron-label class=${type} style=${styleMap(this.styles)}>

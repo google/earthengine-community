@@ -12,7 +12,7 @@ export class ToolBar extends LitElement {
 
   static styles = css`
     #container {
-      height: 35px;
+      height: 15px;
       padding: var(--regular);
       display: flex;
       align-items: center;
@@ -33,7 +33,7 @@ export class ToolBar extends LitElement {
     h3 {
       margin: 0;
       padding: 0;
-      font-size: 1.3rem;
+      font-size: 1rem;
     }
   `;
 

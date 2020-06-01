@@ -36,11 +36,13 @@ export class ActionsPanel extends connect(store)(LitElement) {
       position: absolute;
       cursor: pointer;
       top: 16px;
-      right: -25.5px;
+      right: -19.5px;
       background-color: white;
       border: var(--light-border);
       border-left: none;
       z-index: 10;
+      --iron-icon-height: 18px;
+      --iron-icon-width: 18px;
     }
 
     #panel {
@@ -50,6 +52,9 @@ export class ActionsPanel extends connect(store)(LitElement) {
 
     paper-tabs {
       border-bottom: var(--light-border);
+      --iron-icon-height: 16px;
+      --iron-icon-width: 16px;
+      height: 40px;
     }
   `;
 

@@ -24,8 +24,8 @@ export class Searchbar extends LitElement {
       width: calc(100% - 2 * var(--tight));
       border: 0.7px solid rgba(0, 0, 0, 0.3);
       padding: var(--tight);
-      border-radius: var(--loose);
-      height: 20px;
+      border-radius: var(--regular);
+      height: 15px;
       align-items: center;
       display: flex;
     }
@@ -33,12 +33,14 @@ export class Searchbar extends LitElement {
     #search-icon {
       color: rgba(0, 0, 0, 0.3);
       margin-right: var(--extra-tight);
+      --iron-icon-height: 18px;
+      --iron-icon-width: 18px;
     }
 
     #search-input {
       border: none;
-      height: 30px;
-      font-size: 0.9rem;
+      height: 15px;
+      font-size: 0.8rem;
     }
 
     #search-input:focus {

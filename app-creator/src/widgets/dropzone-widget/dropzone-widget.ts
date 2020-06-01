@@ -75,40 +75,33 @@ export class Dropzone extends LitElement {
   }
 
   /**
-   * Callback triggered whenever we drag a widget over a dropzone-widget.
+   * Places the dragging widget in the correct order in the container.
    */
-  handleDragOver(e: DragEvent) {
-    // Get container element.
-    let container = this.shadowRoot?.getElementById(CONTAINER_ID);
-    if (container == null) {
-      return;
+  handleReorderingWidget(
+    container: Element,
+    widget: Element,
+    nextElement: Element | null
+  ) {
+    if (nextElement == null) {
+      container.appendChild(widget);
+    } else {
+      container.insertBefore(widget, nextElement);
     }
-
-    // Get widget that's currently being dragged.
-    const widget = store.getState().draggingWidget;
-    const widgetWrapper = widget?.parentElement;
-    if (widget == null || widgetWrapper == null) {
-      return;
+    // set the global reordering state to true so we know that we don't increment the current widget id
+    if (!store.getState().isReordering) {
+      store.dispatch(setReordering(true));
     }
+    return;
+  }
 
-    // Get next element.
-    const nextElement = this.getNextElement(widget, e.clientY);
-
-    // In case we are reordering an element, we want to move the actual element rather than creating a clone.
-    const reordering = (widgetWrapper as DraggableWidget).editable;
-    if (reordering) {
-      if (nextElement == null) {
-        container.appendChild(widgetWrapper);
-      } else {
-        container.insertBefore(widgetWrapper, nextElement);
-      }
-      // set the global reordering state to true so we know that we don't increment the current widget id
-      if (!store.getState().reordering) {
-        store.dispatch(setReordering(true));
-      }
-      return;
-    }
-
+  /**
+   * Places a clone of the dragging widget in the correct order in the container.
+   */
+  handleAddingWidget(
+    container: Element,
+    widget: Element,
+    nextElement: Element | null
+  ) {
     // Making clone with new id.
     const clone = widget.cloneNode(true) as HTMLElement;
     clone.id += `-${store.getState().widgetIDs[widget.id]}`;
@@ -131,9 +124,36 @@ export class Dropzone extends LitElement {
 
     // We use this to correctly increment the widget id.
     store.dispatch(setElementAdded(true));
+  }
 
-    // We hide the empty notice if it exists.
-    this.hideEmptyNotice();
+  /**
+   * Callback triggered whenever we drag a widget over a dropzone-widget.
+   */
+  handleDragOver(e: DragEvent) {
+    // Get container element.
+    let container = this.shadowRoot?.getElementById(CONTAINER_ID);
+    if (container == null) {
+      return;
+    }
+
+    // Get widget that's currently being dragged.
+    const widget = store.getState().draggingWidget;
+    const widgetWrapper = widget?.parentElement;
+    if (widget == null || widgetWrapper == null) {
+      return;
+    }
+
+    // Get next element.
+    const nextElement = this.getNextElement(widget, e.clientY);
+
+    // In case we are reordering an element, we want to move the actual element rather than creating a clone.
+    const isReordering = (widgetWrapper as DraggableWidget).editable;
+
+    if (isReordering) {
+      this.handleReorderingWidget(container, widgetWrapper, nextElement);
+    } else {
+      this.handleAddingWidget(container, widget, nextElement);
+    }
   }
 
   /**
@@ -172,6 +192,10 @@ export class Dropzone extends LitElement {
       return null;
     }
 
+    /** Get all widgets in the container excluding the currently dragged widget.
+     * The direct children of the container are the widget wrappers that allow them to be
+     * draggable so we exclude the wrapper of the current widget.
+     */
     const children = Array.from(container.children).filter(
       (child) =>
         child.id !==
@@ -211,6 +235,11 @@ export class Dropzone extends LitElement {
     if (container == null) {
       return;
     }
+
+    // We hide the empty notice if it exists.
+    this.hideEmptyNotice();
+
+    // Highlight border and change alignment.
     container.style.borderColor = 'var(--accent-color)';
     container.style.alignItems = 'flex-start';
     container.style.justifyContent = 'flex-start';

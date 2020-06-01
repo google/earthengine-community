@@ -3,11 +3,11 @@
  */
 import { LitElement, html, customElement, css, property } from 'lit-element';
 import { nothing } from 'lit-html';
-import '../tab-container/tab-container';
-import '@polymer/iron-icons/editor-icons.js';
+import { styleMap } from 'lit-html/directives/style-map';
 import { EMPTY_NOTICE_ID } from '../empty-notice/empty-notice';
 import { CONTAINER_ID } from '../dropzone-widget/dropzone-widget';
 import { store } from '../../redux/store';
+import '../tab-container/tab-container';
 import {
   setEditingWidget,
   setDraggingWidget,
@@ -17,9 +17,6 @@ import {
 
 @customElement('draggable-widget')
 export class DraggableWidget extends LitElement {
-  /**
-   * Additional custom styles.
-   */
   static styles = css`
     #container {
       border: var(--light-dashed-border);
@@ -61,6 +58,12 @@ export class DraggableWidget extends LitElement {
   `;
 
   /**
+   * Additional custom styles.
+   */
+  @property({ type: Object })
+  styles = {};
+
+  /**
    * Determines if widget should have a draggable overlay.
    */
   @property({ type: Boolean })
@@ -76,6 +79,7 @@ export class DraggableWidget extends LitElement {
     const {
       editable,
       hasOverlay,
+      styles,
       handleDragstart,
       handleDragend,
       handleRemoveWidget,
@@ -105,6 +109,7 @@ export class DraggableWidget extends LitElement {
       <div
         id="container"
         draggable="true"
+        style=${styleMap(styles)}
         @dragstart=${handleDragstart}
         @dragend=${handleDragend}
       >
@@ -128,21 +133,38 @@ export class DraggableWidget extends LitElement {
       return;
     }
 
+    this.removeEditingWidgetHighlight();
+
     store.dispatch(setEditingWidget(widget));
+    container.style.borderColor = 'var(--accent-color)';
+  }
+
+  /**
+   * Sets the editing widget's parent container border color to the default gray color.
+   */
+  removeEditingWidgetHighlight() {
+    const editingWidget = store.getState().editingWidget;
+    const editingWidgetParent = editingWidget?.parentElement;
+    const editingWidgetParentContainer = editingWidgetParent?.shadowRoot?.getElementById(
+      CONTAINER_ID
+    );
+    if (editingWidgetParentContainer != null) {
+      editingWidgetParentContainer.style.borderColor = 'var(--border-gray)';
+    }
   }
 
   /**
    * Returns the widget inside the draggable wrapper.
    * @param target draggable wrapper element.
    */
-  extractChildWidget(target: HTMLElement) {
+  extractChildWidget(target: HTMLElement): Element | undefined {
     // We want to unwrap the draggable wrapper and only reference the the inner element.
     return target.querySelector('slot')?.assignedElements()[0];
   }
 
   /**
    * Triggered when the trash icon is clicked. If the widget is the last in the dropzone,
-   * we display the empty empty notice and center the container's flex alignments.
+   * we display the empty notice and center the container's flex alignments.
    */
   handleRemoveWidget() {
     const container = this.shadowRoot?.getElementById(
@@ -205,8 +227,8 @@ export class DraggableWidget extends LitElement {
     const draggingWidget = store.getState().draggingWidget;
     if (
       draggingWidget &&
-      store.getState().elementAdded &&
-      !store.getState().reordering
+      store.getState().isElementAdded &&
+      !store.getState().isReordering
     ) {
       store.dispatch(incrementWidgetID(draggingWidget.id));
     }

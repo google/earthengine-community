@@ -4,22 +4,10 @@
  */
 import { html, customElement, css, property, LitElement } from 'lit-element';
 import { nothing } from 'lit-html';
-import '@polymer/paper-input/paper-input.js';
-import '@polymer/iron-icon/iron-icon.js';
-import '@polymer/paper-input/paper-input.js';
-import '../tab-container/tab-container';
-import '../draggable-widget/draggable-widget';
-import '../ui-label/ui-label';
-import '../ui-button/ui-button';
-import '../ui-select/ui-select';
-import '../ui-checkbox/ui-checkbox';
-import '../ui-textbox/ui-textbox';
-import '../ui-slider/ui-slider';
-import '../ui-panel/ui-panel';
-import '../search-bar/search-bar';
 import { connect } from 'pwa-helpers';
 import { store } from '../../redux/store.js';
 import { AppCreatorStore } from '../../redux/reducer';
+import '../tab-container/tab-container';
 
 @customElement('attributes-tab')
 export class AttributesTab extends connect(store)(LitElement) {
@@ -51,20 +39,19 @@ export class AttributesTab extends connect(store)(LitElement) {
   editingWidget: Element | null = store.getState().editingWidget;
 
   render() {
-    const emptyNotice =
-      this.editingWidget == null
-        ? html`
-            <empty-notice
-              icon="create"
-              message="No widget selected. Click on a widget's edit icon to select it."
-              size="large"
-              bold
-            ></empty-notice>
-          `
-        : nothing;
+    const emptyNotice = html`
+      <empty-notice
+        icon="create"
+        message="No widget selected. Click on a widget's edit icon to select it."
+        size="large"
+        bold
+      ></empty-notice>
+    `;
 
     return html`
-      <tab-container title="Attributes">${emptyNotice}</tab-container>
+      <tab-container title="Attributes"
+        >${this.editingWidget ? nothing : emptyNotice}</tab-container
+      >
     `;
   }
 }

@@ -14,4 +14,9 @@ suite('attributes-tab', () => {
     const el = await fixture(html`<attributes-tab></attributes-tab>`);
     expect(el.shadowRoot!.childNodes.length).to.be.greaterThan(0);
   });
+
+  test('renders empty notice when editing widget is null', async () => {
+    const el = await fixture(html`<attributes-tab></attributes-tab>`);
+    console.log({ el });
+  });
 });

@@ -19,8 +19,8 @@ export interface AppCreatorStore {
   draggingWidget: Element | null;
   editingWidget: Element | null;
   selectedTab: Tab;
-  elementAdded: boolean;
-  reordering: boolean;
+  isElementAdded: boolean;
+  isReordering: boolean;
   widgetIDs: { [key: string]: number };
 }
 
@@ -31,8 +31,8 @@ const INITIAL_STATE: AppCreatorStore = {
   draggingWidget: null,
   editingWidget: null,
   selectedTab: Tab.widgets,
-  elementAdded: false,
-  reordering: false,
+  isElementAdded: false,
+  isReordering: false,
   widgetIDs: {
     label: 0,
     button: 0,
@@ -77,12 +77,12 @@ export const reducer: Reducer<AppCreatorStore, AppCreatorAction | AnyAction> = (
     case SET_ELEMENT_ADDED:
       return {
         ...state,
-        elementAdded: action.payload.value,
+        isElementAdded: action.payload.value,
       };
     case SET_REORDERING:
       return {
         ...state,
-        reordering: action.payload.value,
+        isReordering: action.payload.value,
       };
     case INCREMENT_WIDGET_ID:
       return {

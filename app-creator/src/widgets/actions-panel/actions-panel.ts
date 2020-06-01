@@ -89,11 +89,15 @@ export class ActionsPanel extends connect(store)(LitElement) {
   render() {
     const { selectedTab } = this;
 
-    const widgetsMarkup =
-      selectedTab === 1 ? html`<widgets-tab></widgets-tab>` : nothing;
-
-    const attributesMarkup =
-      selectedTab === 2 ? html`<attributes-tab></attributes-tab>` : nothing;
+    let renderedTab = nothing;
+    switch (selectedTab) {
+      case Tab.widgets:
+        renderedTab = html`<widgets-tab></widgets-tab>`;
+        break;
+      case Tab.attributes:
+        renderedTab = html`<attributes-tab></attributes-tab>`;
+        break;
+    }
 
     return html`
       <div id="container">
@@ -109,7 +113,7 @@ export class ActionsPanel extends connect(store)(LitElement) {
               <iron-icon icon="image:tune"></iron-icon>
             </paper-tab>
           </paper-tabs>
-          ${widgetsMarkup} ${attributesMarkup}
+          ${renderedTab}
         </div>
         <iron-icon
           @click=${this.togglePanel}

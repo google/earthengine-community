@@ -11,9 +11,9 @@ import {
   SET_SELECTED_TAB,
   ResetDraggingValuesAction,
   RESET_DRAGGING_VALUES,
-  SetElementAddedAction,
+  SetIsElementAddedAction,
   SET_ELEMENT_ADDED,
-  SetReorderingAction,
+  SetIsReorderingAction,
   SET_REORDERING,
   IncrementWidgetAction,
   INCREMENT_WIDGET_ID,
@@ -22,7 +22,6 @@ import {
 /**
  * Sets the currently dragged widget to the element being dragged, or null
  * if there isn't any.
- * @param widget element currently being dragged.
  */
 export const setDraggingWidget = (
   widget: Element | null
@@ -37,7 +36,6 @@ export const setDraggingWidget = (
 
 /**
  * Sets the widget that is currently being edited, or null if there isn't any.
- * @param widget element currently being edited.
  */
 export const setEditingWidget = (
   widget: Element | null
@@ -53,7 +51,6 @@ export const setEditingWidget = (
 
 /**
  * Sets the actions-panel's selected tab to the index passed in.
- * @param index index of tab to be selected.
  */
 export const setSelectedTab = (index: Tab): SetSelectedTabAction => {
   return {
@@ -72,18 +69,18 @@ export const resetDraggingValues = (): ResetDraggingValuesAction => {
     type: RESET_DRAGGING_VALUES,
     payload: {
       draggingElement: null,
-      elementAdded: false,
-      reordering: false,
+      isElementAdded: false,
+      isReordering: false,
     },
   };
 };
 
 /**
  * Sets state to true if an element has been added to a dropzone. This is used to increment
- * a specified widget's id.
+ * a specified widget's ID.
  * @param value true if an element has been added and false otherwise.
  */
-export const setElementAdded = (value: boolean): SetElementAddedAction => {
+export const setElementAdded = (value: boolean): SetIsElementAddedAction => {
   return {
     type: SET_ELEMENT_ADDED,
     payload: {
@@ -94,10 +91,10 @@ export const setElementAdded = (value: boolean): SetElementAddedAction => {
 
 /**
  * Sets state to true if we are reordering widgets and false otherwise. Reordering state is used to determine
- * if a widget should be cloned and if we should increment the widget's id.
+ * if a widget should be cloned and if we should increment the widget's ID.
  * @param value true if we are reordering elements and false otherwise.
  */
-export const setReordering = (value: boolean): SetReorderingAction => {
+export const setReordering = (value: boolean): SetIsReorderingAction => {
   return {
     type: SET_REORDERING,
     payload: {
@@ -107,8 +104,7 @@ export const setReordering = (value: boolean): SetReorderingAction => {
 };
 
 /**
- * Increments the widget's id so that each widget can have a unique identifier.
- * @param id id of widget to be incremented.
+ * Increments the widget's ID so that each widget can have a unique identifier.
  */
 export const incrementWidgetID = (id: string): IncrementWidgetAction => {
   return {

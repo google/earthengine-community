@@ -3,10 +3,8 @@
  */
 import { css, customElement, html, LitElement, property } from 'lit-element';
 import { styleMap } from 'lit-html/directives/style-map';
-import '@polymer/paper-card/paper-card.js';
-import '../dropzone-widget/dropzone-widget';
-import '@polymer/iron-icon/iron-icon.js';
 import { classMap } from 'lit-html/directives/class-map';
+import '@polymer/iron-icon/iron-icon.js';
 
 export const EMPTY_NOTICE_ID = 'empty-notice';
 

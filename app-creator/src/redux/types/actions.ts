@@ -41,12 +41,12 @@ export interface ResetDraggingValuesAction {
   type: typeof RESET_DRAGGING_VALUES;
   payload: {
     draggingElement: null;
-    elementAdded: boolean;
-    reordering: boolean;
+    isElementAdded: boolean;
+    isReordering: boolean;
   };
 }
 
-export interface SetElementAddedAction {
+export interface SetIsElementAddedAction {
   type: typeof SET_ELEMENT_ADDED;
   payload: {
     value: boolean;
@@ -60,7 +60,7 @@ export interface IncrementWidgetAction {
   };
 }
 
-export interface SetReorderingAction {
+export interface SetIsReorderingAction {
   type: typeof SET_REORDERING;
   payload: {
     value: boolean;
@@ -70,8 +70,8 @@ export interface SetReorderingAction {
 export type AppCreatorAction =
   | SetDraggingWidgetAction
   | SetEditingWidgetAction
-  | SetElementAddedAction
+  | SetIsElementAddedAction
   | SetSelectedTabAction
-  | SetReorderingAction
+  | SetIsReorderingAction
   | IncrementWidgetAction
   | ResetDraggingValuesAction;

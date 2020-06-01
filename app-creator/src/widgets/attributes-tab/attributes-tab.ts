@@ -7,6 +7,7 @@ import { nothing } from 'lit-html';
 import { connect } from 'pwa-helpers';
 import { store } from '../../redux/store.js';
 import { AppCreatorStore, EventType } from '../../redux/reducer';
+import { Label } from '../ui-label/ui-label';
 import '../tab-container/tab-container';
 
 @customElement('attributes-tab')
@@ -20,6 +21,33 @@ export class AttributesTab extends connect(store)(LitElement) {
       margin: 0px 0px;
       font-size: 0.8rem;
       font-weight: 600;
+    }
+
+    .attribute-input {
+      margin: var(--extra-tight) 0px;
+      margin-right: 0px;
+      padding: var(--extra-tight);
+      border: var(--light-border);
+      -webkit-border-radius: var(--extra-tight);
+      border-radius: var(--extra-tight);
+      width: 100% !important;
+      resize: none;
+      font-family: inherit;
+      background-color: var(--primary-color);
+    }
+
+    .attribute-input:focus {
+      border-color: var(--accent-color);
+      outline: none;
+    }
+
+    .attribute-input-container {
+      margin: var(--tight) 0px;
+      width: calc(100% - var(--regular));
+    }
+
+    .select-input {
+      width: 97.5%;
     }
   `;
 
@@ -43,6 +71,84 @@ export class AttributesTab extends connect(store)(LitElement) {
       ? store.getState().element
       : null;
 
+  getLabelInputs(widget: Element | null) {
+    if (widget == null) {
+      return nothing;
+    }
+
+    return html`
+      <div class="attribute-input-container">
+        <p class="input-label">Value:</p>
+        <textarea
+          class="attribute-input"
+          rows="4"
+          @keyup=${(e: Event) =>
+            ((widget as Label).value = (e.target as HTMLInputElement).value)}
+        >
+${(widget as Label).value}</textarea
+        >
+      </div>
+      <div class="attribute-input-container">
+        <p class="input-label">Target Url:</p>
+        <input
+          class="attribute-input"
+          @keyup=${(e: Event) =>
+            ((widget as Label).targetUrl = (e.target as HTMLInputElement).value)}
+          value="${(widget as Label).targetUrl}"
+        ></input
+        >
+      </div>
+      <div class="attribute-input-container">
+        <p class="input-label">Color:</p>
+        <input
+          class="attribute-input"
+          type='color'
+          @change=${(e: Event) =>
+            ((widget as Label).style[
+              'color'
+            ] = (e.target as HTMLInputElement).value)}
+          value="${(widget as HTMLElement).style.color}"
+        ></input
+        >
+      </div>
+      <div class="attribute-input-container select-input">
+        <p class="input-label">Text Align:</p>
+        <select
+          name='Text Align'
+          placeholder='Text Align'
+          class="attribute-input"
+          value="${(widget as HTMLElement).style.textAlign}"
+          @change=${(e: Event) =>
+            ((widget as Label).style[
+              'textAlign'
+            ] = (e.target as HTMLSelectElement).value)}
+          >
+          <option value="left">Left</option>
+          <option value="center">Center</option>
+          <option value="right">Right</option>
+          <option value="justify">Justify</option>
+        </select
+        >
+      </div>
+      <div class="attribute-input-container">
+        <p class="input-label">Padding:</p>
+        <input
+          class="attribute-input"
+          type='number'
+          value='0'
+          @change=${(e: Event) => {
+            console.log((e.target as HTMLInputElement).value + 'px');
+            console.log('padding', (widget as HTMLElement).style.padding);
+            (widget as Label).style['padding'] =
+              (e.target as HTMLInputElement).value + 'px';
+          }}
+          value="${(widget as HTMLElement).style.padding}"
+        ></input
+        >
+      </div>
+    `;
+  }
+
   render() {
     const emptyNotice = html`
       <empty-notice
@@ -53,9 +159,12 @@ export class AttributesTab extends connect(store)(LitElement) {
       ></empty-notice>
     `;
 
+    const editableAttributesMarkup = this.getLabelInputs(this.editingWidget);
+
     return html`
       <tab-container title="Attributes"
-        >${this.editingWidget ? nothing : emptyNotice}</tab-container
+        >${editableAttributesMarkup}
+        ${this.editingWidget ? nothing : emptyNotice}</tab-container
       >
     `;
   }
@@ -66,3 +175,47 @@ declare global {
     'attributes-tab': AttributesTab;
   }
 }
+
+/**
+ * Label
+ * - value
+ * - targetUrl
+ */
+
+/**
+ * Button
+ * - label
+ * - disabled
+ */
+
+/**
+ * Checkbox
+ * - label
+ * - value
+ * - disabled
+ */
+
+/**
+ * Select
+ * - items
+ * - placeholder
+ * - value
+ * - disabled
+ */
+
+/**
+ * Slider
+ * - min
+ * - max
+ * - value
+ * - step
+ * - direction
+ * - disabled
+ */
+
+/**
+ * Textbox
+ * - placeholder
+ * - value
+ * - disabled
+ */

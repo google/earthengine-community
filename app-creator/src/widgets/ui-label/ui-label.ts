@@ -22,6 +22,11 @@ export class Label extends LitElement {
       font-size: 1.4rem;
       font-weight: 600;
     }
+
+    a {
+      text-decoration: none;
+      color: inherit;
+    }
   `;
 
   /**

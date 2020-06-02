@@ -10,7 +10,8 @@ import { css, customElement, html, LitElement, property } from 'lit-element';
 export class Select extends LitElement {
   static styles = css`
     paper-dropdown-menu {
-      margin: var(--tight);
+      margin: 0px var(--tight);
+      width: 90%;
     }
   `;
 

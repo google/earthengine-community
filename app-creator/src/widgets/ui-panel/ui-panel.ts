@@ -55,11 +55,11 @@ export class Panel extends LitElement {
   @property({ type: Boolean }) isRaised = false;
 
   render() {
-    const { direction, isRaised, styles } = this;
+    const { isRaised, styles } = this;
     return html`
       <div
         id="container"
-        class="${classMap({ direction, raised: isRaised })}"
+        class="${classMap({ raised: isRaised })}"
         style="${styleMap(styles)}"
       >
         <dropzone-widget></dropzone-widget>

@@ -9,6 +9,7 @@ module.exports = (config) => {
         mocha: { ui: 'tdd' },
       },
       files: [
+        './script.js',
         {
           pattern: config.grep ? config.grep : 'widgets/**/*_test.js',
           type: 'module',

@@ -4,13 +4,14 @@
 import { css, customElement, html, LitElement, property } from 'lit-element';
 import { styleMap } from 'lit-html/directives/style-map';
 import '@polymer/iron-icon/iron-icon.js';
-import { store } from '../../store';
-import {
-  DraggableWidget,
-  PLACEHOLDER_ID,
-} from '../draggable-widget/draggable-widget';
+import { DraggableWidget } from '../draggable-widget/draggable-widget';
+import '../empty-notice/empty-notice';
+import { EMPTY_NOTICE_ID } from '../empty-notice/empty-notice';
+import { store } from '../../redux/store';
+import { setElementAdded, setReordering } from '../../redux/actions';
+import { EventType } from '../../redux/reducer';
 
-const CONTAINER_ID = 'container';
+export const CONTAINER_ID = 'container';
 
 @customElement('dropzone-widget')
 export class Dropzone extends LitElement {
@@ -33,15 +34,15 @@ export class Dropzone extends LitElement {
       font-size: 0.8rem;
     }
 
-    #empty-placeholder-icon {
+    #empty-notice-icon {
       color: var(--border-gray);
     }
 
-    #empty-placeholder-text {
+    #empty-notice-text {
       color: var(--border-gray);
     }
 
-    #empty-placeholder {
+    #empty-notice {
       display: flex;
       align-items: center;
       justify-content: center;
@@ -57,16 +58,6 @@ export class Dropzone extends LitElement {
   render() {
     const { styles, handleDragOver, handleDragenter, handleDrageleave } = this;
 
-    const emptyPlaceholder = html`
-      <div id="${PLACEHOLDER_ID}">
-        <iron-icon
-          id="${PLACEHOLDER_ID}-icon"
-          icon="icons:system-update-alt"
-        ></iron-icon>
-        <p id="${PLACEHOLDER_ID}-text">Drop widgets here</p>
-      </div>
-    `;
-
     return html`
       <div
         id="${CONTAINER_ID}"
@@ -75,45 +66,46 @@ export class Dropzone extends LitElement {
         @dragover=${handleDragOver}
         style="${styleMap(styles)}"
       >
-        ${emptyPlaceholder}
+        <empty-notice
+          id="${EMPTY_NOTICE_ID}"
+          icon="icons:system-update-alt"
+          message="Drop widgets here"
+        ></empty-notice>
       </div>
     `;
   }
 
   /**
-   * Callback triggered whenever we drag a widget over a dropzone-widget.
+   * Places the dragging widget in the correct order in the container.
    */
-  handleDragOver(e: DragEvent) {
-    // Get container element.
-    let container = this.shadowRoot?.getElementById(CONTAINER_ID);
-    if (container == null) {
-      return;
+  handleReorderingWidget(
+    container: Element,
+    widget: Element,
+    nextElement: Element | null
+  ) {
+    if (nextElement == null) {
+      container.appendChild(widget);
+    } else {
+      container.insertBefore(widget, nextElement);
     }
-
-    // Get widget that's currently being dragged.
-    const widget = store.draggingElement as HTMLElement;
-    const widgetWrapper = widget.parentElement;
-    if (widget == null || widgetWrapper == null) {
-      return;
+    // set the global reordering state to true so we know that we don't increment the current widget id
+    if (store.getState().eventType !== EventType.reordering) {
+      store.dispatch(setReordering(true));
     }
+    return;
+  }
 
-    // Get next element.
-    const nextElement = this.getNextElement(widget, e.clientY);
-
-    // In case we are reordering an element, we want to move the actual element rather than creating a clone.
-    const reordering = (widgetWrapper as DraggableWidget).editable;
-    if (reordering) {
-      if (nextElement == null) {
-        container.appendChild(widgetWrapper);
-      } else {
-        container.insertBefore(widgetWrapper, nextElement);
-      }
-      return;
-    }
-
+  /**
+   * Places a clone of the dragging widget in the correct order in the container.
+   */
+  handleAddingWidget(
+    container: Element,
+    widget: Element,
+    nextElement: Element | null
+  ) {
     // Making clone with new id.
     const clone = widget.cloneNode(true) as HTMLElement;
-    clone.id += `-${store.widgetIDs[widget.id]}`;
+    clone.id += `-${store.getState().widgetIDs[widget.id]}`;
 
     // Check if the element already exists.
     // This is necessary because the event is fired multiple times consecutively.
@@ -132,22 +124,50 @@ export class Dropzone extends LitElement {
     }
 
     // We use this to correctly increment the widget id.
-    store.elementAdded = true;
-
-    // We hide the placeholder if it exists.
-    this.hidePlaceholder();
+    store.dispatch(setElementAdded(true));
   }
 
   /**
-   * Hides placeholder content by changing display property from 'flex' to 'none'.
+   * Callback triggered whenever we drag a widget over a dropzone-widget.
    */
-  hidePlaceholder() {
-    const placeholder = this.shadowRoot?.getElementById(PLACEHOLDER_ID);
-    if (placeholder == null) {
+  handleDragOver(e: DragEvent) {
+    // Get container element.
+    let container = this.shadowRoot?.getElementById(CONTAINER_ID);
+    if (container == null) {
       return;
     }
 
-    placeholder.style.display = 'none';
+    // Get widget that's currently being dragged.
+    const widget = store.getState().element;
+
+    const widgetWrapper = widget?.parentElement;
+    if (widget == null || widgetWrapper == null) {
+      return;
+    }
+
+    // Get next element.
+    const nextElement = this.getNextElement(widget, e.clientY);
+
+    // In case we are reordering an element, we want to move the actual element rather than creating a clone.
+    const isReordering = (widgetWrapper as DraggableWidget).editable;
+
+    if (isReordering) {
+      this.handleReorderingWidget(container, widgetWrapper, nextElement);
+    } else {
+      this.handleAddingWidget(container, widget, nextElement);
+    }
+  }
+
+  /**
+   * Hides empty notice content by changing display property from 'flex' to 'none'.
+   */
+  hideEmptyNotice() {
+    const emptyNotice = this.shadowRoot?.getElementById(EMPTY_NOTICE_ID);
+    if (emptyNotice == null) {
+      return;
+    }
+
+    emptyNotice.style.display = 'none';
   }
 
   /**
@@ -168,15 +188,21 @@ export class Dropzone extends LitElement {
    * @param widget widget currently being dragged.
    * @param y the y coordinate of the triggered event.
    */
-  getNextElement(widget: HTMLElement, y: number): Element | null {
+  getNextElement(widget: Element, y: number): Element | null {
     const container = this.shadowRoot?.getElementById(CONTAINER_ID);
     if (container == null) {
       return null;
     }
 
+    /**
+     * Get all widgets in the container excluding the currently dragged widget.
+     * The direct children of the container are the widget wrappers that allow them to be
+     * draggable so we exclude the wrapper of the current widget.
+     */
     const children = Array.from(container.children).filter(
       (child) =>
-        child.id !== `${widget.id}-${store.widgetIDs[widget.id]}-wrapper`
+        child.id !==
+        `${widget.id}-${store.getState().widgetIDs[widget.id]}-wrapper`
     );
 
     const closest = children.reduce(
@@ -212,6 +238,11 @@ export class Dropzone extends LitElement {
     if (container == null) {
       return;
     }
+
+    // We hide the empty notice if it exists.
+    this.hideEmptyNotice();
+
+    // Highlight border and change alignment.
     container.style.borderColor = 'var(--accent-color)';
     container.style.alignItems = 'flex-start';
     container.style.justifyContent = 'flex-start';

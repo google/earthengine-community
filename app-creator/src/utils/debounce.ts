@@ -1,7 +1,7 @@
 /**
  * This function debounces an external function with the specified delay time.
- * @param context context of calling class.
- * @param fn function that requires rate limiting.
+ * @param context context of calling object.
+ * @param fn function that requires debouncing.
  * @param delay waiting time between consecutive events.
  */
 export function debounce<Params extends any[]>(

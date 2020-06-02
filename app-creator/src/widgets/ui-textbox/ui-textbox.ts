@@ -9,7 +9,8 @@ import { styleMap } from 'lit-html/directives/style-map';
 export class Textbox extends LitElement {
   static styles = css`
     paper-input {
-      margin: var(--tight);
+      margin: 0px var(--tight);
+      width: 90%;
     }
   `;
 
@@ -19,14 +20,51 @@ export class Textbox extends LitElement {
   @property({ type: Object }) styles = {};
 
   /**
+   * Value of input.
+   */
+  @property({ type: String }) value = '';
+
+  /**
    * Sets textbox label.
    */
   @property({ type: String }) label = '';
 
+  /**
+   * Type of input.
+   */
+  @property({ type: String }) type = 'text';
+
+  /**
+   * Handler for keyup events.
+   */
+  @property({ type: Object })
+  onKeyupChangeHandler: (e: Event) => void = () => {};
+
+  /**
+   * Handler for change events.
+   */
+  @property({ type: Object })
+  onChangeHandler: (e: Event) => void = () => {};
+
   render() {
-    const { label, styles } = this;
+    const {
+      label,
+      type,
+      value,
+      onKeyupChangeHandler,
+      onChangeHandler,
+      styles,
+    } = this;
     return html`
-      <paper-input style=${styleMap(styles)} label="${label}"></paper-input>
+      <paper-input
+        style=${styleMap(styles)}
+        label="${label}"
+        value=${value}
+        type=${type}
+        @keyup=${onKeyupChangeHandler}
+        @change=${onChangeHandler}
+        no-float-label
+      ></paper-input>
     `;
   }
 

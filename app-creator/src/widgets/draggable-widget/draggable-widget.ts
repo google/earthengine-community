@@ -3,17 +3,21 @@
  */
 import { LitElement, html, customElement, css, property } from 'lit-element';
 import { nothing } from 'lit-html';
+import { styleMap } from 'lit-html/directives/style-map';
+import { EMPTY_NOTICE_ID } from '../empty-notice/empty-notice';
+import { CONTAINER_ID } from '../dropzone-widget/dropzone-widget';
+import { store } from '../../redux/store';
 import '../tab-container/tab-container';
-import '@polymer/iron-icons/editor-icons.js';
-import { store } from '../../store';
-
-export const PLACEHOLDER_ID = 'empty-placeholder';
+import {
+  setEditingWidget,
+  setDraggingWidget,
+  resetDraggingValues,
+  incrementWidgetID,
+} from '../../redux/actions';
+import { EventType } from '../../redux/reducer';
 
 @customElement('draggable-widget')
 export class DraggableWidget extends LitElement {
-  /**
-   * Additional custom styles.
-   */
   static styles = css`
     #container {
       border: var(--light-dashed-border);
@@ -55,6 +59,12 @@ export class DraggableWidget extends LitElement {
   `;
 
   /**
+   * Additional custom styles.
+   */
+  @property({ type: Object })
+  styles = {};
+
+  /**
    * Determines if widget should have a draggable overlay.
    */
   @property({ type: Boolean })
@@ -70,9 +80,11 @@ export class DraggableWidget extends LitElement {
     const {
       editable,
       hasOverlay,
+      styles,
       handleDragstart,
       handleDragend,
       handleRemoveWidget,
+      handleEditWidget,
     } = this;
 
     const overlay = hasOverlay ? html`<div class="overlay"></div>` : nothing;
@@ -80,7 +92,11 @@ export class DraggableWidget extends LitElement {
     const editableMarkup = editable
       ? html`
           <div id="editable-view">
-            <iron-icon class="edit-buttons" icon="create"></iron-icon>
+            <iron-icon
+              class="edit-buttons"
+              icon="create"
+              @click=${handleEditWidget}
+            ></iron-icon>
             <iron-icon
               class="edit-buttons"
               icon="icons:delete"
@@ -94,6 +110,7 @@ export class DraggableWidget extends LitElement {
       <div
         id="container"
         draggable="true"
+        style=${styleMap(styles)}
         @dragstart=${handleDragstart}
         @dragend=${handleDragend}
       >
@@ -104,10 +121,68 @@ export class DraggableWidget extends LitElement {
   }
 
   /**
+   * Triggered when the edit icon is clicked. Stores a reference of the selected element in the store and
+   * displays a set of inputs for editing its attributes.
+   */
+  handleEditWidget() {
+    const container = this.shadowRoot?.getElementById(
+      CONTAINER_ID
+    ) as HTMLElement;
+
+    const widget = this.extractChildWidget(container);
+    if (widget == null) {
+      return;
+    }
+
+    this.removeEditingWidgetHighlight();
+
+    store.dispatch(setEditingWidget(widget));
+    container.style.borderColor = 'var(--accent-color)';
+  }
+
+  /**
+   * Sets the editing widget's parent container border color to the default gray color.
+   */
+  removeEditingWidgetHighlight() {
+    const editingWidget = store.getState().element;
+
+    const editingWidgetParent = editingWidget?.parentElement;
+    const editingWidgetParentContainer = editingWidgetParent?.shadowRoot?.getElementById(
+      CONTAINER_ID
+    );
+    if (editingWidgetParentContainer != null) {
+      editingWidgetParentContainer.style.borderColor = 'var(--border-gray)';
+    }
+  }
+
+  /**
+   * Returns the widget inside the draggable wrapper.
+   * @param target draggable wrapper element.
+   */
+  extractChildWidget(target: HTMLElement): Element | undefined {
+    // We want to unwrap the draggable wrapper and only reference the the inner element.
+    return target.querySelector('slot')?.assignedElements()[0];
+  }
+
+  /**
    * Triggered when the trash icon is clicked. If the widget is the last in the dropzone,
-   * we display the empty placeholder and center the container's flex alignments.
+   * we display the empty notice and center the container's flex alignments.
    */
   handleRemoveWidget() {
+    const container = this.shadowRoot?.getElementById(
+      CONTAINER_ID
+    ) as HTMLElement;
+
+    const widget = this.extractChildWidget(container);
+    if (widget == null) {
+      return;
+    }
+
+    if (widget === store.getState().element) {
+      // clearing editing widget state
+      store.dispatch(setEditingWidget(null));
+    }
+
     const parent = this.parentElement;
     if (parent == null) {
       return;
@@ -117,10 +192,10 @@ export class DraggableWidget extends LitElement {
 
     const childrenCount = parent.childElementCount;
 
-    // We never really remove the placeholder div (we just hide it with display='none').
-    // When the children count is 1 after removing a widget, we want to unhide the placeholder.
+    // We never really remove the empty notice div (we just hide it with display='none').
+    // When the children count is 1 after removing a widget, we want to unhide the empty notice.
     if (childrenCount === 1) {
-      this.showPlaceholder(parent);
+      this.showEmptyNotice(parent);
     }
   }
 
@@ -130,19 +205,20 @@ export class DraggableWidget extends LitElement {
    * @param e dragstart event
    */
   handleDragstart(e: Event) {
-    const target = e.target as HTMLDivElement;
+    const target = e.target as DraggableWidget;
     if (target == null) {
       return;
     }
 
     // We want to unwrap the draggable wrapper and only reference the the inner element.
-    const widget = target?.querySelector('slot')?.assignedElements()[0];
+    const widget = this.extractChildWidget(target);
     if (widget == null) {
       return;
     }
 
+    this.removeEditingWidgetHighlight();
     // Referencing the currently dragged element in global state.
-    store.draggingElement = widget;
+    store.dispatch(setDraggingWidget(widget));
   }
 
   /**
@@ -151,25 +227,30 @@ export class DraggableWidget extends LitElement {
    * @param e dragend event
    */
   handleDragend() {
-    const draggingElement = store.draggingElement;
-    if (draggingElement && store.elementAdded && !store.reordering) {
-      store.widgetIDs[draggingElement.id]++;
+    const draggingWidget =
+      store.getState().eventType === EventType.adding
+        ? store.getState().element
+        : null;
+
+    if (draggingWidget != null) {
+      store.dispatch(incrementWidgetID(draggingWidget.id));
     }
-    store.resetDraggingValues();
+
+    store.dispatch(resetDraggingValues());
   }
 
   /**
-   * Displays placeholder by changing display property from 'none' to 'flex'.
-   * @param parent: element containing placeholder content
+   * Displays empty notice by changing display property from 'none' to 'flex'.
+   * @param parent: element containing empty notice content
    */
-  showPlaceholder(parent: HTMLElement) {
-    const placeholder = parent.querySelector(
-      `#${PLACEHOLDER_ID}`
+  showEmptyNotice(parent: HTMLElement) {
+    const emptyNotice = parent.querySelector(
+      `#${EMPTY_NOTICE_ID}`
     ) as HTMLElement;
-    if (placeholder == null) {
+    if (emptyNotice == null) {
       return;
     }
-    placeholder.style.display = 'flex';
+    emptyNotice.style.display = 'flex';
     parent.style.alignItems = 'center';
     parent.style.justifyContent = 'center';
   }

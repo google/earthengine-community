@@ -14,6 +14,7 @@ import {
   resetDraggingValues,
   incrementWidgetID,
 } from '../../redux/actions';
+import { EventType } from '../../redux/reducer';
 
 @customElement('draggable-widget')
 export class DraggableWidget extends LitElement {
@@ -143,7 +144,8 @@ export class DraggableWidget extends LitElement {
    * Sets the editing widget's parent container border color to the default gray color.
    */
   removeEditingWidgetHighlight() {
-    const editingWidget = store.getState().editingWidget;
+    const editingWidget = store.getState().element;
+
     const editingWidgetParent = editingWidget?.parentElement;
     const editingWidgetParentContainer = editingWidgetParent?.shadowRoot?.getElementById(
       CONTAINER_ID
@@ -176,7 +178,7 @@ export class DraggableWidget extends LitElement {
       return;
     }
 
-    if (widget === store.getState().editingWidget) {
+    if (widget === store.getState().element) {
       // clearing editing widget state
       store.dispatch(setEditingWidget(null));
     }
@@ -214,6 +216,7 @@ export class DraggableWidget extends LitElement {
       return;
     }
 
+    this.removeEditingWidgetHighlight();
     // Referencing the currently dragged element in global state.
     store.dispatch(setDraggingWidget(widget));
   }
@@ -224,14 +227,15 @@ export class DraggableWidget extends LitElement {
    * @param e dragend event
    */
   handleDragend() {
-    const draggingWidget = store.getState().draggingWidget;
-    if (
-      draggingWidget &&
-      store.getState().isElementAdded &&
-      !store.getState().isReordering
-    ) {
+    const draggingWidget =
+      store.getState().eventType === EventType.adding
+        ? store.getState().element
+        : null;
+
+    if (draggingWidget != null) {
       store.dispatch(incrementWidgetID(draggingWidget.id));
     }
+
     store.dispatch(resetDraggingValues());
   }
 

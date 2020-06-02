@@ -18,6 +18,7 @@ import {
   IncrementWidgetAction,
   INCREMENT_WIDGET_ID,
 } from './types/actions';
+import { EventType } from './reducer';
 
 /**
  * Sets the currently dragged widget to the element being dragged, or null
@@ -68,9 +69,8 @@ export const resetDraggingValues = (): ResetDraggingValuesAction => {
   return {
     type: RESET_DRAGGING_VALUES,
     payload: {
-      draggingElement: null,
-      isElementAdded: false,
-      isReordering: false,
+      element: null,
+      eventType: EventType.none,
     },
   };
 };

@@ -17,6 +17,6 @@ suite('attributes-tab', () => {
 
   test('renders empty notice when editing widget is null', async () => {
     const el = await fixture(html`<attributes-tab></attributes-tab>`);
-    console.log({ el });
+    expect(el.shadowRoot!.querySelector('empty-notice')).to.exist;
   });
 });

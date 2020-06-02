@@ -6,7 +6,7 @@ import { html, customElement, css, property, LitElement } from 'lit-element';
 import { nothing } from 'lit-html';
 import { connect } from 'pwa-helpers';
 import { store } from '../../redux/store.js';
-import { AppCreatorStore } from '../../redux/reducer';
+import { AppCreatorStore, EventType } from '../../redux/reducer';
 import '../tab-container/tab-container';
 
 @customElement('attributes-tab')
@@ -24,7 +24,9 @@ export class AttributesTab extends connect(store)(LitElement) {
   `;
 
   stateChanged(state: AppCreatorStore) {
-    this.editingWidget = state.editingWidget;
+    if (state.eventType === EventType.editing) {
+      this.editingWidget = state.element;
+    }
   }
 
   /**
@@ -36,7 +38,10 @@ export class AttributesTab extends connect(store)(LitElement) {
    * Widget currently being edited.
    */
   @property({ type: Object })
-  editingWidget: Element | null = store.getState().editingWidget;
+  editingWidget: Element | null =
+    store.getState().eventType === EventType.editing
+      ? store.getState().element
+      : null;
 
   render() {
     const emptyNotice = html`

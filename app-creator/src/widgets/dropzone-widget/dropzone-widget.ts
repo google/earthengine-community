@@ -9,6 +9,7 @@ import '../empty-notice/empty-notice';
 import { EMPTY_NOTICE_ID } from '../empty-notice/empty-notice';
 import { store } from '../../redux/store';
 import { setElementAdded, setReordering } from '../../redux/actions';
+import { EventType } from '../../redux/reducer';
 
 export const CONTAINER_ID = 'container';
 
@@ -88,7 +89,7 @@ export class Dropzone extends LitElement {
       container.insertBefore(widget, nextElement);
     }
     // set the global reordering state to true so we know that we don't increment the current widget id
-    if (!store.getState().isReordering) {
+    if (store.getState().eventType !== EventType.reordering) {
       store.dispatch(setReordering(true));
     }
     return;
@@ -137,7 +138,8 @@ export class Dropzone extends LitElement {
     }
 
     // Get widget that's currently being dragged.
-    const widget = store.getState().draggingWidget;
+    const widget = store.getState().element;
+
     const widgetWrapper = widget?.parentElement;
     if (widget == null || widgetWrapper == null) {
       return;
@@ -192,7 +194,8 @@ export class Dropzone extends LitElement {
       return null;
     }
 
-    /** Get all widgets in the container excluding the currently dragged widget.
+    /**
+     * Get all widgets in the container excluding the currently dragged widget.
      * The direct children of the container are the widget wrappers that allow them to be
      * draggable so we exclude the wrapper of the current widget.
      */

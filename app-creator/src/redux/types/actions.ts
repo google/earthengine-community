@@ -1,3 +1,5 @@
+import { EventType } from '../reducer';
+
 /**
  *  @fileoverview This file contains the type interfaces for each action in our store.
  */
@@ -40,9 +42,8 @@ export interface SetSelectedTabAction {
 export interface ResetDraggingValuesAction {
   type: typeof RESET_DRAGGING_VALUES;
   payload: {
-    draggingElement: null;
-    isElementAdded: boolean;
-    isReordering: boolean;
+    element: null;
+    eventType: EventType;
   };
 }
 

@@ -18,9 +18,12 @@ suite('ui-textbox', () => {
       `
     <paper-input
       aria-disabled="false"
+      no-float-label=""
       label="${label}"
       style=""
       tabindex="0"
+      type="text"
+      value=""
       ></paper-input>
     `
     );

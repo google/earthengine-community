@@ -16,23 +16,26 @@ import {
 import { Reducer, AnyAction } from 'redux';
 
 export interface AppCreatorStore {
-  draggingWidget: Element | null;
-  editingWidget: Element | null;
+  element: Element | null;
   selectedTab: Tab;
-  isElementAdded: boolean;
-  isReordering: boolean;
+  eventType: EventType;
   widgetIDs: { [key: string]: number };
+}
+
+export const enum EventType {
+  editing = 'editing',
+  reordering = 'reordering',
+  adding = 'adding',
+  none = 'none',
 }
 
 /**
  * Initial state of our application.
  */
 const INITIAL_STATE: AppCreatorStore = {
-  draggingWidget: null,
-  editingWidget: null,
+  element: null,
   selectedTab: Tab.widgets,
-  isElementAdded: false,
-  isReordering: false,
+  eventType: EventType.none,
   widgetIDs: {
     label: 0,
     button: 0,
@@ -58,12 +61,14 @@ export const reducer: Reducer<AppCreatorStore, AppCreatorAction | AnyAction> = (
     case SET_DRAGGING_WIDGET:
       return {
         ...state,
-        draggingWidget: action.payload.widget,
+        element: action.payload.widget,
+        eventType: EventType.none,
       };
     case SET_EDITING_WIDGET:
       return {
         ...state,
-        editingWidget: action.payload.widget,
+        element: action.payload.widget,
+        eventType: EventType.editing,
         selectedTab:
           action.payload.widget == null
             ? state.selectedTab
@@ -77,12 +82,12 @@ export const reducer: Reducer<AppCreatorStore, AppCreatorAction | AnyAction> = (
     case SET_ELEMENT_ADDED:
       return {
         ...state,
-        isElementAdded: action.payload.value,
+        eventType: action.payload.value ? EventType.adding : EventType.none,
       };
     case SET_REORDERING:
       return {
         ...state,
-        isReordering: action.payload.value,
+        eventType: action.payload.value ? EventType.reordering : EventType.none,
       };
     case INCREMENT_WIDGET_ID:
       return {

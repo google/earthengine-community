@@ -1,41 +1,69 @@
-import { EventType } from '../reducer';
-
 /**
  *  @fileoverview This file contains the type interfaces for each action in our store.
  */
+import { EventType, AttributeType, Tab } from './enums';
+
 export const SET_DRAGGING_WIDGET = 'SET_DRAGGING_WIDGET';
 export const SET_EDITING_WIDGET = 'SET_EDITING_WIDGET';
 export const SET_ELEMENT_ADDED = 'SET_ELEMENT_ADDED';
 export const SET_SELECTED_TAB = 'SET_SELECTED_TAB';
+export const SET_REORDERING = 'SET_REORDERING';
 export const INCREMENT_WIDGET_ID = 'INCREMENT_WIDGET_ID';
 export const RESET_DRAGGING_VALUES = 'RESET_DRAGGING_VALUES';
-export const SET_REORDERING = 'SET_REORDERING';
+export const ADD_WIDGET_META_DATA = 'ADD_WIDGET_META_DATA';
+export const REMOVE_WIDGET_META_DATA = 'REMOVE_WIDGET_META_DATA';
+export const UPDATE_WIDGET_META_DATA = 'UPDATE_WIDGET_META_DATA';
 
-export enum Tab {
-  templates = 0,
-  widgets = 1,
-  attributes = 2,
+export interface RemoveWidgetMetaData {
+  type: typeof REMOVE_WIDGET_META_DATA;
+  payload: {
+    id: string;
+  };
+}
+
+export interface AddWidgetMetaData {
+  type: typeof ADD_WIDGET_META_DATA;
+  payload: {
+    [id: string]: {
+      id: string;
+      widgetRef: HTMLElement;
+      children: string[];
+      uniqueAttributes: {};
+      style: {};
+    };
+  };
+}
+
+export interface UpdateWidgetMetaData {
+  type: typeof UPDATE_WIDGET_META_DATA;
+  payload: {
+    key: string;
+    value: string;
+    id: string;
+    attributeType: AttributeType;
+  };
 }
 
 export interface SetDraggingWidgetAction {
   type: typeof SET_DRAGGING_WIDGET;
   payload: {
-    widget: Element | null;
+    element: Element | null;
+    eventType: EventType;
   };
 }
 
 export interface SetEditingWidgetAction {
   type: typeof SET_EDITING_WIDGET;
   payload: {
-    widget: Element | null;
-    index: Tab;
+    element: Element | null;
+    eventType: EventType;
   };
 }
 
 export interface SetSelectedTabAction {
   type: typeof SET_SELECTED_TAB;
   payload: {
-    index: Tab;
+    selectedTab: Tab;
   };
 }
 
@@ -75,4 +103,7 @@ export type AppCreatorAction =
   | SetSelectedTabAction
   | SetIsReorderingAction
   | IncrementWidgetAction
-  | ResetDraggingValuesAction;
+  | ResetDraggingValuesAction
+  | AddWidgetMetaData
+  | RemoveWidgetMetaData
+  | UpdateWidgetMetaData;

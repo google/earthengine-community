@@ -5,6 +5,11 @@ import '@polymer/paper-dropdown-menu/paper-dropdown-menu';
 import '@polymer/paper-item/paper-item';
 import '@polymer/paper-listbox/paper-listbox';
 import { css, customElement, html, LitElement, property } from 'lit-element';
+import {
+  DEFAULT_SHARED_ATTRIBUTES,
+  DEFAULT_SELECT_ATTRIBUTES,
+} from '../../redux/types/attributes';
+import { styleMap } from 'lit-html/directives/style-map';
 
 @customElement('ui-select')
 export class Select extends LitElement {
@@ -18,12 +23,12 @@ export class Select extends LitElement {
   /**
    * Additional custom styles for the button.
    */
-  @property({ type: Object }) styles = {};
+  @property({ type: Object }) styles = DEFAULT_SHARED_ATTRIBUTES;
 
   /**
    * Sets the items in the drop down menu.
    */
-  @property({ type: Array }) items: string[] = [];
+  @property({ type: String }) items = DEFAULT_SELECT_ATTRIBUTES.items;
 
   /**
    * Sets the widget placeholder.
@@ -47,17 +52,21 @@ export class Select extends LitElement {
   onChangeHandler: (selection: string) => void = () => {};
 
   render() {
+    const { styles } = this;
     return html`
       <paper-dropdown-menu
         label="${this.placeholder}"
         ?disabled=${this.disabled}
         @value-changed=${this.handleSelectionChange}
+        style=${styleMap(styles)}
       >
         <paper-listbox
           slot="dropdown-content"
           selected="${this.items.indexOf(this.value)}"
         >
-          ${this.items.map((i) => html`<paper-item>${i}</paper-item>`)}
+          ${this.items
+            .split(', ')
+            .map((i) => html`<paper-item>${i}</paper-item>`)}
         </paper-listbox>
       </paper-dropdown-menu>
     `;
@@ -66,6 +75,25 @@ export class Select extends LitElement {
   handleSelectionChange(selection: CustomEvent): void {
     this.value = selection.detail.value;
     this.onChangeHandler(this.value);
+  }
+
+  setAttribute(key: string, value: string) {
+    switch (key) {
+      case 'value':
+        this.value = value;
+        break;
+      case 'placeholder':
+        this.placeholder = value;
+        break;
+      case 'items':
+        this.items = value;
+        break;
+      case 'disabled':
+        this.disabled = value === 'true';
+        break;
+    }
+
+    this.requestUpdate();
   }
 
   getDisabled(): boolean {
@@ -80,7 +108,7 @@ export class Select extends LitElement {
     return this.value;
   }
 
-  getItems(): string[] {
+  getItems(): string {
     return this.items;
   }
 
@@ -105,5 +133,10 @@ export class Select extends LitElement {
 
   getStyle() {
     return this.styles;
+  }
+
+  setStyle(style: { [key: string]: string }) {
+    this.styles = style;
+    this.requestUpdate();
   }
 }

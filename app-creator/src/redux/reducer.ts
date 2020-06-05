@@ -11,22 +11,28 @@ import {
   SET_SELECTED_TAB,
   SET_REORDERING,
   AppCreatorAction,
-  Tab,
+  ADD_WIDGET_META_DATA,
+  REMOVE_WIDGET_META_DATA,
+  UPDATE_WIDGET_META_DATA,
 } from './types/actions';
 import { Reducer, AnyAction } from 'redux';
+import { UniqueAttributes } from './types/attributes';
+import { EventType, Tab } from './types/enums';
+
+export interface WidgetMetaData {
+  id: string;
+  widgetRef: HTMLElement;
+  children: string[];
+  uniqueAttributes: UniqueAttributes;
+  style: { [key: string]: string };
+}
 
 export interface AppCreatorStore {
   element: Element | null;
   selectedTab: Tab;
   eventType: EventType;
   widgetIDs: { [key: string]: number };
-}
-
-export const enum EventType {
-  editing = 'editing',
-  reordering = 'reordering',
-  adding = 'adding',
-  none = 'none',
+  template: { [key: string]: any };
 }
 
 /**
@@ -45,6 +51,7 @@ const INITIAL_STATE: AppCreatorStore = {
     slider: 0,
     checkbox: 0,
   },
+  template: {},
 };
 
 /**
@@ -61,23 +68,19 @@ export const reducer: Reducer<AppCreatorStore, AppCreatorAction | AnyAction> = (
     case SET_DRAGGING_WIDGET:
       return {
         ...state,
-        element: action.payload.widget,
-        eventType: EventType.none,
+        ...action.payload,
       };
     case SET_EDITING_WIDGET:
       return {
         ...state,
-        element: action.payload.widget,
-        eventType: EventType.editing,
+        ...action.payload,
         selectedTab:
-          action.payload.widget == null
-            ? state.selectedTab
-            : action.payload.index,
+          action.payload.element == null ? state.selectedTab : Tab.attributes,
       };
     case SET_SELECTED_TAB:
       return {
         ...state,
-        selectedTab: action.payload.index,
+        ...action.payload,
       };
     case SET_ELEMENT_ADDED:
       return {
@@ -88,6 +91,43 @@ export const reducer: Reducer<AppCreatorStore, AppCreatorAction | AnyAction> = (
       return {
         ...state,
         eventType: action.payload.value ? EventType.reordering : EventType.none,
+      };
+    case ADD_WIDGET_META_DATA:
+      return {
+        ...state,
+        template: {
+          ...state.template,
+          ...action.payload,
+        },
+      };
+    case UPDATE_WIDGET_META_DATA:
+      const updatedTemplate = { ...state.template };
+      updatedTemplate[action.payload.id][action.payload.attributeType][
+        action.payload.key
+      ] = action.payload.value;
+
+      const {
+        widgetRef,
+        style: { borderWidth, borderColor, borderType },
+      } = updatedTemplate[action.payload.id];
+
+      updatedTemplate[
+        action.payload.id
+      ].style.border = `${borderWidth} ${borderType} ${borderColor}`;
+
+      widgetRef.setStyle(updatedTemplate[action.payload.id].style);
+      updateUI(widgetRef, updatedTemplate);
+
+      return {
+        ...state,
+        template: updatedTemplate,
+      };
+    case REMOVE_WIDGET_META_DATA:
+      const newTemplate = { ...state.template };
+      delete newTemplate[action.payload.id];
+      return {
+        ...state,
+        template: newTemplate,
       };
     case INCREMENT_WIDGET_ID:
       return {
@@ -106,3 +146,12 @@ export const reducer: Reducer<AppCreatorStore, AppCreatorAction | AnyAction> = (
       return state;
   }
 };
+
+/**
+ * Updates DOM element with attributes.
+ */
+function updateUI(widget: HTMLElement, template: { [key: string]: any }) {
+  Object.keys(template[widget.id].uniqueAttributes).forEach((attr: string) => {
+    widget.setAttribute(attr, template[widget.id].uniqueAttributes[attr]);
+  });
+}

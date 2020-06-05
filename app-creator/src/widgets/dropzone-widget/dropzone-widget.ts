@@ -8,8 +8,13 @@ import { DraggableWidget } from '../draggable-widget/draggable-widget';
 import '../empty-notice/empty-notice';
 import { EMPTY_NOTICE_ID } from '../empty-notice/empty-notice';
 import { store } from '../../redux/store';
-import { setElementAdded, setReordering } from '../../redux/actions';
-import { EventType } from '../../redux/reducer';
+import {
+  setElementAdded,
+  setReordering,
+  addWidgetMetaData,
+  removeWidgetMetaData,
+} from '../../redux/actions';
+import { EventType } from '../../redux/types/enums';
 
 export const CONTAINER_ID = 'container';
 
@@ -112,10 +117,12 @@ export class Dropzone extends LitElement {
     const element = this.shadowRoot?.getElementById(`${clone.id}-wrapper`);
     if (element != null) {
       container.removeChild(element);
+      store.dispatch(removeWidgetMetaData(clone.id));
     }
 
     // The cloned widget is not wrapped with a draggable widget so we have to create one below.
     const cloneDraggableWrapper = this.wrapDraggableWidget(clone);
+    cloneDraggableWrapper.hasOverlay = false;
 
     if (nextElement == null) {
       container.appendChild(cloneDraggableWrapper);
@@ -124,7 +131,10 @@ export class Dropzone extends LitElement {
     }
 
     // We use this to correctly increment the widget id.
-    store.dispatch(setElementAdded(true));
+    if (store.getState().eventType !== EventType.adding) {
+      store.dispatch(setElementAdded(true));
+    }
+    store.dispatch(addWidgetMetaData(clone.id, clone));
   }
 
   /**

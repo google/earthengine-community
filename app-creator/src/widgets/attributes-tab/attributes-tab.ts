@@ -6,9 +6,28 @@ import { html, customElement, css, property, LitElement } from 'lit-element';
 import { nothing } from 'lit-html';
 import { connect } from 'pwa-helpers';
 import { store } from '../../redux/store.js';
-import { AppCreatorStore, EventType } from '../../redux/reducer';
-import { Label } from '../ui-label/ui-label';
+import { AppCreatorStore } from '../../redux/reducer';
 import '../tab-container/tab-container';
+import {
+  sharedAttributes,
+  labelAttributes,
+  AttributeMetaData,
+  buttonAttributes,
+  checkboxAttributes,
+  sliderAttributes,
+  textboxAttributes,
+  selectAttributes,
+  UniqueAttributes,
+} from '../../redux/types/attributes.js';
+import './../empty-notice/empty-notice';
+import { camelCaseToTitleCase } from '../../utils/helpers.js';
+import { updateWidgetMetaData } from '../../redux/actions.js';
+import {
+  EventType,
+  AttributeType,
+  InputType,
+  WidgetType,
+} from '../../redux/types/enums.js';
 
 @customElement('attributes-tab')
 export class AttributesTab extends connect(store)(LitElement) {
@@ -19,7 +38,7 @@ export class AttributesTab extends connect(store)(LitElement) {
 
     .input-label {
       margin: 0px 0px;
-      font-size: 0.8rem;
+      font-size: 0.7rem;
       font-weight: 600;
     }
 
@@ -71,82 +90,333 @@ export class AttributesTab extends connect(store)(LitElement) {
       ? store.getState().element
       : null;
 
-  getLabelInputs(widget: Element | null) {
-    if (widget == null) {
-      return nothing;
-    }
-
+  getTextInput(
+    key: string,
+    title: string,
+    value: string,
+    id: string,
+    attributeType: AttributeType
+  ) {
     return html`
-      <div class="attribute-input-container">
-        <p class="input-label">Value:</p>
-        <textarea
-          class="attribute-input"
-          rows="4"
+      <div class='attribute-input-container'>
+        <p class='input-label'>${title}</p>
+        <input
+          class='attribute-input'
           @keyup=${(e: Event) =>
-            ((widget as Label).value = (e.target as HTMLInputElement).value)}
-        >
-${(widget as Label).value}</textarea
-        >
-      </div>
-      <div class="attribute-input-container">
-        <p class="input-label">Target Url:</p>
-        <input
-          class="attribute-input"
-          @keyup=${(e: Event) =>
-            ((widget as Label).targetUrl = (e.target as HTMLInputElement).value)}
-          value="${(widget as Label).targetUrl}"
-        ></input
-        >
-      </div>
-      <div class="attribute-input-container">
-        <p class="input-label">Color:</p>
-        <input
-          class="attribute-input"
-          type='color'
-          @change=${(e: Event) =>
-            ((widget as Label).style[
-              'color'
-            ] = (e.target as HTMLInputElement).value)}
-          value="${(widget as HTMLElement).style.color}"
-        ></input
-        >
-      </div>
-      <div class="attribute-input-container select-input">
-        <p class="input-label">Text Align:</p>
-        <select
-          name='Text Align'
-          placeholder='Text Align'
-          class="attribute-input"
-          value="${(widget as HTMLElement).style.textAlign}"
-          @change=${(e: Event) =>
-            ((widget as Label).style[
-              'textAlign'
-            ] = (e.target as HTMLSelectElement).value)}
-          >
-          <option value="left">Left</option>
-          <option value="center">Center</option>
-          <option value="right">Right</option>
-          <option value="justify">Justify</option>
-        </select
-        >
-      </div>
-      <div class="attribute-input-container">
-        <p class="input-label">Padding:</p>
-        <input
-          class="attribute-input"
-          type='number'
-          value='0'
-          @change=${(e: Event) => {
-            console.log((e.target as HTMLInputElement).value + 'px');
-            console.log('padding', (widget as HTMLElement).style.padding);
-            (widget as Label).style['padding'] =
-              (e.target as HTMLInputElement).value + 'px';
-          }}
-          value="${(widget as HTMLElement).style.padding}"
+            store.dispatch(
+              updateWidgetMetaData(
+                key,
+                (e.target as HTMLInputElement).value,
+                id,
+                attributeType
+              )
+            )}
+          value='${value}'
         ></input
         >
       </div>
     `;
+  }
+
+  getTextareaInput(
+    key: string,
+    title: string,
+    value: string,
+    id: string,
+    attributeType: AttributeType
+  ) {
+    return html`
+      <div class="attribute-input-container">
+        <p class="input-label">${title}</p>
+        <textarea
+          class="attribute-input"
+          rows="4"
+          @keyup=${(e: Event) =>
+            store.dispatch(
+              updateWidgetMetaData(
+                key,
+                (e.target as HTMLTextAreaElement).value,
+                id,
+                attributeType
+              )
+            )}
+        >
+${value}</textarea
+        >
+      </div>
+    `;
+  }
+
+  getColorInput(
+    key: string,
+    title: string,
+    value: string,
+    id: string,
+    attributeType: AttributeType
+  ) {
+    return html`
+      <div class='attribute-input-container'>
+        <p class='input-label'>${title}</p>
+        <input
+          class='attribute-input'
+          type='color'
+          @change=${(e: Event) =>
+            store.dispatch(
+              updateWidgetMetaData(
+                key,
+                (e.target as HTMLInputElement).value,
+                id,
+                attributeType
+              )
+            )}
+          value='${value}'
+        ></input
+        >
+      </div>
+    `;
+  }
+
+  getSelectInput(
+    key: string,
+    title: string,
+    value: string,
+    items: string[] | undefined,
+    id: string,
+    attributeType: AttributeType
+  ) {
+    if (items == null) {
+      return;
+    }
+    return html`
+      <div class="attribute-input-container select-input">
+        <p class="input-label">${title}</p>
+        <select
+          name="${title}"
+          class="attribute-input"
+          .value="${value}"
+          @change=${(e: Event) =>
+            store.dispatch(
+              updateWidgetMetaData(
+                key,
+                (e.target as HTMLInputElement).value,
+                id,
+                attributeType
+              )
+            )}
+        >
+          ${items.map(
+            (item) =>
+              html`<option value="${item}" ?selected=${item === value}
+                >${item}</option
+              >`
+          )}
+        </select>
+      </div>
+    `;
+  }
+
+  getNumberInput(
+    key: string,
+    title: string,
+    value: string,
+    id: string,
+    attributeType: AttributeType
+  ) {
+    return html`
+      <div class='attribute-input-container'>
+        <p class='input-label'>${title}</p>
+        <input
+          class='attribute-input'
+          type='number'
+          value='${value.replace('px', '')}'
+          @change=${(e: Event) =>
+            store.dispatch(
+              updateWidgetMetaData(
+                key,
+                (e.target as HTMLInputElement).value + 'px',
+                id,
+                attributeType
+              )
+            )}
+        ></input>
+      </div>
+    `;
+  }
+
+  getUniqueAttributeMarkup(
+    attributesArray: AttributeMetaData,
+    uniqueAttributes: UniqueAttributes,
+    id: string
+  ) {
+    return Object.keys(attributesArray).map((key) => {
+      const value = uniqueAttributes[key];
+      const type = attributesArray[key].type;
+      const items = attributesArray[key].items;
+
+      const attributeTitle = camelCaseToTitleCase(key);
+
+      switch (type) {
+        case InputType.text:
+          return this.getTextInput(
+            key,
+            attributeTitle,
+            value,
+            id,
+            AttributeType.unique
+          );
+        case InputType.textarea:
+          return this.getTextareaInput(
+            key,
+            attributeTitle,
+            value,
+            id,
+            AttributeType.unique
+          );
+        case InputType.color:
+          return this.getColorInput(
+            key,
+            attributeTitle,
+            value,
+            id,
+            AttributeType.unique
+          );
+        case InputType.select:
+          return this.getSelectInput(
+            key,
+            attributeTitle,
+            value,
+            items,
+            id,
+            AttributeType.unique
+          );
+        case InputType.number:
+          return this.getNumberInput(
+            key,
+            attributeTitle,
+            value,
+            id,
+            AttributeType.unique
+          );
+        default:
+          return nothing;
+      }
+    });
+  }
+
+  getUniqueAttributes() {
+    const widget = this.editingWidget;
+    if (widget == null) {
+      return;
+    }
+
+    const uniqueAttributes = store.getState().template[widget.id]
+      .uniqueAttributes;
+
+    const widgetType = widget.id.slice(0, widget.id.indexOf('-'));
+
+    switch (widgetType) {
+      case WidgetType.label:
+        return this.getUniqueAttributeMarkup(
+          labelAttributes,
+          uniqueAttributes,
+          widget.id
+        );
+      case WidgetType.button:
+        return this.getUniqueAttributeMarkup(
+          buttonAttributes,
+          uniqueAttributes,
+          widget.id
+        );
+      case WidgetType.checkbox:
+        return this.getUniqueAttributeMarkup(
+          checkboxAttributes,
+          uniqueAttributes,
+          widget.id
+        );
+      case WidgetType.select:
+        return this.getUniqueAttributeMarkup(
+          selectAttributes,
+          uniqueAttributes,
+          widget.id
+        );
+      case WidgetType.slider:
+        return this.getUniqueAttributeMarkup(
+          sliderAttributes,
+          uniqueAttributes,
+          widget.id
+        );
+      case WidgetType.textbox:
+        return this.getUniqueAttributeMarkup(
+          textboxAttributes,
+          uniqueAttributes,
+          widget.id
+        );
+      default:
+        return nothing;
+    }
+  }
+
+  getStyleAttributes() {
+    const widget = this.editingWidget;
+    if (widget == null) {
+      return;
+    }
+
+    const styleAttributes = store.getState().template[widget.id].style;
+
+    return Object.keys(sharedAttributes).map((key) => {
+      const value = styleAttributes[key];
+      const type = sharedAttributes[key].type;
+      const items = sharedAttributes[key].items;
+
+      const attributeTitle = camelCaseToTitleCase(key);
+
+      switch (type) {
+        case InputType.text:
+          return this.getTextInput(
+            key,
+            attributeTitle,
+            value,
+            widget.id,
+            AttributeType.style
+          );
+        case InputType.textarea:
+          return this.getTextareaInput(
+            key,
+            attributeTitle,
+            value,
+            widget.id,
+            AttributeType.style
+          );
+        case InputType.color:
+          return this.getColorInput(
+            key,
+            attributeTitle,
+            value,
+            widget.id,
+            AttributeType.style
+          );
+        case InputType.select:
+          return this.getSelectInput(
+            key,
+            attributeTitle,
+            value,
+            items,
+            widget.id,
+            AttributeType.style
+          );
+        case InputType.number:
+          return this.getNumberInput(
+            key,
+            attributeTitle,
+            value,
+            widget.id,
+            AttributeType.style
+          );
+        default:
+          return nothing;
+      }
+    });
   }
 
   render() {
@@ -159,11 +429,12 @@ ${(widget as Label).value}</textarea
       ></empty-notice>
     `;
 
-    const editableAttributesMarkup = this.getLabelInputs(this.editingWidget);
+    const uniqueAttributes = this.getUniqueAttributes();
+    const styleAttributesMarkup = this.getStyleAttributes();
 
     return html`
-      <tab-container title="Attributes"
-        >${editableAttributesMarkup}
+      <tab-container title="Attributes">
+        ${uniqueAttributes} ${styleAttributesMarkup}
         ${this.editingWidget ? nothing : emptyNotice}</tab-container
       >
     `;
@@ -175,47 +446,3 @@ declare global {
     'attributes-tab': AttributesTab;
   }
 }
-
-/**
- * Label
- * - value
- * - targetUrl
- */
-
-/**
- * Button
- * - label
- * - disabled
- */
-
-/**
- * Checkbox
- * - label
- * - value
- * - disabled
- */
-
-/**
- * Select
- * - items
- * - placeholder
- * - value
- * - disabled
- */
-
-/**
- * Slider
- * - min
- * - max
- * - value
- * - step
- * - direction
- * - disabled
- */
-
-/**
- * Textbox
- * - placeholder
- * - value
- * - disabled
- */

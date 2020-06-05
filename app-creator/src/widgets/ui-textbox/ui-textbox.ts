@@ -4,6 +4,7 @@
 import '@polymer/paper-input/paper-input.js';
 import { css, customElement, html, LitElement, property } from 'lit-element';
 import { styleMap } from 'lit-html/directives/style-map';
+import { DEFAULT_SHARED_ATTRIBUTES } from '../../redux/types/attributes';
 
 @customElement('ui-textbox')
 export class Textbox extends LitElement {
@@ -17,7 +18,7 @@ export class Textbox extends LitElement {
   /**
    * Additional custom styles.
    */
-  @property({ type: Object }) styles = {};
+  @property({ type: Object }) styles = DEFAULT_SHARED_ATTRIBUTES;
 
   /**
    * Value of input.
@@ -28,6 +29,11 @@ export class Textbox extends LitElement {
    * Sets textbox label.
    */
   @property({ type: String }) label = '';
+
+  /**
+   * Sets textbox placeholder.
+   */
+  @property({ type: String }) placeholder = '';
 
   /**
    * Type of input.
@@ -51,6 +57,7 @@ export class Textbox extends LitElement {
       label,
       type,
       value,
+      placeholder,
       onKeyupChangeHandler,
       onChangeHandler,
       styles,
@@ -59,6 +66,7 @@ export class Textbox extends LitElement {
       <paper-input
         style=${styleMap(styles)}
         label="${label}"
+        placeholder="${placeholder}"
         value=${value}
         type=${type}
         @keyup=${onKeyupChangeHandler}
@@ -74,5 +82,29 @@ export class Textbox extends LitElement {
 
   getStyle(): object {
     return this.styles;
+  }
+
+  setAttribute(key: string, value: string) {
+    switch (key) {
+      case 'value':
+        this.value = value;
+        break;
+      case 'label':
+        this.label = value;
+        break;
+      case 'placeholder':
+        this.placeholder = value;
+        break;
+      case 'type':
+        this.type = value;
+        break;
+    }
+
+    this.requestUpdate();
+  }
+
+  setStyle(style: { [key: string]: string }) {
+    this.styles = style;
+    this.requestUpdate();
   }
 }

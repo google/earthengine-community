@@ -17,7 +17,7 @@ export class TabContainer extends LitElement {
       padding: var(--regular);
     }
 
-    h4 {
+    h5 {
       margin-top: var(--extra-tight);
       margin-bottom: var(--regular);
     }
@@ -33,7 +33,7 @@ export class TabContainer extends LitElement {
     const { title } = this;
     return html`
       <div id="container">
-        <h4>${title}</h4>
+        <h5>${title}</h5>
         <slot></slot>
       </div>
     `;

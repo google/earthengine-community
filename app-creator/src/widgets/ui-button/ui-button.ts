@@ -1,21 +1,24 @@
 import '@polymer/paper-button';
 import { css, customElement, html, LitElement, property } from 'lit-element';
 import { styleMap } from 'lit-html/directives/style-map';
+import { DEFAULT_SHARED_ATTRIBUTES } from '../../redux/types/attributes';
 
 @customElement('ui-button')
 export class Button extends LitElement {
   static styles = css`
     paper-button {
       margin: var(--tight);
-      background-color: var(--accent-color);
+      background-color: var(--primary-color);
       color: var(--primary-color);
+      height: 30px;
+      font-size: 0.8rem;
     }
   `;
 
   /**
    * Additional custom styles for the button.
    */
-  @property({ type: Object }) styles = {};
+  @property({ type: Object }) styles = DEFAULT_SHARED_ATTRIBUTES;
 
   /**
    * If true, the user cannot interact with this element.
@@ -51,6 +54,22 @@ export class Button extends LitElement {
     `;
   }
 
+  setAttribute(key: string, value: string) {
+    switch (key) {
+      case 'label':
+        this.label = value;
+        break;
+      case 'raised':
+        this.raised = value === 'true';
+        break;
+      case 'disabled':
+        this.disabled = value === 'true';
+        break;
+    }
+
+    this.requestUpdate();
+  }
+
   getDisabled(): boolean {
     return this.disabled;
   }
@@ -70,5 +89,10 @@ export class Button extends LitElement {
 
   getStyle(): object {
     return this.styles;
+  }
+
+  setStyle(style: { [key: string]: string }) {
+    this.styles = style;
+    this.requestUpdate();
   }
 }

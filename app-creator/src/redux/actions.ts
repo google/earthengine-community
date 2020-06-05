@@ -2,11 +2,12 @@
  *  @fileoverview This file contains a set of action creators that modify the state of our application.
  */
 import {
+  ADD_WIDGET_META_DATA,
+  REMOVE_WIDGET_META_DATA,
   SetDraggingWidgetAction,
   SET_DRAGGING_WIDGET,
   SetEditingWidgetAction,
   SET_EDITING_WIDGET,
-  Tab,
   SetSelectedTabAction,
   SET_SELECTED_TAB,
   ResetDraggingValuesAction,
@@ -17,8 +18,77 @@ import {
   SET_REORDERING,
   IncrementWidgetAction,
   INCREMENT_WIDGET_ID,
+  AddWidgetMetaData,
+  RemoveWidgetMetaData,
+  UPDATE_WIDGET_META_DATA,
+  UpdateWidgetMetaData,
 } from './types/actions';
-import { EventType } from './reducer';
+import {
+  DEFAULT_SHARED_ATTRIBUTES,
+  UniqueAttributes,
+  DEFAULT_LABEL_ATTRIBUTES,
+  DEFAULT_BUTTON_ATTRIBUTES,
+  DEFAULT_SELECT_ATTRIBUTES,
+  DEFAULT_CHECKBOX_ATTRIBUTES,
+  DEFAULT_SLIDER_ATTRIBUTES,
+  DEFAULT_TEXTBOX_ATTRIBUTES,
+} from './types/attributes';
+import { WidgetType, AttributeType, Tab, EventType } from './types/enums';
+
+/**
+ * Updates widget attributes.
+ */
+export const updateWidgetMetaData = (
+  key: string,
+  value: string,
+  id: string,
+  attributeType: AttributeType
+): UpdateWidgetMetaData => {
+  return {
+    type: UPDATE_WIDGET_META_DATA,
+    payload: {
+      key,
+      value,
+      id,
+      attributeType,
+    },
+  };
+};
+
+/**
+ * Removes the widget metadata for the given widget id.
+ */
+export const removeWidgetMetaData = (id: string): RemoveWidgetMetaData => {
+  return {
+    type: REMOVE_WIDGET_META_DATA,
+    payload: {
+      id,
+    },
+  };
+};
+
+/**
+ * Adds widget meta data to the store's template representation.
+ */
+export const addWidgetMetaData = (
+  id: string,
+  widget: Element
+): AddWidgetMetaData => {
+  return {
+    type: ADD_WIDGET_META_DATA,
+    payload: {
+      [id]: {
+        id,
+        widgetRef: widget as HTMLElement,
+        children: [],
+        uniqueAttributes: {
+          ...getDefaultUniqueAttributes(id.slice(0, id.indexOf('-'))),
+        },
+        style: { ...DEFAULT_SHARED_ATTRIBUTES },
+      },
+    },
+  };
+};
 
 /**
  * Sets the currently dragged widget to the element being dragged, or null
@@ -30,7 +100,8 @@ export const setDraggingWidget = (
   return {
     type: SET_DRAGGING_WIDGET,
     payload: {
-      widget,
+      element: widget,
+      eventType: EventType.none,
     },
   };
 };
@@ -44,8 +115,8 @@ export const setEditingWidget = (
   return {
     type: SET_EDITING_WIDGET,
     payload: {
-      widget,
-      index: Tab.attributes,
+      element: widget,
+      eventType: EventType.editing,
     },
   };
 };
@@ -57,7 +128,7 @@ export const setSelectedTab = (index: Tab): SetSelectedTabAction => {
   return {
     type: SET_SELECTED_TAB,
     payload: {
-      index,
+      selectedTab: index,
     },
   };
 };
@@ -114,3 +185,25 @@ export const incrementWidgetID = (id: string): IncrementWidgetAction => {
     },
   };
 };
+
+/**
+ * Returns default values for a specified widget type (ie. label, button, etc).
+ */
+function getDefaultUniqueAttributes(type: string): UniqueAttributes {
+  switch (type) {
+    case WidgetType.label:
+      return DEFAULT_LABEL_ATTRIBUTES;
+    case WidgetType.button:
+      return DEFAULT_BUTTON_ATTRIBUTES;
+    case WidgetType.checkbox:
+      return DEFAULT_CHECKBOX_ATTRIBUTES;
+    case WidgetType.select:
+      return DEFAULT_SELECT_ATTRIBUTES;
+    case WidgetType.slider:
+      return DEFAULT_SLIDER_ATTRIBUTES;
+    case WidgetType.textbox:
+      return DEFAULT_TEXTBOX_ATTRIBUTES;
+    default:
+      return {};
+  }
+}

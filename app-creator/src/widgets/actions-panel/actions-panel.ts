@@ -18,7 +18,7 @@ import { store } from '../../redux/store';
 import { connect } from 'pwa-helpers';
 import { AppCreatorStore } from '../../redux/reducer';
 import { setSelectedTab } from '../../redux/actions';
-import { Tab } from '../../redux/types/actions';
+import { Tab } from '../../redux/types/enums';
 
 @customElement('actions-panel')
 export class ActionsPanel extends connect(store)(LitElement) {

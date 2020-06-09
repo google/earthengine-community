@@ -3,7 +3,7 @@
  *  attributes that a user can edit for a particular element.
  */
 import { html, customElement, css, property, LitElement } from 'lit-element';
-import { nothing } from 'lit-html';
+import { nothing, render } from 'lit-html';
 import { connect } from 'pwa-helpers';
 import { store } from '../../redux/store.js';
 import { AppCreatorStore } from '../../redux/reducer';
@@ -20,7 +20,7 @@ import {
   UniqueAttributes,
 } from '../../redux/types/attributes.js';
 import './../empty-notice/empty-notice';
-import { camelCaseToTitleCase } from '../../utils/helpers.js';
+import { camelCaseToTitleCase, getIdPrefix } from '../../utils/helpers.js';
 import { updateWidgetMetaData } from '../../redux/actions.js';
 import {
   EventType,
@@ -28,6 +28,7 @@ import {
   InputType,
   WidgetType,
 } from '../../redux/types/enums.js';
+import '@polymer/iron-input/iron-input.js';
 
 @customElement('attributes-tab')
 export class AttributesTab extends connect(store)(LitElement) {
@@ -42,11 +43,15 @@ export class AttributesTab extends connect(store)(LitElement) {
       font-weight: 600;
     }
 
-    .attribute-input {
+    .attribute-input-container {
+      width: 95% !important;
       margin: var(--extra-tight) 0px;
       margin-right: 0px;
-      padding: var(--extra-tight);
+    }
+
+    .attribute-input {
       border: var(--light-border);
+      padding: var(--extra-tight);
       -webkit-border-radius: var(--extra-tight);
       border-radius: var(--extra-tight);
       width: 100% !important;
@@ -71,8 +76,30 @@ export class AttributesTab extends connect(store)(LitElement) {
   `;
 
   stateChanged(state: AppCreatorStore) {
-    if (state.eventType === EventType.editing) {
+    if (state.element !== this.editingWidget) {
       this.editingWidget = state.element;
+
+      const slot = this.shadowRoot
+        ?.querySelector('tab-container')
+        ?.querySelector('slot')!;
+
+      if (slot == null) {
+        return;
+      }
+
+      const uniqueAttributesMarkup = this.getUniqueAttributes();
+      const styleAttributesMarkup = this.getStyleAttributes();
+
+      render(
+        html``,
+        this.shadowRoot?.querySelector('tab-container')?.querySelector('slot')!
+      );
+
+      render(
+        html`${uniqueAttributesMarkup} ${styleAttributesMarkup}
+        ${this.editingWidget ? nothing : AttributesTab.emptyNotice}`,
+        this.shadowRoot?.querySelector('tab-container')?.querySelector('slot')!
+      );
     }
   }
 
@@ -84,7 +111,6 @@ export class AttributesTab extends connect(store)(LitElement) {
   /**
    * Widget currently being edited.
    */
-  @property({ type: Object })
   editingWidget: Element | null =
     store.getState().eventType === EventType.editing
       ? store.getState().element
@@ -98,8 +124,8 @@ export class AttributesTab extends connect(store)(LitElement) {
     attributeType: AttributeType
   ) {
     return html`
-      <div class='attribute-input-container'>
-        <p class='input-label'>${title}</p>
+      <div class="attribute-input-container">
+        <p class="input-label">${title}</p>
         <input
           class='attribute-input'
           @keyup=${(e: Event) =>
@@ -111,9 +137,8 @@ export class AttributesTab extends connect(store)(LitElement) {
                 attributeType
               )
             )}
-          value='${value}'
-        ></input
-        >
+            value="${value}"
+        ></input>
       </div>
     `;
   }
@@ -125,24 +150,33 @@ export class AttributesTab extends connect(store)(LitElement) {
     id: string,
     attributeType: AttributeType
   ) {
+    console.log({
+      key,
+      title,
+      value,
+      id,
+      attributeType,
+    });
     return html`
       <div class="attribute-input-container">
         <p class="input-label">${title}</p>
-        <textarea
-          class="attribute-input"
-          rows="4"
-          @keyup=${(e: Event) =>
-            store.dispatch(
-              updateWidgetMetaData(
-                key,
-                (e.target as HTMLTextAreaElement).value,
-                id,
-                attributeType
-              )
-            )}
-        >
+        <iron-input class="attribute-input-container" bind-value="${value}">
+          <textarea
+            class="attribute-input"
+            rows="4"
+            @keyup=${(e: Event) =>
+              store.dispatch(
+                updateWidgetMetaData(
+                  key,
+                  (e.target as HTMLTextAreaElement).value,
+                  id,
+                  attributeType
+                )
+              )}
+          >
 ${value}</textarea
-        >
+          >
+        </iron-input>
       </div>
     `;
   }
@@ -228,6 +262,8 @@ ${value}</textarea
         <input
           class='attribute-input'
           type='number'
+          min="0"
+          oninput="validity.valid||(value='');"
           value='${value.replace('px', '')}'
           @change=${(e: Event) =>
             store.dispatch(
@@ -312,7 +348,7 @@ ${value}</textarea
     const uniqueAttributes = store.getState().template[widget.id]
       .uniqueAttributes;
 
-    const widgetType = widget.id.slice(0, widget.id.indexOf('-'));
+    const widgetType = getIdPrefix(widget.id);
 
     switch (widgetType) {
       case WidgetType.label:
@@ -419,24 +455,26 @@ ${value}</textarea
     });
   }
 
-  render() {
-    const emptyNotice = html`
-      <empty-notice
-        icon="create"
-        message="No widget selected. Click on a widget's edit icon to select it."
-        size="large"
-        bold
-      ></empty-notice>
-    `;
+  static emptyNotice = html`
+    <empty-notice
+      icon="create"
+      message="No widget selected. Click on a widget's edit icon to select it."
+      size="large"
+      bold
+    ></empty-notice>
+  `;
 
-    const uniqueAttributes = this.getUniqueAttributes();
+  render() {
+    const uniqueAttributesMarkup = this.getUniqueAttributes();
     const styleAttributesMarkup = this.getStyleAttributes();
 
     return html`
       <tab-container title="Attributes">
-        ${uniqueAttributes} ${styleAttributesMarkup}
-        ${this.editingWidget ? nothing : emptyNotice}</tab-container
-      >
+        <slot>
+          ${uniqueAttributesMarkup} ${styleAttributesMarkup}
+          ${this.editingWidget ? nothing : AttributesTab.emptyNotice}
+        </slot>
+      </tab-container>
     `;
   }
 }

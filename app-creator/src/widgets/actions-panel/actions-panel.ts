@@ -36,7 +36,7 @@ export class ActionsPanel extends connect(store)(LitElement) {
       position: absolute;
       cursor: pointer;
       top: 16px;
-      right: -19.5px;
+      right: -20px;
       background-color: white;
       border: var(--light-border);
       border-left: none;

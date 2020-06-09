@@ -11,7 +11,7 @@ export type SharedAttributes =
   | 'color'
   | 'backgroundColor'
   | 'borderWidth'
-  | 'borderType'
+  | 'borderStyle'
   | 'borderColor'
   | 'fontSize'
   | 'fontWeight'
@@ -54,14 +54,14 @@ export const sharedAttributes: AttributeMetaData = {
     type: InputType.color,
   },
   backgroundColor: {
-    value: 'none',
+    value: '#FFFFFF',
     type: InputType.color,
   },
   borderWidth: {
     value: '0',
     type: InputType.number,
   },
-  borderType: {
+  borderStyle: {
     value: 'solid',
     type: InputType.select,
     items: ['solid', 'dashed'],
@@ -148,7 +148,7 @@ export const DEFAULT_TEXTBOX_ATTRIBUTES: DefaultAttributesType = Object.keys(
 export const labelAttributes: AttributeMetaData = {
   value: {
     value:
-      "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.",
+      "Google Earth Engine combines a multi-petabyte catalog of satellite imagery and geospatial datasets with planetary-scale analysis capabilities and makes it available for scientists, researchers, and developers to detect changes, map trends, and quantify differences on the Earth's surface.",
     type: InputType.textarea,
   },
   targetUrl: {

@@ -123,7 +123,6 @@ export class Dropzone extends LitElement {
     // The cloned widget is not wrapped with a draggable widget so we have to create one below.
     const cloneDraggableWrapper = this.wrapDraggableWidget(clone);
     cloneDraggableWrapper.hasOverlay = false;
-
     if (nextElement == null) {
       container.appendChild(cloneDraggableWrapper);
     } else {

@@ -12,7 +12,7 @@ import {
   SET_REORDERING,
   AppCreatorAction,
   ADD_WIDGET_META_DATA,
-  REMOVE_WIDGET_META_DATA,
+  REMOVE_WIDGET,
   UPDATE_WIDGET_META_DATA,
 } from './types/actions';
 import { Reducer, AnyAction } from 'redux';
@@ -64,6 +64,7 @@ export const reducer: Reducer<AppCreatorStore, AppCreatorAction | AnyAction> = (
   state = INITIAL_STATE,
   action
 ): AppCreatorStore => {
+  console.log({ state });
   switch (action.type) {
     case SET_DRAGGING_WIDGET:
       return {
@@ -73,9 +74,11 @@ export const reducer: Reducer<AppCreatorStore, AppCreatorAction | AnyAction> = (
     case SET_EDITING_WIDGET:
       return {
         ...state,
-        ...action.payload,
-        selectedTab:
-          action.payload.element == null ? state.selectedTab : Tab.attributes,
+        element: action.payload.element,
+        eventType: action.payload.eventType,
+        selectedTab: action.payload.openAttributesTab
+          ? Tab.attributes
+          : state.selectedTab,
       };
     case SET_SELECTED_TAB:
       return {
@@ -106,14 +109,7 @@ export const reducer: Reducer<AppCreatorStore, AppCreatorAction | AnyAction> = (
         action.payload.key
       ] = action.payload.value;
 
-      const {
-        widgetRef,
-        style: { borderWidth, borderColor, borderType },
-      } = updatedTemplate[action.payload.id];
-
-      updatedTemplate[
-        action.payload.id
-      ].style.border = `${borderWidth} ${borderType} ${borderColor}`;
+      const { widgetRef } = updatedTemplate[action.payload.id];
 
       widgetRef.setStyle(updatedTemplate[action.payload.id].style);
       updateUI(widgetRef, updatedTemplate);
@@ -122,7 +118,7 @@ export const reducer: Reducer<AppCreatorStore, AppCreatorAction | AnyAction> = (
         ...state,
         template: updatedTemplate,
       };
-    case REMOVE_WIDGET_META_DATA:
+    case REMOVE_WIDGET:
       const newTemplate = { ...state.template };
       delete newTemplate[action.payload.id];
       return {
@@ -151,7 +147,7 @@ export const reducer: Reducer<AppCreatorStore, AppCreatorAction | AnyAction> = (
  * Updates DOM element with attributes.
  */
 function updateUI(widget: HTMLElement, template: { [key: string]: any }) {
-  Object.keys(template[widget.id].uniqueAttributes).forEach((attr: string) => {
+  for (const attr of Object.keys(template[widget.id].uniqueAttributes)) {
     widget.setAttribute(attr, template[widget.id].uniqueAttributes[attr]);
-  });
+  }
 }

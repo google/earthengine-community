@@ -3,7 +3,7 @@
  */
 import {
   ADD_WIDGET_META_DATA,
-  REMOVE_WIDGET_META_DATA,
+  REMOVE_WIDGET,
   SetDraggingWidgetAction,
   SET_DRAGGING_WIDGET,
   SetEditingWidgetAction,
@@ -19,7 +19,7 @@ import {
   IncrementWidgetAction,
   INCREMENT_WIDGET_ID,
   AddWidgetMetaData,
-  RemoveWidgetMetaData,
+  RemoveWidget,
   UPDATE_WIDGET_META_DATA,
   UpdateWidgetMetaData,
 } from './types/actions';
@@ -34,6 +34,7 @@ import {
   DEFAULT_TEXTBOX_ATTRIBUTES,
 } from './types/attributes';
 import { WidgetType, AttributeType, Tab, EventType } from './types/enums';
+import { getIdPrefix } from '../utils/helpers';
 
 /**
  * Updates widget attributes.
@@ -58,9 +59,9 @@ export const updateWidgetMetaData = (
 /**
  * Removes the widget metadata for the given widget id.
  */
-export const removeWidgetMetaData = (id: string): RemoveWidgetMetaData => {
+export const removeWidgetMetaData = (id: string): RemoveWidget => {
   return {
-    type: REMOVE_WIDGET_META_DATA,
+    type: REMOVE_WIDGET,
     payload: {
       id,
     },
@@ -82,7 +83,7 @@ export const addWidgetMetaData = (
         widgetRef: widget as HTMLElement,
         children: [],
         uniqueAttributes: {
-          ...getDefaultUniqueAttributes(id.slice(0, id.indexOf('-'))),
+          ...getUniqueAttributes(getIdPrefix(id)),
         },
         style: { ...DEFAULT_SHARED_ATTRIBUTES },
       },
@@ -116,7 +117,13 @@ export const setEditingWidget = (
     type: SET_EDITING_WIDGET,
     payload: {
       element: widget,
-      eventType: EventType.editing,
+      /**
+       * If widget is null, then we want to clear the editing state.
+       * This occurs when are dragging a new widget or we are removing the current widget being edited.
+       */
+      eventType: widget == null ? EventType.none : EventType.editing,
+      // Open attributes tab if we are editing an element (ie. Not clearing state).
+      openAttributesTab: widget != null,
     },
   };
 };
@@ -189,7 +196,7 @@ export const incrementWidgetID = (id: string): IncrementWidgetAction => {
 /**
  * Returns default values for a specified widget type (ie. label, button, etc).
  */
-function getDefaultUniqueAttributes(type: string): UniqueAttributes {
+function getUniqueAttributes(type: string): UniqueAttributes {
   switch (type) {
     case WidgetType.label:
       return DEFAULT_LABEL_ATTRIBUTES;

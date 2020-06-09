@@ -42,6 +42,7 @@ p {
 
   /* sizes */
   --actions-panel-width: 300px;
+  --regular-border-radius: 16px;
 
   /* utils */
   --raised-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);

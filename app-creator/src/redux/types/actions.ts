@@ -11,11 +11,11 @@ export const SET_REORDERING = 'SET_REORDERING';
 export const INCREMENT_WIDGET_ID = 'INCREMENT_WIDGET_ID';
 export const RESET_DRAGGING_VALUES = 'RESET_DRAGGING_VALUES';
 export const ADD_WIDGET_META_DATA = 'ADD_WIDGET_META_DATA';
-export const REMOVE_WIDGET_META_DATA = 'REMOVE_WIDGET_META_DATA';
+export const REMOVE_WIDGET = 'REMOVE_WIDGET';
 export const UPDATE_WIDGET_META_DATA = 'UPDATE_WIDGET_META_DATA';
 
-export interface RemoveWidgetMetaData {
-  type: typeof REMOVE_WIDGET_META_DATA;
+export interface RemoveWidget {
+  type: typeof REMOVE_WIDGET;
   payload: {
     id: string;
   };
@@ -57,6 +57,7 @@ export interface SetEditingWidgetAction {
   payload: {
     element: Element | null;
     eventType: EventType;
+    openAttributesTab: boolean;
   };
 }
 
@@ -105,5 +106,5 @@ export type AppCreatorAction =
   | IncrementWidgetAction
   | ResetDraggingValuesAction
   | AddWidgetMetaData
-  | RemoveWidgetMetaData
+  | RemoveWidget
   | UpdateWidgetMetaData;

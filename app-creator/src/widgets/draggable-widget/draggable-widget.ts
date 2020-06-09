@@ -234,7 +234,10 @@ export class DraggableWidget extends LitElement {
         ? store.getState().element
         : null;
 
-    if (addedElement != null) {
+    if (
+      store.getState().eventType === EventType.adding &&
+      addedElement != null
+    ) {
       store.dispatch(incrementWidgetID(addedElement.id));
     }
 

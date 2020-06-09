@@ -56,21 +56,25 @@ export class Slider extends LitElement {
   }
 
   setAttribute(key: string, value: string) {
+    let safeValue = value.trim().replace('px', '');
+    if (safeValue === '') {
+      safeValue = '0';
+    }
     switch (key) {
       case 'value':
-        this.value = parseInt(value);
+        this.value = parseInt(safeValue);
         break;
       case 'max':
-        this.max = parseInt(value);
+        this.max = parseInt(safeValue);
         break;
       case 'min':
-        this.min = parseInt(value);
+        this.min = parseInt(safeValue);
         break;
       case 'editable':
-        this.editable = value === 'true';
+        this.editable = safeValue === 'true';
         break;
       case 'disabled':
-        this.disabled = value === 'true';
+        this.disabled = safeValue === 'true';
         break;
     }
 

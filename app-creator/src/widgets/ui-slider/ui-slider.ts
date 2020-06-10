@@ -19,18 +19,22 @@ export class Slider extends LitElement {
   static attributes: AttributeMetaData = {
     min: {
       value: '0',
+      placeholder: '0',
       type: InputType.number,
     },
     max: {
       value: '100',
+      placeholder: '100',
       type: InputType.number,
     },
     value: {
       value: '50',
+      placeholder: '50',
       type: InputType.number,
     },
     step: {
       value: '5',
+      placeholder: '5',
       type: InputType.number,
     },
     direction: {

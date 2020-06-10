@@ -40,10 +40,10 @@ export class AttributesTab extends connect(store)(LitElement) {
       margin: 0px 0px;
       font-size: 0.7rem;
       font-weight: 600;
+      color: var(--accent-color);
     }
 
     .attribute-input-container {
-      width: 95%;
       margin: var(--extra-tight) 0px;
       margin-right: 0px;
     }
@@ -53,11 +53,11 @@ export class AttributesTab extends connect(store)(LitElement) {
       padding: var(--extra-tight);
       -webkit-border-radius: var(--extra-tight);
       border-radius: var(--extra-tight);
-      width: 100% !important;
+      width: 100%;
       resize: none;
       font-family: inherit;
       background-color: var(--primary-color);
-      margin: var(--tight) 0px;
+      margin: var(--extra-tight) 0px;
     }
 
     .attribute-input:focus {
@@ -65,13 +65,30 @@ export class AttributesTab extends connect(store)(LitElement) {
       outline: none;
     }
 
-    .attribute-input-container {
-      margin: var(--tight) 0px;
-      width: calc(100% - var(--regular));
+    .text-input {
+      width: 96.5%;
     }
 
-    .select-input {
-      width: 97.5%;
+    .input-container {
+      display: flex;
+      width: 100%;
+    }
+
+    .unit-input {
+      margin: 0px 0px 0px var(--extra-tight);
+      border: var(--light-border);
+      padding: var(--extra-tight);
+      -webkit-border-radius: var(--extra-tight);
+      border-radius: var(--extra-tight);
+      resize: none;
+      font-family: inherit;
+      background-color: var(--primary-color);
+      height: 26px;
+      margin-top: var(--extra-tight);
+    }
+
+    .color-input {
+      width: 50px;
     }
   `;
 
@@ -90,15 +107,12 @@ export class AttributesTab extends connect(store)(LitElement) {
       const uniqueAttributesMarkup = this.getUniqueAttributes();
       const styleAttributesMarkup = this.getStyleAttributes();
 
-      render(
-        html``,
-        this.shadowRoot?.querySelector('tab-container')?.querySelector('slot')!
-      );
+      render(html``, slot);
 
       render(
         html`${uniqueAttributesMarkup} ${styleAttributesMarkup}
         ${this.editingWidget ? nothing : AttributesTab.emptyNotice}`,
-        this.shadowRoot?.querySelector('tab-container')?.querySelector('slot')!
+        slot
       );
     }
   }
@@ -120,6 +134,7 @@ export class AttributesTab extends connect(store)(LitElement) {
     key: string,
     title: string,
     value: string,
+    placeholder: string | undefined,
     id: string,
     attributeType: AttributeType
   ) {
@@ -127,7 +142,8 @@ export class AttributesTab extends connect(store)(LitElement) {
       <div class="attribute-input-container">
         <p class="input-label">${title}</p>
         <input
-          class='attribute-input'
+          class='attribute-input text-input'
+          placeholder="${placeholder ?? ''}"
           @keyup=${(e: Event) =>
             store.dispatch(
               updateWidgetMetaData(
@@ -147,6 +163,7 @@ export class AttributesTab extends connect(store)(LitElement) {
     key: string,
     title: string,
     value: string,
+    placeholder: string | undefined,
     id: string,
     attributeType: AttributeType
   ) {
@@ -154,7 +171,8 @@ export class AttributesTab extends connect(store)(LitElement) {
       <div class="attribute-input-container">
         <p class="input-label">${title}</p>
         <textarea
-          class="attribute-input"
+          class="attribute-input text-input"
+          placeholder="${placeholder ?? ''}"
           rows="4"
           @keyup=${(e: Event) =>
             store.dispatch(
@@ -183,7 +201,7 @@ ${value}</textarea
       <div class='attribute-input-container'>
         <p class='input-label'>${title}</p>
         <input
-          class='attribute-input'
+          class='attribute-input color-input'
           type='color'
           @change=${(e: Event) =>
             store.dispatch(
@@ -219,7 +237,7 @@ ${value}</textarea
       >`);
     }
     return html`
-      <div class="attribute-input-container select-input">
+      <div class="attribute-input-container">
         <p class="input-label">${title}</p>
         <select
           name="${title}"
@@ -245,28 +263,64 @@ ${value}</textarea
     key: string,
     title: string,
     value: string,
+    placeholder: string | undefined,
+    unit: string | undefined,
     id: string,
     attributeType: AttributeType
   ) {
+    const unitMarkup =
+      unit == null
+        ? nothing
+        : html`
+            <select
+              name="unit"
+              class="unit-input"
+              .value="${unit}"
+              @change=${(e: Event) =>
+                store.dispatch(
+                  updateWidgetMetaData(
+                    key + '-unit',
+                    (e.target as HTMLInputElement).value,
+                    id,
+                    attributeType
+                  )
+                )}
+            >
+              <option value="px" ?selected=${unit === 'px'}>px</option>
+              <option value="%" ?selected=${unit === '%'}>%</option>
+            </select>
+          `;
+
+    let valueUnit = '';
+    if (value.endsWith('px')) {
+      valueUnit = 'px';
+    } else if (value.endsWith('%')) {
+      valueUnit = '%';
+    }
+
     return html`
       <div class='attribute-input-container'>
         <p class='input-label'>${title}</p>
+        <div class='input-container'>
         <input
           class='attribute-input'
           type='number'
+          placeholder="${placeholder ?? ''}"
           min="0"
           oninput="validity.valid||(value='');"
-          value='${value.replace('px', '')}'
+          value='${value.replace(valueUnit, '')}'
           @change=${(e: Event) =>
             store.dispatch(
               updateWidgetMetaData(
                 key,
-                (e.target as HTMLInputElement).value + 'px',
+                (e.target as HTMLInputElement).value + valueUnit,
                 id,
                 attributeType
               )
             )}
         ></input>
+        ${unitMarkup}
+        </div>
       </div>
     `;
   }
@@ -278,6 +332,8 @@ ${value}</textarea
   ) {
     return Object.keys(attributesArray).map((key) => {
       const value = uniqueAttributes[key];
+      const placeholder = attributesArray[key].placeholder;
+      const unit = attributesArray[key].unit;
       const type = attributesArray[key].type;
       const items = attributesArray[key].items;
 
@@ -289,6 +345,7 @@ ${value}</textarea
             key,
             attributeTitle,
             value,
+            placeholder,
             id,
             AttributeType.unique
           );
@@ -297,6 +354,7 @@ ${value}</textarea
             key,
             attributeTitle,
             value,
+            placeholder,
             id,
             AttributeType.unique
           );
@@ -322,6 +380,8 @@ ${value}</textarea
             key,
             attributeTitle,
             value,
+            placeholder,
+            unit,
             id,
             AttributeType.unique
           );
@@ -391,9 +451,10 @@ ${value}</textarea
     }
 
     const styleAttributes = store.getState().template[widget.id].style;
-
     return Object.keys(sharedAttributes).map((key) => {
       const value = styleAttributes[key];
+      const placeholder = sharedAttributes[key].placeholder;
+      const unit = sharedAttributes[key].unit;
       const type = sharedAttributes[key].type;
       const items = sharedAttributes[key].items;
 
@@ -405,6 +466,7 @@ ${value}</textarea
             key,
             attributeTitle,
             value,
+            placeholder,
             widget.id,
             AttributeType.style
           );
@@ -413,6 +475,7 @@ ${value}</textarea
             key,
             attributeTitle,
             value,
+            placeholder,
             widget.id,
             AttributeType.style
           );
@@ -438,6 +501,8 @@ ${value}</textarea
             key,
             attributeTitle,
             value,
+            placeholder,
+            unit,
             widget.id,
             AttributeType.style
           );

@@ -81,7 +81,12 @@ export class WidgetsTab extends LitElement {
       name: 'textbox',
       markup: html`<h6 class="subtitle">Textbox</h6>
         <draggable-widget>
-          <ui-textbox id="textbox" label="Enter text"></ui-textbox>
+          <ui-textbox
+            id="textbox"
+            label=""
+            placeholder="Enter text"
+            no-label-float
+          ></ui-textbox>
         </draggable-widget>`,
     },
     {

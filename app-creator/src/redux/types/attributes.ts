@@ -29,6 +29,8 @@ export type SharedAttributes =
 export interface AttributeMetaData {
   [key: string]: {
     value: string;
+    placeholder?: string;
+    unit?: string;
     type: InputType;
     items?: string[];
   };
@@ -41,18 +43,24 @@ export interface DefaultAttributesType {
 export const sharedAttributes: AttributeMetaData = {
   height: {
     value: '',
+    placeholder: '35',
+    unit: 'px',
     type: InputType.number,
   },
   width: {
     value: '',
+    placeholder: '35',
+    unit: 'px',
     type: InputType.number,
   },
   padding: {
     value: '0',
+    placeholder: '0',
     type: InputType.number,
   },
   margin: {
     value: '8',
+    placeholder: '8',
     type: InputType.number,
   },
   color: {
@@ -65,6 +73,7 @@ export const sharedAttributes: AttributeMetaData = {
   },
   borderWidth: {
     value: '0',
+    placeholder: '0',
     type: InputType.number,
   },
   borderStyle: {
@@ -78,6 +87,7 @@ export const sharedAttributes: AttributeMetaData = {
   },
   fontSize: {
     value: '12',
+    placeholder: '12',
     type: InputType.number,
   },
   fontWeight: {

@@ -35,10 +35,12 @@ export class Label extends LitElement {
     value: {
       value:
         "Google Earth Engine combines a multi-petabyte catalog of satellite imagery and geospatial datasets with planetary-scale analysis capabilities and makes it available for scientists, researchers, and developers to detect changes, map trends, and quantify differences on the Earth's surface.",
+      placeholder: 'Enter text',
       type: InputType.textarea,
     },
     targetUrl: {
       value: '',
+      placeholder: 'https://www.website.com',
       type: InputType.text,
     },
   };

@@ -24,6 +24,7 @@ export class Checkbox extends LitElement {
   static attributes: AttributeMetaData = {
     label: {
       value: 'Item',
+      placeholder: 'Enter label',
       type: InputType.text,
     },
     value: {

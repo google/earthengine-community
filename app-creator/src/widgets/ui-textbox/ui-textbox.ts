@@ -24,10 +24,12 @@ export class Textbox extends LitElement {
   static attributes: AttributeMetaData = {
     value: {
       value: '',
+      placeholder: 'Enter value',
       type: InputType.text,
     },
     placeholder: {
       value: 'Enter text',
+      placeholder: 'Enter placeholder',
       type: InputType.text,
     },
   };

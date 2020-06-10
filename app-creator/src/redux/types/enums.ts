@@ -26,7 +26,7 @@ export enum AttributeType {
   style = 'style',
 }
 
-export const enum EventType {
+export enum EventType {
   editing = 'editing',
   reordering = 'reordering',
   adding = 'adding',

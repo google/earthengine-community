@@ -18,6 +18,7 @@ import {
 import { Reducer, AnyAction } from 'redux';
 import { UniqueAttributes } from './types/attributes';
 import { EventType, Tab } from './types/enums';
+import { getIdPrefix } from '../utils/helpers';
 
 export interface WidgetMetaData {
   id: string;
@@ -103,14 +104,29 @@ export const reducer: Reducer<AppCreatorStore, AppCreatorAction | AnyAction> = (
         },
       };
     case UPDATE_WIDGET_META_DATA:
+      const { attributeName, value, id, attributeType } = action.payload;
       const updatedTemplate = { ...state.template };
-      updatedTemplate[action.payload.id][action.payload.attributeType][
-        action.payload.attributeName
-      ] = action.payload.value;
 
-      const { widgetRef } = updatedTemplate[action.payload.id];
+      if (attributeName.endsWith('unit')) {
+        const attributePrefix = getIdPrefix(attributeName);
+        const attributeValue =
+          updatedTemplate[id][attributeType][attributePrefix];
+        if (attributeValue.endsWith('px')) {
+          updatedTemplate[id][attributeType][
+            attributePrefix
+          ] = attributeValue.replace('px', value);
+        } else {
+          updatedTemplate[id][attributeType][
+            attributePrefix
+          ] = attributeValue.replace('%', value);
+        }
+      } else {
+        updatedTemplate[id][attributeType][attributeName] = value;
+      }
 
-      widgetRef.setStyle(updatedTemplate[action.payload.id].style);
+      const { widgetRef } = updatedTemplate[id];
+
+      widgetRef.setStyle(updatedTemplate[id].style);
       updateUI(widgetRef, updatedTemplate);
 
       return {

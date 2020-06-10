@@ -25,15 +25,18 @@ export class Select extends LitElement {
 
   static attributes: AttributeMetaData = {
     items: {
-      value: 'Item 1, Item 2',
+      value: '',
+      placeholder: 'Item 1, Item 2',
       type: InputType.text,
     },
     placeholder: {
       value: 'Select Item',
+      placeholder: 'Enter placeholder',
       type: InputType.text,
     },
     value: {
       value: 'Item 1',
+      placeholder: 'Enter value',
       type: InputType.text,
     },
     disabled: {

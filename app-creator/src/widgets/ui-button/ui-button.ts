@@ -24,6 +24,7 @@ export class Button extends LitElement {
   static attributes: AttributeMetaData = {
     label: {
       value: 'Button',
+      placeholder: 'Enter label',
       type: InputType.text,
     },
     disabled: {

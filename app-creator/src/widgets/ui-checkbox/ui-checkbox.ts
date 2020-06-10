@@ -4,19 +4,49 @@
 import '@polymer/paper-checkbox/paper-checkbox.js';
 import { css, customElement, html, LitElement, property } from 'lit-element';
 import { styleMap } from 'lit-html/directives/style-map';
+import {
+  DEFAULT_SHARED_ATTRIBUTES,
+  AttributeMetaData,
+  DefaultAttributesType,
+  getDefaultAttributes,
+} from '../../redux/types/attributes';
+import { InputType } from '../../redux/types/enums';
 
 @customElement('ui-checkbox')
 export class Checkbox extends LitElement {
   static styles = css`
     paper-checkbox {
       margin: var(--tight);
+      font-size: 0.8rem;
     }
   `;
+
+  static attributes: AttributeMetaData = {
+    label: {
+      value: 'Item',
+      placeholder: 'Enter label',
+      type: InputType.text,
+    },
+    value: {
+      value: 'false',
+      type: InputType.select,
+      items: ['true', 'false'],
+    },
+    disabled: {
+      value: 'false',
+      type: InputType.select,
+      items: ['true', 'false'],
+    },
+  };
+
+  static DEFAULT_CHECKBOX_ATTRIBUTES: DefaultAttributesType = getDefaultAttributes(
+    Checkbox.attributes
+  );
 
   /**
    * Additional custom styles for the button.
    */
-  @property({ type: Object }) styles = {};
+  @property({ type: Object }) styles = DEFAULT_SHARED_ATTRIBUTES;
 
   /**
    * Sets checkbox label.
@@ -48,6 +78,22 @@ export class Checkbox extends LitElement {
     `;
   }
 
+  setAttribute(key: string, value: string) {
+    switch (key) {
+      case 'label':
+        this.label = value;
+        break;
+      case 'value':
+        this.checked = value === 'true';
+        break;
+      case 'disabled':
+        this.disabled = value === 'true';
+        break;
+    }
+
+    this.requestUpdate();
+  }
+
   getChecked() {
     return this.checked;
   }
@@ -58,5 +104,10 @@ export class Checkbox extends LitElement {
 
   getStyle(): object {
     return this.styles;
+  }
+
+  setStyle(style: { [key: string]: string }) {
+    this.styles = style;
+    this.requestUpdate();
   }
 }

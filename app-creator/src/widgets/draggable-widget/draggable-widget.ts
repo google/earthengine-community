@@ -13,8 +13,9 @@ import {
   setDraggingWidget,
   resetDraggingValues,
   incrementWidgetID,
+  removeWidgetMetaData,
 } from '../../redux/actions';
-import { EventType } from '../../redux/reducer';
+import { EventType } from '../../redux/types/enums';
 
 @customElement('draggable-widget')
 export class DraggableWidget extends LitElement {
@@ -189,6 +190,7 @@ export class DraggableWidget extends LitElement {
     }
 
     parent.removeChild(this);
+    store.dispatch(removeWidgetMetaData(widget.id));
 
     const childrenCount = parent.childElementCount;
 
@@ -227,13 +229,16 @@ export class DraggableWidget extends LitElement {
    * @param e dragend event
    */
   handleDragend() {
-    const draggingWidget =
+    const addedElement =
       store.getState().eventType === EventType.adding
         ? store.getState().element
         : null;
 
-    if (draggingWidget != null) {
-      store.dispatch(incrementWidgetID(draggingWidget.id));
+    if (
+      store.getState().eventType === EventType.adding &&
+      addedElement != null
+    ) {
+      store.dispatch(incrementWidgetID(addedElement.id));
     }
 
     store.dispatch(resetDraggingValues());

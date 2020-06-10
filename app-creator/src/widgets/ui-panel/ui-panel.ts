@@ -74,4 +74,8 @@ export class Panel extends LitElement {
   getStyle(): object {
     return this.styles;
   }
+
+  setStyle(style: { [key: string]: string }) {
+    this.styles = style;
+  }
 }

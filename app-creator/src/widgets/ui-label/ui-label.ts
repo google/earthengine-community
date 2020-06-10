@@ -5,21 +5,23 @@
 import '@polymer/iron-label';
 import { css, customElement, html, LitElement, property } from 'lit-element';
 import { styleMap } from 'lit-html/directives/style-map';
+import {
+  DEFAULT_SHARED_ATTRIBUTES,
+  AttributeMetaData,
+  DefaultAttributesType,
+  getDefaultAttributes,
+} from '../../redux/types/attributes';
+import { InputType } from '../../redux/types/enums';
 
 @customElement('ui-label')
 export class Label extends LitElement {
   static styles = css`
-    p {
-      margin: var(--tight) 0px;
-      padding: 0px var(--tight);
-    }
-
     .paragraph {
-      font-size: 0.8rem;
+      font-size: 0.7rem;
     }
 
     .title {
-      font-size: 1.4rem;
+      font-size: 1rem;
       font-weight: 600;
     }
 
@@ -29,10 +31,28 @@ export class Label extends LitElement {
     }
   `;
 
+  static attributes: AttributeMetaData = {
+    value: {
+      value:
+        "Google Earth Engine combines a multi-petabyte catalog of satellite imagery and geospatial datasets with planetary-scale analysis capabilities and makes it available for scientists, researchers, and developers to detect changes, map trends, and quantify differences on the Earth's surface.",
+      placeholder: 'Enter text',
+      type: InputType.textarea,
+    },
+    targetUrl: {
+      value: '',
+      placeholder: 'https://www.website.com',
+      type: InputType.text,
+    },
+  };
+
+  static DEFAULT_LABEL_ATTRIBUTES: DefaultAttributesType = getDefaultAttributes(
+    Label.attributes
+  );
+
   /**
    * Additional custom styles for the button.
    */
-  @property({ type: Object }) styles = {};
+  @property({ type: Object }) styles = DEFAULT_SHARED_ATTRIBUTES;
 
   /**
    * Sets the value of the label.
@@ -54,15 +74,17 @@ export class Label extends LitElement {
   render() {
     const { type } = this;
     return html`
-      <iron-label class=${type} style=${styleMap(this.styles)}>
+      <iron-label class="${type}">
         ${this.targetUrl
           ? html`<a
               href="${this.targetUrl}"
               target="_blank"
               rel="noopener noreferrer"
-              ><p>${this.value}</p></a
+              ><p style="${styleMap(this.styles)}">${this.value}</p></a
             >`
-          : html`<p>${this.value}</p>`}
+          : html`<p style="${styleMap(this.styles)}">
+              ${this.value}
+            </p>`}
       </iron-label>
     `;
   }
@@ -75,17 +97,23 @@ export class Label extends LitElement {
     return this.targetUrl;
   }
 
-  setValue(value: string): Label {
-    this.value = value;
-    return this;
-  }
-
-  setUrl(targetUrl: string): Label {
-    this.targetUrl = targetUrl;
-    return this;
-  }
-
   getStyle(): object {
     return this.styles;
+  }
+
+  setAttribute(key: string, value: string) {
+    switch (key) {
+      case 'value':
+        this.value = value;
+        return;
+      case 'targetUrl':
+        this.targetUrl = value;
+        return;
+    }
+  }
+
+  setStyle(style: { [key: string]: string }) {
+    this.styles = style;
+    this.requestUpdate();
   }
 }

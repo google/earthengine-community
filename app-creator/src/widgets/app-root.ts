@@ -19,7 +19,7 @@ export class AppRoot extends LitElement {
     #container {
       display: flex;
       width: 100%;
-      height: calc(100vh - 67.57px);
+      height: calc(100vh - 47.594px);
     }
 
     #storyboard {

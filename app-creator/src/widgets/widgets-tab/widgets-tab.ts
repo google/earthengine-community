@@ -37,6 +37,7 @@ export class WidgetsTab extends LitElement {
   static styles = css`
     .subtitle {
       margin: var(--regular) 0px var(--tight) 0px;
+      color: var(--accent-color);
     }
   `;
 
@@ -47,22 +48,18 @@ export class WidgetsTab extends LitElement {
     {
       id: 'ui-label',
       name: 'text',
-      markup: html`<h5 class="subtitle">Text</h5>
-        <draggable-widget>
-          <ui-label id="label" type="title" value="Title"></ui-label>
-        </draggable-widget>
+      markup: html`<h6 class="subtitle">Text</h6>
         <draggable-widget>
           <ui-label
             id="label"
-            type="paragraph"
-            value="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat."
+            value="Google Earth Engine combines a multi-petabyte catalog of satellite imagery and geospatial datasets with planetary-scale analysis capabilities and makes it available for scientists, researchers, and developers to detect changes, map trends, and quantify differences on the Earth's surface."
           ></ui-label>
-        </draggable-widget>`,
+        </draggable-widget> `,
     },
     {
       id: 'ui-button',
       name: 'button',
-      markup: html`<h5 class="subtitle">Button</h5>
+      markup: html`<h6 class="subtitle">Button</h6>
         <draggable-widget .hasOverlay=${false}>
           <ui-button id="button" label="Button"></ui-button>
         </draggable-widget>`,
@@ -70,11 +67,11 @@ export class WidgetsTab extends LitElement {
     {
       id: 'ui-select',
       name: 'select',
-      markup: html`<h5 class="subtitle">Select</h5>
+      markup: html`<h6 class="subtitle">Select</h6>
         <draggable-widget>
           <ui-select
             id="select"
-            .items=${['Item 1', 'Item 2']}
+            .items=${'Item 1, Item 2'}
             placeholder="Select Item"
           ></ui-select>
         </draggable-widget>`,
@@ -82,15 +79,20 @@ export class WidgetsTab extends LitElement {
     {
       id: 'ui-textbox',
       name: 'textbox',
-      markup: html`<h5 class="subtitle">Textbox</h5>
+      markup: html`<h6 class="subtitle">Textbox</h6>
         <draggable-widget>
-          <ui-textbox id="textbox" label="Enter text"></ui-textbox>
+          <ui-textbox
+            id="textbox"
+            label=""
+            placeholder="Enter text"
+            no-label-float
+          ></ui-textbox>
         </draggable-widget>`,
     },
     {
       id: 'ui-slider',
       name: 'slider',
-      markup: html`<h5 class="subtitle">Slider</h5>
+      markup: html`<h6 class="subtitle">Slider</h6>
         <draggable-widget>
           <ui-slider id="slider" label="Item"></ui-slider>
         </draggable-widget>`,
@@ -98,7 +100,7 @@ export class WidgetsTab extends LitElement {
     {
       id: 'ui-checkbox',
       name: 'checkbox',
-      markup: html`<h5 class="subtitle">Checkbox</h5>
+      markup: html`<h6 class="subtitle">Checkbox</h6>
         <draggable-widget .hasOverlay=${false}>
           <ui-checkbox id="checkbox" label="Item"></ui-checkbox>
         </draggable-widget>`,

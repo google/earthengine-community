@@ -5,7 +5,13 @@
 import '@polymer/iron-label';
 import { css, customElement, html, LitElement, property } from 'lit-element';
 import { styleMap } from 'lit-html/directives/style-map';
-import { DEFAULT_SHARED_ATTRIBUTES } from '../../redux/types/attributes';
+import {
+  DEFAULT_SHARED_ATTRIBUTES,
+  AttributeMetaData,
+  DefaultAttributesType,
+  getDefaultAttributes,
+} from '../../redux/types/attributes';
+import { InputType } from '../../redux/types/enums';
 
 @customElement('ui-label')
 export class Label extends LitElement {
@@ -24,6 +30,22 @@ export class Label extends LitElement {
       color: inherit;
     }
   `;
+
+  static attributes: AttributeMetaData = {
+    value: {
+      value:
+        "Google Earth Engine combines a multi-petabyte catalog of satellite imagery and geospatial datasets with planetary-scale analysis capabilities and makes it available for scientists, researchers, and developers to detect changes, map trends, and quantify differences on the Earth's surface.",
+      type: InputType.textarea,
+    },
+    targetUrl: {
+      value: '',
+      type: InputType.text,
+    },
+  };
+
+  static DEFAULT_LABEL_ATTRIBUTES: DefaultAttributesType = getDefaultAttributes(
+    Label.attributes
+  );
 
   /**
    * Additional custom styles for the button.
@@ -46,13 +68,6 @@ export class Label extends LitElement {
    */
   @property({ type: String })
   type = 'paragraph';
-
-  convertToStyleString(style: { [key: string]: string }) {
-    return Object.keys(style).reduce(
-      (styleString, key) => styleString + `${key}: ${style[key]};`,
-      ''
-    );
-  }
 
   render() {
     const { type } = this;

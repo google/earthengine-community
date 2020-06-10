@@ -24,7 +24,7 @@ export class Searchbar extends LitElement {
       width: calc(100% - 2 * var(--tight));
       border: 0.7px solid rgba(0, 0, 0, 0.3);
       padding: var(--tight);
-      border-radius: var(--regular);
+      border-radius: var(--regular-border-radius);
       height: 15px;
       align-items: center;
       display: flex;

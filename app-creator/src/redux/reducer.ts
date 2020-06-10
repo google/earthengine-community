@@ -64,7 +64,6 @@ export const reducer: Reducer<AppCreatorStore, AppCreatorAction | AnyAction> = (
   state = INITIAL_STATE,
   action
 ): AppCreatorStore => {
-  console.log({ state });
   switch (action.type) {
     case SET_DRAGGING_WIDGET:
       return {
@@ -106,7 +105,7 @@ export const reducer: Reducer<AppCreatorStore, AppCreatorAction | AnyAction> = (
     case UPDATE_WIDGET_META_DATA:
       const updatedTemplate = { ...state.template };
       updatedTemplate[action.payload.id][action.payload.attributeType][
-        action.payload.key
+        action.payload.attributeName
       ] = action.payload.value;
 
       const { widgetRef } = updatedTemplate[action.payload.id];

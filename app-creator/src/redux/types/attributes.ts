@@ -2,6 +2,12 @@
  *  @fileoverview This file contains interface types for the different style attributes.
  */
 import { InputType } from './enums';
+import { Label } from '../../widgets/ui-label/ui-label';
+import { Button } from '../../widgets/ui-button/ui-button';
+import { Checkbox } from '../../widgets/ui-checkbox/ui-checkbox';
+import { Select } from '../../widgets/ui-select/ui-select';
+import { Slider } from '../../widgets/ui-slider/ui-slider';
+import { Textbox } from '../../widgets/ui-textbox/ui-textbox';
 
 export type SharedAttributes =
   | 'height'
@@ -120,164 +126,31 @@ export const sharedAttributes: AttributeMetaData = {
 
 export const DEFAULT_SHARED_ATTRIBUTES: DefaultAttributesType = Object.keys(
   sharedAttributes
-).reduce((attributes, key) => {
+).reduce((attributes: DefaultAttributesType, key) => {
   if (sharedAttributes[key].type === InputType.number) {
-    return { ...attributes, [key]: sharedAttributes[key].value + 'px' };
+    attributes[key] = sharedAttributes[key].value + 'px';
+    return attributes;
   }
-  return { ...attributes, [key]: sharedAttributes[key].value };
+  attributes[key] = sharedAttributes[key].value;
+  return attributes;
 }, {});
 
-export const textboxAttributes: AttributeMetaData = {
-  value: {
-    value: '',
-    type: InputType.text,
-  },
-  placeholder: {
-    value: 'Enter text',
-    type: InputType.text,
-  },
-};
-
-export const DEFAULT_TEXTBOX_ATTRIBUTES: DefaultAttributesType = Object.keys(
-  textboxAttributes
-).reduce(
-  (attributes, key) => ({ ...attributes, [key]: textboxAttributes[key].value }),
-  {}
-);
-
-export const labelAttributes: AttributeMetaData = {
-  value: {
-    value:
-      "Google Earth Engine combines a multi-petabyte catalog of satellite imagery and geospatial datasets with planetary-scale analysis capabilities and makes it available for scientists, researchers, and developers to detect changes, map trends, and quantify differences on the Earth's surface.",
-    type: InputType.textarea,
-  },
-  targetUrl: {
-    value: '',
-    type: InputType.text,
-  },
-};
-
-export const DEFAULT_LABEL_ATTRIBUTES: DefaultAttributesType = Object.keys(
-  labelAttributes
-).reduce(
-  (attributes, key) => ({ ...attributes, [key]: labelAttributes[key].value }),
-  {}
-);
-
-export const buttonAttributes: AttributeMetaData = {
-  label: {
-    value: 'Button',
-    type: InputType.text,
-  },
-  disabled: {
-    value: 'false',
-    type: InputType.select,
-    items: ['true', 'false'],
-  },
-};
-
-export const DEFAULT_BUTTON_ATTRIBUTES: DefaultAttributesType = Object.keys(
-  buttonAttributes
-).reduce(
-  (attributes, key) => ({ ...attributes, [key]: buttonAttributes[key].value }),
-  {}
-);
-
-export const checkboxAttributes: AttributeMetaData = {
-  label: {
-    value: 'Item',
-    type: InputType.text,
-  },
-  value: {
-    value: 'false',
-    type: InputType.select,
-    items: ['true', 'false'],
-  },
-  disabled: {
-    value: 'false',
-    type: InputType.select,
-    items: ['true', 'false'],
-  },
-};
-
-export const DEFAULT_CHECKBOX_ATTRIBUTES: DefaultAttributesType = Object.keys(
-  checkboxAttributes
-).reduce(
-  (attributes, key) => ({
-    ...attributes,
-    [key]: checkboxAttributes[key].value,
-  }),
-  {}
-);
-
-export const selectAttributes: AttributeMetaData = {
-  items: {
-    value: 'Item 1, Item 2',
-    type: InputType.text,
-  },
-  placeholder: {
-    value: 'Select Item',
-    type: InputType.text,
-  },
-  value: {
-    value: 'Item 1',
-    type: InputType.text,
-  },
-  disabled: {
-    value: 'false',
-    type: InputType.select,
-    items: ['true', 'false'],
-  },
-};
-
-export const DEFAULT_SELECT_ATTRIBUTES: DefaultAttributesType = Object.keys(
-  selectAttributes
-).reduce(
-  (attributes, key) => ({ ...attributes, [key]: selectAttributes[key].value }),
-  {}
-);
-
-export const sliderAttributes: AttributeMetaData = {
-  min: {
-    value: '0',
-    type: InputType.number,
-  },
-  max: {
-    value: '100',
-    type: InputType.number,
-  },
-  value: {
-    value: '50',
-    type: InputType.number,
-  },
-  step: {
-    value: '5',
-    type: InputType.number,
-  },
-  direction: {
-    value: 'horizontal',
-    type: InputType.select,
-    items: ['horizontal', 'vertical'],
-  },
-  disabled: {
-    value: 'false',
-    type: InputType.select,
-    items: ['true', 'false'],
-  },
-};
-
-export const DEFAULT_SLIDER_ATTRIBUTES: DefaultAttributesType = Object.keys(
-  sliderAttributes
-).reduce(
-  (attributes, key) => ({ ...attributes, [key]: sliderAttributes[key].value }),
-  {}
-);
+export function getDefaultAttributes(
+  attributes: AttributeMetaData
+): DefaultAttributesType {
+  return Object.keys(attributes).reduce(
+    (defaultAttributes: DefaultAttributesType, key) => {
+      defaultAttributes[key] = attributes[key].value;
+      return defaultAttributes;
+    },
+    {}
+  );
+}
 
 export type UniqueAttributes =
-  | typeof DEFAULT_LABEL_ATTRIBUTES
-  | typeof DEFAULT_BUTTON_ATTRIBUTES
-  | typeof DEFAULT_CHECKBOX_ATTRIBUTES
-  | typeof DEFAULT_LABEL_ATTRIBUTES
-  | typeof DEFAULT_SELECT_ATTRIBUTES
-  | typeof DEFAULT_SLIDER_ATTRIBUTES
-  | typeof DEFAULT_TEXTBOX_ATTRIBUTES;
+  | typeof Label.DEFAULT_LABEL_ATTRIBUTES
+  | typeof Button.DEFAULT_BUTTON_ATTRIBUTES
+  | typeof Checkbox.DEFAULT_CHECKBOX_ATTRIBUTES
+  | typeof Select.DEFAULT_SELECT_ATTRIBUTES
+  | typeof Slider.DEFAULT_SLIDER_ATTRIBUTES
+  | typeof Textbox.DEFAULT_TEXTBOX_ATTRIBUTES;

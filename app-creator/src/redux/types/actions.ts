@@ -37,7 +37,7 @@ export interface AddWidgetMetaData {
 export interface UpdateWidgetMetaData {
   type: typeof UPDATE_WIDGET_META_DATA;
   payload: {
-    key: string;
+    attributeName: string;
     value: string;
     id: string;
     attributeType: AttributeType;

@@ -26,21 +26,21 @@ import {
 import {
   DEFAULT_SHARED_ATTRIBUTES,
   UniqueAttributes,
-  DEFAULT_LABEL_ATTRIBUTES,
-  DEFAULT_BUTTON_ATTRIBUTES,
-  DEFAULT_SELECT_ATTRIBUTES,
-  DEFAULT_CHECKBOX_ATTRIBUTES,
-  DEFAULT_SLIDER_ATTRIBUTES,
-  DEFAULT_TEXTBOX_ATTRIBUTES,
 } from './types/attributes';
 import { WidgetType, AttributeType, Tab, EventType } from './types/enums';
 import { getIdPrefix } from '../utils/helpers';
+import { Label } from '../widgets/ui-label/ui-label';
+import { Button } from '../widgets/ui-button/ui-button';
+import { Checkbox } from '../widgets/ui-checkbox/ui-checkbox';
+import { Select } from '../widgets/ui-select/ui-select';
+import { Slider } from '../widgets/ui-slider/ui-slider';
+import { Textbox } from '../widgets/ui-textbox/ui-textbox';
 
 /**
  * Updates widget attributes.
  */
 export const updateWidgetMetaData = (
-  key: string,
+  attributeName: string,
   value: string,
   id: string,
   attributeType: AttributeType
@@ -48,7 +48,7 @@ export const updateWidgetMetaData = (
   return {
     type: UPDATE_WIDGET_META_DATA,
     payload: {
-      key,
+      attributeName,
       value,
       id,
       attributeType,
@@ -199,17 +199,17 @@ export const incrementWidgetID = (id: string): IncrementWidgetAction => {
 function getUniqueAttributes(type: string): UniqueAttributes {
   switch (type) {
     case WidgetType.label:
-      return DEFAULT_LABEL_ATTRIBUTES;
+      return Label.DEFAULT_LABEL_ATTRIBUTES;
     case WidgetType.button:
-      return DEFAULT_BUTTON_ATTRIBUTES;
+      return Button.DEFAULT_BUTTON_ATTRIBUTES;
     case WidgetType.checkbox:
-      return DEFAULT_CHECKBOX_ATTRIBUTES;
+      return Checkbox.DEFAULT_CHECKBOX_ATTRIBUTES;
     case WidgetType.select:
-      return DEFAULT_SELECT_ATTRIBUTES;
+      return Select.DEFAULT_SELECT_ATTRIBUTES;
     case WidgetType.slider:
-      return DEFAULT_SLIDER_ATTRIBUTES;
+      return Slider.DEFAULT_SLIDER_ATTRIBUTES;
     case WidgetType.textbox:
-      return DEFAULT_TEXTBOX_ATTRIBUTES;
+      return Textbox.DEFAULT_TEXTBOX_ATTRIBUTES;
     default:
       return {};
   }

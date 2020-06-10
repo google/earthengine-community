@@ -1,7 +1,13 @@
 import '@polymer/paper-button';
 import { css, customElement, html, LitElement, property } from 'lit-element';
 import { styleMap } from 'lit-html/directives/style-map';
-import { DEFAULT_SHARED_ATTRIBUTES } from '../../redux/types/attributes';
+import {
+  DEFAULT_SHARED_ATTRIBUTES,
+  AttributeMetaData,
+  DefaultAttributesType,
+  getDefaultAttributes,
+} from '../../redux/types/attributes';
+import { InputType } from '../../redux/types/enums';
 
 @customElement('ui-button')
 export class Button extends LitElement {
@@ -14,6 +20,22 @@ export class Button extends LitElement {
       font-size: 0.8rem;
     }
   `;
+
+  static attributes: AttributeMetaData = {
+    label: {
+      value: 'Button',
+      type: InputType.text,
+    },
+    disabled: {
+      value: 'false',
+      type: InputType.select,
+      items: ['true', 'false'],
+    },
+  };
+
+  static DEFAULT_BUTTON_ATTRIBUTES: DefaultAttributesType = getDefaultAttributes(
+    Button.attributes
+  );
 
   /**
    * Additional custom styles for the button.

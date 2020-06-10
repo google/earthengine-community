@@ -4,7 +4,13 @@
 import '@polymer/paper-input/paper-input.js';
 import { css, customElement, html, LitElement, property } from 'lit-element';
 import { styleMap } from 'lit-html/directives/style-map';
-import { DEFAULT_SHARED_ATTRIBUTES } from '../../redux/types/attributes';
+import {
+  DEFAULT_SHARED_ATTRIBUTES,
+  AttributeMetaData,
+  DefaultAttributesType,
+  getDefaultAttributes,
+} from '../../redux/types/attributes';
+import { InputType } from '../../redux/types/enums';
 
 @customElement('ui-textbox')
 export class Textbox extends LitElement {
@@ -14,6 +20,21 @@ export class Textbox extends LitElement {
       width: 90%;
     }
   `;
+
+  static attributes: AttributeMetaData = {
+    value: {
+      value: '',
+      type: InputType.text,
+    },
+    placeholder: {
+      value: 'Enter text',
+      type: InputType.text,
+    },
+  };
+
+  static DEFAULT_TEXTBOX_ATTRIBUTES: DefaultAttributesType = getDefaultAttributes(
+    Textbox.attributes
+  );
 
   /**
    * Additional custom styles.

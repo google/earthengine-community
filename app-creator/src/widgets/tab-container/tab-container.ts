@@ -11,7 +11,7 @@ export class TabContainer extends LitElement {
    */
   static styles = css`
     #container {
-      height: calc(100vh - 47.594px - 73px);
+      height: calc(100vh - 47.6px - 73px);
       width: calc(var(--actions-panel-width) - 2 * var(--regular));
       overflow-y: scroll;
       padding: var(--regular);

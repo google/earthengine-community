@@ -4,11 +4,50 @@
 import '@polymer/paper-slider/paper-slider.js';
 import { css, customElement, html, LitElement, property } from 'lit-element';
 import { styleMap } from 'lit-html/directives/style-map';
-import { DEFAULT_SHARED_ATTRIBUTES } from '../../redux/types/attributes';
+import {
+  DEFAULT_SHARED_ATTRIBUTES,
+  AttributeMetaData,
+  DefaultAttributesType,
+  getDefaultAttributes,
+} from '../../redux/types/attributes';
+import { InputType } from '../../redux/types/enums';
 
 @customElement('ui-slider')
 export class Slider extends LitElement {
   static styles = css``;
+
+  static attributes: AttributeMetaData = {
+    min: {
+      value: '0',
+      type: InputType.number,
+    },
+    max: {
+      value: '100',
+      type: InputType.number,
+    },
+    value: {
+      value: '50',
+      type: InputType.number,
+    },
+    step: {
+      value: '5',
+      type: InputType.number,
+    },
+    direction: {
+      value: 'horizontal',
+      type: InputType.select,
+      items: ['horizontal', 'vertical'],
+    },
+    disabled: {
+      value: 'false',
+      type: InputType.select,
+      items: ['true', 'false'],
+    },
+  };
+
+  static DEFAULT_SLIDER_ATTRIBUTES: DefaultAttributesType = getDefaultAttributes(
+    Slider.attributes
+  );
 
   /**
    * Additional custom styles for the button.

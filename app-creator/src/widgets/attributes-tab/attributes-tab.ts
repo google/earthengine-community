@@ -10,13 +10,7 @@ import { AppCreatorStore } from '../../redux/reducer';
 import '../tab-container/tab-container';
 import {
   sharedAttributes,
-  labelAttributes,
   AttributeMetaData,
-  buttonAttributes,
-  checkboxAttributes,
-  sliderAttributes,
-  textboxAttributes,
-  selectAttributes,
   UniqueAttributes,
 } from '../../redux/types/attributes.js';
 import './../empty-notice/empty-notice';
@@ -28,7 +22,12 @@ import {
   InputType,
   WidgetType,
 } from '../../redux/types/enums.js';
-import '@polymer/iron-input/iron-input.js';
+import { Label } from '../ui-label/ui-label.js';
+import { Button } from '../ui-button/ui-button.js';
+import { Checkbox } from '../ui-checkbox/ui-checkbox.js';
+import { Select } from '../ui-select/ui-select.js';
+import { Slider } from '../ui-slider/ui-slider.js';
+import { Textbox } from '../ui-textbox/ui-textbox.js';
 
 @customElement('attributes-tab')
 export class AttributesTab extends connect(store)(LitElement) {
@@ -44,7 +43,7 @@ export class AttributesTab extends connect(store)(LitElement) {
     }
 
     .attribute-input-container {
-      width: 95% !important;
+      width: 95%;
       margin: var(--extra-tight) 0px;
       margin-right: 0px;
     }
@@ -58,6 +57,7 @@ export class AttributesTab extends connect(store)(LitElement) {
       resize: none;
       font-family: inherit;
       background-color: var(--primary-color);
+      margin: var(--tight) 0px;
     }
 
     .attribute-input:focus {
@@ -150,33 +150,24 @@ export class AttributesTab extends connect(store)(LitElement) {
     id: string,
     attributeType: AttributeType
   ) {
-    console.log({
-      key,
-      title,
-      value,
-      id,
-      attributeType,
-    });
     return html`
       <div class="attribute-input-container">
         <p class="input-label">${title}</p>
-        <iron-input class="attribute-input-container" bind-value="${value}">
-          <textarea
-            class="attribute-input"
-            rows="4"
-            @keyup=${(e: Event) =>
-              store.dispatch(
-                updateWidgetMetaData(
-                  key,
-                  (e.target as HTMLTextAreaElement).value,
-                  id,
-                  attributeType
-                )
-              )}
-          >
+        <textarea
+          class="attribute-input"
+          rows="4"
+          @keyup=${(e: Event) =>
+            store.dispatch(
+              updateWidgetMetaData(
+                key,
+                (e.target as HTMLTextAreaElement).value,
+                id,
+                attributeType
+              )
+            )}
+        >
 ${value}</textarea
-          >
-        </iron-input>
+        >
       </div>
     `;
   }
@@ -214,12 +205,18 @@ ${value}</textarea
     key: string,
     title: string,
     value: string,
-    items: string[] | undefined,
+    items: string[] | boolean[] | undefined,
     id: string,
     attributeType: AttributeType
   ) {
     if (items == null) {
       return;
+    }
+    const optionList = [];
+    for (const item of items) {
+      optionList.push(html`<option value="${item}" ?selected=${item === value}
+        >${item}</option
+      >`);
     }
     return html`
       <div class="attribute-input-container select-input">
@@ -238,12 +235,7 @@ ${value}</textarea
               )
             )}
         >
-          ${items.map(
-            (item) =>
-              html`<option value="${item}" ?selected=${item === value}
-                >${item}</option
-              >`
-          )}
+          ${optionList}
         </select>
       </div>
     `;
@@ -353,37 +345,37 @@ ${value}</textarea
     switch (widgetType) {
       case WidgetType.label:
         return this.getUniqueAttributeMarkup(
-          labelAttributes,
+          Label.attributes,
           uniqueAttributes,
           widget.id
         );
       case WidgetType.button:
         return this.getUniqueAttributeMarkup(
-          buttonAttributes,
+          Button.attributes,
           uniqueAttributes,
           widget.id
         );
       case WidgetType.checkbox:
         return this.getUniqueAttributeMarkup(
-          checkboxAttributes,
+          Checkbox.attributes,
           uniqueAttributes,
           widget.id
         );
       case WidgetType.select:
         return this.getUniqueAttributeMarkup(
-          selectAttributes,
+          Select.attributes,
           uniqueAttributes,
           widget.id
         );
       case WidgetType.slider:
         return this.getUniqueAttributeMarkup(
-          sliderAttributes,
+          Slider.attributes,
           uniqueAttributes,
           widget.id
         );
       case WidgetType.textbox:
         return this.getUniqueAttributeMarkup(
-          textboxAttributes,
+          Textbox.attributes,
           uniqueAttributes,
           widget.id
         );

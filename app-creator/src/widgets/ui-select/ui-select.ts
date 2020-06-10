@@ -7,9 +7,12 @@ import '@polymer/paper-listbox/paper-listbox';
 import { css, customElement, html, LitElement, property } from 'lit-element';
 import {
   DEFAULT_SHARED_ATTRIBUTES,
-  DEFAULT_SELECT_ATTRIBUTES,
+  AttributeMetaData,
+  DefaultAttributesType,
+  getDefaultAttributes,
 } from '../../redux/types/attributes';
 import { styleMap } from 'lit-html/directives/style-map';
+import { InputType } from '../../redux/types/enums';
 
 @customElement('ui-select')
 export class Select extends LitElement {
@@ -20,6 +23,30 @@ export class Select extends LitElement {
     }
   `;
 
+  static attributes: AttributeMetaData = {
+    items: {
+      value: 'Item 1, Item 2',
+      type: InputType.text,
+    },
+    placeholder: {
+      value: 'Select Item',
+      type: InputType.text,
+    },
+    value: {
+      value: 'Item 1',
+      type: InputType.text,
+    },
+    disabled: {
+      value: 'false',
+      type: InputType.select,
+      items: ['true', 'false'],
+    },
+  };
+
+  static DEFAULT_SELECT_ATTRIBUTES: DefaultAttributesType = getDefaultAttributes(
+    Select.attributes
+  );
+
   /**
    * Additional custom styles for the button.
    */
@@ -28,7 +55,7 @@ export class Select extends LitElement {
   /**
    * Sets the items in the drop down menu.
    */
-  @property({ type: String }) items = DEFAULT_SELECT_ATTRIBUTES.items;
+  @property({ type: String }) items = Select.DEFAULT_SELECT_ATTRIBUTES.items;
 
   /**
    * Sets the widget placeholder.
@@ -65,8 +92,8 @@ export class Select extends LitElement {
           selected="${this.items.indexOf(this.value)}"
         >
           ${this.items
-            .split(', ')
-            .map((i) => html`<paper-item>${i}</paper-item>`)}
+            .split(',')
+            .map((item) => html`<paper-item>${item.trim()}</paper-item>`)}
         </paper-listbox>
       </paper-dropdown-menu>
     `;

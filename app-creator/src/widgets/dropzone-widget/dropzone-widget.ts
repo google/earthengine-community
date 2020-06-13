@@ -24,13 +24,12 @@ export class Dropzone extends LitElement {
     #container {
       padding: var(--extra-tight) var(--tight);
       border: var(--light-dashed-border);
-      width: calc(100% - 2 * var(--tight));
-      height: calc(100% - 2 * var(--extra-tight));
       display: flex;
       flex-direction: column;
-      align-items: center;
-      justify-content: center;
+      justify-content: flex-start;
       overflow-y: scroll;
+      height: calc(100% - var(--tight));
+      width: 100%;
     }
 
     p {
@@ -53,12 +52,20 @@ export class Dropzone extends LitElement {
       justify-content: center;
       flex-direction: column;
     }
+
+    .full-width {
+      width: 100%;
+    }
   `;
 
   /**
    * Additional custom styles for the button.
    */
   @property({ type: Object }) styles = {};
+
+  // createRenderRoot() {
+  //   return this;
+  // }
 
   render() {
     const { styles, handleDragOver, handleDragenter, handleDrageleave } = this;
@@ -71,12 +78,13 @@ export class Dropzone extends LitElement {
         @dragover=${handleDragOver}
         style="${styleMap(styles)}"
       >
-        <empty-notice
+        <!-- <slot></slot> -->
+      </div>
+      <!-- <empty-notice
           id="${EMPTY_NOTICE_ID}"
           icon="icons:system-update-alt"
           message="Drop widgets here"
-        ></empty-notice>
-      </div>
+        ></empty-notice> -->
     `;
   }
 

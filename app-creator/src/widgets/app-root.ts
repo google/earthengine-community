@@ -7,6 +7,7 @@ import './tool-bar/tool-bar';
 import './actions-panel/actions-panel';
 import './tab-container/tab-container';
 import './story-board/story-board';
+import '../templates/template-parser';
 
 @customElement('app-root')
 export class AppRoot extends LitElement {
@@ -19,7 +20,7 @@ export class AppRoot extends LitElement {
     #container {
       display: flex;
       width: 100%;
-      height: calc(100vh - 47.594px);
+      height: calc(100vh - 47px);
     }
 
     #storyboard {
@@ -44,7 +45,7 @@ export class AppRoot extends LitElement {
         <div id="container">
           <actions-panel></actions-panel>
           <div id="storyboard-container">
-            <story-board id="storyboard"></story-board>
+            <story-board id="storyboard"> </story-board>
           </div>
         </div>
       </div>

@@ -125,7 +125,11 @@ export const reducer: Reducer<AppCreatorStore, AppCreatorAction | AnyAction> = (
           ] = attributeValue.replace('%', value);
         }
       } else {
-        updatedTemplate[id][attributeType][attributeName] = value;
+        const attributeValue =
+          updatedTemplate[id][attributeType][attributeName];
+
+        updatedTemplate[id][attributeType][attributeName] =
+          value + (attributeValue.endsWith('px') ? 'px' : '%');
       }
 
       const { widgetRef } = updatedTemplate[id];

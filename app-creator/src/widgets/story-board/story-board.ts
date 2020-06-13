@@ -13,7 +13,25 @@ export class Storyboard extends LitElement {
       height: 100%;
       width: 100%;
       background-color: var(--primary-color);
-      padding: var(--tight);
+    }
+
+    #root-panel {
+      height: 100%;
+      width: 100%;
+      background-color: blue;
+    }
+
+    .full-size {
+      height: 100%;
+      width: 100%;
+    }
+
+    .full-width {
+      width: 100%;
+    }
+
+    .padded {
+      padding: var(--extra-tight);
     }
   `;
 
@@ -26,9 +44,7 @@ export class Storyboard extends LitElement {
     const { styles } = this;
 
     return html`
-      <paper-card id="container" style=${styleMap(styles)}>
-        <dropzone-widget></dropzone-widget>
-      </paper-card>
+      <paper-card id="container" style=${styleMap(styles)}> </paper-card>
     `;
   }
 

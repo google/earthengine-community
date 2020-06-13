@@ -317,7 +317,7 @@ ${value}</textarea
             store.dispatch(
               updateWidgetMetaData(
                 key,
-                (e.target as HTMLInputElement).value + valueUnit,
+                (e.target as HTMLInputElement).value,
                 id,
                 attributeType
               )

@@ -4,9 +4,10 @@
  */
 import { css, customElement, html, LitElement, property } from 'lit-element';
 import '../dropzone-widget/dropzone-widget';
-import { nothing } from 'lit-html';
 import { store } from '../../redux/store';
 import { setEditingWidget } from '../../redux/actions';
+import { styleMap } from 'lit-html/directives/style-map';
+import { CONTAINER_ID } from '../dropzone-widget/dropzone-widget';
 
 @customElement('ui-panel')
 export class Panel extends LitElement {
@@ -43,15 +44,6 @@ export class Panel extends LitElement {
 
     .padded {
       padding: var(--extra-tight);
-    }
-
-    #editable-view {
-      position: absolute;
-      top: 0;
-      right: 0;
-      display: flex;
-      justify-content: flex-end;
-      width: 100%;
     }
 
     .edit-buttons {
@@ -99,32 +91,27 @@ export class Panel extends LitElement {
   @property({ type: Boolean }) padded = false;
 
   /**
-   * Adds edit icon to panel.
+   * Sets editable property.
    */
   @property({ type: Boolean }) editable = false;
 
-  render() {
-    const { isRaised, editable, layout, padded, handleEditWidget } = this;
+  addWidget(widget: HTMLElement) {
+    const container = this.shadowRoot?.getElementById(CONTAINER_ID);
+    if (container != null) {
+      container.appendChild(widget);
+    }
+  }
 
-    const editableMarkup = editable
-      ? html`
-          <div id="editable-view">
-            <iron-icon
-              class="edit-buttons"
-              icon="create"
-              @click=${handleEditWidget}
-            ></iron-icon>
-          </div>
-        `
-      : nothing;
+  render() {
+    const { isRaised, layout, padded, styles } = this;
 
     return html`
       <div
         id="container"
         class="${layout} ${isRaised ? 'raised' : ''} ${padded ? 'padded' : ''}"
+        style="${styleMap(styles)}"
       >
-        <slot class="${layout}"></slot>
-        ${editableMarkup}
+        <slot></slot>
       </div>
     `;
   }

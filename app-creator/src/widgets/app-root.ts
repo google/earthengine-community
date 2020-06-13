@@ -175,7 +175,7 @@ export class AppRoot extends LitElement {
         <div id="container">
           <actions-panel></actions-panel>
           <div id="storyboard-container">
-            <story-board id="storyboard"></story-board>
+            <story-board id="storyboard"> </story-board>
           </div>
 
           <paper-dialog with-backdrop no-cancel-on-outside-click>

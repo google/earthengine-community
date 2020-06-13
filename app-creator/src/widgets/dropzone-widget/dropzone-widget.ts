@@ -65,6 +65,10 @@ export class Dropzone extends LitElement {
    */
   @property({ type: Object }) styles = {};
 
+  // createRenderRoot() {
+  //   return this;
+  // }
+
   render() {
     const { styles, handleDragOver, handleDragenter, handleDrageleave } = this;
     return html`
@@ -75,12 +79,13 @@ export class Dropzone extends LitElement {
         @dragover=${handleDragOver}
         style="${styleMap(styles)}"
       >
-        <empty-notice
+        <!-- <slot></slot> -->
+      </div>
+      <!-- <empty-notice
           id="${EMPTY_NOTICE_ID}"
           icon="icons:system-update-alt"
           message="Drop widgets here"
-        ></empty-notice>
-      </div>
+        ></empty-notice> -->
     `;
   }
 

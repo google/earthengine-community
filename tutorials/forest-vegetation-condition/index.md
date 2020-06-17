@@ -36,6 +36,7 @@ Bandipur and Nagarhole national parks are located in the Mysore-Malenad landscap
 ### Import images, features
 
 Import the MODIS 250m/pixel 16-day composite vegetation indices dataset, and select the EVI band. Load boundaries of Bandipur and Nagarhole national parks.
+
 ```js
 // get MODIS 250m EVI data 
 var mod13 = ee.ImageCollection('MODIS/006/MOD13Q1')
@@ -80,6 +81,7 @@ var npsRes = cond.multiply(ee.Image.pixelArea())
 ### Visualise results
 
 Tabulate the areas of vegetation greening and browning for each national park. 
+
 ```js
 // tabulate total area under greening and browning
 var table = ui.Chart.feature.byFeature(npsRes.select(['NAME', 'browning', 'greening']), 'NAME');
@@ -89,6 +91,7 @@ print('Area (sq. m) under greening and browning', table);
 ![](areastable.png)
 
 Choose suitable visualization parameters and display the slope values on the map to denote areas under greening and browning, along with the national park boundaries.
+
 ```js
 // display on map
 Map.setOptions("SATELLITE");

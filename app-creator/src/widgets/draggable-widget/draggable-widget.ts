@@ -24,9 +24,11 @@ export class DraggableWidget extends LitElement {
       border: var(--light-dashed-border);
       border-radius: var(--tight);
       width: 100%;
+      min-height: 30px;
       margin: var(--extra-tight) 0px;
       position: relative;
       cursor: move;
+      overflow: hidden;
     }
 
     .overlay {
@@ -95,11 +97,6 @@ export class DraggableWidget extends LitElement {
           <div id="editable-view">
             <iron-icon
               class="edit-buttons"
-              icon="create"
-              @click=${handleEditWidget}
-            ></iron-icon>
-            <iron-icon
-              class="edit-buttons"
               icon="icons:delete"
               @click=${handleRemoveWidget}
             ></iron-icon>
@@ -112,6 +109,7 @@ export class DraggableWidget extends LitElement {
         id="container"
         draggable="true"
         style=${styleMap(styles)}
+        @click=${handleEditWidget}
         @dragstart=${handleDragstart}
         @dragend=${handleDragend}
       >

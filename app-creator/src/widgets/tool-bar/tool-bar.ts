@@ -4,6 +4,9 @@
  */
 import { LitElement, html, customElement, css } from 'lit-element';
 import '@polymer/paper-button/paper-button.js';
+import '@polymer/paper-dialog/paper-dialog.js';
+import '@polymer/paper-dialog-scrollable/paper-dialog-scrollable.js';
+import { store } from '../../redux/store';
 
 @customElement('tool-bar')
 export class ToolBar extends LitElement {
@@ -16,6 +19,7 @@ export class ToolBar extends LitElement {
       padding: var(--regular);
       display: flex;
       align-items: center;
+      justify-content: space-between;
       border-bottom: var(--light-border);
       background-color: var(--primary-color);
     }
@@ -35,15 +39,107 @@ export class ToolBar extends LitElement {
       padding: 0;
       font-size: 1rem;
     }
+
+    #dialog {
+      padding: var(--tight);
+      border-radius: var(--tight);
+      width: 40%;
+      max-height: 600px;
+    }
+
+    #json-string-container {
+      margin: 16px;
+      overflow-y: scroll;
+      overflow-x: scroll;
+      padding: 16px;
+      background-color: var(--background-color);
+      max-height: 400px;
+    }
+
+    #json-snippet {
+      font-family: monospace;
+    }
+
+    #copy-button {
+      background-color: var(--accent-color);
+    }
+
+    #cancel-button {
+      color: var(--accent-color);
+    }
+
+    paper-button {
+      margin-right: var(--tight);
+    }
   `;
 
+  openDialog() {
+    const dialog = this.shadowRoot?.getElementById('dialog');
+    const jsonSnippetContainer = this.shadowRoot?.getElementById(
+      'json-snippet'
+    );
+
+    if (dialog == null || jsonSnippetContainer == null) {
+      return;
+    }
+    jsonSnippetContainer.innerHTML = this.getTemplateString();
+
+    (dialog as any).open();
+  }
+
+  getTemplateString() {
+    return JSON.stringify(store.getState().template, undefined, 3);
+  }
+
+  copy() {
+    const copyText = this.shadowRoot?.getElementById('json-snippet');
+    if (copyText == null) {
+      return;
+    }
+    const textArea = document.createElement('textarea');
+    textArea.value = copyText.innerText;
+    document.body.appendChild(textArea);
+    textArea.select();
+    document.execCommand('Copy');
+    textArea.remove();
+  }
+
   render() {
+    const { openDialog, copy } = this;
     return html`
       <div id="container">
         <h3>
           <strong id="app-title-prefix">${ToolBar.prefix}</strong>
           <span id="app-title-suffix">${ToolBar.suffix}</span>
         </h3>
+
+        <ui-button
+          .raised=${false}
+          id="export-button"
+          label="export"
+          color="secondary"
+          @click=${openDialog}
+        ></ui-button>
+
+        <paper-dialog id="dialog">
+          <h2>Paste string in EE Code Editor</h2>
+          <paper-dialog-scrollable id="json-string-container">
+            <pre><code id="json-snippet"></code
+          ></pre>
+          </paper-dialog-scrollable>
+          <div class="buttons">
+            <paper-button id="cancel-button" dialog-dismiss
+              >Cancel</paper-button
+            >
+            <paper-button
+              id="copy-button"
+              dialog-confirm
+              autofocus
+              @click=${copy}
+              >Copy</paper-button
+            >
+          </div>
+        </paper-dialog>
       </div>
     `;
   }

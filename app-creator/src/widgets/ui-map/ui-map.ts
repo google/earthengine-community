@@ -1,12 +1,205 @@
 import {} from 'googlemaps';
-import { customElement, html, LitElement } from 'lit-element';
+import { customElement, html, LitElement, property, css } from 'lit-element';
+import { nothing } from 'lit-html';
+import { InputType } from '../../redux/types/enums';
+import {
+  AttributeMetaData,
+  DefaultAttributesType,
+  getDefaultAttributes,
+} from '../../redux/types/attributes';
+import { store } from '../../redux/store';
+import { updateWidgetRef, setEditingWidget } from '../../redux/actions';
+
+declare global {
+  interface Window {
+    __initGoogleMap: any;
+  }
+}
+
+window.__initGoogleMap = window.__initGoogleMap || {};
+
+let initCalled: boolean = false;
+const callbackPromise = new Promise((r) => (window.__initGoogleMap = r));
+
+function loadGoogleMaps(apiKey: string) {
+  if (!initCalled) {
+    const script = document.createElement('script');
+    script.src =
+      'https://maps.googleapis.com/maps/api/js?' +
+      (apiKey ? `key=${apiKey}&` : '') +
+      'callback=__initGoogleMap';
+    document.head.appendChild(script);
+    initCalled = true;
+  }
+  return callbackPromise;
+}
 
 @customElement('ui-map')
 export class Map extends LitElement {
+  static styles = css`
+    #editable-view {
+      position: absolute;
+      top: 0;
+      right: 0;
+      display: flex;
+      justify-content: flex-end;
+      width: 100%;
+    }
+
+    .edit-buttons {
+      background-color: white;
+      border: var(--light-border);
+      border-radius: var(--extra-tight);
+      margin-left: var(--extra-tight);
+      cursor: pointer;
+    }
+  `;
+  static attributes: AttributeMetaData = {
+    latitude: {
+      value: '39.930546488601294',
+      placeholder: '39.9305464',
+      type: InputType.number,
+    },
+    longitude: {
+      value: '-100.825',
+      placeholder: '-100.825',
+      type: InputType.number,
+    },
+    zoom: {
+      value: '4',
+      placeholder: '4',
+      type: InputType.number,
+    },
+  };
+
+  static DEFAULT_MAP_ATTRIBUTES: DefaultAttributesType = getDefaultAttributes(
+    Map.attributes
+  );
+
+  /**
+   * Additional custom styles for the button.
+   */
+  @property({ type: Object }) styles = {};
+
+  /**
+   * Map api key.
+   */
+  @property({ type: String }) apiKey = '';
+
   /**
    * Sets zoom property on map.
    */
-  private zoom = 4;
+  @property({ type: Number }) zoom = 4;
+
+  /**
+   * Center position of map.
+   */
+  @property({ type: Object }) center = {
+    lat: 39.930546488601294,
+    lng: -100.825,
+  };
+
+  /**
+   * Properties of map. Full list can be found here.
+   * https://developers.google.com/maps/documentation/javascript/reference/map#MapOptions.
+   */
+  @property({ type: Object }) mapOptions: google.maps.MapOptions = {};
+
+  /**
+   * Sets map element.
+   */
+  private map: google.maps.Map | null = null;
+
+  /**
+   * Adds edit icon to panel.
+   */
+  @property({ type: Boolean }) editable = false;
+
+  connectedCallback() {
+    this.initMap();
+  }
+
+  initMap() {
+    loadGoogleMaps(this.apiKey).then(() => {
+      this.mapOptions.zoom = this.zoom || 0;
+
+      this.mapOptions.center = this.center;
+
+      this.map = new google.maps.Map(this, this.mapOptions);
+      this.dispatchEvent(
+        new CustomEvent('google-map-ready', { detail: this.map })
+      );
+    });
+  }
+
+  // Disable the shadow root, since it interferes with Google Maps.
+  // https://lit-element.polymer-project.org/guide/templates#renderroot
+  createRenderRoot() {
+    return this;
+  }
+
+  /**
+   * Triggered when the edit icon is clicked. Stores a reference of the selected element in the store and
+   * displays a set of inputs for editing its attributes.
+   */
+  handleEditWidget() {
+    // Check if a widgetRef has been set.
+    const ref = store.getState().template[this.id].widgetRef;
+    if (ref == null) {
+      // Set the ref to be the current element.
+      store.dispatch(updateWidgetRef(this));
+    }
+    store.dispatch(setEditingWidget(this));
+  }
+
+  render() {
+    const { editable, handleEditWidget } = this;
+    const editableMarkup = editable
+      ? html`
+          <div id="editable-view">
+            <iron-icon
+              class="edit-buttons"
+              icon="create"
+              @click=${handleEditWidget}
+            ></iron-icon>
+          </div>
+        `
+      : nothing;
+    return html` ${editableMarkup}`;
+  }
+
+  setAttribute(key: string, value: any) {
+    switch (key) {
+      case 'zoom':
+        this.zoom = parseInt(value);
+        break;
+      case 'center':
+        this.center = value;
+        break;
+      case 'latitude':
+        this.center = { ...this.center, lat: parseFloat(value) };
+        break;
+      case 'longitude':
+        this.center = { ...this.center, lng: parseFloat(value) };
+        break;
+      case 'map':
+        this.map = value;
+        break;
+    }
+
+    this.initMap();
+  }
+
+  getStyle() {
+    return this.styles;
+  }
+
+  setStyle(style: { [key: string]: string }) {
+    for (const attribute in style) {
+      this.style[attribute as any] = style[attribute];
+    }
+    this.requestUpdate();
+  }
 
   getZoom() {
     return this.zoom;
@@ -16,23 +209,13 @@ export class Map extends LitElement {
     this.zoom = value;
   }
 
-  /**
-   * Sets center location on initial render.
-   */
-  private center = { lng: -100.825, lat: 39.930546488601294 };
-
   getCenter() {
     return this.center;
   }
 
-  setCenter(value: { lng: number; lat: number }) {
+  setCenter(value: { lat: number; lng: number }) {
     this.center = value;
   }
-
-  /**
-   * Sets map element.
-   */
-  private map: google.maps.Map | null = null;
 
   getMap() {
     return this.map;
@@ -40,33 +223,5 @@ export class Map extends LitElement {
 
   setMap(map: google.maps.Map | null) {
     this.map = map;
-  }
-
-  connectedCallback() {}
-
-  // Disable the shadow root, since it interferes with Google Maps.
-  // https://lit-element.polymer-project.org/guide/templates#renderroot
-  createRenderRoot() {
-    return this;
-  }
-
-  render() {
-    return html``;
-  }
-
-  init(): void {
-    const mapOptions = {
-      center: this.center,
-      zoom: this.zoom,
-      maxZoom: 10,
-      streetViewControl: false,
-    };
-
-    const mapContainer = document.createElement('div');
-    mapContainer.style.width = '100%';
-    mapContainer.style.height = '100%';
-    this.appendChild(mapContainer);
-    // Render the base Google Map directly into the component.
-    this.map = new google.maps.Map(mapContainer, mapOptions);
   }
 }

@@ -13,6 +13,9 @@ export enum WidgetType {
   select = 'select',
   slider = 'slider',
   textbox = 'textbox',
+  panel = 'panel',
+  map = 'map',
+  chart = 'chart',
 }
 
 export enum Tab {
@@ -31,4 +34,9 @@ export enum EventType {
   reordering = 'reordering',
   adding = 'adding',
   none = 'none',
+}
+
+export enum DeviceType {
+  desktop = 'desktop',
+  mobile = 'mobile',
 }

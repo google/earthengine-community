@@ -8,6 +8,8 @@ import { Checkbox } from '../../widgets/ui-checkbox/ui-checkbox';
 import { Select } from '../../widgets/ui-select/ui-select';
 import { Slider } from '../../widgets/ui-slider/ui-slider';
 import { Textbox } from '../../widgets/ui-textbox/ui-textbox';
+import { Chart } from '../../widgets/ui-chart/ui-chart';
+import { Map } from '../../widgets/ui-map/ui-map';
 
 export type SharedAttributes =
   | 'height'
@@ -68,7 +70,7 @@ export const sharedAttributes: AttributeMetaData = {
     type: InputType.color,
   },
   backgroundColor: {
-    value: '#FFFFFF',
+    value: '#FFFFFF00',
     type: InputType.color,
   },
   borderWidth: {
@@ -163,4 +165,6 @@ export type UniqueAttributes =
   | typeof Checkbox.DEFAULT_CHECKBOX_ATTRIBUTES
   | typeof Select.DEFAULT_SELECT_ATTRIBUTES
   | typeof Slider.DEFAULT_SLIDER_ATTRIBUTES
-  | typeof Textbox.DEFAULT_TEXTBOX_ATTRIBUTES;
+  | typeof Textbox.DEFAULT_TEXTBOX_ATTRIBUTES
+  | typeof Chart.DEFAULT_CHART_ATTRIBUTES
+  | typeof Map.DEFAULT_MAP_ATTRIBUTES;

@@ -22,6 +22,10 @@ import {
   RemoveWidget,
   UPDATE_WIDGET_META_DATA,
   UpdateWidgetMetaData,
+  UpdateWidgetRef,
+  UPDATE_WIDGET_REF,
+  SetSelectedTemplate,
+  SET_SELECTED_TEMPLATE,
 } from './types/actions';
 import {
   DEFAULT_SHARED_ATTRIBUTES,
@@ -35,6 +39,9 @@ import { Checkbox } from '../widgets/ui-checkbox/ui-checkbox';
 import { Select } from '../widgets/ui-select/ui-select';
 import { Slider } from '../widgets/ui-slider/ui-slider';
 import { Textbox } from '../widgets/ui-textbox/ui-textbox';
+import { Chart } from '../widgets/ui-chart/ui-chart';
+import { Map } from '../widgets/ui-map/ui-map';
+import { AppCreatorStore } from './reducer';
 
 /**
  * Updates widget attributes.
@@ -52,6 +59,18 @@ export const updateWidgetMetaData = (
       value,
       id,
       attributeType,
+    },
+  };
+};
+
+/**
+ * Updates widget reference.
+ */
+export const updateWidgetRef = (widget: Element): UpdateWidgetRef => {
+  return {
+    type: UPDATE_WIDGET_REF,
+    payload: {
+      widgetRef: widget,
     },
   };
 };
@@ -141,6 +160,22 @@ export const setSelectedTab = (index: Tab): SetSelectedTabAction => {
 };
 
 /**
+ * Sets the actions-panel's selected tab to the index passed in.
+ */
+export const setSelectedTemplate = (
+  template: AppCreatorStore['template'],
+  markup: string
+): SetSelectedTemplate => {
+  return {
+    type: SET_SELECTED_TEMPLATE,
+    payload: {
+      template,
+      markup,
+    },
+  };
+};
+
+/**
  * Resets dragging values on dragend.
  */
 export const resetDraggingValues = (): ResetDraggingValuesAction => {
@@ -210,6 +245,10 @@ function getUniqueAttributes(type: string): UniqueAttributes {
       return Slider.DEFAULT_SLIDER_ATTRIBUTES;
     case WidgetType.textbox:
       return Textbox.DEFAULT_TEXTBOX_ATTRIBUTES;
+    case WidgetType.chart:
+      return Chart.DEFAULT_CHART_ATTRIBUTES;
+    case WidgetType.map:
+      return Map.DEFAULT_MAP_ATTRIBUTES;
     default:
       return {};
   }

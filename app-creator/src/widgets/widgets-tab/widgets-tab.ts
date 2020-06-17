@@ -25,6 +25,7 @@ import '../ui-panel/ui-panel';
 import '../ui-chart/ui-chart';
 import '../search-bar/search-bar';
 import '../empty-notice/empty-notice';
+import '../ui-map/ui-map';
 import { onSearchEvent } from '../search-bar/search-bar';
 
 interface WidgetItem {

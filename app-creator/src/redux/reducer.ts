@@ -29,7 +29,8 @@ export interface WidgetMetaData {
 }
 
 export interface AppCreatorStore {
-  element: Element | null;
+  editingElement: Element | null;
+  draggingElement: Element | null;
   selectedTab: Tab;
   eventType: EventType;
   widgetIDs: { [key: string]: number };
@@ -40,7 +41,8 @@ export interface AppCreatorStore {
  * Initial state of our application.
  */
 const INITIAL_STATE: AppCreatorStore = {
-  element: null,
+  editingElement: null,
+  draggingElement: null,
   selectedTab: Tab.widgets,
   eventType: EventType.none,
   widgetIDs: {
@@ -51,6 +53,8 @@ const INITIAL_STATE: AppCreatorStore = {
     panel: 0,
     slider: 0,
     checkbox: 0,
+    chart: 0,
+    map: 0,
   },
   template: {},
 };
@@ -74,7 +78,7 @@ export const reducer: Reducer<AppCreatorStore, AppCreatorAction | AnyAction> = (
     case SET_EDITING_WIDGET:
       return {
         ...state,
-        element: action.payload.element,
+        editingElement: action.payload.editingElement,
         eventType: action.payload.eventType,
         selectedTab: action.payload.openAttributesTab
           ? Tab.attributes

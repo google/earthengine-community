@@ -120,8 +120,7 @@ export const setDraggingWidget = (
   return {
     type: SET_DRAGGING_WIDGET,
     payload: {
-      element: widget,
-      eventType: EventType.none,
+      draggingElement: widget,
     },
   };
 };
@@ -135,7 +134,7 @@ export const setEditingWidget = (
   return {
     type: SET_EDITING_WIDGET,
     payload: {
-      element: widget,
+      editingElement: widget,
       /**
        * If widget is null, then we want to clear the editing state.
        * This occurs when are dragging a new widget or we are removing the current widget being edited.
@@ -182,7 +181,7 @@ export const resetDraggingValues = (): ResetDraggingValuesAction => {
   return {
     type: RESET_DRAGGING_VALUES,
     payload: {
-      element: null,
+      draggingElement: null,
       eventType: EventType.none,
     },
   };

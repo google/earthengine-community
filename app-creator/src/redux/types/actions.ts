@@ -65,15 +65,14 @@ export interface UpdateWidgetRef {
 export interface SetDraggingWidgetAction {
   type: typeof SET_DRAGGING_WIDGET;
   payload: {
-    element: Element | null;
-    eventType: EventType;
+    draggingElement: Element | null;
   };
 }
 
 export interface SetEditingWidgetAction {
   type: typeof SET_EDITING_WIDGET;
   payload: {
-    element: Element | null;
+    editingElement: Element | null;
     eventType: EventType;
     openAttributesTab: boolean;
   };
@@ -89,7 +88,7 @@ export interface SetSelectedTabAction {
 export interface ResetDraggingValuesAction {
   type: typeof RESET_DRAGGING_VALUES;
   payload: {
-    element: null;
+    draggingElement: null;
     eventType: EventType;
   };
 }
@@ -125,4 +124,5 @@ export type AppCreatorAction =
   | ResetDraggingValuesAction
   | AddWidgetMetaData
   | RemoveWidget
-  | UpdateWidgetMetaData;
+  | UpdateWidgetMetaData
+  | UpdateWidgetRef;

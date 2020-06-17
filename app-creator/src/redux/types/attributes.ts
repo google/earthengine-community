@@ -33,6 +33,7 @@ export interface AttributeMetaData {
     value: string;
     placeholder?: string;
     unit?: string;
+    step?: number;
     type: InputType;
     items?: string[];
   };

@@ -124,6 +124,9 @@ export class DraggableWidget extends LitElement {
    * displays a set of inputs for editing its attributes.
    */
   handleEditWidget() {
+    if (!this.editable) {
+      return;
+    }
     const container = this.shadowRoot?.getElementById(
       CONTAINER_ID
     ) as HTMLElement;
@@ -143,7 +146,7 @@ export class DraggableWidget extends LitElement {
    * Sets the editing widget's parent container border color to the default gray color.
    */
   removeEditingWidgetHighlight() {
-    const editingWidget = store.getState().element;
+    const editingWidget = store.getState().editingElement;
 
     const editingWidgetParent = editingWidget?.parentElement;
     const editingWidgetParentContainer = editingWidgetParent?.shadowRoot?.getElementById(
@@ -167,7 +170,8 @@ export class DraggableWidget extends LitElement {
    * Triggered when the trash icon is clicked. If the widget is the last in the dropzone,
    * we display the empty notice and center the container's flex alignments.
    */
-  handleRemoveWidget() {
+  handleRemoveWidget(e: Event) {
+    e.stopPropagation();
     const container = this.shadowRoot?.getElementById(
       CONTAINER_ID
     ) as HTMLElement;
@@ -177,7 +181,7 @@ export class DraggableWidget extends LitElement {
       return;
     }
 
-    if (widget === store.getState().element) {
+    if (widget === store.getState().editingElement) {
       // clearing editing widget state
       store.dispatch(setEditingWidget(null));
     }
@@ -216,7 +220,6 @@ export class DraggableWidget extends LitElement {
       return;
     }
 
-    this.removeEditingWidgetHighlight();
     // Referencing the currently dragged element in global state.
     store.dispatch(setDraggingWidget(widget));
   }
@@ -224,14 +227,17 @@ export class DraggableWidget extends LitElement {
   /**
    * Callback triggered on the end of a drag action. We use it to clear the reference
    * of a currently dragged element and increment a widget id if necessary.
+   * This is called when adding a new widget from the side panel and when reordering widgets
+   * in a dropzone.
    * @param e dragend event
    */
   handleDragend() {
     const addedElement =
       store.getState().eventType === EventType.adding
-        ? store.getState().element
+        ? store.getState().draggingElement
         : null;
 
+    // We only need to increment the widget id when adding a new widget.
     if (
       store.getState().eventType === EventType.adding &&
       addedElement != null

@@ -3,7 +3,7 @@
  *  attributes that a user can edit for a particular element.
  */
 import { html, customElement, css, property, LitElement } from 'lit-element';
-import { nothing, render } from 'lit-html';
+import { nothing, render, TemplateResult } from 'lit-html';
 import { connect } from 'pwa-helpers';
 import { store } from '../../redux/store.js';
 import { AppCreatorStore } from '../../redux/reducer';
@@ -28,6 +28,8 @@ import { Checkbox } from '../ui-checkbox/ui-checkbox.js';
 import { Select } from '../ui-select/ui-select.js';
 import { Slider } from '../ui-slider/ui-slider.js';
 import { Textbox } from '../ui-textbox/ui-textbox.js';
+import { Chart } from '../ui-chart/ui-chart.js';
+import { Map } from '../ui-map/ui-map.js';
 
 @customElement('attributes-tab')
 export class AttributesTab extends connect(store)(LitElement) {
@@ -93,8 +95,8 @@ export class AttributesTab extends connect(store)(LitElement) {
   `;
 
   stateChanged(state: AppCreatorStore) {
-    if (state.element !== this.editingWidget) {
-      this.editingWidget = state.element;
+    if (state.editingElement !== this.editingWidget) {
+      this.editingWidget = state.editingElement;
 
       const slot = this.shadowRoot
         ?.querySelector('tab-container')
@@ -127,7 +129,7 @@ export class AttributesTab extends connect(store)(LitElement) {
    */
   editingWidget: Element | null =
     store.getState().eventType === EventType.editing
-      ? store.getState().element
+      ? store.getState().editingElement
       : null;
 
   getTextInput(
@@ -137,7 +139,7 @@ export class AttributesTab extends connect(store)(LitElement) {
     placeholder: string | undefined,
     id: string,
     attributeType: AttributeType
-  ) {
+  ): TemplateResult {
     return html`
       <div class="attribute-input-container">
         <p class="input-label">${title}</p>
@@ -166,7 +168,7 @@ export class AttributesTab extends connect(store)(LitElement) {
     placeholder: string | undefined,
     id: string,
     attributeType: AttributeType
-  ) {
+  ): TemplateResult {
     return html`
       <div class="attribute-input-container">
         <p class="input-label">${title}</p>
@@ -196,7 +198,7 @@ ${value}</textarea
     value: string,
     id: string,
     attributeType: AttributeType
-  ) {
+  ): TemplateResult {
     return html`
       <div class='attribute-input-container'>
         <p class='input-label'>${title}</p>
@@ -226,9 +228,9 @@ ${value}</textarea
     items: string[] | boolean[] | undefined,
     id: string,
     attributeType: AttributeType
-  ) {
+  ): TemplateResult | {} {
     if (items == null) {
-      return;
+      return nothing;
     }
     const optionList = [];
     for (const item of items) {
@@ -265,9 +267,10 @@ ${value}</textarea
     value: string,
     placeholder: string | undefined,
     unit: string | undefined,
+    step: number | undefined,
     id: string,
     attributeType: AttributeType
-  ) {
+  ): TemplateResult {
     const unitMarkup =
       unit == null
         ? nothing
@@ -307,6 +310,7 @@ ${value}</textarea
           type='number'
           placeholder="${placeholder ?? ''}"
           min="0"
+          step="${step ?? 0.01}"
           oninput="validity.valid||(value='');"
           value='${value.replace(valueUnit, '')}'
           @change=${(e: Event) =>
@@ -329,11 +333,12 @@ ${value}</textarea
     attributesArray: AttributeMetaData,
     uniqueAttributes: UniqueAttributes,
     id: string
-  ) {
+  ): (TemplateResult | {})[] {
     return Object.keys(attributesArray).map((key) => {
       const value = uniqueAttributes[key];
       const placeholder = attributesArray[key].placeholder;
       const unit = attributesArray[key].unit;
+      const step = attributesArray[key].step;
       const type = attributesArray[key].type;
       const items = attributesArray[key].items;
 
@@ -382,6 +387,7 @@ ${value}</textarea
             value,
             placeholder,
             unit,
+            step,
             id,
             AttributeType.unique
           );
@@ -391,10 +397,10 @@ ${value}</textarea
     });
   }
 
-  getUniqueAttributes() {
+  getUniqueAttributes(): (TemplateResult | {})[] | {} {
     const widget = this.editingWidget;
     if (widget == null) {
-      return;
+      return nothing;
     }
 
     const uniqueAttributes = store.getState().template[widget.id]
@@ -439,15 +445,27 @@ ${value}</textarea
           uniqueAttributes,
           widget.id
         );
+      case WidgetType.chart:
+        return this.getUniqueAttributeMarkup(
+          Chart.attributes,
+          uniqueAttributes,
+          widget.id
+        );
+      case WidgetType.map:
+        return this.getUniqueAttributeMarkup(
+          Map.attributes,
+          uniqueAttributes,
+          widget.id
+        );
       default:
         return nothing;
     }
   }
 
-  getStyleAttributes() {
+  getStyleAttributes(): (TemplateResult | {})[] | {} {
     const widget = this.editingWidget;
     if (widget == null) {
-      return;
+      return nothing;
     }
 
     const styleAttributes = store.getState().template[widget.id].style;
@@ -455,6 +473,7 @@ ${value}</textarea
       const value = styleAttributes[key];
       const placeholder = sharedAttributes[key].placeholder;
       const unit = sharedAttributes[key].unit;
+      const step = sharedAttributes[key].step;
       const type = sharedAttributes[key].type;
       const items = sharedAttributes[key].items;
 
@@ -503,6 +522,7 @@ ${value}</textarea
             value,
             placeholder,
             unit,
+            step,
             widget.id,
             AttributeType.style
           );
@@ -515,7 +535,7 @@ ${value}</textarea
   static emptyNotice = html`
     <empty-notice
       icon="create"
-      message="No widget selected. Click on a widget's edit icon to select it."
+      message="No widget selected. Click on a widget to select it."
       size="large"
       bold
     ></empty-notice>

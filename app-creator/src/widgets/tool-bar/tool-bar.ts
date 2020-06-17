@@ -4,9 +4,12 @@
  */
 import { LitElement, html, customElement, css } from 'lit-element';
 import '@polymer/paper-button/paper-button.js';
-import '@polymer/paper-dialog/paper-dialog.js';
-import '@polymer/paper-dialog-scrollable/paper-dialog-scrollable.js';
 import { store } from '../../redux/store';
+
+// The paper dialog widget appears on export button click and is used to display the serialized template string.
+import '@polymer/paper-dialog/paper-dialog.js';
+import { PaperDialogElement } from '@polymer/paper-dialog/paper-dialog.js';
+import '@polymer/paper-dialog-scrollable/paper-dialog-scrollable.js';
 
 @customElement('tool-bar')
 export class ToolBar extends LitElement {
@@ -84,11 +87,18 @@ export class ToolBar extends LitElement {
     }
     jsonSnippetContainer.innerHTML = this.getTemplateString();
 
-    (dialog as any).open();
+    (dialog as PaperDialogElement).open();
   }
 
   getTemplateString() {
-    return JSON.stringify(store.getState().template, undefined, 3);
+    const template = store.getState().template;
+    // Remove widget reference from JSON.
+    for (const key in template) {
+      if (typeof template[key] === 'object' && !Array.isArray(template[key])) {
+        delete template[key].widgetRef;
+      }
+    }
+    return JSON.stringify(template, undefined, 3);
   }
 
   copy() {

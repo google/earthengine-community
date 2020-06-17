@@ -23,6 +23,7 @@ const callbackPromise = new Promise((r) => (window.__initGoogleMap = r));
 
 function loadGoogleMaps(apiKey: string) {
   if (!initCalled) {
+    console.log('loading maps');
     const script = document.createElement('script');
     script.src =
       'https://maps.googleapis.com/maps/api/js?' +
@@ -54,14 +55,17 @@ export class Map extends LitElement {
       cursor: pointer;
     }
   `;
+
   static attributes: AttributeMetaData = {
     latitude: {
       value: '39.930546488601294',
       placeholder: '39.9305464',
+      step: 0.000000000000000000001,
       type: InputType.number,
     },
     longitude: {
       value: '-100.825',
+      step: 0.000000000000000000001,
       placeholder: '-100.825',
       type: InputType.number,
     },
@@ -190,7 +194,7 @@ export class Map extends LitElement {
     this.initMap();
   }
 
-  getStyle() {
+  getStyle(): { [key: string]: string } {
     return this.styles;
   }
 
@@ -201,7 +205,7 @@ export class Map extends LitElement {
     this.requestUpdate();
   }
 
-  getZoom() {
+  getZoom(): number {
     return this.zoom;
   }
 
@@ -209,7 +213,7 @@ export class Map extends LitElement {
     this.zoom = value;
   }
 
-  getCenter() {
+  getCenter(): { lat: number; lng: number } {
     return this.center;
   }
 
@@ -217,7 +221,7 @@ export class Map extends LitElement {
     this.center = value;
   }
 
-  getMap() {
+  getMap(): google.maps.Map<Element> | null {
     return this.map;
   }
 

@@ -23,13 +23,13 @@ export class Dropzone extends LitElement {
   static styles = css`
     #container {
       padding: var(--extra-tight) var(--tight);
+      margin: var(--extra-tight);
       border: var(--light-dashed-border);
       display: flex;
       flex-direction: column;
-      justify-content: flex-start;
+      justify-content: center;
       overflow-y: scroll;
-      height: calc(100% - var(--tight));
-      width: 100%;
+      height: calc(100% - 2 * var(--tight));
     }
 
     p {
@@ -63,10 +63,6 @@ export class Dropzone extends LitElement {
    */
   @property({ type: Object }) styles = {};
 
-  // createRenderRoot() {
-  //   return this;
-  // }
-
   render() {
     const { styles, handleDragOver, handleDragenter, handleDrageleave } = this;
 
@@ -78,13 +74,12 @@ export class Dropzone extends LitElement {
         @dragover=${handleDragOver}
         style="${styleMap(styles)}"
       >
-        <!-- <slot></slot> -->
-      </div>
-      <!-- <empty-notice
+        <empty-notice
           id="${EMPTY_NOTICE_ID}"
           icon="icons:system-update-alt"
           message="Drop widgets here"
-        ></empty-notice> -->
+        ></empty-notice>
+      </div>
     `;
   }
 

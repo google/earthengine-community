@@ -14,7 +14,11 @@ import { InputType } from '../../redux/types/enums';
 
 @customElement('ui-slider')
 export class Slider extends LitElement {
-  static styles = css``;
+  static styles = css`
+    paper-slider {
+      width: 150px;
+    }
+  `;
 
   static attributes: AttributeMetaData = {
     min: {

@@ -14,6 +14,7 @@ import '@polymer/iron-icons/device-icons.js';
 import '@polymer/iron-icons/image-icons.js';
 import '../widgets-tab/widgets-tab';
 import '../attributes-tab/attributes-tab';
+import '../templates-tab/templates-tab';
 import { store } from '../../redux/store';
 import { connect } from 'pwa-helpers';
 import { AppCreatorStore } from '../../redux/reducer';
@@ -66,7 +67,7 @@ export class ActionsPanel extends connect(store)(LitElement) {
    * Sets the currently selected tab.
    */
   @property({ type: Number })
-  selectedTab = 1;
+  selectedTab = Tab.templates;
 
   handleTabSwitch(index: Tab) {
     store.dispatch(setSelectedTab(index));
@@ -96,6 +97,9 @@ export class ActionsPanel extends connect(store)(LitElement) {
 
     let renderedTab = nothing;
     switch (selectedTab) {
+      case Tab.templates:
+        renderedTab = html`<templates-tab></templates-tab>`;
+        break;
       case Tab.widgets:
         renderedTab = html`<widgets-tab></widgets-tab>`;
         break;

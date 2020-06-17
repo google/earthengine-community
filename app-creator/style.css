@@ -47,3 +47,20 @@ p {
   /* utils */
   --raised-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
 }
+
+#editable-view {
+  position: absolute;
+  top: 0;
+  right: 0;
+  display: flex;
+  justify-content: flex-end;
+  width: 100%;
+}
+
+.edit-buttons {
+  background-color: white;
+  border: var(--light-border);
+  border-radius: var(--extra-tight);
+  margin-left: var(--extra-tight);
+  cursor: pointer;
+}

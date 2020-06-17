@@ -3,9 +3,10 @@
  *  are essentially containers that can align their children vertically, horizontally, and in a grid.
  */
 import { css, customElement, html, LitElement, property } from 'lit-element';
-import { styleMap } from 'lit-html/directives/style-map';
 import '../dropzone-widget/dropzone-widget';
-import { CONTAINER_ID } from '../dropzone-widget/dropzone-widget';
+import { nothing } from 'lit-html';
+import { store } from '../../redux/store';
+import { setEditingWidget } from '../../redux/actions';
 
 @customElement('ui-panel')
 export class Panel extends LitElement {
@@ -22,6 +23,7 @@ export class Panel extends LitElement {
       min-width: 50px;
       height: 100%;
       width: 100%;
+      position: relative;
     }
 
     .full-size {
@@ -43,6 +45,23 @@ export class Panel extends LitElement {
 
     .padded {
       padding: var(--extra-tight);
+    }
+
+    #editable-view {
+      position: absolute;
+      top: 0;
+      right: 0;
+      display: flex;
+      justify-content: flex-end;
+      width: 100%;
+    }
+
+    .edit-buttons {
+      background-color: white;
+      border: var(--light-border);
+      border-radius: var(--extra-tight);
+      margin-left: var(--extra-tight);
+      cursor: pointer;
     }
   `;
 
@@ -74,29 +93,44 @@ export class Panel extends LitElement {
    */
   @property({ type: Boolean }) padded = false;
 
-  addWidget(widget: HTMLElement) {
-    const container = this.shadowRoot?.getElementById(CONTAINER_ID);
-    if (container != null) {
-      container.appendChild(widget);
-    }
-  }
+  /**
+   * Adds edit icon to panel.
+   */
+  @property({ type: Boolean }) editable = false;
 
   render() {
-    const { isRaised, layout, padded, styles } = this;
+    const { isRaised, editable, layout, padded, handleEditWidget } = this;
 
-    // const content = hasDropzone
-    //   ? html`<dropzone-widget class="full-size"><slot></slot></dropzone-widget>`
-    //   : html`<slot></slot>`;
+    const editableMarkup = editable
+      ? html`
+          <div id="editable-view">
+            <iron-icon
+              class="edit-buttons"
+              icon="create"
+              @click=${handleEditWidget}
+            ></iron-icon>
+          </div>
+        `
+      : nothing;
 
     return html`
       <div
         id="container"
         class="${layout} ${isRaised ? 'raised' : ''} ${padded ? 'padded' : ''}"
-        style="${styleMap(styles)}"
       >
         <slot></slot>
+        ${editableMarkup}
       </div>
     `;
+  }
+
+  /**
+   * Triggered when the edit icon is clicked. Stores a reference of the selected element in the store and
+   * displays a set of inputs for editing its attributes.
+   */
+  handleEditWidget() {
+    // Check if a widgetRef has been set.
+    store.dispatch(setEditingWidget(this));
   }
 
   setAttribute(key: string, value: string) {
@@ -125,7 +159,9 @@ export class Panel extends LitElement {
   }
 
   setStyle(style: { [key: string]: string }) {
-    this.styles = style;
+    for (const attribute in style) {
+      this.style[attribute as any] = style[attribute];
+    }
     this.requestUpdate();
   }
 }

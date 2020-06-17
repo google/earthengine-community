@@ -17,6 +17,7 @@ export class EmptyNotice extends LitElement {
       justify-content: center;
       flex-direction: column;
       padding: var(--extra-loose) 0px;
+      max-width: 350px;
     }
 
     #empty-notice-icon {
@@ -49,6 +50,15 @@ export class EmptyNotice extends LitElement {
     .large {
       --iron-icon-height: 75px;
       --iron-icon-width: 75px;
+    }
+
+    .x-large {
+      --iron-icon-height: 100px;
+      --iron-icon-width: 100px;
+    }
+
+    .x-large #empty-notice-message {
+      font-size: 1.2rem;
     }
 
     .large #empty-notice-message {

@@ -289,8 +289,14 @@ ${value}</textarea
                   )
                 )}
             >
-              <option value="px" ?selected=${unit === 'px'}>px</option>
-              <option value="%" ?selected=${unit === '%'}>%</option>
+              <option
+                value="px"
+                ?selected=${value.endsWith('px') || unit === 'px'}
+                >px</option
+              >
+              <option value="%" ?selected=${value.endsWith('%') || unit === '%'}
+                >%</option
+              >
             </select>
           `;
 
@@ -308,6 +314,7 @@ ${value}</textarea
         <input
           class='attribute-input'
           type='number'
+          step="1"
           placeholder="${placeholder ?? ''}"
           min="0"
           step="${step ?? 0.01}"

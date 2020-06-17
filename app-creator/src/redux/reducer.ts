@@ -14,6 +14,7 @@ import {
   ADD_WIDGET_META_DATA,
   REMOVE_WIDGET,
   UPDATE_WIDGET_META_DATA,
+  SET_SELECTED_TEMPLATE,
 } from './types/actions';
 import { Reducer, AnyAction } from 'redux';
 import { UniqueAttributes } from './types/attributes';
@@ -35,6 +36,7 @@ export interface AppCreatorStore {
   eventType: EventType;
   widgetIDs: { [key: string]: number };
   template: { [key: string]: any };
+  templateMarkup: string | null;
 }
 
 /**
@@ -57,6 +59,7 @@ const INITIAL_STATE: AppCreatorStore = {
     map: 0,
   },
   template: {},
+  templateMarkup: null,
 };
 
 /**
@@ -69,6 +72,7 @@ export const reducer: Reducer<AppCreatorStore, AppCreatorAction | AnyAction> = (
   state = INITIAL_STATE,
   action
 ): AppCreatorStore => {
+  console.log({ state });
   switch (action.type) {
     case SET_DRAGGING_WIDGET:
       return {
@@ -128,8 +132,13 @@ export const reducer: Reducer<AppCreatorStore, AppCreatorAction | AnyAction> = (
         const attributeValue =
           updatedTemplate[id][attributeType][attributeName];
 
-        updatedTemplate[id][attributeType][attributeName] =
-          value + (attributeValue.endsWith('px') ? 'px' : '%');
+        updatedTemplate[id][attributeType][attributeName] = value;
+
+        if (attributeValue.endsWith('px') || attributeValue.endsWith('%')) {
+          updatedTemplate[id][attributeType][
+            attributeName
+          ] += attributeValue.endsWith('px') ? 'px' : '%';
+        }
       }
 
       const { widgetRef } = updatedTemplate[id];
@@ -155,6 +164,12 @@ export const reducer: Reducer<AppCreatorStore, AppCreatorAction | AnyAction> = (
           ...state.widgetIDs,
           [action.payload.id]: state.widgetIDs[action.payload.id] + 1,
         },
+      };
+    case SET_SELECTED_TEMPLATE:
+      return {
+        ...state,
+        template: action.payload.template,
+        templateMarkup: action.payload.markup,
       };
     case RESET_DRAGGING_VALUES:
       return {

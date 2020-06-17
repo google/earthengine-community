@@ -7,7 +7,6 @@ import './tool-bar/tool-bar';
 import './actions-panel/actions-panel';
 import './tab-container/tab-container';
 import './story-board/story-board';
-import '../templates/template-parser';
 
 @customElement('app-root')
 export class AppRoot extends LitElement {
@@ -24,14 +23,14 @@ export class AppRoot extends LitElement {
     }
 
     #storyboard {
-      height: 90%;
+      height: 95%;
       width: 90%;
     }
 
     #storyboard-container {
       display: flex;
       align-items: center;
-      justify-content: center;
+      justify-content: flex-start;
       flex-direction: column;
       height: 100%;
       width: 100%;

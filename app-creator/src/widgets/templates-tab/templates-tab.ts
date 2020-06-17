@@ -157,7 +157,11 @@ export class TemplatesTab extends LitElement {
           <ui-map
             id="map-template-0"
             editable
+<<<<<<< HEAD
             class="full-width"
+=======
+            style="width: 100%;"
+>>>>>>> added templates tab and card
             apiKey=${window.process.env.MAPS_API_KEY}
             zoom="4"
           ></ui-map>

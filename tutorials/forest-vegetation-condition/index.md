@@ -21,8 +21,6 @@ See the License for the specific language governing permissions and
 limitations under the License.
 -->
 
-[Open & run code in Earth Engine code editor](https://code.earthengine.google.co.in/2ac326e0fc824134f1dd1c7575591151)
-
 ## Context
 
 Forests around the world are in crisis. Rapidly expanding global human footprint and climate change have caused extensive deforestation, and have left remnant forests fragmented and significantly altered in condition. Yet, these remaining forests harbour a dazzling array of unique ecosystems and an overwhelming majority of our planet’s current terrestrial biodiversity, thanks to in-situ conservation efforts including those by local and indigenous communities. Valuing these forests and ensuring their continued conservation depends on our understanding their long term dynamics and responses to dominant anthropogenic and climatic drivers. This tutorial illustrates the use of Earth Engine to investigate forest vegetation condition over time.

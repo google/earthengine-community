@@ -47,7 +47,7 @@ var nps = ee.FeatureCollection('users/pradeepkoulgi/IndiaTRCondition/MainlandPAs
 ```
 ### Compute annual summertime composites 
 
-Build an image collection with an image for each year from 2000 to 2019, where the image is the maximum EVI in that year's summer months. This is our measure of the status of the vegetation for each year. Also add the year as a band, in preparation for linear trend analysis.
+Build an image collection with an image for each year from 2000 to 2019. Each of these images is calculated to be the maximum EVI in the summer months of its corresponding year. This is our measure of the status of the vegetation for each year. Also add the year as a band, in preparation for linear trend analysis.
 
 ```js
 var years = ee.List.sequence(2000, 2019);

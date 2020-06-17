@@ -98,7 +98,7 @@ Map.setOptions('SATELLITE');
 // set visualisation parameters for greening and browning areas
 var visParams = {opacity: 1, bands: ['slope'],
   min: -40, max: 40,
-  palette: ['ebb801','ffffff','76cc04']
+  palette: ['ebb801', 'ffffff', '76cc04']
 };
 Map.addLayer(sens.clipToCollection(nps), visParams, 'Sen\'s slope');
 // draw forest boundaries

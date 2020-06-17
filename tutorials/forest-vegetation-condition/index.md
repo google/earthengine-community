@@ -35,15 +35,15 @@ Bandipur and Nagarhole national parks are located in the Mysore-Malenad landscap
 
 ### Import images, features
 
-Import the MODIS 250m/pixel 16-day composite vegetation indices dataset, and select the EVI band. Load boundaries of Bandipur and Nagarhole national parks.
+Import the MODIS 250m/pixel 16-day composite vegetation indices dataset, and select the EVI band. Load boundaries of Bandipur and Nagarhole national parks from the [World Database on Protected Areas (WDPA)](https://developers.google.com/earth-engine/datasets/catalog/WCMC_WDPA_current_polygons?hl=en) dataset.
 
 ```js
 // get MODIS 250m EVI data 
 var mod13 = ee.ImageCollection('MODIS/006/MOD13Q1')
   .select('EVI');
 // get features of the forest national parks
-var nps = ee.FeatureCollection('users/pradeepkoulgi/IndiaTRCondition/MainlandPAs')
-  .filter(ee.Filter.inList('NAME', ['Bandipur', 'Nagarhole']));
+var nps = ee.FeatureCollection('WCMC/WDPA/current/polygons')
+  .filter(ee.Filter.inList('NAME', ['Bandipur', 'Rajiv Gandhi (Nagarhole)']));
 ```
 ### Compute annual summertime composites 
 

@@ -15,6 +15,12 @@ export const ADD_WIDGET_META_DATA = 'ADD_WIDGET_META_DATA';
 export const REMOVE_WIDGET = 'REMOVE_WIDGET';
 export const UPDATE_WIDGET_META_DATA = 'UPDATE_WIDGET_META_DATA';
 export const SET_SELECTED_TEMPLATE = 'SET_SELECTED_TEMPLATE';
+export const UPDATE_CHILDREN_ORDERING = 'UPDATE_CHILDREN_ORDERING';
+
+export interface UpdateChildrenOrdering {
+  type: typeof UPDATE_CHILDREN_ORDERING;
+  payload: {};
+}
 
 export interface RemoveWidget {
   type: typeof REMOVE_WIDGET;

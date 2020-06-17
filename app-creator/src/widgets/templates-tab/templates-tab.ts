@@ -29,6 +29,7 @@ import { AppCreatorStore } from '../../redux/reducer';
 import { store } from '../../redux/store';
 import { setSelectedTemplate, setSelectedTab } from '../../redux/actions';
 import { Tab } from '../../redux/types/enums';
+import '../template-card/template-card';
 
 interface TemplateItem {
   id: string;
@@ -38,32 +39,25 @@ interface TemplateItem {
   markup: string;
 }
 
+function createSelectionCallback(id: string) {
+  return () => {
+    store.dispatch(
+      setSelectedTemplate(
+        TemplatesTab.templates[id].initialState,
+        TemplatesTab.templates[id].markup
+      )
+    );
+
+    store.dispatch(setSelectedTab(Tab.widgets));
+  };
+}
+
 @customElement('templates-tab')
 export class TemplatesTab extends LitElement {
   static styles = css`
     .subtitle {
       margin: var(--regular) 0px var(--tight) 0px;
       color: var(--accent-color);
-    }
-
-    .card-image {
-      height: 120px;
-      background-size: cover;
-      background-position: center;
-      border-bottom: var(--light-border);
-      overflow: hidden;
-    }
-
-    .card-container {
-      border: var(--light-border);
-      border-radius: var(--tight);
-      overflow: hidden;
-    }
-
-    .card-actions {
-      display: flex;
-      justify-content: flex-end;
-      padding: var(--extra-tight);
     }
 
     #cards-container {
@@ -77,30 +71,15 @@ export class TemplatesTab extends LitElement {
       title: 'Side Panel',
       card: html`
         <h6 class="subtitle">Side Panel</h6>
-        <div class="card-container">
-          <div
-            class="card-image"
-            style="background: url(https://miro.medium.com/max/552/0*aR2TiedsgbC4n0uQ)"
-          ></div>
-          <div class="card-actions">
-            <paper-button
-              @click=${() => {
-                store.dispatch(
-                  setSelectedTemplate(
-                    TemplatesTab.templates['side-panel'].initialState,
-                    TemplatesTab.templates['side-panel'].markup
-                  )
-                );
-                store.dispatch(setSelectedTab(Tab.widgets));
-              }}
-              >Select</paper-button
-            >
-          </div>
-          <div></div>
-        </div>
+        <template-card
+          id="side-panel"
+          imageUrl="https://miro.medium.com/max/552/0*aR2TiedsgbC4n0uQ"
+          .onSelection=${createSelectionCallback('side-panel')}
+        ></template-card>
       `,
       initialState: {
-        templateID: 'side-panel',
+        id: 'side-panel',
+        name: 'Side Panel',
         'panel-template-0': {
           id: 'panel-template-0',
           children: ['panel-template-1', 'map-template-0'],
@@ -123,7 +102,7 @@ export class TemplatesTab extends LitElement {
           },
           style: {
             height: '100%',
-            width: '40%',
+            width: '30%',
             padding: '0px',
             margin: '0px',
             color: 'black',
@@ -145,7 +124,7 @@ export class TemplatesTab extends LitElement {
           uniqueAttributes: {},
           style: {
             height: '100%',
-            width: '60%',
+            width: '100%',
           },
         },
       },
@@ -157,11 +136,7 @@ export class TemplatesTab extends LitElement {
           <ui-map
             id="map-template-0"
             editable
-<<<<<<< HEAD
             class="full-width"
-=======
-            style="width: 100%;"
->>>>>>> added templates tab and card
             apiKey=${window.process.env.MAPS_API_KEY}
             zoom="4"
           ></ui-map>

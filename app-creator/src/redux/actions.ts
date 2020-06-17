@@ -24,6 +24,8 @@ import {
   UpdateWidgetMetaData,
   SetSelectedTemplate,
   SET_SELECTED_TEMPLATE,
+  UpdateChildrenOrdering,
+  UPDATE_CHILDREN_ORDERING,
 } from './types/actions';
 import {
   DEFAULT_SHARED_ATTRIBUTES,
@@ -93,6 +95,16 @@ export const addWidgetMetaData = (
         style: { ...DEFAULT_SHARED_ATTRIBUTES },
       },
     },
+  };
+};
+
+/**
+ * Updates children ordering.
+ */
+export const updateChildrenOrdering = (): UpdateChildrenOrdering => {
+  return {
+    type: UPDATE_CHILDREN_ORDERING,
+    payload: {},
   };
 };
 

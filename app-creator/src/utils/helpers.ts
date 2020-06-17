@@ -16,6 +16,6 @@ export function getIdPrefix(id: string): string {
 }
 
 /**
- * Empty function.
+ * Empty function. Used as a placeholder.
  */
 export const noop = () => {};

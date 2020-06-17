@@ -38,7 +38,7 @@ Bandipur and Nagarhole national parks are located in the Mysore-Malenad landscap
 Import the MODIS 250m/pixel 16-day composite vegetation indices dataset, and select the EVI band. Load boundaries of Bandipur and Nagarhole national parks from the [World Database on Protected Areas (WDPA)](https://developers.google.com/earth-engine/datasets/catalog/WCMC_WDPA_current_polygons?hl=en) dataset.
 
 ```js
-// get MODIS 250m EVI data 
+// get MODIS 250m EVI data
 var mod13 = ee.ImageCollection('MODIS/006/MOD13Q1')
   .select('EVI');
 // get features of the forest national parks
@@ -94,13 +94,16 @@ Choose suitable visualization parameters and display the slope values on the map
 
 ```js
 // display on map
-Map.setOptions("SATELLITE");
+Map.setOptions('SATELLITE');
 // set visualisation parameters for greening and browning areas
-var visParams = {"opacity":1,"bands":["slope"],"min":-40,"max":40,"palette":["ebb801","ffffff","76cc04"]};
-Map.addLayer(sens.clipToCollection(nps), visParams, "Sen's slope");
+var visParams = {opacity: 1, bands: ['slope'],
+  min: -40, max: 40,
+  palette: ['ebb801','ffffff','76cc04']
+};
+Map.addLayer(sens.clipToCollection(nps), visParams, 'Sen\'s slope');
 // draw forest boundaries
 var paimg = ee.Image().byte().paint(nps, 0, 2);
-Map.addLayer(paimg, {palette:'#000000'}, 'National Parks');
+Map.addLayer(paimg, {palette: '000000'}, 'National Parks');
 Map.centerObject(nps, 10);
 ```
 ![](conditionmap.png)
@@ -109,7 +112,8 @@ Chart the median of maximum summer EVIs in each national park over the years.
 
 ```js
 // plot trend in EVI data by national park and year
-var chart = ui.Chart.image.seriesByRegion(summerStats, nps, ee.Reducer.median(), 'max', 250, 'year', 'NAME');
+var chart = ui.Chart.image.seriesByRegion(summerStats, nps, ee.Reducer.median(),
+  'max', 250, 'year', 'NAME');
 chart = chart.setChartType('ScatterChart');
 chart = chart.setOptions({
   title: 'Greening/browning trend in forest national parks',

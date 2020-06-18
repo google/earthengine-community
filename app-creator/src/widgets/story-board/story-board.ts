@@ -104,6 +104,7 @@ export class Storyboard extends connect(store)(LitElement) {
       if (storyboard == null) {
         return;
       }
+
       storyboard.innerHTML = ``;
       generateUI(state.template, storyboard);
     }

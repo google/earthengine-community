@@ -13,9 +13,10 @@ import {
   setReordering,
   addWidgetMetaData,
   removeWidgetMetaData,
-  updateChildrenOrdering,
+  updateWidgetChildren,
 } from '../../redux/actions';
 import { EventType } from '../../redux/types/enums';
+import { getIdPrefixLastIndex } from '../../utils/helpers';
 
 export const CONTAINER_ID = 'container';
 
@@ -66,7 +67,6 @@ export class Dropzone extends LitElement {
 
   render() {
     const { styles, handleDragOver, handleDragenter, handleDrageleave } = this;
-
     return html`
       <div
         id="${CONTAINER_ID}"
@@ -85,9 +85,20 @@ export class Dropzone extends LitElement {
   }
 
   /**
+   * Takes in an html element (usually a dropzone) and returns the children ids without the empty-notice.
+   */
+  getChildrenIds(container: Element): string[] {
+    // We slice the first child because it is always the empty notice.
+    return Array.from(container.children)
+      .slice(1)
+      .map((el) => getIdPrefixLastIndex(el.id));
+  }
+
+  /**
    * Places the dragging widget in the correct order in the container.
    */
   handleReorderingWidget(
+    parent: Element | null,
     container: Element,
     widget: Element,
     nextElement: Element | null
@@ -97,6 +108,13 @@ export class Dropzone extends LitElement {
     } else {
       container.insertBefore(widget, nextElement);
     }
+
+    // Update children ordering in store.
+    const ids = this.getChildrenIds(container);
+    if (parent != null) {
+      store.dispatch(updateWidgetChildren(parent.id, ids));
+    }
+
     // set the global reordering state to true so we know that we don't increment the current widget id
     if (store.getState().eventType !== EventType.reordering) {
       store.dispatch(setReordering(true));
@@ -108,6 +126,7 @@ export class Dropzone extends LitElement {
    * Places a clone of the dragging widget in the correct order in the container.
    */
   handleAddingWidget(
+    parent: Element | null,
     container: Element,
     widget: Element,
     nextElement: Element | null
@@ -124,6 +143,9 @@ export class Dropzone extends LitElement {
       store.dispatch(removeWidgetMetaData(clone.id));
     }
 
+    // Hide empty notice if it is visible.
+    this.hideEmptyNotice();
+
     // The cloned widget is not wrapped with a draggable widget so we have to create one below.
     const cloneDraggableWrapper = this.wrapDraggableWidget(clone);
 
@@ -133,13 +155,18 @@ export class Dropzone extends LitElement {
       container.insertBefore(cloneDraggableWrapper, nextElement);
     }
 
+    // Update widget ordering in store.
+    const ids = this.getChildrenIds(container);
+    if (parent != null) {
+      store.dispatch(updateWidgetChildren(parent.id, ids));
+    }
+
     // We use this to correctly increment the widget id.
     if (store.getState().eventType !== EventType.adding) {
       store.dispatch(setElementAdded(true));
     }
 
     store.dispatch(addWidgetMetaData(clone.id, clone));
-    store.dispatch(updateChildrenOrdering());
   }
 
   /**
@@ -167,9 +194,19 @@ export class Dropzone extends LitElement {
     const isReordering = (widgetWrapper as DraggableWidget).editable;
 
     if (isReordering) {
-      this.handleReorderingWidget(container, widgetWrapper, nextElement);
+      this.handleReorderingWidget(
+        this.parentElement,
+        container,
+        widgetWrapper,
+        nextElement
+      );
     } else {
-      this.handleAddingWidget(container, widget, nextElement);
+      this.handleAddingWidget(
+        this.parentElement,
+        container,
+        widget,
+        nextElement
+      );
     }
   }
 
@@ -181,7 +218,6 @@ export class Dropzone extends LitElement {
     if (emptyNotice == null) {
       return;
     }
-
     emptyNotice.style.display = 'none';
   }
 

@@ -1,7 +1,14 @@
 /**
  *  @fileoverview The story-board widget lets users preview and edit their templates.
  */
-import { css, customElement, html, LitElement, property } from 'lit-element';
+import {
+  css,
+  customElement,
+  html,
+  LitElement,
+  property,
+  query,
+} from 'lit-element';
 import { styleMap } from 'lit-html/directives/style-map';
 import '@polymer/paper-card/paper-card.js';
 import '../dropzone-widget/dropzone-widget';
@@ -9,12 +16,24 @@ import '../ui-map/ui-map';
 import '@polymer/iron-icons/hardware-icons.js';
 import './../ui-panel/ui-panel';
 import { connect } from 'pwa-helpers';
-import { DeviceType } from '../../redux/types/enums';
+import { DeviceType, WidgetType } from '../../redux/types/enums';
 import { store } from '../../redux/store';
-import { AppCreatorStore } from '../../redux/reducer';
+import { AppCreatorStore, WidgetMetaData } from '../../redux/reducer';
+import { getIdPrefix } from '../../utils/helpers';
+import { Map } from '../ui-map/ui-map';
+import { Dropzone } from '../dropzone-widget/dropzone-widget';
+import { Panel } from './../ui-panel/ui-panel';
+import { setSelectedTemplate } from '../../redux/actions';
+import { ROOT_ID } from '../../utils/constants';
+import { EEWidget } from '../../redux/types/types';
+import { PaperCardElement } from '@polymer/paper-card/paper-card.js';
 
 const STORYBOARD_ID = 'storyboard';
 
+/**
+ * The story-board widget renders the currently selected template
+ * and allows the user to interact with it.
+ */
 @customElement('story-board')
 export class Storyboard extends connect(store)(LitElement) {
   static styles = css`
@@ -33,6 +52,7 @@ export class Storyboard extends connect(store)(LitElement) {
       background-color: var(--primary-color);
       margin: 0 auto;
       overflow: hidden;
+      transition: 0.5s ease;
     }
 
     #root-panel {
@@ -78,31 +98,27 @@ export class Storyboard extends connect(store)(LitElement) {
   `;
 
   stateChanged(state: AppCreatorStore) {
-    if (
-      state.template.templateID != this.templateID &&
-      state.templateMarkup != null
-    ) {
-      this.templateMarkup = state.templateMarkup;
-      this.templateID = state.template.templateID;
-
-      const storyboard = this.shadowRoot?.getElementById(STORYBOARD_ID);
+    if (state.template.id !== this.templateID) {
+      this.templateID = state.template.id;
+      const { storyboard } = this;
       if (storyboard == null) {
         return;
       }
       storyboard.innerHTML = ``;
-      storyboard.innerHTML = state.templateMarkup;
+      generateUI(state.template, storyboard);
     }
   }
 
+  /**
+   * Represents the id of the currently selected template. Used to avoid rerendering on state changes.
+   */
   @property({ type: String }) templateID: string = '';
-
-  @property({ type: String }) templateMarkup: string = '';
 
   /**
    * Switches between desktop and mobile view.
    */
   switchDeviceViewTab(device: DeviceType) {
-    const storyboard = this.shadowRoot?.getElementById(STORYBOARD_ID);
+    const { storyboard } = this;
     if (storyboard == null) {
       return;
     }
@@ -111,10 +127,12 @@ export class Storyboard extends connect(store)(LitElement) {
       case DeviceType.desktop:
         this.selectedTab = 0;
         storyboard.style.width = '100%';
+        storyboard.style.height = '100%';
         break;
       case DeviceType.mobile:
         this.selectedTab = 1;
-        storyboard.style.width = '500px';
+        storyboard.style.width = '400px';
+        storyboard.style.height = '800px';
         break;
     }
 
@@ -131,6 +149,8 @@ export class Storyboard extends connect(store)(LitElement) {
    * Additional custom styles for the button.
    */
   @property({ type: Object }) styles = {};
+
+  @query(`#${STORYBOARD_ID}`) storyboard!: PaperCardElement;
 
   render() {
     const { switchDeviceViewTab, styles } = this;
@@ -149,17 +169,7 @@ export class Storyboard extends connect(store)(LitElement) {
           ></paper-tab>
         </paper-tabs>
 
-        <paper-card id="storyboard" style=${styleMap(styles)}>
-        
-            <empty-notice
-              id="empty-notice"
-              icon="image:filter-none"
-              message="No template selected. Please select a template from the left panel."
-              size="x-large"
-              bold
-            ></empty-notice>
-          
-        </paper-card>
+        <paper-card id="storyboard" style=${styleMap(styles)}></paper-card>
       </div>
     `;
   }
@@ -167,4 +177,75 @@ export class Storyboard extends connect(store)(LitElement) {
   getStyle(): object {
     return this.styles;
   }
+}
+
+function generateUI(template: AppCreatorStore['template'], node: HTMLElement) {
+  const templateCopy = Object.assign({}, template);
+
+  function helper(widgetData: WidgetMetaData): HTMLElement {
+    const { id, children } = widgetData;
+    const { element, dropzone } = getWidgetElement(widgetData);
+
+    for (const childID of children) {
+      if (dropzone != null) {
+        dropzone.appendChild(helper(templateCopy[childID]));
+      } else {
+        element.appendChild(helper(templateCopy[childID]));
+      }
+    }
+
+    templateCopy[id].widgetRef = element;
+
+    return element;
+  }
+
+  // The root of the template will always have an id of panel-template-0
+  const root = templateCopy[ROOT_ID];
+  node.appendChild(helper(root));
+
+  // Replace the store's template with the one that include the widgetRefs.
+  store.dispatch(setSelectedTemplate(templateCopy));
+}
+
+function getWidgetElement({
+  id,
+  editable,
+  uniqueAttributes,
+  style,
+}: WidgetMetaData): { element: HTMLElement; dropzone: Dropzone | null } {
+  // Get widget type (ie. panel-0 -> panel).
+  const type = getIdPrefix(id);
+
+  // Create DOM element.
+  let element = document.createElement(`ui-${type}`);
+  element.id = id;
+
+  // Set Unique attributes.
+  for (const attribute in uniqueAttributes) {
+    element.setAttribute(attribute, uniqueAttributes[attribute]);
+  }
+
+  // Set styles.
+  (element as EEWidget).setStyle(style);
+
+  let dropzone = null;
+
+  switch (type) {
+    case WidgetType.map:
+      (element as Map).setAttribute('apiKey', window.process.env.MAPS_API_KEY);
+      break;
+    case WidgetType.panel:
+      (element as Panel).editable = editable ?? false;
+      if (editable) {
+        const dropzoneWidget = document.createElement(
+          'dropzone-widget'
+        ) as Dropzone;
+        dropzoneWidget.classList.add('full-height');
+        element.appendChild(dropzoneWidget);
+        dropzone = dropzoneWidget;
+      }
+      break;
+  }
+
+  return { element, dropzone };
 }

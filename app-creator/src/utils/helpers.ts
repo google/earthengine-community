@@ -16,6 +16,13 @@ export function getIdPrefix(id: string): string {
 }
 
 /**
+ * Used when getting prefix of wrapper widget.
+ */
+export function getIdPrefixLastIndex(id: string) {
+  return id.slice(0, id.lastIndexOf('-'));
+}
+
+/**
  * Empty function. Used as a placeholder.
  */
-export const noop = () => {};
+export const noop: VoidFunction = () => {};

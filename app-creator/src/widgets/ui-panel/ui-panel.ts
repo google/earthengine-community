@@ -19,8 +19,6 @@ export class Panel extends LitElement {
     #container {
       display: flex;
       flex-wrap: wrap;
-      min-height: 100px;
-      min-width: 50px;
       height: 100%;
       width: 100%;
       position: relative;
@@ -62,6 +60,13 @@ export class Panel extends LitElement {
       border-radius: var(--extra-tight);
       margin-left: var(--extra-tight);
       cursor: pointer;
+    }
+
+    slot {
+      display: flex;
+      flex-direction: column;
+      width: 100%;
+      height: 100%;
     }
   `;
 
@@ -118,7 +123,7 @@ export class Panel extends LitElement {
         id="container"
         class="${layout} ${isRaised ? 'raised' : ''} ${padded ? 'padded' : ''}"
       >
-        <slot></slot>
+        <slot class="${layout}"></slot>
         ${editableMarkup}
       </div>
     `;
@@ -148,6 +153,8 @@ export class Panel extends LitElement {
         this.padded = value === 'true';
         return;
     }
+
+    this.requestUpdate();
   }
 
   getlayout() {

@@ -2,6 +2,7 @@
  *  @fileoverview The template-card widget allows users to switch to a new template.
  */
 import { LitElement, html, customElement, css, property } from 'lit-element';
+import { nothing } from 'lit-html';
 import '@polymer/paper-card/paper-card.js';
 import '@polymer/paper-button/paper-button.js';
 import { noop } from '../../utils/helpers';
@@ -14,6 +15,7 @@ export class TemplateCard extends LitElement {
       height: 120px;
       background-size: cover;
       background-position: center;
+      background-repeat: no-repeat;
       border-bottom: var(--light-border);
       overflow: hidden;
     }
@@ -22,12 +24,18 @@ export class TemplateCard extends LitElement {
       border: var(--light-border);
       border-radius: var(--tight);
       overflow: hidden;
+      margin-bottom: var(--tight);
     }
 
     .card-actions {
       display: flex;
       justify-content: flex-end;
       padding: var(--extra-tight);
+    }
+
+    h4 {
+      margin: var(--tight) 0px 0px var(--tight);
+      font-weight: 400;
     }
   `;
 
@@ -37,6 +45,11 @@ export class TemplateCard extends LitElement {
   @property({ type: String }) id = '';
 
   /**
+   * Template title.
+   */
+  @property({ type: String }) title = '';
+
+  /**
    * Sets card image.
    */
   @property({ type: String }) imageUrl = '';
@@ -44,22 +57,31 @@ export class TemplateCard extends LitElement {
   /**
    * Callback triggered on select button click.
    */
-  @property({ type: Object }) onSelection: () => void = noop;
+  @property({ type: Object }) onSelection: VoidFunction = noop;
 
   /**
    * Disables button if true and sets label to 'selected'.
    */
   @property({ type: Boolean }) selected = false;
 
-  render() {
-    const { id, imageUrl, onSelection } = this;
+  /**
+   * Hides title when false.
+   */
+  @property({ type: Boolean }) showTitle = false;
 
+  render() {
+    const { id, imageUrl, title, showTitle, onSelection } = this;
     const selected = store.getState().template.id === id;
     const buttonLabel = selected ? 'Selected' : 'Select';
 
+    const titleMarkup = showTitle ? html`<h4>${title}</h4>` : nothing;
     return html`
       <div class="card-container">
-        <div class="card-image" style="background: url(${imageUrl})"></div>
+        <div
+          class="card-image"
+          style="background-image: url(${imageUrl});"
+        ></div>
+        ${titleMarkup}
         <div class="card-actions">
           <paper-button
             @click=${() => {
@@ -67,8 +89,9 @@ export class TemplateCard extends LitElement {
               this.requestUpdate();
             }}
             ?disabled=${selected}
-            >${buttonLabel}</paper-button
           >
+            ${buttonLabel}
+          </paper-button>
         </div>
       </div>
     `;

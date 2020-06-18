@@ -1,15 +1,8 @@
 /**
  *  @fileoverview The templates-tab widget contains the different templates that the user can use for their earth engine app.
  */
-import {
-  LitElement,
-  html,
-  customElement,
-  css,
-  TemplateResult,
-  property,
-} from 'lit-element';
-import { nothing } from 'lit-html';
+import { LitElement, html, customElement, css, property } from 'lit-element';
+import { nothing, TemplateResult } from 'lit-html';
 import '@polymer/paper-input/paper-input.js';
 import '@polymer/iron-icon/iron-icon.js';
 import '../tab-container/tab-container';
@@ -25,31 +18,15 @@ import '../ui-chart/ui-chart';
 import '../search-bar/search-bar';
 import '../empty-notice/empty-notice';
 import { onSearchEvent } from '../search-bar/search-bar';
-import { AppCreatorStore } from '../../redux/reducer';
-import { store } from '../../redux/store';
-import { setSelectedTemplate, setSelectedTab } from '../../redux/actions';
-import { Tab } from '../../redux/types/enums';
 import '../template-card/template-card';
+import { store } from '../../redux/store';
+import { setSelectedTemplate } from '../../redux/actions';
+import { database } from '../../client/fetch-templates';
 
-interface TemplateItem {
+export interface TemplatesTabItem {
   id: string;
-  title: string;
-  card: TemplateResult;
-  initialState: AppCreatorStore['template'];
-  markup: string;
-}
-
-function createSelectionCallback(id: string) {
-  return () => {
-    store.dispatch(
-      setSelectedTemplate(
-        TemplatesTab.templates[id].initialState,
-        TemplatesTab.templates[id].markup
-      )
-    );
-
-    store.dispatch(setSelectedTab(Tab.widgets));
-  };
+  name: string;
+  markup: TemplateResult;
 }
 
 @customElement('templates-tab')
@@ -65,131 +42,51 @@ export class TemplatesTab extends LitElement {
     }
   `;
 
-  static templates: { [key: string]: TemplateItem } = {
-    'side-panel': {
-      id: 'side-panel',
-      title: 'Side Panel',
-      card: html`
-        <h6 class="subtitle">Side Panel</h6>
-        <template-card
-          id="side-panel"
-          imageUrl="https://miro.medium.com/max/552/0*aR2TiedsgbC4n0uQ"
-          .onSelection=${createSelectionCallback('side-panel')}
-        ></template-card>
-      `,
-      initialState: {
-        id: 'side-panel',
-        name: 'Side Panel',
-        'panel-template-0': {
-          id: 'panel-template-0',
-          children: ['panel-template-1', 'map-template-0'],
-          uniqueAttributes: {
-            layout: 'row',
-          },
-          style: {
-            height: '100%',
-            width: '100%',
-            padding: '0px',
-            margin: '0px',
-          },
-        },
-        'panel-template-1': {
-          id: 'panel-template-1',
-          children: [],
-          uniqueAttributes: {
-            layout: 'column',
-            hasDropzone: 'true',
-          },
-          style: {
-            height: '100%',
-            width: '30%',
-            padding: '0px',
-            margin: '0px',
-            color: 'black',
-            backgroundColor: '#FFFFFF',
-            borderWidth: '0px',
-            borderStyle: 'solid',
-            borderColor: 'black',
-            fontSize: '12px',
-            fontWeight: '300',
-            fontFamily: 'Roboto',
-            textAlign: 'left',
-            whiteSpace: 'normal',
-            shown: 'true',
-          },
-        },
-        'map-template-0': {
-          id: 'map-template-0',
-          children: [],
-          uniqueAttributes: {},
-          style: {
-            height: '100%',
-            width: '100%',
-          },
-        },
-      },
-      markup: `
-        <ui-panel>
-          <ui-panel id="panel-template-1" style="width: 30%;" class="full-height" editable>
-            <dropzone-widget class="full-height"></dropzone-widget>
-          </ui-panel>
-          <ui-map
-            id="map-template-0"
-            editable
-            class="full-width"
-            apiKey=${window.process.env.MAPS_API_KEY}
-            zoom="4"
-          ></ui-map>
-        </ui-panel>
-      `,
-    },
-  };
-
   /**
    * Sets the search query.
    */
   @property({ type: String }) query = '';
 
-  render() {
-    const { query, filterTemplates, handleSearch } = this;
-    const filteredTemplates: TemplateItem[] = filterTemplates(query);
-    const emptyNotice =
-      filteredTemplates.length === 0
-        ? html`
-            <empty-notice
-              id="empty-notice"
-              icon="search"
-              message="No templates available. Please search again."
-              size="large"
-              bold
-            ></empty-notice>
-          `
-        : nothing;
-
-    return html`
-      <tab-container title="Templates">
-        <search-bar
-          placeholder="Search for template"
-          @onsearch=${handleSearch}
-        ></search-bar>
-        <div id="cards-container">
-          ${filteredTemplates.map(({ card }) => card)} ${emptyNotice}
-        </div>
-      </tab-container>
-    `;
+  getTemplateCards(showTitle = false) {
+    return database.map(({ id, name, imageUrl, template }) => {
+      return {
+        id,
+        name,
+        markup: html`
+          ${showTitle ? nothing : html`<h6 class="subtitle">${name}</h6>`}
+          <template-card
+            id="${id}"
+            title="${name}"
+            imageUrl="${imageUrl}"
+            ?showTitle=${showTitle}
+            .onSelection=${this.createSelectionCallback(template)}
+          ></template-card>
+        `,
+      };
+    });
   }
 
   /**
    * Returns widgets with names and ids that include the search query.
    */
-  filterTemplates(query: string): TemplateItem[] {
-    return Object.values(TemplatesTab.templates).filter(({ id, title }) => {
+  static filterTemplates(
+    templateCards: { id: string; name: string; markup: TemplateResult }[],
+    query: string
+  ): Array<TemplatesTabItem> {
+    return templateCards.filter(({ id, name }) => {
       const lowerCasedQuery = query.toLowerCase();
       return (
         id.toLowerCase().includes(lowerCasedQuery) ||
-        title.toLowerCase().includes(lowerCasedQuery)
+        name.toLowerCase().includes(lowerCasedQuery)
       );
     });
+  }
+
+  createSelectionCallback(template: string): VoidFunction {
+    return () => {
+      store.dispatch(setSelectedTemplate(JSON.parse(template)));
+      this.requestUpdate();
+    };
   }
 
   /**
@@ -197,7 +94,41 @@ export class TemplatesTab extends LitElement {
    * searchbar widget.
    */
   handleSearch({ detail: { query } }: onSearchEvent) {
-    this.query = query;
+    this.query = query.trim();
+  }
+
+  render() {
+    const { query, getTemplateCards, handleSearch } = this;
+
+    const templateCards = getTemplateCards.call(this);
+
+    const filteredTemplates = TemplatesTab.filterTemplates(
+      templateCards,
+      query
+    );
+
+    const emptyNotice = html`
+      <empty-notice
+        id="empty-notice"
+        icon="search"
+        message='No templates match "${query}". Please search again.'
+        size="large"
+        bold
+      ></empty-notice>
+    `;
+
+    return html`
+      <tab-container title="Templates">
+        <search-bar
+          placeholder="Search for template (ie. side panel)"
+          @onsearch=${handleSearch}
+        ></search-bar>
+        <div id="cards-container">
+          ${filteredTemplates.map(({ markup }) => markup)}
+          ${filteredTemplates.length === 0 ? emptyNotice : nothing}
+        </div>
+      </tab-container>
+    `;
   }
 }
 

@@ -41,6 +41,7 @@ export class Searchbar extends LitElement {
       border: none;
       height: 15px;
       font-size: 0.8rem;
+      width: 100%;
     }
 
     #search-input:focus {

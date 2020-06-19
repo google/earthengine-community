@@ -1,12 +1,12 @@
 /**
  *  @fileoverview The tool-bar widget is the header component
- *  which contains the app title and export actions.
+ *  which contains the app title and export action. It handles the logic for
+ *  displaying a serialized template string that the user can copy
+ *  and import into the code editor.
  */
 import { LitElement, html, customElement, css } from 'lit-element';
 import '@polymer/paper-button/paper-button.js';
 import { store } from '../../redux/store';
-
-// The paper dialog widget appears on export button click and is used to display the serialized template string.
 import '@polymer/paper-dialog/paper-dialog.js';
 import { PaperDialogElement } from '@polymer/paper-dialog/paper-dialog.js';
 import '@polymer/paper-dialog-scrollable/paper-dialog-scrollable.js';
@@ -76,8 +76,12 @@ export class ToolBar extends LitElement {
     }
   `;
 
+  /**
+   * Triggered when export button is clicked. It displays the paper dialog which
+   * contains the serialized template string.
+   */
   openDialog() {
-    const dialog = this.shadowRoot?.getElementById('dialog');
+    const dialog = this.shadowRoot?.querySelector('paper-dialog');
     const jsonSnippetContainer = this.shadowRoot?.getElementById(
       'json-snippet'
     );
@@ -85,14 +89,17 @@ export class ToolBar extends LitElement {
     if (dialog == null || jsonSnippetContainer == null) {
       return;
     }
-    jsonSnippetContainer.innerHTML = this.getTemplateString();
+    jsonSnippetContainer.textContent = this.getTemplateString();
 
     (dialog as PaperDialogElement).open();
   }
 
+  /**
+   * Returns the serialized template string with indentation.
+   */
   getTemplateString() {
     const template = store.getState().template;
-    // Remove widget reference from JSON.
+    // Remove all widget references from JSON.
     for (const key in template) {
       if (typeof template[key] === 'object' && !Array.isArray(template[key])) {
         delete template[key].widgetRef;
@@ -101,6 +108,9 @@ export class ToolBar extends LitElement {
     return JSON.stringify(template, undefined, 3);
   }
 
+  /**
+   * Adds template string to clipboard.
+   */
   copy() {
     const copyText = this.shadowRoot?.getElementById('json-snippet');
     if (copyText == null) {
@@ -122,7 +132,6 @@ export class ToolBar extends LitElement {
           <strong id="app-title-prefix">${ToolBar.prefix}</strong>
           <span id="app-title-suffix">${ToolBar.suffix}</span>
         </h3>
-
         <ui-button
           .raised=${false}
           id="export-button"

@@ -17,4 +17,9 @@ suite('ui-checkbox', () => {
     );
     expect(el.shadowRoot!.textContent).to.include(label);
   });
+
+  test('renders correct tag', async () => {
+    const el = await fixture(html`<ui-checkbox></ui-checkbox>`);
+    expect(el.tagName).to.equal('UI-CHECKBOX');
+  });
 });

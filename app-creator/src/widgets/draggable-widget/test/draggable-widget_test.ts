@@ -14,4 +14,9 @@ suite('draggable-widget', () => {
     const el = await fixture(html`<draggable-widget></draggable-widget>`);
     expect(el.shadowRoot!.childNodes.length).to.be.greaterThan(0);
   });
+
+  test('renders correct tag', async () => {
+    const el = await fixture(html`<draggable-widget></draggable-widget>`);
+    expect(el.tagName).to.equal('DRAGGABLE-WIDGET');
+  });
 });

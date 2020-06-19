@@ -125,8 +125,13 @@ export class DraggableWidget extends LitElement {
    */
   handleEditWidget() {
     if (!this.editable) {
+      /**
+       * Draggable widgets on the left side panel are not editable
+       * and thus we need to return early.
+       */
       return;
     }
+
     const container = this.shadowRoot?.getElementById(
       CONTAINER_ID
     ) as HTMLElement;

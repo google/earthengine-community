@@ -14,4 +14,9 @@ suite('ui-panel', () => {
     const el = await fixture(html`<ui-panel></ui-panel>`);
     expect(el.shadowRoot!.childNodes.length).to.be.greaterThan(0);
   });
+
+  test('renders correct tag', async () => {
+    const el = await fixture(html`<ui-panel></ui-panel>`);
+    expect(el.tagName).to.equal('UI-PANEL');
+  });
 });

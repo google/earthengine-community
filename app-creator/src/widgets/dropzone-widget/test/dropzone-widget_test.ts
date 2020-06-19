@@ -14,4 +14,9 @@ suite('dropzone-widget', () => {
     const el = await fixture(html`<dropzone-widget></dropzone-widget>`);
     expect(el.shadowRoot!.childNodes.length).to.be.greaterThan(0);
   });
+
+  test('renders correct tag', async () => {
+    const el = await fixture(html`<dropzone-widget></dropzone-widget>`);
+    expect(el.tagName).to.equal('DROPZONE-WIDGET');
+  });
 });

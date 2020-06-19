@@ -14,4 +14,9 @@ suite('ui-slider', () => {
     const el = await fixture(html`<ui-slider></ui-slider>`);
     expect(el.shadowRoot!.childNodes.length).to.be.greaterThan(0);
   });
+
+  test('renders correct tag', async () => {
+    const el = await fixture(html`<ui-slider></ui-slider>`);
+    expect(el.tagName).to.equal('UI-SLIDER');
+  });
 });

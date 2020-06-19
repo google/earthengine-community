@@ -1,5 +1,6 @@
 /**
- *  @fileoverview The ui-chart widget allows users to add a chart element to their template.
+ *  @fileoverview The ui-chart widget allows users to add a chart element to their template. The chart
+ *  element in the App Creator is a static image that represents an actual chart element in the EE code editor.
  */
 import '@polymer/iron-label';
 import { css, customElement, html, LitElement, property } from 'lit-element';
@@ -30,9 +31,7 @@ export class Chart extends LitElement {
                {id: 'hours', label: 'Hours per Day', type: 'number'}],
         rows: [{c:[{v: 'Work'}, {v: 11}]},
                {c:[{v: 'Eat'}, {v: 2}]},
-               {c:[{v: 'Commute'}, {v: 2}]},
-               {c:[{v: 'Watch TV'}, {v:2}]},
-               {c:[{v: 'Sleep'}, {v:7, f:'7.000'}]}]
+               {c:[{v: 'Write EE code'}, {v:7, f:'7.000'}]}]
         }`,
       type: InputType.textarea,
     },

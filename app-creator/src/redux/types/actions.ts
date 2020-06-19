@@ -14,7 +14,6 @@ export const RESET_DRAGGING_VALUES = 'RESET_DRAGGING_VALUES';
 export const ADD_WIDGET_META_DATA = 'ADD_WIDGET_META_DATA';
 export const REMOVE_WIDGET = 'REMOVE_WIDGET';
 export const UPDATE_WIDGET_META_DATA = 'UPDATE_WIDGET_META_DATA';
-export const UPDATE_WIDGET_REF = 'UPDATE_WIDGET_REF';
 export const SET_SELECTED_TEMPLATE = 'SET_SELECTED_TEMPLATE';
 
 export interface RemoveWidget {
@@ -52,13 +51,6 @@ export interface UpdateWidgetMetaData {
     value: string;
     id: string;
     attributeType: AttributeType;
-  };
-}
-
-export interface UpdateWidgetRef {
-  type: typeof UPDATE_WIDGET_REF;
-  payload: {
-    widgetRef: Element;
   };
 }
 
@@ -124,5 +116,4 @@ export type AppCreatorAction =
   | ResetDraggingValuesAction
   | AddWidgetMetaData
   | RemoveWidget
-  | UpdateWidgetMetaData
-  | UpdateWidgetRef;
+  | UpdateWidgetMetaData;

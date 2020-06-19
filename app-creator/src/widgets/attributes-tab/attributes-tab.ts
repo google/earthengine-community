@@ -333,7 +333,7 @@ ${value}</textarea
     attributesArray: AttributeMetaData,
     uniqueAttributes: UniqueAttributes,
     id: string
-  ): (TemplateResult | {})[] {
+  ): Array<TemplateResult | {}> {
     return Object.keys(attributesArray).map((key) => {
       const value = uniqueAttributes[key];
       const placeholder = attributesArray[key].placeholder;
@@ -397,7 +397,7 @@ ${value}</textarea
     });
   }
 
-  getUniqueAttributes(): (TemplateResult | {})[] | {} {
+  getUniqueAttributes(): Array<TemplateResult | {}> | {} {
     const widget = this.editingWidget;
     if (widget == null) {
       return nothing;
@@ -462,7 +462,7 @@ ${value}</textarea
     }
   }
 
-  getStyleAttributes(): (TemplateResult | {})[] | {} {
+  getStyleAttributes(): Array<TemplateResult | {}> | {} {
     const widget = this.editingWidget;
     if (widget == null) {
       return nothing;

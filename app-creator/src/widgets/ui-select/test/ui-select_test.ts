@@ -17,4 +17,9 @@ suite('ui-select', () => {
     );
     expect(el.shadowRoot!.textContent).to.include(value);
   });
+
+  test('renders correct tag', async () => {
+    const el = await fixture(html`<ui-select></ui-select>`);
+    expect(el.tagName).to.equal('UI-SELECT');
+  });
 });

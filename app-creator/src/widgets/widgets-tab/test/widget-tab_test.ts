@@ -25,4 +25,9 @@ suite('widgets-tab', () => {
     expect(widgetsTab.filterWidgets('does not exist')).to.deep.equal([]);
     expect(widgetsTab.filterWidgets('checkbox')).to.deep.equal([checkbox]);
   });
+
+  test('renders correct tag', async () => {
+    const el = await fixture(html`<widget-tab></widget-tab>`);
+    expect(el.tagName).to.equal('WIDGET-TAB');
+  });
 });

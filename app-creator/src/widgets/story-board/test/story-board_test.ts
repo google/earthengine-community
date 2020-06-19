@@ -14,4 +14,9 @@ suite('story-board', () => {
     const el = await fixture(html`<story-board></story-board>`);
     expect(el.shadowRoot!.childNodes.length).to.be.greaterThan(0);
   });
+
+  test('renders correct tag', async () => {
+    const el = await fixture(html`<story-board></story-board>`);
+    expect(el.tagName).to.equal('STORY-BOARD');
+  });
 });

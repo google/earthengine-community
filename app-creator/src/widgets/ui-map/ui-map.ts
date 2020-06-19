@@ -1,18 +1,16 @@
 import {} from 'googlemaps';
 import { customElement, html, LitElement, property, css } from 'lit-element';
-import { nothing } from 'lit-html';
 import { InputType } from '../../redux/types/enums';
 import {
   AttributeMetaData,
   DefaultAttributesType,
   getDefaultAttributes,
 } from '../../redux/types/attributes';
-import { store } from '../../redux/store';
-import { updateWidgetRef, setEditingWidget } from '../../redux/actions';
 
 declare global {
   interface Window {
     __initGoogleMap: any;
+    gm_authFailure: Function;
   }
 }
 
@@ -57,6 +55,7 @@ export class Map extends LitElement {
   `;
 
   static attributes: AttributeMetaData = {
+    // Default latitude and longitude is set to Google's Mountain View office.
     latitude: {
       value: '39.930546488601294',
       placeholder: '39.9305464',
@@ -129,7 +128,11 @@ export class Map extends LitElement {
 
       this.mapOptions.center = this.center;
 
-      this.map = new google.maps.Map(this, this.mapOptions);
+      if (this.map == null) {
+        this.map = new google.maps.Map(this, this.mapOptions);
+      } else {
+        this.map.setOptions(this.mapOptions);
+      }
       this.dispatchEvent(
         new CustomEvent('google-map-ready', { detail: this.map })
       );
@@ -142,34 +145,8 @@ export class Map extends LitElement {
     return this;
   }
 
-  /**
-   * Triggered when the edit icon is clicked. Stores a reference of the selected element in the store and
-   * displays a set of inputs for editing its attributes.
-   */
-  handleEditWidget() {
-    // Check if a widgetRef has been set.
-    const ref = store.getState().template[this.id].widgetRef;
-    if (ref == null) {
-      // Set the ref to be the current element.
-      store.dispatch(updateWidgetRef(this));
-    }
-    store.dispatch(setEditingWidget(this));
-  }
-
   render() {
-    const { editable, handleEditWidget } = this;
-    const editableMarkup = editable
-      ? html`
-          <div id="editable-view">
-            <iron-icon
-              class="edit-buttons"
-              icon="create"
-              @click=${handleEditWidget}
-            ></iron-icon>
-          </div>
-        `
-      : nothing;
-    return html` ${editableMarkup}`;
+    return html``;
   }
 
   setAttribute(key: string, value: any) {

@@ -72,7 +72,7 @@ export class Button extends LitElement {
    * Sets the theme of the button including background and text color.
    * Options available "primary" | "secondary".
    */
-  @property({ type: String }) color = '';
+  @property({ type: String }) color = 'primary';
 
   /**
    * Callback triggered on button click.

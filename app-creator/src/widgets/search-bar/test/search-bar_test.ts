@@ -14,4 +14,9 @@ suite('search-bar', () => {
     const el = await fixture(html`<search-bar></search-bar>`);
     expect(el.shadowRoot!.childNodes.length).to.be.greaterThan(0);
   });
+
+  test('renders correct tag', async () => {
+    const el = await fixture(html`<search-bar></search-bar>`);
+    expect(el.tagName).to.equal('SEARCH-BAR');
+  });
 });

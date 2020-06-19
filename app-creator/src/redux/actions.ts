@@ -22,8 +22,6 @@ import {
   RemoveWidget,
   UPDATE_WIDGET_META_DATA,
   UpdateWidgetMetaData,
-  UpdateWidgetRef,
-  UPDATE_WIDGET_REF,
   SetSelectedTemplate,
   SET_SELECTED_TEMPLATE,
 } from './types/actions';
@@ -59,18 +57,6 @@ export const updateWidgetMetaData = (
       value,
       id,
       attributeType,
-    },
-  };
-};
-
-/**
- * Updates widget reference.
- */
-export const updateWidgetRef = (widget: Element): UpdateWidgetRef => {
-  return {
-    type: UPDATE_WIDGET_REF,
-    payload: {
-      widgetRef: widget,
     },
   };
 };

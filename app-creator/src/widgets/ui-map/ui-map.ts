@@ -53,14 +53,26 @@ export class Map extends LitElement {
     latitude: {
       value: '37.419857',
       placeholder: '37.419857',
-      step: 0.000000000000000000001,
+      step: 0.00000000000001,
+      min: -90,
+      max: 90,
       type: InputType.number,
+      validator: (value: string) => {
+        const float = parseFloat(value);
+        return value === '' || (!isNaN(float) && float >= -90 && float <= 90);
+      },
     },
     longitude: {
       value: '-122.078827',
-      step: 0.000000000000000000001,
+      step: 0.00000000000001,
+      min: -180,
+      max: 180,
       placeholder: '-122.078827',
       type: InputType.number,
+      validator: (value: string) => {
+        const float = parseFloat(value);
+        return value === '' || (!isNaN(float) && float >= -180 && float <= 180);
+      },
     },
     zoom: {
       value: '4',
@@ -94,9 +106,20 @@ export class Map extends LitElement {
     },
     customMapStyles: {
       value: '',
-      placeholder:
-        'Paste JSON here. Overwrites Map Style input. Generate style here https://mapstyle.withgoogle.com/.',
+      validator: (value: string) => {
+        try {
+          JSON.parse(value);
+          return true;
+        } catch (e) {
+          return false;
+        }
+      },
+      placeholder: 'Paste JSON here',
       type: InputType.textarea,
+      tooltip: {
+        text: 'Create custom map styles at the following link.',
+        url: 'https://mapstyle.withgoogle.com',
+      },
     },
   };
 
@@ -150,7 +173,7 @@ export class Map extends LitElement {
 
   /**
    * Sets map styling to custom JSON.
-   * Custom JSON can be generated from https://mapstyle.withgoogle.com/
+   * Custom JSON can be generated from https://mapstyle.withgoogle.com/.
    */
   private customMapStyles = '';
 
@@ -177,12 +200,11 @@ export class Map extends LitElement {
       store.dispatch(setEditingWidget(this as Map));
     }
     store.dispatch(setSelectedTab(Tab.attributes));
-    this.updateMap();
   }
 
   /**
    * Called on initialization and on property changes. Initial call
-   * creates a new map instance but subsequent ones update the existed object.
+   * creates a new map instance but subsequent ones update the existing object.
    */
   updateMap() {
     loadGoogleMaps(this.apiKey).then(() => {

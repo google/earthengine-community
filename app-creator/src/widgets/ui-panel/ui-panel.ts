@@ -7,6 +7,7 @@ import '../dropzone-widget/dropzone-widget';
 import { store } from '../../redux/store';
 import { setEditingWidget } from '../../redux/actions';
 import { DraggableWidget } from '../draggable-widget/draggable-widget';
+import { CONTAINER_ID } from '../dropzone-widget/dropzone-widget';
 
 @customElement('ui-panel')
 export class Panel extends LitElement {
@@ -22,6 +23,7 @@ export class Panel extends LitElement {
       height: 100%;
       width: 100%;
       position: relative;
+      cursor: pointer;
     }
 
     .full-size {
@@ -113,7 +115,7 @@ export class Panel extends LitElement {
   }
 
   /**
-   * Triggered when panel is selected is clicked. Stores a reference of the selected element in the store and
+   * Triggered when the panel is selected. Stores a reference of the selected element in the store and
    * displays a set of inputs for editing its attributes.
    */
   handleEditWidget(e: Event) {
@@ -122,6 +124,14 @@ export class Panel extends LitElement {
 
     // Remove highlight from currently selected widget (if any).
     DraggableWidget.removeEditingWidgetHighlight();
+
+    const dropzone = this.querySelector(
+      'dropzone-widget'
+    )?.shadowRoot?.querySelector(`#${CONTAINER_ID}`);
+
+    if (dropzone != null) {
+      (dropzone as HTMLElement).style.borderColor = 'var(--accent-color)';
+    }
 
     // Check if a widgetRef has been set.
     store.dispatch(setEditingWidget(this));

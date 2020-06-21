@@ -5,7 +5,7 @@ import { LitElement, html, customElement, css, property } from 'lit-element';
 import { nothing } from 'lit-html';
 import { styleMap } from 'lit-html/directives/style-map';
 import { EMPTY_NOTICE_ID } from '../empty-notice/empty-notice';
-import { CONTAINER_ID } from '../dropzone-widget/dropzone-widget';
+import { CONTAINER_ID, Dropzone } from '../dropzone-widget/dropzone-widget';
 import { store } from '../../redux/store';
 import '../tab-container/tab-container';
 import {
@@ -15,7 +15,8 @@ import {
   incrementWidgetID,
   removeWidgetMetaData,
 } from '../../redux/actions';
-import { EventType } from '../../redux/types/enums';
+import { EventType, WidgetType } from '../../redux/types/enums';
+import { getIdPrefix } from '../../utils/helpers';
 
 @customElement('draggable-widget')
 export class DraggableWidget extends LitElement {
@@ -85,12 +86,29 @@ export class DraggableWidget extends LitElement {
   static removeEditingWidgetHighlight() {
     const editingWidget = store.getState().editingElement;
 
-    const editingWidgetParent = editingWidget?.parentElement;
-    const editingWidgetParentContainer = editingWidgetParent?.shadowRoot?.getElementById(
-      CONTAINER_ID
-    );
-    if (editingWidgetParentContainer != null) {
-      editingWidgetParentContainer.style.borderColor = 'var(--border-gray)';
+    if (editingWidget == null) {
+      return;
+    }
+
+    const type = getIdPrefix(editingWidget.id) as WidgetType;
+
+    if (type === WidgetType.panel) {
+      const dropzone = editingWidget.querySelector('dropzone-widget');
+
+      if (dropzone != null) {
+        (dropzone as Dropzone).setStyleProperty(
+          'borderColor',
+          'var(--border-gray)'
+        );
+      }
+    } else {
+      const editingWidgetParent = editingWidget?.parentElement;
+      const editingWidgetParentContainer = editingWidgetParent?.shadowRoot?.getElementById(
+        CONTAINER_ID
+      );
+      if (editingWidgetParentContainer != null) {
+        editingWidgetParentContainer.style.borderColor = 'var(--border-gray)';
+      }
     }
   }
 
@@ -160,6 +178,7 @@ export class DraggableWidget extends LitElement {
     DraggableWidget.removeEditingWidgetHighlight();
 
     store.dispatch(setEditingWidget(widget));
+
     container.style.borderColor = 'var(--accent-color)';
   }
 

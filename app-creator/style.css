@@ -32,6 +32,7 @@ p {
   --paper-slider-active-color: var(--accent-color);
   --paper-tabs-selection-bar-color: var(--accent-color);
   --primary-color: white;
+  --validation-error-border-color: #ea4335;
 
   /* spacing */
   --extra-tight: 4px;

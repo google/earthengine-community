@@ -11,6 +11,7 @@ import '@polymer/paper-dialog/paper-dialog.js';
 import { PaperDialogElement } from '@polymer/paper-dialog/paper-dialog.js';
 import '@polymer/paper-dialog-scrollable/paper-dialog-scrollable.js';
 import { AppCreatorStore } from '../../redux/reducer';
+import { WIDGET_REF } from '../../utils/constants';
 
 @customElement('tool-bar')
 export class ToolBar extends LitElement {
@@ -110,7 +111,12 @@ export class ToolBar extends LitElement {
   ): AppCreatorStore['template'] {
     const clone: AppCreatorStore['template'] = {};
     for (const key in template) {
-      if (key === 'widgetRef') {
+      /**
+       * Widget refs are only needed in the context of the app creator. Once we serialize the data,
+       * we no longer need to keep the refs. As a result, we skip over them when we are producing the
+       * output string.
+       */
+      if (key === WIDGET_REF) {
         continue;
       }
       if (typeof template[key] === 'object' && !Array.isArray(template[key])) {

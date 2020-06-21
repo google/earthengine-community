@@ -28,14 +28,23 @@ export type SharedAttributes =
   | 'whiteSpace'
   | 'shown';
 
+export interface Tooltip {
+  text?: string;
+  url?: string;
+}
+
 export interface AttributeMetaData {
   [key: string]: {
     value: string;
     placeholder?: string;
+    tooltip?: Tooltip;
     unit?: string;
     step?: number;
+    min?: number;
+    max?: number;
     type: InputType;
     items?: string[];
+    validator?: Function;
   };
 }
 

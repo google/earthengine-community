@@ -1,3 +1,6 @@
+/**
+ * @fileoverview Map style from https://mapstyle.withgoogle.com.
+ */
 export const silver: google.maps.MapTypeStyle[] = [
   {
     elementType: 'geometry',

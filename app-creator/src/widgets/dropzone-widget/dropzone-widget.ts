@@ -70,12 +70,11 @@ export class Dropzone extends LitElement {
   // }
 
   render() {
-    const { styles, handleDragOver, handleDragenter, handleDrageleave } = this;
+    const { styles, handleDragOver, handleDragenter } = this;
     return html`
       <div
         id="${CONTAINER_ID}"
         @dragenter=${handleDragenter}
-        @dragleave=${handleDrageleave}
         @dragover=${handleDragOver}
         style="${styleMap(styles)}"
       >
@@ -298,28 +297,19 @@ export class Dropzone extends LitElement {
     // We hide the empty notice if it exists.
     this.hideEmptyNotice();
 
-    // Highlight border and change alignment.
-    container.style.borderColor = 'var(--accent-color)';
+    // // Highlight border and change alignment.
     container.style.alignItems = 'flex-start';
     container.style.justifyContent = 'flex-start';
   }
 
   /**
-   * Removes highlighted border on dragleave.
+   * Set individual style porperties on the dropzone.
    */
-  handleDrageleave(e: Event) {
-    // return early if dragleave is called on child widget
-    if ((e.target as HTMLElement).id !== CONTAINER_ID) {
-      return;
-    }
-
-    // Remove highlight from container widget.
+  setStyleProperty(property: string, value: string): void {
     const container = this.shadowRoot?.getElementById(CONTAINER_ID);
-    if (container == null) {
-      return;
+    if (container != null) {
+      container.style[property as any] = value;
     }
-
-    container.style.borderColor = 'var(--border-gray)';
   }
 
   getStyle(): object {

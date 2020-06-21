@@ -43,7 +43,8 @@ export const database: TemplateItem[] = [
                 "fontFamily": "Roboto",
                 "textAlign": "left",
                 "whiteSpace": "normal",
-                "shown": "true"
+                "shown": "true",
+                "box-sizing": "border-box"
             }
         },
         "panel-template-1": {
@@ -69,7 +70,8 @@ export const database: TemplateItem[] = [
                 "fontFamily": "Roboto",
                 "textAlign": "left",
                 "whiteSpace": "normal",
-                "shown": "true"
+                "shown": "true",
+                "box-sizing": "border-box"
             }
         },
         "map-template-0": {
@@ -100,7 +102,8 @@ export const database: TemplateItem[] = [
                 "fontFamily": "Roboto",
                 "textAlign": "left",
                 "whiteSpace": "normal",
-                "shown": "true"
+                "shown": "true",
+                "box-sizing": "border-box"
             }
         }
     }`,
@@ -136,7 +139,8 @@ export const database: TemplateItem[] = [
                 "fontFamily": "Roboto",
                 "textAlign": "left",
                 "whiteSpace": "normal",
-                "shown": "true"
+                "shown": "true",
+                "box-sizing": "border-box"
             }
         },
         "panel-template-1": {
@@ -162,7 +166,8 @@ export const database: TemplateItem[] = [
                 "fontFamily": "Roboto",
                 "textAlign": "left",
                 "whiteSpace": "normal",
-                "shown": "true"
+                "shown": "true",
+                "box-sizing": "border-box"
             }
         },
         "map-template-0": {
@@ -193,7 +198,8 @@ export const database: TemplateItem[] = [
                 "fontFamily": "Roboto",
                 "textAlign": "left",
                 "whiteSpace": "normal",
-                "shown": "true"
+                "shown": "true",
+                "box-sizing": "border-box"
             }
         }
     }`,
@@ -230,7 +236,8 @@ export const database: TemplateItem[] = [
                 "textAlign": "left",
                 "whiteSpace": "normal",
                 "shown": "true", 
-                "position": "relative"
+                "position": "relative",
+                "box-sizing": "border-box"
             }
         },
         "panel-template-1": {
@@ -259,7 +266,8 @@ export const database: TemplateItem[] = [
                 "shown": "true",
                 "position": "absolute",
                 "bottom": "16px",
-                "left": "16px"
+                "left": "16px",
+                "box-sizing": "border-box"
             }
         },
         "map-template-0": {
@@ -290,7 +298,8 @@ export const database: TemplateItem[] = [
                 "fontFamily": "Roboto",
                 "textAlign": "left",
                 "whiteSpace": "normal",
-                "shown": "true"
+                "shown": "true",
+                "box-sizing": "border-box"
             }
         }
     }`,

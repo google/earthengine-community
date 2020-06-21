@@ -141,7 +141,6 @@ export const reducer: Reducer<AppCreatorStore, AppCreatorAction | AnyAction> = (
       }
 
       const { widgetRef } = updatedTemplate[id];
-
       widgetRef.setStyle(updatedTemplate[id].style);
       updateUI(widgetRef, updatedTemplate);
 

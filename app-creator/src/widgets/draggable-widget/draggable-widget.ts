@@ -79,6 +79,21 @@ export class DraggableWidget extends LitElement {
   @property({ type: Boolean })
   editable = false;
 
+  /**
+   * Sets the editing widget's parent container border color to the default gray color.
+   */
+  static removeEditingWidgetHighlight() {
+    const editingWidget = store.getState().editingElement;
+
+    const editingWidgetParent = editingWidget?.parentElement;
+    const editingWidgetParentContainer = editingWidgetParent?.shadowRoot?.getElementById(
+      CONTAINER_ID
+    );
+    if (editingWidgetParentContainer != null) {
+      editingWidgetParentContainer.style.borderColor = 'var(--border-gray)';
+    }
+  }
+
   render() {
     const {
       editable,
@@ -123,7 +138,8 @@ export class DraggableWidget extends LitElement {
    * Triggered when the edit icon is clicked. Stores a reference of the selected element in the store and
    * displays a set of inputs for editing its attributes.
    */
-  handleEditWidget() {
+  handleEditWidget(e: Event) {
+    e.stopPropagation();
     if (!this.editable) {
       /**
        * Draggable widgets on the left side panel are not editable
@@ -141,25 +157,10 @@ export class DraggableWidget extends LitElement {
       return;
     }
 
-    this.removeEditingWidgetHighlight();
+    DraggableWidget.removeEditingWidgetHighlight();
 
     store.dispatch(setEditingWidget(widget));
     container.style.borderColor = 'var(--accent-color)';
-  }
-
-  /**
-   * Sets the editing widget's parent container border color to the default gray color.
-   */
-  removeEditingWidgetHighlight() {
-    const editingWidget = store.getState().editingElement;
-
-    const editingWidgetParent = editingWidget?.parentElement;
-    const editingWidgetParentContainer = editingWidgetParent?.shadowRoot?.getElementById(
-      CONTAINER_ID
-    );
-    if (editingWidgetParentContainer != null) {
-      editingWidgetParentContainer.style.borderColor = 'var(--border-gray)';
-    }
   }
 
   /**

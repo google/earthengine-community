@@ -10,6 +10,7 @@ import { store } from '../../redux/store';
 import '@polymer/paper-dialog/paper-dialog.js';
 import { PaperDialogElement } from '@polymer/paper-dialog/paper-dialog.js';
 import '@polymer/paper-dialog-scrollable/paper-dialog-scrollable.js';
+import { AppCreatorStore } from '../../redux/reducer';
 
 @customElement('tool-bar')
 export class ToolBar extends LitElement {
@@ -74,6 +75,13 @@ export class ToolBar extends LitElement {
     paper-button {
       margin-right: var(--tight);
     }
+
+    #export-button {
+      background-color: var(--accent-color);
+      color: var(--primary-color);
+      height: 30px;
+      font-size: 0.8rem;
+    }
   `;
 
   /**
@@ -95,16 +103,33 @@ export class ToolBar extends LitElement {
   }
 
   /**
+   * Returns a deep clone of template without widgetRefs.
+   */
+  deepCloneTemplate(
+    template: AppCreatorStore['template']
+  ): AppCreatorStore['template'] {
+    const clone: AppCreatorStore['template'] = {};
+    for (const key in template) {
+      if (key === 'widgetRef') {
+        continue;
+      }
+      if (typeof template[key] === 'object' && !Array.isArray(template[key])) {
+        clone[key] = this.deepCloneTemplate(template[key]);
+      } else if (Array.isArray(template[key])) {
+        clone[key] = template[key].slice();
+      } else {
+        clone[key] = template[key];
+      }
+    }
+
+    return clone;
+  }
+
+  /**
    * Returns the serialized template string with indentation.
    */
   getTemplateString() {
-    const template = store.getState().template;
-    // Remove all widget references from JSON.
-    for (const key in template) {
-      if (typeof template[key] === 'object' && !Array.isArray(template[key])) {
-        delete template[key].widgetRef;
-      }
-    }
+    const template = this.deepCloneTemplate(store.getState().template);
     return JSON.stringify(template, null, 3);
   }
 
@@ -133,13 +158,9 @@ export class ToolBar extends LitElement {
           <span id="app-title-suffix">${ToolBar.suffix}</span>
         </h3>
 
-        <ui-button
-          .raised=${false}
-          id="export-button"
-          label="export"
-          color="secondary"
-          @click=${openDialog}
-        ></ui-button>
+        <paper-button id="export-button" @click=${openDialog}
+          >Export</paper-button
+        >
 
         <paper-dialog>
           <h2>Paste string in EE Code Editor</h2>

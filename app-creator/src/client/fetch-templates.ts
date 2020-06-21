@@ -32,7 +32,18 @@ export const database: TemplateItem[] = [
                 "height": "100%",
                 "width": "100%",
                 "padding": "0px",
-                "margin": "0px"
+                "margin": "0px",
+                "color": "black",
+                "backgroundColor": "#FFFFFF",
+                "borderWidth": "0px",
+                "borderStyle": "solid",
+                "borderColor": "black",
+                "fontSize": "12px",
+                "fontWeight": "300",
+                "fontFamily": "Roboto",
+                "textAlign": "left",
+                "whiteSpace": "normal",
+                "shown": "true"
             }
         },
         "panel-template-1": {
@@ -65,11 +76,31 @@ export const database: TemplateItem[] = [
             "id": "map-template-0",
             "children": [],
             "uniqueAttributes": {
-                "zoom": 4
-            },
-            "style": {
+                "zoom": "4",
+                "latitude": "37.419857",
+                "longitude": "-122.078827",
+                "zoomControl": "false",
+                "fullscreenControl": "false",
+                "streetViewControl": "false",
+                "mapTypeControl": "false",
+                "mapStyles": "standard",
+                "customMapStyles": ""
+            }, "style": {
                 "height": "100%",
-                "width": "100%"
+                "width": "100%",
+                "padding": "0px",
+                "margin": "0px",
+                "color": "black",
+                "backgroundColor": "#FFFFFF",
+                "borderWidth": "0px",
+                "borderStyle": "solid",
+                "borderColor": "black",
+                "fontSize": "12px",
+                "fontWeight": "300",
+                "fontFamily": "Roboto",
+                "textAlign": "left",
+                "whiteSpace": "normal",
+                "shown": "true"
             }
         }
     }`,
@@ -94,7 +125,18 @@ export const database: TemplateItem[] = [
                 "height": "100%",
                 "width": "100%",
                 "padding": "0px",
-                "margin": "0px"
+                "margin": "0px",
+                "color": "black",
+                "backgroundColor": "#FFFFFF",
+                "borderWidth": "0px",
+                "borderStyle": "solid",
+                "borderColor": "black",
+                "fontSize": "12px",
+                "fontWeight": "300",
+                "fontFamily": "Roboto",
+                "textAlign": "left",
+                "whiteSpace": "normal",
+                "shown": "true"
             }
         },
         "panel-template-1": {
@@ -127,11 +169,31 @@ export const database: TemplateItem[] = [
             "id": "map-template-0",
             "children": [],
             "uniqueAttributes": {
-                "zoom": 4
-            },
-            "style": {
+                "zoom": "4",
+                "latitude": "37.419857",
+                "longitude": "-122.078827",
+                "zoomControl": "false",
+                "fullscreenControl": "false",
+                "streetViewControl": "false",
+                "mapTypeControl": "false",
+                "mapStyles": "standard",
+                "customMapStyles": ""
+            }, "style": {
                 "height": "100%",
-                "width": "100%"
+                "width": "100%",
+                "padding": "0px",
+                "margin": "0px",
+                "color": "black",
+                "backgroundColor": "#FFFFFF",
+                "borderWidth": "0px",
+                "borderStyle": "solid",
+                "borderColor": "black",
+                "fontSize": "12px",
+                "fontWeight": "300",
+                "fontFamily": "Roboto",
+                "textAlign": "left",
+                "whiteSpace": "normal",
+                "shown": "true"
             }
         }
     }`,
@@ -150,13 +212,24 @@ export const database: TemplateItem[] = [
             "hasDropzone": false,
             "children": ["map-template-0", "panel-template-1"],
             "uniqueAttributes": {
-                "layout": "row"
+                "layout": "column"
             },
             "style": {
                 "height": "100%",
                 "width": "100%",
                 "padding": "0px",
                 "margin": "0px",
+                "color": "black",
+                "backgroundColor": "#FFFFFF",
+                "borderWidth": "0px",
+                "borderStyle": "solid",
+                "borderColor": "black",
+                "fontSize": "12px",
+                "fontWeight": "300",
+                "fontFamily": "Roboto",
+                "textAlign": "left",
+                "whiteSpace": "normal",
+                "shown": "true", 
                 "position": "relative"
             }
         },
@@ -193,11 +266,31 @@ export const database: TemplateItem[] = [
             "id": "map-template-0",
             "children": [],
             "uniqueAttributes": {
-                "zoom": 4
-            },
-            "style": {
+                "zoom": "4",
+                "latitude": "37.419857",
+                "longitude": "-122.078827",
+                "zoomControl": "false",
+                "fullscreenControl": "false",
+                "streetViewControl": "false",
+                "mapTypeControl": "false",
+                "mapStyles": "standard",
+                "customMapStyles": ""
+            }, "style": {
                 "height": "100%",
-                "width": "100%"
+                "width": "100%",
+                "padding": "0px",
+                "margin": "0px",
+                "color": "black",
+                "backgroundColor": "#FFFFFF",
+                "borderWidth": "0px",
+                "borderStyle": "solid",
+                "borderColor": "black",
+                "fontSize": "12px",
+                "fontWeight": "300",
+                "fontFamily": "Roboto",
+                "textAlign": "left",
+                "whiteSpace": "normal",
+                "shown": "true"
             }
         }
     }`,

@@ -21,13 +21,13 @@ export class Button extends LitElement {
     }
 
     .primary {
-      background-color: var(--primary-color) !important;
-      color: var(--accent-color) !important;
+      background-color: var(--primary-color);
+      color: var(--accent-color);
     }
 
     .secondary {
-      background-color: var(--accent-color) !important;
-      color: var(--primary-color) !important;
+      background-color: var(--accent-color);
+      color: var(--primary-color);
     }
   `;
 

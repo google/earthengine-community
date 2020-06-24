@@ -14,3 +14,8 @@ export function camelCaseToTitleCase(text: string) {
 export function getIdPrefix(id: string): string {
   return id.slice(0, id.indexOf('-'));
 }
+
+/**
+ * Empty function.
+ */
+export const noop = () => {};

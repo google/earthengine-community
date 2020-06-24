@@ -30,4 +30,9 @@ suite('tab-container', () => {
     );
     expect(el.shadowRoot!.textContent).to.include(title);
   });
+
+  test('renders correct tag', async () => {
+    const el = await fixture(html`<tab-container></tab-container>`);
+    expect(el.tagName).to.equal('TAB-CONTAINER');
+  });
 });

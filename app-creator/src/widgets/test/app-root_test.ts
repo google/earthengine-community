@@ -15,4 +15,9 @@ suite('app-root', () => {
     const el = await fixture(html`<app-root></app-root>`);
     expect(el.shadowRoot!.childNodes.length).to.be.greaterThan(0);
   });
+
+  test('renders correct tag', async () => {
+    const el = await fixture(html`<app-root></app-root>`);
+    expect(el.tagName).to.equal('APP-ROOT');
+  });
 });

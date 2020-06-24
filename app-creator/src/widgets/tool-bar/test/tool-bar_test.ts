@@ -16,4 +16,9 @@ suite('tool-bar', () => {
     expect(el.shadowRoot!.textContent).to.include(ToolBar.prefix);
     expect(el.shadowRoot!.textContent).to.include(ToolBar.suffix);
   });
+
+  test('renders correct tag', async () => {
+    const el = await fixture(html`<tool-bar></tool-bar>`);
+    expect(el.tagName).to.equal('TOOL-BAR');
+  });
 });

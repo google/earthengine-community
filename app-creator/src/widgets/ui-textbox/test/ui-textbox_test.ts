@@ -2,7 +2,7 @@
  *  @fileoverview This file tests the ui-textbox widget.
  */
 import { Textbox } from '../ui-textbox';
-import { fixture, html, assert } from '@open-wc/testing';
+import { fixture, html, assert, expect } from '@open-wc/testing';
 
 suite('ui-textbox', () => {
   test('is defined', () => {
@@ -10,22 +10,13 @@ suite('ui-textbox', () => {
     assert.instanceOf(el, Textbox);
   });
 
-  test('renders widget with correct label', async () => {
-    const label = 'Item';
-    const el = await fixture(html`<ui-textbox label="${label}"></ui-textbox>`);
-    assert.shadowDom.equal(
-      el,
-      `
-    <paper-input
-      aria-disabled="false"
-      no-float-label=""
-      label="${label}"
-      style=""
-      tabindex="0"
-      type="text"
-      value=""
-      ></paper-input>
-    `
-    );
+  test('renders widget', async () => {
+    const el = await fixture(html`<ui-textbox></ui-textbox>`);
+    expect(el.shadowRoot!.childNodes.length).to.be.greaterThan(0);
+  });
+
+  test('renders correct tag', async () => {
+    const el = await fixture(html`<ui-select></ui-select>`);
+    expect(el.tagName).to.equal('UI-SELECT');
   });
 });

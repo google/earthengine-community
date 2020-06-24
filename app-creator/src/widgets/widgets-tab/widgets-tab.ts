@@ -22,8 +22,10 @@ import '../ui-checkbox/ui-checkbox';
 import '../ui-textbox/ui-textbox';
 import '../ui-slider/ui-slider';
 import '../ui-panel/ui-panel';
+import '../ui-chart/ui-chart';
 import '../search-bar/search-bar';
 import '../empty-notice/empty-notice';
+import '../ui-map/ui-map';
 import { onSearchEvent } from '../search-bar/search-bar';
 
 interface WidgetItem {
@@ -60,7 +62,7 @@ export class WidgetsTab extends LitElement {
       id: 'ui-button',
       name: 'button',
       markup: html`<h6 class="subtitle">Button</h6>
-        <draggable-widget .hasOverlay=${false}>
+        <draggable-widget>
           <ui-button id="button" label="Button"></ui-button>
         </draggable-widget>`,
     },
@@ -101,8 +103,16 @@ export class WidgetsTab extends LitElement {
       id: 'ui-checkbox',
       name: 'checkbox',
       markup: html`<h6 class="subtitle">Checkbox</h6>
-        <draggable-widget .hasOverlay=${false}>
+        <draggable-widget>
           <ui-checkbox id="checkbox" label="Item"></ui-checkbox>
+        </draggable-widget>`,
+    },
+    {
+      id: 'ui-chart',
+      name: 'chart',
+      markup: html`<h6 class="subtitle">Chart</h6>
+        <draggable-widget>
+          <ui-chart id="chart" label="Item"></ui-chart>
         </draggable-widget>`,
     },
   ];
@@ -130,7 +140,10 @@ export class WidgetsTab extends LitElement {
 
     return html`
       <tab-container title="Widgets">
-        <search-bar @onsearch=${handleSearch}></search-bar>
+        <search-bar
+          placeholder="Search for widget"
+          @onsearch=${handleSearch}
+        ></search-bar>
         ${filteredWidgets.map(({ markup }) => markup)} ${emptyNotice}
       </tab-container>
     `;

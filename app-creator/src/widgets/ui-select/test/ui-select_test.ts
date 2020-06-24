@@ -13,11 +13,13 @@ suite('ui-select', () => {
   test('renders widget with correct value', async () => {
     const value = 'Item 1';
     const el = await fixture(
-      html`<ui-select
-        .items=${['Item 1', 'Item 2']}
-        value="${value}"
-      ></ui-select>`
+      html`<ui-select items="Item 1, Item 2" } value="${value}"></ui-select>`
     );
     expect(el.shadowRoot!.textContent).to.include(value);
+  });
+
+  test('renders correct tag', async () => {
+    const el = await fixture(html`<ui-select></ui-select>`);
+    expect(el.tagName).to.equal('UI-SELECT');
   });
 });

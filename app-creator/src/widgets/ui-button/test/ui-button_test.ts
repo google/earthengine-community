@@ -15,4 +15,9 @@ suite('ui-button', () => {
     const el = await fixture(html`<ui-button label="${label}"></ui-button>`);
     expect(el.shadowRoot!.textContent).to.include(label);
   });
+
+  test('renders correct tag', async () => {
+    const el = await fixture(html`<ui-button></ui-button>`);
+    expect(el.tagName).to.equal('UI-BUTTON');
+  });
 });

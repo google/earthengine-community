@@ -133,6 +133,7 @@ export class Dropzone extends LitElement {
     if (store.getState().eventType !== EventType.adding) {
       store.dispatch(setElementAdded(true));
     }
+
     store.dispatch(addWidgetMetaData(clone.id, clone));
   }
 
@@ -147,7 +148,7 @@ export class Dropzone extends LitElement {
     }
 
     // Get widget that's currently being dragged.
-    const widget = store.getState().element;
+    const widget = store.getState().draggingElement;
 
     const widgetWrapper = widget?.parentElement;
     if (widget == null || widgetWrapper == null) {

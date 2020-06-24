@@ -12,3 +12,5 @@ app-creator/redux
 app-creator/widgets
 app-creator/utils
 app-creator/app.yaml
+app-creator/build
+app-creator/env.js

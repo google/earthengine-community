@@ -19,4 +19,9 @@ suite('attributes-tab', () => {
     const el = await fixture(html`<attributes-tab></attributes-tab>`);
     expect(el.shadowRoot!.querySelector('empty-notice')).to.exist;
   });
+
+  test('renders correct tag', async () => {
+    const el = await fixture(html`<attributes-tab></attributes-tab>`);
+    expect(el.tagName).to.equal('ATTRIBUTES-TAB');
+  });
 });

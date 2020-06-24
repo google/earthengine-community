@@ -22,6 +22,8 @@ import {
   RemoveWidget,
   UPDATE_WIDGET_META_DATA,
   UpdateWidgetMetaData,
+  SetSelectedTemplate,
+  SET_SELECTED_TEMPLATE,
 } from './types/actions';
 import {
   DEFAULT_SHARED_ATTRIBUTES,
@@ -35,6 +37,9 @@ import { Checkbox } from '../widgets/ui-checkbox/ui-checkbox';
 import { Select } from '../widgets/ui-select/ui-select';
 import { Slider } from '../widgets/ui-slider/ui-slider';
 import { Textbox } from '../widgets/ui-textbox/ui-textbox';
+import { Chart } from '../widgets/ui-chart/ui-chart';
+import { Map } from '../widgets/ui-map/ui-map';
+import { AppCreatorStore } from './reducer';
 
 /**
  * Updates widget attributes.
@@ -101,8 +106,7 @@ export const setDraggingWidget = (
   return {
     type: SET_DRAGGING_WIDGET,
     payload: {
-      element: widget,
-      eventType: EventType.none,
+      draggingElement: widget,
     },
   };
 };
@@ -116,7 +120,7 @@ export const setEditingWidget = (
   return {
     type: SET_EDITING_WIDGET,
     payload: {
-      element: widget,
+      editingElement: widget,
       /**
        * If widget is null, then we want to clear the editing state.
        * This occurs when are dragging a new widget or we are removing the current widget being edited.
@@ -141,13 +145,29 @@ export const setSelectedTab = (index: Tab): SetSelectedTabAction => {
 };
 
 /**
+ * Sets the actions-panel's selected tab to the index passed in.
+ */
+export const setSelectedTemplate = (
+  template: AppCreatorStore['template'],
+  markup: string
+): SetSelectedTemplate => {
+  return {
+    type: SET_SELECTED_TEMPLATE,
+    payload: {
+      template,
+      markup,
+    },
+  };
+};
+
+/**
  * Resets dragging values on dragend.
  */
 export const resetDraggingValues = (): ResetDraggingValuesAction => {
   return {
     type: RESET_DRAGGING_VALUES,
     payload: {
-      element: null,
+      draggingElement: null,
       eventType: EventType.none,
     },
   };
@@ -210,6 +230,10 @@ function getUniqueAttributes(type: string): UniqueAttributes {
       return Slider.DEFAULT_SLIDER_ATTRIBUTES;
     case WidgetType.textbox:
       return Textbox.DEFAULT_TEXTBOX_ATTRIBUTES;
+    case WidgetType.chart:
+      return Chart.DEFAULT_CHART_ATTRIBUTES;
+    case WidgetType.map:
+      return Map.DEFAULT_MAP_ATTRIBUTES;
     default:
       return {};
   }

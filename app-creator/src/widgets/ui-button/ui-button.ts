@@ -19,6 +19,16 @@ export class Button extends LitElement {
       height: 30px;
       font-size: 0.8rem;
     }
+
+    .primary {
+      background-color: var(--primary-color) !important;
+      color: var(--accent-color) !important;
+    }
+
+    .secondary {
+      background-color: var(--accent-color) !important;
+      color: var(--primary-color) !important;
+    }
   `;
 
   static attributes: AttributeMetaData = {
@@ -59,20 +69,29 @@ export class Button extends LitElement {
   @property({ type: String }) label = '';
 
   /**
+   * Sets the theme of the button including background and text color.
+   * Options available "primary" | "secondary".
+   */
+  @property({ type: String }) color = 'primary';
+
+  /**
    * Callback triggered on button click.
    */
   @property({ type: Object }) onClickHandler: () => void = () => {};
 
   render() {
+    const { label, color, disabled, onClickHandler, raised, styles } = this;
+
     return html`
       <paper-button
-        style=${styleMap(this.styles)}
+        style=${styleMap(styles)}
         draggable="true"
-        @click=${this.onClickHandler}
-        ?disabled=${this.disabled}
-        ?raised=${this.raised}
+        @click=${onClickHandler}
+        ?disabled=${disabled}
+        ?raised=${raised}
+        class="${color}"
       >
-        ${this.label}
+        ${label}
       </paper-button>
     `;
   }
@@ -87,6 +106,9 @@ export class Button extends LitElement {
         break;
       case 'disabled':
         this.disabled = value === 'true';
+        break;
+      case 'color':
+        this.color = value;
         break;
     }
 

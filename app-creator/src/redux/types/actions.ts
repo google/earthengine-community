@@ -2,6 +2,7 @@
  *  @fileoverview This file contains the type interfaces for each action in our store.
  */
 import { EventType, AttributeType, Tab } from './enums';
+import { AppCreatorStore } from '../reducer';
 
 export const SET_DRAGGING_WIDGET = 'SET_DRAGGING_WIDGET';
 export const SET_EDITING_WIDGET = 'SET_EDITING_WIDGET';
@@ -13,11 +14,20 @@ export const RESET_DRAGGING_VALUES = 'RESET_DRAGGING_VALUES';
 export const ADD_WIDGET_META_DATA = 'ADD_WIDGET_META_DATA';
 export const REMOVE_WIDGET = 'REMOVE_WIDGET';
 export const UPDATE_WIDGET_META_DATA = 'UPDATE_WIDGET_META_DATA';
+export const SET_SELECTED_TEMPLATE = 'SET_SELECTED_TEMPLATE';
 
 export interface RemoveWidget {
   type: typeof REMOVE_WIDGET;
   payload: {
     id: string;
+  };
+}
+
+export interface SetSelectedTemplate {
+  type: typeof SET_SELECTED_TEMPLATE;
+  payload: {
+    template: AppCreatorStore['template'];
+    markup: string;
   };
 }
 
@@ -47,15 +57,14 @@ export interface UpdateWidgetMetaData {
 export interface SetDraggingWidgetAction {
   type: typeof SET_DRAGGING_WIDGET;
   payload: {
-    element: Element | null;
-    eventType: EventType;
+    draggingElement: Element | null;
   };
 }
 
 export interface SetEditingWidgetAction {
   type: typeof SET_EDITING_WIDGET;
   payload: {
-    element: Element | null;
+    editingElement: Element | null;
     eventType: EventType;
     openAttributesTab: boolean;
   };
@@ -71,7 +80,7 @@ export interface SetSelectedTabAction {
 export interface ResetDraggingValuesAction {
   type: typeof RESET_DRAGGING_VALUES;
   payload: {
-    element: null;
+    draggingElement: null;
     eventType: EventType;
   };
 }

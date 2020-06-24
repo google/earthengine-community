@@ -14,4 +14,9 @@ suite('actions-panel', () => {
     const el = await fixture(html`<actions-panel></actions-panel>`);
     expect(el.shadowRoot!.childNodes.length).to.be.greaterThan(0);
   });
+
+  test('renders correct tag', async () => {
+    const el = await fixture(html`<actions-panel></actions-panel>`);
+    expect(el.tagName).to.equal('ACTIONS-PANEL');
+  });
 });

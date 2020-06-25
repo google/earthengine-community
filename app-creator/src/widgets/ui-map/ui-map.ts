@@ -15,6 +15,7 @@ import { retro } from '../../map-styles/retro';
 import { night } from '../../map-styles/night';
 import { dark } from '../../map-styles/dark';
 import { DraggableWidget } from '../draggable-widget/draggable-widget';
+import { MAP_STYLES } from '../../utils/constants';
 
 declare global {
   interface Window {
@@ -102,7 +103,7 @@ export class Map extends LitElement {
     mapStyles: {
       value: 'standard',
       type: InputType.select,
-      items: ['standard', 'silver', 'retro', 'night', 'dark', 'aubergine'],
+      items: MAP_STYLES,
     },
     customMapStyles: {
       value: '',

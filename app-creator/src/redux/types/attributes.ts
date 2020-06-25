@@ -44,7 +44,7 @@ export interface AttributeMetaData {
     max?: number;
     type: InputType;
     items?: string[];
-    validator?: Function;
+    validator?: (value: string) => boolean;
   };
 }
 

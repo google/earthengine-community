@@ -192,7 +192,7 @@ export class AttributesTab extends connect(store)(LitElement) {
       ? store.getState().editingElement
       : null;
 
-  openBy(e: Event, key: string) {
+  openTooltipBy(e: Event, key: string) {
     const tooltip = this.shadowRoot?.getElementById(
       key + '-tooltip'
     ) as PaperDialogElement;
@@ -209,7 +209,7 @@ export class AttributesTab extends connect(store)(LitElement) {
         : html`<p
               id="${key}-info"
               class="info-icon"
-              @click=${(e: Event) => this.openBy(e, key)}
+              @click=${(e: Event) => this.openTooltipBy(e, key)}
             ></p>
             <paper-dialog
               id="${key}-tooltip"
@@ -241,7 +241,7 @@ export class AttributesTab extends connect(store)(LitElement) {
   handleInputKeyup(
     e: Event,
     dispatcher: (value: string) => void,
-    validator?: Function
+    validator?: AttributeMetaData['key']['validator']
   ) {
     const inputElement = e.target as HTMLInputElement;
     if (validator != null) {
@@ -266,7 +266,7 @@ export class AttributesTab extends connect(store)(LitElement) {
     attributeType: AttributeType,
     placeholder?: string,
     tooltip?: Tooltip,
-    validator?: Function
+    validator?: AttributeMetaData['key']['validator']
   ): TemplateResult {
     return html`
       <div class="attribute-input-container">
@@ -423,7 +423,7 @@ ${value}</textarea
     attributeType: AttributeType,
     placeholder?: string,
     tooltip?: Tooltip,
-    validator?: Function,
+    validator?: AttributeMetaData['key']['validator'],
     unit?: string,
     step?: number,
     min?: number,

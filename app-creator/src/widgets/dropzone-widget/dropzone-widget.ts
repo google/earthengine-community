@@ -303,7 +303,7 @@ export class Dropzone extends LitElement {
   }
 
   /**
-   * Set individual style porperties on the dropzone.
+   * Set individual style properties on the dropzone.
    */
   setStyleProperty(property: string, value: string): void {
     const container = this.shadowRoot?.getElementById(CONTAINER_ID);

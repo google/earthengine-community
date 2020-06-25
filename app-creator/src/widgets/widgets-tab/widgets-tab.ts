@@ -125,26 +125,24 @@ export class WidgetsTab extends LitElement {
   render() {
     const { query, filterWidgets, handleSearch } = this;
     const filteredWidgets: WidgetItem[] = filterWidgets(query);
-    const emptyNotice =
-      filteredWidgets.length === 0
-        ? html`
-            <empty-notice
-              id="empty-notice"
-              icon="search"
-              message="No widgets available. Please search again."
-              size="large"
-              bold
-            ></empty-notice>
-          `
-        : nothing;
+    const emptyNotice = html`
+      <empty-notice
+        id="empty-notice"
+        icon="search"
+        message='No widgets match "${query}". Please search again.'
+        size="large"
+        bold
+      ></empty-notice>
+    `;
 
     return html`
       <tab-container title="Widgets">
         <search-bar
-          placeholder="Search for widget"
+          placeholder="Search for widget (i.e. button)"
           @onsearch=${handleSearch}
         ></search-bar>
-        ${filteredWidgets.map(({ markup }) => markup)} ${emptyNotice}
+        ${filteredWidgets.map(({ markup }) => markup)}
+        ${filteredWidgets.length === 0 ? emptyNotice : nothing}
       </tab-container>
     `;
   }

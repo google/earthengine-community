@@ -24,6 +24,8 @@ import {
   UpdateWidgetMetaData,
   SetSelectedTemplate,
   SET_SELECTED_TEMPLATE,
+  UPDATE_WIDGET_CHILDREN,
+  UpdateWidgetChildren,
 } from './types/actions';
 import {
   DEFAULT_SHARED_ATTRIBUTES,
@@ -57,6 +59,22 @@ export const updateWidgetMetaData = (
       value,
       id,
       attributeType,
+    },
+  };
+};
+
+/**
+ * Sets children property to a new array of ids. Dispatched on dragover events for adding and reordering widgets.
+ */
+export const updateWidgetChildren = (
+  id: string,
+  childrenIDs: string[]
+): UpdateWidgetChildren => {
+  return {
+    type: UPDATE_WIDGET_CHILDREN,
+    payload: {
+      id,
+      childrenIDs,
     },
   };
 };
@@ -148,14 +166,12 @@ export const setSelectedTab = (index: Tab): SetSelectedTabAction => {
  * Sets the actions-panel's selected tab to the index passed in.
  */
 export const setSelectedTemplate = (
-  template: AppCreatorStore['template'],
-  markup: string
+  template: AppCreatorStore['template']
 ): SetSelectedTemplate => {
   return {
     type: SET_SELECTED_TEMPLATE,
     payload: {
       template,
-      markup,
     },
   };
 };

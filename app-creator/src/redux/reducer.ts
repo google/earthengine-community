@@ -14,6 +14,8 @@ import {
   ADD_WIDGET_META_DATA,
   REMOVE_WIDGET,
   UPDATE_WIDGET_META_DATA,
+  SET_SELECTED_TEMPLATE,
+  UPDATE_WIDGET_CHILDREN,
 } from './types/actions';
 import { Reducer, AnyAction } from 'redux';
 import { UniqueAttributes } from './types/attributes';
@@ -22,7 +24,8 @@ import { getIdPrefix } from '../utils/helpers';
 
 export interface WidgetMetaData {
   id: string;
-  widgetRef: HTMLElement;
+  editable?: boolean;
+  widgetRef?: HTMLElement;
   children: string[];
   uniqueAttributes: UniqueAttributes;
   style: { [key: string]: string };
@@ -125,7 +128,16 @@ export const reducer: Reducer<AppCreatorStore, AppCreatorAction | AnyAction> = (
           ] = attributeValue.replace('%', value);
         }
       } else {
+        const attributeValue =
+          updatedTemplate[id][attributeType][attributeName];
+
         updatedTemplate[id][attributeType][attributeName] = value;
+
+        if (attributeValue.endsWith('px') || attributeValue.endsWith('%')) {
+          updatedTemplate[id][attributeType][
+            attributeName
+          ] += attributeValue.endsWith('px') ? 'px' : '%';
+        }
       }
 
       const { widgetRef } = updatedTemplate[id];
@@ -152,10 +164,27 @@ export const reducer: Reducer<AppCreatorStore, AppCreatorAction | AnyAction> = (
           [action.payload.id]: state.widgetIDs[action.payload.id] + 1,
         },
       };
+    case SET_SELECTED_TEMPLATE:
+      return {
+        ...INITIAL_STATE,
+        selectedTab: state.selectedTab,
+        template: action.payload.template,
+      };
     case RESET_DRAGGING_VALUES:
       return {
         ...state,
         ...action.payload,
+      };
+    case UPDATE_WIDGET_CHILDREN:
+      return {
+        ...state,
+        template: {
+          ...state.template,
+          [action.payload.id]: {
+            ...state.template[action.payload.id],
+            children: action.payload.childrenIDs,
+          },
+        },
       };
     default:
       return state;

@@ -41,6 +41,7 @@ export class Searchbar extends LitElement {
       border: none;
       height: 15px;
       font-size: 0.8rem;
+      width: 100%;
     }
 
     #search-input:focus {
@@ -54,6 +55,11 @@ export class Searchbar extends LitElement {
   @property({ type: Object }) styles = {};
 
   /**
+   * Sets search bar placeholder.
+   */
+  @property({ type: String }) placeholder = 'Search...';
+
+  /**
    * Callback triggered on input change.
    */
   @property({ type: Object })
@@ -64,14 +70,14 @@ export class Searchbar extends LitElement {
   }) => void = () => {};
 
   render() {
-    const { styles, debouncedSearchEvent } = this;
+    const { placeholder, styles, debouncedSearchEvent } = this;
     return html`
       <div id="container" style=${styleMap(styles)}>
         <iron-icon id="search-icon" icon="search"></iron-icon>
         <input
           id="search-input"
           type="text"
-          placeholder="Search for widget"
+          placeholder="${placeholder}"
           @keyup=${debouncedSearchEvent}
         />
       </div>

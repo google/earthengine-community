@@ -271,6 +271,13 @@ ${value}</textarea
     id: string,
     attributeType: AttributeType
   ): TemplateResult {
+    let valueUnit = '';
+    if (value.endsWith('px')) {
+      valueUnit = 'px';
+    } else if (value.endsWith('%')) {
+      valueUnit = '%';
+    }
+
     const unitMarkup =
       unit == null
         ? nothing
@@ -289,17 +296,10 @@ ${value}</textarea
                   )
                 )}
             >
-              <option value="px" ?selected=${unit === 'px'}>px</option>
-              <option value="%" ?selected=${unit === '%'}>%</option>
+              <option value="px" ?selected=${valueUnit === 'px'}>px</option>
+              <option value="%" ?selected=${valueUnit === '%'}>%</option>
             </select>
           `;
-
-    let valueUnit = '';
-    if (value.endsWith('px')) {
-      valueUnit = 'px';
-    } else if (value.endsWith('%')) {
-      valueUnit = '%';
-    }
 
     return html`
       <div class='attribute-input-container'>
@@ -317,7 +317,7 @@ ${value}</textarea
             store.dispatch(
               updateWidgetMetaData(
                 key,
-                (e.target as HTMLInputElement).value + valueUnit,
+                (e.target as HTMLInputElement).value,
                 id,
                 attributeType
               )

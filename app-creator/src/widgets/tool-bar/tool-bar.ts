@@ -43,7 +43,7 @@ export class ToolBar extends LitElement {
       font-size: 1rem;
     }
 
-    #dialog {
+    paper-dialog {
       padding: var(--tight);
       border-radius: var(--tight);
       width: 40%;
@@ -105,7 +105,7 @@ export class ToolBar extends LitElement {
         delete template[key].widgetRef;
       }
     }
-    return JSON.stringify(template, undefined, 3);
+    return JSON.stringify(template, null, 3);
   }
 
   /**
@@ -132,6 +132,7 @@ export class ToolBar extends LitElement {
           <strong id="app-title-prefix">${ToolBar.prefix}</strong>
           <span id="app-title-suffix">${ToolBar.suffix}</span>
         </h3>
+
         <ui-button
           .raised=${false}
           id="export-button"
@@ -140,7 +141,7 @@ export class ToolBar extends LitElement {
           @click=${openDialog}
         ></ui-button>
 
-        <paper-dialog id="dialog">
+        <paper-dialog>
           <h2>Paste string in EE Code Editor</h2>
           <paper-dialog-scrollable id="json-string-container">
             <pre><code id="json-snippet"></code

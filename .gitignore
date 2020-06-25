@@ -14,3 +14,6 @@ app-creator/utils
 app-creator/app.yaml
 app-creator/build
 app-creator/env.js
+app-creator/client
+app-creator/map-styles
+app-creator/templates

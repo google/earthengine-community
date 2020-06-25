@@ -1,5 +1,5 @@
 /**
- *  @fileoverview The ui-textbox widget lets users add user input to their templates
+ *  @fileoverview The ui-textbox widget lets users add user input to their templates.
  */
 import '@polymer/paper-input/paper-input.js';
 import { css, customElement, html, LitElement, property } from 'lit-element';

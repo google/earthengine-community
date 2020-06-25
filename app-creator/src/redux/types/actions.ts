@@ -15,6 +15,15 @@ export const ADD_WIDGET_META_DATA = 'ADD_WIDGET_META_DATA';
 export const REMOVE_WIDGET = 'REMOVE_WIDGET';
 export const UPDATE_WIDGET_META_DATA = 'UPDATE_WIDGET_META_DATA';
 export const SET_SELECTED_TEMPLATE = 'SET_SELECTED_TEMPLATE';
+export const UPDATE_WIDGET_CHILDREN = 'UPDATE_WIDGET_CHILDREN';
+
+export interface UpdateWidgetChildren {
+  type: typeof UPDATE_WIDGET_CHILDREN;
+  payload: {
+    id: string;
+    childrenIDs: string[];
+  };
+}
 
 export interface RemoveWidget {
   type: typeof REMOVE_WIDGET;
@@ -27,7 +36,6 @@ export interface SetSelectedTemplate {
   type: typeof SET_SELECTED_TEMPLATE;
   payload: {
     template: AppCreatorStore['template'];
-    markup: string;
   };
 }
 
@@ -116,4 +124,5 @@ export type AppCreatorAction =
   | ResetDraggingValuesAction
   | AddWidgetMetaData
   | RemoveWidget
-  | UpdateWidgetMetaData;
+  | UpdateWidgetMetaData
+  | UpdateWidgetChildren;

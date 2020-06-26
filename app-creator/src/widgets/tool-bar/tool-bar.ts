@@ -10,6 +10,8 @@ import { store } from '../../redux/store';
 import '@polymer/paper-dialog/paper-dialog.js';
 import { PaperDialogElement } from '@polymer/paper-dialog/paper-dialog.js';
 import '@polymer/paper-dialog-scrollable/paper-dialog-scrollable.js';
+import { AppCreatorStore } from '../../redux/reducer';
+import { WIDGET_REF } from '../../utils/constants';
 
 @customElement('tool-bar')
 export class ToolBar extends LitElement {
@@ -74,6 +76,13 @@ export class ToolBar extends LitElement {
     paper-button {
       margin-right: var(--tight);
     }
+
+    #export-button {
+      background-color: var(--accent-color);
+      color: var(--primary-color);
+      height: 30px;
+      font-size: 0.8rem;
+    }
   `;
 
   /**
@@ -89,35 +98,54 @@ export class ToolBar extends LitElement {
     if (dialog == null || jsonSnippetContainer == null) {
       return;
     }
-    jsonSnippetContainer.textContent = this.getTemplateString();
+    jsonSnippetContainer.textContent = this.getTemplateString(3);
 
     (dialog as PaperDialogElement).open();
   }
 
   /**
-   * Returns the serialized template string with indentation.
+   * Returns a deep clone of template without widgetRefs.
    */
-  getTemplateString() {
-    const template = store.getState().template;
-    // Remove all widget references from JSON.
+  deepCloneTemplate(
+    template: AppCreatorStore['template']
+  ): AppCreatorStore['template'] {
+    const clone: AppCreatorStore['template'] = {};
     for (const key in template) {
+      /**
+       * Widget refs are only needed in the context of the app creator. Once we serialize the data,
+       * we no longer need to keep the refs. As a result, we skip over them when we are producing the
+       * output string.
+       */
+      if (key === WIDGET_REF) {
+        continue;
+      }
       if (typeof template[key] === 'object' && !Array.isArray(template[key])) {
-        delete template[key].widgetRef;
+        clone[key] = this.deepCloneTemplate(template[key]);
+      } else if (Array.isArray(template[key])) {
+        clone[key] = template[key].slice();
+      } else {
+        clone[key] = template[key];
       }
     }
-    return JSON.stringify(template, null, 3);
+
+    return clone;
+  }
+
+  /**
+   * Returns the serialized template string with indentation.
+   */
+  getTemplateString(space: number = 0) {
+    const template = this.deepCloneTemplate(store.getState().template);
+    return JSON.stringify(template, null, space);
   }
 
   /**
    * Adds template string to clipboard.
    */
   copy() {
-    const copyText = this.shadowRoot?.getElementById('json-snippet');
-    if (copyText == null) {
-      return;
-    }
     const textArea = document.createElement('textarea');
-    textArea.value = copyText.innerText;
+    // We get the template string without indentation and with escaped single quotes.
+    textArea.value = this.getTemplateString().replace(/'/g, "\\'");
     document.body.appendChild(textArea);
     textArea.select();
     document.execCommand('Copy');
@@ -133,13 +161,9 @@ export class ToolBar extends LitElement {
           <span id="app-title-suffix">${ToolBar.suffix}</span>
         </h3>
 
-        <ui-button
-          .raised=${false}
-          id="export-button"
-          label="export"
-          color="secondary"
-          @click=${openDialog}
-        ></ui-button>
+        <paper-button id="export-button" @click=${openDialog}
+          >Export</paper-button
+        >
 
         <paper-dialog>
           <h2>Paste string in EE Code Editor</h2>

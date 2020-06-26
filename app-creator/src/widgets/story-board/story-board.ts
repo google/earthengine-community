@@ -14,7 +14,7 @@ import '@polymer/paper-card/paper-card.js';
 import '../dropzone-widget/dropzone-widget';
 import '../ui-map/ui-map';
 import '@polymer/iron-icons/hardware-icons.js';
-import './../ui-panel/ui-panel';
+import '../ui-panel/ui-panel';
 import { connect } from 'pwa-helpers';
 import { DeviceType, WidgetType } from '../../redux/types/enums';
 import { store } from '../../redux/store';
@@ -22,7 +22,7 @@ import { AppCreatorStore, WidgetMetaData } from '../../redux/reducer';
 import { getIdPrefix } from '../../utils/helpers';
 import { Map } from '../ui-map/ui-map';
 import { Dropzone } from '../dropzone-widget/dropzone-widget';
-import { Panel } from './../ui-panel/ui-panel';
+import { Panel } from '../ui-panel/ui-panel';
 import { setSelectedTemplate } from '../../redux/actions';
 import { ROOT_ID } from '../../utils/constants';
 import { EEWidget } from '../../redux/types/types';
@@ -104,6 +104,7 @@ export class Storyboard extends connect(store)(LitElement) {
       if (storyboard == null) {
         return;
       }
+
       storyboard.innerHTML = ``;
       generateUI(state.template, storyboard);
     }

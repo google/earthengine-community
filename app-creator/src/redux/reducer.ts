@@ -134,14 +134,15 @@ export const reducer: Reducer<AppCreatorStore, AppCreatorAction | AnyAction> = (
         updatedTemplate[id][attributeType][attributeName] = value;
 
         if (attributeValue.endsWith('px') || attributeValue.endsWith('%')) {
-          updatedTemplate[id][attributeType][
-            attributeName
-          ] += attributeValue.endsWith('px') ? 'px' : '%';
+          if (!value.endsWith('px') && !value.endsWith('%')) {
+            updatedTemplate[id][attributeType][
+              attributeName
+            ] += attributeValue.endsWith('px') ? 'px' : '%';
+          }
         }
       }
 
       const { widgetRef } = updatedTemplate[id];
-
       widgetRef.setStyle(updatedTemplate[id].style);
       updateUI(widgetRef, updatedTemplate);
 
@@ -152,6 +153,18 @@ export const reducer: Reducer<AppCreatorStore, AppCreatorAction | AnyAction> = (
     case REMOVE_WIDGET:
       const newTemplate = { ...state.template };
       delete newTemplate[action.payload.id];
+      for (const key in newTemplate) {
+        const widget = newTemplate[key];
+        if (
+          typeof widget === 'object' &&
+          !Array.isArray(widget) &&
+          'children' in widget
+        ) {
+          widget.children = widget.children.filter(
+            (id: string) => id !== action.payload.id
+          );
+        }
+      }
       return {
         ...state,
         template: newTemplate,

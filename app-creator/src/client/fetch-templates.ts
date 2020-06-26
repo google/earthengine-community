@@ -32,7 +32,19 @@ export const database: TemplateItem[] = [
                 "height": "100%",
                 "width": "100%",
                 "padding": "0px",
-                "margin": "0px"
+                "margin": "0px",
+                "color": "black",
+                "backgroundColor": "#FFFFFF",
+                "borderWidth": "0px",
+                "borderStyle": "solid",
+                "borderColor": "black",
+                "fontSize": "12px",
+                "fontWeight": "300",
+                "fontFamily": "Roboto",
+                "textAlign": "left",
+                "whiteSpace": "normal",
+                "shown": "true",
+                "box-sizing": "border-box"
             }
         },
         "panel-template-1": {
@@ -58,18 +70,41 @@ export const database: TemplateItem[] = [
                 "fontFamily": "Roboto",
                 "textAlign": "left",
                 "whiteSpace": "normal",
-                "shown": "true"
+                "shown": "true",
+                "box-sizing": "border-box"
             }
         },
         "map-template-0": {
             "id": "map-template-0",
             "children": [],
             "uniqueAttributes": {
-                "zoom": 4
-            },
-            "style": {
+                "zoom": "4",
+                "latitude": "37.419857",
+                "longitude": "-122.078827",
+                "zoomControl": "false",
+                "fullscreenControl": "false",
+                "scaleControl": "false",
+                "streetViewControl": "false",
+                "mapTypeControl": "false",
+                "mapStyles": "standard",
+                "customMapStyles": ""
+            }, "style": {
                 "height": "100%",
-                "width": "100%"
+                "width": "100%",
+                "padding": "0px",
+                "margin": "0px",
+                "color": "black",
+                "backgroundColor": "#FFFFFF",
+                "borderWidth": "0px",
+                "borderStyle": "solid",
+                "borderColor": "black",
+                "fontSize": "12px",
+                "fontWeight": "300",
+                "fontFamily": "Roboto",
+                "textAlign": "left",
+                "whiteSpace": "normal",
+                "shown": "true",
+                "box-sizing": "border-box"
             }
         }
     }`,
@@ -94,7 +129,19 @@ export const database: TemplateItem[] = [
                 "height": "100%",
                 "width": "100%",
                 "padding": "0px",
-                "margin": "0px"
+                "margin": "0px",
+                "color": "black",
+                "backgroundColor": "#FFFFFF",
+                "borderWidth": "0px",
+                "borderStyle": "solid",
+                "borderColor": "black",
+                "fontSize": "12px",
+                "fontWeight": "300",
+                "fontFamily": "Roboto",
+                "textAlign": "left",
+                "whiteSpace": "normal",
+                "shown": "true",
+                "box-sizing": "border-box"
             }
         },
         "panel-template-1": {
@@ -120,18 +167,41 @@ export const database: TemplateItem[] = [
                 "fontFamily": "Roboto",
                 "textAlign": "left",
                 "whiteSpace": "normal",
-                "shown": "true"
+                "shown": "true",
+                "box-sizing": "border-box"
             }
         },
         "map-template-0": {
             "id": "map-template-0",
             "children": [],
             "uniqueAttributes": {
-                "zoom": 4
-            },
-            "style": {
+                "zoom": "4",
+                "latitude": "37.419857",
+                "longitude": "-122.078827",
+                "zoomControl": "false",
+                "fullscreenControl": "false",
+                "scaleControl": "false",
+                "streetViewControl": "false",
+                "mapTypeControl": "false",
+                "mapStyles": "standard",
+                "customMapStyles": ""
+            }, "style": {
                 "height": "100%",
-                "width": "100%"
+                "width": "100%",
+                "padding": "0px",
+                "margin": "0px",
+                "color": "black",
+                "backgroundColor": "#FFFFFF",
+                "borderWidth": "0px",
+                "borderStyle": "solid",
+                "borderColor": "black",
+                "fontSize": "12px",
+                "fontWeight": "300",
+                "fontFamily": "Roboto",
+                "textAlign": "left",
+                "whiteSpace": "normal",
+                "shown": "true",
+                "box-sizing": "border-box"
             }
         }
     }`,
@@ -150,14 +220,26 @@ export const database: TemplateItem[] = [
             "hasDropzone": false,
             "children": ["map-template-0", "panel-template-1"],
             "uniqueAttributes": {
-                "layout": "row"
+                "layout": "column"
             },
             "style": {
                 "height": "100%",
                 "width": "100%",
                 "padding": "0px",
                 "margin": "0px",
-                "position": "relative"
+                "color": "black",
+                "backgroundColor": "#FFFFFF",
+                "borderWidth": "0px",
+                "borderStyle": "solid",
+                "borderColor": "black",
+                "fontSize": "12px",
+                "fontWeight": "300",
+                "fontFamily": "Roboto",
+                "textAlign": "left",
+                "whiteSpace": "normal",
+                "shown": "true", 
+                "position": "relative",
+                "box-sizing": "border-box"
             }
         },
         "panel-template-1": {
@@ -186,18 +268,41 @@ export const database: TemplateItem[] = [
                 "shown": "true",
                 "position": "absolute",
                 "bottom": "16px",
-                "left": "16px"
+                "left": "16px",
+                "box-sizing": "border-box"
             }
         },
         "map-template-0": {
             "id": "map-template-0",
             "children": [],
             "uniqueAttributes": {
-                "zoom": 4
-            },
-            "style": {
+                "zoom": "4",
+                "latitude": "37.419857",
+                "longitude": "-122.078827",
+                "zoomControl": "false",
+                "fullscreenControl": "false",
+                "scaleControl": "false",
+                "streetViewControl": "false",
+                "mapTypeControl": "false",
+                "mapStyles": "standard",
+                "customMapStyles": ""
+            }, "style": {
                 "height": "100%",
-                "width": "100%"
+                "width": "100%",
+                "padding": "0px",
+                "margin": "0px",
+                "color": "black",
+                "backgroundColor": "#FFFFFF",
+                "borderWidth": "0px",
+                "borderStyle": "solid",
+                "borderColor": "black",
+                "fontSize": "12px",
+                "fontWeight": "300",
+                "fontFamily": "Roboto",
+                "textAlign": "left",
+                "whiteSpace": "normal",
+                "shown": "true",
+                "box-sizing": "border-box"
             }
         }
     }`,

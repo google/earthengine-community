@@ -95,6 +95,11 @@ export class Map extends LitElement {
       type: InputType.select,
       items: ['true', 'false'],
     },
+    scaleControl: {
+      value: 'false',
+      type: InputType.select,
+      items: ['true', 'false'],
+    },
     mapTypeControl: {
       value: 'false',
       type: InputType.select,
@@ -147,11 +152,6 @@ export class Map extends LitElement {
   };
 
   /**
-   * If set to true, adds street view button.
-   */
-  private streetViewControl = false;
-
-  /**
    * Enables zoom control on map.
    */
   private zoomControl = false;
@@ -162,9 +162,19 @@ export class Map extends LitElement {
   private fullscreenControl = false;
 
   /**
+   * If set to true, adds street view control button.
+   */
+  private streetViewControl = false;
+
+  /**
    * If set to true, adds map type control.
    */
   private mapTypeControl = false;
+
+  /**
+   * If set to true, adds scale control.
+   */
+  private scaleControl = false;
 
   /**
    * Sets pre-existing map styling.
@@ -215,9 +225,11 @@ export class Map extends LitElement {
 
       this.mapOptions.zoomControl = this.zoomControl;
 
+      this.mapOptions.fullscreenControl = this.fullscreenControl;
+
       this.mapOptions.streetViewControl = this.streetViewControl;
 
-      this.mapOptions.fullscreenControl = this.fullscreenControl;
+      this.mapOptions.scaleControl = this.scaleControl;
 
       this.mapOptions.mapTypeControl = this.mapTypeControl;
 
@@ -255,6 +267,9 @@ export class Map extends LitElement {
         break;
       case 'zoomControl':
         this.zoomControl = value === 'true';
+        break;
+      case 'scaleControl':
+        this.scaleControl = value === 'true';
         break;
       case 'streetViewControl':
         this.streetViewControl = value === 'true';

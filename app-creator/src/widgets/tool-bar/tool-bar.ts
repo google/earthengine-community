@@ -98,7 +98,7 @@ export class ToolBar extends LitElement {
     if (dialog == null || jsonSnippetContainer == null) {
       return;
     }
-    jsonSnippetContainer.textContent = this.getTemplateString();
+    jsonSnippetContainer.textContent = this.getTemplateString(3);
 
     (dialog as PaperDialogElement).open();
   }
@@ -134,21 +134,18 @@ export class ToolBar extends LitElement {
   /**
    * Returns the serialized template string with indentation.
    */
-  getTemplateString() {
+  getTemplateString(space: number = 0) {
     const template = this.deepCloneTemplate(store.getState().template);
-    return JSON.stringify(template, null, 3);
+    return JSON.stringify(template, null, space);
   }
 
   /**
    * Adds template string to clipboard.
    */
   copy() {
-    const copyText = this.shadowRoot?.getElementById('json-snippet');
-    if (copyText == null) {
-      return;
-    }
     const textArea = document.createElement('textarea');
-    textArea.value = copyText.innerText;
+    // We get the template string without indentation and with escaped single quotes.
+    textArea.value = this.getTemplateString().replace(/'/g, "\\'");
     document.body.appendChild(textArea);
     textArea.select();
     document.execCommand('Copy');

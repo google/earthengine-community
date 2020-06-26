@@ -1,0 +1,12 @@
+runtime: go113
+
+env_variables:
+  GOOGLE_CLOUD_PROJECT: YOUR_PROJECT_NAME
+
+handlers:
+  - url: /
+    static_files: static/index.html
+    upload: static/index.html
+
+  - url: /static/
+    static_dir: static

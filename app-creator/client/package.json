@@ -8,6 +8,7 @@
   "scripts": {
     "build": "tsc",
     "build:watch": "tsc --watch",
+    "build:prod": "node_modules/.bin/webpack",
     "clean": "rimraf app-root.{d.ts,d.ts.map,js,js.map} test/app-root.{d.ts,d.ts.map,js,js.map} test/app-root_test.{d.ts,d.ts.map,js,js.map}",
     "lint": "npm run lint:lit-analyzer && npm run lint:eslint",
     "lint:eslint": "eslint 'src/**/*.ts'",

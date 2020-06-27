@@ -3,6 +3,7 @@ package main
 import (
 	"log"
 	"os"
+	"regexp"
 
 	"github.com/labstack/echo"
 )
@@ -19,7 +20,15 @@ func main() {
 
 	// Check if a PORT env variable is set.
 	port := os.Getenv("PORT")
-	if port == "" {
+
+	// Strip any leading leading colons and make sure it only contains numbers.
+	re := regexp.MustCompile(`^[:]+?([0-9]+)$`)
+	port = string(re.ReplaceAll([]byte(port), []byte("$1"))[:])
+
+	reAllNumbers := regexp.MustCompile(`^[0-9]+$`)
+
+	// Default to port 8080 if environment variable is not set or is invalid.
+	if port == "" || !reAllNumbers.MatchString(port) {
 		port = "8080"
 		log.Printf("Defaulting to port %s", port)
 	}

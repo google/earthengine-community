@@ -30,17 +30,13 @@ Land-cover classification in complex landscapes have been constrained by inheren
 #Caveat
 This landcover classification was implemented based on available data as collected under a  multi-year project (https://tamasa.cimmyt.org/) which was focused on advancing digital agronomic innovation for decision support in maize-based farming systems. Therefore, the available ground-truth data is rich in maize farm locations, and contains much fewer datapoints for other croptypes within the focal geography. Cosidering this limitation, the scope of this classification tool and this tutorial is limited to binary classification of maizelands (i.e. maize vs. non-maize cultivated) within the period of data collection (i.e. 2017).
 
-In a few sentences, describe what the user is going to learn. Be sure to include
-_concise_ background information; only include what's helpful and relevant.
-When in doubt, leave it out!
-
 
 ##Outline
 
-1. Importing, Ingesting, and Visualizing Data
-a. Import groundtruth data
-b. Import boundary files
-c. Ingest sentinel 2A Imageries
+1. Ingesting, Importing, and Visualizing Data
+a.  Ingest boundary files
+b.  Ingest groundtruth data
+c.  Import sentinel 2A Imageries
 
 2.	Setting-Up and Implementing Analytics
 a. Defining model
@@ -50,6 +46,73 @@ c. Generating results
 3.	Plotting the charts to generate insights
 
 5.	Exporting Outputs
+
+
+##Ingesting, Importing, and Visualizing Data
+
+a. Ingest the Nigerian boundary as the focal geography and maize target region boundary as the area of interest (AOI). Using the code below, you will import a FeatureCollection object, and filter by "Country" to select "Nigeria". FeatureCollections are groups of features (spatial data and attributes). Filter is the method to extract a specific set of features from a feature collection. Assign the output to a variable called "nigerianBorder". The imagery analyses will be limited to the maize target region in Nigeria, i.e. the region that accounts for ~70% of Nigeria's maize production. Therefore, you will import a predefined shapefile layer (already converted to GEE asset) and assign to the variable "aoi". The maize target region asset can be assessed here (https://code.earthengine.google.com/?asset=users/juliusadewopo/MzeTargetRegion_alt_dslv2).  Display both layers to the map it using Map.addLayer() and tweak the symbology with the color parameters specified below.
+
+// Ingest country boundaries feature collection.
+var dataset = ee.FeatureCollection('USDOS/LSIB_SIMPLE/2017');
+
+// Apply filter where country name equals Nigeria.
+var nigeriaBorder = dataset.filter(ee.Filter.eq('country_na', 'Nigeria'));
+
+// Print new "nigeriaBorder" object and explore features and properties.
+// There should only be one feature representing Nigeria.
+print(nigeriaBorder);
+
+// Center the map view on Nigeria, otherwise, the view defaults to the Country of your IP address
+Map.centerObject(nigeriaBorder, 6);
+
+//Setting color parameters for Nigeria Boundary
+var shown = true; // true or false, 1 or 0 
+var opacity = 0.2; // number [0-1]
+var nameLayer = 'map'; // string
+var visParams = {color: 'red'}; // dictionary: 
+
+//Add Nigeria as a layer to the map view
+Map.addLayer(nigeriaBorder, visParams, nameLayer, shown, opacity);
+
+//Setting color parameters for Maize target area boundary
+var shown = true; // true or false, 1 or 0 
+var opacity = 0.5; // number [0-1]
+var nameLayer = 'map2'; // string
+var visParams = {color: 'brown', strokeWidth: 5}; // dictionary:
+Map.addLayer(aoi, visParams, nameLayer, shown, opacity);
+
+
+b. Ingest groundtruth data for georeferenced locations where maize (and other crops) were cultivated during the growing season of 2017 (June - Oct). The data has been pre-processed and randomly split (70:30) into training and testing datasets. Import the training dataset as GEE asset here (https://code.earthengine.google.com/?asset=users/juliusadewopo/Mzetrgt_Train17_Rev), and the testing dataset here (https://code.earthengine.google.com/?asset=users/juliusadewopo/Mzetrgt_Test17_Rev). Assing variable names "trainpts" and "testpts" to the training and testing points, respectively, and add them as layer to the map view.
+
+//Display training and test points to visualize distribution within the aoi
+Map.addLayer(trainpts, {color:'FF0000'});
+Map.addLayer(testpts, {color:'00FFFF'});
+
+
+c. Import sentinel 2A Imageries
+
+Next, you will import Copernicus Sentinel 2A spectral band imageries. The imageries are organized as an ImageCollection object, which is a container for a collection of individual images. With the code snippet below, you will import the sentinel 2A ImageCollection , and similar  method can be used to import an ImageCollection for other types of multi-temporal or multi-spectral data including Landsat, vegetation index,  rainfall, temperature etc. Considering the context, you will apply relevant filters to restrict selected imagery tiles to the aoi and date range for the growing season in 2017 (to coincide with the period of data collection). Standard quality control bands for cloud will be used in a function to create a mask layer, ans assigned to variable "maskS2Clouds". The function is passed on to a variable that minimizes cloud contamination by selecting pixels with the least percentage of cloud contamination within the temporal imagery composite (during the season). which will be combined with other filters to generate a "mosaic" of cloud-minimized imageries. Note that the aoi is north of the equator and often characterized by heavy cloudiness during the rainy season, so this workflow is essesntial and can be further tweaked to achieve better results.
+
+//Ingest sentinel 2A imageries
+var s2 = ee.ImageCollection("COPERNICUS/S2");
+
+// Define parameters for cloudmask; Bits 10 and 11 are clouds and cirrus, respectively.
+var cloudBitMask = ee.Number(2).pow(10).int();
+var cirrusBitMask = ee.Number(2).pow(11).int();
+
+//set function to generate cloud mask
+function maskS2clouds(image) {
+  var qa = image.select('QA60');
+  // Both flags should be set to zero, indicating clear conditions.
+  var mask = qa.bitwiseAnd(cloudBitMask).eq(0).and(
+             qa.bitwiseAnd(cirrusBitMask).eq(0));
+  return image.updateMask(mask);
+}
+
+//Apply the cloud mask with other filters to derive a mosaic within spatial and temporal context
+var cloudMasked = s2.filterBounds(aoi).map(maskS2clouds).filterDate('2017-06-15', '2017-10-15');
+var min = cloudMasked.min();
+var mosaic = ee.ImageCollection(min).mosaic();
 
 
 ## Section heading 1

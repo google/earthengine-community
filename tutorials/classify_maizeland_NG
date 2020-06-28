@@ -39,13 +39,13 @@ b.  Ingest groundtruth data
 c.  Import sentinel 2A Imageries
 
 2.	Setting-Up and Implementing Analytics
-a. Defining model
-b. Selecting/optimizing Classifiers
-c. Generating results
+a. Select Bands and extract training data
+b. Train Classifiers, calculate error matrix, and assess training accuracy
+c. Test Classification outputs, generate validation matrix, and calculate accuracy
 
-3.	Plotting the charts to generate insights
+3.	Export Outputs
 
-5.	Exporting Outputs
+4.	Final notes
 
 
 ##Ingesting, Importing, and Visualizing Data
@@ -113,6 +113,91 @@ function maskS2clouds(image) {
 var cloudMasked = s2.filterBounds(aoi).map(maskS2clouds).filterDate('2017-06-15', '2017-10-15');
 var min = cloudMasked.min();
 var mosaic = ee.ImageCollection(min).mosaic();
+
+//Create Custom mosaic from selected bands to visualize the cloud-minimized imagery; You apply similar code to compare the initial cloud-contaminated imagery, setting "s2" as the image
+Map.addLayer(mosaic, {bands: ['B4', 'B3', 'B2'], max: 2000}, 'custom mosaic');
+
+
+2.	Setting-Up and Implementing Analytics
+a. Now that you have prepared the mosaic, proceed to select that spectral bands that are relevant for the classification. The more bands selected, the more computationally intensive the classification will be. In the code below, all bands of the S2A are selected, but you can tweak this by selecting fewer bands. Note that our goal is to utilize as much spectral information as possible to train the classifier algorithm to differentiate between maize and non-maize. It's probable that generating additional training points from the imagery may help to further achieve this objective. The training points (trainpts) will be used to extract the reflectance values of the pixels from all spectral bands and this will be passed to the classifier algorithms.
+
+//Specify and select bands that will be used in the classification
+var bands = ['B1','B2','B3','B4','B5','B6', 'B7', 'B8', 'B8A', 'B9', 'B10','B11', 'B12'];
+
+var image_cl = mosaic
+  .select(bands);
+
+// Overlay the points on the imagery to get training.
+var training = image_cl.sampleRegions({
+  collection: trainpts,
+  properties: ['class'],
+  scale: 30
+});
+
+
+b. For the binary classification you will be applying 2 classifiers - classification and regression trees (CART) and Random Forest (RF), which are both suitable for categorical classification and have been used in various contexts for classification. By comparing outputs from both CART and RF, users can make objective inference on most accurate classifier. Default parameters will be accepted and further tweaks (such as optiming number of trees in RF) is outside the scope of this tutorial. The output imagery will be a bi-colored imagery, and the console will show the metrics. While reviewing the output metrics, note that maize is labeled as "0" while non-maize is labeled as "1".
+
+// Train a CART classifier with default parameters.
+var trained = ee.Classifier.smileCart().train(training, 'class', bands);
+
+//Train a RF classifier with default parameters.
+var trained_rf = ee.Classifier.smileRandomForest(10)
+    .train({
+      features: training,
+      classProperty: 'class',
+      inputProperties: bands
+    });
+
+// Classify the image with the same bands used for training.
+var classified = image_cl.select(bands).classify(trained);
+var classified_rf = image_cl.select(bands).classify(trained_rf);
+
+// Create a palette to display the classes.
+var palette =['00008B', '32CD32'];
+
+//Add the output of the training classification to the map view
+Map.addLayer(classified,{min: 0, max: 1, palette: palette},'class');
+Map.addLayer(classified_rf,{min: 0, max: 1, palette: palette},'class');
+
+
+// Calculate the training error matrix and accuracy for both classifiers by using the "confusionMatrix" function to generate metrics on the resubstitution accuracy, as shown below
+
+//Accuracy calculation for CART
+var trainAccuracy = trained.confusionMatrix();
+print('Resubstitution error matrix: ', trainAccuracy);
+print('Training overall accuracy: ', trainAccuracy.accuracy());
+
+//Accuracy calculation for RF
+var trainAccuracy_rf = trained_rf.confusionMatrix();
+print('Resubstitution error matrix: ', trainAccuracy_rf);
+print('Training overall accuracy: ', trainAccuracy_rf.accuracy());
+  
+  
+c. To assess the reliability of the classification outputs, use the "testpts" dataset (earlier ingested as assets) to extract spectral information from the bands. You will further apply ee.Filter.neq on the "B1" band to remove pixels with null value, and extract the classified values for the "testpts" pixels from the training-mode algorithm classification. Note that different accuracy assessment is conducted for each classifier.
+    
+  // Use the testpts to extract pixel values from the bands for validation
+ var testing = image_cl.sampleRegions({
+  collection: testpts,
+  properties: ['class'],
+  scale: 30
+}).filter(ee.Filter.neq('B1', null)); //filter added to rid out null pixels
+
+// Classify the validation data
+var validated = testing.classify(trained);
+var validated_rf = testing.classify(trained_rf);
+
+// Calculate confusion matrix to generate validation accuracy for CART
+var testAccuracy = validated.errorMatrix('class', 'classification');
+print('Validation error matrix: ', testAccuracy);
+print('Validation overall accuracy: ', testAccuracy.accuracy());
+
+// Calculate confusion matrix to generate validation accuracy for CART
+var testAccuracy_rf = validated_rf.errorMatrix('class', 'classification');
+print('Validation error matrix: ', testAccuracy_rf);
+print('Validation overall accuracy: ', testAccuracy_rf.accuracy());
+
+//Add the "aoi" layer on top of the classified grid for visualization. You can tweak the opacity parameter or turn off the "aoi" layer to see the layer beneath more clearly
+Map.addLayer(aoi);   
 
 
 ## Section heading 1

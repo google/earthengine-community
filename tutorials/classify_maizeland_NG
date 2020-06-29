@@ -229,3 +229,5 @@ var areas = areaImage.reduceRegion({
  print (areas);
 
 
+##4.	Final notes
+Although this tutorial offers a template for users, further tweaks can possibly improve the results.  The results (in the Console tab) shows that RF outperformed CART in the validation mode (RF accuracy = 73.4%; CART accuracy = 69%). Also, the maize area estimated was 19.09*1e10 sq meter (i.e. ~19 million ha). Is is probable that this is over/under estimated, so further area-based validation may be necessary to validate the estimate. In any case, this analytical tool (and tutorial) can support rapid generation of national cropland area estimate that is scalable (across, regions, local governments/districts, wards or villages) based on delineated boundaries. 

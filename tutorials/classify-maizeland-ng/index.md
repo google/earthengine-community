@@ -133,7 +133,6 @@ var training = image_cl.sampleRegions({
   scale: 30
 });
 
-
 b. For the binary classification you will be applying 2 classifiers - classification and regression trees (CART) and Random Forest (RF), which are both suitable for categorical classification and have been used in various contexts for classification. By comparing outputs from both CART and RF, users can make objective inference on most accurate classifier. Default parameters will be accepted and further tweaks (such as optiming number of trees in RF) is outside the scope of this tutorial. The output imagery will be a bi-colored imagery, and the console will show the metrics. While reviewing the output metrics, note that maize is labeled as "0" while non-maize is labeled as "1".
 
 // Train a CART classifier with default parameters.
@@ -170,7 +169,6 @@ print('Training overall accuracy: ', trainAccuracy.accuracy());
 var trainAccuracy_rf = trained_rf.confusionMatrix();
 print('Resubstitution error matrix: ', trainAccuracy_rf);
 print('Training overall accuracy: ', trainAccuracy_rf.accuracy());
-  
   
 c. To assess the reliability of the classification outputs, use the "testpts" dataset (earlier ingested as assets) to extract spectral information from the bands. You will further apply ee.Filter.neq on the "B1" band to remove pixels with null value, and extract the classified values for the "testpts" pixels from the training-mode algorithm classification. Note that different accuracy assessment is conducted for each classifier.
     

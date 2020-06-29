@@ -43,7 +43,7 @@ a. Select Bands and extract training data
 b. Train Classifiers, calculate error matrix, and assess training accuracy
 c. Test Classification outputs, generate validation matrix, and calculate accuracy
 
-3.	Export Outputs
+3.	Calculate area and Export Outputs
 
 4.	Final notes
 
@@ -119,7 +119,7 @@ Map.addLayer(mosaic, {bands: ['B4', 'B3', 'B2'], max: 2000}, 'custom mosaic');
 
 
 2.	Setting-Up and Implementing Analytics
-a. Now that you have prepared the mosaic, proceed to select that spectral bands that are relevant for the classification. The more bands selected, the more computationally intensive the classification will be. In the code below, all bands of the S2A are selected, but you can tweak this by selecting fewer bands. Note that our goal is to utilize as much spectral information as possible to train the classifier algorithm to differentiate between maize and non-maize. It's probable that generating additional training points from the imagery may help to further achieve this objective. The training points (trainpts) will be used to extract the reflectance values of the pixels from all spectral bands and this will be passed to the classifier algorithms.
+a. Now that you have prepared the mosaic, proceed to select the spectral bands that are relevant for the classification. By selecting more bands, the analysis will become more computationally intensive. The bands also have differing spatial resolution (https://en.wikipedia.org/wiki/Sentinel-2), so the relative computation cost (and time) will vary with the choice of bands. In the code below, all bands of the S2A are selected, but you can tweak this by selecting fewer bands. Note that our goal is to utilize as much spectral information as possible to train the classifier algorithm to differentiate between maize and non-maize. The training points (trainpts) will be used to extract the reflectance values of the pixels from all spectral bands and this will be passed to the classifier algorithms.
 
 //Specify and select bands that will be used in the classification
 var bands = ['B1','B2','B3','B4','B5','B6', 'B7', 'B8', 'B8A', 'B9', 'B10','B11', 'B12'];
@@ -196,49 +196,36 @@ var testAccuracy_rf = validated_rf.errorMatrix('class', 'classification');
 print('Validation error matrix: ', testAccuracy_rf);
 print('Validation overall accuracy: ', testAccuracy_rf.accuracy());
 
-//Add the "aoi" layer on top of the classified grid for visualization. You can tweak the opacity parameter or turn off the "aoi" layer to see the layer beneath more clearly
+//Draw the "aoi" layer on top of the classified grid for visualization. You can tweak the opacity parameter or turn off the "aoi" layer to see the layer beneath more clearly
 Map.addLayer(aoi);   
 
 
-## Section heading 1
+## 3. Calulcating area and Export the output
+With the binary classification completed, you can now export the classified imagery to google bucket drive (or any other compatible storage) for further analysis. Check the export resolution parameter (called "scale") and adjust accordingly to control output file size, if neccessary. The larger the scale, the lighter the file size. The maxPixels parameter sets an upper boundary on th enumber of pixels allowable for export to avoid export of large file or prolonged file creation time. Calculate the area for each landcover class by applying ee.Image.pixelArea on the classifed imagery and assign to the variable areaImage. By passing on the new variable to the Image reducing function, constrained by the aoi boundary geometry and specifying other parameters (per below), the area for both classes are generated in squeare meters. 
 
-Break up your tutorial into manageable sections.
 
-With one or more paragraphs, separated by a blank line.
+//Exporting to google bucket drive; If you use any other type of staorage solution, set the command as appropriate
+  Export.image.toDrive({
+ image: classified,
+  description: 'Maizeland_Classified',
+  scale: 20,
+  region: aoi,
+  maxPixels: 100000000000,
+});
 
-Inside your sections, you can also:
+//To calculate Maize Area in square meters
+var areaImage = ee.Image.pixelArea().addBands(
+      classified_rf);
+      
+var areas = areaImage.reduceRegion({
+      reducer: ee.Reducer.sum().group({
+      groupField: 1,
+      groupName: 'class',
+    }),
+    geometry: aoi.geometry(),
+    scale: 500,
+    maxPixels: 1e10
+    }); 
+ print (areas);
 
-1. Use numbered lists
-1. ..when the order..
-1. ..of items is important.
 
-And:
-
-- This is a bulleted list.
-- Use bulleted lists when items are not strictly ordered.
-
-..and even:
-
-Use     | tables   | to organize | content
-------- | -------- | ----------- | -------
-Your    | tables   | can         | also
-contain | multiple | rows        | ...
-
-## Section heading 2
-
-Use separate sections for related, but discrete, groups of steps.
-
-Use code blocks to show users how to do something after describing it:
-
-```
-// Use comments to describe details that can't be easily expressed in code.
-// Always try making code more self descriptive before adding a comment.
-// Similarly, avoid repeating verbatim what's already said in code
-// (e.g., "assign ImageCollection to variable 'coll'").
-var coll = ee.ImageCollection('LANDSAT/LC08/C01/T1_TOA');
-```
-
-### Use subsections if appropriate
-
-Consider breaking longer sections that cover multiple topics or span multiple
-pages into subsections.

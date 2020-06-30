@@ -53,6 +53,7 @@ c. Test Classification outputs, generate validation matrix, and calculate accura
 
 a. Ingest the Nigerian boundary as the focal geography and maize target region boundary as the area of interest (AOI). Using the code below, you will import a FeatureCollection object, and filter by "Country" to select "Nigeria". FeatureCollections are groups of features (spatial data and attributes). Filter is the method to extract a specific set of features from a feature collection. Assign the output to a variable called "nigerianBorder". The imagery analyses will be limited to the maize target region in Nigeria, i.e. the region that accounts for ~70% of Nigeria's maize production. Therefore, you will import a predefined shapefile layer (already converted to GEE asset) and assign to the variable "aoi". The maize target region asset can be assessed here (https://code.earthengine.google.com/?asset=users/juliusadewopo/MzeTargetRegion_alt_dslv2).  Display both layers to the map it using Map.addLayer() and tweak the symbology with the color parameters specified below.
 
+```js
 // Ingest country boundaries feature collection.
 var dataset = ee.FeatureCollection('USDOS/LSIB_SIMPLE/2017');
 
@@ -81,17 +82,19 @@ var opacity = 0.5; // number [0-1]
 var nameLayer = 'map2'; // string
 var visParams = {color: 'brown', strokeWidth: 5}; // dictionary:
 Map.addLayer(aoi, visParams, nameLayer, shown, opacity);
-
+```
 
 b. Ingest groundtruth data for georeferenced locations where maize (and other crops) were cultivated during the growing season of 2017 (June - Oct). The data has been pre-processed and randomly split (70:30) into training and testing datasets. Import the training dataset as GEE asset here (https://code.earthengine.google.com/?asset=users/juliusadewopo/Mzetrgt_Train17_Rev), and the testing dataset here (https://code.earthengine.google.com/?asset=users/juliusadewopo/Mzetrgt_Test17_Rev). Assing variable names "trainpts" and "testpts" to the training and testing points, respectively, and add them as layer to the map view.
 
+```js
 //Display training and test points to visualize distribution within the aoi
 Map.addLayer(trainpts, {color:'FF0000'});
 Map.addLayer(testpts, {color:'00FFFF'});
-
+```
 
 c. Next, you will import Copernicus Sentinel 2A spectral band imageries. The imageries are organized as an ImageCollection object, which is a container for a collection of individual images. With the code snippet below, you will import the sentinel 2A ImageCollection , and similar  method can be used to import an ImageCollection for other types of multi-temporal or multi-spectral data including Landsat, vegetation index,  rainfall, temperature etc. Considering the context, you will apply relevant filters to restrict selected imagery tiles to the aoi and date range for the growing season in 2017 (to coincide with the period of data collection). Standard quality control bands for cloud will be used in a function to create a mask layer, ans assigned to variable "maskS2Clouds". The function is passed on to a variable that minimizes cloud contamination by selecting pixels with the least percentage of cloud contamination within the temporal imagery composite (during the season). which will be combined with other filters to generate a "mosaic" of cloud-minimized imageries. Note that the aoi is north of the equator and often characterized by heavy cloudiness during the rainy season, so this workflow is essesntial and can be further tweaked to achieve better results.
 
+```js
 //Ingest sentinel 2A imageries
 var s2 = ee.ImageCollection("COPERNICUS/S2");
 
@@ -115,11 +118,12 @@ var mosaic = ee.ImageCollection(min).mosaic();
 
 //Create Custom mosaic from selected bands to visualize the cloud-minimized imagery; You apply similar code to compare the initial cloud-contaminated imagery, setting "s2" as the image
 Map.addLayer(mosaic, {bands: ['B4', 'B3', 'B2'], max: 2000}, 'custom mosaic');
-
+```
 
 ## 2.	Setting-Up and Implementing Analytics
 a. Now that you have prepared the mosaic, proceed to select the spectral bands that are relevant for the classification. By selecting more bands, the analysis will become more computationally intensive. The bands also have differing spatial resolution (https://en.wikipedia.org/wiki/Sentinel-2), so the relative computation cost (and time) will vary with the choice of bands. In the code below, all bands of the S2A are selected, but you can tweak this by selecting fewer bands. Note that our goal is to utilize as much spectral information as possible to train the classifier algorithm to differentiate between maize and non-maize. The training points (trainpts) will be used to extract the reflectance values of the pixels from all spectral bands and this will be passed to the classifier algorithms.
 
+```js
 //Specify and select bands that will be used in the classification
 var bands = ['B1','B2','B3','B4','B5','B6', 'B7', 'B8', 'B8A', 'B9', 'B10','B11', 'B12'];
 
@@ -132,9 +136,10 @@ var training = image_cl.sampleRegions({
   properties: ['class'],
   scale: 30
 });
-
+```
 b. For the binary classification you will be applying 2 classifiers - classification and regression trees (CART) and Random Forest (RF), which are both suitable for categorical classification and have been used in various contexts for classification. By comparing outputs from both CART and RF, users can make objective inference on most accurate classifier. Default parameters will be accepted and further tweaks (such as optiming number of trees in RF) is outside the scope of this tutorial. The output imagery will be a bi-colored imagery, and the console will show the metrics. While reviewing the output metrics, note that maize is labeled as "0" while non-maize is labeled as "1".
 
+```js
 // Train a CART classifier with default parameters.
 var trained = ee.Classifier.smileCart().train(training, 'class', bands);
 
@@ -195,12 +200,12 @@ print('Validation overall accuracy: ', testAccuracy_rf.accuracy());
 
 //Draw the "aoi" layer on top of the classified grid for visualization. You can tweak the opacity parameter or turn off the "aoi" layer to see the layer beneath more clearly
 Map.addLayer(aoi);   
-
+```
 
 ## 3. Calculate area and Export the output
 With the binary classification completed, you can now export the classified imagery to google bucket drive (or any other compatible storage) for further analysis. Check the export resolution parameter (called "scale") and adjust accordingly to control output file size, if neccessary. The larger the scale, the lighter the file size. The maxPixels parameter sets an upper boundary on th enumber of pixels allowable for export to avoid export of large file or prolonged file creation time. Calculate the area for each landcover class by applying ee.Image.pixelArea on the classifed imagery and assign to the variable areaImage. By passing on the new variable to the Image reducing function, constrained by the aoi boundary geometry and specifying other parameters (per below), the area for both classes are generated in squeare meters. 
 
-
+```js
 //Exporting to google bucket drive; If you use any other type of staorage solution, set the command as appropriate
   Export.image.toDrive({
  image: classified,
@@ -224,7 +229,7 @@ var areas = areaImage.reduceRegion({
     maxPixels: 1e10
     }); 
  print (areas);
-
+```
 
 ## 4.Final notes
 Although this tutorial offers a template for users, further tweaks can possibly improve the results.  The results (in the Console tab) shows that RF outperformed CART in the validation mode (RF accuracy = 73.4%; CART accuracy = 69%). Also, the maize area estimated was 19.09*1e10 sq meter (i.e. ~19 million ha). Is is probable that this is over/under estimated, so further area-based validation may be necessary to validate the estimate. In any case, this analytical tool (and tutorial) can support rapid generation of national cropland area estimate that is scalable (across, regions, local governments/districts, wards or villages) based on delineated boundaries. 

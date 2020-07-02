@@ -15,6 +15,7 @@ app-creator/client/app.yaml
 app-creator/client/build
 app-creator/client/env.js
 app-creator/client/client
+app-creator/client/data
 app-creator/client/map-styles
 app-creator/app.yaml
 app-creator/static

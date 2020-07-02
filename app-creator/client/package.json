@@ -44,6 +44,7 @@
     "@polymer/paper-progress": "^3.0.1",
     "@polymer/paper-slider": "^3.0.1",
     "@polymer/paper-tabs": "^3.1.0",
+    "@polymer/paper-toast": "^3.0.1",
     "@types/googlemaps": "^3.39.6",
     "googlemaps": "^1.12.0",
     "lit-element": "^2.3.1",

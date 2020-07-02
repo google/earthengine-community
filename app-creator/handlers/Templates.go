@@ -4,17 +4,19 @@ import (
 	"log"
 	"net/http"
 	"modules/data"
+	"cloud.google.com/go/datastore"
 )
 
 type Templates struct {
 	l *log.Logger 
+	db *datastore.Client
 }
 
 /**
 * Creates new templates handler with a provided logger instance.
 */
-func NewTemplatesHandler(l *log.Logger) *Templates {
-	return &Templates{l}
+func NewTemplatesHandler(l *log.Logger, db *datastore.Client) *Templates {
+	return &Templates{l, db}
 }
 
 /*
@@ -39,10 +41,10 @@ func (t *Templates) ServeHTTP(rw http.ResponseWriter, r *http.Request) {
 * Helper method called on GET requests to "/templates".
 */
 func (t *Templates) getTemplates(rw http.ResponseWriter, r *http.Request) {
-	templates := data.GetTemplates()
+	templates := data.GetTemplates(t.db, t.l, r.Context())
 	err := templates.ToJSON(rw)
 	if err != nil {
-		http.Error(rw, "Unable to fetch templates", http.StatusInternalServerError)
+		http.Error(rw, "Conversion to JSON was unsuccessful", http.StatusInternalServerError)
 	}
 }
 
@@ -50,7 +52,6 @@ func (t *Templates) getTemplates(rw http.ResponseWriter, r *http.Request) {
 * Helper method called on POST requests to "/templates". Adds a new template to the database.
 */
 func (t *Templates) addTemplate(rw http.ResponseWriter, r *http.Request) {
-	t.l.Println("Handle adding template")
 	template := &data.Template{}
 	err := template.FromJSON(r.Body)
 	if err != nil {

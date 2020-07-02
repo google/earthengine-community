@@ -9,9 +9,24 @@ import (
 	"time"
 	"modules/handlers"
 	"regexp"
+	"github.com/rs/cors"
+	"cloud.google.com/go/datastore"
 )
 
 func main() {
+	/**
+	* Getting application context.
+	*/
+	ctx := context.Background()
+
+	/** 
+	* Creating a datastore client. This instance is shared accross the application.
+	*/
+	db, err := datastore.NewClient(ctx, os.Getenv("GOOGLE_CLOUD_PROJECT"))
+	if err != nil {
+		log.Fatal("Database connection error", err)
+	}
+
 	/**
 	* Creating shared logger instance.
 	*/
@@ -38,7 +53,7 @@ func main() {
 	/**
 	* Setting up handlers.
 	*/
-	templatesHandler := handlers.NewTemplatesHandler(l)
+	templatesHandler := handlers.NewTemplatesHandler(l, db)
 
 	/**
 	* Initializing a new server mux to handle routes.
@@ -58,11 +73,17 @@ func main() {
 	serverMux.Handle("/templates", templatesHandler)
 
 	/**
+	* CORS middleware. Default option allows all origins. 
+	* https://github.com/rs/cors
+	*/ 
+	c := cors.Default().Handler(serverMux)
+
+	/**
 	* Setting up server instance.
 	*/
 	server := &http.Server{
 		Addr:         port,
-		Handler:      serverMux,
+		Handler:      c,
 		IdleTimeout:  120 * time.Second,
 		ReadTimeout:  1 * time.Second,
 		WriteTimeout: 1 * time.Second,
@@ -91,7 +112,7 @@ func main() {
 	sig := <-sigChan
 	l.Println("Shutting down gracefully", sig)
 
-	timeoutContext, cancel := context.WithTimeout(context.Background(), 30*time.Second)
+	timeoutContext, cancel := context.WithTimeout(ctx, 30*time.Second)
 	defer cancel()
 
 	server.Shutdown(timeoutContext)

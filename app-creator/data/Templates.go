@@ -3,6 +3,9 @@ package data
 import (
 	"encoding/json"
 	"io"
+	"context"
+	"cloud.google.com/go/datastore"
+	"log"
 )
 
 type Template struct {
@@ -33,110 +36,15 @@ func (t *Template) FromJSON(r io.Reader) error {
 /**
 * Returns array of templates.
 */
-func GetTemplates() Templates {
+func GetTemplates(db *datastore.Client, l *log.Logger, ctx context.Context) Templates {
+	templates := []*Template{}
+	_, err := db.GetAll(ctx, datastore.NewQuery("Template"), &templates)
+	if err != nil {
+		l.Fatal("Unable to fetch templates\n")
+	}
+
 	return templates
 }
 
-/**
-* Adds a new template to the global template array.
-*/
-func AddTemplate(t *Template) {
-	templates = append(templates, t)
-} 
-
-var templates = []*Template{
-	&Template{
-		Id: "left-side-panel",
-		Name: "Left Side Panel",
-		ImageUrl: "https://storage.googleapis.com/ee-app-creator.appspot.com/left-side-panel.jpeg",
-		Template: `{
-			"id": "left-side-panel",
-			"name": "Left Side Panel",
-			"panel-template-0": {
-				"id": "panel-template-0",
-				"editable": false,
-				"hasDropzone": false,
-				"children": ["panel-template-1", "map-template-0"],
-				"uniqueAttributes": {
-					"layout": "row"
-				},
-				"style": {
-					"height": "100%",
-					"width": "100%",
-					"padding": "0px",
-					"margin": "0px",
-					"color": "black",
-					"backgroundColor": "#FFFFFF",
-					"borderWidth": "0px",
-					"borderStyle": "solid",
-					"borderColor": "black",
-					"fontSize": "12px",
-					"fontWeight": "300",
-					"fontFamily": "Roboto",
-					"textAlign": "left",
-					"whiteSpace": "normal",
-					"shown": "true",
-					"box-sizing": "border-box"
-				}
-			},
-			"panel-template-1": {
-				"id": "panel-template-1",
-				"editable": true,
-				"hasDropzone": true,
-				"children": [],
-				"uniqueAttributes": {
-					"layout": "column"
-				},
-				"style": {
-					"height": "100%",
-					"width": "40%",
-					"padding": "0px",
-					"margin": "0px",
-					"color": "black",
-					"backgroundColor": "#FFFFFF",
-					"borderWidth": "0px",
-					"borderStyle": "solid",
-					"borderColor": "black",
-					"fontSize": "12px",
-					"fontWeight": "300",
-					"fontFamily": "Roboto",
-					"textAlign": "left",
-					"whiteSpace": "normal",
-					"shown": "true",
-					"box-sizing": "border-box"
-				}
-			},
-			"map-template-0": {
-				"id": "map-template-0",
-				"children": [],
-				"uniqueAttributes": {
-					"zoom": "4",
-					"latitude": "37.419857",
-					"longitude": "-122.078827",
-					"zoomControl": "false",
-					"fullscreenControl": "false",
-					"scaleControl": "false",
-					"streetViewControl": "false",
-					"mapTypeControl": "false",
-					"mapStyles": "standard",
-					"customMapStyles": ""
-				}, "style": {
-					"height": "100%",
-					"width": "60%",
-					"padding": "0px",
-					"margin": "0px",
-					"color": "black",
-					"backgroundColor": "#FFFFFF",
-					"borderWidth": "0px",
-					"borderStyle": "solid",
-					"borderColor": "black",
-					"fontSize": "12px",
-					"fontWeight": "300",
-					"fontFamily": "Roboto",
-					"textAlign": "left",
-					"whiteSpace": "normal",
-					"shown": "true",
-					"box-sizing": "border-box"
-				}
-			}
-		}`}}
+// TODO: Implement adding templates to the database. Used when a user saves a template.
+func AddTemplate(t *Template) {} 

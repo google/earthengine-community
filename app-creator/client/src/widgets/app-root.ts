@@ -22,7 +22,8 @@ import { onSearchEvent } from './search-bar/search-bar';
 import { TemplatesTab, TemplatesTabItem } from './templates-tab/templates-tab';
 import { store } from '../redux/store';
 import { setSelectedTemplate } from '../redux/actions';
-import { TemplateItem } from '../client/fetch-templates';
+import { TemplateItem, database } from '../client/fetch-templates';
+import { templatesManager } from '../data/templates';
 
 @customElement('app-root')
 export class AppRoot extends LitElement {
@@ -66,10 +67,8 @@ export class AppRoot extends LitElement {
     }
 
     paper-dialog {
-      min-width: 650px;
-      max-width: 60%;
-      min-height: 450px;
-      max-height: 60%;
+      width: 60%;
+      height: 500px;
       padding: var(--regular);
       border-radius: var(--tight);
       display: flex;
@@ -94,6 +93,16 @@ export class AppRoot extends LitElement {
       font-weight: 500;
       color: var(--accent-color);
     }
+
+    paper-progress {
+      width: 100%;
+      height: 20px;
+      z-index: 10;
+      position: absolute;
+      top: 0;
+      left: 0;
+      margin: 0px;
+    }
   `;
 
   /**
@@ -107,7 +116,7 @@ export class AppRoot extends LitElement {
   @property({ type: Array }) templates: TemplateItem[] = [];
 
   /**
-   * Array of templates.
+   * Loading state.
    */
   @property({ type: Boolean }) loading = false;
 
@@ -122,11 +131,14 @@ export class AppRoot extends LitElement {
 
       const response = await fetch('/templates');
       const templates = await response.json();
-      console.log('templates');
-      this.templates = templates;
-      this.requestUpdate;
+
+      templatesManager.setTemplates(templates);
+      this.templates = templatesManager.getTemplates();
     } catch (e) {
-      console.log('Error fetching templates', e);
+      // Use backup templates
+      console.log('Error fetching templates, getting backup', e);
+      templatesManager.setTemplates(database);
+      this.templates = templatesManager.getTemplates();
     } finally {
       this.loading = false;
     }
@@ -197,14 +209,18 @@ export class AppRoot extends LitElement {
       ></empty-notice>
     `;
 
-    const contentMarkup = !loading
-      ? html`<paper-progress indeterminate class="blue"></paper-progress>`
+    const contentMarkup = loading
+      ? nothing
       : html`
           <div id="cards-container">
             ${filteredTemplates.map(({ markup }) => markup)}
             ${filteredTemplates.length === 0 ? emptyNotice : nothing}
           </div>
         `;
+
+    const loadingBar = loading
+      ? html`<paper-progress indeterminate></paper-progress>`
+      : nothing;
 
     return html`
       <div id="app">
@@ -216,14 +232,15 @@ export class AppRoot extends LitElement {
           </div>
 
           <paper-dialog with-backdrop no-cancel-on-outside-click>
+            ${loadingBar}
             <div id="header-content">
               <h2 id="modal-title">Select Template</h2>
               <search-bar
                 placeholder="Search for template (i.e. side panel)"
                 @onsearch=${handleSearch}
               ></search-bar>
-              ${contentMarkup}
             </div>
+            ${contentMarkup}
           </paper-dialog>
         </div>
       </div>

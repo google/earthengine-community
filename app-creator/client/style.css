@@ -33,6 +33,7 @@ p {
   --paper-tabs-selection-bar-color: var(--accent-color);
   --primary-color: white;
   --validation-error-border-color: #ea4335;
+  --paper-progress-active-color: var(--accent-color);
 
   /* spacing */
   --extra-tight: 4px;

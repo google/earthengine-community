@@ -21,7 +21,7 @@ import { onSearchEvent } from '../search-bar/search-bar';
 import '../template-card/template-card';
 import { store } from '../../redux/store';
 import { setSelectedTemplate } from '../../redux/actions';
-import { database } from '../../client/fetch-templates';
+import { templatesManager } from '../../data/templates';
 
 export interface TemplatesTabItem {
   id: string;
@@ -48,7 +48,8 @@ export class TemplatesTab extends LitElement {
   @property({ type: String }) query = '';
 
   getTemplateCards(showTitle = false) {
-    return database.map(({ id, name, imageUrl, template }) => {
+    const templates = templatesManager.getTemplates();
+    return templates.map(({ id, name, imageUrl, template }) => {
       return {
         id,
         name,

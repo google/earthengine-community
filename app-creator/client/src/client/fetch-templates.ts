@@ -1,7 +1,7 @@
 /**
  *  @fileoverview This file acts as a mock database storing our templates.
  */
-interface TemplateItem {
+export interface TemplateItem {
   id: string;
   name: string;
   imageUrl: string;

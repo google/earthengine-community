@@ -16,12 +16,13 @@ import './actions-panel/actions-panel';
 import './tab-container/tab-container';
 import './story-board/story-board';
 import './search-bar/search-bar';
+import '@polymer/paper-progress/paper-progress.js';
 import { PaperDialogElement } from '@polymer/paper-dialog/paper-dialog.js';
 import { onSearchEvent } from './search-bar/search-bar';
 import { TemplatesTab, TemplatesTabItem } from './templates-tab/templates-tab';
 import { store } from '../redux/store';
 import { setSelectedTemplate } from '../redux/actions';
-import { database } from '../client/fetch-templates';
+import { TemplateItem } from '../client/fetch-templates';
 
 @customElement('app-root')
 export class AppRoot extends LitElement {
@@ -101,11 +102,38 @@ export class AppRoot extends LitElement {
   @property({ type: String }) query = '';
 
   /**
+   * Array of templates.
+   */
+  @property({ type: Array }) templates: TemplateItem[] = [];
+
+  /**
+   * Array of templates.
+   */
+  @property({ type: Boolean }) loading = false;
+
+  /**
    * Reference to dialog element.
    */
   @query('paper-dialog') dialog!: PaperDialogElement;
 
+  async fetchTemplates() {
+    try {
+      this.loading = true;
+
+      const response = await fetch('/templates');
+      const templates = await response.json();
+      console.log('templates');
+      this.templates = templates;
+      this.requestUpdate;
+    } catch (e) {
+      console.log('Error fetching templates', e);
+    } finally {
+      this.loading = false;
+    }
+  }
+
   firstUpdated() {
+    this.fetchTemplates();
     this.showTemplateSelectionModal();
   }
 
@@ -124,7 +152,7 @@ export class AppRoot extends LitElement {
   }
 
   getTemplateCards(showTitle = false): Array<TemplatesTabItem> {
-    return database.map(({ id, name, imageUrl, template }) => {
+    return this.templates.map(({ id, name, imageUrl, template }) => {
       return {
         id,
         name,
@@ -151,7 +179,7 @@ export class AppRoot extends LitElement {
   }
 
   render() {
-    const { handleSearch, getTemplateCards, query } = this;
+    const { handleSearch, getTemplateCards, query, loading } = this;
 
     const templateCards = getTemplateCards.call(this, true);
     const filteredTemplates = TemplatesTab.filterTemplates(
@@ -169,6 +197,15 @@ export class AppRoot extends LitElement {
       ></empty-notice>
     `;
 
+    const contentMarkup = !loading
+      ? html`<paper-progress indeterminate class="blue"></paper-progress>`
+      : html`
+          <div id="cards-container">
+            ${filteredTemplates.map(({ markup }) => markup)}
+            ${filteredTemplates.length === 0 ? emptyNotice : nothing}
+          </div>
+        `;
+
     return html`
       <div id="app">
         <tool-bar></tool-bar>
@@ -185,12 +222,8 @@ export class AppRoot extends LitElement {
                 placeholder="Search for template (i.e. side panel)"
                 @onsearch=${handleSearch}
               ></search-bar>
+              ${contentMarkup}
             </div>
-            <div id="cards-container">
-              ${filteredTemplates.map(({ markup }) => markup)}
-              ${filteredTemplates.length === 0 ? emptyNotice : nothing}
-            </div>
-            <div class="buttons"></div>
           </paper-dialog>
         </div>
       </div>

@@ -3,7 +3,7 @@ package handlers
 import (
 	"log"
 	"net/http"
-	"modules/data"
+	data "modules/data/templates"
 	"cloud.google.com/go/datastore"
 )
 

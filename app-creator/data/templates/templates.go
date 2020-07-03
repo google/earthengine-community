@@ -1,4 +1,4 @@
-package data 
+package templates_data 
 
 import (
 	"encoding/json"
@@ -11,7 +11,7 @@ import (
 type Template struct {
 	Id string `json:"id"` 
 	Name string `json:"name"`
-	ImageUrl string `json:"description"`
+	ImageUrl string `json:"imageUrl"`
 	Template string `json:"template"`
 }
 

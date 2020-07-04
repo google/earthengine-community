@@ -171,9 +171,13 @@ Choose suitable visualization parameters and display the slope values on the map
 // display on map
 Map.setOptions('SATELLITE');
 // set visualisation parameters for greening and browning areas
-var visParams = {opacity: 1, bands: ['slope'],
-  min: -40, max: 40,
-  palette: ['ebb801', 'ffffff', '76cc04']
+var visParams = {
+  opacity: 1,
+  bands: ['slope'],
+  min: -55,
+  max: 55,
+  palette:
+    ['8c510a', 'd8b365', 'f6e8c3', 'f5f5f5', 'd9f0d3', '7fbf7b', '1b7837']
 };
 Map.addLayer(sens.clipToCollection(nps), visParams, 'Sen\'s slope');
 // draw forest boundaries

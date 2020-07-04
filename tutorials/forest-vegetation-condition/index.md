@@ -35,12 +35,11 @@ Bandipur and Nagarhole national parks are located in the Mysore-Malenad landscap
 
 ### Import images, features
 
-Import the MODIS 250m/pixel 16-day composite vegetation indices dataset, and select the EVI band. Load boundaries of Bandipur and Nagarhole national parks from the [World Database on Protected Areas (WDPA)](https://developers.google.com/earth-engine/datasets/catalog/WCMC_WDPA_current_polygons?hl=en) dataset.
+Import the MODIS 250m/pixel 16-day composite vegetation indices dataset. Load boundaries of Bandipur and Nagarhole national parks from the [World Database on Protected Areas (WDPA)](https://developers.google.com/earth-engine/datasets/catalog/WCMC_WDPA_current_polygons?hl=en) dataset.
 
 ```js
-// get MODIS 250m EVI data
-var mod13 = ee.ImageCollection('MODIS/006/MOD13Q1')
-  .select('EVI');
+// get MODIS 250m vegetation data 
+var mod13 = ee.ImageCollection('MODIS/006/MOD13Q1');
 // get features of the forest national parks
 var nps = ee.FeatureCollection('WCMC/WDPA/current/polygons')
   .filter(ee.Filter.inList('NAME', ['Bandipur', 'Rajiv Gandhi (Nagarhole)']));
@@ -50,16 +49,30 @@ var nps = ee.FeatureCollection('WCMC/WDPA/current/polygons')
 Build an image collection with an image for each year from 2000 to 2019. Each of these images is calculated to be the maximum EVI in the summer months of its corresponding year. This is our measure of the status of the vegetation for each year. Also add the year as a band, in preparation for linear trend analysis.
 
 ```js
-var years = ee.List.sequence(2000, 2019);
+// Filter MODIS images to summer months between Jan and Apr 2000-2019,
+// Add observation year as an image property.
+var mod13Summer = mod13.filter(ee.Filter.calendarRange(1, 4, 'month'))
+  .filter(ee.Filter.calendarRange(2000, 2019, 'year'))
+  .map(function(img) {
+    return img.set('year', img.date().get('year'));
+  });
 
-// filter images for summer months between January and April
-// and calculate yearly max EVI for those months
-var mod13Summer = mod13.filter(ee.Filter.calendarRange(1, 4, 'month'));
-var summerStats = ee.ImageCollection(years.map(function(year) {
-  var oneYear = mod13Summer.filter(ee.Filter.calendarRange(year, year, 'year'));
-  var max = oneYear.max().rename('max');
-  var yr = ee.Image(ee.Number(year)).float().rename('year');
-  return ee.Image.cat(max, yr).set('year', year);
+// Generate lists of images from the year using a join.
+var mod13SummerAnnualJoin = ee.Join.saveAll('same_year').apply({
+  primary: mod13Summer.distinct('year'),
+  secondary: mod13Summer,
+  condition: ee.Filter.equals({leftField: 'year', rightField: 'year'})
+});
+
+// Calculate annual max EVI composite images from the "same year" join lists.
+// Return an image with two bands for use in time series slope calculation;
+// year as band 1, max EVI as band 2.
+var summerStats = ee.ImageCollection(mod13SummerAnnualJoin.map(function(img) {
+  var year = img.get('year');
+  var yearCol = ee.ImageCollection.fromImages(img.get('same_year'));
+  var max = yearCol.select('EVI').max();
+  var yr = ee.Image.constant(ee.Number(year)).toShort();
+  return ee.Image.cat(yr, max).rename(['year', 'max']).set('year', year);
 }));
 ```
 

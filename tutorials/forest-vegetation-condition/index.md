@@ -143,10 +143,25 @@ var npsRes = cond.multiply(ee.Image.pixelArea())
 Tabulate the areas of vegetation greening and browning for each national park. 
 
 ```js
-// tabulate total area under greening and browning
-var table = ui.Chart.feature.byFeature(npsRes.select(['NAME', 'browning', 'greening']), 'NAME');
-table.setChartType('Table');
-print('Area (sq. m) under greening and browning', table);
+// Format results of the greening and browning for use in a table; convert sq m
+// to sq km and calculate fraction of each; add as feature properties.
+npsRes = npsRes.map(function(feature) {
+  var browningSqM = feature.getNumber('browning');
+  var greeningSqM = feature.getNumber('greening');
+  var forestSqM = feature.area();
+  return feature.set({
+    'Browning sq km': browningSqM.divide(1e6),
+    'Browning fraction': browningSqM.divide(forestSqM),
+    'Greening sq km': greeningSqM.divide(1e6),
+    'Greening fraction': greeningSqM.divide(forestSqM),
+  });
+});
+
+// Display area summary of vegetation condition as a table "chart".
+print(ui.Chart.feature.byFeature(npsRes.select(['NAME', 'Browning sq km',
+    'Browning fraction', 'Greening sq km', 'Greening fraction']),
+    'NAME')
+  .setChartType('Table'));
 ```
 ![](areastable.png)
 

@@ -190,26 +190,26 @@ Map.centerObject(nps, 10);
 Chart the median of maximum summer EVIs in each national park over the years.
 
 ```js
-// plot trend in EVI data by national park and year
-var chart = ui.Chart.image.seriesByRegion(summerStats, nps, ee.Reducer.median(),
-  'max', 250, 'year', 'NAME');
-chart = chart.setChartType('ScatterChart');
-chart = chart.setOptions({
-  title: 'Greening/browning trend in forest national parks',
-  vAxis: {
-    title: 'Median of max. summer EVI'
-  },
-  hAxis: {
-    title: 'Year'
-  },
-  lineWidth: 1,
-  pointSize: 0,
-  series: {
-    0: {color: 'ff0000'},
-    1: {color: '0000ff'}
-  }
-});
-print(chart);
+// Plot trend in EVI data by national park and year.
+print(ui.Chart.image
+          .seriesByRegion({
+            imageCollection: summerStats,
+            regions: nps,
+            reducer: ee.Reducer.median(),
+            band: 'max',
+            scale: 250,
+            xProperty: 'year',
+            seriesProperty: 'NAME'
+          })
+          .setChartType('ScatterChart')
+          .setOptions({
+            title: 'Greening/browning trend in forest national parks',
+            vAxis: {title: 'Median of max. summer EVI'},
+            hAxis: {title: 'Year', format: '####'},
+            lineWidth: 2,
+            pointSize: 0,
+            series: {0: {color: 'ff0000'}, 1: {color: '0000ff'}}
+          }));
 ```
 ![](medevichart.png)
 

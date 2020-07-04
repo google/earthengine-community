@@ -75,15 +75,62 @@ var summerStats = ee.ImageCollection(mod13SummerAnnualJoin.map(function(img) {
   return ee.Image.cat(yr, max).rename(['year', 'max']).set('year', year);
 }));
 ```
-
 ### Estimate trends and infer vegetation condition
 
-Estimate a linear trend at each pixel by calculating its Sen's slope of maximum summer EVI with time. Infer pixel-wise vegetation greening or browning based on the sign of the slope value. Calculate summary of areas under greening and browning for each national park.
+Estimate a linear trend at each pixel by calculating its Sen's slope of maximum summer EVI with time. Calculate and visualize histograms of the regression slope values for each national park.
 
 ```js
 var sens = summerStats.select(['year', 'max'])
                       .reduce(ee.Reducer.sensSlope());
 
+// Define a function to calculate a histogram of slope values to be calculated
+// for each park; defining a custom histogram function instead of using
+// ui.Chart.image.histogram because it does not allow baseline to be set as 0,
+// which is important when evaluating positive and negative slope frequency.
+function getHistogram(sensImg, geometry, title) {
+  // Calculate histogram as an ee.Array table.
+  var hist = sensImg.select('slope').reduceRegion({
+    reducer: ee.Reducer.autoHistogram(),
+    geometry: geometry,
+    scale: 250,
+    maxPixels: 1e13,
+  });
+
+  // Get the array and extract the bin column and pixel count columns.
+  var histArray = ee.Array(hist.get('slope'));
+  var binBottom = histArray.slice(1, 0, 1);
+  var nPixels = histArray.slice(1, 1, null);
+
+  // Chart the two arrays using the `ui.Chart.array.values` function.
+  var histColumnFromArray =
+    ui.Chart.array.values({array: nPixels, axis: 0, xLabels: binBottom})
+      .setChartType('LineChart')
+      .setOptions({
+        title: title + ' forest condition trend histogram',
+        hAxis: {title: 'Slope'},
+        vAxis: {title: 'Pixel count'},
+        pointSize: 0,
+        lineSize: 2,
+        colors: ['1b7837'],
+        legend: {position: 'none'}
+      });
+
+  return histColumnFromArray;
+}
+
+// Get the slope histogram charts and print them to the console per park.
+print(getHistogram(
+  sens, nps.filter(ee.Filter.eq('NAME', 'Bandipur')), 'Bandipur'));
+print(getHistogram(
+  sens, nps.filter(ee.Filter.eq('NAME', 'Rajiv Gandhi (Nagarhole)')),
+  'Rajiv Gandhi (Nagarhole)'));
+```
+![](slopeshistogrambandipur.png)    |    ![](slopeshistogramnagarhole.png) 
+:----------------------------------:|:---------------------------------------:
+
+Infer pixel-wise vegetation greening or browning based on the sign of the slope value. Calculate summary of areas under greening and browning for each national park.
+
+```js
 // infer pixel-wise vegetation condition based on sign of the slope
 var cond = ee.Image.cat(sens.select('slope').gt(0).rename('greening'),
                         sens.select('slope').lt(0).rename('browning'));

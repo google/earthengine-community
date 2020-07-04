@@ -38,9 +38,10 @@ Bandipur and Nagarhole national parks are located in the Mysore-Malenad landscap
 Import the MODIS 250m/pixel 16-day composite vegetation indices dataset. Load boundaries of Bandipur and Nagarhole national parks from the [World Database on Protected Areas (WDPA)](https://developers.google.com/earth-engine/datasets/catalog/WCMC_WDPA_current_polygons?hl=en) dataset.
 
 ```js
-// get MODIS 250m vegetation data 
+// Get MODIS 250m vegetation data.
 var mod13 = ee.ImageCollection('MODIS/006/MOD13Q1');
-// get features of the forest national parks
+
+// Get features of the forest national parks.
 var nps = ee.FeatureCollection('WCMC/WDPA/current/polygons')
   .filter(ee.Filter.inList('NAME', ['Bandipur', 'Rajiv Gandhi (Nagarhole)']));
 ```
@@ -80,7 +81,7 @@ var summerStats = ee.ImageCollection(mod13SummerAnnualJoin.map(function(img) {
 Estimate a linear trend at each pixel by calculating its Sen's slope of maximum summer EVI with time. Calculate and visualize histograms of the regression slope values for each national park.
 
 ```js
-// Calculate time series slope using sensSlope()
+// Calculate time series slope using sensSlope().
 var sens = summerStats.reduce(ee.Reducer.sensSlope());
 
 // Define a function to calculate a histogram of slope values to be calculated
@@ -131,10 +132,11 @@ print(getHistogram(
 Infer pixel-wise vegetation greening or browning based on the sign of the slope value. Calculate summary of areas under greening and browning for each national park.
 
 ```js
-// infer pixel-wise vegetation condition based on sign of the slope
+// Infer pixel-wise vegetation condition based on sign of the slope.
 var cond = ee.Image.cat(sens.select('slope').gt(0).rename('greening'),
                         sens.select('slope').lt(0).rename('browning'));
-// calculate area under greening and browning in each national park
+
+// Calculate area under greening and browning in each national park.
 var npsRes = cond.multiply(ee.Image.pixelArea())
                  .reduceRegions(nps, ee.Reducer.sum(), 250);
 ```
@@ -168,9 +170,11 @@ print(ui.Chart.feature.byFeature(npsRes.select(['NAME', 'Browning sq km',
 Choose suitable visualization parameters and display the slope values on the map to denote areas under greening and browning, along with the national park boundaries.
 
 ```js
-// display on map
+// Prepare to display vegetation condition to the map; set map display options.
 Map.setOptions('SATELLITE');
-// set visualisation parameters for greening and browning areas
+Map.centerObject(nps, 10);
+
+// Set visualisation parameters for greening and browning areas; display to map.
 var visParams = {
   opacity: 1,
   bands: ['slope'],
@@ -180,10 +184,10 @@ var visParams = {
     ['8c510a', 'd8b365', 'f6e8c3', 'f5f5f5', 'd9f0d3', '7fbf7b', '1b7837']
 };
 Map.addLayer(sens.clipToCollection(nps), visParams, 'Sen\'s slope');
-// draw forest boundaries
+
+// Draw national park boundaries to the map.
 var paimg = ee.Image().byte().paint(nps, 0, 2);
 Map.addLayer(paimg, {palette: '000000'}, 'National Parks');
-Map.centerObject(nps, 10);
 ```
 ![](conditionmap.png)
 

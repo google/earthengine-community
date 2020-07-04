@@ -80,8 +80,8 @@ var summerStats = ee.ImageCollection(mod13SummerAnnualJoin.map(function(img) {
 Estimate a linear trend at each pixel by calculating its Sen's slope of maximum summer EVI with time. Calculate and visualize histograms of the regression slope values for each national park.
 
 ```js
-var sens = summerStats.select(['year', 'max'])
-                      .reduce(ee.Reducer.sensSlope());
+// Calculate time series slope using sensSlope()
+var sens = summerStats.reduce(ee.Reducer.sensSlope());
 
 // Define a function to calculate a histogram of slope values to be calculated
 // for each park; defining a custom histogram function instead of using

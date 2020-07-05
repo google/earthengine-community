@@ -16,7 +16,6 @@ import {
   updateWidgetChildren,
 } from '../../redux/actions';
 import { EventType } from '../../redux/types/enums';
-import { getIdPrefixLastIndex } from '../../utils/helpers';
 
 export const CONTAINER_ID = 'container';
 
@@ -29,7 +28,6 @@ export class Dropzone extends LitElement {
       border: var(--light-dashed-border);
       display: flex;
       flex-direction: column;
-      justify-content: center;
       overflow-y: scroll;
       height: calc(100% - 2 * var(--tight));
     }
@@ -53,6 +51,8 @@ export class Dropzone extends LitElement {
       align-items: center;
       justify-content: center;
       flex-direction: column;
+      height: 100%;
+      width: 100%;
     }
 
     .full-width {
@@ -65,16 +65,11 @@ export class Dropzone extends LitElement {
    */
   @property({ type: Object }) styles = {};
 
-  // createRenderRoot() {
-  //   return this;
-  // }
-
   render() {
-    const { styles, handleDragOver, handleDragenter } = this;
+    const { styles, handleDragOver } = this;
     return html`
-      <div
+      <slot
         id="${CONTAINER_ID}"
-        @dragenter=${handleDragenter}
         @dragover=${handleDragOver}
         style="${styleMap(styles)}"
       >
@@ -83,18 +78,18 @@ export class Dropzone extends LitElement {
           icon="icons:system-update-alt"
           message="Drop widgets here"
         ></empty-notice>
-      </div>
+      </slot>
     `;
   }
 
   /**
    * Takes in an html element (usually a dropzone) and returns the children ids without the empty-notice.
    */
-  getChildrenIds(container: Element): string[] {
+  getChildrenIds(): string[] {
     // We slice the first child because it is always the empty notice.
-    return Array.from(container.children)
-      .slice(1)
-      .map((el) => getIdPrefixLastIndex(el.id));
+    return Array.from(this.children).map((el) => {
+      return el.firstElementChild!.id;
+    });
   }
 
   /**
@@ -102,18 +97,17 @@ export class Dropzone extends LitElement {
    */
   handleReorderingWidget(
     parent: Element | null,
-    container: Element,
     widget: Element,
     nextElement: Element | null
   ) {
     if (nextElement == null) {
-      container.appendChild(widget);
+      this.appendChild(widget);
     } else {
-      container.insertBefore(widget, nextElement);
+      this.insertBefore(widget, nextElement);
     }
 
     // Update children ordering in store.
-    const ids = this.getChildrenIds(container);
+    const ids = this.getChildrenIds();
     if (parent != null) {
       store.dispatch(updateWidgetChildren(parent.id, ids));
     }
@@ -130,7 +124,6 @@ export class Dropzone extends LitElement {
    */
   handleAddingWidget(
     parent: Element | null,
-    container: Element,
     widget: Element,
     nextElement: Element | null
   ) {
@@ -138,28 +131,38 @@ export class Dropzone extends LitElement {
     const clone = widget.cloneNode(true) as HTMLElement;
     clone.id += `-${store.getState().widgetIDs[widget.id]}`;
 
-    // Check if the element already exists.
-    // This is necessary because the event is fired multiple times consecutively.
-    const element = this.shadowRoot?.getElementById(`${clone.id}-wrapper`);
-    if (element != null) {
-      container.removeChild(element);
-      store.dispatch(removeWidgetMetaData(clone.id));
+    // Return early if the widget has been added to another panel earlier.
+    const template = store.getState().template;
+    for (const id in template) {
+      if (
+        typeof template[id] === 'object' &&
+        !Array.isArray(template[id]) &&
+        id !== parent!.id &&
+        template[id].children.includes(clone.id)
+      ) {
+        return;
+      }
     }
 
-    // Hide empty notice if it is visible.
-    this.hideEmptyNotice();
+    // Check if the element already exists.
+    // This is necessary because the event is fired multiple times consecutively.
+    const element = this.querySelector(`#${clone.id}-wrapper`);
+    if (element != null) {
+      this.removeChild(element);
+      store.dispatch(removeWidgetMetaData(clone.id));
+    }
 
     // The cloned widget is not wrapped with a draggable widget so we have to create one below.
     const cloneDraggableWrapper = this.wrapDraggableWidget(clone);
 
     if (nextElement == null) {
-      container.appendChild(cloneDraggableWrapper);
+      this.appendChild(cloneDraggableWrapper);
     } else {
-      container.insertBefore(cloneDraggableWrapper, nextElement);
+      this.insertBefore(cloneDraggableWrapper, nextElement);
     }
 
     // Update widget ordering in store.
-    const ids = this.getChildrenIds(container);
+    const ids = this.getChildrenIds();
     if (parent != null) {
       store.dispatch(updateWidgetChildren(parent.id, ids));
     }
@@ -176,12 +179,6 @@ export class Dropzone extends LitElement {
    * Callback triggered whenever we drag a widget over a dropzone-widget.
    */
   handleDragOver(e: DragEvent) {
-    // Get container element.
-    let container = this.shadowRoot?.getElementById(CONTAINER_ID);
-    if (container == null) {
-      return;
-    }
-
     // Get widget that's currently being dragged.
     const widget = store.getState().draggingElement;
 
@@ -189,6 +186,10 @@ export class Dropzone extends LitElement {
     if (widget == null || widgetWrapper == null) {
       return;
     }
+
+    // Remove widget id if it already exists. This case will occur when we are dragging a widget
+    // from one panel to another.
+    store.dispatch(removeWidgetMetaData(widget.id, true));
 
     // Get next element.
     const nextElement = this.getNextElement(widget, e.clientY);
@@ -199,29 +200,12 @@ export class Dropzone extends LitElement {
     if (isReordering) {
       this.handleReorderingWidget(
         this.parentElement,
-        container,
         widgetWrapper,
         nextElement
       );
     } else {
-      this.handleAddingWidget(
-        this.parentElement,
-        container,
-        widget,
-        nextElement
-      );
+      this.handleAddingWidget(this.parentElement, widget, nextElement);
     }
-  }
-
-  /**
-   * Hides empty notice content by changing display property from 'flex' to 'none'.
-   */
-  hideEmptyNotice() {
-    const emptyNotice = this.shadowRoot?.getElementById(EMPTY_NOTICE_ID);
-    if (emptyNotice == null) {
-      return;
-    }
-    emptyNotice.style.display = 'none';
   }
 
   /**
@@ -243,17 +227,12 @@ export class Dropzone extends LitElement {
    * @param y the y coordinate of the triggered event.
    */
   getNextElement(widget: Element, y: number): Element | null {
-    const container = this.shadowRoot?.getElementById(CONTAINER_ID);
-    if (container == null) {
-      return null;
-    }
-
     /**
      * Get all widgets in the container excluding the currently dragged widget.
      * The direct children of the container are the widget wrappers that allow them to be
      * draggable so we exclude the wrapper of the current widget.
      */
-    const children = Array.from(container.children).filter(
+    const children = Array.from(this.children).filter(
       (child) =>
         child.id !==
         `${widget.id}-${store.getState().widgetIDs[widget.id]}-wrapper`
@@ -276,29 +255,6 @@ export class Dropzone extends LitElement {
     );
 
     return closest.element;
-  }
-
-  /**
-   * Highlights dropzone border on drag enter and modifies flex alignment.
-   */
-  handleDragenter(e: Event) {
-    // Return early if dragenter is called on child widget.
-    if ((e.target as HTMLElement).id !== CONTAINER_ID) {
-      return;
-    }
-
-    // Add highlight to container widget and change flex alignment.
-    const container = this.shadowRoot?.getElementById(CONTAINER_ID);
-    if (container == null) {
-      return;
-    }
-
-    // We hide the empty notice if it exists.
-    this.hideEmptyNotice();
-
-    // // Highlight border and change alignment.
-    container.style.alignItems = 'flex-start';
-    container.style.justifyContent = 'flex-start';
   }
 
   /**

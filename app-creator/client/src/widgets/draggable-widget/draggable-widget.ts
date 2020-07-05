@@ -4,7 +4,6 @@
 import { LitElement, html, customElement, css, property } from 'lit-element';
 import { nothing } from 'lit-html';
 import { styleMap } from 'lit-html/directives/style-map';
-import { EMPTY_NOTICE_ID } from '../empty-notice/empty-notice';
 import { CONTAINER_ID, Dropzone } from '../dropzone-widget/dropzone-widget';
 import { store } from '../../redux/store';
 import '../tab-container/tab-container';
@@ -192,8 +191,7 @@ export class DraggableWidget extends LitElement {
   }
 
   /**
-   * Triggered when the trash icon is clicked. If the widget is the last in the dropzone,
-   * we display the empty notice and center the container's flex alignments.
+   * Triggered when the trash icon is clicked.
    */
   handleRemoveWidget(e: Event) {
     e.stopPropagation();
@@ -218,14 +216,6 @@ export class DraggableWidget extends LitElement {
 
     parent.removeChild(this);
     store.dispatch(removeWidgetMetaData(widget.id));
-
-    const childrenCount = parent.childElementCount;
-
-    // We never really remove the empty notice div (we just hide it with display='none').
-    // When the children count is 1 after removing a widget, we want to unhide the empty notice.
-    if (childrenCount === 1) {
-      this.showEmptyNotice(parent);
-    }
   }
 
   /**
@@ -271,22 +261,6 @@ export class DraggableWidget extends LitElement {
     }
 
     store.dispatch(resetDraggingValues());
-  }
-
-  /**
-   * Displays empty notice by changing display property from 'none' to 'flex'.
-   * @param parent: element containing empty notice content
-   */
-  showEmptyNotice(parent: HTMLElement) {
-    const emptyNotice = parent.querySelector(
-      `#${EMPTY_NOTICE_ID}`
-    ) as HTMLElement;
-    if (emptyNotice == null) {
-      return;
-    }
-    emptyNotice.style.display = 'flex';
-    parent.style.alignItems = 'center';
-    parent.style.justifyContent = 'center';
   }
 }
 

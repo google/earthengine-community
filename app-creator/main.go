@@ -7,10 +7,10 @@ import (
 	"os"
 	"os/signal"
 	"time"
-	"modules/handlers"
 	"regexp"
 	"github.com/rs/cors"
 	"cloud.google.com/go/datastore"
+	"modules/handlers/templates"
 )
 
 func main() {

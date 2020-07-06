@@ -51,14 +51,14 @@ Map.addLayer(contrast,
 
 // [START earthengine__images17__gearys]
 // Create a list of weights for a 9x9 kernel.
-var list = [1, 1, 1, 1, 1, 1, 1, 1, 1];
+var row = [1, 1, 1, 1, 1, 1, 1, 1, 1];
 // The center of the kernel is zero.
-var centerList = [1, 1, 1, 1, 0, 1, 1, 1, 1];
+var centerRow = [1, 1, 1, 1, 0, 1, 1, 1, 1];
 // Assemble a list of lists: the 9x9 kernel weights as a 2-D matrix.
-var lists = [list, list, list, list, centerList, list, list, list, list];
+var rows = [row, row, row, row, centerRow, row, row, row, row];
 // Create the kernel from the weights.
 // Non-zero weights represent the spatial neighborhood.
-var kernel = ee.Kernel.fixed(9, 9, lists, -4, -4, false);
+var kernel = ee.Kernel.fixed(9, 9, rows, -4, -4, false);
 
 // Convert the neighborhood into multiple bands.
 var neighs = nir.neighborhoodToBands(kernel);

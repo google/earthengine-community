@@ -7,7 +7,7 @@ import (
 	"os"
 	"os/signal"
 	"time"
-	"modules/handlers"
+	"modules/handlers/templates"
 	"regexp"
 	"github.com/rs/cors"
 	"cloud.google.com/go/datastore"
@@ -20,7 +20,7 @@ func main() {
 	ctx := context.Background()
 
 	/** 
-	* Creating a datastore client. This instance is shared accross the application.
+	* Creating a datastore client. This instance is shared across the application.
 	*/
 	db, err := datastore.NewClient(ctx, os.Getenv("GOOGLE_CLOUD_PROJECT"))
 	if err != nil {
@@ -49,28 +49,28 @@ func main() {
 		port = ":8080"
 		log.Printf("Defaulting to port %s", port)
 	}
-
-	/**
-	* Setting up handlers.
-	*/
-	templatesHandler := handlers.NewTemplatesHandler(l, db)
-
+	
 	/**
 	* Initializing a new server mux to handle routes.
 	*/
 	serverMux := http.NewServeMux()
-
+	
 	/**
 	* Serving static files.
 	*/
 	fs := http.FileServer(http.Dir("./static"))
 	serverMux.Handle("/", fs)
 	serverMux.Handle("/static/", http.StripPrefix("/static/", http.FileServer(http.Dir("./static"))))
+	
+	/**
+	* Setting up handlers.
+	*/
+	templatesHandler := handlers.NewTemplatesHandler(l, db)
 
 	/**
 	* Registering handlers.
 	*/
-	serverMux.Handle("/templates", templatesHandler)
+	serverMux.Handle("/api/v1/templates", templatesHandler)
 
 	/**
 	* CORS middleware. Default option allows all origins. 

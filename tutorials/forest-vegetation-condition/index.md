@@ -1,6 +1,6 @@
 ---
-title: Monitoring forest vegetation condition
-description: Estimate forest vegetation status over the years and infer condition using linear trend analysis.
+title: Monitoring Forest Vegetation Condition
+description: Estimate forest vegetation status over time and infer condition using linear trend analysis.
 author: pskoulgi
 tags: forest, vegetation, trend-analysis
 date_published: 2020-06-12

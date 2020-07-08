@@ -17,6 +17,8 @@ import './tab-container/tab-container';
 import './story-board/story-board';
 import './search-bar/search-bar';
 import '@polymer/paper-progress/paper-progress.js';
+import '@polymer/paper-toast/paper-toast.js';
+import { PaperToastElement } from '@polymer/paper-toast/paper-toast.js';
 import { PaperDialogElement } from '@polymer/paper-dialog/paper-dialog.js';
 import { onSearchEvent } from './search-bar/search-bar';
 import { TemplatesTab, TemplatesTabItem } from './templates-tab/templates-tab';
@@ -67,7 +69,7 @@ export class AppRoot extends LitElement {
     }
 
     paper-dialog {
-      width: 800px;
+      width: 60%;
       height: 500px;
       padding: var(--regular);
       border-radius: var(--tight);
@@ -129,14 +131,19 @@ export class AppRoot extends LitElement {
     try {
       this.loading = true;
 
-      const response = await fetch('/templates');
+      const response = await fetch('/api/v1/templates');
       const templates = await response.json();
 
       templatesManager.setTemplates(templates);
       this.templates = templatesManager.getTemplates();
     } catch (e) {
       // Use backup templates
-      console.log('Error fetching templates, getting backup', e);
+      const fetchErrorToast = this.shadowRoot?.getElementById(
+        'fetch-error-toast'
+      ) as PaperToastElement;
+      if (fetchErrorToast != null) {
+        fetchErrorToast.open();
+      }
       templatesManager.setTemplates(database);
       this.templates = templatesManager.getTemplates();
     } finally {
@@ -242,6 +249,11 @@ export class AppRoot extends LitElement {
             </div>
             ${contentMarkup}
           </paper-dialog>
+
+          <paper-toast
+            id="fetch-error-toast"
+            text="Error fetching templates. Using backup instead."
+          ></paper-toast>
         </div>
       </div>
     `;

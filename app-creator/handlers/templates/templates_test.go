@@ -11,7 +11,7 @@ import (
 )
 
 func TestGetTemplates(t *testing.T) {
-	req, err := http.NewRequest("GET", "localhost:8080/templates", nil)
+	req, err := http.NewRequest("GET", "localhost:8080/api/v1/templates", nil)
 	if err != nil {
 		t.Fatalf("could not create request: %v", err)
 	}

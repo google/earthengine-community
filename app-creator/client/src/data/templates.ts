@@ -1,11 +1,7 @@
 import { TemplateItem } from '../client/fetch-templates';
 
 class TemplatesManager {
-  private templates: TemplateItem[];
-
-  constructor() {
-    this.templates = [];
-  }
+  private templates: TemplateItem[] = [];
 
   getTemplates() {
     return this.templates;

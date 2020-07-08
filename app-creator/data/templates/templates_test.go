@@ -38,7 +38,7 @@ func TestFromJSON(t *testing.T) {
 	}
 
 	r := strings.NewReader(string(templateJSON))
-	req, err := http.NewRequest("GET", "localhost:8080/templates", r)
+  req, err := http.NewRequest("GET", "localhost:8080/api/v1/templates", r)
 	if err != nil {
 		t.Fatalf("could not create request: %v", err)
 	}

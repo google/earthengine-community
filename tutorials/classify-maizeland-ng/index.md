@@ -120,6 +120,7 @@ Map.addLayer(mosaic, {bands: ['B4', 'B3', 'B2'], max: 2000}, 'custom mosaic');
 ### a. Now that you have prepared the mosaic, proceed to select the spectral bands that are relevant for the classification. By selecting more bands, the analysis will become more computationally intensive. The bands also have differing spatial resolution (https://en.wikipedia.org/wiki/Sentinel-2), so the relative computation cost (and time) will vary with the choice of bands. In the code below, all bands of the S2A are selected, but you can tweak this by selecting fewer bands. Note that our goal is to utilize as much spectral information as possible to train the classifier algorithm to differentiate between maize and non-maize. The training points (trainpts) will be used to extract the reflectance values of the pixels from all spectral bands and this will be passed to the classifier algorithms.
 
 ```js
+
 // Specify and select bands that will be used in the classification
 var bands = ['B1', 'B2', 'B3', 'B4', 'B5', 'B6', 'B7', 'B8', 'B8A', 'B9', 'B10', 'B11', 'B12'];
 

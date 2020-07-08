@@ -177,7 +177,7 @@ c. To assess the reliability of the classification outputs, use the "testpts" da
   collection: testpts,
   properties: ['class'],
   scale: 30
-}).filter(ee.Filter.neq('B1', null)); //filter added to rid out null pixels
+}).filter(ee.Filter.neq('B1', null)); // filter added to rid out null pixels
 
 // Classify the validation data
 var validated = testing.classify(trained);
@@ -198,7 +198,7 @@ Map.addLayer(aoi);
 ```
 
 ## 3. Calculate Area and Export Output
-With the binary classification completed, you can now export the classified imagery to google bucket drive (or any other compatible storage) for further analysis. Check the export resolution parameter (called "scale") and adjust accordingly to control output file size, if neccessary. The larger the scale, the lighter the file size. The maxPixels parameter sets an upper boundary on th enumber of pixels allowable for export to avoid export of large file or prolonged file creation time. Calculate the area for each landcover class by applying ee.Image.pixelArea on the classifed imagery and assign to the variable areaImage. By passing on the new variable to the Image reducing function, constrained by the aoi boundary geometry and specifying other parameters (per below), the area for both classes are generated in squeare meters. 
+With the binary classification completed, you can now export the classified imagery to google bucket drive (or any other compatible storage) for further analysis. Check the export resolution parameter (called "scale") and adjust accordingly to control output file size, if neccessary. The larger the scale, the lighter the file size. The maxPixels parameter sets an upper boundary on the number of pixels allowable for export to avoid export of large file or prolonged file creation time. Calculate the area for each landcover class by applying ee.Image.pixelArea on the classifed imagery and assign to the variable areaImage. By passing on the new variable to the Image reducing function, constrained by the aoi boundary geometry and specifying other parameters (per below), the area for both classes are generated in squeare meters. 
 
 ```js
 // Exporting to google bucket drive; If you use any other type of staorage solution, set the command as appropriate

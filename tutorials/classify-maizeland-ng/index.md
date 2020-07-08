@@ -107,13 +107,15 @@ function maskS2clouds(image) {
 }
 
 // Apply the cloud mask with other filters to derive a mosaic within spatial and temporal context
-var cloudMasked = s2.filterBounds(aoi).map(maskS2clouds).filterDate('2017-06-15', '2017-10-15');
+var cloudMasked = s2.filterBounds(aoi).map(maskS2clouds)
+.filterDate('2017-06-15', '2017-10-15');
 var min = cloudMasked.min();
 var mosaic = ee.ImageCollection(min).mosaic();
 
 // Create Custom mosaic from selected bands to visualize the cloud-minimized imagery
 //You apply similar code to compare the initial cloud-contaminated imagery, setting "s2" as the image
-Map.addLayer(mosaic, {bands: ['B4', 'B3', 'B2'], max: 2000}, 'custom mosaic');
+Map.addLayer(mosaic, {bands: ['B4', 'B3', 'B2'], 
+max: 2000}, 'custom mosaic');
 ```
 
 ## 2. Setting-Up and Implementing Analytics

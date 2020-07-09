@@ -24,7 +24,7 @@ import { onSearchEvent } from './search-bar/search-bar';
 import { TemplatesTab, TemplatesTabItem } from './templates-tab/templates-tab';
 import { store } from '../redux/store';
 import { setSelectedTemplate } from '../redux/actions';
-import { TemplateItem, database } from '../client/fetch-templates';
+import { TemplateItem } from '../client/fetch-templates';
 import { templatesManager } from '../data/templates';
 
 @customElement('app-root')
@@ -127,32 +127,22 @@ export class AppRoot extends LitElement {
    */
   @query('paper-dialog') dialog!: PaperDialogElement;
 
-  async fetchTemplates() {
-    try {
-      this.loading = true;
 
-      const response = await fetch('/api/v1/templates');
-      const templates = await response.json();
+  async firstUpdated() {
+    this.loading = true;
 
-      templatesManager.setTemplates(templates);
-      this.templates = templatesManager.getTemplates();
-    } catch (e) {
-      // Use backup templates
+    this.templates = await templatesManager.fetchTemplates(false, () => {
       const fetchErrorToast = this.shadowRoot?.getElementById(
         'fetch-error-toast'
       ) as PaperToastElement;
+
       if (fetchErrorToast != null) {
         fetchErrorToast.open();
       }
-      templatesManager.setTemplates(database);
-      this.templates = templatesManager.getTemplates();
-    } finally {
-      this.loading = false;
-    }
-  }
+    });
 
-  firstUpdated() {
-    this.fetchTemplates();
+    this.loading = false;
+
     this.showTemplateSelectionModal();
   }
 
@@ -252,7 +242,7 @@ export class AppRoot extends LitElement {
 
           <paper-toast
             id="fetch-error-toast"
-            text="Error fetching templates. Using backup instead."
+            text="Unable to fetch latest templates from the server."
           ></paper-toast>
         </div>
       </div>

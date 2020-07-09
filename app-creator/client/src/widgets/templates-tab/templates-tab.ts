@@ -48,24 +48,23 @@ export class TemplatesTab extends LitElement {
   @property({ type: String }) query = '';
 
   getTemplateCards(showTitle = false) {
-    return templatesManager
-      .getTemplates()
-      .map(({ id, name, imageUrl, template }) => {
-        return {
-          id,
-          name,
-          markup: html`
-            ${showTitle ? nothing : html`<h6 class="subtitle">${name}</h6>`}
-            <template-card
-              id="${id}"
-              title="${name}"
-              imageUrl="${imageUrl}"
-              ?showTitle=${showTitle}
-              .onSelection=${this.createSelectionCallback(template)}
-            ></template-card>
-          `,
-        };
-      });
+    const templates = templatesManager.getTemplates();
+    return templates.map(({ id, name, imageUrl, template }) => {
+      return {
+        id,
+        name,
+        markup: html`
+          ${showTitle ? nothing : html`<h6 class="subtitle">${name}</h6>`}
+          <template-card
+            id="${id}"
+            title="${name}"
+            imageUrl="${imageUrl}"
+            ?showTitle=${showTitle}
+            .onSelection=${this.createSelectionCallback(template)}
+          ></template-card>
+        `,
+      };
+    });
   }
 
   /**

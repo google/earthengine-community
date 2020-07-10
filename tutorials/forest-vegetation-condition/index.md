@@ -129,7 +129,7 @@ print(getHistogram(
   'Rajiv Gandhi (Nagarhole)'));
 ```
 
-![](slopeshistogrambandipur.png)    |    ![](slopeshistogramnagarhole.png) 
+![](slopes-histogram-bandipur.png)    |    ![](slopes-histogram-nagarhole.png) 
 :----------------------------------:|:---------------------------------------:
 
 Infer pixel-wise vegetation greening or browning based on the sign of the slope value. Calculate summary of areas under greening and browning for each national park.
@@ -170,7 +170,7 @@ print(ui.Chart.feature.byFeature(npsRes.select(['NAME', 'Browning sq km',
   .setChartType('Table'));
 ```
 
-![](areastable.png)
+![](areas-table.png)
 
 Choose suitable visualization parameters and display the slope values on the map to denote areas under greening and browning, along with the national park boundaries.
 
@@ -195,7 +195,7 @@ var paimg = ee.Image().byte().paint(nps, 0, 2);
 Map.addLayer(paimg, {palette: '000000'}, 'National Parks');
 ```
 
-![](conditionmap.png)
+![](condition-map.png)
 
 Chart the median of maximum summer EVIs in each national park over the years.
 
@@ -222,5 +222,5 @@ print(ui.Chart.image
           }));
 ```
 
-![](medevichart.png)
+![](med-evi-chart.png)
 

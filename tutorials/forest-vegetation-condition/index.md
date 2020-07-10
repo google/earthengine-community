@@ -45,6 +45,7 @@ var mod13 = ee.ImageCollection('MODIS/006/MOD13Q1');
 var nps = ee.FeatureCollection('WCMC/WDPA/current/polygons')
   .filter(ee.Filter.inList('NAME', ['Bandipur', 'Rajiv Gandhi (Nagarhole)']));
 ```
+
 ### Compute annual summertime composites 
 
 Build an image collection with an image for each year from 2000 to 2019. Each of these images is calculated to be the maximum EVI in the summer months of its corresponding year. This is our measure of the status of the vegetation for each year. Also add the year as a band, in preparation for linear trend analysis.
@@ -76,6 +77,7 @@ var summerStats = ee.ImageCollection(mod13SummerAnnualJoin.map(function(img) {
   return ee.Image.cat(yr, max).rename(['year', 'max']).set('year', year);
 }));
 ```
+
 ### Estimate trends and infer vegetation condition
 
 Estimate a linear trend at each pixel by calculating its Sen's slope of maximum summer EVI with time. Calculate and visualize histograms of the regression slope values for each national park.
@@ -126,6 +128,7 @@ print(getHistogram(
   sens, nps.filter(ee.Filter.eq('NAME', 'Rajiv Gandhi (Nagarhole)')),
   'Rajiv Gandhi (Nagarhole)'));
 ```
+
 ![](slopeshistogrambandipur.png)    |    ![](slopeshistogramnagarhole.png) 
 :----------------------------------:|:---------------------------------------:
 
@@ -140,6 +143,7 @@ var cond = ee.Image.cat(sens.select('slope').gt(0).rename('greening'),
 var npsRes = cond.multiply(ee.Image.pixelArea())
                  .reduceRegions(nps, ee.Reducer.sum(), 250);
 ```
+
 ### Visualise results
 
 Tabulate the areas of vegetation greening and browning for each national park. 
@@ -165,6 +169,7 @@ print(ui.Chart.feature.byFeature(npsRes.select(['NAME', 'Browning sq km',
     'NAME')
   .setChartType('Table'));
 ```
+
 ![](areastable.png)
 
 Choose suitable visualization parameters and display the slope values on the map to denote areas under greening and browning, along with the national park boundaries.
@@ -189,6 +194,7 @@ Map.addLayer(sens.clipToCollection(nps), visParams, 'Sen\'s slope');
 var paimg = ee.Image().byte().paint(nps, 0, 2);
 Map.addLayer(paimg, {palette: '000000'}, 'National Parks');
 ```
+
 ![](conditionmap.png)
 
 Chart the median of maximum summer EVIs in each national park over the years.
@@ -215,5 +221,6 @@ print(ui.Chart.image
             series: {0: {color: 'ff0000'}, 1: {color: '0000ff'}}
           }));
 ```
+
 ![](medevichart.png)
 

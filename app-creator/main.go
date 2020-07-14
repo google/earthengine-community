@@ -26,7 +26,7 @@ func main() {
 	*/
 	db, err := datastore.NewClient(ctx, os.Getenv("GOOGLE_CLOUD_PROJECT"))
 	if err != nil {
-		log.Fatal("Database connection error", err)
+		log.Fatalf("Database connection error: %v", err)
 	}
 
 	/*
@@ -48,7 +48,7 @@ func main() {
 	/*
 	  Strip any leading colons and make sure it only contains numbers.
 	*/
-	re := regexp.MustCompile(`^:([0-9]+)$`)
+	re := regexp.MustCompile(`^:?([0-9]+)$`)
 	
 	/*
 	  Default to port 8080 if environment variable is not set or is invalid.
@@ -74,7 +74,7 @@ func main() {
 	/*
 	  Setting up handlers.
 	*/
-	handler := handlers.NewHandler(l, dbclient)
+	handler := handlers.New(l, dbclient)
 
 	/*
 	  Registering handlers.
@@ -88,16 +88,14 @@ func main() {
 	*/ 
 	c := cors.Default().Handler(serverMux)
 
-	var allowedOrigins []string
-	allowedOriginsEnv := os.Getenv("ALLOWED_ORIGINS")
 	// If env variable is set for allowedOrigins, use them instead of the default.
-	if allowedOriginsEnv != "" {
-		// Split comma separated domains and trim whitespaces.
-		allowedOrigins = strings.Split(allowedOriginsEnv, ",")
-		for i := 0; i < len(allowedOrigins); i++ {
-			allowedOrigins[i] = strings.Trim(allowedOrigins[i], " ")	
-		}
+	// Split comma separated domains and trim whitespaces.
+	allowedOrigins := strings.Split(os.Getenv("ALLOWED_ORIGINS"), ",")
+	for i, o := range allowedOrigins {
+		allowedOrigins[i] = strings.Trim(o, " ")
+	}
 
+	if len(allowedOrigins) > 0 {
 		c = cors.New(cors.Options{
 			AllowedOrigins: allowedOrigins,
 			AllowCredentials: true,

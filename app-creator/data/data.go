@@ -43,15 +43,14 @@ func (t *Template) FromJSON(r io.Reader) error {
 /**
  Get is used to fetch templates from the database and returns a slice of templates.
 */
-func Get(ctx context.Context, db dsiface.Client, l *log.Logger) Templates {
+func Get(ctx context.Context, db dsiface.Client, l *log.Logger) (Templates, error) {
 	templates := []*Template{}
 	_, err := db.GetAll(ctx, datastore.NewQuery("Template"), &templates)
-	if err != nil {
-		l.Fatal("Unable to fetch templates\n")
-	}
 
-	return templates
+	return templates, err
 }
 
 // TODO: Implement adding templates to the database. Used when a user saves a template.
-func AddTemplate(t *Template) {} 
+func AddTemplate(t *Template) error {
+	return nil
+} 

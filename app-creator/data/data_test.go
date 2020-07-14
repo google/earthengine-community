@@ -14,7 +14,7 @@ func TestToJSON(t *testing.T) {
 
 	err := TemplatesStub.ToJSON(rec)
 	if err != nil {
-		t.Fatalf("error converting to json: %v", err)
+		t.Fatalf("Error converting to json: %v", err)
 	}
 
 	res := rec.Result()
@@ -25,7 +25,7 @@ func TestToJSON(t *testing.T) {
 
 	_, err = ioutil.ReadAll(res.Body)
 	if err != nil {
-		t.Fatalf("could not read response: %v", err)
+		t.Fatalf("Could not read response: %v", err)
 	}
 }
 
@@ -34,18 +34,18 @@ func TestFromJSON(t *testing.T) {
 
 	templateJSON, err := json.Marshal(template)
 	if err != nil {
-		t.Fatalf("could not convert template to json: %v", err)
+		t.Fatalf("Could not convert template to json: %v", err)
 	}
 
 	r := strings.NewReader(string(templateJSON))
 	req, err := http.NewRequest("GET", "localhost:8080/api/v1/templates", r)
 	if err != nil {
-		t.Fatalf("could not create request: %v", err)
+		t.Fatalf("Could not create request: %v", err)
 	}
 
 	err = template.FromJSON(req.Body)
 	if err != nil {
-		t.Fatalf("error converting from json: %v", err)
+		t.Fatalf("Error converting from json: %v", err)
 	}
 }
 

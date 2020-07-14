@@ -7,25 +7,11 @@ import (
 	"log"
 	"os"
 	"io/ioutil"
-	"github.com/googleapis/google-cloud-go-testing/datastore/dsiface"
-	"context"
 	"cloud.google.com/go/datastore"
+	"github.com/googleapis/google-cloud-go-testing/datastore/dsiface"
 )
 
-type mockClient struct {
-	dsiface.Client
-	m map[string]interface{}
-}
-
-func newMockClient() dsiface.Client {
-	return &mockClient{
-		m: make(map[string]interface{}),
-	}
-}
-
 func TestGetTemplates(t *testing.T) {
-	ctx := context.Background()
-
 	req, err := http.NewRequest("GET", "localhost:8080/api/v1/templates", nil)
 	if err != nil {
 		t.Fatalf("could not create request: %v", err)
@@ -35,17 +21,14 @@ func TestGetTemplates(t *testing.T) {
 
 	l := log.New(os.Stdout, "app-creator", log.LstdFlags)
 
-	dbclient := newMockClient()
-
-	query := datastore.NewQuery("Template")
-
-	var dst dsiface.sourceData
-	_, err = dbclient.GetAll(ctx, query, &dst)
+	db, err := datastore.NewClient(req.Context(), os.Getenv("GOOGLE_CLOUD_PROJECT"))
 	if err != nil {
-		t.Fatal(err)
+		t.Fatalf("Database connection failed: %v", err)
 	}
 
-	th := NewHandler(l, dbclient)
+	dbclient := dsiface.AdaptClient(db);
+
+	th := New(l, dbclient)
 
 	th.ServeHTTP(rec, req)
 
@@ -59,12 +42,4 @@ func TestGetTemplates(t *testing.T) {
 	if err != nil {
 		t.Fatalf("could not read response: %v", err)
 	}
-}
-
-func (m *mockClient) GetAll(ctx context.Context, q *datastore.Query, dst interface{}) (keys []*datastore.Key, err error) {
-	if q.Query != "Template" {
-		return datastore.ErrNoSuchEntity
-	}
-
-
 }

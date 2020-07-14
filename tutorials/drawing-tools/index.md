@@ -463,7 +463,7 @@ function classify() {
   });
 
   // Train a CART classifier.
-  var classifier = ee.Classifier.cart().train({
+  var classifier = ee.Classifier.smileCart().train({
     features: training,
     classProperty: classProperty,
   });
@@ -524,7 +524,7 @@ Map.centerObject(urban);
 ```
 
 That's all there is to it!
-**[Here's a link to the full script.](https://code.earthengine.google.com/21c913d95b92b414a7579fbd5ab759a9)**
+**[Here's a link to the full script.](https://code.earthengine.google.com/281685736496e769a96f12f0c5dd3a6b)**
 
 ## Conclusion
 

@@ -1,4 +1,4 @@
-package templates_data
+package data
 
 import (
 	"testing"
@@ -12,7 +12,7 @@ import (
 func TestToJSON(t *testing.T) {
 	rec := httptest.NewRecorder()
 
-	err := templates.ToJSON(rec)
+	err := TemplatesStub.ToJSON(rec)
 	if err != nil {
 		t.Fatalf("error converting to json: %v", err)
 	}
@@ -20,7 +20,7 @@ func TestToJSON(t *testing.T) {
 	res := rec.Result()
 	defer res.Body.Close()
 	if res.StatusCode != http.StatusOK {
-		t.Fatalf("expected status OK; got %v", res.StatusCode)
+		t.Fatalf("Incorrect status. Got %v, and expected OK.", res.StatusCode)
 	}
 
 	_, err = ioutil.ReadAll(res.Body)
@@ -30,7 +30,7 @@ func TestToJSON(t *testing.T) {
 }
 
 func TestFromJSON(t *testing.T) {
-	template := templates[0]
+	template := TemplatesStub[0]
 
 	templateJSON, err := json.Marshal(template)
 	if err != nil {
@@ -49,11 +49,11 @@ func TestFromJSON(t *testing.T) {
 	}
 }
 
-var templates = Templates{
+var TemplatesStub = Templates{
 	&Template{
 		Id: "left-side-panel",
 		Name: "Left Side Panel",
-		ImageUrl: "https://storage.googleapis.com/ee-app-creator.appspot.com/left-side-panel.jpeg",
+		ImageURL: "https://storage.googleapis.com/ee-app-creator.appspot.com/left-side-panel.jpeg",
 		Template: `{
 			"id": "left-side-panel",
 			"name": "Left Side Panel",

@@ -5,9 +5,10 @@ import (
 	"net/http/httptest"
 	"testing"
 	"log"
-	"cloud.google.com/go/datastore"
 	"os"
 	"io/ioutil"
+	"cloud.google.com/go/datastore"
+	"github.com/googleapis/google-cloud-go-testing/datastore/dsiface"
 )
 
 func TestGetTemplates(t *testing.T) {
@@ -25,7 +26,9 @@ func TestGetTemplates(t *testing.T) {
 		t.Fatalf("Database connection failed: %v", err)
 	}
 
-	th := NewTemplatesHandler(l, db)
+	dbclient := dsiface.AdaptClient(db);
+
+	th := NewHandler(l, dbclient)
 
 	th.ServeHTTP(rec, req)
 

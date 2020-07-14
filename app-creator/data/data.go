@@ -1,24 +1,31 @@
-package templates_data 
+package data
 
 import (
 	"encoding/json"
 	"io"
 	"context"
-	"cloud.google.com/go/datastore"
 	"log"
+	"cloud.google.com/go/datastore"
+	"github.com/googleapis/google-cloud-go-testing/datastore/dsiface"
 )
 
+/*
+ Template struct defines the structure of template objects in our database.
+*/
 type Template struct {
 	Id string `json:"id"` 
 	Name string `json:"name"`
-	ImageUrl string `json:"imageUrl"`
+	ImageURL string `json:"imageURL"`
 	Template string `json:"template"`
 }
 
+/*
+ Templates is an array data type for templates. Used when fetching templates and returning them to the user.
+*/
 type Templates []*Template
 
 /**
-* Converts an array of Template data into JSON.
+ ToJSON is a method called on a Templates. It converts an array of Template data into JSON.
 */
 func (t *Templates) ToJSON(w io.Writer) error {
 	encoder := json.NewEncoder(w)
@@ -26,7 +33,7 @@ func (t *Templates) ToJSON(w io.Writer) error {
 }
 
 /**
-* Converts a JSON representation of a Template object into a Template instance. 
+ FromJSON converts a JSON representation of a Template object into a Template instance. 
 */
 func (t *Template) FromJSON(r io.Reader) error {
 	e := json.NewDecoder(r)
@@ -34,9 +41,9 @@ func (t *Template) FromJSON(r io.Reader) error {
 }
 
 /**
-* Returns array of templates.
+ Get is used to fetch templates from the database and returns a slice of templates.
 */
-func GetTemplates(db *datastore.Client, l *log.Logger, ctx context.Context) Templates {
+func Get(ctx context.Context, db dsiface.Client, l *log.Logger) Templates {
 	templates := []*Template{}
 	_, err := db.GetAll(ctx, datastore.NewQuery("Template"), &templates)
 	if err != nil {

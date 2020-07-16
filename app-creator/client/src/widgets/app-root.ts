@@ -16,12 +16,16 @@ import './actions-panel/actions-panel';
 import './tab-container/tab-container';
 import './story-board/story-board';
 import './search-bar/search-bar';
+import '@polymer/paper-progress/paper-progress.js';
+import '@polymer/paper-toast/paper-toast.js';
+import { PaperToastElement } from '@polymer/paper-toast/paper-toast.js';
 import { PaperDialogElement } from '@polymer/paper-dialog/paper-dialog.js';
 import { onSearchEvent } from './search-bar/search-bar';
 import { TemplatesTab, TemplatesTabItem } from './templates-tab/templates-tab';
 import { store } from '../redux/store';
 import { setSelectedTemplate } from '../redux/actions';
-import { database } from '../client/fetch-templates';
+import { TemplateItem } from '../client/fetch-templates';
+import { templatesManager } from '../data/templates';
 
 @customElement('app-root')
 export class AppRoot extends LitElement {
@@ -65,10 +69,8 @@ export class AppRoot extends LitElement {
     }
 
     paper-dialog {
-      min-width: 650px;
-      max-width: 60%;
-      min-height: 450px;
-      max-height: 60%;
+      width: 60%;
+      height: 500px;
       padding: var(--regular);
       border-radius: var(--tight);
       display: flex;
@@ -93,6 +95,16 @@ export class AppRoot extends LitElement {
       font-weight: 500;
       color: var(--accent-color);
     }
+
+    paper-progress {
+      width: 100%;
+      height: 20px;
+      z-index: 10;
+      position: absolute;
+      top: 0;
+      left: 0;
+      margin: 0px;
+    }
   `;
 
   /**
@@ -101,11 +113,42 @@ export class AppRoot extends LitElement {
   @property({ type: String }) query = '';
 
   /**
+   * Array of templates.
+   */
+  @property({ type: Array }) templates: TemplateItem[] = [];
+
+  /**
+   * Loading state.
+   */
+  @property({ type: Boolean }) loading = false;
+
+  /**
    * Reference to dialog element.
    */
   @query('paper-dialog') dialog!: PaperDialogElement;
 
-  firstUpdated() {
+  async firstUpdated() {
+    try {
+      this.loading = true;
+
+      const templates = await templatesManager.fetchTemplates(false);
+      if (templates != null) {
+        this.templates = templates;
+      }
+    } catch (e) {
+      const fetchErrorToast = this.shadowRoot?.getElementById(
+        'fetch-error-toast'
+      ) as PaperToastElement;
+
+      if (fetchErrorToast != null) {
+        fetchErrorToast.open();
+      }
+
+      this.templates = templatesManager.getTemplates();
+    } finally {
+      this.loading = false;
+    }
+
     this.showTemplateSelectionModal();
   }
 
@@ -124,7 +167,7 @@ export class AppRoot extends LitElement {
   }
 
   getTemplateCards(showTitle = false): Array<TemplatesTabItem> {
-    return database.map(({ id, name, imageUrl, template }) => {
+    return this.templates.map(({ id, name, imageUrl, template }) => {
       return {
         id,
         name,
@@ -151,7 +194,7 @@ export class AppRoot extends LitElement {
   }
 
   render() {
-    const { handleSearch, getTemplateCards, query } = this;
+    const { handleSearch, getTemplateCards, query, loading } = this;
 
     const templateCards = getTemplateCards.call(this, true);
     const filteredTemplates = TemplatesTab.filterTemplates(
@@ -169,6 +212,19 @@ export class AppRoot extends LitElement {
       ></empty-notice>
     `;
 
+    const contentMarkup = loading
+      ? nothing
+      : html`
+          <div id="cards-container">
+            ${filteredTemplates.map(({ markup }) => markup)}
+            ${filteredTemplates.length === 0 ? emptyNotice : nothing}
+          </div>
+        `;
+
+    const loadingBar = loading
+      ? html`<paper-progress indeterminate></paper-progress>`
+      : nothing;
+
     return html`
       <div id="app">
         <tool-bar></tool-bar>
@@ -179,6 +235,7 @@ export class AppRoot extends LitElement {
           </div>
 
           <paper-dialog with-backdrop no-cancel-on-outside-click>
+            ${loadingBar}
             <div id="header-content">
               <h2 id="modal-title">Select Template</h2>
               <search-bar
@@ -186,12 +243,13 @@ export class AppRoot extends LitElement {
                 @onsearch=${handleSearch}
               ></search-bar>
             </div>
-            <div id="cards-container">
-              ${filteredTemplates.map(({ markup }) => markup)}
-              ${filteredTemplates.length === 0 ? emptyNotice : nothing}
-            </div>
-            <div class="buttons"></div>
+            ${contentMarkup}
           </paper-dialog>
+
+          <paper-toast
+            id="fetch-error-toast"
+            text="Unable to fetch the latest templates from the server."
+          ></paper-toast>
         </div>
       </div>
     `;

@@ -33,6 +33,11 @@ export class Chart extends LitElement {
                {c:[{v: 'Eat'}, {v: 2}]},
                {c:[{v: 'Write EE code'}, {v:7, f:'7.000'}]}]
         }`,
+      tooltip: {
+        text: 'Learn more at:',
+        url:
+          'https://developers.google.com/chart/interactive/docs/reference#DataTable',
+      },
       type: InputType.textarea,
     },
     chartType: {
@@ -58,6 +63,10 @@ export class Chart extends LitElement {
         'Gauge',
         'Candlestick Chart',
       ],
+      tooltip: {
+        text: 'Learn more at:',
+        url: 'https://developers.google.com/chart/interactive/docs/gallery',
+      },
     },
     title: {
       value: '',

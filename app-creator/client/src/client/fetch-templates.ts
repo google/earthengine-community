@@ -90,7 +90,7 @@ export const database: TemplateItem[] = [
                 "customMapStyles": ""
             }, "style": {
                 "height": "100%",
-                "width": "100%",
+                "width": "60%",
                 "padding": "0px",
                 "margin": "0px",
                 "color": "black",
@@ -187,7 +187,7 @@ export const database: TemplateItem[] = [
                 "customMapStyles": ""
             }, "style": {
                 "height": "100%",
-                "width": "100%",
+                "width": "60%",
                 "padding": "0px",
                 "margin": "0px",
                 "color": "black",
@@ -274,7 +274,7 @@ export const database: TemplateItem[] = [
         },
         "map-template-0": {
             "id": "map-template-0",
-            "children": [],
+            "children": ["panel-template-1"],
             "uniqueAttributes": {
                 "zoom": "4",
                 "latitude": "37.419857",

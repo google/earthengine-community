@@ -1,5 +1,9 @@
 import { TemplateItem, database } from '../client/fetch-templates';
 
+/**
+ * TemplatesManager is a class that handles data fetching regarding template data.
+ * It stores a local cache of templates to be used throughout the lifetime of the application.
+ */
 class TemplatesManager {
   private templates: TemplateItem[] = [];
 
@@ -7,10 +11,15 @@ class TemplatesManager {
     return this.templates;
   }
 
+  /**
+   * fetchTemplates fetches the templates from the datastore. If the
+   * network request is not successful, it will fall back by setting this.templates
+   * to backup templates stored on the client. It will also store an error to be
+   * handled by the consumer.
+   */
   async fetchTemplates(
-    forceReload: boolean = false,
-    onError?: () => void
-  ): Promise<TemplateItem[]> {
+    forceReload: boolean = false
+  ): Promise<TemplateItem[] | void> {
     /**
      * If we have already fetched the templates, then
      * we will just return what we have stored.
@@ -31,14 +40,11 @@ class TemplatesManager {
        * we will try again one more time.
        */
       if (forceReload) {
-        await this.fetchTemplates(false, onError);
+        await this.fetchTemplates(false);
       } else {
         this.templates = database;
-        if (onError != null) {
-          onError();
-        }
+        throw e;
       }
-      return this.templates;
     }
   }
 

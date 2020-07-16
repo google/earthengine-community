@@ -127,11 +127,15 @@ export class AppRoot extends LitElement {
    */
   @query('paper-dialog') dialog!: PaperDialogElement;
 
-
   async firstUpdated() {
-    this.loading = true;
+    try {
+      this.loading = true;
 
-    this.templates = await templatesManager.fetchTemplates(false, () => {
+      const templates = await templatesManager.fetchTemplates(false);
+      if (templates != null) {
+        this.templates = templates;
+      }
+    } catch (e) {
       const fetchErrorToast = this.shadowRoot?.getElementById(
         'fetch-error-toast'
       ) as PaperToastElement;
@@ -139,10 +143,10 @@ export class AppRoot extends LitElement {
       if (fetchErrorToast != null) {
         fetchErrorToast.open();
       }
-    });
-
-    this.loading = false;
-
+      this.templates = templatesManager.getTemplates();
+    } finally {
+      this.loading = false;
+    }
     this.showTemplateSelectionModal();
   }
 
@@ -242,7 +246,7 @@ export class AppRoot extends LitElement {
 
           <paper-toast
             id="fetch-error-toast"
-            text="Unable to fetch latest templates from the server."
+            text="Unable to fetch the latest templates from the server."
           ></paper-toast>
         </div>
       </div>

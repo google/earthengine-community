@@ -330,7 +330,11 @@ export class Map extends LitElement {
 
   setStyle(style: { [key: string]: string }) {
     for (const attribute in style) {
-      this.style[attribute as any] = style[attribute];
+      if (attribute === 'height' || attribute === 'width') {
+        this.style[attribute] = '100%';
+      } else {
+        this.style[attribute as any] = style[attribute];
+      }
     }
     this.requestUpdate();
   }

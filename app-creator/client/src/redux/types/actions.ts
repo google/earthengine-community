@@ -29,6 +29,7 @@ export interface RemoveWidget {
   type: typeof REMOVE_WIDGET;
   payload: {
     id: string;
+    reordering: boolean;
   };
 }
 

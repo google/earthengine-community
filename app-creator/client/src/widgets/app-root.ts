@@ -143,12 +143,10 @@ export class AppRoot extends LitElement {
       if (fetchErrorToast != null) {
         fetchErrorToast.open();
       }
-
       this.templates = templatesManager.getTemplates();
     } finally {
       this.loading = false;
     }
-
     this.showTemplateSelectionModal();
   }
 

@@ -82,11 +82,15 @@ export const updateWidgetChildren = (
 /**
  * Removes the widget metadata for the given widget id.
  */
-export const removeWidgetMetaData = (id: string): RemoveWidget => {
+export const removeWidgetMetaData = (
+  id: string,
+  reordering: boolean = false
+): RemoveWidget => {
   return {
     type: REMOVE_WIDGET,
     payload: {
       id,
+      reordering,
     },
   };
 };

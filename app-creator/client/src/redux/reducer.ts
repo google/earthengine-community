@@ -143,6 +143,11 @@ export const reducer: Reducer<AppCreatorStore, AppCreatorAction | AnyAction> = (
       }
 
       const { widgetRef } = updatedTemplate[id];
+
+      updatedTemplate[id].style.backgroundColor = getBackgroundColor(
+        updatedTemplate[id].style
+      );
+
       widgetRef.setStyle(updatedTemplate[id].style);
       updateUI(widgetRef, updatedTemplate);
 
@@ -152,7 +157,9 @@ export const reducer: Reducer<AppCreatorStore, AppCreatorAction | AnyAction> = (
       };
     case REMOVE_WIDGET:
       const newTemplate = { ...state.template };
-      delete newTemplate[action.payload.id];
+      if (!action.payload.reordering) {
+        delete newTemplate[action.payload.id];
+      }
       for (const key in newTemplate) {
         const widget = newTemplate[key];
         if (
@@ -211,4 +218,29 @@ function updateUI(widget: HTMLElement, template: { [key: string]: any }) {
   for (const attr of Object.keys(template[widget.id].uniqueAttributes)) {
     widget.setAttribute(attr, template[widget.id].uniqueAttributes[attr]);
   }
+}
+
+function getBackgroundColor(style: { [key: string]: any }): string {
+  // Stringified number from 0 - 100 (only integers) or an empty string.
+  let backgroundOpacityStr = style.backgroundOpacity;
+
+  // Empty string case.
+  if (backgroundOpacityStr === '') {
+    backgroundOpacityStr = '100';
+  }
+
+  const backgroundOpacity = parseInt(backgroundOpacityStr);
+
+  const fraction = backgroundOpacity / 100;
+
+  const hexFraction = Math.floor(255 * fraction);
+
+  // Ensure that the hex number is at least two digits.
+  let hexNumberString = ('0' + hexFraction.toString(16)).slice(-2);
+
+  const newBackgroundColor =
+    style.backgroundColor.slice(0, 7) + hexNumberString.toUpperCase();
+
+  // Example: #FFFFFF00, where the last two hex numbers represent the opacity.
+  return newBackgroundColor;
 }

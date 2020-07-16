@@ -148,7 +148,6 @@ export class AppRoot extends LitElement {
     } finally {
       this.loading = false;
     }
-
     this.showTemplateSelectionModal();
   }
 

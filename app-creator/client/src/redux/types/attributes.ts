@@ -18,6 +18,7 @@ export type SharedAttributes =
   | 'margin'
   | 'color'
   | 'backgroundColor'
+  | 'backgroundOpacity'
   | 'borderWidth'
   | 'borderStyle'
   | 'borderColor'
@@ -83,6 +84,12 @@ export const sharedAttributes: AttributeMetaData = {
     value: '#FFFFFF00',
     type: InputType.color,
   },
+  backgroundOpacity: {
+    value: '0',
+    min: 0,
+    max: 100,
+    type: InputType.number,
+  },
   borderWidth: {
     value: '0',
     placeholder: '0',
@@ -146,13 +153,21 @@ export const sharedAttributes: AttributeMetaData = {
   },
 };
 
+export const pxAttributes = new Set([
+  'height',
+  'width',
+  'borderWidth',
+  'fontSize',
+]);
+
 export const DEFAULT_SHARED_ATTRIBUTES: DefaultAttributesType = Object.keys(
   sharedAttributes
 ).reduce((attributes: DefaultAttributesType, key) => {
-  if (sharedAttributes[key].type === InputType.number) {
+  if (key in pxAttributes) {
     attributes[key] = sharedAttributes[key].value + 'px';
     return attributes;
   }
+
   attributes[key] = sharedAttributes[key].value;
   return attributes;
 }, {});

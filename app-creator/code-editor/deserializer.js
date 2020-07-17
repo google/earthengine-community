@@ -1,5 +1,4 @@
 var mapStyles = require('users/msibrahim/app-creator:map-styles');
-var examples = require('users/msibrahim/app-creator:examples');
 
 exports.createApp = createApp;
 
@@ -30,7 +29,7 @@ function createApp(template) {
     function helper(nodeObj) {
       var obj = app.createUIElement(nodeObj);
       if (!obj) {
-        console.log('Incorrect widget type');
+        print('Received invalid node object', nodeObj);
         throw new Error('Incorrect widget type.');
       }
 
@@ -192,7 +191,7 @@ function createApp(template) {
         return item.trim();
       });
     } catch (e) {
-      console.log('Error parsing items for select element');
+      print('Error parsing items for select element');
     }
 
     var select = ui.Select({
@@ -345,7 +344,7 @@ function createApp(template) {
       try {
         customMapStylesJSON = JSON.parse(customMapStyles);
       } catch (e) {
-        console.log(e);
+        print(e);
       }
     }
 

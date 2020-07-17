@@ -69,7 +69,7 @@ export class AppRoot extends LitElement {
     }
 
     paper-dialog {
-      width: 60%;
+      width: 800px;
       height: 500px;
       padding: var(--regular);
       border-radius: var(--tight);

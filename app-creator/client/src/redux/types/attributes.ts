@@ -105,7 +105,7 @@ export const sharedAttributes: AttributeMetaData = {
     type: InputType.color,
   },
   fontSize: {
-    value: '12',
+    value: '12px',
     placeholder: '12',
     type: InputType.number,
   },

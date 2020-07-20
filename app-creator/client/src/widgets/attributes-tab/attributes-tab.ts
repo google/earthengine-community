@@ -251,7 +251,7 @@ export class AttributesTab extends connect(store)(LitElement) {
         }
         inputElement.style.border = 'var(--light-border)';
       } else {
-        inputElement.style.borderColor = 'var(--validation-error-border-color)';
+        inputElement.style.borderColor = 'var(--validation-error-red-color)';
       }
     } else {
       dispatcher(inputElement.value);
@@ -301,8 +301,7 @@ export class AttributesTab extends connect(store)(LitElement) {
         dispatcher(textareaInput.value);
         textareaInput.style.border = 'var(--light-border)';
       } else {
-        textareaInput.style.borderColor =
-          'var(--validation-error-border-color)';
+        textareaInput.style.borderColor = 'var(--validation-error-red-color)';
       }
     } else {
       dispatcher(textareaInput.value);

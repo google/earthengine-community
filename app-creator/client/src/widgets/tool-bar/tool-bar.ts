@@ -4,14 +4,17 @@
  *  displaying a serialized template string that the user can copy
  *  and import into the code editor.
  */
-import { LitElement, html, customElement, css } from 'lit-element';
 import '@polymer/paper-button/paper-button.js';
-import { store } from '../../redux/store';
 import '@polymer/paper-dialog/paper-dialog.js';
-import { PaperDialogElement } from '@polymer/paper-dialog/paper-dialog.js';
 import '@polymer/paper-dialog-scrollable/paper-dialog-scrollable.js';
+import '@polymer/paper-toast/paper-toast.js';
+import { LitElement, html, customElement, css } from 'lit-element';
+import { store } from '../../redux/store';
+import { PaperDialogElement } from '@polymer/paper-dialog/paper-dialog.js';
 import { AppCreatorStore } from '../../redux/reducer';
-import { WIDGET_REF } from '../../utils/constants';
+import { WIDGET_REF, ROOT_ID } from '../../utils/constants';
+import { setSelectedTemplate } from '../../redux/actions';
+import { PaperToastElement } from '@polymer/paper-toast/paper-toast.js';
 
 @customElement('tool-bar')
 export class ToolBar extends LitElement {
@@ -65,7 +68,7 @@ export class ToolBar extends LitElement {
       font-family: monospace;
     }
 
-    #copy-button {
+    .action-button {
       background-color: var(--accent-color);
     }
 
@@ -77,11 +80,30 @@ export class ToolBar extends LitElement {
       margin-right: var(--tight);
     }
 
+    #import-textarea {
+      width: calc(100% - 2 * var(--tight) - 44px);
+      height: 250px;
+      margin-left: 24px;
+      padding: var(--tight);
+    }
+
+    #import-button {
+      background-color: var(--primary-color);
+      color: var(--accent-color);
+      height: 30px;
+      font-size: 0.8rem;
+      border: 0.3px solid var(--accent-color);
+    }
+
     #export-button {
       background-color: var(--accent-color);
       color: var(--primary-color);
       height: 30px;
       font-size: 0.8rem;
+    }
+
+    #invalid-json-toast {
+      background-color: var(--validation-error-red-color);
     }
   `;
 
@@ -89,8 +111,8 @@ export class ToolBar extends LitElement {
    * Triggered when export button is clicked. It displays the paper dialog which
    * contains the serialized template string.
    */
-  openDialog() {
-    const dialog = this.shadowRoot?.querySelector('paper-dialog');
+  openExportDialog() {
+    const dialog = this.shadowRoot?.querySelector('#export-dialog');
     const jsonSnippetContainer = this.shadowRoot?.getElementById(
       'json-snippet'
     );
@@ -99,6 +121,19 @@ export class ToolBar extends LitElement {
       return;
     }
     jsonSnippetContainer.textContent = this.getTemplateString(3);
+
+    (dialog as PaperDialogElement).open();
+  }
+
+  /**
+   * Triggered when import button is clicked. It displays the paper dialog which
+   * allows users to paste a template string.
+   */
+  openImportDialog() {
+    const dialog = this.shadowRoot?.querySelector('#import-dialog');
+    if (dialog == null) {
+      return;
+    }
 
     (dialog as PaperDialogElement).open();
   }
@@ -152,8 +187,122 @@ export class ToolBar extends LitElement {
     textArea.remove();
   }
 
+  /**
+   * Imports template from JSON provided by the user.
+   */
+  importTemplate() {
+    // Get textarea input element.
+    const textarea = this.shadowRoot?.querySelector(
+      '#import-textarea'
+    ) as HTMLTextAreaElement;
+    if (textarea == null) {
+      return;
+    }
+
+    // Get dialog element.
+    const dialog = this.shadowRoot?.querySelector('#import-dialog');
+    if (dialog == null) {
+      return;
+    }
+
+    // Get template json string.
+    const template = textarea.value.replace(/\\'/g, "'");
+
+    try {
+      const templateJSON = JSON.parse(template);
+
+      // If the JSON doesn't contain a root_id (i.e. panel-template-0)
+      // then it is not a valid template and thus we need to throw an error.
+      if (!(ROOT_ID in templateJSON)) {
+        throw new Error('Root ID not present in template string.');
+      }
+
+      // Update the store with the new template.
+      store.dispatch(setSelectedTemplate(templateJSON));
+
+      (dialog as PaperDialogElement).close();
+
+      this.clearTextArea('import-textarea');
+    } catch (e) {
+      console.log(e);
+
+      const fetchErrorToast = this.shadowRoot?.getElementById(
+        'invalid-json-toast'
+      ) as PaperToastElement;
+
+      if (fetchErrorToast != null) {
+        fetchErrorToast.open();
+      }
+    }
+  }
+
+  clearTextArea(id: string) {
+    const textarea = this.shadowRoot?.querySelector(
+      `#${id}`
+    ) as HTMLTextAreaElement;
+
+    if (textarea == null) {
+      return;
+    }
+
+    textarea.value = '';
+  }
+
   render() {
-    const { openDialog, copy } = this;
+    const {
+      openExportDialog,
+      openImportDialog,
+      importTemplate,
+      clearTextArea,
+      copy,
+    } = this;
+
+    const exportDialog = html`
+      <paper-dialog id="export-dialog" with-backdrop no-cancel-on-outside-click>
+        <h2>Paste string in EE Code Editor</h2>
+        <paper-dialog-scrollable id="json-string-container">
+          <pre><code id="json-snippet"></code
+          ></pre>
+        </paper-dialog-scrollable>
+        <div class="buttons">
+          <paper-button id="cancel-button" dialog-dismiss>Cancel</paper-button>
+          <paper-button
+            class="action-button"
+            dialog-confirm
+            autofocus
+            @click=${copy}
+            >Copy</paper-button
+          >
+        </div>
+      </paper-dialog>
+    `;
+
+    const importDialog = html`
+      <paper-dialog id="import-dialog" with-backdrop no-cancel-on-outside-click>
+        <h2>Paste template string below</h2>
+
+        <textarea
+          id="import-textarea"
+          class="attribute-input text-input"
+          placeholder="Paste JSON here."
+          rows="4"
+        ></textarea>
+        <div class="buttons">
+          <paper-button
+            id="cancel-button"
+            @click=${() => {
+              clearTextArea.call(this, 'import-textarea');
+            }}
+            dialog-dismiss
+            >Cancel</paper-button
+          >
+          <paper-button class="action-button" autofocus @click=${importTemplate}
+            >Import</paper-button
+          >
+        </div>
+      </paper-dialog>
+    `;
+
     return html`
       <div id="container">
         <h3>
@@ -161,29 +310,20 @@ export class ToolBar extends LitElement {
           <span id="app-title-suffix">${ToolBar.suffix}</span>
         </h3>
 
-        <paper-button id="export-button" @click=${openDialog}
-          >Export</paper-button
-        >
+        <div>
+          <paper-button id="import-button" @click=${openImportDialog}
+            >Import</paper-button
+          >
+          <paper-button id="export-button" @click=${openExportDialog}
+            >Export</paper-button
+          >
+        </div>
 
-        <paper-dialog>
-          <h2>Paste string in EE Code Editor</h2>
-          <paper-dialog-scrollable id="json-string-container">
-            <pre><code id="json-snippet"></code
-          ></pre>
-          </paper-dialog-scrollable>
-          <div class="buttons">
-            <paper-button id="cancel-button" dialog-dismiss
-              >Cancel</paper-button
-            >
-            <paper-button
-              id="copy-button"
-              dialog-confirm
-              autofocus
-              @click=${copy}
-              >Copy</paper-button
-            >
-          </div>
-        </paper-dialog>
+        ${importDialog} ${exportDialog}
+        <paper-toast
+          id="invalid-json-toast"
+          text="Invalid template string."
+        ></paper-toast>
       </div>
     `;
   }

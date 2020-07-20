@@ -22,6 +22,8 @@ import '../template-card/template-card';
 import { store } from '../../redux/store';
 import { setSelectedTemplate } from '../../redux/actions';
 import { templatesManager } from '../../data/templates';
+import { connect } from 'pwa-helpers';
+import { AppCreatorStore } from '../../redux/reducer';
 
 export interface TemplatesTabItem {
   id: string;
@@ -30,7 +32,7 @@ export interface TemplatesTabItem {
 }
 
 @customElement('templates-tab')
-export class TemplatesTab extends LitElement {
+export class TemplatesTab extends connect(store)(LitElement) {
   static styles = css`
     .subtitle {
       margin: var(--regular) 0px var(--tight) 0px;
@@ -41,6 +43,18 @@ export class TemplatesTab extends LitElement {
       margin-top: var(--regular);
     }
   `;
+
+  stateChanged(state: AppCreatorStore) {
+    if (state.template.id !== this.selectedTemplateID) {
+      this.selectedTemplateID = state.template.id;
+      this.requestUpdate();
+    }
+  }
+
+  /**
+   * Represents the id of the currently selected template. Used to rerender templates tab.
+   */
+  @property({ type: String }) selectedTemplateID: string = '';
 
   /**
    * Sets the search query.

@@ -10,6 +10,7 @@ import {
   RESET_DRAGGING_VALUES,
   SET_SELECTED_TAB,
   SET_REORDERING,
+  SET_IMPORTING,
   AppCreatorAction,
   ADD_WIDGET_META_DATA,
   REMOVE_WIDGET,
@@ -20,7 +21,7 @@ import {
 import { Reducer, AnyAction } from 'redux';
 import { UniqueAttributes } from './types/attributes';
 import { EventType, Tab } from './types/enums';
-import { getIdPrefix } from '../utils/helpers';
+import { getWidgetType } from '../utils/helpers';
 
 export interface WidgetMetaData {
   id: string;
@@ -102,6 +103,11 @@ export const reducer: Reducer<AppCreatorStore, AppCreatorAction | AnyAction> = (
         ...state,
         eventType: action.payload.value ? EventType.reordering : EventType.none,
       };
+    case SET_IMPORTING:
+      return {
+        ...state,
+        eventType: action.payload.value ? EventType.importing : EventType.none,
+      };
     case ADD_WIDGET_META_DATA:
       return {
         ...state,
@@ -115,7 +121,7 @@ export const reducer: Reducer<AppCreatorStore, AppCreatorAction | AnyAction> = (
       const updatedTemplate = { ...state.template };
 
       if (attributeName.endsWith('unit')) {
-        const attributePrefix = getIdPrefix(attributeName);
+        const attributePrefix = getWidgetType(attributeName);
         const attributeValue =
           updatedTemplate[id][attributeType][attributePrefix];
         if (attributeValue.endsWith('px')) {

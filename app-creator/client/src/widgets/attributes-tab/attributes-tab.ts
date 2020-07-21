@@ -14,7 +14,7 @@ import {
 } from '../../redux/types/attributes.js';
 import '@polymer/paper-dialog/paper-dialog.js';
 import '../empty-notice/empty-notice';
-import { camelCaseToTitleCase, getIdPrefix } from '../../utils/helpers.js';
+import { camelCaseToTitleCase, getWidgetType } from '../../utils/helpers.js';
 import { updateWidgetMetaData } from '../../redux/actions.js';
 import {
   EventType,
@@ -585,7 +585,7 @@ ${value}</textarea
     const uniqueAttributes = store.getState().template[widget.id]
       .uniqueAttributes;
 
-    const widgetType = getIdPrefix(widget.id);
+    const widgetType = getWidgetType(widget.id);
 
     switch (widgetType) {
       case WidgetType.label:

@@ -16,13 +16,14 @@ import '../ui-map/ui-map';
 import '@polymer/iron-icons/hardware-icons.js';
 import '../ui-panel/ui-panel';
 import { connect } from 'pwa-helpers';
-import { DeviceType } from '../../redux/types/enums';
+import { DeviceType, EventType } from '../../redux/types/enums';
 import { store } from '../../redux/store';
 import { AppCreatorStore } from '../../redux/reducer';
 import { PaperCardElement } from '@polymer/paper-card/paper-card.js';
 import { generateUI } from '../../utils/template-generation';
 import '@polymer/paper-tabs/paper-tabs';
 import '@polymer/paper-tabs/paper-tab';
+import { setImporting } from '../../redux/actions';
 
 const STORYBOARD_ID = 'storyboard';
 
@@ -94,12 +95,17 @@ export class Storyboard extends connect(store)(LitElement) {
   `;
 
   stateChanged(state: AppCreatorStore) {
-    if (state.template.id !== this.templateID) {
+    if (
+      state.template.id !== this.templateID ||
+      state.eventType == EventType.importing
+    ) {
       this.templateID = state.template.id;
       const { storyboard } = this;
       if (storyboard == null) {
         return;
       }
+
+      store.dispatch(setImporting(false));
 
       storyboard.innerHTML = ``;
       generateUI(state.template, storyboard);

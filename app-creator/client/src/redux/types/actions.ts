@@ -9,6 +9,7 @@ export const SET_EDITING_WIDGET = 'SET_EDITING_WIDGET';
 export const SET_ELEMENT_ADDED = 'SET_ELEMENT_ADDED';
 export const SET_SELECTED_TAB = 'SET_SELECTED_TAB';
 export const SET_REORDERING = 'SET_REORDERING';
+export const SET_IMPORTING = 'SET_IMPORTING';
 export const INCREMENT_WIDGET_ID = 'INCREMENT_WIDGET_ID';
 export const RESET_DRAGGING_VALUES = 'RESET_DRAGGING_VALUES';
 export const ADD_WIDGET_META_DATA = 'ADD_WIDGET_META_DATA';
@@ -115,6 +116,13 @@ export interface SetIsReorderingAction {
   };
 }
 
+export interface SetIsImportingAction {
+  type: typeof SET_IMPORTING;
+  payload: {
+    value: boolean;
+  };
+}
+
 export type AppCreatorAction =
   | SetDraggingWidgetAction
   | SetEditingWidgetAction
@@ -127,4 +135,5 @@ export type AppCreatorAction =
   | AddWidgetMetaData
   | RemoveWidget
   | UpdateWidgetMetaData
-  | UpdateWidgetChildren;
+  | UpdateWidgetChildren
+  | SetIsImportingAction;

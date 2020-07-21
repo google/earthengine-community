@@ -32,6 +32,7 @@ export enum AttributeType {
 export enum EventType {
   editing = 'editing',
   reordering = 'reordering',
+  importing = 'importing',
   adding = 'adding',
   none = 'none',
 }

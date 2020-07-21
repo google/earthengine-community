@@ -8,12 +8,12 @@ import '@polymer/paper-button/paper-button.js';
 import '@polymer/paper-dialog/paper-dialog.js';
 import '@polymer/paper-dialog-scrollable/paper-dialog-scrollable.js';
 import '@polymer/paper-toast/paper-toast.js';
-import { LitElement, html, customElement, css } from 'lit-element';
+import { LitElement, html, customElement, css, query } from 'lit-element';
 import { store } from '../../redux/store';
 import { PaperDialogElement } from '@polymer/paper-dialog/paper-dialog.js';
 import { AppCreatorStore } from '../../redux/reducer';
 import { WIDGET_REF, ROOT_ID } from '../../utils/constants';
-import { setSelectedTemplate } from '../../redux/actions';
+import { setSelectedTemplate, setImporting } from '../../redux/actions';
 import { PaperToastElement } from '@polymer/paper-toast/paper-toast.js';
 
 @customElement('tool-bar')
@@ -108,21 +108,36 @@ export class ToolBar extends LitElement {
   `;
 
   /**
+   * Reference to the export dialog element.
+   */
+  @query('#export-dialog') exportDialog!: PaperDialogElement;
+
+  /**
+   * Reference to the import dialog element.
+   */
+  @query('#import-dialog') importDialog!: PaperDialogElement;
+
+  /**
+   * Reference to the textarea element.
+   */
+  @query('#import-textarea') importTextArea!: HTMLTextAreaElement;
+
+  /**
    * Triggered when export button is clicked. It displays the paper dialog which
    * contains the serialized template string.
    */
   openExportDialog() {
-    const dialog = this.shadowRoot?.querySelector('#export-dialog');
     const jsonSnippetContainer = this.shadowRoot?.getElementById(
       'json-snippet'
     );
 
-    if (dialog == null || jsonSnippetContainer == null) {
+    if (this.exportDialog == null || jsonSnippetContainer == null) {
       return;
     }
+
     jsonSnippetContainer.textContent = this.getTemplateString(3);
 
-    (dialog as PaperDialogElement).open();
+    this.exportDialog.open();
   }
 
   /**
@@ -130,12 +145,11 @@ export class ToolBar extends LitElement {
    * allows users to paste a template string.
    */
   openImportDialog() {
-    const dialog = this.shadowRoot?.querySelector('#import-dialog');
-    if (dialog == null) {
+    if (this.importDialog == null) {
       return;
     }
 
-    (dialog as PaperDialogElement).open();
+    this.importDialog.open();
   }
 
   /**
@@ -192,40 +206,39 @@ export class ToolBar extends LitElement {
    */
   importTemplate() {
     // Get textarea input element.
-    const textarea = this.shadowRoot?.querySelector(
-      '#import-textarea'
-    ) as HTMLTextAreaElement;
-    if (textarea == null) {
+    if (this.importTextArea == null) {
       return;
     }
 
     // Get dialog element.
-    const dialog = this.shadowRoot?.querySelector('#import-dialog');
-    if (dialog == null) {
+    if (this.importDialog == null) {
       return;
     }
 
     // Get template json string.
-    const template = textarea.value.replace(/\\'/g, "'");
+    let template = this.importTextArea.value.replace(/\\'/g, "'").trim();
+    template = template.slice(
+      template.indexOf('{'),
+      template.lastIndexOf('}') + 1
+    );
 
     try {
       const templateJSON = JSON.parse(template);
 
       // If the JSON doesn't contain a root_id (i.e. panel-template-0)
       // then it is not a valid template and thus we need to throw an error.
-      if (!(ROOT_ID in templateJSON)) {
-        throw new Error('Root ID not present in template string.');
+      if (!templateJSON.hasOwnProperty(ROOT_ID)) {
+        throw new Error('Root ID (panel-template-0) not present...');
       }
 
       // Update the store with the new template.
       store.dispatch(setSelectedTemplate(templateJSON));
+      store.dispatch(setImporting(true));
 
-      (dialog as PaperDialogElement).close();
+      this.importDialog.close();
 
       this.clearTextArea('import-textarea');
     } catch (e) {
-      console.log(e);
-
       const fetchErrorToast = this.shadowRoot?.getElementById(
         'invalid-json-toast'
       ) as PaperToastElement;
@@ -284,7 +297,7 @@ export class ToolBar extends LitElement {
         <textarea
           id="import-textarea"
           class="attribute-input text-input"
-          placeholder="Paste JSON here."
+          placeholder="Paste JSON string here (e.g. { panel-template-0: { ... } })"
           rows="4"
         ></textarea>
         <div class="buttons">

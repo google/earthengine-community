@@ -148,7 +148,8 @@ var palette =['00008B', '32CD32'];
 Map.addLayer(classified, {min: 0, max: 1, palette: palette}, 'class');
 Map.addLayer(classifiedRf, {min: 0, max: 1, palette: palette}, 'class');
 
-// Calculate the training error matrix and accuracy for both classifiers by using the "confusionMatrix" function to generate metrics on the resubstitution accuracy.
+// Calculate the training error matrix and accuracy for both classifiers by using the
+// "confusionMatrix" function to generate metrics on the resubstitution accuracy.
 
 // Accuracy calculation for CART
 var trainAccuracy = trained.confusionMatrix();
@@ -185,7 +186,8 @@ var testAccuracyRf = validatedRf.errorMatrix('class', 'classification');
 print('Validation error matrix: ', testAccuracyRf);
 print('Validation overall accuracy: ', testAccuracyRf.accuracy());
 
-// Draw the "aoi" layer on top of the classified grid for visualization. You can tweak the opacity parameter or turn off the "aoi" layer to see the layer beneath more clearly
+// Draw the "aoi" layer on top of the classified grid for visualization. You can tweak the opacity
+// parameter or turn off the "aoi" layer to see the layer beneath more clearly
 Map.addLayer(aoi);
 ```
 

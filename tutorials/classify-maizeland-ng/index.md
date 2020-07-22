@@ -145,8 +145,8 @@ var classifiedRf = image_cl.select(bands).classify(trainedRf);
 var palette =['00008B', '32CD32'];
 
 // Add the output of the training classification to the map view
-Map.addLayer(classified,{min: 0, max: 1, palette: palette},'class');
-Map.addLayer(classifiedRf,{min: 0, max: 1, palette: palette},'class');
+Map.addLayer(classified, {min: 0, max: 1, palette: palette}, 'class');
+Map.addLayer(classifiedRf, {min: 0, max: 1, palette: palette}, 'class');
 
 // Calculate the training error matrix and accuracy for both classifiers by using the "confusionMatrix" function to generate metrics on the resubstitution accuracy.
 

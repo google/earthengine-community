@@ -59,14 +59,14 @@ var nigeriaBorder = dataset.filter(ee.Filter.eq('country_na', 'Nigeria'));
 // There should only be one feature representing Nigeria.
 print(nigeriaBorder);
 
-//Center the map view on Nigeria, otherwise, the view defaults to the Country of your IP address
+// Center the map view on Nigeria, otherwise, the view defaults to the Country of your IP address
 Map.centerObject(nigeriaBorder, 6);
 
 // Setting color parameters for Nigeria Boundary
-var shown = true; //true or false, 1 or 0 
-var opacity = 0.2; //number [0-1]
-var nameLayer = 'map'; //string
-var visParams = {color: 'red'}; // dictionary: 
+var shown = true; // true or false, 1 or 0
+var opacity = 0.2; // number [0-1]
+var nameLayer = 'map'; // string
+var visParams = {color: 'red'};
 
 // Add Nigeria as a layer to the map view
 Map.addLayer(nigeriaBorder, visParams, nameLayer, shown, opacity);
@@ -82,16 +82,16 @@ Map.addLayer(aoi, visParams, nameLayer, shown, opacity);
 ### b. Ingest ground truth data for georeferenced locations where maize (and other crops) were cultivated during the growing season of 2017 (June - Oct). The data has been pre-processed and randomly split (70:30) into training and testing datasets. Import the training dataset as GEE asset here (https://code.earthengine.google.com/?asset=users/juliusadewopo/Mzetrgt_Train17_Rev), and the testing dataset here (https://code.earthengine.google.com/?asset=users/juliusadewopo/Mzetrgt_Test17_Rev). Assign variable names "trainpts" and "testpts" to the training and testing points, respectively, and add them as layer to the map view.
 
 ```js
-//Display training and test points to visualize distribution within the aoi
-Map.addLayer(trainpts, {color:'FF0000'});
-Map.addLayer(testpts, {color:'00FFFF'});
+// Display training and test points to visualize distribution within the aoi
+Map.addLayer(trainpts, {color: 'FF0000'});
+Map.addLayer(testpts, {color: '00FFFF'});
 ```
 
 ### c. Next, you will import Copernicus Sentinel-2A spectral band imageries. The imagery is organized as an ImageCollection object, which is a container for a collection of individual images. With the code snippet below, you will import the sentinel 2A ImageCollection , and similar  method can be used to import an ImageCollection for other types of multi-temporal or multi-spectral data including Landsat, vegetation index,  rainfall, temperature etc. Considering the context, you will apply relevant filters to restrict selected imagery tiles to the aoi and date range for the growing season in 2017 (to coincide with the period of data collection). Standard quality control bands for cloud will be used in a function to create a mask layer, and assigned to variable "maskS2Clouds". The function is passed on to a variable that minimizes cloud contamination by selecting pixels with the least percentage of cloud contamination within the temporal imagery composite (during the season). which will be combined with other filters to generate a "mosaic" of cloud-minimized imageries. Note that the aoi is north of the equator and often characterized by heavy cloudiness during the rainy season, so this workflow is essesntial and can be further tweaked to achieve better results.
 
 ```js
 // Ingest Sentinel-2A imageries
-var s2 = ee.ImageCollection("COPERNICUS/S2");
+var s2 = ee.ImageCollection('COPERNICUS/S2');
 
 // Define parameters for cloudmask; Bits 10 and 11 are clouds and cirrus, respectively.
 var cloudBitMask = ee.Number(2).pow(10).int();
@@ -100,7 +100,7 @@ var cirrusBitMask = ee.Number(2).pow(11).int();
 // Set function to generate cloud mask
 function maskS2clouds(image) {
   var qa = image.select('QA60');
-//Both flags should be set to zero, indicating clear conditions.
+// Both flags should be set to zero, indicating clear conditions.
   var mask = qa.bitwiseAnd(cloudBitMask).eq(0).and(
              qa.bitwiseAnd(cirrusBitMask).eq(0));
   return image.updateMask(mask);
@@ -113,8 +113,8 @@ var min = cloudMasked.min();
 var mosaic = ee.ImageCollection(min).mosaic();
 
 // Create Custom mosaic from selected bands to visualize the cloud-minimized imagery
-//You apply similar code to compare the initial cloud-contaminated imagery, setting "s2" as the image
-Map.addLayer(mosaic, {bands: ['B4', 'B3', 'B2'], 
+// You can apply similar code to compare initial cloud-contaminated imagery, setting "s2" as the image
+Map.addLayer(mosaic, {bands: ['B4', 'B3', 'B2'],
 max: 2000}, 'custom mosaic');
 ```
 
@@ -126,11 +126,11 @@ max: 2000}, 'custom mosaic');
 // Specify and select bands that will be used in the classification
 var bands = ['B1', 'B2', 'B3', 'B4', 'B5', 'B6', 'B7', 'B8', 'B8A', 'B9', 'B10', 'B11', 'B12'];
 
-var image_cl = mosaic
+var Image_cl = mosaic
   .select(bands);
 
 // Overlay the points on the imagery to get training.
-var training = image_cl.sampleRegions({
+var training = Image_cl.sampleRegions({
   collection: trainpts,
   properties: ['class'],
   scale: 30
@@ -173,7 +173,7 @@ var trainAccuracy_rf = trained_rf.confusionMatrix();
 print('Resubstitution error matrix: ', trainAccuracy_rf);
 print('Training overall accuracy: ', trainAccuracy_rf.accuracy());
   
-c. To assess the reliability of the classification outputs, use the "testpts" dataset (earlier ingested as assets) to extract spectral information from the bands. You will further apply ee.Filter.neq on the "B1" band to remove pixels with null value, and extract the classified values for the "testpts" pixels from the training-mode algorithm classification. Note that different accuracy assessment is conducted for each classifier.
+### c. To assess the reliability of the classification outputs, use the "testpts" dataset (earlier ingested as assets) to extract spectral information from the bands. You will further apply ee.Filter.neq on the "B1" band to remove pixels with null value, and extract the classified values for the "testpts" pixels from the training-mode algorithm classification. Note that different accuracy assessment is conducted for each classifier.
     
 // Use the testpts to extract pixel values from the bands for validation
  var testing = image_cl.sampleRegions({
@@ -204,7 +204,7 @@ Map.addLayer(aoi);
 With the binary classification completed, you can now export the classified imagery to google bucket drive (or any other compatible storage) for further analysis. Check the export resolution parameter (called "scale") and adjust accordingly to control output file size, if neccessary. The larger the scale, the lighter the file size. The maxPixels parameter sets an upper boundary on the number of pixels allowable for export to avoid export of large file or prolonged file creation time. Calculate the area for each landcover class by applying ee.Image.pixelArea on the classifed imagery and assign to the variable areaImage. By passing on the new variable to the Image reducing function, constrained by the aoi boundary geometry and specifying other parameters (per below), the area for both classes are generated in squeare meters. 
 
 ```js
-// Exporting to google bucket drive; If you use any other type of staorage solution, set the command as appropriate
+// Exporting to google bucket drive; Any other type of storage may require different command
   Export.image.toDrive({
  image: classified,
   description: 'Maizeland_Classified',
@@ -225,7 +225,7 @@ var areas = areaImage.reduceRegion({
     geometry: aoi.geometry(),
     scale: 500,
     maxPixels: 1e10
-    }); 
+    });
  print(areas);
 ```
 

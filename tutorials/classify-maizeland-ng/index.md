@@ -100,7 +100,7 @@ var min = cloudMasked.min();
 var mosaic = ee.ImageCollection(min).mosaic();
 
 // Create Custom mosaic from selected bands to visualize the cloud-minimized imagery
-// You can apply similar code to compare initial cloud-contaminated imagery, setting "s2" as the image
+// You can apply similar code to compare initial cloud-contaminated image, setting "s2" as the image
 Map.addLayer(mosaic, {bands: ['B4', 'B3', 'B2'],
 max: 2000}, 'custom mosaic');
 ```
@@ -113,11 +113,11 @@ max: 2000}, 'custom mosaic');
 // Specify and select bands that will be used in the classification
 var bands = ['B1', 'B2', 'B3', 'B4', 'B5', 'B6', 'B7', 'B8', 'B8A', 'B9', 'B10', 'B11', 'B12'];
 
-var Image_cl = mosaic
+var imagecl = mosaic
   .select(bands);
 
 // Overlay the points on the imagery to get training.
-var training = Image_cl.sampleRegions({
+var training = imagecl.sampleRegions({
   collection: trainpts,
   properties: ['class'],
   scale: 30
@@ -159,9 +159,11 @@ print('Training overall accuracy: ', trainAccuracy.accuracy());
 var trainAccuracy_rf = trained_rf.confusionMatrix();
 print('Resubstitution error matrix: ', trainAccuracy_rf);
 print('Training overall accuracy: ', trainAccuracy_rf.accuracy());
+```
   
 ### c. To assess the reliability of the classification outputs, use the "testpts" dataset (earlier ingested as assets) to extract spectral information from the bands. You will further apply ee.Filter.neq on the "B1" band to remove pixels with null value, and extract the classified values for the "testpts" pixels from the training-mode algorithm classification. Note that different accuracy assessment is conducted for each classifier.
     
+```js
 // Use the testpts to extract pixel values from the bands for validation
  var testing = image_cl.sampleRegions({
   collection: testpts,

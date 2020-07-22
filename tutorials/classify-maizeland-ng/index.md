@@ -113,11 +113,11 @@ max: 2000}, 'custom mosaic');
 // Specify and select bands that will be used in the classification
 var bands = ['B1', 'B2', 'B3', 'B4', 'B5', 'B6', 'B7', 'B8', 'B8A', 'B9', 'B10', 'B11', 'B12'];
 
-var imagecl = mosaic
+var ImageCl = mosaic
   .select(bands);
 
 // Overlay the points on the imagery to get training.
-var training = imagecl.sampleRegions({
+var training = ImageCl.sampleRegions({
   collection: trainpts,
   properties: ['class'],
   scale: 30

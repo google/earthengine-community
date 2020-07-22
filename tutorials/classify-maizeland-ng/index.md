@@ -130,7 +130,7 @@ var training = ImageCl.sampleRegions({
 var trained = ee.Classifier.smileCart().train(training, 'class', bands);
 
 // Train a RF classifier with default parameters.
-var trained_rf = ee.Classifier.smileRandomForest(10)
+var trainedRf = ee.Classifier.smileRandomForest(10)
     .train({
       features: training,
       classProperty: 'class',
@@ -139,14 +139,14 @@ var trained_rf = ee.Classifier.smileRandomForest(10)
 
 // Classify the image with the same bands used for training.
 var classified = image_cl.select(bands).classify(trained);
-var classified_rf = image_cl.select(bands).classify(trained_rf);
+var classifiedRf = image_cl.select(bands).classify(trainedRf);
 
 // Create a palette to display the classes.
 var palette =['00008B', '32CD32'];
 
 // Add the output of the training classification to the map view
 Map.addLayer(classified,{min: 0, max: 1, palette: palette},'class');
-Map.addLayer(classified_rf,{min: 0, max: 1, palette: palette},'class');
+Map.addLayer(classifiedRf,{min: 0, max: 1, palette: palette},'class');
 
 // Calculate the training error matrix and accuracy for both classifiers by using the "confusionMatrix" function to generate metrics on the resubstitution accuracy.
 
@@ -156,9 +156,9 @@ print('Resubstitution error matrix: ', trainAccuracy);
 print('Training overall accuracy: ', trainAccuracy.accuracy());
 
 // Accuracy calculation for RF
-var trainAccuracy_rf = trained_rf.confusionMatrix();
-print('Resubstitution error matrix: ', trainAccuracy_rf);
-print('Training overall accuracy: ', trainAccuracy_rf.accuracy());
+var trainAccuracyRf = trainedRf.confusionMatrix();
+print('Resubstitution error matrix: ', trainAccuracyRf);
+print('Training overall accuracy: ', trainAccuracyRf.accuracy());
 ```
   
 ### c. To assess the reliability of the classification outputs, use the "testpts" dataset (earlier ingested as assets) to extract spectral information from the bands. You will further apply ee.Filter.neq on the "B1" band to remove pixels with null value, and extract the classified values for the "testpts" pixels from the training-mode algorithm classification. Note that different accuracy assessment is conducted for each classifier.
@@ -173,7 +173,7 @@ print('Training overall accuracy: ', trainAccuracy_rf.accuracy());
 
 // Classify the validation data
 var validated = testing.classify(trained);
-var validated_rf = testing.classify(trained_rf);
+var validatedRf = testing.classify(trainedRf);
 
 // Calculate confusion matrix to generate validation accuracy for CART
 var testAccuracy = validated.errorMatrix('class', 'classification');
@@ -181,9 +181,9 @@ print('Validation error matrix: ', testAccuracy);
 print('Validation overall accuracy: ', testAccuracy.accuracy());
 
 // Calculate confusion matrix to generate validation accuracy for CART
-var testAccuracy_rf = validated_rf.errorMatrix('class', 'classification');
-print('Validation error matrix: ', testAccuracy_rf);
-print('Validation overall accuracy: ', testAccuracy_rf.accuracy());
+var testAccuracyRf = validatedRf.errorMatrix('class', 'classification');
+print('Validation error matrix: ', testAccuracyRf);
+print('Validation overall accuracy: ', testAccuracyRf.accuracy());
 
 // Draw the "aoi" layer on top of the classified grid for visualization. You can tweak the opacity parameter or turn off the "aoi" layer to see the layer beneath more clearly
 Map.addLayer(aoi);   
@@ -203,8 +203,7 @@ With the binary classification completed, you can now export the classified imag
 });
 
 // To calculate Maize Area in square meters
-var areaImage = ee.Image.pixelArea().addBands(
-      classified_rf);
+var areaImage = ee.Image.pixelArea().addBands(classifiedRf);
 
 var areas = areaImage.reduceRegion({
       reducer: ee.Reducer.sum().group({

@@ -33,6 +33,14 @@ var authenticate = function(onSuccess) {
   ee.data.authenticateViaPrivateKey(privateKey, onSuccess, fail);
 };
 
+// Temporarily replace API init method with function that throws an error to
+// provide more meaningful stack traces when trying to use API functions before
+// API has been initialized.
+// var eeInitialize = ee.ApiFunction.initialize;
+// ee.ApiFunction.initialize = function() {
+//   throw Error("EE API used before beforeAll()");
+// };
+
 /**
  * Runs a test or set of tests against live Earth Engine server. This includes
  * authenticating with the private key provided in /test/.private-key.json,
@@ -47,19 +55,19 @@ global.withEarthEngine = function(testDescription, test) {
     // Authenticate service account and initialize before running tests.
     beforeAll(function(done) {
       // Change working directory to ensure the current process has permission
-      // to write temp files.
+      // // to write temp files.
       process.chdir(os.tmpdir());
+      // Restore stubbed API init method.
+      // ee.ApiFunction.initialize = eeInitialize;
       authenticate(function() {
         ee.initialize(null, null, done);
       });
-      if (test.beforeAll) test.beforeAll();
     });
 
     beforeEach(function() {
       // The maximum time an individual remote test case is allowed to run
       // before it fails with a timeout.
       jasmine.DEFAULT_TIMEOUT_INTERVAL = 5000;
-      if (test.beforeEach) test.beforeEach();
     });
 
     // Run the provided test suite.

@@ -71,7 +71,7 @@ export class TemplateCard extends LitElement {
 
   render() {
     const { id, imageUrl, title, showTitle, onSelection } = this;
-    const selected = store.getState().template.id === id;
+    const selected = store.getState().template.config?.parentID === id;
     const buttonLabel = selected ? 'Selected' : 'Select';
 
     const titleMarkup = showTitle ? html`<h4>${title}</h4>` : nothing;

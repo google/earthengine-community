@@ -582,7 +582,7 @@ ${value}</textarea
       return nothing;
     }
 
-    const uniqueAttributes = store.getState().template[widget.id]
+    const uniqueAttributes = store.getState().template.widgets[widget.id]
       .uniqueAttributes;
 
     const widgetType = getWidgetType(widget.id);
@@ -647,7 +647,7 @@ ${value}</textarea
       return nothing;
     }
 
-    const styleAttributes = store.getState().template[widget.id].style;
+    const styleAttributes = store.getState().template.widgets[widget.id].style;
     return Object.keys(sharedAttributes).map((key) => {
       const value = styleAttributes[key];
       const placeholder = sharedAttributes[key].placeholder;

@@ -10,20 +10,20 @@ import {
   query,
 } from 'lit-element';
 import { styleMap } from 'lit-html/directives/style-map';
-import '@polymer/paper-card/paper-card.js';
-import '../dropzone-widget/dropzone-widget';
-import '../ui-map/ui-map';
-import '@polymer/iron-icons/hardware-icons.js';
-import '../ui-panel/ui-panel';
 import { connect } from 'pwa-helpers';
 import { DeviceType, EventType } from '../../redux/types/enums';
 import { store } from '../../redux/store';
 import { AppCreatorStore } from '../../redux/reducer';
 import { PaperCardElement } from '@polymer/paper-card/paper-card.js';
 import { generateUI } from '../../utils/template-generation';
+import { setImporting } from '../../redux/actions';
+import '@polymer/paper-card/paper-card.js';
+import '@polymer/iron-icons/hardware-icons.js';
 import '@polymer/paper-tabs/paper-tabs';
 import '@polymer/paper-tabs/paper-tab';
-import { setImporting } from '../../redux/actions';
+import '../dropzone-widget/dropzone-widget';
+import '../ui-map/ui-map';
+import '../ui-panel/ui-panel';
 
 const STORYBOARD_ID = 'storyboard';
 
@@ -95,11 +95,13 @@ export class Storyboard extends connect(store)(LitElement) {
   `;
 
   stateChanged(state: AppCreatorStore) {
+    const template = state.template;
     if (
-      state.template.id !== this.templateID ||
-      state.eventType == EventType.importing
+      (template.hasOwnProperty('config') &&
+        template.config.id !== this.templateID) ||
+      state.eventType === EventType.importing
     ) {
-      this.templateID = state.template.id;
+      this.templateID = template.config.id;
       const { storyboard } = this;
       if (storyboard == null) {
         return;
@@ -108,7 +110,7 @@ export class Storyboard extends connect(store)(LitElement) {
       store.dispatch(setImporting(false));
 
       storyboard.innerHTML = ``;
-      generateUI(state.template, storyboard);
+      generateUI(template, storyboard);
     }
   }
 

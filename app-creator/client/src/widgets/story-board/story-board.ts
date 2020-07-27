@@ -10,11 +10,6 @@ import {
   query,
 } from 'lit-element';
 import { styleMap } from 'lit-html/directives/style-map';
-import '@polymer/paper-card/paper-card.js';
-import '../dropzone-widget/dropzone-widget';
-import '../ui-map/ui-map';
-import '@polymer/iron-icons/hardware-icons.js';
-import '../ui-panel/ui-panel';
 import { connect } from 'pwa-helpers';
 import { DeviceType, WidgetType } from '../../redux/types/enums';
 import { store } from '../../redux/store';
@@ -28,6 +23,13 @@ import { ROOT_ID } from '../../utils/constants';
 import { EEWidget } from '../../redux/types/types';
 import { PaperCardElement } from '@polymer/paper-card/paper-card.js';
 import { DraggableWidget } from '../draggable-widget/draggable-widget';
+import '@polymer/paper-card/paper-card.js';
+import '@polymer/iron-icons/hardware-icons.js';
+import '@polymer/paper-tabs/paper-tabs';
+import '@polymer/paper-tabs/paper-tab';
+import '../dropzone-widget/dropzone-widget';
+import '../ui-map/ui-map';
+import '../ui-panel/ui-panel';
 
 const STORYBOARD_ID = 'storyboard';
 
@@ -99,15 +101,19 @@ export class Storyboard extends connect(store)(LitElement) {
   `;
 
   stateChanged(state: AppCreatorStore) {
-    if (state.template.id !== this.templateID) {
-      this.templateID = state.template.id;
+    const template = state.template;
+    if (
+      template.hasOwnProperty('config') &&
+      template.config.id !== this.templateID
+    ) {
+      this.templateID = template.config.id;
       const { storyboard } = this;
       if (storyboard == null) {
         return;
       }
 
       storyboard.innerHTML = ``;
-      generateUI(state.template, storyboard);
+      generateUI(template, storyboard);
     }
   }
 
@@ -190,23 +196,23 @@ function generateUI(template: AppCreatorStore['template'], node: HTMLElement) {
 
     for (const childID of children) {
       if (dropzone != null) {
-        dropzone.appendChild(helper(templateCopy[childID]));
+        dropzone.appendChild(helper(templateCopy.widgets[childID]));
       } else {
-        element.appendChild(helper(templateCopy[childID]));
+        element.appendChild(helper(templateCopy.widgets[childID]));
       }
     }
 
     if (map != null) {
-      templateCopy[id].widgetRef = map;
+      templateCopy.widgets[id].widgetRef = map;
     } else {
-      templateCopy[id].widgetRef = element;
+      templateCopy.widgets[id].widgetRef = element;
     }
 
     return draggable == null ? element : draggable;
   }
 
   // The root of the template will always have an id of panel-template-0
-  const root = templateCopy[ROOT_ID];
+  const root = templateCopy.widgets[ROOT_ID];
   node.appendChild(helper(root));
 
   // Replace the store's template with the one that include the widgetRefs.

@@ -16,18 +16,14 @@ import '../ui-map/ui-map';
 import '@polymer/iron-icons/hardware-icons.js';
 import '../ui-panel/ui-panel';
 import { connect } from 'pwa-helpers';
-import { DeviceType, WidgetType } from '../../redux/types/enums';
+import { DeviceType, EventType } from '../../redux/types/enums';
 import { store } from '../../redux/store';
-import { AppCreatorStore, WidgetMetaData } from '../../redux/reducer';
-import { getIdPrefix } from '../../utils/helpers';
-import { Map } from '../ui-map/ui-map';
-import { Dropzone } from '../dropzone-widget/dropzone-widget';
-import { Panel } from '../ui-panel/ui-panel';
-import { setSelectedTemplate } from '../../redux/actions';
-import { ROOT_ID } from '../../utils/constants';
-import { EEWidget } from '../../redux/types/types';
+import { AppCreatorStore } from '../../redux/reducer';
 import { PaperCardElement } from '@polymer/paper-card/paper-card.js';
-import { DraggableWidget } from '../draggable-widget/draggable-widget';
+import { generateUI } from '../../utils/template-generation';
+import '@polymer/paper-tabs/paper-tabs';
+import '@polymer/paper-tabs/paper-tab';
+import { setImporting } from '../../redux/actions';
 
 const STORYBOARD_ID = 'storyboard';
 
@@ -99,12 +95,17 @@ export class Storyboard extends connect(store)(LitElement) {
   `;
 
   stateChanged(state: AppCreatorStore) {
-    if (state.template.id !== this.templateID) {
+    if (
+      state.template.id !== this.templateID ||
+      state.eventType == EventType.importing
+    ) {
       this.templateID = state.template.id;
       const { storyboard } = this;
       if (storyboard == null) {
         return;
       }
+
+      store.dispatch(setImporting(false));
 
       storyboard.innerHTML = ``;
       generateUI(state.template, storyboard);
@@ -179,106 +180,4 @@ export class Storyboard extends connect(store)(LitElement) {
   getStyle(): object {
     return this.styles;
   }
-}
-
-function generateUI(template: AppCreatorStore['template'], node: HTMLElement) {
-  const templateCopy = Object.assign({}, template);
-
-  function helper(widgetData: WidgetMetaData): HTMLElement {
-    const { id, children } = widgetData;
-    const { element, dropzone, map, draggable } = getWidgetElement(widgetData);
-
-    for (const childID of children) {
-      if (dropzone != null) {
-        dropzone.appendChild(helper(templateCopy[childID]));
-      } else {
-        element.appendChild(helper(templateCopy[childID]));
-      }
-    }
-
-    if (map != null) {
-      templateCopy[id].widgetRef = map;
-    } else {
-      templateCopy[id].widgetRef = element;
-    }
-
-    return draggable == null ? element : draggable;
-  }
-
-  // The root of the template will always have an id of panel-template-0
-  const root = templateCopy[ROOT_ID];
-  node.appendChild(helper(root));
-
-  // Replace the store's template with the one that include the widgetRefs.
-  store.dispatch(setSelectedTemplate(templateCopy));
-}
-
-function getWidgetElement({
-  id,
-  editable,
-  uniqueAttributes,
-  style,
-}: WidgetMetaData): {
-  element: HTMLElement;
-  dropzone: Dropzone | null;
-  map: Map | null;
-  draggable: DraggableWidget | null;
-} {
-  // Get widget type (ie. panel-0 -> panel).
-  const type = getIdPrefix(id);
-
-  // Create DOM element.
-  let element = document.createElement(`ui-${type}`);
-  element.id = id;
-
-  // Set Unique attributes.
-  for (const attribute in uniqueAttributes) {
-    element.setAttribute(attribute, uniqueAttributes[attribute]);
-  }
-
-  // Set styles.
-  (element as EEWidget).setStyle(style);
-
-  let dropzone = null;
-  let map = null;
-  let draggable = null;
-
-  switch (type) {
-    case WidgetType.map:
-      (element as Map).setAttribute('apiKey', window.process.env.MAPS_API_KEY);
-
-      // We wrap the map with a div and give it a height and width of a 100%.
-      const wrapper = document.createElement('div');
-      wrapper.style.width = element.style.width;
-      wrapper.style.height = element.style.height;
-
-      (element as Map).setStyle({
-        height: '100%',
-        width: '100%',
-      });
-
-      wrapper.appendChild(element);
-
-      map = element as Map;
-      element = wrapper;
-      break;
-    case WidgetType.panel:
-      (element as Panel).editable = editable ?? false;
-      if (editable) {
-        const dropzoneWidget = new Dropzone();
-        dropzoneWidget.classList.add('full-height');
-        element.appendChild(dropzoneWidget);
-        dropzone = dropzoneWidget;
-      }
-      break;
-
-    default:
-      const draggableWrapper = document.createElement('draggable-widget');
-      draggableWrapper.appendChild(element);
-      draggableWrapper.editable = true;
-      draggable = draggableWrapper;
-      break;
-  }
-
-  return { element, dropzone, map, draggable };
 }

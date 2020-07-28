@@ -14,7 +14,7 @@ import {
 } from '../../redux/types/attributes.js';
 import '@polymer/paper-dialog/paper-dialog.js';
 import '../empty-notice/empty-notice';
-import { camelCaseToTitleCase, getIdPrefix } from '../../utils/helpers.js';
+import { camelCaseToTitleCase, getWidgetType } from '../../utils/helpers.js';
 import { updateWidgetMetaData } from '../../redux/actions.js';
 import {
   EventType,
@@ -251,7 +251,7 @@ export class AttributesTab extends connect(store)(LitElement) {
         }
         inputElement.style.border = 'var(--light-border)';
       } else {
-        inputElement.style.borderColor = 'var(--validation-error-border-color)';
+        inputElement.style.borderColor = 'var(--validation-error-red-color)';
       }
     } else {
       dispatcher(inputElement.value);
@@ -301,8 +301,7 @@ export class AttributesTab extends connect(store)(LitElement) {
         dispatcher(textareaInput.value);
         textareaInput.style.border = 'var(--light-border)';
       } else {
-        textareaInput.style.borderColor =
-          'var(--validation-error-border-color)';
+        textareaInput.style.borderColor = 'var(--validation-error-red-color)';
       }
     } else {
       dispatcher(textareaInput.value);
@@ -586,7 +585,7 @@ ${value}</textarea
     const uniqueAttributes = store.getState().template[widget.id]
       .uniqueAttributes;
 
-    const widgetType = getIdPrefix(widget.id);
+    const widgetType = getWidgetType(widget.id);
 
     switch (widgetType) {
       case WidgetType.label:

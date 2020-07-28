@@ -26,13 +26,15 @@ import {
   SET_SELECTED_TEMPLATE,
   UPDATE_WIDGET_CHILDREN,
   UpdateWidgetChildren,
+  SetIsImportingAction,
+  SET_IMPORTING,
 } from './types/actions';
 import {
   DEFAULT_SHARED_ATTRIBUTES,
   UniqueAttributes,
 } from './types/attributes';
 import { WidgetType, AttributeType, Tab, EventType } from './types/enums';
-import { getIdPrefix } from '../utils/helpers';
+import { getWidgetType } from '../utils/helpers';
 import { Label } from '../widgets/ui-label/ui-label';
 import { Button } from '../widgets/ui-button/ui-button';
 import { Checkbox } from '../widgets/ui-checkbox/ui-checkbox';
@@ -110,7 +112,7 @@ export const addWidgetMetaData = (
         widgetRef: widget as HTMLElement,
         children: [],
         uniqueAttributes: {
-          ...getUniqueAttributes(getIdPrefix(id)),
+          ...getUniqueAttributes(getWidgetType(id)),
         },
         style: { ...DEFAULT_SHARED_ATTRIBUTES },
       },
@@ -215,6 +217,20 @@ export const setElementAdded = (value: boolean): SetIsElementAddedAction => {
 export const setReordering = (value: boolean): SetIsReorderingAction => {
   return {
     type: SET_REORDERING,
+    payload: {
+      value,
+    },
+  };
+};
+
+/**
+ * Sets state to true if we are importing widgets and false otherwise. Importing state is used to determine
+ * if a widget should be cloned and if we should increment the widget's ID.
+ * @param value true if we are importing elements and false otherwise.
+ */
+export const setImporting = (value: boolean): SetIsImportingAction => {
+  return {
+    type: SET_IMPORTING,
     payload: {
       value,
     },

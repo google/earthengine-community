@@ -15,7 +15,7 @@ import {
   removeWidgetMetaData,
 } from '../../redux/actions';
 import { EventType, WidgetType } from '../../redux/types/enums';
-import { getIdPrefix } from '../../utils/helpers';
+import { getWidgetType } from '../../utils/helpers';
 
 @customElement('draggable-widget')
 export class DraggableWidget extends LitElement {
@@ -89,7 +89,7 @@ export class DraggableWidget extends LitElement {
       return;
     }
 
-    const type = getIdPrefix(editingWidget.id) as WidgetType;
+    const type = getWidgetType(editingWidget.id) as WidgetType;
 
     if (type === WidgetType.panel) {
       const dropzone = editingWidget.querySelector('dropzone-widget');

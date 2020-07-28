@@ -11,7 +11,7 @@ export function camelCaseToTitleCase(text: string) {
  * Returns widget type.
  * id. 'label-0' => 'label'
  */
-export function getIdPrefix(id: string): string {
+export function getWidgetType(id: string): string {
   return id.slice(0, id.indexOf('-'));
 }
 

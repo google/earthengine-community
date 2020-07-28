@@ -151,10 +151,13 @@ export class Storyboard extends connect(store)(LitElement) {
   @property({ type: Number }) selectedTab = 0;
 
   /**
-   * Additional custom styles for the button.
+   * Additional custom styles.
    */
   @property({ type: Object }) styles = {};
 
+  /**
+   * Reference to storyboard element.
+   */
   @query(`#${STORYBOARD_ID}`) storyboard!: PaperCardElement;
 
   render() {

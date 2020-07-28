@@ -16,6 +16,7 @@ export enum WidgetType {
   panel = 'panel',
   map = 'map',
   chart = 'chart',
+  sidemenu = 'sidemenu',
 }
 
 export enum Tab {

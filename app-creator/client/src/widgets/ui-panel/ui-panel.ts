@@ -64,7 +64,7 @@ export class Panel extends LitElement {
   `;
 
   /**
-   * Additional custom styles for the button.
+   * Additional custom styles for the panel.
    */
   @property({ type: Object }) styles = {};
 
@@ -101,19 +101,6 @@ export class Panel extends LitElement {
     this.onclick = this.handleEditWidget;
   }
 
-  render() {
-    const { isRaised, layout, padded } = this;
-
-    return html`
-      <div
-        id="container"
-        class="${layout} ${isRaised ? 'raised' : ''} ${padded ? 'padded' : ''}"
-      >
-        <slot class="${layout}"></slot>
-      </div>
-    `;
-  }
-
   /**
    * Triggered when the panel is selected. Stores a reference of the selected element in the store and
    * displays a set of inputs for editing its attributes.
@@ -135,6 +122,19 @@ export class Panel extends LitElement {
 
     // Check if a widgetRef has been set.
     store.dispatch(setEditingWidget(this));
+  }
+
+  render() {
+    const { isRaised, layout, padded } = this;
+
+    return html`
+      <div
+        id="container"
+        class="${layout} ${isRaised ? 'raised' : ''} ${padded ? 'padded' : ''}"
+      >
+        <slot class="${layout}"></slot>
+      </div>
+    `;
   }
 
   setAttribute(key: string, value: string) {

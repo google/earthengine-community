@@ -130,6 +130,88 @@ export const database: TemplateItem[] = [
     }`,
   },
   {
+    id: 'left-side-panel-mobile',
+    name: 'Left Side Panel Mobile',
+    imageUrl:
+      'https://storage.cloud.google.com/ee-app-creator.appspot.com/left-panel.png',
+    template: `{
+        "config": {
+            "parentID": "left-side-panel-mobile",
+            "parentName": "Left Side Panel Mobile",
+            "id": "left-side-panel-mobile",
+            "name": "Left Side Panel Mobile",
+            "textDirection": "left",
+            "language": "en"
+        },
+        "widgets": {
+            "panel-template-0": {
+                "id": "panel-template-0",
+                "editable": false,
+                "hasDropzone": false,
+                "children": ["map-template-0", "sidemenu-template-1"],
+                "uniqueAttributes": {
+                    "layout": "row"
+                },
+                "style": {
+                    "height": "100%",
+                    "width": "100%",
+                    "padding": "0px",
+                    "margin": "0px",
+                    "color": "black",
+                    "backgroundColor": "#FFFFFF",
+                    "box-sizing": "border-box"
+                }
+            },
+            "sidemenu-template-1": {
+                "id": "sidemenu-template-1",
+                "editable": true,
+                "hasDropzone": true,
+                "children": [],
+                "uniqueAttributes": {
+                    "layout": "column"
+                },
+                "style": {
+                    "height": "100%",
+                    "width": "80%",
+                    "padding": "0px",
+                    "margin": "0px",
+                    "color": "black",
+                    "backgroundColor": "#FFFFFF00",
+                    "box-sizing": "border-box",
+                    "position": "absolute",
+                    "top":0,
+                    "left":0
+                }
+            },
+            "map-template-0": {
+                "id": "map-template-0",
+                "children": [],
+                "uniqueAttributes": {
+                    "zoom": "4",
+                    "latitude": "37.419857",
+                    "longitude": "-122.078827",
+                    "zoomControl": "false",
+                    "fullscreenControl": "false",
+                    "scaleControl": "false",
+                    "streetViewControl": "false",
+                    "mapTypeControl": "false",
+                    "mapStyles": "standard",
+                    "customMapStyles": ""
+                },
+                "style": {
+                    "height": "100%",
+                    "width": "100%",
+                    "padding": "0px",
+                    "margin": "0px",
+                    "color": "black",
+                    "backgroundColor": "#FFFFFF",
+                    "box-sizing": "border-box"
+                }
+            }
+        }
+    }`,
+  },
+  {
     id: 'right-side-panel',
     name: 'Right Side Panel',
     imageUrl:

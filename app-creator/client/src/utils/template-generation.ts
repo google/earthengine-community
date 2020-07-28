@@ -110,11 +110,11 @@ export function getWidgetElement({
     case WidgetType.panel:
     case WidgetType.sidemenu:
       if ((element as Panel).editable) {
-        (element as Panel).editable = editable ?? false;
+        (element as Panel).editable = !!editable;
       }
 
       if ((element as SideMenu).editable) {
-        (element as SideMenu).editable = editable ?? false;
+        (element as SideMenu).editable = !!editable;
       }
 
       if (editable) {

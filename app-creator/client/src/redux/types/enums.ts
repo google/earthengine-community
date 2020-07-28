@@ -1,3 +1,4 @@
+// TODO: Convert all enum properties to uppercase.
 export enum InputType {
   text = 'text',
   textarea = 'textarea',
@@ -41,4 +42,10 @@ export enum EventType {
 export enum DeviceType {
   desktop = 'desktop',
   mobile = 'mobile',
+  all = 'all',
+}
+
+export enum Layout {
+  COLUMN = 'COLUMN',
+  ROW = 'ROW',
 }

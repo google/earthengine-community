@@ -10,13 +10,14 @@ import {
   query,
 } from 'lit-element';
 import { styleMap } from 'lit-html/directives/style-map';
+import { classMap } from 'lit-html/directives/class-map';
 import { connect } from 'pwa-helpers';
-import { DeviceType, EventType } from '../../redux/types/enums';
+import { DeviceType } from '../../redux/types/enums';
 import { store } from '../../redux/store';
 import { AppCreatorStore } from '../../redux/reducer';
 import { PaperCardElement } from '@polymer/paper-card/paper-card.js';
 import { generateUI } from '../../utils/template-generation';
-import { setImporting } from '../../redux/actions';
+import { setSelectedTemplateID } from '../../redux/actions';
 import '@polymer/paper-card/paper-card.js';
 import '@polymer/iron-icons/hardware-icons.js';
 import '@polymer/paper-tabs/paper-tabs';
@@ -43,9 +44,18 @@ export class Storyboard extends connect(store)(LitElement) {
       justify-content: center;
     }
 
-    #storyboard {
+    .storyboard {
       height: 100%;
       width: 100%;
+      background-color: var(--primary-color);
+      margin: 0 auto;
+      overflow: hidden;
+      transition: 0.5s ease;
+    }
+
+    .mobile-storyboard {
+      height: 700px;
+      width: 350px;
       background-color: var(--primary-color);
       margin: 0 auto;
       overflow: hidden;
@@ -97,58 +107,20 @@ export class Storyboard extends connect(store)(LitElement) {
   stateChanged(state: AppCreatorStore) {
     const template = state.template;
     if (
-      (template.hasOwnProperty('config') &&
-        template.config.id !== this.templateID) ||
-      state.eventType === EventType.importing
+      template.hasOwnProperty('config') &&
+      template.config.id !== state.selectedTemplateID
     ) {
-      this.templateID = template.config.id;
+      store.dispatch(setSelectedTemplateID(template.config.id));
+
       const { storyboard } = this;
-      if (storyboard == null) {
-        return;
+      if (storyboard) {
+        storyboard.innerHTML = ``;
+        generateUI(template, storyboard);
       }
 
-      store.dispatch(setImporting(false));
-
-      storyboard.innerHTML = ``;
-      generateUI(template, storyboard);
+      this.requestUpdate();
     }
   }
-
-  /**
-   * Represents the id of the currently selected template. Used to avoid rerendering on state changes.
-   */
-  @property({ type: String }) templateID: string = '';
-
-  /**
-   * Switches between desktop and mobile view.
-   */
-  switchDeviceViewTab(device: DeviceType) {
-    const { storyboard } = this;
-    if (storyboard == null) {
-      return;
-    }
-
-    switch (device) {
-      case DeviceType.desktop:
-        this.selectedTab = 0;
-        storyboard.style.width = '100%';
-        storyboard.style.height = '100%';
-        break;
-      case DeviceType.mobile:
-        this.selectedTab = 1;
-        storyboard.style.width = '400px';
-        storyboard.style.height = '800px';
-        break;
-    }
-
-    this.requestUpdate();
-  }
-
-  /**
-   * Sets selected tab.
-   * 0 for desktop and 1 for mobile.
-   */
-  @property({ type: Number }) selectedTab = 0;
 
   /**
    * Additional custom styles.
@@ -161,23 +133,18 @@ export class Storyboard extends connect(store)(LitElement) {
   @query(`#${STORYBOARD_ID}`) storyboard!: PaperCardElement;
 
   render() {
-    const { switchDeviceViewTab, styles } = this;
+    const { styles } = this;
+
+    const isMobile =
+      store.getState().template.config?.device === DeviceType.mobile;
+
     return html`
       <div id="container">
-        <paper-tabs id="device-tabs" selected=${this.selectedTab} noink>
-          <paper-tab
-            @click=${() =>
-              switchDeviceViewTab.call(
-                this,
-                DeviceType.desktop
-              )}><iron-icon icon="hardware:desktop-windows"></iron-icon></paper-tab>
-          <paper-tab @click=${() =>
-            switchDeviceViewTab.call(this, DeviceType.mobile)}
-            ><iron-icon icon="hardware:smartphone"></iron-icon></paper-icon-button
-          ></paper-tab>
-        </paper-tabs>
-
-        <paper-card id="storyboard" style=${styleMap(styles)}></paper-card>
+        <paper-card
+          id="storyboard"
+          style=${styleMap(styles)}
+          class=${classMap({ storyboard: true, 'mobile-storyboard': isMobile })}
+        ></paper-card>
       </div>
     `;
   }

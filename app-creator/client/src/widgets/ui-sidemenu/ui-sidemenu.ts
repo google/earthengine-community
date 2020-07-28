@@ -10,8 +10,9 @@ import {
   property,
   query,
 } from 'lit-element';
-import { styleMap } from 'lit-html/directives/style-map';
 import { Panel } from '../ui-panel/ui-panel';
+import { classMap } from 'lit-html/directives/class-map';
+import { Layout } from '../../redux/types/enums';
 import '@polymer/paper-icon-button/paper-icon-button.js';
 import '@polymer/iron-icons/iron-icons.js';
 import '../ui-panel/ui-panel';
@@ -25,6 +26,8 @@ export class SideMenu extends LitElement {
     paper-icon-button {
       margin: var(--tight);
       pointer-events: auto;
+      background-color: white;
+      border-radius: 50%;
     }
 
     #container {
@@ -49,11 +52,11 @@ export class SideMenu extends LitElement {
       height: 100%;
     }
 
-    .column {
+    .COLUMN {
       flex-direction: column;
     }
 
-    .row {
+    .ROW {
       flex-direction: row;
     }
   `;
@@ -64,7 +67,7 @@ export class SideMenu extends LitElement {
    * column layout will append widgets below the last child element.
    * row layout will append widgets to the right of the last child element.
    */
-  @property({ type: String }) layout = 'column';
+  @property({ type: String }) layout = Layout.COLUMN;
 
   /**
    * Contains an inner dropzone-widget.
@@ -87,28 +90,30 @@ export class SideMenu extends LitElement {
   @query('ui-panel') panel!: Panel;
 
   firstUpdated() {
-    if (this.panel != null) {
+    if (this.panel) {
       this.panel.id = this.id;
     }
   }
 
-  toggleMenu() {
+  toggleMenu(e: Event) {
+    e.stopPropagation();
+
     const { panel } = this;
-    if (panel == null) {
+    if (!panel) {
       return;
     }
 
-    if (panel.style.width === '80%' || panel.style.width === '') {
-      panel.style.width = '0%';
-    } else {
-      panel.style.width = '80%';
-    }
+    const isZeroWidth = panel.style.width.match(/^\s*0(px|%)?/);
+    panel.style.width = isZeroWidth ? '80%' : '0%';
   }
 
   setStyle(style: { [key: string]: string }) {
+    const filteredStyles = new Set(['position', 'top', 'left', 'width']);
     if (this.panel != null) {
       for (const attribute in style) {
-        this.panel.style[attribute as any] = style[attribute];
+        if (!filteredStyles.has(attribute)) {
+          this.panel.style[attribute as any] = style[attribute];
+        }
       }
     }
     this.requestUpdate();
@@ -117,22 +122,22 @@ export class SideMenu extends LitElement {
   setAttribute(key: string, value: string) {
     switch (key) {
       case 'layout':
-        this.layout = value;
-        return;
+        this.layout = value.toUpperCase() as Layout;
+        break;
       case 'hasDropzone':
         this.hasDropzone = value === 'true';
-        return;
+        break;
     }
 
     this.requestUpdate();
   }
 
   render() {
-    const { styles, toggleMenu, layout } = this;
+    const { toggleMenu, layout } = this;
     return html`
-      <div id="container" style=${styleMap(styles)}>
+      <div id="container">
         <ui-panel>
-          <slot class="${layout}"></slot>
+          <slot class=${classMap({ [layout]: true })}></slot>
         </ui-panel>
         <paper-icon-button
           icon="icons:menu"

@@ -1,3 +1,5 @@
+import { DeviceType } from '../redux/types/enums';
+
 /**
  *  @fileoverview This file acts as a mock database storing our templates.
  */
@@ -5,6 +7,7 @@ export interface TemplateItem {
   id: string;
   name: string;
   imageUrl: string;
+  device: DeviceType;
   template: string;
 }
 
@@ -17,6 +20,7 @@ export const database: TemplateItem[] = [
     name: 'Left Side Panel',
     imageUrl:
       'https://storage.cloud.google.com/ee-app-creator.appspot.com/left-panel.png',
+    device: DeviceType.desktop,
     template: `{
         "config": {
             "parentID": "left-side-panel",
@@ -24,7 +28,8 @@ export const database: TemplateItem[] = [
             "id": "left-side-panel-desktop",
             "name": "Left Side Panel Desktop",
             "textDirection": "left",
-            "language": "en"
+            "language": "en",
+            "device": "desktop"
         },
         "widgets": {
             "panel-template-0": {
@@ -130,25 +135,27 @@ export const database: TemplateItem[] = [
     }`,
   },
   {
-    id: 'left-side-panel-mobile',
-    name: 'Left Side Panel Mobile',
+    id: 'left-drawer-mobile',
+    name: 'Left Drawer Mobile',
     imageUrl:
-      'https://storage.cloud.google.com/ee-app-creator.appspot.com/left-panel.png',
+      'https://storage.googleapis.com/ee-app-creator.appspot.com/left-drawer-mobile.png',
+    device: DeviceType.mobile,
     template: `{
         "config": {
-            "parentID": "left-side-panel-mobile",
-            "parentName": "Left Side Panel Mobile",
-            "id": "left-side-panel-mobile",
+            "parentID": "left-drawer-mobile",
+            "parentName": "Left Drawer Mobile",
+            "id": "left-drawer-mobile",
             "name": "Left Side Panel Mobile",
             "textDirection": "left",
-            "language": "en"
+            "language": "en",
+            "device": "mobile"
         },
         "widgets": {
             "panel-template-0": {
                 "id": "panel-template-0",
                 "editable": false,
                 "hasDropzone": false,
-                "children": ["map-template-0", "sidemenu-template-1"],
+                "children": ["map-template-0", "sidemenu-template-0"],
                 "uniqueAttributes": {
                     "layout": "row"
                 },
@@ -162,11 +169,15 @@ export const database: TemplateItem[] = [
                     "box-sizing": "border-box"
                 }
             },
-            "sidemenu-template-1": {
-                "id": "sidemenu-template-1",
+            "sidemenu-template-0": {
+                "id": "sidemenu-template-0",
                 "editable": true,
                 "hasDropzone": true,
-                "children": [],
+                "children": [
+                    "label-template-0",
+                    "label-template-1",
+                    "button-template-0"
+                ],
                 "uniqueAttributes": {
                     "layout": "column"
                 },
@@ -176,6 +187,7 @@ export const database: TemplateItem[] = [
                     "padding": "0px",
                     "margin": "0px",
                     "color": "black",
+                    "backgroundOpacity": "100",
                     "backgroundColor": "#FFFFFF00",
                     "box-sizing": "border-box",
                     "position": "absolute",
@@ -183,6 +195,41 @@ export const database: TemplateItem[] = [
                     "left":0
                 }
             },
+            "label-template-0": {
+                "id": "label-template-0",
+                "children": [],
+                "uniqueAttributes": {
+                   "value": "Earth Engine",
+                   "targetUrl": ""
+                },
+                "style": {
+                   "backgroundColor": "#FFFFFF00",
+                   "fontSize": "32px",
+                   "fontWeight": "700"
+                }
+             },
+             "label-template-1": {
+                "id": "label-template-1",
+                "children": [],
+                "uniqueAttributes": {
+                   "value": "Google Earth Engine combines a multi-petabyte catalog of satellite imagery and geospatial datasets with planetary-scale analysis capabilities and makes it available for scientists, researchers, and developers to detect changes, map trends, and quantify differences on the Earth's surface.",
+                   "targetUrl": ""
+                },
+                "style": {
+                   "backgroundColor": "#FFFFFF00"
+                }
+             },
+             "button-template-0": {
+                "id": "button-template-0",
+                "children": [],
+                "uniqueAttributes": {
+                   "label": "Button",
+                   "disabled": "false"
+                },
+                "style": {
+                   "backgroundColor": "#FFFFFF00"
+                }
+             },
             "map-template-0": {
                 "id": "map-template-0",
                 "children": [],
@@ -216,6 +263,7 @@ export const database: TemplateItem[] = [
     name: 'Right Side Panel',
     imageUrl:
       'https://storage.cloud.google.com/ee-app-creator.appspot.com/right-panel.png',
+    device: DeviceType.desktop,
     template: `{
         "config": {
             "parentID": "right-side-panel",
@@ -223,7 +271,8 @@ export const database: TemplateItem[] = [
             "id": "right-side-panel-desktop",
             "name": "Right Side Panel Desktop",
             "textDirection": "left",
-            "language": "en"
+            "language": "en",
+            "device": "desktop"
         },
         "widgets": {
             "panel-template-0": {
@@ -332,6 +381,7 @@ export const database: TemplateItem[] = [
     name: 'Map With Legend',
     imageUrl:
       'https://storage.cloud.google.com/ee-app-creator.appspot.com/legend-example.png',
+    device: DeviceType.desktop,
     template: `{
         "config": {
             "parentID": "map-with-legend",
@@ -339,7 +389,8 @@ export const database: TemplateItem[] = [
             "id": "map-with-legend-desktop",
             "name": "Map with legend Desktop",
             "textDirection": "left",
-            "language": "en"
+            "language": "en",
+            "device": "desktop"
         },
         "widgets": {
             "panel-template-0": {
@@ -460,6 +511,7 @@ export const database: TemplateItem[] = [
     name: 'Two Maps',
     imageUrl:
       'https://storage.cloud.google.com/ee-app-creator.appspot.com/two-map.png',
+    device: DeviceType.desktop,
     template: `{
         "config": {
             "parentID": "two-maps",
@@ -467,7 +519,8 @@ export const database: TemplateItem[] = [
             "id": "two-maps-desktop",
             "name": "Two Maps Desktop",
             "textDirection": "left",
-            "language": "en"
+            "language": "en",
+            "device": "desktop"
         },
         "widgets": {
             "panel-template-0": {
@@ -676,6 +729,7 @@ export const database: TemplateItem[] = [
     name: 'Four Maps',
     imageUrl:
       'https://storage.cloud.google.com/ee-app-creator.appspot.com/four-maps.png',
+    device: DeviceType.desktop,
     template: `{
         "config": {
             "parentID": "four-maps",
@@ -683,7 +737,8 @@ export const database: TemplateItem[] = [
             "id": "four-maps-desktop",
             "name": "Four Maps Desktop",
             "textDirection": "left",
-            "language": "en"
+            "language": "en",
+            "device": "desktop"
         },
         "widgets": {
             "panel-template-0": {

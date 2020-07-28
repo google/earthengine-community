@@ -3,10 +3,10 @@
  */
 import { LitElement, html, customElement, css, property } from 'lit-element';
 import { nothing } from 'lit-html';
-import '@polymer/paper-card/paper-card.js';
-import '@polymer/paper-button/paper-button.js';
 import { noop } from '../../utils/helpers';
 import { store } from '../../redux/store';
+import '@polymer/paper-card/paper-card.js';
+import '@polymer/paper-button/paper-button.js';
 
 @customElement('template-card')
 export class TemplateCard extends LitElement {

@@ -91,8 +91,15 @@ export class DraggableWidget extends LitElement {
 
     const type = getWidgetType(editingWidget.id) as WidgetType;
 
-    if (type === WidgetType.panel) {
-      const dropzone = editingWidget.querySelector('dropzone-widget');
+    if (type === WidgetType.panel || type === WidgetType.sidemenu) {
+      let dropzone = editingWidget.querySelector('dropzone-widget');
+
+      if (dropzone == null) {
+        dropzone = editingWidget
+          .querySelector('slot')
+          ?.assignedNodes()
+          .find((node) => node.nodeName === 'DROPZONE-WIDGET') as Dropzone;
+      }
 
       if (dropzone != null) {
         (dropzone as Dropzone).setStyleProperty(

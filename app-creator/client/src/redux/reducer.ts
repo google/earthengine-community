@@ -17,6 +17,7 @@ import {
   UPDATE_WIDGET_META_DATA,
   SET_SELECTED_TEMPLATE,
   UPDATE_WIDGET_CHILDREN,
+  SET_SELECTED_TEMPLATE_ID,
 } from './types/actions';
 import { Reducer, AnyAction } from 'redux';
 import { UniqueAttributes } from './types/attributes';
@@ -35,6 +36,7 @@ export interface WidgetMetaData {
 export interface AppCreatorStore {
   editingElement: Element | null;
   draggingElement: Element | null;
+  selectedTemplateID: string;
   selectedTab: Tab;
   eventType: EventType;
   widgetIDs: { [key: string]: number };
@@ -48,6 +50,7 @@ const INITIAL_STATE: AppCreatorStore = {
   editingElement: null,
   draggingElement: null,
   selectedTab: Tab.widgets,
+  selectedTemplateID: '',
   eventType: EventType.none,
   widgetIDs: {
     label: 0,
@@ -102,6 +105,11 @@ export const reducer: Reducer<AppCreatorStore, AppCreatorAction | AnyAction> = (
       return {
         ...state,
         eventType: action.payload.value ? EventType.reordering : EventType.none,
+      };
+    case SET_SELECTED_TEMPLATE_ID:
+      return {
+        ...state,
+        selectedTemplateID: action.payload.id,
       };
     case SET_IMPORTING:
       return {
@@ -197,6 +205,7 @@ export const reducer: Reducer<AppCreatorStore, AppCreatorAction | AnyAction> = (
       addDefaultStyles(action.payload.template);
       return {
         ...INITIAL_STATE,
+        selectedTemplateID: state.selectedTemplateID,
         selectedTab: state.selectedTab,
         template: action.payload.template,
       };
@@ -229,10 +238,14 @@ export const reducer: Reducer<AppCreatorStore, AppCreatorAction | AnyAction> = (
  */
 function addDefaultStyles(template: { [key: string]: any }) {
   for (const id in template.widgets) {
-    template.widgets[id].style = {
-      ...DEFAULT_STYLES,
-      ...template.widgets[id].style,
-    };
+    const styleCopy: { [key: string]: string } = Object.assign(
+      {},
+      DEFAULT_STYLES
+    );
+    for (const attribute in template.widgets[id].style) {
+      styleCopy[attribute] = template.widgets[id].style[attribute];
+    }
+    template.widgets[id].style = styleCopy;
   }
 }
 

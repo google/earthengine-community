@@ -258,8 +258,8 @@ contexts for classification. By comparing outputs from both CART and RF,
 users can make objective inference on the most accurate classifier. Default
 parameters will be accepted (adjustments such as optimizing the number of
 trees in RF, e.g., are outside the scope of this tutorial). The output images
-will include values 0 (non-maize, shown as orange in the map) and 1
-(maize, shown as grey in the map). Metrics regarding model accuracies are
+will include values 0 (maize, shown as orange in the map) and 1
+(non-maize, shown as grey in the map). Metrics regarding model accuracies are
 printed to the console.
 
 ```js
@@ -279,7 +279,7 @@ var classifiedCart = imageCl.select(bands).classify(trainedCart);
 var classifiedRf = imageCl.select(bands).classify(trainedRf);
 
 // Define visualization parameters for classification display.
-var classVis = {min: 0, max: 1, palette: ['484848', 'f2c649']};
+var classVis = {min: 0, max: 1, palette: ['f2c649', '484848']};
 
 // Add the output of the training classification to the map.
 Map.addLayer(classifiedCart.clipToCollection(aoi), classVis, 'Classes (CART)');
@@ -388,7 +388,7 @@ print(areas);
 Although this tutorial offers a template for users, further adjustments can
 possibly improve the results. The results show that RF outperformed CART in the
 validation mode (RF accuracy = 74.9%; CART accuracy = 67.4%). Also, the maize
-area estimated was 80323 square km (i.e. ~8 million ha). It is probable that
+area estimated was 165,338 square km (i.e. ~16.5 million ha). It is probable that
 this is over/under estimated, so further area-based validation may be necessary
 to validate the estimate. In any case, this analytical tool (and tutorial) can
 support rapid generation of national cropland area estimate that is scalable

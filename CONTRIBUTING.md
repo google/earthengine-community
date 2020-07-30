@@ -42,3 +42,9 @@ information on using pull requests.
 
 This project follows [Google's Open Source Community
 Guidelines](https://opensource.google.com/conduct/).
+
+## Code of Conduct
+
+The Earth Engine team is committed to fostering a welcoming community.
+Please familiarize yourself with our [Code of Conduct](https://opensource.google/docs/releasing/template/CODE_OF_CONDUCT/)
+before participating.

@@ -248,7 +248,7 @@ var training = imageCl
                      tileScale: 8
                    })
                    .filter(ee.Filter.neq(
-                       'B1', null));  // Remove null pixels.
+                       'B1', null)); // Remove null pixels.
 ```
 
 **b.** For the binary classification you will be applying two classifiers:
@@ -317,7 +317,7 @@ var validation = imageCl
                        tileScale: 8
                      })
                      .filter(ee.Filter.neq(
-                         'B1', null));  // Remove null pixels.
+                         'B1', null)); // Remove null pixels.
 
 // Classify the validation data.
 var validatedCart = validation.classify(trainedCart);

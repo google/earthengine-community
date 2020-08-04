@@ -95,7 +95,8 @@ Map.centerObject(nigeria, 6);
 Map.addLayer(nigeriaBorder, null, 'Nigeria border');
 
 // Import the maize target region asset.
-var aoi = ee.FeatureCollection('users/juliusadewopo/MzeTargetRegion_alt_dslv2');
+var aoi = ee.FeatureCollection(
+    'projects/earthengine-community/tutorials/classify-maizeland-ng/aoi');
 
 // Display the maize target area boundary to the map.
 Map.addLayer(aoi, {color: 'white', strokeWidth: 5}, 'AOI', true, 0.6);
@@ -110,10 +111,10 @@ points as layers to the map.
 
 ```js
 // Import ground truth data that are divided into training and validation sets.
-var trainingPts =
-    ee.FeatureCollection('users/juliusadewopo/Mzetrgt_Train17_Rev');
-var validationPts =
-    ee.FeatureCollection('users/juliusadewopo/Mzetrgt_Test17_Rev');
+var trainingPts = ee.FeatureCollection(
+    'projects/earthengine-community/tutorials/classify-maizeland-ng/training-pts');
+var validationPts = ee.FeatureCollection(
+    'projects/earthengine-community/tutorials/classify-maizeland-ng/validation-pts');
 
 // Display training and validation points to see distribution within the AOI.
 Map.addLayer(trainingPts, {color: 'green'}, 'Training points');

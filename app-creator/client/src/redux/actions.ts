@@ -28,6 +28,8 @@ import {
   UpdateWidgetChildren,
   SetIsImportingAction,
   SET_IMPORTING,
+  SetSelectedTemplateIDAction,
+  SET_SELECTED_TEMPLATE_ID,
 } from './types/actions';
 import {
   DEFAULT_SHARED_ATTRIBUTES,
@@ -243,6 +245,20 @@ export const setImporting = (value: boolean): SetIsImportingAction => {
 export const incrementWidgetID = (id: string): IncrementWidgetAction => {
   return {
     type: INCREMENT_WIDGET_ID,
+    payload: {
+      id,
+    },
+  };
+};
+
+/**
+ * Sets selected template id.
+ */
+export const setSelectedTemplateID = (
+  id: string
+): SetSelectedTemplateIDAction => {
+  return {
+    type: SET_SELECTED_TEMPLATE_ID,
     payload: {
       id,
     },

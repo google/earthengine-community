@@ -10,14 +10,8 @@ import {
   property,
   query,
 } from 'lit-element';
+import { classMap } from 'lit-html/directives/class-map';
 import { nothing } from 'lit-html';
-import './tool-bar/tool-bar';
-import './actions-panel/actions-panel';
-import './tab-container/tab-container';
-import './story-board/story-board';
-import './search-bar/search-bar';
-import '@polymer/paper-progress/paper-progress.js';
-import '@polymer/paper-toast/paper-toast.js';
 import { PaperToastElement } from '@polymer/paper-toast/paper-toast.js';
 import { PaperDialogElement } from '@polymer/paper-dialog/paper-dialog.js';
 import { onSearchEvent } from './search-bar/search-bar';
@@ -26,6 +20,16 @@ import { store } from '../redux/store';
 import { setSelectedTemplate } from '../redux/actions';
 import { TemplateItem } from '../client/fetch-templates';
 import { templatesManager } from '../data/templates';
+import { DeviceType } from '../redux/types/enums';
+import { chips } from '../utils/helpers';
+import './tool-bar/tool-bar';
+import './actions-panel/actions-panel';
+import './tab-container/tab-container';
+import './story-board/story-board';
+import './search-bar/search-bar';
+import '@polymer/paper-progress/paper-progress.js';
+import '@polymer/paper-toast/paper-toast.js';
+import '@cwmr/paper-chip/paper-chip.js';
 
 @customElement('app-root')
 export class AppRoot extends LitElement {
@@ -42,14 +46,14 @@ export class AppRoot extends LitElement {
     }
 
     #storyboard {
-      height: 95%;
+      height: 90%;
       width: 90%;
     }
 
     #storyboard-container {
       display: flex;
       align-items: center;
-      justify-content: flex-start;
+      justify-content: center;
       flex-direction: column;
       height: 100%;
       width: 100%;
@@ -105,12 +109,36 @@ export class AppRoot extends LitElement {
       left: 0;
       margin: 0px;
     }
+
+    #chips-container {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: center;
+      margin-top: var(--tight);
+    }
+
+    paper-chip {
+      margin: 0px var(--extra-tight);
+      background-color: var(--primary-color);
+      color: var(--accent-color);
+    }
+
+    .selected-paper-chip {
+      background-color: var(--accent-color);
+      color: var(--primary-color);
+    }
   `;
 
   /**
    * Sets template dialog search query.
    */
   @property({ type: String }) query = '';
+
+  /**
+   * Sets device filter.
+   */
+  @property({ type: String }) deviceFilter: DeviceType = DeviceType.all;
 
   /**
    * Array of templates.
@@ -165,10 +193,11 @@ export class AppRoot extends LitElement {
   }
 
   getTemplateCards(showTitle = false): Array<TemplatesTabItem> {
-    return this.templates.map(({ id, name, imageUrl, template }) => {
+    return this.templates.map(({ id, name, imageUrl, device, template }) => {
       return {
         id,
         name,
+        device,
         markup: html`
           ${showTitle ? nothing : html`<h6 class="subtitle">${name}</h6>`}
           <template-card
@@ -192,12 +221,19 @@ export class AppRoot extends LitElement {
   }
 
   render() {
-    const { handleSearch, getTemplateCards, query, loading } = this;
+    const {
+      handleSearch,
+      getTemplateCards,
+      deviceFilter,
+      query,
+      loading,
+    } = this;
 
     const templateCards = getTemplateCards.call(this, true);
     const filteredTemplates = TemplatesTab.filterTemplates(
       templateCards,
-      query
+      query,
+      deviceFilter
     );
 
     const emptyNotice = html`
@@ -223,6 +259,25 @@ export class AppRoot extends LitElement {
       ? html`<paper-progress indeterminate></paper-progress>`
       : nothing;
 
+    const sortingChips = html`
+      <div id="chips-container">
+        ${chips.map(({ label, device }) => {
+          return html`
+            <paper-chip
+              selectable
+              class=${classMap({
+                'selected-paper-chip': this.deviceFilter === device,
+              })}
+              @click=${() => {
+                this.deviceFilter = device;
+              }}
+              >${label}</paper-chip
+            >
+          `;
+        })}
+      </div>
+    `;
+
     return html`
       <div id="app">
         <tool-bar></tool-bar>
@@ -240,6 +295,7 @@ export class AppRoot extends LitElement {
                 placeholder="Search for template (i.e. side panel)"
                 @onsearch=${handleSearch}
               ></search-bar>
+              ${sortingChips}
             </div>
             ${contentMarkup}
           </paper-dialog>

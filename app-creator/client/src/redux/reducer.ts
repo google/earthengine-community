@@ -17,6 +17,7 @@ import {
   UPDATE_WIDGET_META_DATA,
   SET_SELECTED_TEMPLATE,
   UPDATE_WIDGET_CHILDREN,
+  SET_SELECTED_TEMPLATE_ID,
 } from './types/actions';
 import { Reducer, AnyAction } from 'redux';
 import { UniqueAttributes } from './types/attributes';
@@ -35,6 +36,7 @@ export interface WidgetMetaData {
 export interface AppCreatorStore {
   editingElement: Element | null;
   draggingElement: Element | null;
+  selectedTemplateID: string;
   selectedTab: Tab;
   eventType: EventType;
   widgetIDs: { [key: string]: number };
@@ -48,6 +50,7 @@ const INITIAL_STATE: AppCreatorStore = {
   editingElement: null,
   draggingElement: null,
   selectedTab: Tab.widgets,
+  selectedTemplateID: '',
   eventType: EventType.none,
   widgetIDs: {
     label: 0,
@@ -103,6 +106,11 @@ export const reducer: Reducer<AppCreatorStore, AppCreatorAction | AnyAction> = (
         ...state,
         eventType: action.payload.value ? EventType.reordering : EventType.none,
       };
+    case SET_SELECTED_TEMPLATE_ID:
+      return {
+        ...state,
+        selectedTemplateID: action.payload.id,
+      };
     case SET_IMPORTING:
       return {
         ...state,
@@ -113,7 +121,10 @@ export const reducer: Reducer<AppCreatorStore, AppCreatorAction | AnyAction> = (
         ...state,
         template: {
           ...state.template,
-          ...action.payload,
+          widgets: {
+            ...state.template.widgets,
+            ...action.payload,
+          },
         },
       };
     case UPDATE_WIDGET_META_DATA:
@@ -123,38 +134,38 @@ export const reducer: Reducer<AppCreatorStore, AppCreatorAction | AnyAction> = (
       if (attributeName.endsWith('unit')) {
         const attributePrefix = getWidgetType(attributeName);
         const attributeValue =
-          updatedTemplate[id][attributeType][attributePrefix];
+          updatedTemplate.widgets[id][attributeType][attributePrefix];
         if (attributeValue.endsWith('px')) {
-          updatedTemplate[id][attributeType][
+          updatedTemplate.widgets[id][attributeType][
             attributePrefix
           ] = attributeValue.replace('px', value);
         } else {
-          updatedTemplate[id][attributeType][
+          updatedTemplate.widgets[id][attributeType][
             attributePrefix
           ] = attributeValue.replace('%', value);
         }
       } else {
         const attributeValue =
-          updatedTemplate[id][attributeType][attributeName];
+          updatedTemplate.widgets[id][attributeType][attributeName];
 
-        updatedTemplate[id][attributeType][attributeName] = value;
+        updatedTemplate.widgets[id][attributeType][attributeName] = value;
 
         if (attributeValue.endsWith('px') || attributeValue.endsWith('%')) {
           if (!value.endsWith('px') && !value.endsWith('%')) {
-            updatedTemplate[id][attributeType][
+            updatedTemplate.widgets[id][attributeType][
               attributeName
             ] += attributeValue.endsWith('px') ? 'px' : '%';
           }
         }
       }
 
-      const { widgetRef } = updatedTemplate[id];
+      const { widgetRef } = updatedTemplate.widgets[id];
 
-      updatedTemplate[id].style.backgroundColor = getBackgroundColor(
-        updatedTemplate[id].style
+      updatedTemplate.widgets[id].style.backgroundColor = getBackgroundColor(
+        updatedTemplate.widgets[id].style
       );
 
-      widgetRef.setStyle(updatedTemplate[id].style);
+      widgetRef.setStyle(updatedTemplate.widgets[id].style);
       updateUI(widgetRef, updatedTemplate);
 
       return {
@@ -164,10 +175,10 @@ export const reducer: Reducer<AppCreatorStore, AppCreatorAction | AnyAction> = (
     case REMOVE_WIDGET:
       const newTemplate = { ...state.template };
       if (!action.payload.reordering) {
-        delete newTemplate[action.payload.id];
+        delete newTemplate.widgets[action.payload.id];
       }
-      for (const key in newTemplate) {
-        const widget = newTemplate[key];
+      for (const key in newTemplate.widgets) {
+        const widget = newTemplate.widgets[key];
         if (
           typeof widget === 'object' &&
           !Array.isArray(widget) &&
@@ -191,8 +202,10 @@ export const reducer: Reducer<AppCreatorStore, AppCreatorAction | AnyAction> = (
         },
       };
     case SET_SELECTED_TEMPLATE:
+      addDefaultStyles(action.payload.template);
       return {
         ...INITIAL_STATE,
+        selectedTemplateID: state.selectedTemplateID,
         selectedTab: state.selectedTab,
         template: action.payload.template,
       };
@@ -206,9 +219,12 @@ export const reducer: Reducer<AppCreatorStore, AppCreatorAction | AnyAction> = (
         ...state,
         template: {
           ...state.template,
-          [action.payload.id]: {
-            ...state.template[action.payload.id],
-            children: action.payload.childrenIDs,
+          widgets: {
+            ...state.template.widgets,
+            [action.payload.id]: {
+              ...state.template.widgets[action.payload.id],
+              children: action.payload.childrenIDs,
+            },
           },
         },
       };
@@ -218,11 +234,32 @@ export const reducer: Reducer<AppCreatorStore, AppCreatorAction | AnyAction> = (
 };
 
 /**
+ * Adds default styles to all widgets.
+ */
+function addDefaultStyles(template: { [key: string]: any }) {
+  for (const id in template.widgets) {
+    const styleCopy: { [key: string]: string } = Object.assign(
+      {},
+      DEFAULT_STYLES
+    );
+    for (const attribute in template.widgets[id].style) {
+      styleCopy[attribute] = template.widgets[id].style[attribute];
+    }
+    template.widgets[id].style = styleCopy;
+  }
+}
+
+/**
  * Updates DOM element with attributes.
  */
 function updateUI(widget: HTMLElement, template: { [key: string]: any }) {
-  for (const attr of Object.keys(template[widget.id].uniqueAttributes)) {
-    widget.setAttribute(attr, template[widget.id].uniqueAttributes[attr]);
+  for (const attr of Object.keys(
+    template.widgets[widget.id].uniqueAttributes
+  )) {
+    widget.setAttribute(
+      attr,
+      template.widgets[widget.id].uniqueAttributes[attr]
+    );
   }
 }
 
@@ -250,3 +287,24 @@ function getBackgroundColor(style: { [key: string]: any }): string {
   // Example: #FFFFFF00, where the last two hex numbers represent the opacity.
   return newBackgroundColor;
 }
+
+/**
+ * List of default styles shared across all widgets.
+ */
+const DEFAULT_STYLES = {
+  height: 'px',
+  width: 'px',
+  padding: '0px',
+  margin: '8px',
+  borderWidth: '0px',
+  borderStyle: 'solid',
+  borderColor: 'black',
+  fontSize: '12px',
+  color: 'black',
+  backgroundOpacity: '0',
+  fontWeight: '300',
+  fontFamily: 'Roboto',
+  textAlign: 'left',
+  whiteSpace: 'normal',
+  shown: 'true',
+};

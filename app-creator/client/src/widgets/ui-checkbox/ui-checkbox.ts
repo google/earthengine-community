@@ -44,7 +44,7 @@ export class Checkbox extends LitElement {
   );
 
   /**
-   * Additional custom styles for the button.
+   * Additional custom styles.
    */
   @property({ type: Object }) styles = DEFAULT_SHARED_ATTRIBUTES;
 

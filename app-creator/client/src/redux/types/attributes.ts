@@ -55,13 +55,13 @@ export interface DefaultAttributesType {
 
 export const sharedAttributes: AttributeMetaData = {
   height: {
-    value: '',
+    value: 'px',
     placeholder: '35',
     unit: 'px',
     type: InputType.number,
   },
   width: {
-    value: '',
+    value: 'px',
     placeholder: '35',
     unit: 'px',
     type: InputType.number,

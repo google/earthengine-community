@@ -13,6 +13,8 @@ import { EEWidget } from '../redux/types/types';
 import { WidgetType } from '../redux/types/enums';
 import { Panel } from '../widgets/ui-panel/ui-panel';
 import { Map } from '../widgets/ui-map/ui-map';
+import { SideMenu } from '../widgets/ui-sidemenu/ui-sidemenu';
+import '../widgets/ui-sidemenu/ui-sidemenu';
 
 /**
  * Builds a DOM tree given a template JSON and renders it in the provided HTML node.
@@ -30,19 +32,20 @@ export function generateUI(
 
     for (const childID of children) {
       if (dropzone != null) {
-        dropzone.appendChild(getWidgetTree(templateCopy[childID]));
+        dropzone.appendChild(getWidgetTree(templateCopy.widgets[childID]));
       } else {
-        element.appendChild(getWidgetTree(templateCopy[childID]));
+        element.appendChild(getWidgetTree(templateCopy.widgets[childID]));
       }
     }
 
-    templateCopy[id].widgetRef = map ?? element;
+    templateCopy.widgets[id].widgetRef = map ?? element;
 
     return draggable ?? element;
   }
 
   // The root of the template will always have an id of panel-template-0
-  const root = templateCopy[ROOT_ID];
+  const root = templateCopy.widgets[ROOT_ID];
+
   node.appendChild(getWidgetTree(root));
 
   // Replace the store's template with the one that include the widgetRefs.
@@ -105,8 +108,13 @@ export function getWidgetElement({
       element = wrapper;
       break;
     case WidgetType.panel:
+    case WidgetType.sidemenu:
       if ((element as Panel).editable) {
-        (element as Panel).editable = editable ?? false;
+        (element as Panel).editable = !!editable;
+      }
+
+      if ((element as SideMenu).editable) {
+        (element as SideMenu).editable = !!editable;
       }
 
       if (editable) {
@@ -115,6 +123,7 @@ export function getWidgetElement({
         element.appendChild(dropzoneWidget);
         dropzone = dropzoneWidget;
       }
+
       break;
     default:
       const draggableWrapper = document.createElement('draggable-widget');

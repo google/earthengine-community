@@ -3,11 +3,13 @@
  *  are essentially containers that can align their children vertically, horizontally, and in a grid.
  */
 import { css, customElement, html, LitElement, property } from 'lit-element';
-import '../dropzone-widget/dropzone-widget';
 import { store } from '../../redux/store';
 import { setEditingWidget } from '../../redux/actions';
 import { DraggableWidget } from '../draggable-widget/draggable-widget';
-import { CONTAINER_ID } from '../dropzone-widget/dropzone-widget';
+import { Dropzone } from '../dropzone-widget/dropzone-widget';
+import { classMap } from 'lit-html/directives/class-map';
+import '../dropzone-widget/dropzone-widget';
+import { Layout } from '../../redux/types/enums';
 
 @customElement('ui-panel')
 export class Panel extends LitElement {
@@ -31,11 +33,11 @@ export class Panel extends LitElement {
       width: calc(100% - 2 * var(--extra-tight));
     }
 
-    .column {
+    .COLUMN {
       flex-direction: column;
     }
 
-    .row {
+    .ROW {
       flex-direction: row;
     }
 
@@ -64,7 +66,7 @@ export class Panel extends LitElement {
   `;
 
   /**
-   * Additional custom styles for the button.
+   * Additional custom styles for the panel.
    */
   @property({ type: Object }) styles = {};
 
@@ -74,7 +76,7 @@ export class Panel extends LitElement {
    * column layout will append widgets below the last child element.
    * row layout will append widgets to the right of the last child element.
    */
-  @property({ type: String }) layout = 'column';
+  @property({ type: String }) layout = Layout.COLUMN;
 
   /**
    * Adds a border and shadow to panel.
@@ -101,19 +103,6 @@ export class Panel extends LitElement {
     this.onclick = this.handleEditWidget;
   }
 
-  render() {
-    const { isRaised, layout, padded } = this;
-
-    return html`
-      <div
-        id="container"
-        class="${layout} ${isRaised ? 'raised' : ''} ${padded ? 'padded' : ''}"
-      >
-        <slot class="${layout}"></slot>
-      </div>
-    `;
-  }
-
   /**
    * Triggered when the panel is selected. Stores a reference of the selected element in the store and
    * displays a set of inputs for editing its attributes.
@@ -125,22 +114,42 @@ export class Panel extends LitElement {
     // Remove highlight from currently selected widget (if any).
     DraggableWidget.removeEditingWidgetHighlight();
 
-    const dropzone = this.querySelector(
-      'dropzone-widget'
-    )?.shadowRoot?.querySelector(`#${CONTAINER_ID}`);
+    let dropzone = this.querySelector('dropzone-widget') as Dropzone;
+
+    if (dropzone == null) {
+      dropzone = this.querySelector('slot')
+        ?.assignedNodes()
+        .find((node) => node.nodeName === 'DROPZONE-WIDGET') as Dropzone;
+    }
 
     if (dropzone != null) {
-      (dropzone as HTMLElement).style.borderColor = 'var(--accent-color)';
+      (dropzone as Dropzone).setStyleProperty(
+        'borderColor',
+        'var(--accent-color)'
+      );
     }
 
     // Check if a widgetRef has been set.
     store.dispatch(setEditingWidget(this));
   }
 
+  render() {
+    const { isRaised, layout, padded } = this;
+
+    return html`
+      <div
+        id="container"
+        class=${classMap({ raised: isRaised, padded, [layout]: true })}
+      >
+        <slot class="${layout}"></slot>
+      </div>
+    `;
+  }
+
   setAttribute(key: string, value: string) {
     switch (key) {
       case 'layout':
-        this.layout = value;
+        this.layout = value.toUpperCase() as Layout;
         return;
       case 'isRaised':
         this.isRaised = value === 'true';

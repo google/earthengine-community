@@ -227,7 +227,7 @@ export class ToolBar extends LitElement {
 
       // If the JSON doesn't contain a root_id (i.e. panel-template-0)
       // then it is not a valid template and thus we need to throw an error.
-      if (!templateJSON.hasOwnProperty(ROOT_ID)) {
+      if (!templateJSON.widgets.hasOwnProperty(ROOT_ID)) {
         throw new Error('Root ID (panel-template-0) not present...');
       }
 

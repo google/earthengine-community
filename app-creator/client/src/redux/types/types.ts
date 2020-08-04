@@ -7,6 +7,7 @@ import { Select } from '../../widgets/ui-select/ui-select';
 import { Textbox } from '../../widgets/ui-textbox/ui-textbox';
 import { Checkbox } from '../../widgets/ui-checkbox/ui-checkbox';
 import { Chart } from '../../widgets/ui-chart/ui-chart';
+import { SideMenu } from '../../widgets/ui-sidemenu/ui-sidemenu';
 
 export type EEWidget =
   | Panel
@@ -17,4 +18,5 @@ export type EEWidget =
   | Select
   | Textbox
   | Checkbox
-  | Chart;
+  | Chart
+  | SideMenu;

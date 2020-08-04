@@ -17,6 +17,7 @@ export const REMOVE_WIDGET = 'REMOVE_WIDGET';
 export const UPDATE_WIDGET_META_DATA = 'UPDATE_WIDGET_META_DATA';
 export const SET_SELECTED_TEMPLATE = 'SET_SELECTED_TEMPLATE';
 export const UPDATE_WIDGET_CHILDREN = 'UPDATE_WIDGET_CHILDREN';
+export const SET_SELECTED_TEMPLATE_ID = 'SET_SELECTED_TEMPLATE_ID';
 
 export interface UpdateWidgetChildren {
   type: typeof UPDATE_WIDGET_CHILDREN;
@@ -31,6 +32,13 @@ export interface RemoveWidget {
   payload: {
     id: string;
     reordering: boolean;
+  };
+}
+
+export interface SetSelectedTemplateIDAction {
+  type: typeof SET_SELECTED_TEMPLATE_ID;
+  payload: {
+    id: string;
   };
 }
 

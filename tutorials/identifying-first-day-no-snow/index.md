@@ -249,8 +249,8 @@ var annualList = years.map(function(year) {
   var endDate = startDate.advance(1, 'year').advance(1, 'day');
   // Filter the complete collection by the start and end dates just defined.
   var yearCol = completeCol.filterDate(startDate, endDate);
-  // Construct an image where pixels represent the first day within the date range
-  // that the lowest snow fraction is observed.
+  // Construct an image where pixels represent the first day within the date
+  // range that the lowest snow fraction is observed.
   var noSnowImg = yearCol
     // Add date bands to all images in this particular collection.
     .map(addDateBands)
@@ -414,7 +414,8 @@ var slope = annualCol.sort('year').select(['year', 'calDoy'])
 var visArgs = {
   min: -1,
   max: 1,
-  palette: ['b2182b', 'ef8a62', 'fddbc7', 'f7f7f7', 'd1e5f0', '67a9cf', '2166ac']};
+  palette: ['b2182b', 'ef8a62', 'fddbc7', 'f7f7f7',
+            'd1e5f0', '67a9cf', '2166ac']};
 
 // Map it.
 Map.setCenter(-95.78, 59.451, 5);

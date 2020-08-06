@@ -1,5 +1,5 @@
 ---
-title: Non-parametric trend analysis
+title: Non-Parametric Trend Analysis
 description: Estimate presence of monotonic trends with the Mann-Kendall test, magnitude of trend with Sen's slope and the statistical significance of the presence of trend using the error function.
 author: n-clinton
 tags: trend, Mann, Kendall, Sens, slope, statistical, significance, Z-statistic, P-value, erf, hypothesis, testing

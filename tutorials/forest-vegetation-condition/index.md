@@ -23,19 +23,47 @@ limitations under the License.
 
 ## Context
 
-Forests around the world are in crisis. Rapidly expanding global human footprint and climate change have caused extensive deforestation, and have left remnant forests fragmented and significantly altered in condition. Yet, these remaining forests harbour a dazzling array of unique ecosystems and an overwhelming majority of our planet’s current terrestrial biodiversity, thanks to in-situ conservation efforts including those by local and indigenous communities. Valuing these forests and ensuring their continued conservation depends on our understanding their long term dynamics and responses to dominant anthropogenic and climatic drivers. This tutorial illustrates the use of Earth Engine to investigate forest vegetation condition over time.
+Forests around the world are in crisis. Rapidly expanding global human footprint
+and climate change have caused extensive deforestation, and have left remnant
+forests fragmented and significantly altered in condition. Yet, these remaining
+forests harbour a dazzling array of unique ecosystems and an overwhelming
+majority of our planet’s current terrestrial biodiversity, thanks to in-situ
+conservation efforts including those by local and indigenous communities.
+Valuing these forests and ensuring their continued conservation depends on our
+understanding their long term dynamics and responses to dominant anthropogenic
+and climatic drivers. This tutorial illustrates the use of Earth Engine to
+investigate forest vegetation condition over time.
 
 ## Rationale
 
-Remotely sensed indices such as enhanced vegetation index (EVI), normalized difference vegetation index (NDVI) and normalized difference water index (NDWI) are widely used to estimate vegetation status from satellite imagery. EVI and NDVI estimate vegetation chlorophyll content while NDWI estimates vegetation moisture content. All these indices can be derived from free public imagery of satellites like Landsat and MODIS, available in the Earth Engine data catalog. This tutorial uses MODIS EVI data from the [MOD13Q1.006 dataset](https://developers.google.com/earth-engine/datasets/catalog/MODIS_006_MOD13Q1) for the period from year 2000 to 2019.
+Remotely sensed indices such as enhanced vegetation index (EVI), normalized
+difference vegetation index (NDVI) and normalized difference water index (NDWI)
+are widely used to estimate vegetation status from satellite imagery. EVI and
+NDVI estimate vegetation chlorophyll content while NDWI estimates vegetation
+moisture content. All these indices can be derived from free public imagery of
+satellites like Landsat and MODIS, available in the Earth Engine data catalog.
+This tutorial uses MODIS EVI data from the
+[MOD13Q1.006 dataset](https://developers.google.com/earth-engine/datasets/catalog/MODIS_006_MOD13Q1)
+for the period from year 2000 to 2019.
 
-Bandipur and Nagarhole national parks are located in the Mysore-Malenad landscape of the Western Ghats in southern India, and are home to diverse habitats ranging from dry deciduous scrub forests to evergreen forests. Forest vegetation in this region is typically under most stress during the dry summer months, and hence, tracking annual changes during this period can be useful from a conservation and management perspective. The vegetation turns most green and abundant during the rainy monsoon months, but also becomes hard to observe from optical satellite imagery due to the accompanying heavy cloud cover.
+Bandipur and Nagarhole national parks are located in the Mysore-Malenad
+landscape of the Western Ghats in southern India, and are home to diverse
+habitats ranging from dry deciduous scrub forests to evergreen forests. Forest
+vegetation in this region is typically under most stress during the dry summer
+months, and hence, tracking annual changes during this period can be useful
+from a conservation and management perspective. The vegetation turns most green
+and abundant during the rainy monsoon months, but also becomes hard to observe
+from optical satellite imagery due to the accompanying heavy cloud cover.
 
 ## Approach
 
 ### Import images, features
 
-Import the MODIS 250m/pixel 16-day composite vegetation indices dataset. Load boundaries of Bandipur and Nagarhole national parks from the [World Database on Protected Areas (WDPA)](https://developers.google.com/earth-engine/datasets/catalog/WCMC_WDPA_current_polygons?hl=en) dataset. Note that analyses here are performed within these features; modify the import to suit your study.
+Import the MODIS 250m/pixel 16-day composite vegetation indices dataset. Load
+boundaries of Bandipur and Nagarhole national parks from the
+[World Database on Protected Areas (WDPA)](https://developers.google.com/earth-engine/datasets/catalog/WCMC_WDPA_current_polygons?hl=en)
+dataset. Note that analyses here are performed within these features; modify the
+import to suit your study.
 
 ```js
 // Get MODIS 250m vegetation data.
@@ -46,9 +74,12 @@ var nps = ee.FeatureCollection('WCMC/WDPA/current/polygons')
   .filter(ee.Filter.inList('NAME', ['Bandipur', 'Rajiv Gandhi (Nagarhole)']));
 ```
 
-### Compute annual summertime composites 
+### Compute annual summertime composites
 
-Build an image collection with an image for each year from 2000 to 2019. Each of these images is calculated to be the maximum EVI in the summer months of its corresponding year. This is our measure of the status of the vegetation for each year. Also add the year as a band, in preparation for linear trend analysis.
+Build an image collection with an image for each year from 2000 to 2019. Each of
+these images is calculated to be the maximum EVI in the summer months of its
+corresponding year. This is our measure of the status of the vegetation for each
+year. Also add the year as a band, in preparation for linear trend analysis.
 
 ```js
 // Filter MODIS images to summer months between Jan and Apr 2000-2019,
@@ -80,7 +111,9 @@ var summerStats = ee.ImageCollection(mod13SummerAnnualJoin.map(function(img) {
 
 ### Estimate trends and infer vegetation condition
 
-Estimate a linear trend at each pixel by calculating its Sen's slope of maximum summer EVI with time. Calculate and visualize histograms of the regression slope values for each national park.
+Estimate a linear trend at each pixel by calculating its Sen's slope of maximum
+summer EVI with time. Calculate and visualize histograms of the regression slope
+values for each national park.
 
 ```js
 // Calculate time series slope using sensSlope().
@@ -129,10 +162,12 @@ print(getHistogram(
   'Rajiv Gandhi (Nagarhole)'));
 ```
 
-![](slopes-histogram-bandipur.png)    |    ![](slopes-histogram-nagarhole.png) 
+![](slopes-histogram-bandipur.png)    |    ![](slopes-histogram-nagarhole.png)
 :----------------------------------:|:---------------------------------------:
 
-Infer pixel-wise vegetation greening or browning based on the sign of the slope value. Calculate summary of areas under greening and browning for each national park.
+Infer pixel-wise vegetation greening or browning based on the sign of the slope
+value. Calculate summary of areas under greening and browning for each national
+park.
 
 ```js
 // Infer pixel-wise vegetation condition based on sign of the slope.
@@ -146,7 +181,7 @@ var npsRes = cond.multiply(ee.Image.pixelArea())
 
 ### Visualise results
 
-Tabulate the areas of vegetation greening and browning for each national park. 
+Tabulate the areas of vegetation greening and browning for each national park.
 
 ```js
 // Format results of the greening and browning for use in a table; convert sq m
@@ -172,7 +207,9 @@ print(ui.Chart.feature.byFeature(npsRes.select(['NAME', 'Browning sq km',
 
 ![](areas-table.png)
 
-Choose suitable visualization parameters and display the slope values on the map to denote areas under greening and browning, along with the national park boundaries.
+Choose suitable visualization parameters and display the slope values on the map
+to denote areas under greening and browning, along with the national park
+boundaries.
 
 ```js
 // Prepare to display vegetation condition to the map; set map display options.
@@ -223,4 +260,3 @@ print(ui.Chart.image
 ```
 
 ![](med-evi-chart.png)
-

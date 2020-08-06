@@ -1,5 +1,5 @@
 ---
-title: Rapid classification of croplands
+title: Rapid Classification of Croplands
 description: This tutorial provides a quick template for rapid and replicable binary classification of maize-cultivated land in Nigeria, using Google Earth Engine (GEE).
 author: PJNation
 tags: maize, smallholder, cropland, classify, rapid, binary, s2, sentinel-2

@@ -1,4 +1,5 @@
 var mapStyles = require('users/msibrahim/app-creator:map-styles');
+var sidemenu = require('users/msibrahim/app-creator:sidemenu');
 
 exports.createApp = createApp;
 
@@ -16,6 +17,18 @@ function createApp(template) {
   app.widgetInterface = ui.data.ActiveDictionary();
 
   /**
+   * Object containing template variations (i.e. mobile, dark, english).
+   */
+  app.templates = {};
+
+  /**
+   * Adds new template variation.
+   */
+  app.addTemplate = function (device, theme, language, template) {
+    app.templates[device][theme][language] = app.deserializeUI(template);
+  };
+
+  /**
    * Returns reference to the widget interface.
    */
   app.widgets = function () {
@@ -29,7 +42,6 @@ function createApp(template) {
     function helper(nodeObj) {
       var obj = app.createUIElement(nodeObj);
       if (!obj) {
-        print('Received invalid node object', nodeObj);
         throw new Error('Incorrect widget type.');
       }
 
@@ -42,24 +54,34 @@ function createApp(template) {
         map = isMapWrapper ? obj.widgets().get(0) : null;
       }
 
-      var node = map === null ? obj : map;
+      var isSidemenu = obj.hasOwnProperty('sidePanel');
+
+      var node = null;
+      if (isSidemenu) {
+        node = obj.contentPanel;
+      } else if (map !== null) {
+        node = map;
+      } else {
+        node = obj;
+      }
+
       app.widgetInterface.set(nodeObj.id, node);
 
       for (var i = 0; i < nodeObj.children.length; i++) {
         var widget = nodeObj.children[i];
         if (map) {
-          map.add(helper(widgetTree[widget]));
+          map.add(helper(widgetTree.widgets[widget]));
         } else {
-          obj.widgets().add(helper(widgetTree[widget]));
+          node.widgets().add(helper(widgetTree.widgets[widget]));
         }
       }
 
-      return obj;
+      return isSidemenu ? obj.sidePanel : obj;
     }
 
     try {
       var widgetTree = JSON.parse(widgetTreeJSON);
-      return helper(widgetTree['panel-template-0']);
+      return helper(widgetTree.widgets['panel-template-0']);
     } catch (e) {
       print(
         'Template JSON is incorrectly formatted. Please check that the JSON is formatted correctly.'
@@ -76,6 +98,8 @@ function createApp(template) {
     switch (type) {
       case 'panel':
         return app.createPanelElement(nodeObj, filteredStyles);
+      case 'sidemenu':
+        return app.createSidemenuElement(nodeObj, filteredStyles);
       case 'map':
         return app.createMapElement(nodeObj, filteredStyles);
       case 'label':
@@ -282,6 +306,15 @@ function createApp(template) {
   };
 
   /**
+   * Helper function for creating sidemenu elements.
+   */
+  app.createSidemenuElement = function (obj, style) {
+    // Sidemenu is an object with the properties: sidePanel and contentPanel.
+    var mobileMenu = sidemenu.createSidemenu(style);
+    return mobileMenu.init();
+  };
+
+  /**
    * Helper function for getting the correct position.
    */
   app.getPosition = function (style) {
@@ -407,6 +440,7 @@ function createApp(template) {
    */
   app.init = function (template) {
     app.root = app.deserializeUI(template);
+    app.templates.default = app.root;
   };
 
   /**

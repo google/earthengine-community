@@ -1,37 +1,36 @@
-//Load GOES-16 Image Collection, filter date and select first image
+// Load GOES-16 Image Collection, filter date and select first image
 var collection = ee.ImageCollection('NOAA/GOES/16/FDCC')
-    .filterDate('2020-07-15','2020-07-16'); 
+                      .filterDate('2020-07-15','2020-07-16'); 
 var image = collection.first();
 
-// "ROADMAP", "SATELLITE", "HYBRID", or "TERRAIN" 
 Map.setOptions("HYBRID");
 
-//Select "Data Quality Flag" property
+// Select property of image.
 var DQF = image.select('DQF');
 
-//Center Map on the United States
-var USgeometry = ee.Geometry.Rectangle({
-    coords: [-127, 24, -64, 50], geodesic: false});
+// Define United States region and center map.
+var USgeometry = ee.Geometry.Rectangle({coords: [-127, 24, -64, 50], geodesic: false});
 Map.centerObject(USgeometry, 5);
 
-//Create color palette to correspond with Data Quality Flag categories 
+// Create color palette to correspond with Data Quality Flag categories.
 var DQFVisParam = {
   min: 0,
   max: 5,
   palette: [
-    'FFFF00',    // [0]  Good quality fire pixel
-    '8BC34A',    // [1]  Good quality fire-free pixel 
-    'B3E5FC',    // [2]  Invalid pixel due to opaque cloud
-    '2196F3',    // [3]  Invalid pixel due to to surface type, sunglint,   
+    'FFFF00',    // 0:  Good quality fire pixel
+    '8BC34A',    // 1:  Good quality fire-free pixel 
+    'B3E5FC',    // 2:  Invalid pixel due to opaque cloud
+    '2196F3',    // 3:  Invalid pixel due to to surface type, sunglint,   
                  //      LZA threshold exceeded, off earth, or missing input data
-    'B2EBF2',    // [4]  Invalid pixel due to bad input data
-    'C5CAE9',    // [5]  Invalid pixel due to algorithm failure
-  ]};
+    'B2EBF2',    // 4:  Invalid pixel due to bad input data
+    'C5CAE9',    // 5:  Invalid pixel due to algorithm failure
+  ]
+ };
   
-//Filter image to include only good quality fire-pixels (DQF = 0)
+// Filter image to show only good quality fire-pixels (DQF = 0).
 var onlyFire = DQF.eq(0);
 
-// Buffer fire pixels to make them stand out
+// Buffer fires to make them stand out.
 var fireBuffer = onlyFire.reduceToVectors({
   scale: 2000,
   geometryType: 'centroid',
@@ -40,6 +39,6 @@ var fireBuffer = onlyFire.reduceToVectors({
   .map(function(feature){
   return feature.buffer(50000);});
 
-//Add Layers to Map
+// Add Layers to Map.
 Map.addLayer(DQF, DQFVisParam, 'Fire Data Quality Flags', true, 0.7);
 Map.addLayer(fireBuffer, {color: 'red'}, 'Buffer', true);

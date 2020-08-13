@@ -67,7 +67,7 @@ var maskVisParam = {
   ]
 };
 
-// Create color pallete to convery fire radiative power (intensity in megawatts)
+// Create color pallete to convey fire radiative power (intensity in megawatts)
 var powerVisParam = {min: 0, max: 1500, palette: ['yellow', 'orange', 'red']};
 
 // Add Layers to Map

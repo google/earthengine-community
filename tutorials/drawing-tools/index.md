@@ -372,9 +372,9 @@ responsive and personalized, Earth Engine experience!
 
 The last example is adapting the
 [Classifications example](https://code.earthengine.google.com/?scriptPath=Examples:Demos/Classification)
-to be more interacive. This example runs a machine learning classification using
-points defined in three `FeatureCollections`, one for urban, vegetation, and
-water. Currently, if we wanted to rerun the classification on new points, we
+to be more interactive. This example runs a machine learning classification
+using points defined in three `FeatureCollections`, one for urban, vegetation,
+and water. Currently, if we wanted to rerun the classification on new points, we
 would have to run the script after we edit the points. **What if we wanted the
 rerun the classification automatically when we edit the points?**
 
@@ -463,7 +463,7 @@ function classify() {
   });
 
   // Train a CART classifier.
-  var classifier = ee.Classifier.cart().train({
+  var classifier = ee.Classifier.smileCart().train({
     features: training,
     classProperty: classProperty,
   });
@@ -524,7 +524,7 @@ Map.centerObject(urban);
 ```
 
 That's all there is to it!
-**[Here's a link to the full script.](https://code.earthengine.google.com/21c913d95b92b414a7579fbd5ab759a9)**
+**[Here's a link to the full script.](https://code.earthengine.google.com/281685736496e769a96f12f0c5dd3a6b)**
 
 ## Conclusion
 

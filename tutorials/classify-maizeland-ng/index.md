@@ -384,7 +384,7 @@ print('##### CLASS AREA SQ. METERS #####');
 print(areas);
 ```
 
-## 4.Final notes
+## 4. Final notes
 
 Although this tutorial offers a template for users, further adjustments can
 possibly improve the results. The results show that RF outperformed CART in the

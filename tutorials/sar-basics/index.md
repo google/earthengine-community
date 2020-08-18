@@ -1,9 +1,9 @@
 ---
-title: Your tutorial title
-description: A short description of the tutorial, all on one line with no carriage returns.
+title: SAR basics
+description: Introduction to SAR basics using Sentinel-1 in GEE.
 author: glemoine62
-tags: comma-separated, lowercase, list, of, related, keywords
-date_published: YYYY-MM-DD
+tags: SAR, Sentinel-1, Copernicus, backscattering coefficients, GRD, polarization
+date_published: 2020-08-20
 ---
 <!--
 Copyright 2019 The Google Earth Engine Community Authors
@@ -24,17 +24,28 @@ limitations under the License.
 This tutorial introduces the basics for Sentinel-1 use in GEE. It will illustrate basic SAR terminology and demonstrate data selection and visualization.
 In a next tutorial, we'll introduce more advanced concepts.
 
-## Section heading 1
+## SAR terminology
 
-Break up your tutorial into manageable sections.
+A good introduction into SAR basics is (https://elib.dlr.de/82313/)[A Tutorial on Synthetic Aperture Radar] by a group of experts at DLR led by Dr. A. Moreira. The essentials are in part I and II. Advanced polarimetry and interferometry, or combined POLINSAR, is outside the scope of what is possible in GEE for now.
 
-With one or more paragraphs, separated by a blank line.
+The key difference between SAR and optical sensors is that
 
-Inside your sections, you can also:
+- SAR is an **active** sensor, transmitting **microwave** radiation, for which it receives the portion **scattered back** to the sensor. Optical sensors are **passive** sensors that register reflected radiation from the Sun (in specific parts of the visible and infrared spectrum).
+- SAR is side-looking, unlike optical sensors which are, usually, nadir looking. 
+- SAR radiation is **coherent**, within a pre-set range of wavelengths. This is useful, because it allows precise **phase** and **intensity** measurements and the use of **polarization**. However, it is also the main cause of **speckle**. Optical sensors are not coherent, apart from laser and lidar instruments. 
 
-1. Use numbered lists
-1. ..when the order..
-1. ..of items is important.
+Reflecting on these differences is important, because it is the basis to understand the relative advantages of SAR compared to optical sensors:
+
+- SAR does not depend on Sun light, thus works day and night, provided the sensor acquires data
+- SAR backscattering (intensity) depends on different physical properties of the "target" then reflectance in optical sensors. These properties relate to the structural geometry and (electromagnetic) material properties of what is illuminiated by the incident radiation.
+- SAR is insensitive to the atmosphere in C-band (Sentinel-1, except for very dense rain cells) and L-band (ALOS-PALSAR), both of which are in GEE collections. 
+- SAR data can be calibrated, without the need for atmospheric correction, leading to systematic time series
+
+as well as the disadvantages:
+
+- The coherent nature of the SAR microwave radiation causes speckle. This causes the "salt and pepper" appearance of extended target areas (e.g. a large honogeneous agricultural field) that one would expect to have a constant backscarring behavior. Speckle can be reduced in different ways (see next tutorial), but is difficult to eliminate. 
+- SAR backscattering depends on the angle of the incident microwave radiation. Thus, since the side-looking SAR operates over a range of incidence angles, the same target will appear different whether it is in near range (low incidence angle) or far range (higher incidence angle) of the scene. The manner in which the backscattering varies with incidence angle depends on the target: a flat dry soil surface has a stronger drop off with incidence angle than, for instance, a forest.
+
 
 And:
 

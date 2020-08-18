@@ -32,7 +32,7 @@ The key difference between SAR and optical sensors is that
 
 - SAR is an **active** sensor, transmitting **microwave** radiation, for which it receives the portion **scattered back** to the sensor. Optical sensors are **passive** sensors that register reflected radiation from the Sun (in specific parts of the visible and infrared spectrum).
 - SAR is **side-looking**, unlike optical sensors which are, usually, nadir looking. 
-- SAR radiation is **coherent**, within a pre-set range of wavelengths. This is useful, because it allows precise **phase** and **intensity** measurements and the use of **polarization**. However, it is also the main cause of **speckle**. Optical sensors are not coherent, apart from laser and lidar instruments. 
+- SAR radiation is **coherent**, within a pre-set range of wavelengths. This is useful, because it allows precise **phase** and **intensity** measurements and the use of **polarization**. However, it is also the cause of **speckle**. Optical sensors are not coherent, apart from laser and lidar instruments. 
 
 Reflecting on these differences is important, because it is the basis to understand the relative advantages of SAR compared to optical sensors:
 
@@ -43,7 +43,7 @@ Reflecting on these differences is important, because it is the basis to underst
 
 as well as the disadvantages:
 
-- The coherent nature of the SAR microwave radiation causes **speckle**. This causes the "salt and pepper" appearance of extended target areas (e.g. a large honogeneous agricultural field) that one would expect to have a constant backscarring behavior. Speckle can be reduced in different ways (see next tutorial), but is difficult to eliminate. 
+- The coherent nature of the SAR microwave radiation causes **speckle**. This causes the "salt and pepper" appearance of extended target areas (e.g. a large homogeneous agricultural field) that one would expect to have a constant backscarring behavior. Speckle can be reduced in different ways (see next tutorial), but is difficult to eliminate. 
 - SAR backscattering depends on the **angle of the incident microwave radiation**. Thus, since the side-looking SAR operates over a range of incidence angles, the same target will appear different whether it is in near range (low incidence angle) or far range (higher incidence angle) of the scene. The manner in which the backscattering varies with incidence angle depends on the target: a flat dry soil surface has a stronger drop off with incidence angle than, for instance, a forest.
 - **Terrain relief** has a strong effect on SAR backscattering because it modulates the area that is illuminated by the side-looking SAR radiation. Slope angle determines the orientation with respect to the incident radiation. This causes foreshortening for slopes oriented towards the SAR and shadowing of slopes steeper than the local indidence and directed away from the SAR.
 

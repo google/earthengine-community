@@ -61,7 +61,9 @@ The S1_GRD_FLOAT collection, and its log-scaled S1_GRD computed equivalent, cont
 
 ### Sentinel-1 coverage
 
-Sentinel-1 consists of 2 identical A and B sensors, which have a 12 days revisit orbit each, but a 6 days revisit when combined. However, there are certain limitations to how much data can be acquired and downloaded from the 2 sensors, which depend on system uptime per orbit, ground station visibility for data downlinking and some other factors. The maps in [the observation scenario plan](https://sentinel.esa.int/web/sentinel/missions/sentinel-1/observation-scenario) show actual and planned operations, which provide an initial idea on how certain areas are revisited.
+Sentinel-1 consists of 2 identical A and B sensors, which have a 12 days revisit orbit each, but a 6 days revisit when combined. However, there are certain limitations to how much data can be acquired and downloaded from the 2 sensors, which depend on sensor uptime per orbit, ground station visibility for data downlinking and some other factors. The maps in [the observation scenario plan](https://sentinel.esa.int/web/sentinel/missions/sentinel-1/observation-scenario) show actual and planned operations, which provide an initial idea on how certain areas are revisited. 
+
+Coverage is most complete over Europe, over which every descending and ascending acquisitions is acquired for both A and B, 
 
 For a more precise estimate, you can use GEE as follows:
 
@@ -73,11 +75,17 @@ For a more precise estimate, you can use GEE as follows:
 var coll = ee.ImageCollection('LANDSAT/LC08/C01/T1_TOA');
 ```
 
-### Sentinel-1 orbits
+### Sentinel-1 orbits and scenes
 
 And:
 
-- This is a bulleted list.
+- One continuous orbit broken up in 15 seconds of azimuth time
+- Right looking
+- S1A and S1B scenes not synched
+- Ascending vs Descending
+- Incidence angle variation
+
+
 - Use bulleted lists when items are not strictly ordered.
 
 ..and even:

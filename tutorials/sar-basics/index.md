@@ -26,7 +26,7 @@ In a next tutorial, we'll introduce more advanced concepts.
 
 ## SAR characteristics
 
-A good introduction into SAR basics is [A Tutorial on Synthetic Aperture Radar](https://elib.dlr.de/82313/) by a group of experts at DLR led by Dr. A. Moreira. The essentials are in part I and II. Advanced polarimetry and interferometry, or combined POLINSAR, (part III ff) is currently outside the scope of what is possible in GEE.
+A good introduction into SAR basics is [A Tutorial on Synthetic Aperture Radar](https://elib.dlr.de/82313/) by a group of experts at DLR led by Dr. A. Moreira. The essentials are in part I and II. Advanced polarimetry and interferometry, or combined POLINSAR, (part III *ff*) is currently outside the scope of what is possible in GEE.
 
 The key difference between SAR and optical sensors is that
 
@@ -43,13 +43,13 @@ Reflecting on these differences is important, because it is the basis to underst
 
 as well as the disadvantages:
 
-- The coherent nature of the SAR microwave radiation causes **speckle**. This causes the "salt and pepper" appearance of extended target areas (e.g. a large homogeneous agricultural field) that one would expect to have a constant backscarring behavior. Speckle can be reduced in different ways (see next tutorial), but is difficult to eliminate. 
+- The coherent nature of the SAR microwave radiation causes **speckle**. This causes the "salt and pepper" appearance of extended target areas (e.g. a large homogeneous agricultural field) that one would expect to have a constant backscattering behavior. Speckle can be reduced in different ways (see next tutorial), but is difficult to eliminate. 
 - SAR backscattering depends on the **angle of the incident microwave radiation**. Thus, since the side-looking SAR operates over a range of incidence angles, the same target will appear different whether it is in near range (low incidence angle) or far range (higher incidence angle) of the scene. The manner in which the backscattering varies with incidence angle depends on the target: a flat dry soil surface has a stronger drop off with incidence angle than, for instance, a forest.
-- **Terrain relief** has a strong effect on SAR backscattering because it modulates the area that is illuminated by the side-looking SAR radiation. Slope angle determines the orientation with respect to the incident radiation. This causes foreshortening for slopes oriented towards the SAR and shadowing of slopes steeper than the local indidence and directed away from the SAR.
+- **Terrain relief** has a strong effect on SAR backscattering because it modulates the area that is illuminated by the side-looking SAR radiation. Slope angle determines the orientation with respect to the incident radiation. This causes foreshortening for slopes oriented towards the SAR and shadowing of slopes steeper than the local incidence and directed away from the SAR.
 
+## Sentinel-1
 
-
-
+https://developers.google.com/earth-engine/sentinel1
 And:
 
 - This is a bulleted list.

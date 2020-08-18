@@ -26,7 +26,7 @@ In a next tutorial, we'll introduce more advanced concepts.
 
 ## SAR characteristics
 
-A good introduction into SAR basics is (A Tutorial on Synthetic Aperture Radar)[https://elib.dlr.de/82313/] by a group of experts at DLR led by Dr. A. Moreira. The essentials are in part I and II. Advanced polarimetry and interferometry, or combined POLINSAR, (part III ff) is currently outside the scope of what is possible in GEE.
+A good introduction into SAR basics is [A Tutorial on Synthetic Aperture Radar](https://elib.dlr.de/82313/) by a group of experts at DLR led by Dr. A. Moreira. The essentials are in part I and II. Advanced polarimetry and interferometry, or combined POLINSAR, (part III ff) is currently outside the scope of what is possible in GEE.
 
 The key difference between SAR and optical sensors is that
 

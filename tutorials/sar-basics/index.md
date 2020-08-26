@@ -63,8 +63,6 @@ The S1_GRD_FLOAT collection, and its log-scaled S1_GRD computed equivalent, cont
 
 Sentinel-1 consists of 2 identical A and B sensors, which have a 12 days revisit orbit each, but a 6 days revisit when combined. However, there are certain limitations to how much data can be acquired and downloaded from the 2 sensors, which depend on sensor uptime per orbit, ground station visibility for data downlinking and some other factors. The maps in [the observation scenario plan](https://sentinel.esa.int/web/sentinel/missions/sentinel-1/observation-scenario) show actual and planned operations, which provide an initial idea on how certain areas are revisited. 
 
-Coverage is most complete over Europe, over which every descending and ascending acquisitions is acquired for both A and B, 
-
 For a more precise estimate, you can use GEE as follows:
 
 ```
@@ -105,8 +103,16 @@ Map.addLayer(cnt.updateMask(cnt.gt(0)).clip(aoi), {min:1, max:upper.get('count')
 Map.centerObject(aoi,5);
 
 ```
+You can change the scripts parameters in the script to find out how S1 coverage various across different parts of the World.
+You will notice that coverages get denser towards the poles, as orbits which are adjacent at the Equator start to overlap.
+Coverage is most complete over Europe (hey, we pay for this stuff!), over which every descending and ascending acquisition 
+is acquired for both the A and B sensors. For most of India, however, only a single 12-day repeat cycle is possible, apart
+from the Himalayas, which are included in the seismic zoning, for which a best effort high density revisit is programmed.
 
-### Sentinel-1 orbits and scenes
+### Sentinel-1 orbits, swaths and scenes
+
+Sentinel-1 is a polar orbiting platform, i.e. after passing the North Pole, it descends to the South Pole, and then ascends back to the North Pole.
+This explains the *orbitProperties_pass* metadata property that is tagged to each scene. The total time needed to go from North to South Pole and back is about 90 minutes. 
 
 And:
 

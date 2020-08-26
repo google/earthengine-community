@@ -68,11 +68,42 @@ Coverage is most complete over Europe, over which every descending and ascending
 For a more precise estimate, you can use GEE as follows:
 
 ```
-// Use comments to describe details that can't be easily expressed in code.
-// Always try making code more self descriptive before adding a comment.
-// Similarly, avoid repeating verbatim what's already said in code
-// (e.g., "assign ImageCollection to variable 'coll'").
-var coll = ee.ImageCollection('LANDSAT/LC08/C01/T1_TOA');
+var countries = ee.FeatureCollection("USDOS/LSIB_SIMPLE/2017");
+
+// Comment/uncomment the lists of countries to highlight differences in regional S1 revisit
+var aoi = ee.Feature(countries.filter(ee.Filter.inList('country_na', 
+  ['Germany', 'Poland', 'Czechia', 'Slovakia', 'Austria', 'Hungary']   // European
+  //['Ethiopia', 'Somalia', 'Kenya']  // Near the Equator
+  // ['India']  // 12 days revisit, mostly
+  )).union().first()).geometry().bounds();  // get bounds to simplify geometry
+
+  
+// Define time period
+var start_date = '2020-06-01';
+var end_date = '2020-06-16';
+
+// Select S1 IW images in area of interest and time period
+var s1 = ee.ImageCollection('COPERNICUS/S1_GRD').
+  filterMetadata('instrumentMode', 'equals', 'IW').
+  filterBounds(aoi).
+  filterDate(start_date, end_date);
+  
+
+var cnt = ee.FeatureCollection(s1).
+  // uncomment next line if you want to be specific
+  //filterMetadata('orbitProperties_pass', 'equals', 'ASCENDING').  
+  reduceToImage(['system:index'], ee.Reducer.count());
+  
+var upper = cnt.reduceRegion({reducer: ee.Reducer.max(), geometry: aoi, scale: 1000, bestEffort: true});
+
+print("Max count:", upper.get('count'));
+
+// Define red to green pseudo color palette
+var red2green = ['a50026','d73027','f46d43','fdae61','fee08b','ffffbf','d9ef8b','a6d96a','66bd63','1a9850','006837'];
+
+Map.addLayer(cnt.updateMask(cnt.gt(0)).clip(aoi), {min:1, max:upper.get('count').getInfo(), palette: red2green}, 'All');
+Map.centerObject(aoi,5);
+
 ```
 
 ### Sentinel-1 orbits and scenes

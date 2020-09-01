@@ -158,8 +158,8 @@ The map would then be restyled as shown here:
 There is also an easy way to create custom base map styles without
 tweaking any options: enter [Snazzy Maps](https://snazzymaps.com), a community
 project for creating and sharing great styles for Google Maps. Their website
-provides JavaScript snippets that can be copied from their website and pasted into
-Earth Engine to quickly create alternate base map styles.
+provides JavaScript snippets that can be copied from their website and pasted
+into Earth Engine to quickly create alternate base map styles.
 
 To apply Snazzy Maps styles, one might do the following:
 

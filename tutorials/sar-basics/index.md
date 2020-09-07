@@ -105,7 +105,7 @@ Map.addLayer(cnt.updateMask(cnt.gt(0)).clip(aoi), {min:1, max:upper.get('count')
 Map.centerObject(aoi,5);
 
 ```
-You can change the scripts parameters to find out how S1 coverage various across different parts of the World.
+You can change the scripts parameters to find out how S1 coverage varies across different parts of the World.
 You will notice that coverages get denser towards the poles, as orbits which are adjacent at the Equator start to overlap.
 Coverage is most complete over Europe (hey, we pay for this stuff!), where every descending and ascending acquisition 
 is acquired for both the A and B sensors. For most of India, however, only a single 12-day repeat cycle is possible, apart

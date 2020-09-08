@@ -26,7 +26,7 @@ var image = ee.Image('CGIAR/SRTM90_V4');
 // Define an SLD style of discrete intervals to apply to the image.
 var sld_intervals =
   '<RasterSymbolizer>' +
-    '<ColorMap  type="intervals" extended="false" >' +
+    '<ColorMap type="intervals" extended="false" >' +
       '<ColorMapEntry color="#0000ff" quantity="0" label="0"/>' +
       '<ColorMapEntry color="#00ff00" quantity="100" label="1-100" />' +
       '<ColorMapEntry color="#007f30" quantity="200" label="110-200" />' +

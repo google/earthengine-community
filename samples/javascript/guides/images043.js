@@ -33,7 +33,7 @@ var thumbnail1 = image.unmask(1000).getThumbURL({
 });
 print('Default extent:', thumbnail1);
 
-// Specify region by rectangle, define palette, set size of the larger aspect dimension.
+// Specify region by rectangle, define palette, set larger aspect dimension size.
 var thumbnail2 = image.getThumbURL({
   'min': 0,
   'max': 3000,

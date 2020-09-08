@@ -21,50 +21,63 @@ See the License for the specific language governing permissions and
 limitations under the License.
 -->
 
-In this tutorial, we will introduce several types of geospatial data, and enumerate key Earth Engine functions for analyzing and visualizing them. This cookbook was originally created as a workshop during Yale-NUS Data 2.0 hackathon, and later updated for Yale GIS Day 2018 and 2019.
+In this tutorial, we will introduce several types of geospatial data, and
+enumerate key Earth Engine functions for analyzing and visualizing them. This
+cookbook was originally created as a workshop during Yale-NUS Data 2.0
+hackathon, and later updated for Yale GIS Day 2018 and 2019.
 
 ## Introduction
 
-GIS or Geographic Information System is the collection, visualization, and analysis of geographical or spatial data. In this section, we will cover the data types commonly used in GIS applications.
+GIS or Geographic Information System is the collection, visualization, and
+analysis of geographical or spatial data. In this section, we will cover the
+data types commonly used in GIS applications.
 
 ## Vector data
 
-Vector data represent objects on the Earth's surface using their longitude and latitude, as well as combinations of the pairs of coordinates (lines, polylines, polygons, etc.).
+Vector data represent objects on the Earth's surface using their longitude and
+latitude, as well as combinations of the pairs of coordinates
+(lines, polylines, polygons, etc.).
 
 ### Point data
 
-A pair of coordinates (longitude, latitude), that represents the location of points on the Earth's surface.
+A pair of coordinates (longitude, latitude), that represents the location of
+points on the Earth's surface.
 
 Example: Location of drop boxes, landmarks, etc.
 
- ![Points](points.png)
+![Points](points.png)
 
 ### Lines
 
-A series of points that represents a line (straight or otherwise) on the Earth's surface.
+A series of points that represents a line (straight or otherwise) on the Earth's
+surface.
 
 Example: Center of roads, rivers, etc.
 
- ![Lines](line-vector.png)
+![Lines](line-vector.png)
 
 ### Polygons
 
 A series of points (vertices) that define the outer edge of a region.
 Example: Outlines of cities, countries, continents, etc.
 
- ![Polygons](polygon-vector.png)
+![Polygons](polygon-vector.png)
 
 ## Raster data
 
-Raster data represent objects/variables on the Earth's surface as a matrix of values, in the form of pixels, cells, or grids.
+Raster data represent objects/variables on the Earth's surface as a matrix of
+values, in the form of pixels, cells, or grids.
 
 ### Layers and bands
 
-A raster is an image with a matrix of values representing the values of some observed attribute. Bands of a raster correspond to different variables, usually using the same matrix structure.
+A raster is an image with a matrix of values representing the values of some
+observed attribute. Bands of a raster correspond to different variables, usually
+using the same matrix structure.
 
-Example: Spatial variability of temperature, elevation, rainfall, etc. over a region.
+Example: Spatial variability of temperature, elevation, rainfall, etc. over a
+region.
 
- ![Raster](map-algebra.png)
+![Raster](map-algebra.png)
 
 Image sources: https://gisgeography.com/spatial-data-types-vector-raster/
 
@@ -90,7 +103,8 @@ What is Earth Engine?
 var variableName = ee.ContainerType(value);
 ```
 
-A container object (usually in the form `ee.SomeVariableType`) is used to wrap a native JavaScript object so that Google's servers can perform operations on it.
+A container object (usually in the form `ee.SomeVariableType`) is used to wrap a
+native JavaScript object so that Google's servers can perform operations on it.
 
 ###  Centering the map
 
@@ -106,7 +120,8 @@ Map.setCenter(long, lat, zoomLevel);
 print(variableName);
 ```
 
-The `print` operation is also useful for printing data and getting debugging info. Note: You cannot print more than 5,000 elements at once.
+The `print` operation is also useful for printing data and getting debugging
+info. Note: You cannot print more than 5,000 elements at once.
 
 ### Adding a layer to the map
 
@@ -177,7 +192,8 @@ var lineStr = ee.Geometry.LineString([[0, 45], [5, 6], [70, -56]]);
 
 ```javascript
 var mLineStr =
-ee.Geometry.MultiLineString([[[0, 45], [5, 6], [70, -56]], [[0, -45], [-5, -6], [-70, 56]]]);
+ee.Geometry.MultiLineString(
+    [[[0, 45], [5, 6], [70, -56]], [[0, -45], [-5, -6], [-70, 56]]]);
 ```
 
 ### Linear ring
@@ -202,7 +218,8 @@ var poly = ee.Geometry.Polygon([[[0, 0], [6, 3], [5, 5], [-30, 2], [0, 0]]]);
 
 ```javascript
 var multiPoly =
-ee.Geometry.MultiPolygon([ee.Geometry.Polygon([[0, 0], [6, 3], [5, 5], [-30, 2], [0, 0]]),
+ee.Geometry.MultiPolygon(
+    [ee.Geometry.Polygon([[0, 0], [6, 3], [5, 5], [-30, 2], [0, 0]]),
 ee.Geometry.Polygon([[0, 0], [-6, -3], [-5, -5], [30, -2], [0, 0]])]);
 ```
 
@@ -235,7 +252,8 @@ var result = functionName(input);
 var result = input.map(functionName);
 ```
 
-Mapping a function over a collection applies the function to every element in the collection.
+Mapping a function over a collection applies the function to every element in
+the collection.
 
 ## Common operations on geometries
 
@@ -303,9 +321,12 @@ var unGeo = geometry1.union(geometry2, maxError);
 
 #### Example: Geometry operations
 
-Let's run of some these operations over the the state of Connecticut, US using geometries of the public US counties feature collection available on Earth Engine:
+Let's run some these operations over the state of Connecticut, US using
+geometries of the public US counties feature collection available on Earth
+Engine:
 
-**1.** We begin by zooming to the region of interest and loading/creating the geometries of interest by extracting them from the corresponding features.
+**1.** We begin by zooming to the region of interest and loading/creating the
+geometries of interest by extracting them from the corresponding features.
 
 ```javascript
 // Set map center over the state of CT.
@@ -316,14 +337,18 @@ var countyData = ee.FeatureCollection('TIGER/2018/Counties');
 var countyConnect = countyData.filter(ee.Filter.eq('STATEFP', '09'));
 // Get the union of all the county geometries in Connecticut.
 var countyConnectDiss = countyConnect.union(100);
-// Create a circular area using the first county in the Connecticut  FeatureCollection.
-var circle = ee.Feature(countyConnect.first()).geometry().centroid(100).buffer(50000, 100);
+// Create a circular area using the first county in the Connecticut
+// FeatureCollection.
+var circle = ee.Feature(countyConnect.first())
+    .geometry().centroid(100).buffer(50000, 100);
 // Add the layers to the map with a specified color and layer name.
 Map.addLayer(countyConnectDiss, {color: 'red'}, 'CT dissolved');
 Map.addLayer(circle, {color: 'orange'}, 'Circle');
 ```
 
-**2.** Using the `bounds()` function, we can find the rectangle that emcompasses the southernmost, westernmost, easternmost, and northernmost points of the geometry.
+**2.** Using the `bounds()` function, we can find the rectangle that emcompasses
+the southernmost, westernmost, easternmost, and northernmost points of the
+geometry.
 
 ```javascript
 var bound = countyConnectDiss.geometry().bounds(100);
@@ -331,7 +356,8 @@ var bound = countyConnectDiss.geometry().bounds(100);
 Map.addLayer(bound, {color: 'yellow'}, 'Bounds');
 ```
 
-**3.** In the same vein, but not restricting ourselves to a rectangle, a convex hull (`convexHull()`) is a polygon covering the extremities of the geometry.
+**3.** In the same vein, but not restricting ourselves to a rectangle, a convex
+hull (`convexHull()`) is a polygon covering the extremities of the geometry.
 
 ```javascript
 var convex = countyConnectDiss.geometry().convexHull(100);
@@ -339,7 +365,8 @@ var convex = countyConnectDiss.geometry().convexHull(100);
 Map.addLayer(convex, {color: 'blue'}, 'Convex Hull');
 ```
 
-**4.** Moving on to some basic operations to combine multiple geometries, the intersection (`intersection()`) is the area common to two or more geometries.
+**4.** Moving on to some basic operations to combine multiple geometries, the
+intersection (`intersection()`) is the area common to two or more geometries.
 
 ```javascript
 var intersect = convex.intersection(circle, 100);
@@ -356,7 +383,8 @@ var union = convex.union(circle, 100);
 Map.addLayer(union, {color: 'purple'}, 'Circle and convex union');
 ```
 
-**6.** We can also find the spatial difference (`difference()`) between two geometries.
+**6.** We can also find the spatial difference (`difference()`) between two
+geometries.
 
 ```javascript
 var diff = convex.difference(circle, 100);
@@ -365,10 +393,11 @@ Map.addLayer(diff, {color: 'brown'}, 'Circle and convex difference');
 ```
 
 Difference             |  Union                      | Intersection
-:-------------------------:|:-------------------------:|:-------------------------:
+:-------------------------:|:-------------------------:|:----------------------:
 ![](difference.png)  |  ![](union.png) |  ![](intersection.png)
 
-**7.** Finally, we can calculate and display the area, length, perimeter, etc. of our geometries.
+**7.** Finally, we can calculate and display the area, length, perimeter, etc.
+of our geometries.
 
 ```javascript
 // Find area of feature.
@@ -388,7 +417,8 @@ By mapping over a collection, one can apply the same operation on every element
 in a collection. For instance, let's run the same geometry operations on every
 county in Connecticut:
 
-**1.** Similar to the previous example, we start by zooming into the map and loading the feature collection of CT counties.
+**1.** Similar to the previous example, we start by zooming into the map and
+loading the feature collection of CT counties.
 
 ```javascript
 // Set map center over the state of CT.
@@ -402,7 +432,9 @@ var countyConnect = countyData.filter(
 Map.addLayer(countyConnect, {color: 'red'}, 'Original Collection');
 ```
 
-**2.** We define the function, which will perform the geometry operation on a feature. Try changing the operation being performed within the function to test what it does to the final output.
+**2.** We define the function, which will perform the geometry operation on a
+feature. Try changing the operation being performed within the function to test
+what it does to the final output.
 
 ```javascript
 function performMap(feature) {
@@ -418,7 +450,9 @@ function performMap(feature) {
 }
 ```
 
-**3.** Finally, we map the defined function over all the features in the collection. This parallelization is generally much faster than performing operations sequentially over each element of the collection.
+**3.** Finally, we map the defined function over all the features in the
+collection. This parallelization is generally much faster than performing
+operations sequentially over each element of the collection.
 
 ```javascript
 var mappedCentroid = countyConnect.map(performMap);
@@ -558,7 +592,9 @@ var masked = image.updateMask(mask);
 ```javascript
 var results = image.add(value);
 ```
-> or .subtract ,    .multiply ,    .divide ,    .max , .min ,  .abs ,  .round ,  .floor ,  .ceil ,  .sqrt ,  .exp,  .log, .log10, .sin ,  .cos ,  .tan ,  .sinh ,  .cosh ,  .tanh ,  .acos, .asin
+> or .subtract ,    .multiply ,    .divide ,    .max , .min ,  .abs ,  .round ,
+.floor ,  .ceil ,  .sqrt ,  .exp,  .log, .log10, .sin ,  .cos ,  .tan ,  .sinh ,
+.cosh ,  .tanh ,  .acos, .asin
 
 ### Shift pixels of an image
 
@@ -570,7 +606,15 @@ newImage = oldImage.leftShift(valueOfShift);
 
 ## Reducers
 
-Reducers are objects in Earth Engine for data aggregation. They can be used for aggregating across time, space, bands, properties, etc. Reducers range from basic statistical indices (like `ee.Reducer.mean()`, `ee.Reducer.stdDev()`, `ee.Reducer.max()`, etc.), to standard measures of covariance (like `ee.Reducer.linearFit()`,`ee.Reducer.spearmansCorrelation()`, `ee.Reducer.spearmansCorrelation()`, etc.), to descriptors of variable distributions (like `ee.Reducer.skew()`, `ee.Reducer.frequencyHistogram()`,`ee.Reducer.kurtosis()`, etc.). To get the first (or only) value for a property, use `ee.Reducer.first()`.
+Reducers are objects in Earth Engine for data aggregation. They can be used for
+aggregating across time, space, bands, properties, etc. Reducers range from
+basic statistical indices (like `ee.Reducer.mean()`, `ee.Reducer.stdDev()`,
+`ee.Reducer.max()`, etc.), to standard measures of covariance
+(like `ee.Reducer.linearFit()`,`ee.Reducer.spearmansCorrelation()`,
+`ee.Reducer.spearmansCorrelation()`, etc.), to descriptors of variable
+distributions (like `ee.Reducer.skew()`, `ee.Reducer.frequencyHistogram()`,
+`ee.Reducer.kurtosis()`, etc.). To get the first (or only) value for a property,
+use `ee.Reducer.first()`.
 
 ### Reducing an image collection to an image
 
@@ -585,13 +629,15 @@ var outputDictionary = varImage.reduceRegion(reducer, geometry, scale);
 ```
 
 
-Alternatively, `reduceRegions` can be used to compute image statistics for all elements of a collection at once:
+Alternatively, `reduceRegions` can be used to compute image statistics for all
+elements of a collection at once:
 
 ```javascript
 var outputCollection = varImage.reduceRegions(reducer, collection, scale);
 ```
 
-Note that for large collections, this may be less efficient than mapping over the collection and using `reduceRegion`.
+Note that for large collections, this may be less efficient than mapping over
+the collection and using `reduceRegion`.
 
 ### Applying a reducer to each element of a collection
 
@@ -640,8 +686,8 @@ var selectedIm = imCollection.filterMetadata(propertyName, operator, value);
 ```
 
 > Operators include: "equals", "less_than", "greater_than", "not_equals",
-"not_less_than", "not_greater_than", "starts_with", "ends_with", "not_starts_with",
-"not_ends_with", "contains", "not_contains".
+"not_less_than", "not_greater_than", "starts_with", "ends_with",
+"not_starts_with", "not_ends_with", "contains", "not_contains".
 
 ### Selecting images within a date range
 
@@ -685,7 +731,8 @@ var sumOfImages = imCollection.reduce(ee.Reducer.first());
 
 Let's analyze images over a region of interest (the counties of Connecticut):
 
-**1.** As before, we start by loading in the feature and image collections of interest.
+**1.** As before, we start by loading in the feature and image collections of
+interest.
 
 ```javascript
 // Set map center over the state of CT.
@@ -718,7 +765,9 @@ print(limited);
 print(bandSel1);
 ```
 
-**3.** We calculate the mean of all the images in the collection, clip it to the geometry of interest and scale it to convert it from digital number to degree Celsius.
+**3.** We calculate the mean of all the images in the collection, clip it to the
+geometry of interest and scale it to convert it from digital number to degree
+Celsius.
 
 ```javascript
 // Calculate mean of all images (pixel-by-pixel) in the collection.
@@ -729,10 +778,12 @@ var clipped = mean.clip(roi);
 // of satellite observations to degree Celsius.
 var calculate = clipped.multiply(0.02).subtract(273.15);
 // Add the layer to the map with a specified color palette and layer name.
-Map.addLayer(calculate, {min: 15, max: 20, palette: ['blue', 'green', 'red']}, 'LST');
+Map.addLayer(
+    calculate, {min: 15, max: 20, palette: ['blue', 'green', 'red']}, 'LST');
 ```
 
-**4.** We mask out parts of the image to display regions above and below certain temperature thresholds.
+**4.** We mask out parts of the image to display regions above and below certain
+temperature thresholds.
 
 ```javascript
 // Select pixels in the image that are greater than 30.8.
@@ -764,7 +815,8 @@ Export.image.toDrive({
 
 #### Example: Exporting data
 
-**1.** Define a function to find the mean value of pixels in each feature of a collection.
+**1.** Define a function to find the mean value of pixels in each feature of a
+collection.
 
 ```javascript
 // Function to find mean of pixels in region of interest.
@@ -785,7 +837,9 @@ var getRegions = function(image) {
 };
 ```
 
-**2.** Load image collection, filter collection to date range, select band of interest, calculate mean of all images in collection, and multiply by scaling factor.
+**2.** Load image collection, filter collection to date range, select band of
+interest, calculate mean of all images in collection, and multiply by scaling
+factor.
 
 ```javascript
 var image = ee.ImageCollection('MODIS/MYD13A1')

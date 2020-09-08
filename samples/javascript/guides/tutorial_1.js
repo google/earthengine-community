@@ -131,6 +131,7 @@ Map.addLayer(scene, visParams, 'true-color composite');
 // [END earthengine__tutorial_1__true_color]
 
 // [START earthengine__tutorial_1__collection_mosaic]
+var l8 = ee.ImageCollection('LANDSAT/LC08/C01/T1_TOA');
 var landsat2016 = l8.filterDate('2016-01-01', '2016-12-31');
 Map.addLayer(landsat2016, visParams, 'l8 collection');
 // [END earthengine__tutorial_1__collection_mosaic]
@@ -183,6 +184,14 @@ Map.addLayer(mosaic, {}, 'custom mosaic');
 // PAGE: Mapping a function over a collection
 
 // [START earthengine__tutorial_1__single_image]
+// Define a point of interest. Use the UI Drawing Tools to import a point
+// geometry and name it "point" or set the point coordinates with the
+// ee.Geometry.Point() function as demonstrated here.
+var point = ee.Geometry.Point([-122.292, 37.9018]);
+
+// Import the Landsat 8 TOA image collection.
+var l8 = ee.ImageCollection('LANDSAT/LC08/C01/T1_TOA');
+
 // Get the least cloudy image in 2015.
 var image = ee.Image(
   l8.filterBounds(point)
@@ -236,6 +245,9 @@ Map.addLayer(greenest, visParams, 'Greenest pixel composite');
 // PAGE: Exporting Charts and Images
 
 // [START earthengine__tutorial_1__ndvi_series]
+// Import the Landsat 8 TOA image collection.
+var l8 = ee.ImageCollection('LANDSAT/LC08/C01/T1_TOA');
+
 // Map a function over the Landsat 8 TOA collection to add an NDVI band.
 var withNDVI = l8.map(function(image) {
   var ndvi = image.normalizedDifference(['B5', 'B4']).rename('NDVI');

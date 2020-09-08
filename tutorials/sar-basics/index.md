@@ -121,27 +121,61 @@ Sentinel-1 is **right looking**, i.e. the side looking antenna is sending microw
 
 The concept of an image is only introduced after Level 1 processing, which re-arranges the Level 0 samples in azimuth and range bins to locations on earth. In order to keep Level 1 images at a reasonable size (e.g. for downloading), the Level 0 data is cut into azimuth time slices of 25 seconds (for IW), which are then processed to GRD. This is where the term **frame** or **scene** is often used. 25 seconds of azimuth time corresponds to approximately 185 km om the ground. 
 
-We now have (almost) all relevant parameters to understand how Sentinel-1 view an area of interest. Resolution and pixel spacing are explained in more detail when we deal with speckle. In the next script, we'll highlight some practical aspects of what we just learned.
+We now have (almost) all relevant parameters to understand how Sentinel-1 views an area of interest. Resolution and pixel spacing are explained in more detail when we deal with speckle. In the next script, we'll highlight some practical aspects of what we just learned.
 
+```
+// The area of interest can be defined by drawing and area in the editor's map tab
+// We hardcode one here. 
 
+var geometry = ee.Geometry.Polygon(
+        [[[5.83, 52.74],
+          [5.83, 52.69],
+          [5.91, 52.69],
+          [5.91, 52.74]]], null, false);
+          
+// Get Sentinel-1 for an arbitrary 12 day period (i.e. a full orbit cycle)          
+var s1 = ee.ImageCollection('COPERNICUS/S1_GRD').
+  filterDate('2020-05-01', '2020-05-13').
+  filterMetadata('instrumentMode', 'equals', 'IW').
+  filterBounds(geometry);
 
+// Compose an ancillary property to categorize the images in this selection
+s1 = s1.map(function(f) {return f.set('platform_relorbit', 
+  ee.String(f.get('platform_number')).cat('_').
+  cat(ee.Number(f.get('relativeOrbitNumber_start')).format('%.0f')).
+  cat('_').cat(f.get('orbitProperties_pass')))});
 
+// Check which sensor/relative orbit combinations we have
+var orbits = ee.Dictionary(s1.aggregate_histogram('platform_relorbit'))
 
-And:
+print(orbits) // Check in console
 
+var keys = orbits.getInfo() // Needed to loop
 
-- S1A and S1B scenes not synched
+for (var k in keys) {
+  var color = 'blue'
+  if (k.charAt(0)==='B') {
+    color = 'green'
+  }
+  Map.addLayer(ee.Image().paint(ee.FeatureCollection(s1).filterMetadata('platform_relorbit', 'equals', k), 0, 1), {palette: [color]}, "Footprint" + k, false);
+}
 
-- Incidence angle variation
+for (var k in keys) {
+  Map.addLayer(s1.filterMetadata('platform_relorbit', 'equals', k).first(), {bands: ['angle'], min: 30, max: 45 }, "Incidence angle: " + k, false);
+}
 
+Map.addLayer(ee.Image().paint(geometry, 0, 1), {palette: ['red']}, 'AOI', false);
+          
+```
 
-- Use bulleted lists when items are not strictly ordered.
+If you run the script *as is* you'll notice that the, relatively small, area of interest is where 2 DESC orbits overlap (with relative orbit numbers 37 and 110) AND also 2 ASC orbits (15 and 88). For both Sentinel-1A and -1B combined, that makes for 8 distinct coverages in a full orbit cycle. By displaying the individual footprints of each of the scenes, you should note that DESC scenes are indeed rotated slightly to the North-East, and ASC scenes to the North-West. 
 
-..and even:
+A curiosity is the situation for Sentinel-1B orbit 88. The scene boundary cuts right through the AOI. This is linked to the 25 seconds azimuth slice limits. Unfortunately, the azimuth slicing is not synchronized between Sentinel-1A and -1B (and may even drift somewhat over time). This means you need to compose the full AOI image cover by compositing two adjacent scenes in this case.
 
-Use     | tables   | to organize | content
-------- | -------- | ----------- | -------
-Your    | tables   | can         | also
-contain | multiple | rows        | ...
+Now switch on the "Incidence Angle" layers. These layers are generated from the "angle" band of each S1_GRD scene. Verify with the "Inspector" that incidence angle varies in the range direction between about 30-39 degrees. Since we just learned that the lowest incidence angle is in the near range, we can confirm that Sentinel-1 is a right looking SAR. 
+
+Finally, inspect some of the VV and VH values for points inside the AOI. Switch on the Google satellite background to select specific land use classes (e.g. urban area, grassland, arable crops). Since we're using the S1_GRD catalog, values are expressed in decibels (dB), i.e. on a logarithmic scale. Point samples show significant variation for the different acquisitions. This is expected, because the diversity in orbit look and incidence angles is wide for this AOI, we have not accounted for speckle effects and neither for the environmental factors (weather, land preparation, crop growth) that influence Sentinel-1 backscatter. The good news is that we have good dynamics in the VV and VH backscattering signal in space and time. The downside is that we now need to control for the various sensor and environmental parameters to start to make sense out of this observations. At this point, mono-dimensional NDVI huggers have probably switched off, if they got this far in the first place...
+
+*The upcoming tutorial will deal with resolution, pixel spacing, speckle and speckle filters and, who knows, texture (ETA unknown).*
 
 

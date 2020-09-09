@@ -67,6 +67,8 @@ Sentinel-1 consists of 2 identical A and B sensors, which have a 12 days revisit
 
 For a more precise estimate, you can use GEE as follows:
 
+[Open in the Code Editor](https://code.earthengine.google.com/572731e9ef64d2a93b8868bdaa204d79)
+
 ```js
 var countries = ee.FeatureCollection("USDOS/LSIB_SIMPLE/2017");
 
@@ -123,8 +125,10 @@ The concept of an image is only introduced after Level 1 processing, which re-ar
 
 We now have (almost) all relevant parameters to understand how Sentinel-1 views an area of interest. Resolution and pixel spacing are explained in more detail when we deal with speckle. In the next script, we'll highlight some practical aspects of what we just learned.
 
+[Open in the Code Editor](https://code.earthengine.google.com/c37bf83956fec73b3bfe76aeb9d43959)
+
 ```js
-// The area of interest can be defined by drawing and area in the editor's map tab
+// The area of interest can also be defined by drawing a shape in the Code Editor map
 // We hardcode one here. 
 
 var geometry = ee.Geometry.Polygon(
@@ -133,7 +137,7 @@ var geometry = ee.Geometry.Polygon(
           [5.91, 52.69],
           [5.91, 52.74]]], null, false);
           
-// Get Sentinel-1 for an arbitrary 12 day period (i.e. a full orbit cycle)          
+// Get Sentinel-1 data for an arbitrary 12 day period           
 var s1 = ee.ImageCollection('COPERNICUS/S1_GRD').
   filterDate('2020-05-01', '2020-05-13').
   filterMetadata('instrumentMode', 'equals', 'IW').
@@ -157,7 +161,7 @@ for (var k in keys) {
   if (k.charAt(0)==='B') {
     color = 'green'
   }
-  Map.addLayer(ee.Image().paint(ee.FeatureCollection(s1).filterMetadata('platform_relorbit', 'equals', k), 0, 1), {palette: [color]}, "Footprint" + k, false);
+  Map.addLayer(ee.Image().paint(ee.FeatureCollection(s1).filterMetadata('platform_relorbit', 'equals', k), 0, 1), {palette: [color]}, "Footprint: " + k, false);
 }
 
 for (var k in keys) {
@@ -165,17 +169,17 @@ for (var k in keys) {
 }
 
 Map.addLayer(ee.Image().paint(geometry, 0, 1), {palette: ['red']}, 'AOI', false);
-          
+                    
 ```
 
-If you run the script *as is* you'll notice that the, relatively small, area of interest is where 2 DESC orbits overlap (with relative orbit numbers 37 and 110) AND also 2 ASC orbits (15 and 88). For both Sentinel-1A and -1B combined, that makes for 8 distinct coverages in a full orbit cycle. By displaying the individual footprints of each of the scenes, you should note that DESC scenes are indeed rotated slightly to the North-East, and ASC scenes to the North-West. 
+If you run the script *as is* you'll notice that the relatively small area of interest is where 2 DESC orbits overlap (with relative orbit numbers 37 and 110) AND also 2 ASC orbits (15 and 88). For both Sentinel-1A and -1B combined, that makes for 8 distinct coverages in a full orbit cycle. By displaying the individual footprints of each of the scenes, you should note that DESC scenes are indeed rotated slightly to the North-East, and ASC scenes to the North-West. 
 
-A curiosity is the situation for Sentinel-1B orbit 88. The scene boundary cuts right through the AOI. This is linked to the 25 seconds azimuth slice limits. Unfortunately, the azimuth slicing is not synchronized between Sentinel-1A and -1B (and may even drift somewhat over time). This means you need to compose the full AOI image cover by compositing two adjacent scenes in this case.
+The situation for Sentinel-1B orbit 88 is curious. The scene boundary cuts right through the area of interest (AOI). This is linked to the 25 seconds azimuth slice limits. Unfortunately, the azimuth slicing is not synchronized between Sentinel-1A and -1B (and may even drift somewhat over time). This means you need to compose the full AOI image cover by compositing two adjacent scenes in this case.
 
-Now switch on the "Incidence Angle" layers. These layers are generated from the "angle" band of each S1_GRD scene. Verify with the "Inspector" that incidence angle varies in the range direction between about 30-39 degrees. Since we just learned that the lowest incidence angle is in the near range, we can confirm that Sentinel-1 is a right looking SAR. 
+Now switch on the "Incidence Angle" layers. These layers are generated from the "angle" band of each S1_GRD scene. Verify in the "Inspector" that incidence angle varies in the range direction between about 30-39 degrees. Since we just learned that the lowest incidence angle is in the near range, we can confirm that Sentinel-1 is a right looking SAR. 
 
-Finally, inspect some of the VV and VH values for points inside the AOI. Switch on the Google satellite background to select specific land use classes (e.g. urban area, grassland, arable crops). Since we're using the S1_GRD catalog, values are expressed in decibels (dB), i.e. on a logarithmic scale. Point samples show significant variation for the different acquisitions. This is expected, because the diversity in orbit look and incidence angles is wide for this AOI, we have not accounted for speckle effects and neither for the environmental factors (weather, land preparation, crop growth) that influence Sentinel-1 backscatter. The good news is that we have good dynamics in the VV and VH backscattering signal in space and time. The downside is that we now need to control for the various sensor and environmental parameters to start to make sense out of this observations. At this point, mono-dimensional NDVI huggers have probably switched off, if they got this far in the first place...
+Finally, inspect some of the VV and VH values for points inside the AOI. Switch to the Google Map satellite mode to select specific land use classes (e.g. urban area, grassland, arable crops). Since we're using the S1_GRD collection, values are expressed in decibels (dB), i.e. on a logarithmic scale. Point samples show significant variation for the different acquisitions. This is expected, because the diversity in orbit look and incidence angles is wide for this AOI, and we have not accounted for speckle effects and neither for the environmental factors (weather, land preparation, crop growth) that influence Sentinel-1 backscatter. The good news is that we have good dynamics in the VV and VH backscattering signal in space and time. The downside is that we now need to control for the various sensor and environmental parameters to start to make sense out of this observations. 
 
-*The upcoming tutorial will deal with resolution, pixel spacing, speckle and speckle filters and, who knows, texture (ETA unknown).*
+*The upcoming tutorial will deal with resolution, pixel spacing, local incidence angle correction, speckle and speckle filters and, who knows, texture (ETA unknown).*
 
 

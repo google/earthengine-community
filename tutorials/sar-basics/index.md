@@ -125,7 +125,7 @@ The concept of an image is only introduced after Level 1 processing, which re-ar
 
 We now have (almost) all relevant parameters to understand how Sentinel-1 views an area of interest (AOI). Resolution and pixel spacing are explained in more detail when we deal with speckle. In the next script, we'll highlight some practical aspects of what we just learned.
 
-[Open in the Code Editor](https://code.earthengine.google.com/c37bf83956fec73b3bfe76aeb9d43959)
+[Open in the Code Editor](https://code.earthengine.google.com/229a57183e2416cf901707c1fd725ad8)
 
 ```js
 // The area of interest can also be defined by drawing a shape in the Code Editor map
@@ -169,6 +169,7 @@ for (var k in keys) {
 }
 
 Map.addLayer(ee.Image().paint(geometry, 0, 1), {palette: ['red']}, 'AOI', false);
+Map.centerObject(geometry, 6)
                     
 ```
 

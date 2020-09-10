@@ -1,12 +1,12 @@
 ---
-title: Synthetic Aperture Radar (SAR) basics
+title: Synthetic Aperture Radar (SAR) Basics
 description: Introduction to Synthetic Aperture Radar (SAR) basics using Sentinel-1 in GEE.
 author: glemoine62
 tags: SAR, Sentinel-1, Copernicus, radar, microwave, backscattering coefficients, GRD, polarization
 date_published: 2020-08-20
 ---
 <!--
-Copyright 2019 The Google Earth Engine Community Authors
+Copyright 2020 The Google Earth Engine Community Authors
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -21,12 +21,13 @@ See the License for the specific language governing permissions and
 limitations under the License.
 -->
 
-This tutorial introduces the basics for [Sentinel-1 use in GEE](https://developers.google.com/earth-engine/guides/sentinel1). It will illustrate Synthetic Aperture Radar (SAR) terminology and demonstrate data coverage and selection.
-In a next tutorial we'll introduce more advanced concepts.
+This tutorial introduces the basics of [Sentinel-1 Algorithms](https://developers.google.com/earth-engine/guides/sentinel1) in Earth Engine. It defines Synthetic Aperture Radar (SAR) terminology and demonstrates data coverage and selection.
+
+We'll introduce more advanced concepts in a later tutorial.
 
 ## SAR characteristics
 
-A good introduction into Synthetic Aperture Radar (SAR) basics is [A Tutorial on Synthetic Aperture Radar](https://elib.dlr.de/82313/) by a group of experts at DLR led by Dr. A. Moreira. The essentials are in part I and II. Advanced polarimetry and interferometry, or combined POLINSAR, (part III *ff*) is currently outside the scope of what is possible in GEE.
+A good introduction to Synthetic Aperture Radar (SAR) basics is [A Tutorial on Synthetic Aperture Radar](https://elib.dlr.de/82313/), created by a group of experts at DLR led by Dr. A. Moreira. The essentials are in part I and II. Advanced polarimetry and interferometry, or combined POLINSAR, (part III *ff*) is currently outside the scope of what is possible in Earth Engine.
 
 A key point about SAR is that it is a radar (RAdio Detection And Ranging) instrument, and its basic measurements are intensity (or amplitude) and phase of the backscattered signal, sampled in time bins along the **azimuth** (along track direction of the sensor antenna) and **range** (across track or perpendicular to the direction of the sensor antenna). These time bins relate to locations on Earth from which the backscattered signal originate. The "Synthetic Aperture" of the SAR is the virtual creation of a huge antenna which makes use of the sensor motion and the associated complex data processing, which is necessary to create high resolution in azimuth. While moving along the orbit, the next azimuth line is created from a new microwave pulse in the range direction (this is oversimplified).
 

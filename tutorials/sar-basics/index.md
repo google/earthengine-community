@@ -44,9 +44,9 @@ Reflecting on these differences is important, because it is the basis for unders
 - SAR backscattering depends on **different physical properties of the "target"** compared to the properties that cause reflectance in optical sensors. These properties relate to the structural geometry and (electromagnetic) material properties of what is illuminated by the incident radiation.
 - SAR data can be **calibrated**, without the need for atmospheric correction, leading to **consistent time series**
 
-as well as some drawbacks:
+As well as some drawbacks:
 
-- The coherent nature of the SAR microwave radiation causes **speckle** noise. This causes the "salt-and-pepper" appearance of extended target areas (e.g. a large homogeneous agricultural field) that one would expect to have a constant backscattering behavior. Speckle can be reduced in different ways (see next tutorial), but is difficult to eliminate. 
+- The coherent nature of the SAR microwave radiation causes **speckle** noise. This causes the "salt-and-pepper" appearance of extended target areas (e.g., a large homogeneous agricultural field) that one would expect to have a constant backscattering behavior. Speckle can be reduced in different ways (see next tutorial), but is difficult to eliminate. 
 - SAR backscattering depends on the **angle of the incident microwave radiation**. Thus, since the side-looking SAR operates over a range of incidence angles along the swath, the same target will appear different depending on whether it is in near range (low incidence angle) or far range (higher incidence angle) of the swath. The manner in which the backscattering varies with incidence angle depends on the target: a flat dry soil surface has a stronger drop off with incidence angle than, for instance, a forest.
 - **Terrain relief** has a strong effect on SAR backscattering because it modulates the area that is illuminated by the side-looking SAR radiation. Slope angle determines the orientation with respect to the incident radiation. This causes foreshortening for slopes oriented towards the SAR and shadowing of slopes steeper than the local incidence and directed away from the SAR.
 
@@ -64,9 +64,9 @@ The S1_GRD_FLOAT collection, and its log-scaled COPERNICUS/S1_GRD computed equiv
 
 ### Sentinel-1 coverage
 
-Sentinel-1 consists of 2 identical A and B sensors, which have a 12 days revisit orbit each, but a 6 days revisit when combined. However, there are certain limitations to how much data can be acquired and downloaded from the 2 sensors, which depend on sensor uptime per orbit, ground station visibility for data downlinking and some other factors. The maps in [the observation scenario plan](https://sentinel.esa.int/web/sentinel/missions/sentinel-1/observation-scenario) show actual and planned operations, which provide an initial idea on how certain areas are revisited. 
+Sentinel-1 consists of two identical sensors ("A" and "B") which have a 12 days revisit orbit each, but a 6 days revisit when combined. However, there are certain limitations to how much data can be acquired and downloaded from the two sensors, which depend on sensor uptime per orbit, ground station visibility for data downlinking and some other factors. The maps in [the observation scenario plan](https://sentinel.esa.int/web/sentinel/missions/sentinel-1/observation-scenario) show actual and planned operations, which provide an initial idea on how certain areas are revisited. 
 
-For a more precise estimate, you can use GEE as follows:
+For a more precise estimate, you can use Earth Engine as follows:
 
 [Open in the Code Editor](https://code.earthengine.google.com/572731e9ef64d2a93b8868bdaa204d79)
 
@@ -76,7 +76,7 @@ var countries = ee.FeatureCollection("USDOS/LSIB_SIMPLE/2017");
 // Comment/uncomment the lists of countries to highlight differences in regional S1 revisit
 var aoi = ee.Feature(countries.filter(ee.Filter.inList('country_na', 
   ['Germany', 'Poland', 'Czechia', 'Slovakia', 'Austria', 'Hungary']   // European
-  //['Ethiopia', 'Somalia', 'Kenya']  // Near the Equator
+  // ['Ethiopia', 'Somalia', 'Kenya']  // Near the Equator
   // ['India']  // 12 days revisit, mostly
   )).union().first()).geometry().bounds();  // get bounds to simplify geometry
 
@@ -106,27 +106,26 @@ var red2green = ['a50026','d73027','f46d43','fdae61','fee08b','ffffbf','d9ef8b',
 
 Map.addLayer(cnt.updateMask(cnt.gt(0)).clip(aoi), {min:1, max:upper.get('count').getInfo(), palette: red2green}, 'All');
 Map.centerObject(aoi,5);
-
 ```
-You can change the script parameters to find out how S1 coverage varies across different parts of the World.
+
+You can change the script parameters to find out how S1 coverage varies across different parts of the world.
+
 You will notice that coverages get denser towards the poles, as orbits which are adjacent at the equator start to overlap.
+
 Coverage is most complete over Europe (hey, we pay for this stuff!), where every descending and ascending acquisition 
-is acquired for both the A and B sensors. For most of India, however, only a single 12-day repeat cycle is possible, apart
-from the Himalayas, which are included in the seismic zoning, for which a best effort higher density revisit is programmed.
+is acquired for both the A and B sensors. For most of India, however, only a single 12-day repeat cycle is possible. The Himalayas, however, are included in the seismic zoning, for which a best effort higher density revisit is programmed.
 
 ### Sentinel-1 orbits, modes, swaths and scenes
 
-Sentinel-1 is a **polar orbiting** platform, i.e. after crossing the North Pole, it descends to the South Pole, crosses it and then ascends back to the North Pole. This explains the *orbitProperties_pass* metadata ASCENDING ("ASC") and DESCENDING ("DESC") property that is set on each scene in the S1_GRD_FLOAT collection. The total time needed to go from North to South Pole and back is about 98 minutes (175 orbits in 12 days). In that time, the Earth is turning about 23 degrees to the East, which is why DESC orbits are slightly rotated towards the south-west, and ASC orbits towards the north-west. The *orbitNumber_start* image propery contains the absolute orbit sequence number (counted from start of acquisitions). The *relativeOrbitNumber_start* property is often more useful, as it provides the sequence number of the orbit in the 12 day revisit cycle. Scenes with the same *relativeOrbitNumber_start* are exactly 12 days apart (6 days if you combine A and B) and have (almost) the same SAR view configuration. 
+Sentinel-1 is a **polar orbiting** platform, i.e., after crossing the North Pole, it descends to the South Pole, crosses it and then ascends back to the North Pole. This explains the *orbitProperties_pass* metadata ASCENDING ("ASC") and DESCENDING ("DESC") property that is set on each scene in the S1_GRD_FLOAT collection. The total time needed to go from North to South Pole and back is about 98 minutes (175 orbits in 12 days). In that time, the Earth is turning about 23 degrees to the East, which is why DESC orbits are slightly rotated towards the south-west, and ASC orbits towards the north-west. The *orbitNumber_start* image propery contains the absolute orbit sequence number (counted from start of acquisitions). The *relativeOrbitNumber_start* property is often more useful, as it provides the sequence number of the orbit in the 12 day revisit cycle. Scenes with the same *relativeOrbitNumber_start* are exactly 12 days apart (6 days if you combine A and B) and have (almost) the same SAR view configuration. 
 
-Sentinel-1 can acquire in different **modes**, by programming the sensor to acquire at different resolution or polarization combinations. The most common mode over land is Interferometric Wide (IW), which is acquired in VV and VH polarization (in some maritime and polar areas in HH and HV). Extended Wide (EW) is used over maritime areas. The main trade-off between the 2 modes is between resolution and swath width, i.e. the size of the area that is illuminated by the SAR beam in range direction. The IW mode swath is approximately 250 km in size, whereas EW mode can cover a 400 km swath (both modes are actually composed of 3-5 subswaths).
+Sentinel-1 can acquire in different **modes**, by programming the sensor to acquire at different resolution or polarization combinations. The most common mode over land is Interferometric Wide (IW), which is acquired in VV and VH polarization (in some maritime and polar areas in HH and HV). Extended Wide (EW) is used over maritime areas. The main trade-off between the two modes is between resolution and swath width, i.e., the size of the area that is illuminated by the SAR beam in range direction. The IW mode swath is approximately 250 km in size, whereas EW mode can cover a 400 km swath (both modes are actually composed of 3-5 subswaths).
 
-Sentinel-1 is **right-looking**, i.e. the side-looking antenna is sending microwave beams at a 90 degree angle relative to the sensor's flight path (= **azimuth** direction). As stated before, a SAR collects timed range samples of the backscattered signal of a microwave pulse that is sent with a discrete frequency along the azimuth direction. The first backscattered signal is registered for the swath edge that is closest to the sensor orbit, which is called the **near range**. The last backscattered signal sample is registered at the **far range** edge of the swath. From the sensor view configuration (and the next script), it is easy to figure out that near range samples have a lower **incidence angle** than far range samples, and that incidence angle varies regularly (though not linearly) over the swath. Furthermore, DESC orbits have their near to far range angles increasing from roughly east to west (rotated with the orbit angle), whereas for the ASC orbit this is roughly west to east. The combination of different incidence and **look angle** can lead to different backscattering depending on the target. 
+Sentinel-1 is **right-looking**, i.e., the side-looking antenna is sending microwave beams at a 90 degree angle relative to the sensor's flight path (= **azimuth** direction). As stated before, a SAR collects timed range samples of the backscattered signal of a microwave pulse that is sent with a discrete frequency along the azimuth direction. The first backscattered signal is registered for the swath edge that is closest to the sensor orbit, which is called the **near range**. The last backscattered signal sample is registered at the **far range** edge of the swath. From the sensor view configuration (and the next script), it is easy to figure out that near range samples have a lower **incidence angle** than far range samples, and that incidence angle varies regularly (though not linearly) over the swath. Furthermore, DESC orbits have their near to far range angles increasing from roughly east to west (rotated with the orbit angle), whereas for the ASC orbit this is roughly west to east. The combination of different incidence and **look angle** can lead to different backscattering depending on the target. 
 
-The concept of an image is only introduced after Level 1 processing, which re-arranges the Level 0 samples in azimuth and range bins to locations on earth. In order to keep Level 1 images at a reasonable size (e.g. for downloading), the Level 0 data is cut into azimuth time slices of 25 seconds (for IW), which are then processed to GRD. This is where the term **frame** or **scene** is often used. 25 seconds of azimuth time corresponds to approximately 185 km om the ground. 
+The concept of an image is only introduced after Level 1 processing, which re-arranges the Level 0 samples in azimuth and range bins to locations on earth. In order to keep Level 1 images at a reasonable size (e.g., for downloading), the Level 0 data is cut into azimuth time slices of 25 seconds (for IW), which are then processed to GRD. This is where the term **frame** or **scene** is often used. 25 seconds of azimuth time corresponds to approximately 185 km on the ground. 
 
-We now have (almost) all relevant parameters to understand how Sentinel-1 views an area of interest (AOI). Resolution and pixel spacing are explained in more detail when we deal with speckle. In the next script, we'll highlight some practical aspects of what we just learned.
-
-[Open in the Code Editor](https://code.earthengine.google.com/229a57183e2416cf901707c1fd725ad8)
+We now have almost all relevant parameters to understand how Sentinel-1 views an area of interest (AOI). Resolution and pixel spacing are explained in more detail when we deal with speckle. In the next script, we'll highlight some practical aspects of what we just learned.
 
 ```js
 // The area of interest can also be defined by drawing a shape in the Code Editor map
@@ -171,16 +170,15 @@ for (var k in keys) {
 
 Map.addLayer(ee.Image().paint(geometry, 0, 1), {palette: ['red']}, 'AOI', false);
 Map.centerObject(geometry, 6)
-                    
 ```
 
-If you run the script *as is* you'll notice that the relatively small AOI is where 2 DESC orbits overlap (with relative orbit numbers 37 and 110) AND also 2 ASC orbits (15 and 88). For both Sentinel-1A and -1B combined, that makes for 8 distinct coverages in a full orbit cycle. By displaying the individual footprints of each of the scenes, you should note that DESC scenes are indeed rotated slightly to the South-West, and ASC scenes to the North-West. 
+If you run the script as is you'll notice that the relatively small AOI is where two DESC orbits overlap (with relative orbit numbers 37 and 110) AND also two ASC orbits (15 and 88). For both Sentinel-1A and 1B combined, that makes for eight distinct coverages in a full orbit cycle. By displaying the individual footprints of each of the scenes, you should note that DESC scenes are indeed rotated slightly to the south-west, and ASC scenes to the north-west.
 
-The situation for Sentinel-1B orbit 88 is curious. The scene boundary cuts right through the AOI. This is linked to the 25 seconds azimuth slice limits. Unfortunately, the azimuth slicing is not synchronized between Sentinel-1A and -1B (and may even drift somewhat over time). This means you need to compose the full AOI image cover by compositing two adjacent scenes in this case.
+The situation for Sentinel-1B orbit 88 is curious. The scene boundary cuts right through the AOI. This is linked to the 25 seconds azimuth slice limits. Unfortunately, the azimuth slicing is not synchronized between Sentinel-1A and 1B (and may even drift somewhat over time). This means you need to compose the full AOI image cover by compositing two adjacent scenes in this case.
 
 Now switch on the "Incidence Angle" layers. These layers are generated from the "angle" band of each S1_GRD scene. Verify in the "Inspector" that incidence angle varies in the range direction between about 30-39 degrees. Since we just learned that the lowest incidence angle is in the near range, we can confirm that Sentinel-1 is a right-looking SAR. 
 
-Finally, inspect some of the VV and VH values for points inside the AOI. Switch to the Google Map satellite mode to select specific land use classes (e.g. urban area, grassland, arable crops). Since we're using the S1_GRD collection, values are expressed in decibels (dB), i.e. on a logarithmic scale. Point samples show significant variation for the different acquisitions. This is expected, because the diversity in orbit look and incidence angles is wide for this AOI, and we have not accounted for speckle effects and neither for the environmental factors (weather, land preparation, crop growth) that influence Sentinel-1 backscatter. The good news is that we have good dynamics in the VV and VH backscattering signal in space and time. The downside is that we now need to control for the various sensor and environmental parameters to start to make sense out of these observations. 
+Finally, inspect some of the VV and VH values for points inside the AOI. Switch to the Google Map satellite mode to select specific land use classes (e.g., urban area, grassland, arable crops). Since we're using the S1_GRD collection, values are expressed in decibels (dB), i.e., on a logarithmic scale. Point samples show significant variation for the different acquisitions. This is expected, because the diversity in orbit look and incidence angles is wide for this AOI, and we have not accounted for speckle effects and neither for the environmental factors (weather, land preparation, crop growth) that influence Sentinel-1 backscatter. The good news is that we have good dynamics in the VV and VH backscattering signal in space and time. The downside is that we now need to control for the various sensor and environmental parameters to start to make sense out of these observations. 
 
 *The upcoming tutorial will deal with resolution, pixel spacing, local incidence angle correction, speckle and speckle filters and, who knows, texture (ETA unknown).*
 

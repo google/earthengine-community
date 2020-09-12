@@ -68,8 +68,6 @@ Sentinel-1 consists of two identical sensors ("A" and "B") which have a 12 days 
 
 For a more precise estimate, you can use Earth Engine as follows:
 
-[Open in the Code Editor](https://code.earthengine.google.com/572731e9ef64d2a93b8868bdaa204d79)
-
 ```js
 var countries = ee.FeatureCollection("USDOS/LSIB_SIMPLE/2017");
 

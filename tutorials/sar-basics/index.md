@@ -64,7 +64,7 @@ The S1_GRD_FLOAT collection, and its log-scaled COPERNICUS/S1_GRD computed equiv
 
 ### Sentinel-1 coverage
 
-Sentinel-1 consists of two identical sensors ("A" and "B") which have a 12 days revisit orbit each, but a 6 days revisit when combined. However, there are certain limitations to how much data can be acquired and downloaded from the two sensors, which depend on sensor uptime per orbit, ground station visibility for data downlinking and some other factors. The maps in [the observation scenario plan](https://sentinel.esa.int/web/sentinel/missions/sentinel-1/observation-scenario) show actual and planned operations, which provide an initial idea on how certain areas are revisited. 
+Sentinel-1 consists of two identical sensors ("A" and "B") which have a 12-day revisit orbit each, but a 6-day revisit when combined. However, there are certain limitations to how much data can be acquired and downloaded from the two sensors, which depend on sensor uptime per orbit, ground station visibility for data downlinking and some other factors. The maps in [the observation scenario plan](https://sentinel.esa.int/web/sentinel/missions/sentinel-1/observation-scenario) show actual and planned operations, which provide an initial idea on how certain areas are revisited. 
 
 For a more precise estimate, you can use Earth Engine as follows:
 
@@ -174,7 +174,7 @@ If you run the script as is you'll notice that the relatively small AOI is where
 
 The situation for Sentinel-1B orbit 88 is curious. The scene boundary cuts right through the AOI. This is linked to the 25 seconds azimuth slice limits. Unfortunately, the azimuth slicing is not synchronized between Sentinel-1A and 1B (and may even drift somewhat over time). This means you need to compose the full AOI image cover by compositing two adjacent scenes in this case.
 
-Now switch on the "Incidence Angle" layers. These layers are generated from the "angle" band of each S1_GRD scene. Verify in the "Inspector" that incidence angle varies in the range direction between about 30-39 degrees. Since we just learned that the lowest incidence angle is in the near range, we can confirm that Sentinel-1 is a right-looking SAR. 
+Now switch on the "Incidence Angle" layers. These layers are generated from the "angle" band of each S1_GRD scene. Verify in the "Inspector" tab that incidence angle varies in the range direction between about 30-39 degrees. Since we just learned that the lowest incidence angle is in the near range, we can confirm that Sentinel-1 is a right-looking SAR. 
 
 Finally, inspect some of the VV and VH values for points inside the AOI. Switch to the Google Map satellite mode to select specific land use classes (e.g., urban area, grassland, arable crops). Since we're using the S1_GRD collection, values are expressed in decibels (dB), i.e., on a logarithmic scale. Point samples show significant variation for the different acquisitions. This is expected, because the diversity in orbit look and incidence angles is wide for this AOI, and we have not accounted for speckle effects and neither for the environmental factors (weather, land preparation, crop growth) that influence Sentinel-1 backscatter. The good news is that we have good dynamics in the VV and VH backscattering signal in space and time. The downside is that we now need to control for the various sensor and environmental parameters to start to make sense out of these observations. 
 

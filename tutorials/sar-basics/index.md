@@ -3,7 +3,7 @@ title: Synthetic Aperture Radar (SAR) Basics
 description: Introduction to Synthetic Aperture Radar (SAR) basics using Sentinel-1 in GEE.
 author: glemoine62
 tags: SAR, Sentinel-1, Copernicus, radar, microwave, backscattering coefficients, GRD, polarization
-date_published: 2020-08-20
+date_published: 2020-09-12
 ---
 <!--
 Copyright 2020 The Google Earth Engine Community Authors
@@ -29,13 +29,13 @@ We'll introduce more advanced concepts in a later tutorial.
 
 A good introduction to Synthetic Aperture Radar (SAR) basics is [A Tutorial on Synthetic Aperture Radar](https://elib.dlr.de/82313/), created by a group of experts at DLR led by Dr. A. Moreira. The essentials are in part I and II. Advanced polarimetry and interferometry, or combined POLINSAR, (part III *ff*) is currently outside the scope of what is possible in Earth Engine.
 
-A key point about SAR is that it is a radar (RAdio Detection And Ranging) instrument, and its basic measurements are intensity (or amplitude) and phase of the backscattered signal, sampled in time bins along the **azimuth** (along track direction of the sensor antenna) and **range** (across track or perpendicular to the direction of the sensor antenna). These time bins relate to locations on Earth from which the backscattered signal originate. The "Synthetic Aperture" of the SAR is the virtual creation of a huge antenna which makes use of the sensor motion and the associated complex data processing, which is necessary to create high resolution in azimuth. While moving along the orbit, the next azimuth line is created from a new microwave pulse in the range direction (this is oversimplified).
+A key point about SAR is that it is a radar (RAdio Detection And Ranging) instrument, and its basic measurements are intensity (or amplitude) and phase of the backscattered signal, sampled in time bins along the **azimuth** (along track direction of the sensor antenna) and **range** (across track or perpendicular to the direction of the sensor antenna). These time bins relate to locations on Earth from which the backscattered signal originate. The "Synthetic Aperture" of the SAR relates to the virtual creation of a huge antenna by making use of the sensor motion. The virtual large antenna is needed to ensure an adequate resolution in azimuth. The resolution of the pulsed range echoes and Doppler shifted azimuth samples requires complex raw SAR signal processing (check the reference above if you want more technical details).
 
 The key differences between SAR and optical sensors are:
 
-- SAR is an **active** sensor, transmitting **microwave** radiation, for which it receives the portion **scattered back** to the sensor. Optical sensors are **passive** sensors that register reflected radiation from the Sun (in specific parts of the visible and infrared spectrum).
-- SAR is **side-looking**, unlike optical sensors which are, usually, nadir looking. 
-- SAR radiation is **coherent**, because the microwaves radiation is transmitted with a precise set of wavelengths. This is useful, because it allows precise **phase** and **amplitude** measurements of the backscattered waves and the use of **polarization**. Optical sensors are not coherent because sunlight has a wide range of wavelengths, apart from laser and lidar instruments. 
+- SAR is an **active** sensor, transmitting **microwave** radiation, for which it receives the portion **scattered back** to the sensor. Optical sensors are **passive** sensors that register reflected radiation from the Sun in specific parts of the visible and infrared spectrum.
+- SAR is **side-looking**, unlike optical sensors which are usually nadir looking. 
+- SAR radiation is **coherent**, because the microwave radiation is transmitted with a precise set of wavelengths. This is useful, because it allows precise **phase** and **amplitude** measurements of the backscattered waves and the use of **polarization**. Reflected sunlight is not coherent as it has a wide range of wavelengths and random phase. 
 
 Reflecting on these differences is important, because it is the basis for understanding the relative advantages of SAR compared to optical sensors:
 

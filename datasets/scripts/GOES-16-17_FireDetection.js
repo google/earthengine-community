@@ -14,9 +14,9 @@
  * limitations under the License.
  */
 
-// Load GOES-16 Image Collection, filter date and select first image
+// Load GOES-16 Image Collection, filter date and select first image.
 var collection = ee.ImageCollection('NOAA/GOES/16/FDCC')
-                      .filterDate('2020-07-15','2020-07-16'); 
+                      .filterDate('2020-07-15','2020-07-16');
 var image = collection.first();
 
 Map.setOptions("HYBRID");
@@ -34,15 +34,15 @@ var DQFVisParam = {
   max: 5,
   palette: [
     'FFFF00',    // 0:  Good quality fire pixel
-    '8BC34A',    // 1:  Good quality fire-free pixel 
+    '8BC34A',    // 1:  Good quality fire-free pixel
     'B3E5FC',    // 2:  Invalid pixel due to opaque cloud
-    '2196F3',    // 3:  Invalid pixel due to to surface type, sunglint,   
-                 //      LZA threshold exceeded, off earth, or missing input data
+    '2196F3',    // 3:  Invalid pixel due to to surface type, sunglint,
+                 //     LZA threshold exceeded, off earth, or missing input data
     'B2EBF2',    // 4:  Invalid pixel due to bad input data
     'C5CAE9',    // 5:  Invalid pixel due to algorithm failure
   ]
  };
-  
+
 // Filter image to show only good quality fire-pixels (DQF = 0).
 var onlyFire = DQF.eq(0);
 

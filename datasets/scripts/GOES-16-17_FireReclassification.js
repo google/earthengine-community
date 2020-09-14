@@ -48,7 +48,7 @@ var fireBuffer = onlyFire
                        return feature.buffer(50000);
                      });
 
-// Remap Mask flags into fire categories
+// Remap Mask flags into fire categories.
 var classifiedImage = mask.remap(
     [
       0,   10,  11,  12,  13,  14,  15,  30,  31,  32,  33,  34,
@@ -62,7 +62,7 @@ var classifiedImage = mask.remap(
       10, 10, 10, 10, 10, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11
     ]);
 
-// Create color pallete to correspond with fire categories
+// Create color palette to correspond with fire categories.
 var maskVisParam = {
   min: 0,
   max: 11,
@@ -83,7 +83,7 @@ var maskVisParam = {
   ]
 };
 
-// Create color pallete to convey fire radiative power (intensity in megawatts)
+// Create color palette to convey fire radiative power (intensity in megawatts).
 var powerVisParam = {min: 0, max: 1500, palette: ['yellow', 'orange', 'red']};
 
 // Add Layers to Map

@@ -69,41 +69,46 @@ Sentinel-1 consists of two identical sensors ("A" and "B") which have a 12-day r
 For a more precise estimate, you can use Earth Engine as follows:
 
 ```js
-var countries = ee.FeatureCollection("USDOS/LSIB_SIMPLE/2017");
+var countries = ee.FeatureCollection('USDOS/LSIB_SIMPLE/2017');
 
 // Comment/uncomment the lists of countries to highlight differences in regional S1 revisit
-var aoi = ee.Feature(countries.filter(ee.Filter.inList('country_na', 
-  ['Germany', 'Poland', 'Czechia', 'Slovakia', 'Austria', 'Hungary']   // European
-  // ['Ethiopia', 'Somalia', 'Kenya']  // Near the Equator
-  // ['India']  // 12 days revisit, mostly
-  )).union().first()).geometry().bounds();  // get bounds to simplify geometry
+var aoi = ee.Feature(countries.filter(ee.Filter.inList('country_na',
+  ['Germany', 'Poland', 'Czechia', 'Slovakia', 'Austria', 'Hungary'] // European
+  // ['Ethiopia', 'Somalia', 'Kenya'] // Near the Equator
+  // ['India'] // 12 days revisit, mostly
+  )).union().first()).geometry().bounds(); // get bounds to simplify geometry
 
-  
+
 // Define time period
-var start_date = '2020-06-01';
-var end_date = '2020-06-16';
+var startDate = '2020-06-01';
+var endDate = '2020-06-16';
 
 // Select S1 IW images in area of interest and time period
 var s1 = ee.ImageCollection('COPERNICUS/S1_GRD').
   filterMetadata('instrumentMode', 'equals', 'IW').
   filterBounds(aoi).
-  filterDate(start_date, end_date);
-  
+  filterDate(startDate, endDate);
+
 
 var cnt = ee.FeatureCollection(s1).
   // uncomment next line if you want to be specific
-  //filterMetadata('orbitProperties_pass', 'equals', 'ASCENDING').  
+  // filterMetadata('orbitProperties_pass', 'equals', 'ASCENDING').
   reduceToImage(['system:index'], ee.Reducer.count());
-  
-var upper = cnt.reduceRegion({reducer: ee.Reducer.max(), geometry: aoi, scale: 1000, bestEffort: true});
 
-print("Max count:", upper.get('count'));
+var upper = cnt.reduceRegion(
+  {reducer: ee.Reducer.max(), geometry: aoi, scale: 1000, bestEffort: true}
+);
+
+print('Max count:', upper.get('count'));
 
 // Define red to green pseudo color palette
-var red2green = ['a50026','d73027','f46d43','fdae61','fee08b','ffffbf','d9ef8b','a6d96a','66bd63','1a9850','006837'];
+var red2green = ['a50026', 'd73027', 'f46d43', 'fdae61', 'fee08b', 'ffffbf',
+  'd9ef8b', 'a6d96a', '66bd63', '1a9850', '006837'];
 
-Map.addLayer(cnt.updateMask(cnt.gt(0)).clip(aoi), {min:1, max:upper.get('count').getInfo(), palette: red2green}, 'All');
-Map.centerObject(aoi,5);
+Map.addLayer(cnt.updateMask(cnt.gt(0)).clip(aoi), 
+  {min: 1, max: upper.get('count').getInfo(), palette: red2green}, 'All');
+  
+Map.centerObject(aoi, 5);
 ```
 
 You can change the script parameters to find out how S1 coverage varies across different parts of the world.
@@ -127,7 +132,7 @@ We now have almost all relevant parameters to understand how Sentinel-1 views an
 
 ```js
 // The area of interest can also be defined by drawing a shape in the Code Editor map
-// We hardcode one here. 
+// We hardcode one here.
 
 var geometry = ee.Geometry.Polygon(
         [[[5.83, 52.74],
@@ -135,39 +140,44 @@ var geometry = ee.Geometry.Polygon(
           [5.91, 52.69],
           [5.91, 52.74]]], null, false);
           
-// Get Sentinel-1 data for an arbitrary 12 day period           
+// Get Sentinel-1 data for an arbitrary 12 day period
 var s1 = ee.ImageCollection('COPERNICUS/S1_GRD').
   filterDate('2020-05-01', '2020-05-13').
   filterMetadata('instrumentMode', 'equals', 'IW').
   filterBounds(geometry);
 
 // Compose an ancillary property to categorize the images in this selection
-s1 = s1.map(function(f) {return f.set('platform_relorbit', 
-  ee.String(f.get('platform_number')).cat('_').
-  cat(ee.Number(f.get('relativeOrbitNumber_start')).format('%.0f')).
-  cat('_').cat(f.get('orbitProperties_pass')))});
+s1 = s1.map(function(f) {
+  return f.set('platform_relorbit', 
+    ee.String(f.get('platform_number')).cat('_').
+    cat(ee.Number(f.get('relativeOrbitNumber_start')).format('%.0f')).
+    cat('_').cat(f.get('orbitProperties_pass')));
+});
 
 // Check which sensor/relative orbit combinations we have
-var orbits = ee.Dictionary(s1.aggregate_histogram('platform_relorbit'))
+var orbits = ee.Dictionary(s1.aggregate_histogram('platform_relorbit'));
 
-print(orbits) // Check in console
+print(orbits); // Check in console
 
-var keys = orbits.getInfo() // Needed to loop
+var keys = orbits.getInfo(); // Needed to loop
 
 for (var k in keys) {
-  var color = 'blue'
+  var color = 'blue';
   if (k.charAt(0)==='B') {
-    color = 'green'
+    color = 'green';
   }
-  Map.addLayer(ee.Image().paint(ee.FeatureCollection(s1).filterMetadata('platform_relorbit', 'equals', k), 0, 1), {palette: [color]}, "Footprint: " + k, false);
+  Map.addLayer(ee.Image().paint(ee.FeatureCollection(s1).
+    filterMetadata('platform_relorbit', 'equals', k), 0, 1), 
+    {palette: [color]}, 'Footprint: ' + k, false);
 }
 
 for (var k in keys) {
-  Map.addLayer(s1.filterMetadata('platform_relorbit', 'equals', k).first(), {bands: ['angle'], min: 30, max: 45 }, "Incidence angle: " + k, false);
+  Map.addLayer(s1.filterMetadata('platform_relorbit', 'equals', k).first(), 
+    {bands: ['angle'], min: 30, max: 45}, 'Incidence angle: ' + k, false);
 }
 
 Map.addLayer(ee.Image().paint(geometry, 0, 1), {palette: ['red']}, 'AOI', false);
-Map.centerObject(geometry, 6)
+Map.centerObject(geometry, 6);
 ```
 
 If you run the script as is you'll notice that the relatively small AOI is where two DESC orbits overlap (with relative orbit numbers 37 and 110) AND also two ASC orbits (15 and 88). For both Sentinel-1A and 1B combined, that makes for eight distinct coverages in a full orbit cycle. By displaying the individual footprints of each of the scenes, you should note that DESC scenes are indeed rotated slightly to the south-west, and ASC scenes to the north-west.

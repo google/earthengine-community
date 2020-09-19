@@ -105,9 +105,9 @@ print('Max count:', upper.get('count'));
 var red2green = ['a50026', 'd73027', 'f46d43', 'fdae61', 'fee08b', 'ffffbf',
   'd9ef8b', 'a6d96a', '66bd63', '1a9850', '006837'];
 
-Map.addLayer(cnt.updateMask(cnt.gt(0)).clip(aoi), 
+Map.addLayer(cnt.updateMask(cnt.gt(0)).clip(aoi),
   {min: 1, max: upper.get('count').getInfo(), palette: red2green}, 'All');
-  
+
 Map.centerObject(aoi, 5);
 ```
 
@@ -139,7 +139,7 @@ var geometry = ee.Geometry.Polygon(
           [5.83, 52.69],
           [5.91, 52.69],
           [5.91, 52.74]]], null, false);
-          
+
 // Get Sentinel-1 data for an arbitrary 12 day period
 var s1 = ee.ImageCollection('COPERNICUS/S1_GRD').
   filterDate('2020-05-01', '2020-05-13').
@@ -148,7 +148,7 @@ var s1 = ee.ImageCollection('COPERNICUS/S1_GRD').
 
 // Compose an ancillary property to categorize the images in this selection
 s1 = s1.map(function(f) {
-  return f.set('platform_relorbit', 
+  return f.set('platform_relorbit',
     ee.String(f.get('platform_number')).cat('_').
     cat(ee.Number(f.get('relativeOrbitNumber_start')).format('%.0f')).
     cat('_').cat(f.get('orbitProperties_pass')));
@@ -167,12 +167,12 @@ for (var k in keys) {
     color = 'green';
   }
   Map.addLayer(ee.Image().paint(ee.FeatureCollection(s1).
-    filterMetadata('platform_relorbit', 'equals', k), 0, 1), 
+    filterMetadata('platform_relorbit', 'equals', k), 0, 1),
     {palette: [color]}, 'Footprint: ' + k, false);
 }
 
 for (var k in keys) {
-  Map.addLayer(s1.filterMetadata('platform_relorbit', 'equals', k).first(), 
+  Map.addLayer(s1.filterMetadata('platform_relorbit', 'equals', k).first(),
     {bands: ['angle'], min: 30, max: 45}, 'Incidence angle: ' + k, false);
 }
 

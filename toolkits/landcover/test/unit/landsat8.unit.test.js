@@ -18,19 +18,6 @@
 var Landsat8 = require('../../api.js').Landsat8;
 
 withEarthEngineStub('Landsat8', function() {
-  it('applyCloudAndShadowBitMasks() updates mask', function() {
-    var originalImage = ee.Image(0);
-
-    var newImage = Landsat8.maskCloudsAndShadows(originalImage);
-
-    var qa = originalImage.select(Landsat8.QA_BAND);
-    var mask = qa.bitwiseAnd(Landsat8.CLOUD_SHADOW_BIT_MASK)
-                   .eq(0)
-                   .and(qa.bitwiseAnd(Landsat8.CLOUD_BIT_MASK).eq(0));
-    var expected = originalImage.updateMask(mask);
-    expect(newImage).toEqual(expected);
-  });
-
   it('getTasseledCapCoefficients_() returns coefficients', function() {
     // There are 6 bands in the TC transformation.  There should be 6 coefficients.
     expect(new Landsat8('SR').getTasseledCapCoefficients_().length).toEqual(6);

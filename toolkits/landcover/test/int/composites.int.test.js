@@ -50,21 +50,21 @@ withEarthEngine('Composites', function() {
         });
   });
 
-  it('createMedioidComposite() w/single band', function(done) {
+  it('createMedoidComposite() w/single band', function(done) {
     // Median idx = 3, so we expect the pixel(s) with idx closest to that
     // value to be returned.
     var testCollection = ee.ImageCollection([
-      // Value #1 for medioid function:
+      // Value #1 for medoid function:
       TestImage.create({idx: 1, value: 10}),
-      // Value #2 for medioid function:
+      // Value #2 for medoid function:
       TestImage.create({idx: 2, value: 30}),
-      // Value #3 for medioid function (medioid):
+      // Value #3 for medoid function (medoid):
       TestImage.create({idx: 3, value: 300}),
-      // Value #4 for medioid function:
+      // Value #4 for medoid function:
       TestImage.create({idx: 4, value: 400})
     ]);
 
-    var composite = lct.Composites.createMedioidComposite(
+    var composite = lct.Composites.createMedoidComposite(
         {collection: testCollection, bands: 'idx'});
 
     TestImage.reduceConstant(composite).evaluate(function(actual, error) {
@@ -74,19 +74,19 @@ withEarthEngine('Composites', function() {
     });
   });
 
-  it('createMedioidComposite() w/multiple bands', function(done) {
+  it('createMedoidComposite() w/multiple bands', function(done) {
     // Median idx = 3, so we expect the pixel(s) with idx closest to that
     // value to be returned.
     var testCollection = ee.ImageCollection([
-      // Value #1 for medioid function:
+      // Value #1 for medoid function:
       TestImage.create({a: 1, b: 1, c: 20, value: 200}),
-      // Value #2 for medioid function:
+      // Value #2 for medoid function:
       TestImage.create({a: 2, b: 1, c: 10, value: 100}),
-      // Value #3 for medioid function (medioid):
+      // Value #3 for medoid function (medoid):
       TestImage.create({a: 3, b: 3, c: 30, value: 300}),
     ]);
 
-    var composite = lct.Composites.createMedioidComposite(
+    var composite = lct.Composites.createMedoidComposite(
         {collection: testCollection, bands: ['a', 'b', 'c']});
 
     TestImage.reduceConstant(composite).evaluate(function(actual, error) {
@@ -96,28 +96,28 @@ withEarthEngine('Composites', function() {
     });
   });
 
-  it('createMedioidFunction()', function(done) {
+  it('createMedoidFunction()', function(done) {
     // The first and last dates will be excluded by the temporal composite
     // criteria below. The 5 images in between will be used, with mosaic
     // built using median index value of 3.
     var testCollection = ee.ImageCollection([
       // This date will be filtered out.
       TestImage.create({idx: 0, value: 0}, '2015-12-01'),
-      // Value #1 for medioid function:
+      // Value #1 for medoid function:
       TestImage.create({idx: 1, value: 10}, '2016-01-01'),
-      // Value #2 for medioid function:
+      // Value #2 for medoid function:
       TestImage.create({idx: 2, value: 20}, '2016-01-02'),
-      // Value #3 for medioid function (medioid):
+      // Value #3 for medoid function (medoid):
       TestImage.create({idx: 3, value: 400}, '2016-01-03'),
-      // Value #4 for medioid function;
+      // Value #4 for medoid function;
       TestImage.create({idx: 4, value: 500}, '2016-01-04'),
       // This will also be filtered out (>31d after 2016-01-01).
       TestImage.create({idx: 5, value: 600}, '2016-06-01')
     ]);
 
     // With 1 composite, this should be equivalent to the
-    // medioidComposite test.
-    var compositor = lct.Composites.createMedioidFunction('idx');
+    // medoidComposite test.
+    var compositor = lct.Composites.createMedoidFunction('idx');
     var result = lct.Composites.createTemporalComposites({
         collection: testCollection,
         startDate: '2016-01-01',

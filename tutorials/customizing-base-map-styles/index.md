@@ -151,15 +151,15 @@ Map.setOptions(
 
 The map would then be restyled as shown here:
 
-![Road](https://storage.googleapis.com/earthengine-community/tutorials/customizing-base-map-styles/road.png)
+![Road](road.png)
 
 ## Cheat codes
 
 There is also an easy way to create custom base map styles without
 tweaking any options: enter [Snazzy Maps](https://snazzymaps.com), a community
 project for creating and sharing great styles for Google Maps. Their website
-provides JavaScript snippets that can be copied from their website and pasted into
-Earth Engine to quickly create alternate base map styles.
+provides JavaScript snippets that can be copied from their website and pasted
+into Earth Engine to quickly create alternate base map styles.
 
 To apply Snazzy Maps styles, one might do the following:
 
@@ -278,7 +278,7 @@ Map.setOptions(
 
 The resulting map would then use the Snazzy Maps styles as shown here:
 
-![Dark](https://storage.googleapis.com/earthengine-community/tutorials/customizing-base-map-styles/snazzy-black.png)
+![Dark](snazzy-black.png)
 
 Finally, to get visual feedback while creating custom styles for the base map,
 one can also use [mapstyle](https://mapstyle.withgoogle.com/). Create a
@@ -439,7 +439,7 @@ Map.setOptions('mapStyle', {mapStyle: mapStyle});
 
 The resulting base map would look like this:
 
-![MapStyle](https://storage.googleapis.com/earthengine-community/tutorials/customizing-base-map-styles/map-style.png)
+![MapStyle](map-style.png)
 
 You can find all the map styling options provided in Google Maps API at:
 https://developers.google.com/maps/documentation/javascript/reference#MapTypeStyle

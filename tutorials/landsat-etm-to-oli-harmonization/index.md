@@ -23,16 +23,16 @@ limitations under the License.
 
 [Open In Code Editor](https://code.earthengine.google.com/798ae7a268f8e2c8022433b9562785c0)
 
-This tutorial concerns harmonizing Landsat ETM+ surface reflectance to Landsat OLI
-surface reflectance. It provides:
+This tutorial concerns harmonizing Landsat ETM+ surface reflectance to Landsat
+OLI surface reflectance. It provides:
 
 - A spectral transformation function
 - Functions to create analysis-ready data
 - A time series visualization example
 
-It is intended to be an end-to-end guide for harmonizing and visualizing a 35+ year
-regional time series of Landsat data that can be immediately applied to your own region(s)
-of interest.
+It is intended to be an end-to-end guide for harmonizing and visualizing a 35+
+year regional time series of Landsat data that can be immediately applied to
+your own region(s) of interest.
 
 Note that the coefficients for transforming ETM+ to OLI applies to TM as well.
 As such, within this tutorial, reference to ETM+ is synonymous with TM.
@@ -44,25 +44,27 @@ that has been collecting moderate resolution Earth imagery since 1972.
 As the longest space-based Earth observation program, it provides a valuable
 temporal record for identifying spatiotemporal trends in landscape change.
 Thematic Mapper (TM), Enhanced Thematic Mapper Plus (ETM+), and Operational
-Land Imager (OLI) instrument data are used in this tutorial. They are closely related and
-relatively easy to consolidate into a consistent time series that produces a
-continuous record from 1984 to the present, at a cadence of 16 days
+Land Imager (OLI) instrument data are used in this tutorial. They are closely
+related and relatively easy to consolidate into a consistent time series that
+produces a continuous record from 1984 to the present, at a cadence of 16 days
 per sensor with 30 meter spatial resolution. The Multispectral Scanner
-instrument extends the Landsat record back to 1972, but is not used in this tutorial.
-Its data are quite different, making integration with later sensors challenging. See
-[Savage et al. (2018)](#references) and [Vogeler et al. (2018)](#references) for examples
-of harmonization across all sensors.
+instrument extends the Landsat record back to 1972, but is not used in this
+tutorial. Its data are quite different, making integration with later sensors
+challenging. See [Savage et al. (2018)](#references) and
+[Vogeler et al. (2018)](#references) for examples of harmonization across all
+sensors.
 
 ## Why harmonization
 
 [Roy et al. (2016)](#references)
-demonstrate that there are small, but potentially significant differences between
-the spectral characteristics of Landsat ETM+ and OLI, depending on application.
-Reasons you might want to harmonize datasets include: producing a long time series
-that spans Landsat TM, ETM+, and OLI, generating near-date intra-annual
-composites to reduce the effects of missing observations from ETM+ SLC-off gaps
-and cloud/shadow masking, or increase the observation frequency within a time series.
-Please see the linked manuscript above for more information.
+demonstrate that there are small, but potentially significant differences
+between the spectral characteristics of Landsat ETM+ and OLI, depending on
+application. Reasons you might want to harmonize datasets include: producing a
+long time series that spans Landsat TM, ETM+, and OLI, generating near-date
+intra-annual composites to reduce the effects of missing observations from ETM+
+SLC-off gaps and cloud/shadow masking, or increase the observation frequency
+within a time series. Please see the linked manuscript above for more
+information.
 
 ## Instructions
 
@@ -74,12 +76,13 @@ this tutorial to visualize the spectral-temporal history of a pixel.
 
 #### Harmonization
 
-Harmonization is achieved via linear transformation of ETM+ spectral space to OLI
-spectral space according to coefficients presented in
-[Roy et al. (2016)](#references) Table 2 OLS regression coefficients. Band-respective
-coefficients are defined in the following dictionary with slope (`slopes`) and
-intercept (`itcps`) image constants. Note that the y-intercept values are multiplied
-by 10,000 to match the scaling of USGS Landsat surface reflectance data.
+Harmonization is achieved via linear transformation of ETM+ spectral space to
+OLI spectral space according to coefficients presented in
+[Roy et al. (2016)](#references) Table 2 OLS regression coefficients.
+Band-respective coefficients are defined in the following dictionary with slope
+(`slopes`) and intercept (`itcps`) image constants. Note that the y-intercept
+values are multiplied by 10,000 to match the scaling of USGS Landsat surface
+reflectance data.
 
 ```js
 var coefficients = {
@@ -110,9 +113,9 @@ function renameEtm(img) {
 }
 ```
 
-Finally, define the transformation function, which applies the linear model to ETM+ data,
-casts data type as `Int16` for consistency with OLI, and reattaches the `pixel_qa` band for
-later use in cloud and shadow masking.
+Finally, define the transformation function, which applies the linear model to
+ETM+ data, casts data type as `Int16` for consistency with OLI, and reattaches
+the `pixel_qa` band for later use in cloud and shadow masking.
 
 ```js
 function etmToOli(img) {
@@ -127,8 +130,8 @@ function etmToOli(img) {
 
 #### Cloud and shadow masking
 
-Analysis ready data should have clouds and cloud shadows masked out. The following
-function uses the CFmask ([Zhu et al., 2015](#references))
+Analysis ready data should have clouds and cloud shadows masked out. The
+following function uses the CFmask ([Zhu et al., 2015](#references))
 `pixel_qa` band included with each Landsat USGS surface reflectance image to set
 pixels identified as cloud and cloud shadow to null.
 
@@ -147,8 +150,8 @@ function fmask(img) {
 #### Spectral index calculation
 
 The forthcoming application uses the normalized burn ratio (NBR) spectral
-index to represent the spectral history of a forested pixel affected by wildfire.
-NBR is used because [Cohen et al. (2018)](#references)
+index to represent the spectral history of a forested pixel affected by
+wildfire. NBR is used because [Cohen et al. (2018)](#references)
 found that among 13 spectral indices/bands, NBR had the greatest signal to
 noise ratio with regard to forest disturbance (signal) throughout the US.
 It is calculated by the following function.
@@ -188,39 +191,40 @@ function prepEtm(img) {
 }
 ```
 
-In your application, you might decide to include or exclude functions. Alter these
-functions as needed.
+In your application, you might decide to include or exclude functions. Alter
+these functions as needed.
 
 ### Time series example
 
 The `prepOli` and `prepEtm` wrapper functions above can be mapped over Landsat
-surface reflectance collections to create cross-sensor analysis-ready data to visualize
-the spectral chronology of a pixel or region of pixels. In this example, you will
-create a 35+ year time series and display the spectral history for a single pixel.
-This particular pixel relates the recent history of a mature Pacific Northwest
-conifer forest patch (Figure 1) that experienced some perturbation in the 1980's and
-90's and a high magnitude burn in 2011.
+surface reflectance collections to create cross-sensor analysis-ready data to
+visualize the spectral chronology of a pixel or region of pixels. In this
+example, you will create a 35+ year time series and display the spectral history
+for a single pixel. This particular pixel relates the recent history of a mature
+Pacific Northwest conifer forest patch (Figure 1) that experienced some
+perturbation in the 1980's and 90's and a high magnitude burn in 2011.
 
-![Area of interest](https://storage.googleapis.com/earthengine-community/tutorials/landsat-etm-to-oli-harmonization/area-of-interest.jpg)
+![Area of interest](area-of-interest.jpg)
 
-_Figure 1. Location and site character for example area of interest. Mature Pacific
-Northwest conifer forest on the north slope of Mt Hood, OR, USA. Images courtesy of:
-Google Earth, USDA Forest Service, Landsat, and Copernicus._
+_Figure 1. Location and site character for example area of interest. Mature
+Pacific Northwest conifer forest on the north slope of Mt Hood, OR, USA. Images
+courtesy of: Google Earth, USDA Forest Service, Landsat, and Copernicus._
 
 #### Define an area of interest (AOI)
 
-The result of this application is a time series of Landsat observations for a pixel.
-An `ee.Geometry.Point` object is used to define the pixel's location.
+The result of this application is a time series of Landsat observations for a
+pixel. An `ee.Geometry.Point` object is used to define the pixel's location.
 
 ```js
 var aoi = ee.Geometry.Point([-121.70938, 45.43185]);
 ```
 
-In your application, you might select a different pixel. Do so by replacing the above
-longitude and latitude coordinates. Alternatively, you can summarize
-the spectral history of a group of pixels using other `ee.Geometry` object definitions,
-such as `ee.Geometry.Polygon()` and `ee.Geometry.Rectangle()`.
-Please see the [Geometries](https://developers.google.com/earth-engine/geometries)
+In your application, you might select a different pixel. Do so by replacing the
+above longitude and latitude coordinates. Alternatively, you can summarize
+the spectral history of a group of pixels using other `ee.Geometry` object
+definitions, such as `ee.Geometry.Polygon()` and `ee.Geometry.Rectangle()`.
+Please see the
+[Geometries](https://developers.google.com/earth-engine/geometries)
 section of the Developer Guide for more information.
 
 #### Retrieve Landsat sensor collections
@@ -258,9 +262,9 @@ by under the "Images Properties" tab of the data description pages linked above.
 #### Prepare the collections
 
 Merge the collections, apply the filter, and map the `prepImg` function over all
-images. The result of the following snippet is a single `ee.ImageCollection` that
-contains images from OLI, ETM+, and TM sensor collections that meet the filter
-criteria, and are processed to analysis-ready NBR.
+images. The result of the following snippet is a single `ee.ImageCollection`
+that contains images from OLI, ETM+, and TM sensor collections that meet the
+filter criteria, and are processed to analysis-ready NBR.
 
 ```js
 // Filter collections and prepare them for merging.
@@ -274,11 +278,12 @@ var col = oliCol.merge(etmCol).merge(tmCol);
 
 #### Make a times series chart displaying all observations
 
-Inter-sensor harmony can be assessed qualitatively by plotting all observations as a
-scatter plot where sensor is discerned by color. Earth Engine's `ui.Chart.feature.groups`
-function provides this utility, but first the observed NBR value must be added to each image
-as a property. Map a region reduce function over the image collection that calculates the
-median of all pixels intersecting the AOI and sets the result as an image property.
+Inter-sensor harmony can be assessed qualitatively by plotting all observations
+as a scatter plot where sensor is discerned by color. Earth Engine's
+`ui.Chart.feature.groups` function provides this utility, but first the observed
+NBR value must be added to each image as a property. Map a region reduce
+function over the image collection that calculates the median of all pixels
+intersecting the AOI and sets the result as an image property.
 
 ```js
 var allObs = col.map(function(img) {
@@ -289,20 +294,21 @@ var allObs = col.map(function(img) {
 ```
 
 In your own application, if your AOI is a large area, you might consider
-increasing the `scale` and specifying `bestEffort`, `maxPixels`, `tileScale` arguments for the
-`reduceRegion` function to ensure that the operation does not exceed max pixels, memory,
-or timeout limitations. You can also replace the median reducer with your preferred statistic.
-See the [Statistics of an Image Region](https://developers.google.com/earth-engine/reducers_reduce_region)
+increasing the `scale` and specifying `bestEffort`, `maxPixels`, `tileScale`
+arguments for the `reduceRegion` function to ensure that the operation does not
+exceed max pixels, memory, or timeout limitations. You can also replace the
+median reducer with your preferred statistic. See the
+[Statistics of an Image Region](https://developers.google.com/earth-engine/reducers_reduce_region)
 section of the Developer Guide for more information.
 
-The collection can now be accepted by the `ui.Chart.feature.groups` function. The
-function expects a collection and the names of collection object properties to map
-to the chart. Here, the 'system:time_start' property serves as the
-x-axis variable and 'NBR' as the y-axis variable. Note that the NBR property was named by
-the `reduceRegion` function above based on the band name in the image being reduced.
-If you use a different band (not 'NBR'), change the y-axis property name argument accordingly.
-Finally, set the grouping (series) variable to 'SATELLITE', to which distinct colors
-are assigned.
+The collection can now be accepted by the `ui.Chart.feature.groups` function.
+The function expects a collection and the names of collection object properties
+to map to the chart. Here, the 'system:time_start' property serves as the
+x-axis variable and 'NBR' as the y-axis variable. Note that the NBR property was
+named by the `reduceRegion` function above based on the band name in the image
+being reduced. If you use a different band (not 'NBR'), change the y-axis
+property name argument accordingly. Finally, set the grouping (series) variable
+to 'SATELLITE', to which distinct colors are assigned.
 
 ```js
 var chartAllObs =
@@ -328,18 +334,21 @@ time. Note several things:
 - There are no disernableable sensor-biases.
 - Observation frequency varies annually.
 - There is some intra-annual variance, which is consistent across years and
-relatively tight. Trying this with NDVI (img.normalizedDifference(['SWIR1', 'NIR']).rename('NDVI');)
+relatively tight. Trying this with NDVI
+(img.normalizedDifference(['SWIR1', 'NIR']).rename('NDVI');)
 shows much greater intra- and inter-annual response variability.
-- NBR remains high for the majority of the time series with some minor perturbations.
-- A great, rapid reduction in NBR response results from a forest fire evident in 2012. Note
-however, that the fire ([Dollar Lake](#the-dollar-lake-fire)) occurred in September of 2011.
-The error in detection year is due to the annual composite date range being July through
-August; changes occuring after this period are not picked until the next available non-null
-observation, which could be the next year or later.
-- Vegetation recovery (increasing NBR response) begins two years after the major NBR
-loss is detected.
+- NBR remains high for the majority of the time series with some minor
+perturbations.
+- A great, rapid reduction in NBR response results from a forest fire evident in
+2012. Note however, that the fire ([Dollar Lake](#the-dollar-lake-fire))
+occurred in September of 2011. The error in detection year is due to the annual
+composite date range being July through August; changes occurring after this
+period are not picked until the next available non-null observation, which could
+be the next year or later.
+- Vegetation recovery (increasing NBR response) begins two years after the major
+NBR loss is detected.
 
-![Time series all observations](https://storage.googleapis.com/earthengine-community/tutorials/landsat-etm-to-oli-harmonization/ts-all-obs.png)
+![Time series all observations](ts-all-obs.png)
 
 _Figure 2. Spectral response time series chart for a single pixel
 with representation from Landsat TM, ETM+, and OLI. TM and ETM+ images
@@ -348,11 +357,12 @@ through August and are filtered for high quality._
 
 #### Make a times series chart displaying annual median
 
-To simplify and remove noise from the time series, intra-annual observation reduction
-can be applied. Here, median is used.
+To simplify and remove noise from the time series, intra-annual observation
+reduction can be applied. Here, median is used.
 
-The first step is to group images by year. Add a new 'year' property to each image by
-mapping over the collection setting 'year' from each image's `ee.Image.Date`.
+The first step is to group images by year. Add a new 'year' property to each
+image by mapping over the collection setting 'year' from each image's
+`ee.Image.Date`.
 
 ```js
 var col = col.map(function(img) {
@@ -362,23 +372,25 @@ var col = col.map(function(img) {
 
 The new 'year' property can be used to group images from the same year by a join.
 The join between a distinct image year collection and the complete
-collection provides same-year lists, from which median reductions can be performed.
-Subset the complete collection to a set of distinct year representatives.
+collection provides same-year lists, from which median reductions can be
+performed. Subset the complete collection to a set of distinct year
+representatives.
 
 ```js
 var distinctYearCol = col.distinct('year');
 ```
 
-Define a filter and a join that will identify matching years between the distinct
-year collection (`distinctYearCol`) and the complete collection (`col`). Matches
-will be saved to a property called 'year_matches'.
+Define a filter and a join that will identify matching years between the
+distinct year collection (`distinctYearCol`) and the complete collection
+(`col`). Matches will be saved to a property called 'year_matches'.
 
 ```js
 var filter = ee.Filter.equals({leftField: 'year', rightField: 'year'});
 var join = ee.Join.saveAll('year_matches');
 ```
 
-Apply the join and convert the resulting FeatureCollection to an ImageCollection.
+Apply the join and convert the resulting FeatureCollection to an
+ImageCollection.
 
 ```js
 var joinCol = ee.ImageCollection(join.apply(distinctYearCol, col, filter));
@@ -395,7 +407,8 @@ Change the `ee.Reducer` above if you prefer a statistic other than median to
 represent the collection of images in a given year.
 
 Finally, create a chart that displays the median NBR values from sets of
-inta-annual summer observations. Change the region reduction statistic as you like.
+inta-annual summer observations. Change the region reduction statistic as you
+like.
 
 ```js
 var chartMedianComp = ui.Chart.image
@@ -420,7 +433,7 @@ print(chartMedianComp);
 A chart similar to Figure 3 will appear in the console after some processing
 time.
 
-![Time series median](https://storage.googleapis.com/earthengine-community/tutorials/landsat-etm-to-oli-harmonization/ts-median-obs.png)
+![Time series median](ts-median-obs.png)
 
 _Figure 3. Median summer spectral response time series chart for a
 single pixel with representation from Landsat TM, ETM+, and OLI. TM and ETM+
@@ -431,10 +444,10 @@ July through August and are filtered for high quality._
 
 ### Alternative transformation functions
 
-[Roy et al. (2016)](#references) Table 2 provides OLS and RMA regression coefficients
-to transform ETM+ surface reflectance to OLI surface reflectance and vice
-versa. The above tutorial demonstrates only ETM+ to OLI transformation by OLS
-regression. Functions for all translation options can be found in the
+[Roy et al. (2016)](#references) Table 2 provides OLS and RMA regression
+coefficients to transform ETM+ surface reflectance to OLI surface reflectance
+and vice versa. The above tutorial demonstrates only ETM+ to OLI transformation
+by OLS regression. Functions for all translation options can be found in the
 [Code Editor script](https://code.earthengine.google.com/798ae7a268f8e2c8022433b9562785c0)
 or the [GitHub source script](script.js).
 

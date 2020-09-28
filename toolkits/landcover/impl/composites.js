@@ -86,7 +86,7 @@ function createTemporalComposites(
 }
 
 /**
- * Computes a medioid composite by finding the median and returns the
+ * Computes a medoid composite by finding the median and returns the
  * complete observation closest to the median value as measured by
  * euclidiean distance over the specified band(s).
  *
@@ -96,8 +96,8 @@ function createTemporalComposites(
  *    to use to compute the median value. If omitted, all bands are used.
  * @return {!ee.Image}
  */
-function createMedioidComposite(collection, bands) {
-  var args = NamedArgs.extractFromFunction(createMedioidComposite, arguments);
+function createMedoidComposite(collection, bands) {
+  var args = NamedArgs.extractFromFunction(createMedoidComposite, arguments);
   collection = args.collection;
   bands = args.bands === undefined ? '.*' : args.bands;
 
@@ -107,16 +107,16 @@ function createMedioidComposite(collection, bands) {
     var distance = img.select(bands)
         .spectralDistance(median, 'sed')
         .multiply(-1.0)
-        .rename('medioid_distance_');
+        .rename('medoid_distance_');
     return img.addBands(distance);
   });
-  var mosaic = indexed.qualityMosaic('medioid_distance_');
-  var bandNames = mosaic.bandNames().remove('medioid_distance_');
+  var mosaic = indexed.qualityMosaic('medoid_distance_');
+  var bandNames = mosaic.bandNames().remove('medoid_distance_');
   return mosaic.select(bandNames);
 }
 
 /**
- * Returns a function that generates a medioid composite, suitable for
+ * Returns a function that generates a medoid composite, suitable for
  * passing into temporalComposites as a reducer.
  *
  * @param {Array<string|number>|string|number=} bands A band identifier
@@ -124,16 +124,16 @@ function createMedioidComposite(collection, bands) {
  *    to use to compute the median value. If omitted, all bands are used.
  * @return {function(*=): !ee.Image}
  */
-function createMedioidFunction(bands) {
-  var args = NamedArgs.extractFromFunction(createMedioidFunction, arguments);
+function createMedoidFunction(bands) {
+  var args = NamedArgs.extractFromFunction(createMedoidFunction, arguments);
   var bands = args.bands;
   return function(collection) {
-    return createMedioidComposite(collection, bands);
+    return createMedoidComposite(collection, bands);
   };
 }
 
 exports.Composites = {
-  createMedioidComposite: createMedioidComposite,
-  createMedioidFunction: createMedioidFunction,
+  createMedoidComposite: createMedoidComposite,
+  createMedoidFunction: createMedoidFunction,
   createTemporalComposites: createTemporalComposites
 };

@@ -1,8 +1,24 @@
+/**
+ * Copyright 2020 The Google Earth Engine Community Authors
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 //////////////////////////////////////////////////////////////
 // Asset List
 //////////////////////////////////////////////////////////////
 
-var merit = ee.Image('users/meritdataset/Merit-Hydro-world');
+var merit = ee.Image('MERIT/Hydro/v1_0_1');
 var elv = merit.select('elv');
 var flowDirection = merit.select('dir');
 var riverwidth = merit.select('wth');
@@ -15,7 +31,7 @@ var merit_rd = ee.Image('users/meritdataset/Merit-Hydro-world_reduced');
 var riverwidth_rd = merit_rd.select('wth');
 var upArea_rd = merit_rd.select('upa');
 
-var dem = ee.Image('users/meritdataset/Merit-DEM-world');
+var dem = ee.Image('MERIT/DEM/v1_0_3');
 
 //////////////////////////////////////////////////////////////
 // Constants
@@ -51,26 +67,26 @@ var VIS_DEM = {
 };
 
 // Classify the hand values into 18 categories by value.
-// CLASS_HND = ['0.0-0.1','0.1-0.5','0.5-0.7','0.7-1.0','1.0-2.0','2.0-5.0','5.0-7.0','7.0-10.0','10.0-15.0',
+// CLASS_HAND = ['0.0-0.1','0.1-0.5','0.5-0.7','0.7-1.0','1.0-2.0','2.0-5.0','5.0-7.0','7.0-10.0','10.0-15.0',
 //'15.0-20.0','20.0-30.0','30.0-50.0','50.0-70.0','70.0-100.0','100.0-150.0','150.0-200.0','200.0-300.0','300.0-500.0'];
 
-var palette_hnd = ['000000', '1E5BC0', '0882E9', '00A6D7', '00C67B', '31D36D', '69E079',
+var palette_hand = ['000000', '1E5BC0', '0882E9', '00A6D7', '00C67B', '31D36D', '69E079',
   'A5EE87', 'E5FC93', 'F3EF92', 'D1C680', 'B29E70', '967860', '88655D', 'A68A85',
   'C2B1AF', 'E1D8D7', 'FFFFFF'];
-var VIS_HND = {
+var VIS_HAND = {
     min:1,
     max:18,
-    palette: palette_hnd
+    palette: palette_hand
 };
 
 // Define some constants for Interaction Map
-var RIVERWIDTH = 'River Width';
-var RIVERCHANNEL = 'River Channel';
-var HAND = 'Hand';
+var RIVER_WIDTH = 'River Width';
+var RIVER_CHANNEL = 'River Channel';
+var HAND = 'Hand';  // Height Above the Nearest Drainage
 var ELEVATION = 'Elevation';
 var UPG = 'Upstream Drainage Pixel';
 var UPA = 'Upstream Drainage Area';
-var FLOWDIRECTION = 'Flow Direction';
+var FLOW_DIRECTION = 'Flow Direction';
 var TERRAIN = 'Terrain';
 
 //////////////////////////////////////////////////////////////
@@ -186,15 +202,15 @@ panel.add(ui.Label(
 
 // Create a layer selector that dictates which layer is visible on the map.
 var select = ui.Select({
-  items: [RIVERCHANNEL, RIVERWIDTH, TERRAIN],
-  value: RIVERCHANNEL,
+  items: [RIVER_CHANNEL, RIVER_WIDTH, TERRAIN],
+  value: RIVER_CHANNEL,
   onChange: redraw,
 });
-panel.add(ui.Label('Visualization Map:')).add(select);
+panel.add(ui.Label('Use the Layers panel to choose which band values are shown on the map.')).add(select);
 
 // Check-boxes to control which layers are shown in the inspector.
 panel.add(ui.Label('Band Information:'));
-var wthCheck = ui.Checkbox(RIVERWIDTH).setValue(true);
+var wthCheck = ui.Checkbox(RIVER_WIDTH).setValue(true);
 panel.add(wthCheck);
 var elevationCheck = ui.Checkbox(ELEVATION).setValue(true);
 panel.add(elevationCheck);
@@ -204,7 +220,7 @@ var upgCheck = ui.Checkbox(UPG).setValue(true);
 panel.add(upgCheck);
 var upaCheck = ui.Checkbox(UPA).setValue(true);
 panel.add(upaCheck);
-var dirCheck = ui.Checkbox(FLOWDIRECTION).setValue(true);
+var dirCheck = ui.Checkbox(FLOW_DIRECTION).setValue(true);
 panel.add(dirCheck);
 
 // Create the inspector panel, initially hiding it.
@@ -230,10 +246,10 @@ var lat = ui.Label();
     inspector.clear();
     // Display a label that corresponds to a checked checkbox.
     if (wthCheck.getValue()) {
-      inspector.add(ui.Label('River Width: ' + values.wth + ' m'));
+      inspector.add(ui.Label('River Width: ' + Math.round(values.wth) + ' m'));
     }
     if (elevationCheck.getValue()) {
-      inspector.add(ui.Label('Elevation: ' + values.elv + ' m'));
+      inspector.add(ui.Label('Elevation: ' + Math.round(values.elv * 100) / 100 + ' m'));
     }
     if (upaCheck.getValue()) {
       inspector.add(ui.Label('Upstream Drainage Area: ' + values.upa + ' km^2'));
@@ -242,7 +258,7 @@ var lat = ui.Label();
       inspector.add(ui.Label('Upstream Drain Pixel: ' + values.upg));
     }
     if (hndCheck.getValue()) {
-      inspector.add(ui.Label('Hand: ' + values.hnd + ' m'));
+      inspector.add(ui.Label('Hand: ' + Math.round(values.hnd * 100) / 100 + ' m'));
     }
     if (dirCheck.getValue()) {
       inspector.add(ui.Label('Flow Direction: ' + values.dir + ' degrees'));
@@ -268,7 +284,7 @@ function redraw() {
   var layer = select.getValue();
   var image;
 
-  if (layer == RIVERCHANNEL) {
+  if (layer == RIVER_CHANNEL) {
 
     map.addLayer(elvBackground, null, 'Background Elevation');
     
@@ -278,7 +294,7 @@ function redraw() {
     map.addLayer(waterBody,{palette: '5F6EFF'}, 'Non-centerline Water ')
 
 
-  } else if (layer == RIVERWIDTH) {
+  } else if (layer == RIVER_WIDTH) {
 
     map.addLayer(hillshade,
     {min: 0, max: 600, palette: ['444444', 'e5e5e5']}, 'Hillshade');

@@ -50,19 +50,20 @@ var VIS_WTH = {
     palette: palette_wth
 };
 
-var palette_elv = ['C9EEE1', 'D6FEF0', 'F9F4E7', 'F9EDCE', 'F9E3CE', 'F9E9E2', 'FAD9CC', 'F5B7B1'];
+var palette_elv = ['C9EEE1', 'D6FEF0', 'F9F4E7', 'F9E8CB','F9EDCE', 'F9E3CE', 'F9E9E2', 'FAD9CC', 'F5B7B1', 'f4AAA3'];
 var VIS_ELV = {
-    min: 0, 
+    min: -0.5, 
     max: 10, 
     palette: palette_elv
 };
 
-var palette_dem = ['000000', '2353B9', '1276DC', '0098FE', '00B5AD', '05CD67', '3DD872',
-  '71E37D', 'A5ED87', 'E5FA94', 'F2EE92', 'DCD286', 'BCA975', 'A68D69',
-  '8C6C5B', '93756E', 'A9918C', 'C9BAB7', 'E3DBD9', 'FFFFFF'];
+var palette_dem = ['000000', '1276DC', '00B5AD', '00C777', '05CD67', 
+  '3DD872', '21D36D', '71E37D', '55DD77', 'A5ED87', 'E5FA94', 'FEFE98', 'F2EE92', 'DCD286',
+  'CABB7C', 'BCA975', 'AE976D', 'A68D69', '8C6C5B', '815E56', '93756E', 'A9918C', 'C9BAB7', 
+  'E3DBD9', 'FFFFFF'];
 var VIS_DEM = {
     min:0,
-    max:5700,
+    max:5400,
     palette: palette_dem
 };
 
@@ -109,7 +110,7 @@ var waterBody = waterArea.selfMask();
 
 // River Width
 // Local and Global
-var wth_mask_local = upArea_rd.gt(50);
+var wth_mask_regional = upArea_rd.gt(50);
 var wth_mask_global = upArea_rd.gt(300);
 var riverwidthClass = riverwidth_rd
                           .expression(
@@ -131,11 +132,11 @@ var riverwidthClass = riverwidth_rd
                               ':(b("wth") > 1) ? 2' +
                               ':1');
 
-var rwC_local = riverwidthClass.updateMask(wth_mask_local);
+var rwC_regional = riverwidthClass.updateMask(wth_mask_regional);
 var rwC_global = riverwidthClass.updateMask(wth_mask_global);
 
 // Local
-var wth_mask_point = viswidth.gt(1);
+var wth_mask_local = viswidth.gt(1);
 var viswidthClass = viswidth
                           .expression(
                               '(b("viswth") > 7000) ? 17' +
@@ -158,7 +159,7 @@ var viswidthClass = viswidth
                               ':1')
                           .selfMask();
 
-var rwC_point = viswidthClass.updateMask(wth_mask_point);
+var rwC_local = viswidthClass.updateMask(wth_mask_local);
 
 // Hand
 var handClass = hand
@@ -239,7 +240,7 @@ var lat = ui.Label();
 
   // Add the dot as the second layer, so it shows up on top of the composite.
   var dot = ui.Map.Layer(point, {color: 'FF0000'}, 'clicked location');
-  map.layers().set(1, dot);
+  map.layers().set(0, dot);
   
   var sample = merit.unmask(0).sample(point, 30).first().toDictionary();
   sample.evaluate(function(values) {
@@ -286,16 +287,19 @@ function redraw() {
 
   if (layer == RIVER_CHANNEL) {
 
+    map.addLayer(ee.Image(1), { palette: ['FFFFFF']}, 'clicked location', false, 0)
     map.addLayer(elvBackground, null, 'Background Elevation');
-    
     map.addLayer(tributary, {palette: '000000'}, 'Tributaries');
-    map.addLayer(viswidth.gt(1).selfMask(), 
-      {palette: '071CEC'}, 'River Channel');
-    map.addLayer(waterBody,{palette: '5F6EFF'}, 'Non-centerline Water ')
-
+    map.addLayer(waterBody,{palette: '5F6EFF'}, 'Non-centerline Water')
+    map.addLayer(viswidth.updateMask(viswidth.gt(0)).lte(30).selfMask(),
+      {palette: '000000'}, 'River Channel (Minor)')
+    map.addLayer(viswidth.gt(30).selfMask(), 
+      {palette: '071CEC'}, 'River Channel (Major)');
+   
 
   } else if (layer == RIVER_WIDTH) {
 
+    map.addLayer(ee.Image(1), { palette: ['FFFFFF']}, 'clicked location', false, 0)
     map.addLayer(hillshade,
     {min: 0, max: 600, palette: ['444444', 'e5e5e5']}, 'Hillshade');
     map.addLayer(waterBody, {palette: '000000'}, 'Non-centerline Water');
@@ -304,16 +308,17 @@ function redraw() {
     map.addLayer(tributary, {palette: '281D2F'}, 'Tributaries', false);
 
     // Use 'global' at zoom level below 4
-    map.addLayer(rwC_point, VIS_WTH, 'River Width (Point Specific)', false);
     map.addLayer(rwC_local, VIS_WTH, 'River Width (Local)', false);
+    map.addLayer(rwC_regional, VIS_WTH, 'River Width (Regional)', false);
     map.addLayer(rwC_global, VIS_WTH, 'River Width (Global)', true);
   
     
   } else if (layer == TERRAIN){
     
+    map.addLayer(ee.Image(1), { palette: ['FFFFFF']}, 'clicked location', false, 0)
     map.addLayer(waterBody, {palette: '000000'}, 'Non-centerline Water');
-    map.addLayer(dem, VIS_DEM, 'Elevation');
-    map.addLayer(handClass, VIS_HND, 'Hand', false);
+    map.addLayer(dem, VIS_DEM, 'Elevation', false);
+    map.addLayer(handClass, VIS_HND, 'Hand', true);
     
   }
 }

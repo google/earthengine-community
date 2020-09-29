@@ -27,7 +27,7 @@ var upArea = merit.select('upa');
 var hand = merit.select('hnd');
 var viswidth = merit.select('viswth');
 
-var merit_rd = ee.Image('users/meritdataset/Merit-Hydro-world_reduced');
+var merit_rd = ee.Image('users/meritdataset/Merit-Hydro-world_Reduced');
 var riverwidth_rd = merit_rd.select('wth');
 var upArea_rd = merit_rd.select('upa');
 
@@ -203,8 +203,8 @@ panel.add(ui.Label(
 
 // Create a layer selector that dictates which layer is visible on the map.
 var select = ui.Select({
-  items: [RIVER_CHANNEL, RIVER_WIDTH, TERRAIN],
-  value: RIVER_CHANNEL,
+  items: [RIVER_WIDTH, RIVER_CHANNEL, TERRAIN],
+  value: RIVER_WIDTH,
   onChange: redraw,
 });
 panel.add(ui.Label('Use the Layers panel to choose which band values are shown on the map.')).add(select);
@@ -290,7 +290,7 @@ function redraw() {
     map.addLayer(ee.Image(1), { palette: ['FFFFFF']}, 'clicked location', false, 0)
     map.addLayer(elvBackground, null, 'Background Elevation');
     map.addLayer(tributary, {palette: '000000'}, 'Tributaries');
-    map.addLayer(waterBody,{palette: '5F6EFF'}, 'Non-centerline Water')
+    map.addLayer(waterBody,{palette: '5F6EFF'}, 'Water Body')
     map.addLayer(viswidth.updateMask(viswidth.gt(0)).lte(30).selfMask(),
       {palette: '000000'}, 'River Channel (Minor)')
     map.addLayer(viswidth.gt(30).selfMask(), 
@@ -302,21 +302,21 @@ function redraw() {
     map.addLayer(ee.Image(1), { palette: ['FFFFFF']}, 'clicked location', false, 0)
     map.addLayer(hillshade,
     {min: 0, max: 600, palette: ['444444', 'e5e5e5']}, 'Hillshade');
-    map.addLayer(waterBody, {palette: '000000'}, 'Non-centerline Water');
+    map.addLayer(waterBody, {palette: '000000'}, 'Water Body');
     
     // Visualize this layer when zooming-in at zoom level above 8  
     map.addLayer(tributary, {palette: '281D2F'}, 'Tributaries', false);
 
     // Use 'global' at zoom level below 4
     map.addLayer(rwC_local, VIS_WTH, 'River Width (Local)', false);
-    map.addLayer(rwC_regional, VIS_WTH, 'River Width (Regional)', false);
-    map.addLayer(rwC_global, VIS_WTH, 'River Width (Global)', true);
+    map.addLayer(rwC_regional, VIS_WTH, 'River Width (Regional)', true);
+    map.addLayer(rwC_global, VIS_WTH, 'River Width (Global)', false);
   
     
   } else if (layer == TERRAIN){
     
     map.addLayer(ee.Image(1), { palette: ['FFFFFF']}, 'clicked location', false, 0)
-    map.addLayer(waterBody, {palette: '000000'}, 'Non-centerline Water');
+    map.addLayer(waterBody, {palette: '000000'}, 'Water Body');
     map.addLayer(dem, VIS_DEM, 'Elevation', false);
     map.addLayer(handClass, VIS_HND, 'Hand', true);
     

@@ -318,7 +318,7 @@ function redraw() {
     map.addLayer(ee.Image(1), { palette: ['FFFFFF']}, 'clicked location', false, 0)
     map.addLayer(waterBody, {palette: '000000'}, 'Water Body');
     map.addLayer(dem, VIS_DEM, 'Elevation', false);
-    map.addLayer(handClass, VIS_HND, 'Hand', true);
+    map.addLayer(handClass, VIS_HAND, 'Hand', true);
     
   }
 }

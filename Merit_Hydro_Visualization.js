@@ -27,7 +27,7 @@ var upArea = merit.select('upa');
 var hand = merit.select('hnd');
 var viswidth = merit.select('viswth');
 
-var merit_rd = ee.Image('users/meritdataset/Merit-Hydro-world_Reduced');
+var merit_rd = ee.Image('MERIT/Hydro_reduced/v1_0_1');
 var riverwidth_rd = merit_rd.select('wth');
 var upArea_rd = merit_rd.select('upa');
 

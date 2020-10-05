@@ -74,6 +74,6 @@ var collection = ee.ImageCollection(images);
 
 // Get an RGB image from the collection of bands.
 var rgb = collection.toBands().rename(['B2', 'B3', 'B4', 'B5']);
-Map.centerObject(rgb, 6);
+Map.centerObject(rgb);
 Map.addLayer(rgb, {bands: ['B4', 'B3', 'B2'], min: 0, max: 20000}, 'rgb');
 // [END earthengine__image_collections02__cloud_collections]

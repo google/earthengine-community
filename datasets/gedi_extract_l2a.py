@@ -14,6 +14,7 @@ limitations under the License.
 """
 
 from absl import app
+from absl import logging
 import h5py
 import numpy as np
 import pandas as pd
@@ -21,12 +22,12 @@ import os
 
 
 # pylint:disable=line-too-long
-def rhv(h5file, csv_fh):
-  """Extracts rh values and some qa flags.
+def extract_values(input_path, output_path):
+  """Extracts rh (relative height) values and some qa flags.
 
   Args:
-     h5file: string, GEDI L2A file path
-     csv_fh: csv file handle
+     input_path: string, GEDI L2A file path
+     output_path: string, csv output file path
 
   /BEAMXXXX/rx_assess/quality_flag == 1   L2A
   /BEAMXXXX/rx_assess/rx_maxamp > (8 * /BEAMXXXX/rx_assess/sd_corrected)  L2A Check with Michelle on lowering sd_corrected multiplier
@@ -36,13 +37,18 @@ def rhv(h5file, csv_fh):
   /BEAMXXXX/sensitivity > 0   L2A
   /BEAMXXXX/sensitivity <= 1  L2A
 
-  In this implementaiton, assume that all the shots in rh are using
+  In this implementation, assume that all the shots in rh are using
   the same algorithm.
 
   """
-  f = h5py.File(h5file)
+  basename = os.path.basename(input_path)
+  if not basename.startswith('GEDI') or not basename.endswith('.h5'):
+    logging.error('Input path is not a GEDI filename: %s', input_path)
+    return
+
+  f = h5py.File(input_path, 'r')
   fmt = '%3.6f,%3.6f,%d,%8.4f,%3.2f'
-  with open(csv_fh, 'w') as oufh:
+  with open(output_path, 'w') as oufh:
     # oufh.writelines('lon,lat,rh98\n')
     #oufh.writelines('lon,lat,beam,channel,acquisition_date,rh98\n')
     is_first = True
@@ -100,24 +106,8 @@ def rhv(h5file, csv_fh):
       df = None
 
 
-def process_all(dat_dir, out_dir):
-  for f in os.listdir(dat_dir):
-    print('extracting', f)
-    if f.startswith('GEDI') and f.endswith('.h5'):
-      oufh = os.path.join(out_dir, f'{f.replace(".h5", ".csv")}')
-      if os.path.exists(oufh):
-        continue
-
-      rhv(os.path.join(dat_dir, f), oufh)
-
-
 def main(argv):
-  dat_dir = argv[1]
-  out_dir = '/tmp'
-  print(dat_dir)
-  process_all(dat_dir, out_dir)
-  print('all done!')
-
+  extract_values(argv[1], argv[2])
 
 if __name__ == '__main__':
   app.run(main)

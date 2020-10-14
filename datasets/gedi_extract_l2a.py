@@ -46,64 +46,67 @@ def extract_values(input_path, output_path):
     logging.error('Input path is not a GEDI filename: %s', input_path)
     return
 
-  f = h5py.File(input_path, 'r')
+  with h5py.File(input_path, 'r') as hdf_fh:
+    with open(output_path, 'w') as csv_fh:
+      write_csv(hdf_fh, csv_fh)
+
+
+def write_csv(hdf_fh, csv_fh):
+  """Writes a single CSV file based on the contents of HDF file."""
   fmt = '%3.6f,%3.6f,%d,%8.4f,%3.2f'
-  with open(output_path, 'w') as oufh:
-    # oufh.writelines('lon,lat,rh98\n')
-    #oufh.writelines('lon,lat,beam,channel,acquisition_date,rh98\n')
-    is_first = True
-    for k in f.keys():
-      if not k.startswith('BEAM'):
-        continue
-      print('\t',k)
-      lat = f[f'{k}/lat_lowestmode']
-      lon = f[f'{k}/lon_lowestmode']
-      beam = f[f'{k}/beam']
-      channel = f[f'{k}/channel']
-      #dtime = np.array(f[f'{k}/delta_time']) * 1000 + 1514764800000
-      dtime = np.array(f[f'{k}/delta_time']) + 1514764800
-      degrade = f[f'{k}/degrade_flag']
-      quality = f[f'{k}/quality_flag']
-      sensitivity = f[f'{k}/sensitivity']
-      rx_quality = f[f'{k}/rx_assess/quality_flag']
+  is_first = True
+  for k in hdf_fh.keys():
+    if not k.startswith('BEAM'):
+      continue
+    print('\t',k)
+    lat = hdf_fh[f'{k}/lat_lowestmode']
+    lon = hdf_fh[f'{k}/lon_lowestmode']
+    beam = hdf_fh[f'{k}/beam']
+    channel = hdf_fh[f'{k}/channel']
+    dtime = np.array(hdf_fh[f'{k}/delta_time']) + 1514764800
+    degrade = hdf_fh[f'{k}/degrade_flag']
+    quality = hdf_fh[f'{k}/quality_flag']
+    sensitivity = hdf_fh[f'{k}/sensitivity']
+    rx_quality = hdf_fh[f'{k}/rx_assess/quality_flag']
 
-      # assuming all shots using the same alborithm, randomly picked
-      # the 1000th indexed element
-      algorithm = f[f'{k}/selected_algorithm'][1000]
-      rx_algrunflag = f[f'{k}/rx_processing_a{algorithm}/rx_algrunflag']
-      zcross = f[f'{k}/rx_processing_a{algorithm}/zcross']
-      toploc = f[f'{k}/rx_processing_a{algorithm}/toploc']
+    # assuming all shots using the same alborithm, randomly picked
+    # the 1000th indexed element
+    algorithm = hdf_fh[f'{k}/selected_algorithm'][1000]
+    rx_algrunflag = hdf_fh[f'{k}/rx_processing_a{algorithm}/rx_algrunflag']
+    zcross = hdf_fh[f'{k}/rx_processing_a{algorithm}/zcross']
+    toploc = hdf_fh[f'{k}/rx_processing_a{algorithm}/toploc']
 
-      rh = f[f'{k}/rh']
-      quantiles = (10,20,30,40,50,60,70,80,90,98)
-      rh = rh[:, quantiles]
+    rh = hdf_fh[f'{k}/rh']
+    quantiles = (10,20,30,40,50,60,70,80,90,98)
+    rh = rh[:, quantiles]
 
-      names = [f'rh{x}' for x in quantiles]
-      drh = pd.DataFrame(rh, columns=names)
+    names = [f'rh{x}' for x in quantiles]
+    drh = pd.DataFrame(rh, columns=names)
 
-      ds = {'lon': lon,
-            'lat': lat,
-            'beam': beam,
-            'channel': channel,
-            'dtime': dtime,
-            'degrade': degrade,
-            'quality': quality,
-            'sensitivity': sensitivity,
-            'rx_quality': rx_quality,
-            'rx_algrunflag': rx_algrunflag,
-            'zcross': zcross,
-            'toploc': toploc
-            }
+    row = {
+        'lon': lon,
+        'lat': lat,
+        'beam': beam,
+        'channel': channel,
+        'dtime': dtime,
+        'degrade': degrade,
+        'quality': quality,
+        'sensitivity': sensitivity,
+        'rx_quality': rx_quality,
+        'rx_algrunflag': rx_algrunflag,
+        'zcross': zcross,
+        'toploc': toploc
+    }
 
-      df = pd.DataFrame(ds)
+    dataframe = pd.DataFrame(row)
 
-      tmp = pd.concat((df, drh), axis=1)
+    concat = pd.concat((dataframe, drh), axis=1)
 
-      tmp.to_csv(
-          oufh, float_format='%3.6f', index=False, header=is_first,
-          line_terminator='\n')
-      is_first = False
-      df = None
+    concat.to_csv(
+        csv_fh, float_format='%3.6f', index=False, header=is_first,
+        line_terminator='\n')
+    is_first = False
+    dataframe = None
 
 
 def main(argv):

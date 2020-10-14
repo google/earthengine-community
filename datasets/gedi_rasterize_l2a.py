@@ -13,14 +13,14 @@ See the License for the specific language governing permissions and
 limitations under the License.
 """
 
-import ast
 import datetime
-import json
 import os
 import time
 
 from absl import app
 from absl import flags
+from dateutil import relativedelta
+import pytz
 
 import ee
 
@@ -29,11 +29,24 @@ flags.DEFINE_integer('num_utm_grids', 389, 'UTM grid count')
 FLAGS = flags.FLAGS
 
 
-def make_timestampFromYMD(year, month, day):
-  tdat = datetime.datetime(year, month, day)
-  return time.mktime(tdat.timetuple()) * 1000
+def timestamp_ms_for_datetime(dt):
+  return time.mktime(dt.timetuple()) * 1000
 
-def rasterize_GEDI_by_utm_zone(orbits, grid_id, month):
+
+def parse_date_from_gedi_filename(vector_asset_id):
+  return pytz.utc.localize(
+      datetime.datetime.strptime(
+          os.path.basename(vector_asset_id).split('_')[2], '%Y%j%H%M%S'))
+
+
+def rasterize_gedi_by_utm_zone(vector_asset_ids, grid_id):
+  """Starts an Earth Engine task generating a raster asset covering a month."""
+  datetimes = [parse_date_from_gedi_filename(x) for x in vector_asset_ids]
+  if len(set(x.month for x in datetimes)) > 1:
+    raise ValueError('Found more than one month in filenames')
+  month = datetimes[0].month
+  year = datetimes[0].year
+
   props = ['orbit', 'track', 'beam', 'channel', 'degrade', 'dtime', 'quality',
            'rx_algrunflag', 'rx_quality', 'sensitivity', 'toploc', 'zcross',
            'rh10', 'rh20', 'rh30', 'rh40', 'rh50', 'rh60', 'rh70', 'rh80',
@@ -45,8 +58,9 @@ def rasterize_GEDI_by_utm_zone(orbits, grid_id, month):
             )
 
   shots = []
-  for orbit in orbits:
-    fshots = ee.FeatureCollection(orbit).filterMetadata('quality', 'equals', 1)
+  for vector_asset_id in vector_asset_ids:
+    fshots = ee.FeatureCollection(
+        vector_asset_id).filterMetadata('quality', 'equals', 1)
     augmented = fshots.map(updateOrbit)
     shots.append(augmented)
 
@@ -59,25 +73,31 @@ def rasterize_GEDI_by_utm_zone(orbits, grid_id, month):
   zone_id = ee.Feature(grid.first()).get('grid_name').getInfo()
   crs = ee.Feature(grid.first()).get('crs').getInfo()
 
-  iprop = {
+  month_start = datetime.datetime(year, month, 1)
+  month_end = month_start + relativedelta.relativedelta(months=1)
+
+  image_properties = {
       'month': month,
-      'year': 2019,
+      'year': year,
       'grid_id': grid_id,
       'version': 1,
-      'system:time_start': make_timestampFromYMD(2019, month, 15)
+      'system:time_start': timestamp_ms_for_datetime(month_start),
+      'system:time_end': timestamp_ms_for_datetime(month_end),
   }
 
-  img = (shots.sort('sensitivity', False)
-         .reduceToImage(props, ee.Reducer.first().forEach(props))
-         .reproject(crs, None, 25)
-         .set(iprop))
+  image = (
+      shots.sort('sensitivity', False)
+      .reduceToImage(props, ee.Reducer.first().forEach(props))
+      .reproject(crs, None, 25)
+      .set(image_properties)
+  )
 
   asset_dir = 'projects/gee-gedi/assets/L2A_Raster'
-  task_name = f'L2A_Grid{grid_id:03d}_{zone_id}_2019_{month:02d}_20200625'
+  task_name = f'L2A_Grid{grid_id:03d}_{zone_id}_{year}_{month:02d}'
 
   box = grid.geometry().buffer(2500, 25).bounds()
   task = ee.batch.Export.image.toAsset(
-      image=img.clip(box),
+      image=image.clip(box),
       description=task_name,
       assetId=f'{asset_dir}/{task_name}',
       region=box,
@@ -90,39 +110,14 @@ def rasterize_GEDI_by_utm_zone(orbits, grid_id, month):
   task.start()
 
 
-def lookup(lookup_file):
-  with open(lookup_file) as infh:
-    strdict = infh.read()
-    return ast.literal_eval(strdict)
-
-
-months = {
-    'January': 1,
-    'February': 2,
-    'March': 3,
-    'April': 4,
-    'May': 5,
-    'June': 6,
-    'July': 7,
-    'August': 8,
-    'September': 9,
-    'October': 10,
-    'November': 11,
-    'December': 12
-}
-
-
 def main(argv):
   start_id = 1  # First UTM grid id
   ee.Initialize()
 
   for grid_id in range(start_id, start_id + FLAGS.num_utm_grids):
-    for k, v in lookup(argv[1]).items():
-      if k != 'May':
-        continue
-
-      print(grid_id, k, '-->', months[k])
-      rasterize_GEDI_by_utm_zone(v, grid_id, months[k])
+    print(grid_id)
+    with open(argv[1]) as fh:
+      rasterize_gedi_by_utm_zone([x.strip() for x in fh], grid_id)
 
 
 if __name__ == '__main__':

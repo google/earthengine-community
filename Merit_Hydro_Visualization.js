@@ -190,7 +190,7 @@ var handClass = hand
 // Set up the overall structure of the app, with a control panel to the left
 // of a full-screen map.
 ui.root.clear();
-var panel = ui.Panel({style: {width: '250px'}});
+var panel = ui.Panel({style: {width: '280px'}});
 var map = ui.Map();
 ui.root.add(panel).add(map);
 map.style().set('cursor', 'crosshair');
@@ -198,7 +198,7 @@ map.style().set('cursor', 'crosshair');
 // Create title
 panel.add(ui.Label(
   'MERIT Hydro Visualization and Interactive Map',
-  {fontWeight: 'bold', fontSize:'20px'}
+  {fontWeight: 'bold', fontSize:'18px'}
 ));
 
 // Create a layer selector that dictates which layer is visible on the map.
@@ -207,27 +207,39 @@ var select = ui.Select({
   value: RIVER_WIDTH,
   onChange: redraw,
 });
-panel.add(ui.Label('Use the Layers panel to choose which band values are shown on the map.')).add(select);
+panel.add(ui.Label('Use the dropdown list below to choose which main layer is shown on the map.')).add(select);
 
-// Check-boxes to control which layers are shown in the inspector.
-panel.add(ui.Label('Band Information:'));
-var wthCheck = ui.Checkbox(RIVER_WIDTH).setValue(true);
-panel.add(wthCheck);
-var elevationCheck = ui.Checkbox(ELEVATION).setValue(true);
-panel.add(elevationCheck);
-var hndCheck = ui.Checkbox(HAND).setValue(true);
-panel.add(hndCheck);
-var upgCheck = ui.Checkbox(UPG).setValue(true);
-panel.add(upgCheck);
-var upaCheck = ui.Checkbox(UPA).setValue(true);
-panel.add(upaCheck);
-var dirCheck = ui.Checkbox(FLOW_DIRECTION).setValue(true);
-panel.add(dirCheck);
+// Add descriptions for three main layers.
+panel.add(ui.Label('Main Layer Information:', {fontWeight: 'bold', fontSize:'16px', margin:'12px 0 0 8px'}));
+
+panel.add(ui.Label('River Width', {fontWeight: 'bold', fontSize:'14px', margin:'12px 0 0 8px'}));
+panel.add(ui.Label('River channel width at the channel centerlines. '
+      +'Select appropriate river width visualization layers from '
+      +'"Global", "Regional", "Local" and "Tributaries" depending on the zoom level.',
+      {margin:'4px 4px 0 12px'}));
+
+panel.add(ui.Label('River Channel', {fontWeight: 'bold', fontSize:'14px', margin:'12px 0 0 8px'}));
+panel.add(ui.Label('River channel network with permanent water body. '
+      +'"Major" displays the channels detected by Landsat while '
+      +'"Minor" displays the ones not detected.',
+      {margin:'4px 4px 0 12px'}));
+      
+panel.add(ui.Label('Terrain', {fontWeight: 'bold', fontSize:'14px', margin:'12px 0 0 8px'}));
+panel.add(ui.Label('Terrain layer with "Elevation" and "Hand" (Height above the nearest drainage).',
+      {margin:'4px 4px 0 12px'}));
 
 // Create the inspector panel, initially hiding it.
 var inspector = ui.Panel({style:{shown: false}});
-inspector.style().set({width: '250px', position: 'bottom-right'});
+inspector.style().set({width: '270px', position: 'bottom-right'});
 map.add(inspector);
+
+// Check-boxes to control which layers are shown in the inspector.
+var wthCheck = ui.Checkbox(RIVER_WIDTH).setValue(true);
+var elevationCheck = ui.Checkbox(ELEVATION).setValue(true);
+var hndCheck = ui.Checkbox(HAND).setValue(true);
+var upgCheck = ui.Checkbox(UPG).setValue(true);
+var upaCheck = ui.Checkbox(UPA).setValue(true);
+var dirCheck = ui.Checkbox(FLOW_DIRECTION).setValue(true);
 
 // Register an onClick handler that populates and shows the inspector panel.
 map.onClick(function(coords) {
@@ -253,7 +265,7 @@ var lat = ui.Label();
       inspector.add(ui.Label('Elevation: ' + Math.round(values.elv * 100) / 100 + ' m'));
     }
     if (upaCheck.getValue()) {
-      inspector.add(ui.Label('Upstream Drainage Area: ' + values.upa + ' km^2'));
+      inspector.add(ui.Label('Upstream Drainage Area: ' + Math.round(values.upa * 100) / 100 + ' km^2'));
     }
     if (upgCheck.getValue()) {
       inspector.add(ui.Label('Upstream Drain Pixel: ' + values.upg));

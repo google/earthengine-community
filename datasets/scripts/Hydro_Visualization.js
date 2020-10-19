@@ -63,7 +63,7 @@ var palette_dem = ['000000', '1276DC', '00B5AD', '00C777', '05CD67',
   'E3DBD9', 'FFFFFF'];
 var VIS_DEM = {
     min:0,
-    max:5400,
+    max:5200,
     palette: palette_dem
 };
 
@@ -288,14 +288,109 @@ var lat = ui.Label();
 });
 
 //////////////////////////////////////////////////////////////
+// Map Legend
+//////////////////////////////////////////////////////////////
+
+// Create the legend panel.
+var legendPanel_wth = ui.Panel({style: {width: '130px', position: 'bottom-left'}});
+var legendPanel_dem = ui.Panel({style: {width: '110px'}});
+var legendPanel_hand = ui.Panel({style: {width: '80px'}});
+
+// Create the legend title.
+var legendTitle_wth = ui.Label({value: 'River Width (m)', style: {fontWeight: 'bold'}});
+var legendTitle_dem = ui.Label({value: 'Elevation (m)', style: {fontWeight: 'bold'}});
+var legendTitle_hand = ui.Label({value: 'Hand (m)', style: {fontWeight: 'bold'}});
+
+// Fuction to create the legend image.
+function makeLegendImage(VIS) {
+  var lon = ee.Image.pixelLonLat().select('latitude');
+  var gradient = lon.multiply((VIS.max-VIS.min)/100.0).add(VIS.min);
+  var legendImage = gradient.visualize(VIS);
+  return legendImage;
+}
+
+// Create the color bar for the legend.
+var colorBar_wth = ui.Thumbnail({
+  image: makeLegendImage(VIS_WTH),
+  params: {bbox: [0, 0, 10, 100], dimensions: '30x250'},
+  style: {stretch: 'vertical', margin: '13px 13px'},
+});
+var colorBar_dem = ui.Thumbnail({
+  image: makeLegendImage(VIS_DEM),
+  params: {bbox: [0, 0, 10, 100], dimensions: '30x250'},
+  style: {stretch: 'vertical', margin: '13px 10px'},
+});
+var colorBar_hand = ui.Thumbnail({
+  image: makeLegendImage(VIS_HAND),
+  params: {bbox: [0, 0, 10, 100], dimensions: '30x250'},
+  style: {stretch: 'vertical', margin: '13px 5.5px'},
+});
+
+// Create a panel with three numbers for the legend.
+var legendLabels_wth = ui.Panel({
+  widgets: [
+    ui.Label(7000, {margin: '8px 8px'}),
+    ui.Label(3000, {margin: '8px 8px'}),
+    ui.Label(1500, {margin: '8px 8px'}),
+    ui.Label(700, {margin: '8px 8px'}),
+    ui.Label(300, {margin: '8px 8px'}),
+    ui.Label(150, {margin: '8px 8px'}),
+    ui.Label(70, {margin: '8px 8px'}),
+    ui.Label(20, {margin: '8px 8px'}),
+    ui.Label(1, {margin: '8px 8px'})
+  ],
+  layout: ui.Panel.Layout.flow('vertical'),
+});
+
+var widgets = [];
+for (var i = 0; i < 14; i++) {
+  var label = 5200 - 400*i;
+  widgets[i] = ui.Label(label, {margin: '3.5px 5px'})
+}
+var legendLabels_dem = ui.Panel({
+  widgets: widgets,
+  layout: ui.Panel.Layout.flow('vertical'),
+});
+
+var legendLabels_hand = ui.Panel({
+  widgets: [
+    ui.Label(300.0, {margin: '8px 5px'}),
+    ui.Label(150.0, {margin: '8px 5px'}),
+    ui.Label(70.0, {margin: '8px 5px'}),
+    ui.Label(30.0, {margin: '8px 5px'}),
+    ui.Label(15.0, {margin: '8px 5px'}),
+    ui.Label(7.0, {margin: '8px 5px'}),
+    ui.Label(2.0, {margin: '8px 5px'}),
+    ui.Label(0.7, {margin: '8px 5px'}),
+    ui.Label(0.2, {margin: '8px 5px'}),
+    ui.Label(0, {margin: '8px 5px'})
+  ],
+  layout: ui.Panel.Layout.flow('vertical'),
+});
+
+// Add three properties to the legend panel.
+legendPanel_wth.add(ui.Panel(legendTitle_wth));
+legendPanel_wth.add(ui.Panel([colorBar_wth, legendLabels_wth], ui.Panel.Layout.flow('horizontal')));
+
+legendPanel_dem.add(ui.Panel(legendTitle_dem));
+legendPanel_dem.add(ui.Panel([colorBar_dem, legendLabels_dem], ui.Panel.Layout.flow('horizontal')));
+
+legendPanel_hand.add(ui.Panel(legendTitle_hand));
+legendPanel_hand.add(ui.Panel([colorBar_hand, legendLabels_hand], ui.Panel.Layout.flow('horizontal')));
+
+var legendPanel_Terrain = ui.Panel([legendPanel_dem, legendPanel_hand], ui.Panel.Layout.flow('horizontal'), {position: 'bottom-left'});
+
+//////////////////////////////////////////////////////////////
 // Map Layers
 //////////////////////////////////////////////////////////////
 
 // Create a function to render a map layer configured by the user inputs.
 function redraw() {
   map.layers().reset();
+  map.remove(legendPanel_wth);
+  map.remove(legendPanel_Terrain);
+  
   var layer = select.getValue();
-  var image;
 
   if (layer == RIVER_CHANNEL) {
 
@@ -324,13 +419,16 @@ function redraw() {
     map.addLayer(rwC_regional, VIS_WTH, 'River Width (Regional)', true);
     map.addLayer(rwC_global, VIS_WTH, 'River Width (Global)', false);
   
+    map.add(legendPanel_wth);
     
   } else if (layer == TERRAIN){
     
-    map.addLayer(ee.Image(1), { palette: ['FFFFFF']}, 'clicked location', false, 0)
+    map.addLayer(ee.Image(1), { palette: ['FFFFFF']}, 'clicked location', false, 0);
     map.addLayer(waterBody, {palette: '000000'}, 'Water Body');
     map.addLayer(dem, VIS_DEM, 'Elevation', false);
     map.addLayer(handClass, VIS_HAND, 'Hand', true);
+    
+    map.add(legendPanel_Terrain);
     
   }
 }

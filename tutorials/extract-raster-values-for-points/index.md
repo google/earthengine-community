@@ -1,0 +1,332 @@
+---
+title: Extracting raster values for points
+description: How to extract raster values for points and polygons
+author: swinsem
+tags: raster, image, point, polygon, plot, time-series, landsat, reduce
+date_published: 2020-10-14
+---
+<!--
+Copyright 2020 The Google Earth Engine Community Authors
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+    https://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+-->
+
+
+Extracting raster values for points or plots is essential for many types of projects. This tutorial will show you how to use Earth Engine to get a full time series of image values for points or plots in your dataset. We will first lay out the process and functions for how to extract raster values for points using any dataset and will then apply those to an example using Landsat with a neighborhood mean of 9 pixels.
+
+## Context
+
+Anyone working with field data collected in plots will likely need to extract raster data for those plots at some point. The Normalized Differenced Vegetation Index (NDVI), for example, is commonly used as a measure for vegetation greenness and can be calculated from a wide variety of satellite datasets. You may also want to use climate data for your plots, or extract reflectance for satellite multispectral bands so you can calculate your own indices later. This process works for a single image or image collections. Running the process over an image collection will produce a table with values from each image in the collection. Image collections can be processed before extraction as needed, for example by masking clouds from satellite imagery or by constraining the dates needed for a particular research question. In this tutorial, the data extracted from rasters are exported to a table for analysis, where each row of the table corresponds to a unique point-image combination. 
+
+In fieldwork, researchers often work with plots, which are often recorded as polygon files or as a center point with a set radius. Plots will often not be set right in the center of pixels from your desired raster dataset, and many field GPS units have positioning errors. Because of these issues, it may be important to use the average of adjacent pixels to estimate the central value, or ‘neighborhood’ mean ([Miller and Thode 2007, Cansler and McKenzie 2012](#references)). This is sometimes referred to as a focal mean, a weighted mean, or a moving neighborhood window. To choose the size of your window you will need to consider your research questions, the spatial resolution of the dataset, the size of your field plot, and the error from your GPS. For example, randomly placed 20 m diameter plots would likely require a neighborhood mean when using Sentinel-2 or Landsat 8, at 10 and 30 m spatial resolution respectively, while using a thermal band from MODIS at 1000 m may not. While much of this tutorial is written with the frame of points and buffers, note that a polygon file will work the same way as a buffer.
+
+
+## Point-value extraction: logic and functions
+
+This section outlines the basic process and series of functions for extracting data from rasters for points or polygons.
+
+### Import shapefile/vector data
+
+Whether your file is a polygon or point, you can upload the file and extract raster data for it, with the option to extract statistics of multiple pixels. Import the point or polygon shapefile or csv as an [asset](https://developers.google.com/earth-engine/guides/importing). All columns in your vector file, such as the plot name, will be retained through this process. Next, [import your file](https://developers.google.com/earth-engine/guides/asset_manager#importing-assets-to-your-script) into your script by hovering over the name of the asset and clicking the arrow at the right side or by calling it in your script with the following code:
+
+```
+var pts = ee.FeatureCollection("users/yourUsername/yourAsset");
+```
+
+#### Buffering
+
+If you want to use a neighborhood mean or other statistic for your file, you can import the file with a buffering operation. Pixels used in the reducer will be those with the center coordinate intersecting the polygon or buffer. For example, to get a 9-pixel neighborhood around a point, you want to create a buffer that is the same overall area. For example, a 10 m resolution imagery with a 9-pixel neighborhood would require a 30 m square; this requires a 15 m buffer around the point. For 30 m imagery, you would use a 45 m buffer to create a 90x90m square. Note that a polygon file can also be imported with a buffering operation.
+
+```
+var pts = ee.FeatureCollection("users/yourUsername/yourAsset")  
+  // Add a buffer to each point:
+  .map(function(pt){
+    return pt.buffer(45).bounds(); // edit this number based on image resolution and desired neighborhood size
+  });
+```
+
+
+### Prepare and load raster files
+
+Next, load your raster files and perform any necessary or desired preprocessing. For example, if using satellite imagery, be sure to use a cloud mask. Whatever names the bands have in the original file will be the names exported at the end of the process, so you may want to rename the bands now. 
+
+To load and rename bands, create a function using return img.select(), the names of the bands in the original loaded image, and the names you wish to call each band. For example, to load and rename bands from Landsat OLI, the following would work (more below in the Landsat example).
+
+```
+function renameOli(img) {
+  return img.select(
+    ['B2', 'B3', 'B4', 'B5', 'B6', 'B7'],
+    ['Blue', 'Green', 'Red', 'NIR', 'SWIR1', 'SWIR2'])}
+```
+
+If you want to extract point data for multiple image collections, you can also merge the prepared collections and map over the entire imageCollection at once (see example below using Landsat 5, 7, and 8). 
+
+
+### Reduce region around each point
+
+The crux of this process is the image reduction in the function below. This function will require modifications according to your specifications. In this step, you will first choose the metadata you want from the images, such as the date and name of the satellite. Second, filter the boundary of the images to those intersecting the points to speed processing. 
+
+Next is the image reducer function, img.reduceRegions. By using the reducer you will retrieve band statistics (which may be the simple number if not using a neighborhood) for each point. In this chunk of code, you will use the points, the reducer of your choice (e.g. mean, first, stdDev), the [scale](https://developers.google.com/earth-engine/scale) of the image, and the coordinate reference system. If you are not using a buffer, change the reduce to <ee.Reducer.first()>. 
+
+
+Next, add the metadata that you chose at the beginning of this step to each unique point-image combination. Lastly, return the featureCollection with the name set in the reducer code (bandStats in this example).
+
+If you want to add a vegetation index using the bands in an image, you can add a line of code to the first line of the function below, before extracting the metadata. For example, to add NDVI using bands that were renamed "Red" and "NIR" in the previous step, add < img = img.addBands(img.normalizedDifference(['NIR', 'Red']).rename('NDVI')) > 
+
+Any features that are in your point file, such as the plot name, along with values for each band in the image will be included in the resulting file without the need to specify their names.
+
+```
+var statCol = col.map(function(img) {
+  // Get metadata for the image. Substitute or add the relevant information for your image.
+  var imgDate = img.date().format('YYYY-MM-dd'); 
+  var imgSat = img.getString('SATELLITE');
+  // Filter the points to those that intersect the image.
+  var thesePts = pts.filterBounds(img.geometry());
+
+  // Reduce the image by mean for the points that intersect it. 
+  var bandStats = img.reduceRegions({
+    collection: thesePts,
+    reducer: ee.Reducer.mean(), //change to ee.Reducer.first() if not using a buffer
+    scale: 30, //use the appropriate scale for your image
+    crs: 'EPSG:4326' // this is the default, change if needed 
+  })
+  // Add metadata to each point.
+  .map(function(pt) {
+    return pt.set({
+      'imgDate': imgDate,
+      'imgId': imgId,
+      'imgSat': imgSat
+    });
+  });
+  // Return the featureCollection.
+  return bandStats;
+});
+```
+
+
+Flatten the collection of collections to create a featureCollection. This is a table with one row per unique observation, which is defined by combinations of image and point.  The columns are each band, which has the image statistic as the value, and the image properties specified by the metadata, along with the columns from the point data.
+
+```
+statCol = statCol.flatten();
+```
+
+Filter out observations where band stats are null (where points fell on masked pixels). Use the appropriate names of your columns.
+
+```
+statCol = statCol.filter(
+  ee.Filter.notNull(['Blue', 'Green', 'Red', 'NIR', 'SWIR1', 'SWIR2']));
+```
+
+
+### Batch task: export as asset or Google Drive file
+
+It's likely that for point feature collections that cover a large area or contain many points, you'll need to complete this operation as a batch task by either exporting the final feature collection as an asset or as a CSV/Shapefile/GeoJSON to Google Drive. If your browser times out, try exporting the results to an asset or Google Drive.
+
+First, the option to export as an asset:  
+
+```
+Export.table.toAsset({
+  collection: statCol,
+  description: 'point_summary_table_asset',
+  assetId: 'point_summary_table'
+});
+```
+
+Or, the option to export to Google Drive, with the option to specify the folder in Google Drive where the file should go. Then click 'Run' in the code editor Tasks tab.  
+
+```
+Export.table.toDrive({
+  collection: statCol,
+  folder: 'yourFolderNameHere',
+  description: 'point_summary_table_gdrive',
+  fileFormat: 'CSV'});
+```
+
+
+# Landsat example
+
+[Open In Code Editor](https://code.earthengine.google.com/dd16098e2ee5847b2c41bf48fa44d9d6)
+
+[Landsat](https://landsat.gsfc.nasa.gov/about/) is a satellite program that has been collecting imagery since 1972, providing a valuable resource for studying landscape change. Since 1984 the program has collected 30 meter resolution imagery across three instruments: the Thematic Mapper (TM) from Landsat 5, Enhanced Thematic Mapper Plus (ETM+) from Landsat 7, and Operational Land Imager (OLI) from Landsat 8. The TM and ETM+ sensors are equivalent for the bands considered below. Please see the “Landsat ETM+ to OLI Harmonization” tutorial for additional information about harmonizing the results from TM/ETM+ and OLI, and consider incorporating those steps into this process if using multiple Landsat sensors in your research or work.
+
+In this example, we will extract values from Landsat 5, 7 and 8 for every overpass from 1984-present, returning a 9-pixel neighborhood mean for each point.
+
+
+### Import point feature collection with 90x90m square buffer
+
+The example point file contains 5 random points in the Sierra Nevada.
+
+```
+var pts = ee.FeatureCollection("users/swinsemius/Tutorial/tutorial_pts");
+
+// To add a buffer to the point file, run the following code
+var pts = ee.FeatureCollection(pts)
+  .map(function(pt){
+    return pt.buffer(45).bounds();
+  });
+```
+
+Display the points to the Map.
+
+```
+print(pts.limit(5));
+Map.centerObject(pts);
+Map.addLayer(pts);
+```
+
+### Prepare the Landsat image collection
+
+First, define the function to mask cloud and shadow pixels
+
+```
+function fmask(img) {
+  var cloudShadowBitMask = 1 << 3;
+  var cloudsBitMask = 1 << 5;
+  var qa = img.select('pixel_qa');
+  var mask = qa.bitwiseAnd(cloudShadowBitMask).eq(0)
+    .and(qa.bitwiseAnd(cloudsBitMask).eq(0));
+  return img.updateMask(mask)}
+```
+
+Next you will get and rename the bands of interest for the OLI and TM/ETM+. This is important because the band numbers are different between OLI and TM/ETM+, and it will make future index calculations easier. 
+
+```
+// Function to get and rename bands of interest from OLI.
+function renameOli(img) {
+  return img.select(
+    ['B2', 'B3', 'B4', 'B5', 'B6', 'B7'],
+    ['Blue', 'Green', 'Red', 'NIR', 'SWIR1', 'SWIR2'])}
+
+// Function to get and rename bands of interest from TM/ETM+.
+function renameEtm(img) {
+  return img.select(
+    ['B1', 'B2', 'B3', 'B4', 'B5', 'B7'],
+    ['Blue', 'Green', 'Red', 'NIR', 'SWIR1', 'SWIR2'])}
+```
+
+Combine the cloud mask and band renaming functions into preparation functions for OLI and TM/ETM+. If you want to include band harmonization coefficients, you can combine the prepOli and prepEtm functions from the ["Landsat ETM+ to OLI Harmonization" tutorial](https://developers.google.com/earth-engine/tutorials/community/landsat-etm-to-oli-harmonization) with the functions below.
+
+```
+// Define function to prepare (cloud mask and rename) OLI images.
+function prepOli(img) {
+  img = fmask(img);
+  img = renameOli(img);
+  return img}
+
+// Define function to prepare (cloud mask and rename) TM/ETM+ images.
+function prepEtm(img) {
+  img = fmask(img);
+  img = renameEtm(img);
+  return img}
+```
+
+### Retrieve and prepare the Landsat image collections
+
+Get the Landsat surface reflectance collections for OLI, ETM+ and TM sensors. Filter them by the bounds of the point feature collection and apply the relevant image preparation function.
+
+```
+var LC08col = ee.ImageCollection('LANDSAT/LC08/C01/T1_SR')
+  .filterBounds(pts)
+  .map(prepOli);
+var LE07col = ee.ImageCollection('LANDSAT/LE07/C01/T1_SR')
+  .filterBounds(pts)
+  .map(prepEtm);
+var LT05col = ee.ImageCollection('LANDSAT/LT05/C01/T1_SR')
+  .filterBounds(pts)
+  .map(prepEtm);
+```
+
+Merge the prepared sensor collections.
+```
+var col = LC08col.merge(LE07col).merge(LT05col);
+```
+
+
+### Map over the image collection
+
+For each image, find the intersecting points and do a region reduction at each point. 
+
+```
+var statCol = col.map(function(img) {
+  // Get metadata for the image.
+  var imgDate = img.date().format('YYYY-MM-dd'); 
+  var imgId = img.getString('LANDSAT_ID');
+  var imgSat = img.getString('SATELLITE');
+  // Filter the points to those that intersect the image.
+  var thesePts = pts.filterBounds(img.geometry());
+
+  // Reduce the image by mean for the points that intersect it. 
+  var bandStats = img.reduceRegions({
+    collection: thesePts,
+    reducer: ee.Reducer.mean(),
+    scale: 30,
+    crs: 'EPSG:5070' // this is the default Landsat crs, included for clarity
+  })
+  // Add metadata to each point.
+  .map(function(pt) {
+    return pt.set({
+      'imgDate': imgDate,
+      'imgId': imgId,
+      'imgSat': imgSat
+    });
+  });
+
+  // Return the featureCollection.
+  return bandStats;
+});
+```
+
+Flatten the collection of collections to create a featureCollection. This is a table with one row per unique observation, which is defined by combinations of image and point. The columns are each band, which has the image statistic (mean) as the value, and the image properties specified by the metadata, along with the columns from the point data.
+
+```
+statCol = statCol.flatten();
+```
+
+Filter out observations where band stats are null (where points fell on masked pixels).
+
+```
+statCol = statCol.filter(
+  ee.Filter.notNull(['Blue', 'Green', 'Red', 'NIR', 'SWIR1', 'SWIR2']));
+```
+
+Print a sample of the points.
+
+```
+print(statCol.limit(10));
+```
+
+### Batch task: export as asset or Google Drive file
+
+It's likely that for point feature collections that cover a large area or contain many points, you'll need to complete this operation as a batch task by either exporting the final feature collection as an asset or as a CSV/Shapefile/GeoJSON to Google Drive. If your browser times out, try exporting the results.
+
+Export to asset and Google Drive by running this code and then clicking 'Run' in the code editor Tasks tab.
+
+```
+Export.table.toAsset({
+  collection: statCol,
+  description: 'point_summary_table_asset',
+  assetId: 'point_summary_table'
+});
+
+Export.table.toDrive({
+  collection: statCol,
+  folder: 'yourFolderNameHere',
+  description: 'point_summary_table_gdrive',
+  fileFormat: 'CSV'});
+```
+
+## References  
+
+- [Braaten, J. Landsat ETM+ to OLI Harmonization. Google Earth Engine Community Tutorials. 2019, Aug 29.](https://developers.google.com/earth-engine/tutorials/community/landsat-etm-to-oli-harmonization)
+- [Cansler CA, McKenzie D. How robust are burn severity indices when applied in a new region? Evaluation of alternate field-based and remote-sensing methods. Remote Sensing. 2012;4(2):456–483. doi:10.3390/rs4020456](https://www.mdpi.com/2072-4292/4/2/456)
+- [Miller JD, Thode AE. Quantifying burn severity in a heterogeneous landscape with a relative version of the delta Normalized Burn Ratio (dNBR). Remote Sensing of Environment. 2007;109(1):66–80. doi:10.1016/j.rse.2006.12.006](https://www.researchgate.net/publication/222816542_Quantifying_burn_severity_in_a_heterogeneous_landscape_with_a_relative_version_of_the_delta_Normalized_Burn_Ratio_RdNBR)

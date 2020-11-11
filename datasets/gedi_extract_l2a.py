@@ -23,7 +23,7 @@ import os
 
 # pylint:disable=line-too-long
 def extract_values(input_path, output_path):
-  """Extracts rh (relative height) values and some qa flags.
+  """Extracts all rh (relative height) values from all algorithms and some qa flags.
 
   Args:
      input_path: string, GEDI L2A file path
@@ -36,9 +36,6 @@ def extract_values(input_path, output_path):
   /BEAMXXXX/rx_processing_a<n>/toploc > 0 L2A <n> is equal to the value of /BEAMXXXX/selected_algorithm
   /BEAMXXXX/sensitivity > 0   L2A
   /BEAMXXXX/sensitivity <= 1  L2A
-
-  In this implementation, assume that all the shots in rh are using
-  the same algorithm.
 
   """
   basename = os.path.basename(input_path)
@@ -53,61 +50,69 @@ def extract_values(input_path, output_path):
 
 def write_csv(hdf_fh, csv_fh):
   """Writes a single CSV file based on the contents of HDF file."""
-  fmt = '%3.6f,%3.6f,%d,%8.4f,%3.2f'
   is_first = True
   for k in hdf_fh.keys():
-    if not k.startswith('BEAM'):
-      continue
-    print('\t',k)
-    lat = hdf_fh[f'{k}/lat_lowestmode']
-    lon = hdf_fh[f'{k}/lon_lowestmode']
-    beam = hdf_fh[f'{k}/beam']
-    channel = hdf_fh[f'{k}/channel']
-    dtime = np.array(hdf_fh[f'{k}/delta_time']) + 1514764800
-    degrade = hdf_fh[f'{k}/degrade_flag']
-    quality = hdf_fh[f'{k}/quality_flag']
-    sensitivity = hdf_fh[f'{k}/sensitivity']
-    rx_quality = hdf_fh[f'{k}/rx_assess/quality_flag']
+      if not k.startswith('BEAM'):
+          continue
+      print('\t',k)
+      lat = hdf_fh[f'{k}/lat_lowestmode']
+      lon = hdf_fh[f'{k}/lon_lowestmode']
+      beam = hdf_fh[f'{k}/beam']
+      channel = hdf_fh[f'{k}/channel']
+      degrade_flag = hdf_fh[f'{k}/degrade_flag']
+      delta_time = np.array(hdf_fh[f'{k}/delta_time']) #* 1000 + 1514764800000
+      elev_lowestmode = hdf_fh[f'{k}/elev_lowestmode']
+      master_int = hdf_fh[f'{k}/master_int']
+      master_fact = hdf_fh[f'{k}/master_frac']
+      quality_flag = hdf_fh[f'{k}/quality_flag']
+      selected_algorithm = hdf_fh[f'{k}/selected_algorithm']
+      sensitivity = hdf_fh[f'{k}/sensitivity']
+      shot_number = hdf_fh[f'{k}/shot_number']
+      solar_azimuth = hdf_fh[f'{k}/solar_azimuth']
+      solar_elevation = hdf_fh[f'{k}/solar_elevation']
+      surface_flag = hdf_fh[f'{k}/surface_flag']
 
-    # assuming all shots using the same alborithm, randomly picked
-    # the 1000th indexed element
-    algorithm = hdf_fh[f'{k}/selected_algorithm'][1000]
-    rx_algrunflag = hdf_fh[f'{k}/rx_processing_a{algorithm}/rx_algrunflag']
-    zcross = hdf_fh[f'{k}/rx_processing_a{algorithm}/zcross']
-    toploc = hdf_fh[f'{k}/rx_processing_a{algorithm}/toploc']
+      rx_access_quality_flag = hdf_fh[f'{k}/rx_assess/quality_flag']
 
-    rh = hdf_fh[f'{k}/rh']
-    quantiles = (10,20,30,40,50,60,70,80,90,98)
-    rh = rh[:, quantiles]
+      metadata = {'lon': lon,
+            'lat': lat,
+            'beam': beam,
+            'channel': channel,
+            'delta_time': delta_time,
+            'degrade_flag': degrade_flag,
+            'elev_lowestmode': elev_lowestmode,
+            'master_int': master_int,
+            'master_fact': master_fact,
+            'quality_flag': quality_flag,
+            'selected_algorithm': selected_algorithm,
+            'sensitivity': sensitivity,
+            'shot_number': shot_number,
+            'solar_azimuth': solar_azimuth,
+            'solar_elevation': solar_elevation,
+            'surface_flag': surface_flag,
+            'rx_assess_quality_flag': rx_access_quality_flag
+            }
 
-    names = [f'rh{x}' for x in quantiles]
-    drh = pd.DataFrame(rh, columns=names)
+      dataframe = pd.DataFrame(metadata)
 
-    row = {
-        'lon': lon,
-        'lat': lat,
-        'beam': beam,
-        'channel': channel,
-        'dtime': dtime,
-        'degrade': degrade,
-        'quality': quality,
-        'sensitivity': sensitivity,
-        'rx_quality': rx_quality,
-        'rx_algrunflag': rx_algrunflag,
-        'zcross': zcross,
-        'toploc': toploc
-    }
+      for a in range(1, 7):
+          rh = hdf_fh[f'{k}/geolocation/rh_a{a}']
+          qa = hdf_fh[f'{k}/geolocation/quality_flag_a{a}']
 
-    dataframe = pd.DataFrame(row)
+          rx_algrunflag = hdf_fh[f'{k}/rx_processing_a{a}/rx_algrunflag']
+          zcross = hdf_fh[f'{k}/rx_processing_a{a}/zcross']
+          toploc = hdf_fh[f'{k}/rx_processing_a{a}/toploc']
 
-    concat = pd.concat((dataframe, drh), axis=1)
+          rhq = np.column_stack((rh, qa, rx_algrunflag, zcross, toploc))
+          names = [f'rh{x}_a{a}' for x in range(101)] + [f'quality_flag_a{a}',f'rx_algrunflag_a{a}',f'zcross_a{a}',f'toploc_a{a}']
+          drhq = pd.DataFrame(rhq, columns=names)
+          tmp = pd.concat((dataframe, drhq), axis=1)
+          dataframe = tmp
+          tmp = None
 
-    concat.to_csv(
-        csv_fh, float_format='%3.6f', index=False, header=is_first,
-        line_terminator='\n')
-    is_first = False
-    dataframe = None
-
+      dataframe.to_csv(csv_fh, float_format='%3.6f', index=False, header=is_first, line_terminator='\n')
+      is_first = False
+      dataframe = None
 
 def main(argv):
   extract_values(argv[1], argv[2])

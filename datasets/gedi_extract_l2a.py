@@ -48,71 +48,87 @@ def extract_values(input_path, output_path):
       write_csv(hdf_fh, csv_fh)
 
 
+# Number of different L2A algorithms.
+# Moved to a function for stubbing out in tests.
+def num_algorithms():
+  return 6
+
+
 def write_csv(hdf_fh, csv_fh):
   """Writes a single CSV file based on the contents of HDF file."""
   is_first = True
   for k in hdf_fh.keys():
-      if not k.startswith('BEAM'):
-          continue
-      print('\t',k)
-      lat = hdf_fh[f'{k}/lat_lowestmode']
-      lon = hdf_fh[f'{k}/lon_lowestmode']
-      beam = hdf_fh[f'{k}/beam']
-      channel = hdf_fh[f'{k}/channel']
-      degrade_flag = hdf_fh[f'{k}/degrade_flag']
-      delta_time = np.array(hdf_fh[f'{k}/delta_time']) #* 1000 + 1514764800000
-      elev_lowestmode = hdf_fh[f'{k}/elev_lowestmode']
-      master_int = hdf_fh[f'{k}/master_int']
-      master_fact = hdf_fh[f'{k}/master_frac']
-      quality_flag = hdf_fh[f'{k}/quality_flag']
-      selected_algorithm = hdf_fh[f'{k}/selected_algorithm']
-      sensitivity = hdf_fh[f'{k}/sensitivity']
-      shot_number = hdf_fh[f'{k}/shot_number']
-      solar_azimuth = hdf_fh[f'{k}/solar_azimuth']
-      solar_elevation = hdf_fh[f'{k}/solar_elevation']
-      surface_flag = hdf_fh[f'{k}/surface_flag']
+    if not k.startswith('BEAM'):
+      continue
+    print('\t', k)
+    lat = hdf_fh[f'{k}/lat_lowestmode']
+    lon = hdf_fh[f'{k}/lon_lowestmode']
+    beam = hdf_fh[f'{k}/beam']
+    channel = hdf_fh[f'{k}/channel']
+    degrade_flag = hdf_fh[f'{k}/degrade_flag']
+    delta_time = np.array(hdf_fh[f'{k}/delta_time'])  #* 1000 + 1514764800000
+    elev_lowestmode = hdf_fh[f'{k}/elev_lowestmode']
+    master_int = hdf_fh[f'{k}/master_int']
+    master_fact = hdf_fh[f'{k}/master_frac']
+    quality_flag = hdf_fh[f'{k}/quality_flag']
+    selected_algorithm = hdf_fh[f'{k}/selected_algorithm']
+    sensitivity = hdf_fh[f'{k}/sensitivity']
+    shot_number = hdf_fh[f'{k}/shot_number']
+    solar_azimuth = hdf_fh[f'{k}/solar_azimuth']
+    solar_elevation = hdf_fh[f'{k}/solar_elevation']
+    surface_flag = hdf_fh[f'{k}/surface_flag']
 
-      rx_access_quality_flag = hdf_fh[f'{k}/rx_assess/quality_flag']
+    rx_access_quality_flag = hdf_fh[f'{k}/rx_assess/quality_flag']
 
-      metadata = {'lon': lon,
-            'lat': lat,
-            'beam': beam,
-            'channel': channel,
-            'delta_time': delta_time,
-            'degrade_flag': degrade_flag,
-            'elev_lowestmode': elev_lowestmode,
-            'master_int': master_int,
-            'master_fact': master_fact,
-            'quality_flag': quality_flag,
-            'selected_algorithm': selected_algorithm,
-            'sensitivity': sensitivity,
-            'shot_number': shot_number,
-            'solar_azimuth': solar_azimuth,
-            'solar_elevation': solar_elevation,
-            'surface_flag': surface_flag,
-            'rx_assess_quality_flag': rx_access_quality_flag
-            }
+    metadata = {
+        'lon': lon,
+        'lat': lat,
+        'beam': beam,
+        'channel': channel,
+        'delta_time': delta_time,
+        'degrade_flag': degrade_flag,
+        'elev_lowestmode': elev_lowestmode,
+        'master_int': master_int,
+        'master_fact': master_fact,
+        'quality_flag': quality_flag,
+        'selected_algorithm': selected_algorithm,
+        'sensitivity': sensitivity,
+        'shot_number': shot_number,
+        'solar_azimuth': solar_azimuth,
+        'solar_elevation': solar_elevation,
+        'surface_flag': surface_flag,
+        'rx_assess_quality_flag': rx_access_quality_flag
+    }
 
-      dataframe = pd.DataFrame(metadata)
+    dataframe = pd.DataFrame(metadata)
 
-      for a in range(1, 7):
-          rh = hdf_fh[f'{k}/geolocation/rh_a{a}']
-          qa = hdf_fh[f'{k}/geolocation/quality_flag_a{a}']
+    for a in range(1, 1 + num_algorithms()):
+      rh = hdf_fh[f'{k}/geolocation/rh_a{a}']
+      qa = hdf_fh[f'{k}/geolocation/quality_flag_a{a}']
 
-          rx_algrunflag = hdf_fh[f'{k}/rx_processing_a{a}/rx_algrunflag']
-          zcross = hdf_fh[f'{k}/rx_processing_a{a}/zcross']
-          toploc = hdf_fh[f'{k}/rx_processing_a{a}/toploc']
+      rx_algrunflag = hdf_fh[f'{k}/rx_processing_a{a}/rx_algrunflag']
+      zcross = hdf_fh[f'{k}/rx_processing_a{a}/zcross']
+      toploc = hdf_fh[f'{k}/rx_processing_a{a}/toploc']
 
-          rhq = np.column_stack((rh, qa, rx_algrunflag, zcross, toploc))
-          names = [f'rh{x}_a{a}' for x in range(101)] + [f'quality_flag_a{a}',f'rx_algrunflag_a{a}',f'zcross_a{a}',f'toploc_a{a}']
-          drhq = pd.DataFrame(rhq, columns=names)
-          tmp = pd.concat((dataframe, drhq), axis=1)
-          dataframe = tmp
-          tmp = None
+      rhq = np.column_stack((rh, qa, rx_algrunflag, zcross, toploc))
+      names = [f'rh{x}_a{a}' for x in range(101)] + [
+          f'quality_flag_a{a}', f'rx_algrunflag_a{a}', f'zcross_a{a}',
+          f'toploc_a{a}'
+      ]
+      drhq = pd.DataFrame(rhq, columns=names)
+      tmp = pd.concat((dataframe, drhq), axis=1)
+      dataframe = tmp
+      tmp = None
 
-      dataframe.to_csv(csv_fh, float_format='%3.6f', index=False, header=is_first, line_terminator='\n')
-      is_first = False
-      dataframe = None
+    dataframe.to_csv(
+        csv_fh,
+        float_format='%3.6f',
+        index=False,
+        header=is_first,
+        line_terminator='\n')
+    is_first = False
+    dataframe = None
+
 
 def main(argv):
   extract_values(argv[1], argv[2])

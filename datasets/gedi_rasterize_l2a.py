@@ -38,7 +38,7 @@ def parse_date_from_gedi_filename(vector_asset_id):
           os.path.basename(vector_asset_id).split('_')[2], '%Y%j%H%M%S'))
 
 
-def rasterize_gedi_by_utm_zone(vector_asset_ids, grid_id):
+def rasterize_gedi_by_utm_zone(vector_asset_ids, grid_id, raster_collection):
   """Starts an Earth Engine task generating a raster asset covering a month."""
   datetimes = [parse_date_from_gedi_filename(x) for x in vector_asset_ids]
   if len(set(x.month for x in datetimes)) > 1:
@@ -91,14 +91,13 @@ def rasterize_gedi_by_utm_zone(vector_asset_ids, grid_id):
           ee.Reducer.first().forEach(props)).reproject(
               crs, None, 25).set(image_properties))
 
-  asset_dir = 'projects/gee-gedi/assets/L2A_Raster'
   task_name = f'L2A_Grid{grid_id:03d}_{zone_id}_{year}_{month:02d}'
 
   box = grid.geometry().buffer(2500, 25).bounds()
   task = ee.batch.Export.image.toAsset(
       image=image.clip(box),
       description=task_name,
-      assetId=f'{asset_dir}/{task_name}',
+      assetId=f'{raster_collection}/{task_name}',
       region=box,
       pyramidingPolicy={'.default': 'sample'},
       scale=25,
@@ -108,15 +107,18 @@ def rasterize_gedi_by_utm_zone(vector_asset_ids, grid_id):
   time.sleep(0.1)
   task.start()
 
+  return task.status()['id']
+
 
 def main(argv):
   start_id = 1  # First UTM grid id
   ee.Initialize()
+  raster_collection = 'projects/gee-gedi/assets/L2A_Raster'
 
   for grid_id in range(start_id, start_id + FLAGS.num_utm_grids):
-    print(grid_id)
     with open(argv[1]) as fh:
-      rasterize_gedi_by_utm_zone([x.strip() for x in fh], grid_id)
+      rasterize_gedi_by_utm_zone(
+          [x.strip() for x in fh], grid_id, raster_collection)
 
 
 if __name__ == '__main__':

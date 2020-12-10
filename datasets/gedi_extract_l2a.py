@@ -47,7 +47,12 @@ def extract_values(input_path, output_path):
     with open(output_path, 'w') as csv_fh:
       write_csv(hdf_fh, csv_fh)
 
-#TODO: refactory write_csv to methods by h5 group. 
+# Number of different L2A algorithms.
+# Moved to a function for stubbing out in tests.
+def num_algorithms():
+  return 6
+
+#TODO: refactor write_csv to methods by h5 group. 
 # The idea is to dynamically construct a dataframe by using predefined list of variables.
 def write_csv(hdf_fh, csv_fh):
   """Writes a single CSV file based on the contents of HDF file."""
@@ -213,7 +218,7 @@ def write_csv(hdf_fh, csv_fh):
 
       dataframe = pd.DataFrame(metadata)
 
-      for a in range(1, 7):
+      for a in range(1, 1 + num_algorithms()):
           rh = hdf_fh[f'{k}/geolocation/rh_a{a}']
           qa = hdf_fh[f'{k}/geolocation/quality_flag_a{a}']
 

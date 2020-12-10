@@ -1,5 +1,4 @@
-"""
-Copyright 2020 The Google Earth Engine Community Authors
+"""Copyright 2020 The Google Earth Engine Community Authors.
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -39,7 +38,7 @@ def parse_date_from_gedi_filename(vector_asset_id):
           os.path.basename(vector_asset_id).split('_')[2], '%Y%j%H%M%S'))
 
 
-def rasterize_gedi_by_utm_zone(vector_asset_ids, grid_id):
+def rasterize_gedi_by_utm_zone(vector_asset_ids, grid_id, raster_collection):
   """Starts an Earth Engine task generating a raster asset covering a month."""
   datetimes = [parse_date_from_gedi_filename(x) for x in vector_asset_ids]
   if len(set(x.month for x in datetimes)) > 1:
@@ -47,28 +46,29 @@ def rasterize_gedi_by_utm_zone(vector_asset_ids, grid_id):
   month = datetimes[0].month
   year = datetimes[0].year
 
-  props = ['orbit', 'track', 'beam', 'channel', 'degrade', 'dtime', 'quality',
-           'rx_algrunflag', 'rx_quality', 'sensitivity', 'toploc', 'zcross',
-           'rh10', 'rh20', 'rh30', 'rh40', 'rh50', 'rh60', 'rh70', 'rh80',
-           'rh90', 'rh98']
+  props = [
+      'orbit', 'track', 'beam', 'channel', 'degrade', 'dtime', 'quality',
+      'rx_algrunflag', 'rx_quality', 'sensitivity', 'toploc', 'zcross', 'rh10',
+      'rh20', 'rh30', 'rh40', 'rh50', 'rh60', 'rh70', 'rh80', 'rh90', 'rh98'
+  ]
 
   def updateOrbit(f):
     return (f.set('orbit', fshots.get('orbit'))
-             .set('track', fshots.get('track'))
-            )
+            .set('track', fshots.get('track')))
 
   shots = []
   for vector_asset_id in vector_asset_ids:
-    fshots = ee.FeatureCollection(
-        vector_asset_id).filterMetadata('quality', 'equals', 1)
+    fshots = ee.FeatureCollection(vector_asset_id).filterMetadata(
+        'quality', 'equals', 1)
     augmented = fshots.map(updateOrbit)
     shots.append(augmented)
 
   shots = ee.FeatureCollection(shots).flatten()
 
   grid = (
-      ee.FeatureCollection('users/yang/GEETables/GEDI/GEDI_UTM_GRIDS_LandOnly')
-      .filterMetadata('grid_id', 'equals', grid_id))
+      ee.FeatureCollection(
+          'users/yang/GEETables/GEDI/GEDI_UTM_GRIDS_LandOnly').filterMetadata(
+              'grid_id', 'equals', grid_id))
 
   zone_id = ee.Feature(grid.first()).get('grid_name').getInfo()
   crs = ee.Feature(grid.first()).get('crs').getInfo()
@@ -86,20 +86,18 @@ def rasterize_gedi_by_utm_zone(vector_asset_ids, grid_id):
   }
 
   image = (
-      shots.sort('sensitivity', False)
-      .reduceToImage(props, ee.Reducer.first().forEach(props))
-      .reproject(crs, None, 25)
-      .set(image_properties)
-  )
+      shots.sort('sensitivity', False).reduceToImage(
+          props,
+          ee.Reducer.first().forEach(props)).reproject(
+              crs, None, 25).set(image_properties))
 
-  asset_dir = 'projects/gee-gedi/assets/L2A_Raster'
   task_name = f'L2A_Grid{grid_id:03d}_{zone_id}_{year}_{month:02d}'
 
   box = grid.geometry().buffer(2500, 25).bounds()
   task = ee.batch.Export.image.toAsset(
       image=image.clip(box),
       description=task_name,
-      assetId=f'{asset_dir}/{task_name}',
+      assetId=f'{raster_collection}/{task_name}',
       region=box,
       pyramidingPolicy={'.default': 'sample'},
       scale=25,
@@ -109,15 +107,18 @@ def rasterize_gedi_by_utm_zone(vector_asset_ids, grid_id):
   time.sleep(0.1)
   task.start()
 
+  return task.status()['id']
+
 
 def main(argv):
   start_id = 1  # First UTM grid id
   ee.Initialize()
+  raster_collection = 'projects/gee-gedi/assets/L2A_Raster'
 
   for grid_id in range(start_id, start_id + FLAGS.num_utm_grids):
-    print(grid_id)
     with open(argv[1]) as fh:
-      rasterize_gedi_by_utm_zone([x.strip() for x in fh], grid_id)
+      rasterize_gedi_by_utm_zone(
+          [x.strip() for x in fh], grid_id, raster_collection)
 
 
 if __name__ == '__main__':

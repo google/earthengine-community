@@ -57,11 +57,12 @@ sometimes referred to as a focal
 mean or a weighted mean. To choose the size of your neighborhood, you will
 need to consider your research questions, the spatial resolution of the
 dataset, the size of your field plot, and the error from your GPS. For
-example, the raster value extracted for randomly placed 20 m diameter plots would likely merit use of a
-neighborhood mean when using Sentinel-2 or Landsat 8, at 10 and 30 m spatial
-resolution respectively, while using a thermal band from MODIS at 1000 m may
-not. While much of this tutorial is written with plot points and buffers in
-mind, a polygon asset with predefined regions will serve the same purpose.
+example, the raster value extracted for randomly placed 20 m diameter plots
+would likely merit use of a neighborhood mean when using Sentinel-2 or Landsat
+8, at 10 and 30 m spatial resolution respectively, while using a thermal band
+from MODIS at 1000 m may not. While much of this tutorial is written with plot
+points and buffers in mind, a polygon asset with predefined regions will serve
+the same purpose.
 
 ## Functions
 
@@ -162,7 +163,7 @@ function zonalStats(ic, fc, params) {
     var fcSub = fc.filterBounds(img.geometry());
 
     // Reduce the image by regions.
-    return  img.reduceRegions({
+    return img.reduceRegions({
       collection: fcSub,
       reducer: _params.reducer,
       scale: _params.scale,
@@ -193,7 +194,7 @@ asset and clicking the arrow at the right side, or by calling it in your
 script with the following code:
 
 ```js
-var pts = ee.FeatureCollection("users/yourUsername/yourAsset");
+var pts = ee.FeatureCollection('users/yourUsername/yourAsset');
 ```
 
 If you prefer to define points dynamically, you can add them to your script
@@ -207,11 +208,11 @@ and joining.
 
 ```js
 var pts = ee.FeatureCollection([
-  ee.Feature(ee.Geometry.Point([-118.6010,37.0777]), {plot_id: 1}),
-  ee.Feature(ee.Geometry.Point([-118.5896,37.0778]), {plot_id: 2}),
-  ee.Feature(ee.Geometry.Point([-118.5842,37.0805]), {plot_id: 3}),
-  ee.Feature(ee.Geometry.Point([-118.5994,37.0936]), {plot_id: 4}),
-  ee.Feature(ee.Geometry.Point([-118.5861,37.0567]), {plot_id: 5})
+  ee.Feature(ee.Geometry.Point([-118.6010, 37.0777]), {plot_id: 1}),
+  ee.Feature(ee.Geometry.Point([-118.5896, 37.0778]), {plot_id: 2}),
+  ee.Feature(ee.Geometry.Point([-118.5842, 37.0805]), {plot_id: 3}),
+  ee.Feature(ee.Geometry.Point([-118.5994, 37.0936]), {plot_id: 4}),
+  ee.Feature(ee.Geometry.Point([-118.5861, 37.0567]), {plot_id: 5})
 ]);
 ```
 
@@ -388,7 +389,8 @@ function fmask(img) {
   var qa = img.select('pixel_qa');
   var mask = qa.bitwiseAnd(cloudShadowBitMask).eq(0)
     .and(qa.bitwiseAnd(cloudsBitMask).eq(0));
-  return img.updateMask(mask)}
+  return img.updateMask(mask);
+}
 ```
 
 Next, define functions to select and rename the bands of interest for OLI and
@@ -400,13 +402,15 @@ between OLI and TM/ETM+, and it will make future index calculations easier.
 function renameOli(img) {
   return img.select(
     ['B2', 'B3', 'B4', 'B5', 'B6', 'B7'],
-    ['Blue', 'Green', 'Red', 'NIR', 'SWIR1', 'SWIR2'])}
+    ['Blue', 'Green', 'Red', 'NIR', 'SWIR1', 'SWIR2']);
+}
 
 // Function to select and rename bands of interest from TM/ETM+.
 function renameEtm(img) {
   return img.select(
     ['B1', 'B2', 'B3', 'B4', 'B5', 'B7'],
-    ['Blue', 'Green', 'Red', 'NIR', 'SWIR1', 'SWIR2'])}
+    ['Blue', 'Green', 'Red', 'NIR', 'SWIR1', 'SWIR2']);
+}
 ```
 
 Combine the cloud mask and band renaming functions into preparation functions
@@ -420,13 +424,15 @@ with the functions below.
 function prepOli(img) {
   img = fmask(img);
   img = renameOli(img);
-  return img}
+  return img;
+}
 
 // Define function to prepare (cloud mask and rename) TM/ETM+ images.
 function prepEtm(img) {
   img = fmask(img);
   img = renameEtm(img);
-  return img}
+  return img;
+}
 ```
 
 Get the Landsat surface reflectance collections for OLI, ETM+, and TM
@@ -531,8 +537,8 @@ this behavior by calling `unweighted()` on the reducer, as in
 
 Derived computed images do not retain the properties of their source image, so
 be sure to copy properties to computed images if you want them included in
-the region reduction table. For instance, consider the simple computation of unscaling Landsat
-SR data:
+the region reduction table. For instance, consider the simple computation of
+unscaling Landsat SR data:
 
 ```js
 // Define a Landsat image.
@@ -548,9 +554,9 @@ var computedImg = img.select('B.*').divide(1e4);
 print(computedImg.propertyNames());
 ```
 
-Notice how the computed image does not have the source image's properties and only retains the bands information. To
-fix this, use the `copyProperties` function to add the source properties to
-the derived image.
+Notice how the computed image does not have the source image's properties and
+only retains the bands information. To fix this, use the `copyProperties`
+function to add the source properties to the derived image.
 
 ```js
 // Select the reflectance bands and unscale them.
@@ -569,24 +575,30 @@ function and in single image operations.
 
 ### Understanding which pixels are included in polygon statistics
 
-If you want to visualize what pixels are included in a polygon for a region reducer, you can adapt the following code which demonstrates the process. This demo uses a single polygon that is re-sizable by clicking and dragging the edges or corners, however the process would work with the bufferPoints function or a polygon. 
+If you want to visualize what pixels are included in a polygon for a region
+reducer, you can adapt the following code which demonstrates the process. This
+demo uses a single polygon that is re-sizable by clicking and dragging the edges
+or corners, however the process would work with the bufferPoints function or a
+polygon.
 
 ```js
 // Add polygon geometry
-var geometry = 
+var geometry =
     ee.Geometry.Polygon(
         [[[-118.6019835717645, 37.079867782687884],
           [-118.6019835717645, 37.07838698844939],
           [-118.60036351751951, 37.07838698844939],
           [-118.60036351751951, 37.079867782687884]]], null, false);
-          
+
 // Import the MERIT global elevation dataset.
 var elev = ee.Image('MERIT/DEM/v1_0_3');
 print('Projection, crs, and crs_transform:', elev.projection());
 print('Scale in meters:', elev.projection().nominalScale());
 ```
 
-Run a region reducer that counts the number of pixels in the polygon. Be sure to specify CRS and scale for both the region reducer and adding the layer to the map (see below for more details).
+Run a region reducer that counts the number of pixels in the polygon. Be sure to
+specify CRS and scale for both the region reducer and adding the layer to the
+map (see below for more details).
 
 ```js
 var result = elev.select(0).reduceRegion({
@@ -598,17 +610,32 @@ var result = elev.select(0).reduceRegion({
 
 print('n pixels', result.get('dem'));
 
-Map.addLayer(elev.reproject({crs: 'EPSG:5070', scale: 90}), {min: 2000, max: 3000, palette: ['blue', 'green', 'red']});
+Map.addLayer(elev.reproject({crs: 'EPSG:5070', scale: 90}),
+  {min: 2000, max: 3000, palette: ['blue', 'green', 'red']});
 Map.centerObject(geometry, 18);
 ```
 
-#### Notes on CRS and scale:
+### Notes on CRS and scale:
 
-- Earth Engine runs reduceRegion using the projection of the image's first band if the CRS is unspecified in the function. For imagery spanning multiple UTM zones, for example, this would lead to different origins. For some functions EE uses the default EPSG:4326. Therefore, when the opportunity is presented, such as by the reduceRegion function, it is important to specify the scale and CRS explicitly. 
-- The Map default CRS is EPSG:3857. When looking closely at pixels on the map, the data layer scale and CRS should also be set explicitly. Note that zooming out after setting a relatively small scale may result in memory and timeout errors due to the lack of pyramid layers.
-- Specifying the CRS and scale in both the reduceRegion and addLayer functions allow the map visualization to align with the information printed in the console.
-- The Earth Engine default, WGS 84 lat long (EPSG:4326), is a generic CRS that works worldwide. Below the code reprojects to EPSG:5070, North American Equal Albers, which is a CRS that preserves area for North American locations. Use the CRS that is best for your use case when adapting this to your own project, or maintain (and specify) the CRS of the image using `crs: img.projection()`.
-
+- Earth Engine runs `reduceRegion` using the projection of the image's first
+    band if the CRS is unspecified in the function. For imagery spanning
+	multiple UTM zones, for example, this would lead to different origins. For
+	some functions EE uses the default EPSG:4326. Therefore, when the
+	opportunity is presented, such as by the reduceRegion function, it is
+	important to specify the scale and CRS explicitly.
+- The Map default CRS is EPSG:3857. When looking closely at pixels on the map,
+    the data layer scale and CRS should also be set explicitly. Note that
+	zooming out after setting a relatively small scale may result in memory and
+	timeout errors due to the lack of pyramid layers.
+- Specifying the CRS and scale in both the reduceRegion and addLayer functions
+    allow the map visualization to align with the information printed in the
+	console.
+- The Earth Engine default, WGS 84 lat long (EPSG:4326), is a generic CRS that
+    works worldwide. Below the code reprojects to EPSG:5070, North American
+	Equal Albers, which is a CRS that preserves area for North American
+	locations. Use the CRS that is best for your use case when adapting this to
+	your own project, or maintain (and specify) the CRS of the image using
+	`crs: img.projection()`.
 
 ## References
 

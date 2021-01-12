@@ -331,7 +331,7 @@ and filter the collection to include data for July, August, and September
 from 2015 through 2019.
 
 ```js
-var modisCol = ee.ImageCollection("MODIS/006/MOD09A1")
+var modisCol = ee.ImageCollection('MODIS/006/MOD09A1')
   .filterDate('2015-01-01', '2020-01-01')
   .filter(ee.Filter.calendarRange(183, 245, 'DAY_OF_YEAR'));
 ```

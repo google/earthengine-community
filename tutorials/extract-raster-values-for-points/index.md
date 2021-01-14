@@ -21,7 +21,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 -->
 
-_This tutorials uses the [Earth Engine Code Editor JavaScript API](https://developers.google.com/earth-engine/guides/playground)._
+_This tutorial uses the [Earth Engine Code Editor JavaScript API](https://developers.google.com/earth-engine/guides/playground)._
 
 Extracting raster values for points or plots is essential for many types of
 projects. This tutorial will show you how to use Earth Engine to get a full
@@ -32,7 +32,7 @@ using any dataset and then apply them to a few examples.
 ## Context
 
 Anyone working with field data collected in plots will likely need to extract
-raster data for those plots at some point. The Normalized Differenced
+raster data for those plots at some point. The Normalized Difference
 Vegetation Index (NDVI), for example, is commonly used as a measure for
 vegetation greenness and can be calculated from a wide variety of satellite
 datasets. You may also want to use climate data for your plots, or extract
@@ -69,8 +69,7 @@ the same purpose.
 Two functions are provided; **copy and paste them into your script**:
 
 - A function to generate circular or square regions from buffered points.
-- A function to extract image pixel neighborhood statistics based on buffered
-points.
+- A function to extract image pixel neighborhood statistics for a given region.
 
 ### bufferPoints(radius, bounds) ⇒ `Function`
 
@@ -94,7 +93,7 @@ function bufferPoints(radius, bounds) {
 
 ### zonalStats(fc, params) ⇒ `ee.FeatureCollection`
 
-`zonalStats` is a function for reducing images in a image collection by
+`zonalStats` is a function for reducing images in an image collection by
 regions defined in a feature collection. Note that reductions that return
 null statistics are filtered out of the resulting feature collection. Null
 statistics occur when there are no valid pixels intersecting the region being
@@ -110,7 +109,7 @@ or image regions are masked for quality or clouds.
 | [params.scale=null] | `Number` | A nominal scale in meters of the projection to work in. If null, the native nominal image scale is used. Optional. |
 | [params.crs=null]| `String` | The projection to work in. If null, the native image CRS is used. Optional. |
 | [params.bands=null] | `Array` | A list of image band names to reduce values for. If null, all bands will be reduced. Band names define column names in the resulting reduction table. Optional. |
-| [params.bandsRename=null] | `Array` | A list of desired image band names. The length and order must correspond to the `params.bands` list. If null, band names will renaming unchanged. Band names define column names in the resulting reduction table. Optional. |
+| [params.bandsRename=null] | `Array` | A list of desired image band names. The length and order must correspond to the `params.bands` list. If null, band names will be unchanged. Band names define column names in the resulting reduction table. Optional. |
 | [params.imgProps=null] | `Array` | A list of image properties to include in the table of region reduction results. If null, all image properties are included. Optional. |
 | [params.imgPropsRename=null] | `Array` | A list of image property names to replace those provided by `params.imgProps`. The length and order must match the `params.imgProps` entries. Optional. |
 
@@ -136,7 +135,7 @@ function zonalStats(ic, fc, params) {
     }
   }
 
-  // Set default parameters based on a image representative.
+  // Set default parameters based on an image representative.
   var imgRep = ic.first();
   var nonSystemImgProps = ee.Feature(null)
     .copyProperties(imgRep).propertyNames();
@@ -237,10 +236,10 @@ and slope.
 
 #### Buffer the points
 
-Apply a 45 m radius buffer to the points imported previously by mapping the
+Apply a 45 m radius buffer to the points defined previously by mapping the
 `bufferPoints` function over the feature collection. The radius is set to 45
 m to correspond to the 90 m pixel resolution of the DEM. In this case,
-circles are used instead of a squares (set the second argument as `false`
+circles are used instead of squares (set the second argument as `false`
 i.e., do not use bounds).
 
 ```js
@@ -253,11 +252,11 @@ Two important things to note about the `zonalStats` function that this
 example addresses:
 
 - It only accepts an `ee.ImageCollection` , not an `ee.Image`; single images
-must be wrapped in an image collection.
+    must be wrapped in an image collection.
 - It expects every image in the input image collection to have a timestamp
-property named `'system:time_start'` with values representing milliseconds
-from 00:00:00 UTC on 1 January 1970; most datasets should have this property,
-otherwise one should be added.
+    property named `'system:time_start'` with values representing milliseconds
+    from 00:00:00 UTC on 1 January 1970; most datasets should have this
+	property, otherwise one should be added.
 
 ```js
 // Import the MERIT global elevation dataset.
@@ -268,7 +267,7 @@ var slope = ee.Terrain.slope(elev);
 
 // Concatenate elevation and slope as two bands of an image.
 var topo = ee.Image.cat(elev, slope)
-  // Computed image do not have a 'system:time_start' property; add one based
+  // Computed images do not have a 'system:time_start' property; add one based
   // on when the data were collected.
   .set('system:time_start', ee.Date('2000-01-01').millis());
 
@@ -299,11 +298,11 @@ according to the given reducer. It is essentially a table that looks like this:
 
 | plot_id | timestamp | datetime | elevation | slope |
 | --- | --- | --- | --- | --- |
-| 1 | 946684800000 | 2000-01-01 00:01:00 | 2660 | 26.4 |
-| 2 | 946684800000 | 2000-01-01 00:01:00 | 2894 | 35.0 |
-| 3 | 946684800000 | 2000-01-01 00:01:00 | 3262 | 35.7 |
-| 4 | 946684800000 | 2000-01-01 00:01:00 | 2786 | 26.2 |
-| 5 | 946684800000 | 2000-01-01 00:01:00 | 2563 | 21.8 |
+| 1 | 946684800000 | 2000-01-01 00:01:00 | 2648.1 | 29.7 |
+| 2 | 946684800000 | 2000-01-01 00:01:00 | 2888.2 | 33.9 |
+| 3 | 946684800000 | 2000-01-01 00:01:00 | 3267.8 | 35.8 |
+| 4 | 946684800000 | 2000-01-01 00:01:00 | 2790.7 | 25.1 |
+| 5 | 946684800000 | 2000-01-01 00:01:00 | 2559.4 | 29.4 |
 
 ### MODIS time series
 
@@ -321,7 +320,7 @@ argument of the `bufferPoints` function to `true`, so that the bounds of the
 buffered points are returned.
 
 ```js
-ptsModis = pts.map(bufferPoints(50, true));
+var ptsModis = pts.map(bufferPoints(50, true));
 ```
 
 #### Calculate zonal statistics
@@ -337,14 +336,14 @@ var modisCol = ee.ImageCollection('MODIS/006/MOD09A1')
 ```
 
 Reduce each image in the collection by each plot according to the following
-parameters. Note that this time the reducer defined as the neighborhood max
-(`ee.Reducer.max`) instead of the default mean, and that scale, crs, and
-properties for the datetime are explicitly defined.
+parameters. Note that this time the reducer is defined as the neighborhood
+median (`ee.Reducer.median`) instead of the default mean, and that scale, crs,
+and properties for the datetime are explicitly defined.
 
 ```js
 // Define parameters for the zonalStats function.
 var params = {
-  reducer: ee.Reducer.max(),
+  reducer: ee.Reducer.median(),
   scale: 500,
   crs: 'EPSG:5070',
   bands: ['sur_refl_b01', 'sur_refl_b02', 'sur_refl_b06'],
@@ -355,7 +354,7 @@ var params = {
 
 // Extract zonal statistics per point per image.
 var ptsModisStats = zonalStats(modisCol, ptsModis, params);
-print(ptsModisStats.limit(100));
+print(ptsModisStats.limit(50));
 ```
 
 The result is a feature collection with a feature for all combinations of
@@ -370,13 +369,13 @@ Enhanced Thematic Mapper Plus (ETM+) from Landsat 7, and Operational Land
 Imager (OLI) from Landsat 8.
 
 The following section prepares these collections so that band names are
-consistent and masks clouds are applied. Reflectance among corresponding
+consistent and cloud masks are applied. Reflectance among corresponding
 bands are roughly congruent for the three sensors when using the surface
 reflectance product, therefore the processing steps that follow do not
 address inter-sensor harmonization. If you would like to apply a correction,
 please see the
 ["Landsat ETM+ to OLI Harmonization" tutorial](https://developers.google.com/earth-engine/tutorials/community/landsat-etm-to-oli-harmonization)
-for more information on subject.
+for more information on the subject.
 
 #### Prepare the Landsat image collection
 
@@ -398,14 +397,14 @@ TM/ETM+ data. This is important because the band numbers are different
 between OLI and TM/ETM+, and it will make future index calculations easier.
 
 ```js
-// Function to select and rename bands of interest from OLI.
+// Selects and renames bands of interest for Landsat OLI.
 function renameOli(img) {
   return img.select(
     ['B2', 'B3', 'B4', 'B5', 'B6', 'B7'],
     ['Blue', 'Green', 'Red', 'NIR', 'SWIR1', 'SWIR2']);
 }
 
-// Function to select and rename bands of interest from TM/ETM+.
+// Selects and renames bands of interest for TM/ETM+.
 function renameEtm(img) {
   return img.select(
     ['B1', 'B2', 'B3', 'B4', 'B5', 'B7'],
@@ -415,19 +414,19 @@ function renameEtm(img) {
 
 Combine the cloud mask and band renaming functions into preparation functions
 for OLI and TM/ETM+. If you want to include band harmonization coefficients,
-you can combine the prepOli and prepEtm functions from the  ["Landsat ETM+ to
-OLI Harmonization" tutorial](https://developers.google.com/earth-engine/tutorials/community/landsat-etm-to-oli-harmonization)
+you can combine the `prepOli` and `prepEtm` functions from the
+["Landsat ETM+ to OLI Harmonization" tutorial](https://developers.google.com/earth-engine/tutorials/community/landsat-etm-to-oli-harmonization)
 with the functions below.
 
 ```js
-// Define function to prepare (cloud mask and rename) OLI images.
+// Prepares (cloud masks and renames) OLI images.
 function prepOli(img) {
   img = fmask(img);
   img = renameOli(img);
   return img;
 }
 
-// Define function to prepare (cloud mask and rename) TM/ETM+ images.
+// Prepares (cloud masks and renames) TM/ETM+ images.
 function prepEtm(img) {
   img = fmask(img);
   img = renameEtm(img);
@@ -440,21 +439,25 @@ sensors. Filter them by the bounds of the point feature collection and apply
 the relevant image preparation function.
 
 ```js
-var LC08col = ee.ImageCollection('LANDSAT/LC08/C01/T1_SR')
-  .filterBounds(pts)
+var ptsLandsat = pts.map(bufferPoints(15, true));
+
+var oliCol = ee.ImageCollection('LANDSAT/LC08/C01/T1_SR')
+  .filterBounds(ptsLandsat)
   .map(prepOli);
-var LE07col = ee.ImageCollection('LANDSAT/LE07/C01/T1_SR')
-  .filterBounds(pts)
+
+var etmCol = ee.ImageCollection('LANDSAT/LE07/C01/T1_SR')
+  .filterBounds(ptsLandsat)
   .map(prepEtm);
-var LT05col = ee.ImageCollection('LANDSAT/LT05/C01/T1_SR')
-  .filterBounds(pts)
+
+var tmCol = ee.ImageCollection('LANDSAT/LT05/C01/T1_SR')
+  .filterBounds(ptsLandsat)
   .map(prepEtm);
 ```
 
 Merge the prepared sensor collections.
 
 ```js
-var col = LC08col.merge(LE07col).merge(LT05col);
+var col = oliCol.merge(etmCol).merge(tmCol);
 ```
 
 #### Calculate zonal statistics
@@ -480,34 +483,37 @@ var params = {
 
 // Extract zonal statistics per point per image.
 var ptsLandsatStats = zonalStats(landsatCol, ptsLandsat, params);
-print(ptsLandsatStats.limit(100));
+print(ptsLandsatStats.limit(50));
 ```
+
 The result is a feature collection with a feature for all combinations of
 plots and images.
 
 ### Dealing with large collections
 
-If your browser times out, try exporting the results. It's likely that point
-feature collections that cover a large area or contain many points will need
-to be exported as a batch task by either exporting the final feature
-collection as an asset or as a CSV/Shapefile/GeoJSON to Google Drive or GCS.
+If your browser times out, try [exporting](https://developers.google.com/earth-engine/guides/exporting)
+the results. It's likely that point feature collections that cover a large area
+or contain many points (point-image observations) will need to be exported as a
+batch task by either exporting the final feature collection as an asset or as a
+CSV/Shapefile/GeoJSON to Google Drive or GCS.
 
 Here is how you would export the above Landsat image-point feature collection
-to asset and Google Drive. Run the following code, activate Code Editor Tasks
-tab, and then click the task 'Run' button.
+to asset and Google Drive. Run the following code, activate the Code Editor
+Tasks tab, and then click the task 'Run' button.
 
 ```js
 Export.table.toAsset({
-  collection: statCol,
-  description: 'point_summary_table',
-  assetId: 'point_summary_table'
+  collection: your_feature_collection_goes_here,
+  description: 'your_summary_table_name_here',
+  assetId: 'path_to_your_summary_table_name_here'
 });
 
 Export.table.toDrive({
-  collection: statCol,
-  folder: 'yourFolderNameHere',
-  description: 'point_summary_table_gdrive',
-  fileFormat: 'CSV'});
+  collection: your_feature_collection_goes_here,
+  folder: 'your_gdrive_folder_name_here',
+  description: 'your_summary_table_name_here',
+  fileFormat: 'CSV'
+});
 ```
 
 ## Additional notes
@@ -523,15 +529,13 @@ Export.table.toDrive({
 - [ee.Reducer.percentile](https://developers.google.com/earth-engine/apidocs/ee-reducer-percentile)
 - [ee.Reducer.minMax](https://developers.google.com/earth-engine/apidocs/ee-reducer-minMax)
 
-
 ### Weighted region reduction
 
 [Reducers are weighted by default](https://developers.google.com/earth-engine/guides/reducers_weighting),
 which means that fractions of pixels intersecting a given region contribute
 less to the regional statistic than whole pixels within the region. Adjust
 this behavior by calling `unweighted()` on the reducer, as in
-`ee.Reducer.mean().unweighted`.
-
+`ee.Reducer.mean().unweighted()`.
 
 ### Copy properties to computed images
 
@@ -570,19 +574,16 @@ print(computedImg.propertyNames());
 Now all of the properties are included.
 
 Use this technique when returning computed, derived images in a mapped
-function and in single image operations.
-
+function, and in single image operations.
 
 ### Understanding which pixels are included in polygon statistics
 
 If you want to visualize what pixels are included in a polygon for a region
-reducer, you can adapt the following code which demonstrates the process. This
-demo uses a single polygon that is re-sizable by clicking and dragging the edges
-or corners, however the process would work with the bufferPoints function or a
-polygon.
+reducer, you can adapt the following code to use your own region(s) by replacing
+`geometry` and the `elev` dataset, along with desired scale and crs parameters.
 
 ```js
-// Add polygon geometry
+// Add polygon geometry.
 var geometry =
     ee.Geometry.Polygon(
         [[[-118.6019835717645, 37.079867782687884],
@@ -621,17 +622,18 @@ Map.centerObject(geometry, 18);
     band if the CRS is unspecified in the function. For imagery spanning
 	multiple UTM zones, for example, this would lead to different origins. For
 	some functions EE uses the default EPSG:4326. Therefore, when the
-	opportunity is presented, such as by the reduceRegion function, it is
+	opportunity is presented, such as by the `reduceRegion` function, it is
 	important to specify the scale and CRS explicitly.
 - The Map default CRS is EPSG:3857. When looking closely at pixels on the map,
     the data layer scale and CRS should also be set explicitly. Note that
-	zooming out after setting a relatively small scale may result in memory and
-	timeout errors due to the lack of pyramid layers.
-- Specifying the CRS and scale in both the reduceRegion and addLayer functions
-    allow the map visualization to align with the information printed in the
-	console.
+	zooming out after setting a relatively small scale when reprojecting may
+	result in memory and/or timeout errors because optimized pyramid layers for
+	each zoom level will not be used.
+- Specifying the CRS and scale in both the `reduceRegion` and `addLayer`
+    functions allow the map visualization to align with the information printed
+	in the console.
 - The Earth Engine default, WGS 84 lat long (EPSG:4326), is a generic CRS that
-    works worldwide. Below the code reprojects to EPSG:5070, North American
+    works worldwide. The code above reprojects to EPSG:5070, North American
 	Equal Albers, which is a CRS that preserves area for North American
 	locations. Use the CRS that is best for your use case when adapting this to
 	your own project, or maintain (and specify) the CRS of the image using

@@ -529,13 +529,24 @@ Export.table.toDrive({
 - [ee.Reducer.percentile](https://developers.google.com/earth-engine/apidocs/ee-reducer-percentile)
 - [ee.Reducer.minMax](https://developers.google.com/earth-engine/apidocs/ee-reducer-minMax)
 
-### Weighted region reduction
+### Weighted vs unweighted region reduction
 
-[Reducers are weighted by default](https://developers.google.com/earth-engine/guides/reducers_weighting),
-which means that fractions of pixels intersecting a given region contribute
-less to the regional statistic than whole pixels within the region. Adjust
-this behavior by calling `unweighted()` on the reducer, as in
-`ee.Reducer.mean().unweighted()`.
+A region used for calculation of zonal statistics often bisect pixels along
+its edge. Should partial pixels be included in zonal statistics? Earth Engine
+lets you decide by allowing you to define a reducer as
+either weighted or unweighted (or you can provide per-pixel weight
+specification as an image band). A **weighted** reducer will include partial
+pixels in statistic calculations by weighting each pixel's contribution
+according to the fraction of the area intersecting the region. An **unweighted**
+reducer, on the other hand, gives equal weight to all pixels whose cell center
+intersects the region; all other pixels are excluded from calculation of the
+statistic. For aggregate reducers like `ee.Reducer.mean()` and
+`ee.Reducer.median()`, the default mode is weighted, while identifier reducers
+such as `ee.Reducer.min()` and `ee.Reducer.max()` are unweighted. You can adjust
+the behavior of weighted reducers by calling `unweighted()` on them, as in
+`ee.Reducer.mean().unweighted()`. For more information, please see the
+[Weighted Reductions](https://developers.google.com/earth-engine/guides/reducers_weighting)
+guide page.
 
 ### Copy properties to computed images
 
@@ -581,6 +592,9 @@ function, and in single image operations.
 If you want to visualize what pixels are included in a polygon for a region
 reducer, you can adapt the following code to use your own region(s) by replacing
 `geometry` and the `elev` dataset, along with desired scale and crs parameters.
+The important part to note is that the image data you are adding to the map
+is reprojected using the same `scale` and `crs` as that used in your region
+reduction.
 
 ```js
 // Add polygon geometry.
@@ -598,8 +612,8 @@ print('Scale in meters:', elev.projection().nominalScale());
 ```
 
 Run a region reducer that counts the number of pixels in the polygon. Be sure to
-specify CRS and scale for both the region reducer and adding the layer to the
-map (see below for more details).
+specify CRS and scale for both the region reducer and the reprojected layer added
+to the map (see below for more details).
 
 ```js
 var result = elev.select(0).reduceRegion({
@@ -612,7 +626,8 @@ var result = elev.select(0).reduceRegion({
 print('n pixels', result.get('dem'));
 
 Map.addLayer(elev.reproject({crs: 'EPSG:5070', scale: 90}),
-  {min: 2000, max: 3000, palette: ['blue', 'green', 'red']});
+  {min: 2500, max: 3000, palette: ['blue', 'white', 'red']});
+Map.addLayer(geometry, {color: 'white'});
 Map.centerObject(geometry, 18);
 ```
 

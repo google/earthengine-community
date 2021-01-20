@@ -531,8 +531,8 @@ Export.table.toDrive({
 
 ### Weighted vs unweighted region reduction
 
-A region used for calculation of zonal statistics often bisect pixels along
-its edge. Should partial pixels be included in zonal statistics? Earth Engine
+A region used for calculation of zonal statistics often bisects multiple 
+pixels. Should partial pixels be included in zonal statistics? Earth Engine
 lets you decide by allowing you to define a reducer as
 either weighted or unweighted (or you can provide per-pixel weight
 specification as an image band). A **weighted** reducer will include partial
@@ -611,8 +611,9 @@ print('Projection, crs, and crs_transform:', elev.projection());
 print('Scale in meters:', elev.projection().nominalScale());
 ```
 
-Run a region reducer that counts the number of pixels in the polygon. Be sure to
-specify CRS and scale for both the region reducer and the reprojected layer added
+A count reducer will return how many pixel centers are overlapped by the polygon region, 
+which would be the number of pixels included in any unweighted reducer statistic. Be sure 
+to specify CRS and scale for both the region reducer and the reprojected layer added 
 to the map (see below for more details).
 
 ```js

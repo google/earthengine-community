@@ -27,7 +27,7 @@ var geometry = ee.Geometry.Rectangle([18.5229, 4.3491, 18.5833, 4.4066]);
 var sources = ee.Image().toByte().paint(geometry, 1);
 
 // Mask the sources image with itself.
-sources = sources.updateMask(sources);
+sources = sources.selfMask();
 
 // The cost data is generated from classes in ESA/GLOBCOVER.
 var cover = ee.Image('ESA/GLOBCOVER_L4_200901_200912_V2_3').select(0);
@@ -35,19 +35,17 @@ var cover = ee.Image('ESA/GLOBCOVER_L4_200901_200912_V2_3').select(0);
 // Classes 60, 80, 110, 140 have cost 1.
 // Classes 40, 90, 120, 130, 170 have cost 2.
 // Classes 50, 70, 150, 160 have cost 3.
-var cost =
-  cover.eq(60).or(cover.eq(80)).or(cover.eq(110)).or(cover.eq(140))
-      .multiply(1).add(
-  cover.eq(40).or(cover.eq(90)).or(cover.eq(120)).or(cover.eq(130))
-    .or(cover.eq(170))
-      .multiply(2).add(
-  cover.eq(50).or(cover.eq(70)).or(cover.eq(150)).or(cover.eq(160))
-      .multiply(3)));
+var cost = cover.expression(
+  '(b == 60 | b == 80 | b == 110 | b == 140) ? 1 :' +
+  '(b == 40 | b == 90 | b == 120 | b == 130 | b == 170) ? 2 :' +
+  '(b == 50 | b == 70 | b == 150 | b == 160) ? 3 :' +
+  '0',
+  {b: cover});
 
 // Compute the cumulative cost to traverse the land cover.
 var cumulativeCost = cost.cumulativeCost({
   source: sources,
-  maxDistance: 80 * 1000 // 80 kilometers
+  maxDistance: 80 * 1000  // 80 kilometers
 });
 
 // Display the results

@@ -33,5 +33,5 @@ var bare = ndvi.lt(0.2).and(ndwi.lt(0));
 // Mask and display the binary layer.
 Map.setCenter(-122.3578, 37.7726, 12);
 Map.setOptions('satellite');
-Map.addLayer(bare.updateMask(bare), {}, 'bare');
+Map.addLayer(bare.selfMask(), {}, 'bare');
 // [END earthengine__images07__thresholding]

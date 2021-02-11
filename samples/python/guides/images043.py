@@ -12,10 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-"""Earth Engine Developer's Guide examples for 'Image information' page."""
-
-import ee
-ee.Initialize()
+"""Google Earth Engine Developer's Guide examples for 'Images - Visualization'."""
 
 # [START earthengine__images043__get_thumb]
 # Fetch a digital elevation model.

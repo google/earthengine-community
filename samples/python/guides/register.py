@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-"""GEE DevSite Guide examples for 'Images - Registering Images'."""
+"""Google Earth Engine Developer's Guide examples for 'Images - Registering Images'."""
 
 # [START earthengine__register__displacement]
 # Load the two images to be registered.
@@ -43,21 +43,25 @@ angle = displacement.select('dx').atan2(displacement.select('dy'))
 # Display offset distance and angle.
 import math
 
-Map = folium.Map(location=[0.58, 37.46], zoom_start=15)
-Map.add_ee_layer(offset, {'min': 0, 'max': 20}, 'offset')
-Map.add_ee_layer(angle, {'min': -math.pi, 'max': math.pi}, 'angle')
+# Define a map centered on Central Kenya.
+map_1 = folium.Map(location=[0.58, 37.46], zoom_start=15)
+
+# Add the image layers to the map.
+map_1.add_ee_layer(offset, {'min': 0, 'max': 20}, 'offset')
+map_1.add_ee_layer(angle, {'min': -math.pi, 'max': math.pi}, 'angle')
 # [END earthengine__register__displacement]
 
 # [START earthengine__register__displace]
 # Use the computed displacement to register all original bands.
 registered = image2_orig.displace(displacement)
 
-# Show the results of co-registering the images.
+# Define visualization parameters.
 vis_params = {'bands': ['R', 'G', 'B'], 'max': 4000}
 
-Map.add_ee_layer(image1_orig, vis_params, 'Reference')
-Map.add_ee_layer(image2_orig, vis_params, 'Before Registration')
-Map.add_ee_layer(registered, vis_params, 'After Registration')
+# Add the image layers to the map.
+map_1.add_ee_layer(image1_orig, vis_params, 'Reference')
+map_1.add_ee_layer(image2_orig, vis_params, 'Before Registration')
+map_1.add_ee_layer(registered, vis_params, 'After Registration')
 # [END earthengine__register__displace]
 
 # [START earthengine__register__register]
@@ -67,6 +71,7 @@ also_registered = image2_orig.register(**{
     'patchWidth': 100.0
 })
 
-Map.add_ee_layer(also_registered, vis_params, 'Also Registered')
-display(Map.add_child(folium.LayerControl()))
+# Add the image layer to the map and display it.
+map_1.add_ee_layer(also_registered, vis_params, 'Also Registered')
+display(map_1.add_child(folium.LayerControl()))
 # [END earthengine__register__register]

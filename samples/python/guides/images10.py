@@ -12,10 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-"""Earth Engine Developer's Guide examples from 'Images - Convolutions' page."""
-
-import ee
-ee.Initialize()
+"""Google Earth Engine Developer's Guide examples for 'Images - Convolutions'."""
 
 # [START earthengine__images10__smoothing]
 # Load and display an image.
@@ -26,6 +23,17 @@ boxcar = ee.Kernel.square(radius=7, units='pixels', normalize=True)
 
 # Smooth the image by convolving with the boxcar kernel.
 smooth = image.convolve(boxcar)
+
+# Define a map centered on Oakland, California.
+map_1 = folium.Map(location=[37.8694, -121.9785], zoom_start=11)
+
+# Add the image layers to the map and display it. Compare the smoothed result to
+# the original.
+map_1.add_ee_layer(
+    image, {'bands': ['B5', 'B4', 'B3'], 'max': 0.5}, 'input image')
+map_1.add_ee_layer(
+    smooth, {'bands': ['B5', 'B4', 'B3'], 'max': 0.5}, 'smoothed')
+display(map_1.add_child(folium.LayerControl()))
 # [END earthengine__images10__smoothing]
 
 # [START earthengine__images10__edges]
@@ -34,6 +42,17 @@ laplacian = ee.Kernel.laplacian8(normalize=False)
 
 # Apply the edge-detection kernel.
 edgy = image.convolve(laplacian)
+
+# Define a map centered on Oakland, California.
+map_2 = folium.Map(location=[37.8694, -121.9785], zoom_start=11)
+
+# Add the image layers to the map and display it. Compare the edges result to
+# the original.
+map_2.add_ee_layer(
+    image, {'bands': ['B5', 'B4', 'B3'], 'max': 0.5}, 'input image')
+map_2.add_ee_layer(
+    edgy, {'bands': ['B5', 'B4', 'B3'], 'max': 0.5, 'format': 'png'}, 'edges')
+display(map_2.add_child(folium.LayerControl()))
 # [END earthengine__images10__edges]
 
 # [START earthengine__images10__fixed]

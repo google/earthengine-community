@@ -12,10 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-"""Earth Engine Developer's Guide examples from 'Images - Relational, conditional and Boolean operations' page."""
-
-import ee
-ee.Initialize()
+"""Google Earth Engine Developer's Guide examples for 'Images - Relational, conditional and Boolean operations'."""
 
 # [START earthengine__images09__where_operator]
 # Load a cloudy Landsat 8 image.
@@ -29,4 +26,13 @@ cloud = ee.Algorithms.Landsat.simpleCloudScore(image).select('cloud')
 
 # Set cloudy pixels to the other image.
 replaced = image.where(cloud.gt(10), replacement)
+
+# Define a map centered on San Francisco Bay.
+map_4 = folium.Map(location=[37.4675, -122.1363], zoom_start=9)
+
+# Add the image layer to the map and display it.
+map_4.add_ee_layer(replaced,
+                   {'bands': ['B5', 'B4', 'B3'], 'min': 0, 'max': 0.5},
+                   'clouds replaced')
+display(map_4)
 # [END earthengine__images09__where_operator]

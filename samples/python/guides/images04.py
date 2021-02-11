@@ -12,10 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-"""Earth Engine Developer's Guide examples from 'Images - Visualization' page."""
-
-import ee
-ee.Initialize()
+"""Google Earth Engine Developer's Guide examples for 'Images - Visualization'."""
 
 # [START earthengine__images04__palettized]
 # Load 2012 MODIS land cover and select the IGBP classification.
@@ -43,16 +40,14 @@ igbp_palette = [
     '6f6f6f'   # tundra
 ]
 
-# Specify the min and max labels and the color palette matching the labels.
-cover_viz = cover.visualize(min=0, max=17, palette=igbp_palette)
+# Define a map centered on the United States.
+map_6 = folium.Map(location=[40.413, -99.229], zoom_start=5)
 
-print(
-    'ndwi_viz_masked thumbnail:',
-    ndwi_viz_masked.getThumbURL(params={
-        'dimensions': 512,
-        'crs': 'EPSG:3857',
-        'region': image.geometry().centroid().buffer(4e4)
-    }))
+# Add the image layer to the map and display it. Specify the min and max labels
+# and the color palette matching the labels.
+map_6.add_ee_layer(
+    cover, {'min': 0, 'max': 17, 'palette': igbp_palette}, 'IGBP classes')
+display(map_6)
 # [END earthengine__images04__palettized]
 
 # [START earthengine__images04__sld_style]
@@ -85,4 +80,11 @@ sld_intervals = """
 
 # Apply the SLD style to the image.
 cover_sld = cover.sldStyle(sld_intervals)
+
+# Define a map centered on the United States.
+map_7 = folium.Map(location=[40.413, -99.229], zoom_start=5)
+
+# Add the image layer to the map and display it.
+map_7.add_ee_layer(cover_sld, None, 'IGBP classes styled')
+display(map_7)
 # [END earthengine__images04__sld_style]

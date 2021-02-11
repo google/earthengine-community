@@ -12,10 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-"""Earth Engine Developer's Guide examples from 'Images - Mathematical operations' page."""
-
-import ee
-ee.Initialize()
+"""Google Earth Engine Developer's Guide examples for 'Images - Mathematical operations'."""
 
 # [START earthengine__images06__evi_expression]
 # Load a Landsat 8 image.
@@ -28,4 +25,12 @@ evi = image.expression(
         'RED': image.select('B4'),
         'BLUE': image.select('B2')
     })
+
+# Define a map centered on San Francisco Bay.
+map_2 = folium.Map(location=[37.4675, -122.1363], zoom_start=9)
+
+# Add the image layer to the map and display it.
+map_2.add_ee_layer(
+    evi, {'min': -1, 'max': 1, 'palette': ['FF0000', '00FF00']}, 'evi')
+display(map_2)
 # [END earthengine__images06__evi_expression]

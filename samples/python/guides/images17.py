@@ -12,10 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-"""Earth Engine Developer's Guide examples from 'Images - Texture' page."""
-
-import ee
-ee.Initialize()
+"""Google Earth Engine Developer's Guide examples for 'Images - Texture'."""
 
 # [START earthengine__images17__entropy]
 # Load a high-resolution NAIP image.
@@ -29,12 +26,25 @@ square = ee.Kernel.square(radius=4)
 
 # Compute entropy and display.
 entropy = nir.entropy(square)
+
+# Define a map centered on Golden Gate Park, San Francisco.
+map_1 = folium.Map(location=[37.769833, -122.466123], zoom_start=17)
+
+# Add the image layers to the map.
+map_1.add_ee_layer(image, {'max': 255}, 'image')
+map_1.add_ee_layer(
+    entropy, {'min': 1, 'max': 5, 'palette': ['0000CC', 'CC0000']}, 'entropy')
 # [END earthengine__images17__entropy]
 
 # [START earthengine__images17__glcm]
 # Compute the gray-level co-occurrence matrix (GLCM), get contrast.
 glcm = nir.glcmTexture(size=4)
 contrast = glcm.select('N_contrast')
+
+# Add the contrast layer to the map.
+map_1.add_ee_layer(contrast,
+                   {'min': 0, 'max': 1500, 'palette': ['0000CC', 'CC0000']},
+                   'contrast')
 # [END earthengine__images17__glcm]
 
 # [START earthengine__images17__gearys]
@@ -53,4 +63,10 @@ neighs = nir.neighborhoodToBands(kernel)
 
 # Compute local Geary's C, a measure of spatial association.
 gearys = nir.subtract(neighs).pow(2).reduce(ee.Reducer.sum()).divide(pow(9, 2))
+
+# Add the Geary's C layer to the map and display it.
+map_1.add_ee_layer(gearys,
+                   {'min': 20, 'max': 2500, 'palette': ['0000CC', 'CC0000']},
+                   "Geary's C")
+display(map_1.add_child(folium.LayerControl()))
 # [END earthengine__images17__gearys]

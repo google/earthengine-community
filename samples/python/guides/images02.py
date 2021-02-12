@@ -14,6 +14,34 @@
 
 """Google Earth Engine Developer's Guide examples for 'Images - Creating images'."""
 
+# [START earthengine__images02__load_image]
+loaded_image = ee.Image('JAXA/ALOS/AW3D30/V2_2')
+# [END earthengine__images02__load_image]
+
+# [START earthengine__images02__find_image]
+first = (ee.ImageCollection('COPERNICUS/S2_SR')
+         .filterBounds(ee.Geometry.Point(-70.48, 43.3631))
+         .filterDate('2019-01-01', '2019-12-31')
+         .sort('CLOUDY_PIXEL_PERCENTAGE')
+         .first())
+
+# Define a map centered on southern Maine.
+map_1 = folium.Map(location=[43.7516, -70.8155], zoom_start=11)
+
+# Add the image layer to the map and display it.
+map_1.add_ee_layer(
+    first, {'bands': ['B4', 'B3', 'B2'], 'min': 0, 'max': 2000}, 'first')
+display(map_1)
+# [END earthengine__images02__find_image]
+
+# [START earthengine__images02__cloud_image]
+uri = ('gs://gcp-public-data-landsat/LC08/01/001/002/'
+       'LC08_L1GT_001002_20160817_20170322_01_T2/'
+       'LC08_L1GT_001002_20160817_20170322_01_T2_B5.TIF')
+cloud_image = ee.Image.loadGeoTIFF(uri)
+print(cloud_image.getInfo())
+# [END earthengine__images02__cloud_image]
+
 # [START earthengine__images02__create_image]
 from pprint import pprint
 

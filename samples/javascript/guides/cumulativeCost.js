@@ -35,12 +35,13 @@ var cover = ee.Image('ESA/GLOBCOVER_L4_200901_200912_V2_3').select(0);
 // Classes 60, 80, 110, 140 have cost 1.
 // Classes 40, 90, 120, 130, 170 have cost 2.
 // Classes 50, 70, 150, 160 have cost 3.
-var cost = cover.expression(
-  '(b == 60 | b == 80 | b == 110 | b == 140) ? 1 :' +
-  '(b == 40 | b == 90 | b == 120 | b == 130 | b == 170) ? 2 :' +
-  '(b == 50 | b == 70 | b == 150 | b == 160) ? 3 :' +
-  '0',
-  {b: cover});
+var beforeRemap = [60, 80, 110, 140,
+                   40, 90, 120, 130, 170,
+                   50, 70, 150, 160];
+var afterRemap = [1, 1, 1, 1,
+                  2, 2, 2, 2, 2,
+                  3, 3, 3, 3];
+var cost = cover.remap(beforeRemap, afterRemap, 0);
 
 // Compute the cumulative cost to traverse the land cover.
 var cumulativeCost = cost.cumulativeCost({

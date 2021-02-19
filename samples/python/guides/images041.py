@@ -40,12 +40,14 @@ equalize_sld = template_sld.replace('_enhance_', 'Histogram')
 normalize_sld = template_sld.replace('_enhance_', 'Normalize')
 
 # Define a map centered on San Francisco Bay.
-map_9 = folium.Map(location=[37.5010, -122.1899], zoom_start=10)
+map_sld_continuous = folium.Map(location=[37.5010, -122.1899], zoom_start=10)
 
 # Add the image layers to the map and display it.
-map_9.add_ee_layer(
+map_sld_continuous.add_ee_layer(
     image, {'bands': ['B5', 'B4', 'B3'], 'min': 0, 'max': 15000}, 'Linear')
-map_9.add_ee_layer(image.sldStyle(equalize_sld), None, 'Equalized')
-map_9.add_ee_layer(image.sldStyle(normalize_sld), None, 'Normalized')
-display(map_9.add_child(folium.LayerControl()))
+map_sld_continuous.add_ee_layer(
+    image.sldStyle(equalize_sld), None, 'Equalized')
+map_sld_continuous.add_ee_layer(
+    image.sldStyle(normalize_sld), None, 'Normalized')
+display(map_sld_continuous.add_child(folium.LayerControl()))
 # [END earthengine__images041__sld_stretch]

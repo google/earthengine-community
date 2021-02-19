@@ -35,14 +35,14 @@ diff = landsat_2008.subtract(landsat_1999)
 squared_difference = diff.pow(2)
 
 # Define a map centered on Australia.
-map_1 = folium.Map(location=[-24.003, 133.565], zoom_start=5)
+map_diff = folium.Map(location=[-24.003, 133.565], zoom_start=5)
 
 # Add the image layers to the map and display it.
-map_1.add_ee_layer(diff,
+map_diff.add_ee_layer(diff,
                    {'bands': ['B4', 'B3', 'B2'], 'min': -32, 'max': 32},
                    'diff.')
-map_1.add_ee_layer(squared_difference,
+map_diff.add_ee_layer(squared_difference,
                    {'bands': ['B4', 'B3', 'B2'], 'max': 1000},
                    'squared diff.')
-display(map_1.add_child(folium.LayerControl()))
+display(map_diff.add_child(folium.LayerControl()))
 # [END earthengine__images05__per_band]

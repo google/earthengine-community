@@ -26,9 +26,9 @@ ndwi = image.normalizedDifference(['B3', 'B5'])
 bare = ndvi.lt(0.2).And(ndwi.lt(0))
 
 # Define a map centered on San Francisco Bay.
-map_1 = folium.Map(location=[37.7726, -122.3578], zoom_start=12)
+map_bare = folium.Map(location=[37.7726, -122.3578], zoom_start=12)
 
 # Add the masked image layer to the map and display it.
-map_1.add_ee_layer(bare.selfMask(), None, 'bare')
-display(map_1)
+map_bare.add_ee_layer(bare.selfMask(), None, 'bare')
+display(map_bare)
 # [END earthengine__images07__thresholding]

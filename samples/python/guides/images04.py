@@ -41,13 +41,13 @@ igbp_palette = [
 ]
 
 # Define a map centered on the United States.
-map_6 = folium.Map(location=[40.413, -99.229], zoom_start=5)
+map_palette = folium.Map(location=[40.413, -99.229], zoom_start=5)
 
 # Add the image layer to the map and display it. Specify the min and max labels
 # and the color palette matching the labels.
-map_6.add_ee_layer(
+map_palette.add_ee_layer(
     cover, {'min': 0, 'max': 17, 'palette': igbp_palette}, 'IGBP classes')
-display(map_6)
+display(map_palette)
 # [END earthengine__images04__palettized]
 
 # [START earthengine__images04__sld_style]
@@ -82,9 +82,9 @@ sld_intervals = """
 cover_sld = cover.sldStyle(sld_intervals)
 
 # Define a map centered on the United States.
-map_7 = folium.Map(location=[40.413, -99.229], zoom_start=5)
+map_sld_categorical = folium.Map(location=[40.413, -99.229], zoom_start=5)
 
 # Add the image layer to the map and display it.
-map_7.add_ee_layer(cover_sld, None, 'IGBP classes styled')
-display(map_7)
+map_sld_categorical.add_ee_layer(cover_sld, None, 'IGBP classes styled')
+display(map_sld_categorical)
 # [END earthengine__images04__sld_style]

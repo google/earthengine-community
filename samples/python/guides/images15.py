@@ -28,14 +28,14 @@ sharpened = ee.Image.cat(
      image.select('B8')]).hsvToRgb()
 
 # Define a map centered on San Francisco, California.
-map_1 = folium.Map(location=[37.76664, -122.44829], zoom_start=13)
+map_sharpened = folium.Map(location=[37.76664, -122.44829], zoom_start=13)
 
 # Add the image layers to the map and display it.
-map_1.add_ee_layer(image, {
+map_sharpened.add_ee_layer(image, {
     'bands': ['B4', 'B3', 'B2'], 'min': 0, 'max': 0.25, 'gamma': [1.1, 1.1, 1]
 }, 'rgb')
-map_1.add_ee_layer(sharpened, {
+map_sharpened.add_ee_layer(sharpened, {
     'min': 0, 'max': 0.25, 'gamma': [1.3, 1.3, 1.3]
 }, 'pan-sharpened')
-display(map_1.add_child(folium.LayerControl()))
+display(map_sharpened.add_child(folium.LayerControl()))
 # [END earthengine__images15__pan_sharpening]

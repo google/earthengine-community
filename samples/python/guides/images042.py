@@ -45,10 +45,11 @@ sld_ramp = """
     </RasterSymbolizer>"""
 
 # Define a map centered on the United States.
-map_8 = folium.Map(location=[40.413, -99.229], zoom_start=5)
+map_sld_interval = folium.Map(location=[40.413, -99.229], zoom_start=5)
 
 # Add the image layers to the map and display it.
-map_8.add_ee_layer(image.sldStyle(sld_intervals), None, 'SLD intervals')
-map_8.add_ee_layer(image.sldStyle(sld_ramp), None, 'SLD ramp')
-display(map_8.add_child(folium.LayerControl()))
+map_sld_interval.add_ee_layer(
+    image.sldStyle(sld_intervals), None, 'SLD intervals')
+map_sld_interval.add_ee_layer(image.sldStyle(sld_ramp), None, 'SLD ramp')
+display(map_sld_interval.add_child(folium.LayerControl()))
 # [END earthengine__images042__sld_elevation]

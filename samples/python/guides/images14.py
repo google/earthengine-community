@@ -32,11 +32,11 @@ dog = fat.add(skinny)
 zero_xings = image.convolve(dog).zeroCrossing()
 
 # Define a map centered on San Francisco Bay.
-map_2 = folium.Map(location=[37.7295, -122.054], zoom_start=10)
+map_zero_xings = folium.Map(location=[37.7295, -122.054], zoom_start=10)
 
 # Add the image layers to the map and display it.
-map_2.add_ee_layer(image, {'max': 12000}, 'image')
-map_2.add_ee_layer(
+map_zero_xings.add_ee_layer(image, {'max': 12000}, 'image')
+map_zero_xings.add_ee_layer(
     zero_xings.selfMask(), {'palette': 'FF0000'}, 'zero crossings')
-display(map_2.add_child(folium.LayerControl()))
+display(map_zero_xings.add_child(folium.LayerControl()))
 # [END earthengine__images14__zero_crossings]

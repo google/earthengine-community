@@ -26,12 +26,12 @@ first = (ee.ImageCollection('COPERNICUS/S2_SR')
          .first())
 
 # Define a map centered on southern Maine.
-map_1 = folium.Map(location=[43.7516, -70.8155], zoom_start=11)
+map_s2 = folium.Map(location=[43.7516, -70.8155], zoom_start=11)
 
 # Add the image layer to the map and display it.
-map_1.add_ee_layer(
+map_s2.add_ee_layer(
     first, {'bands': ['B4', 'B3', 'B2'], 'min': 0, 'max': 2000}, 'first')
-display(map_1)
+display(map_s2)
 # [END earthengine__images02__find_image]
 
 # [START earthengine__images02__cloud_image]

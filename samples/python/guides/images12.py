@@ -28,12 +28,12 @@ gradient = xy_grad.select('x').pow(2).add(xy_grad.select('y').pow(2)).sqrt()
 direction = xy_grad.select('y').atan2(xy_grad.select('x'))
 
 # Define a map centered on San Francisco Bay.
-map_1 = folium.Map(location=[37.7295, -122.054], zoom_start=10)
+map_gradient = folium.Map(location=[37.7295, -122.054], zoom_start=10)
 
 # Add the image layers to the map and display it.
-map_1.add_ee_layer(
+map_gradient.add_ee_layer(
     direction, {'min': -2, 'max': 2, 'format': 'png'}, 'direction')
-map_1.add_ee_layer(
+map_gradient.add_ee_layer(
     gradient, {'min': -7, 'max': 7, 'format': 'png'}, 'gradient')
-display(map_1.add_child(folium.LayerControl()))
+display(map_gradient.add_child(folium.LayerControl()))
 # [END earthengine__images12__gradients]

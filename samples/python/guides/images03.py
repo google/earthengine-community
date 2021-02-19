@@ -27,11 +27,11 @@ image_viz_params = {
 }
 
 # Define a map centered on San Francisco Bay.
-map_1 = folium.Map(location=[37.5010, -122.1899], zoom_start=10)
+map_l8 = folium.Map(location=[37.5010, -122.1899], zoom_start=10)
 
 # Add the image layer to the map and display it.
-map_1.add_ee_layer(image, image_viz_params, 'false color composite')
-display(map_1)
+map_l8.add_ee_layer(image, image_viz_params, 'false color composite')
+display(map_l8)
 # [END earthengine__images03__viz_image]
 
 # [START earthengine__images03__palette]
@@ -43,11 +43,11 @@ ndwi = image.normalizedDifference(['B3', 'B5'])
 ndwi_viz = {'min': 0.5, 'max': 1, 'palette': ['00FFFF', '0000FF']}
 
 # Define a map centered on San Francisco Bay.
-map_2 = folium.Map(location=[37.5010, -122.1899], zoom_start=10)
+map_ndwi = folium.Map(location=[37.5010, -122.1899], zoom_start=10)
 
 # Add the image layer to the map and display it.
-map_2.add_ee_layer(ndwi, ndwi_viz, 'NDWI')
-display(map_2)
+map_ndwi.add_ee_layer(ndwi, ndwi_viz, 'NDWI')
+display(map_ndwi)
 # [END earthengine__images03__palette]
 
 # [START earthengine__images03__mask]
@@ -55,11 +55,11 @@ display(map_2)
 ndwi_masked = ndwi.updateMask(ndwi.gte(0.4))
 
 # Define a map centered on San Francisco Bay.
-map_3 = folium.Map(location=[37.5010, -122.1899], zoom_start=10)
+map_ndwi_masked = folium.Map(location=[37.5010, -122.1899], zoom_start=10)
 
 # Add the image layer to the map and display it.
-map_3.add_ee_layer(ndwi_masked, ndwi_viz, 'NDWI masked')
-display(map_3)
+map_ndwi_masked.add_ee_layer(ndwi_masked, ndwi_viz, 'NDWI masked')
+display(map_ndwi_masked)
 # [END earthengine__images03__mask]
 
 # [START earthengine__images03__visualize]
@@ -76,11 +76,11 @@ ndwi_rgb = ndwi_masked.visualize(**{
 mosaic = ee.ImageCollection([image_rgb, ndwi_rgb]).mosaic()
 
 # Define a map centered on San Francisco Bay.
-map_4 = folium.Map(location=[37.5010, -122.1899], zoom_start=10)
+map_mosaic = folium.Map(location=[37.5010, -122.1899], zoom_start=10)
 
 # Add the image layer to the map and display it.
-map_4.add_ee_layer(mosaic, None, 'mosaic')
-display(map_4)
+map_mosaic.add_ee_layer(mosaic, None, 'mosaic')
+display(map_mosaic)
 # [END earthengine__images03__mosaic]
 
 # [START earthengine__images03__clip]
@@ -89,9 +89,9 @@ roi = ee.Geometry.Point([-122.4481, 37.7599]).buffer(20000)
 mosaic_clipped = mosaic.clip(roi)
 
 # Define a map centered on San Francisco.
-map_5 = folium.Map(location=[37.7599, -122.4481], zoom_start=10)
+map_mosaic_clipped = folium.Map(location=[37.7599, -122.4481], zoom_start=10)
 
 # Add the image layer to the map and display it.
-map_5.add_ee_layer(mosaic_clipped, None, 'mosaic clipped')
-display(map_5)
+map_mosaic_clipped.add_ee_layer(mosaic_clipped, None, 'mosaic clipped')
+display(map_mosaic_clipped)
 # [END earthengine__images03__clip]

@@ -28,10 +28,10 @@ opened = image.focal_min(
         kernel=kernel, iterations=2)
 
 # Define a map centered on Redwood City, California.
-map_1 = folium.Map(location=[37.5010, -122.1899], zoom_start=13)
+map_opened = folium.Map(location=[37.5010, -122.1899], zoom_start=13)
 
 # Add the image layers to the map and display it.
-map_1.add_ee_layer(image, None, 'NIR threshold')
-map_1.add_ee_layer(opened, None, 'opened')
-display(map_1.add_child(folium.LayerControl()))
+map_opened.add_ee_layer(image, None, 'NIR threshold')
+map_opened.add_ee_layer(opened, None, 'opened')
+display(map_opened.add_child(folium.LayerControl()))
 # [END earthengine__images11__morphology]

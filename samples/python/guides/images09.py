@@ -28,11 +28,11 @@ cloud = ee.Algorithms.Landsat.simpleCloudScore(image).select('cloud')
 replaced = image.where(cloud.gt(10), replacement)
 
 # Define a map centered on San Francisco Bay.
-map_4 = folium.Map(location=[37.4675, -122.1363], zoom_start=9)
+map_replaced = folium.Map(location=[37.4675, -122.1363], zoom_start=9)
 
 # Add the image layer to the map and display it.
-map_4.add_ee_layer(replaced,
+map_replaced.add_ee_layer(replaced,
                    {'bands': ['B5', 'B4', 'B3'], 'min': 0, 'max': 0.5},
                    'clouds replaced')
-display(map_4)
+display(map_replaced)
 # [END earthengine__images09__where_operator]

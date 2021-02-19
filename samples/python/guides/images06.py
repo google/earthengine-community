@@ -27,10 +27,10 @@ evi = image.expression(
     })
 
 # Define a map centered on San Francisco Bay.
-map_2 = folium.Map(location=[37.4675, -122.1363], zoom_start=9)
+map_evi = folium.Map(location=[37.4675, -122.1363], zoom_start=9)
 
 # Add the image layer to the map and display it.
-map_2.add_ee_layer(
+map_evi.add_ee_layer(
     evi, {'min': -1, 'max': 1, 'palette': ['FF0000', '00FF00']}, 'evi')
-display(map_2)
+display(map_evi)
 # [END earthengine__images06__evi_expression]

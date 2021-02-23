@@ -1,5 +1,5 @@
 ---
-title: Extracting raster values for points
+title: Extracting Raster Values for Points
 description: How to extract raster values for points and polygons.
 author: swinsem
 tags: raster, image, point, polygon, plot, time-series, landsat, reduce
@@ -457,7 +457,7 @@ var tmCol = ee.ImageCollection('LANDSAT/LT05/C01/T1_SR')
 Merge the prepared sensor collections.
 
 ```js
-var col = oliCol.merge(etmCol).merge(tmCol);
+var landsatCol = oliCol.merge(etmCol).merge(tmCol);
 ```
 
 #### Calculate zonal statistics

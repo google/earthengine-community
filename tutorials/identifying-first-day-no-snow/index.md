@@ -148,7 +148,7 @@ function addDateBands(img) {
   // Add all of the above date info as bands to the snow fraction image.
   var dateBands = ee.Image.constant([calDoy, relDoy, millis, startYear])
     .rename(['calDoy', 'relDoy', 'millis', 'year']);
-  // Cast bands to correct data type before returning the image  
+  // Cast bands to correct data type before returning the image.  
   return img.addBands(dateBands)
     .cast({'calDoy': 'int', 'relDoy': 'int', 'millis': 'long','year': 'int'})
 }
@@ -258,7 +258,7 @@ var annualList = years.map(function(year) {
     // Add date bands to all images in this particular collection.
     .map(addDateBands)
     // Sort the images by ascending time to identify the first day without 
-    // snow.  Alternatively, you can use .sort('millis', false) to 
+    // snow. Alternatively, you can use .sort('millis', false) to 
     // reverse sort (find first day of snow in the fall).
     .sort('millis')
     // Make a mosaic composed of pixels from images that represent the

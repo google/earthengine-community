@@ -148,7 +148,9 @@ function addDateBands(img) {
   // Add all of the above date info as bands to the snow fraction image.
   var dateBands = ee.Image.constant([calDoy, relDoy, millis, startYear])
     .rename(['calDoy', 'relDoy', 'millis', 'year']);
-  return img.addBands(dateBands).toInt16().set('millis', millis);
+  // Cast bands to correct data type before returning the image.  
+  return img.addBands(dateBands)
+    .cast({'calDoy': 'int', 'relDoy': 'int', 'millis': 'long','year': 'int'})
 }
 ```
 
@@ -223,8 +225,9 @@ the first day with zero percent snow cover.
 1. Define the start and end dates to filter the dataset for the given year.
 2. Filter the image collection by the date range.
 3. Add the date bands to each image in the filtered collection.
-4. Sort the filtered collection by date.
-5. Make a mosaic using the `min` reducer to select the pixel with 0 (minimum)
+4. Sort the filtered collection by date. (Note: to determine the first day with
+snow accumulation in the fall, reverse sort the filtred collection.)
+6. Make a mosaic using the `min` reducer to select the pixel with 0 (minimum)
 snow cover. Since the collection is sorted by date, the first image with 0
 snow cover is selected. This operation is conducted per-pixel to build the
 complete image mosaic.
@@ -254,7 +257,9 @@ var annualList = years.map(function(year) {
   var noSnowImg = yearCol
     // Add date bands to all images in this particular collection.
     .map(addDateBands)
-    // Sort the images by time.
+    // Sort the images by ascending time to identify the first day without 
+    // snow. Alternatively, you can use .sort('millis', false) to 
+    // reverse sort (find first day of snow in the fall).
     .sort('millis')
     // Make a mosaic composed of pixels from images that represent the
     // observation with the minimum percent snow cover (defined by the

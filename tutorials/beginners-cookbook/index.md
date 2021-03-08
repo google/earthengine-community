@@ -79,7 +79,7 @@ region.
 
 ![Raster](map-algebra.png)
 
-Image sources: https://gisgeography.com/spatial-data-types-vector-raster/
+[Image sources](https://gisgeography.com/spatial-data-types-vector-raster/)
 
 ## The Google Earth Engine platform
 

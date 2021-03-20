@@ -14,12 +14,12 @@
  * limitations under the License.
  */
 
-// [START earthengine__apidocs__ee_number_toint8]
+// [START earthengine__apidocs__ee_number_int8]
 // Cast a number to signed 8-bit integer: [-128, 127].
 var number = ee.Number(100);
 print('Number:', number);
 
-var int8Number = number.toInt8();
+var int8Number = number.int8();
 print('Number cast to int8:', int8Number);
 
 
@@ -32,7 +32,7 @@ print('Number cast to int8:', int8Number);
 var float = ee.Number(1.7);
 print('Floating point value:', float);
 
-var floatToInt8 = float.toInt8();
+var floatToInt8 = float.int8();
 print('Floating point value cast to int8:', floatToInt8);
 
 // A number greater than int8 range max cast to int8 becomes int8 range max.
@@ -40,7 +40,7 @@ var INT8_MAX = 127;
 var outOfRangeHi = ee.Number(INT8_MAX + 12345);
 print('Greater than int8 max:', outOfRangeHi);
 
-var outOfRangeHiToInt8 = outOfRangeHi.toInt8();
+var outOfRangeHiToInt8 = outOfRangeHi.int8();
 print('Greater than int8 max cast to int8 becomes int8 max:', outOfRangeHiToInt8);
 
 // A number greater than int8 range min cast to int8 becomes int8 range min.
@@ -48,6 +48,6 @@ var INT8_MIN = -128;
 var outOfRangeLo = ee.Number(INT8_MIN - 12345);
 print('Less than int8 min:', outOfRangeLo);
 
-var outOfRangeLoToInt8 = outOfRangeLo.toInt8();
+var outOfRangeLoToInt8 = outOfRangeLo.int8();
 print('Less than int8 min cast to int8 becomes int8 min:', outOfRangeLoToInt8);
-// [END earthengine__apidocs__ee_number_toint8]
+// [END earthengine__apidocs__ee_number_int8]

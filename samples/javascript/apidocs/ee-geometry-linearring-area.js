@@ -14,7 +14,22 @@
  * limitations under the License.
  */
 
-// [START earthengine__apidocs__ee_geometry_point]
-// Construct a point from coordinates.
-var point = ee.Geometry.Point([-122.08412, 37.42189]);
-// [END earthengine__apidocs__ee_geometry_point]
+// [START earthengine__apidocs__linearring_area]
+// Define a LinearRing object.
+var linearRing = ee.Geometry.LinearRing(
+    [[-122.091, 37.420],
+     [-122.085, 37.422],
+     [-122.080, 37.430]]);
+
+// Apply the area method to the LinearRing object.
+var linearRingArea = linearRing.area({'maxError': 1});
+
+// Print the result to the console.
+print('linearRing.area(...) = ', linearRingArea);
+
+// Display relevant geometries on the map.
+Map.setCenter(-122.085, 37.422, 15);
+Map.addLayer(linearRing,
+             {'color': 'black'},
+             'Geometry [black]: linearRing');
+// [END earthengine__apidocs__linearring_area]

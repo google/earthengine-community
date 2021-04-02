@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-// [START earthengine__apidocs__ee_geometry_point]
-// Construct a point from coordinates.
+// [START earthengine__apidocs__ee_geometry_point_aside]
 var point = ee.Geometry.Point([-122.08412, 37.42189]);
-// [END earthengine__apidocs__ee_geometry_point]
+point.aside(print);
+// [END earthengine__apidocs__ee_geometry_point_aside]

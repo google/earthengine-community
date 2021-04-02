@@ -14,7 +14,19 @@
  * limitations under the License.
  */
 
-// [START earthengine__apidocs__ee_geometry_point]
-// Construct a point from coordinates.
-var point = ee.Geometry.Point([-122.08412, 37.42189]);
-// [END earthengine__apidocs__ee_geometry_point]
+// [START earthengine__apidocs__multipoint_geodesic]
+// Define a MultiPoint object.
+var multiPoint = ee.Geometry.MultiPoint([[-122.082, 37.420], [-122.081, 37.426]]);
+
+// Apply the geodesic method to the MultiPoint object.
+var multiPointGeodesic = multiPoint.geodesic();
+
+// Print the result to the console.
+print('multiPoint.geodesic(...) = ', multiPointGeodesic);
+
+// Display relevant geometries on the map.
+Map.setCenter(-122.085, 37.422, 15);
+Map.addLayer(multiPoint,
+             {'color': 'black'},
+             'Geometry [black]: multiPoint');
+// [END earthengine__apidocs__multipoint_geodesic]

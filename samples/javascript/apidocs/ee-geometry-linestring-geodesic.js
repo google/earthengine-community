@@ -14,7 +14,19 @@
  * limitations under the License.
  */
 
-// [START earthengine__apidocs__ee_geometry_point]
-// Construct a point from coordinates.
-var point = ee.Geometry.Point([-122.08412, 37.42189]);
-// [END earthengine__apidocs__ee_geometry_point]
+// [START earthengine__apidocs__linestring_geodesic]
+// Define a LineString object.
+var lineString = ee.Geometry.LineString([[-122.09, 37.42], [-122.08, 37.43]]);
+
+// Apply the geodesic method to the LineString object.
+var lineStringGeodesic = lineString.geodesic();
+
+// Print the result to the console.
+print('lineString.geodesic(...) = ', lineStringGeodesic);
+
+// Display relevant geometries on the map.
+Map.setCenter(-122.085, 37.422, 15);
+Map.addLayer(lineString,
+             {'color': 'black'},
+             'Geometry [black]: lineString');
+// [END earthengine__apidocs__linestring_geodesic]

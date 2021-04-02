@@ -14,7 +14,23 @@
  * limitations under the License.
  */
 
-// [START earthengine__apidocs__ee_geometry_point]
-// Construct a point from coordinates.
-var point = ee.Geometry.Point([-122.08412, 37.42189]);
-// [END earthengine__apidocs__ee_geometry_point]
+// [START earthengine__apidocs__polygon_area]
+// Define a Polygon object.
+var polygon = ee.Geometry.Polygon(
+    [[[-122.092, 37.424],
+      [-122.086, 37.418],
+      [-122.079, 37.425],
+      [-122.085, 37.423]]]);
+
+// Apply the area method to the Polygon object.
+var polygonArea = polygon.area({'maxError': 1});
+
+// Print the result to the console.
+print('polygon.area(...) = ', polygonArea);
+
+// Display relevant geometries on the map.
+Map.setCenter(-122.085, 37.422, 15);
+Map.addLayer(polygon,
+             {'color': 'black'},
+             'Geometry [black]: polygon');
+// [END earthengine__apidocs__polygon_area]

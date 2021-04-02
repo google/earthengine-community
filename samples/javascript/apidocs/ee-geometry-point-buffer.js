@@ -14,7 +14,22 @@
  * limitations under the License.
  */
 
-// [START earthengine__apidocs__ee_geometry_point]
-// Construct a point from coordinates.
-var point = ee.Geometry.Point([-122.08412, 37.42189]);
-// [END earthengine__apidocs__ee_geometry_point]
+// [START earthengine__apidocs__point_buffer]
+// Define a Point object.
+var point = ee.Geometry.Point(-122.082, 37.42);
+
+// Apply the buffer method to the Point object.
+var pointBuffer = point.buffer({'distance': 100});
+
+// Print the result to the console.
+print('point.buffer(...) = ', pointBuffer);
+
+// Display relevant geometries on the map.
+Map.setCenter(-122.085, 37.422, 15);
+Map.addLayer(point,
+             {'color': 'black'},
+             'Geometry [black]: point');
+Map.addLayer(pointBuffer,
+             {'color': 'red'},
+             'Result [red]: point.buffer');
+// [END earthengine__apidocs__point_buffer]

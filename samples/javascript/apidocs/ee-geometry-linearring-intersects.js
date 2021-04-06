@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-// [START earthengine__apidocs__linearring_intersects]
+// [START earthengine__apidocs__ee_geometry_linearring_intersects]
 // Define a LinearRing object.
 var linearRing = ee.Geometry.LinearRing(
     [[-122.091, 37.420],
@@ -28,7 +28,7 @@ var inputGeom = ee.Geometry.BBox(-122.085, 37.415, -122.075, 37.425);
 var linearRingIntersects = linearRing.intersects({'right': inputGeom, 'maxError': 1});
 
 // Print the result to the console.
-print('linearRing.intersects(...) = ', linearRingIntersects);
+print('linearRing.intersects(...) =', linearRingIntersects);
 
 // Display relevant geometries on the map.
 Map.setCenter(-122.085, 37.422, 15);
@@ -38,4 +38,4 @@ Map.addLayer(linearRing,
 Map.addLayer(inputGeom,
              {'color': 'blue'},
              'Parameter [blue]: inputGeom');
-// [END earthengine__apidocs__linearring_intersects]
+// [END earthengine__apidocs__ee_geometry_linearring_intersects]

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-// [START earthengine__apidocs__geometry_togeojsonstring]
+// [START earthengine__apidocs__ee_geometry_togeojsonstring]
 // Define a Geometry object.
 var geometry = ee.Geometry({
   'type': 'Polygon',
@@ -29,11 +29,11 @@ var geometry = ee.Geometry({
 var geometryToGeoJSONString = geometry.toGeoJSONString();
 
 // Print the result to the console.
-print('geometry.toGeoJSONString(...) = ', geometryToGeoJSONString);
+print('geometry.toGeoJSONString(...) =', geometryToGeoJSONString);
 
 // Display relevant geometries on the map.
 Map.setCenter(-122.085, 37.422, 15);
 Map.addLayer(geometry,
              {'color': 'black'},
              'Geometry [black]: geometry');
-// [END earthengine__apidocs__geometry_togeojsonstring]
+// [END earthengine__apidocs__ee_geometry_togeojsonstring]

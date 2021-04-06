@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-// [START earthengine__apidocs__linearring_union]
+// [START earthengine__apidocs__ee_geometry_linearring_union]
 // Define a LinearRing object.
 var linearRing = ee.Geometry.LinearRing(
     [[-122.091, 37.420],
@@ -28,7 +28,7 @@ var inputGeom = ee.Geometry.BBox(-122.085, 37.415, -122.075, 37.425);
 var linearRingUnion = linearRing.union({'right': inputGeom, 'maxError': 1});
 
 // Print the result to the console.
-print('linearRing.union(...) = ', linearRingUnion);
+print('linearRing.union(...) =', linearRingUnion);
 
 // Display relevant geometries on the map.
 Map.setCenter(-122.085, 37.422, 15);
@@ -41,4 +41,4 @@ Map.addLayer(inputGeom,
 Map.addLayer(linearRingUnion,
              {'color': 'red'},
              'Result [red]: linearRing.union');
-// [END earthengine__apidocs__linearring_union]
+// [END earthengine__apidocs__ee_geometry_linearring_union]

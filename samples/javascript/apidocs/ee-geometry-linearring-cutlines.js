@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-// [START earthengine__apidocs__linearring_cutlines]
+// [START earthengine__apidocs__ee_geometry_linearring_cutlines]
 // Define a LinearRing object.
 var linearRing = ee.Geometry.LinearRing(
     [[-122.091, 37.420],
@@ -25,7 +25,7 @@ var linearRing = ee.Geometry.LinearRing(
 var linearRingCutLines = linearRing.cutLines({'distances': [10, 100], 'maxError': 1});
 
 // Print the result to the console.
-print('linearRing.cutLines(...) = ', linearRingCutLines);
+print('linearRing.cutLines(...) =', linearRingCutLines);
 
 // Display relevant geometries on the map.
 Map.setCenter(-122.085, 37.422, 15);
@@ -35,4 +35,4 @@ Map.addLayer(linearRing,
 Map.addLayer(linearRingCutLines,
              {'color': 'red'},
              'Result [red]: linearRing.cutLines');
-// [END earthengine__apidocs__linearring_cutlines]
+// [END earthengine__apidocs__ee_geometry_linearring_cutlines]

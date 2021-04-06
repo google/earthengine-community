@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-// [START earthengine__apidocs__multipoint_union]
+// [START earthengine__apidocs__ee_geometry_multipoint_union]
 // Define a MultiPoint object.
 var multiPoint = ee.Geometry.MultiPoint([[-122.082, 37.420], [-122.081, 37.426]]);
 
@@ -25,7 +25,7 @@ var inputGeom = ee.Geometry.BBox(-122.085, 37.415, -122.075, 37.425);
 var multiPointUnion = multiPoint.union({'right': inputGeom, 'maxError': 1});
 
 // Print the result to the console.
-print('multiPoint.union(...) = ', multiPointUnion);
+print('multiPoint.union(...) =', multiPointUnion);
 
 // Display relevant geometries on the map.
 Map.setCenter(-122.085, 37.422, 15);
@@ -38,4 +38,4 @@ Map.addLayer(inputGeom,
 Map.addLayer(multiPointUnion,
              {'color': 'red'},
              'Result [red]: multiPoint.union');
-// [END earthengine__apidocs__multipoint_union]
+// [END earthengine__apidocs__ee_geometry_multipoint_union]

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-// [START earthengine__apidocs__multilinestring_cutlines]
+// [START earthengine__apidocs__ee_geometry_multilinestring_cutlines]
 // Define a MultiLineString object.
 var multiLineString = ee.Geometry.MultiLineString(
    [[[-122.088, 37.418], [-122.086, 37.422], [-122.082, 37.418]],
@@ -24,7 +24,7 @@ var multiLineString = ee.Geometry.MultiLineString(
 var multiLineStringCutLines = multiLineString.cutLines({'distances': [10, 100], 'maxError': 1});
 
 // Print the result to the console.
-print('multiLineString.cutLines(...) = ', multiLineStringCutLines);
+print('multiLineString.cutLines(...) =', multiLineStringCutLines);
 
 // Display relevant geometries on the map.
 Map.setCenter(-122.085, 37.422, 15);
@@ -34,4 +34,4 @@ Map.addLayer(multiLineString,
 Map.addLayer(multiLineStringCutLines,
              {'color': 'red'},
              'Result [red]: multiLineString.cutLines');
-// [END earthengine__apidocs__multilinestring_cutlines]
+// [END earthengine__apidocs__ee_geometry_multilinestring_cutlines]

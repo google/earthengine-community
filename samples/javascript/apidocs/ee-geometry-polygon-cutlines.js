@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-// [START earthengine__apidocs__polygon_cutlines]
+// [START earthengine__apidocs__ee_geometry_polygon_cutlines]
 // Define a Polygon object.
 var polygon = ee.Geometry.Polygon(
     [[[-122.092, 37.424],
@@ -26,7 +26,7 @@ var polygon = ee.Geometry.Polygon(
 var polygonCutLines = polygon.cutLines({'distances': [10, 100], 'maxError': 1});
 
 // Print the result to the console.
-print('polygon.cutLines(...) = ', polygonCutLines);
+print('polygon.cutLines(...) =', polygonCutLines);
 
 // Display relevant geometries on the map.
 Map.setCenter(-122.085, 37.422, 15);
@@ -36,4 +36,4 @@ Map.addLayer(polygon,
 Map.addLayer(polygonCutLines,
              {'color': 'red'},
              'Result [red]: polygon.cutLines');
-// [END earthengine__apidocs__polygon_cutlines]
+// [END earthengine__apidocs__ee_geometry_polygon_cutlines]

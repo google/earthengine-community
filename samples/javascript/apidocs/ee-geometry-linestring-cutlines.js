@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-// [START earthengine__apidocs__linestring_cutlines]
+// [START earthengine__apidocs__ee_geometry_linestring_cutlines]
 // Define a LineString object.
 var lineString = ee.Geometry.LineString([[-122.09, 37.42], [-122.08, 37.43]]);
 
@@ -22,7 +22,7 @@ var lineString = ee.Geometry.LineString([[-122.09, 37.42], [-122.08, 37.43]]);
 var lineStringCutLines = lineString.cutLines({'distances': [10, 100], 'maxError': 1});
 
 // Print the result to the console.
-print('lineString.cutLines(...) = ', lineStringCutLines);
+print('lineString.cutLines(...) =', lineStringCutLines);
 
 // Display relevant geometries on the map.
 Map.setCenter(-122.085, 37.422, 15);
@@ -32,4 +32,4 @@ Map.addLayer(lineString,
 Map.addLayer(lineStringCutLines,
              {'color': 'red'},
              'Result [red]: lineString.cutLines');
-// [END earthengine__apidocs__linestring_cutlines]
+// [END earthengine__apidocs__ee_geometry_linestring_cutlines]

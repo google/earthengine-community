@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-// [START earthengine__apidocs__multilinestring_withindistance]
+// [START earthengine__apidocs__ee_geometry_multilinestring_withindistance]
 // Define a MultiLineString object.
 var multiLineString = ee.Geometry.MultiLineString(
    [[[-122.088, 37.418], [-122.086, 37.422], [-122.082, 37.418]],
@@ -27,7 +27,7 @@ var inputGeom = ee.Geometry.Point(-122.090, 37.423);
 var multiLineStringWithinDistance = multiLineString.withinDistance({'right': inputGeom, 'distance': 500, 'maxError': 1});
 
 // Print the result to the console.
-print('multiLineString.withinDistance(...) = ', multiLineStringWithinDistance);
+print('multiLineString.withinDistance(...) =', multiLineStringWithinDistance);
 
 // Display relevant geometries on the map.
 Map.setCenter(-122.085, 37.422, 15);
@@ -37,4 +37,4 @@ Map.addLayer(multiLineString,
 Map.addLayer(inputGeom,
              {'color': 'blue'},
              'Parameter [blue]: inputGeom');
-// [END earthengine__apidocs__multilinestring_withindistance]
+// [END earthengine__apidocs__ee_geometry_multilinestring_withindistance]

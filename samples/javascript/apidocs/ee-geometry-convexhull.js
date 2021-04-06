@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-// [START earthengine__apidocs__geometry_convexhull]
+// [START earthengine__apidocs__ee_geometry_convexhull]
 // Define a Geometry object.
 var geometry = ee.Geometry({
   'type': 'Polygon',
@@ -29,7 +29,7 @@ var geometry = ee.Geometry({
 var geometryConvexHull = geometry.convexHull({'maxError': 1});
 
 // Print the result to the console.
-print('geometry.convexHull(...) = ', geometryConvexHull);
+print('geometry.convexHull(...) =', geometryConvexHull);
 
 // Display relevant geometries on the map.
 Map.setCenter(-122.085, 37.422, 15);
@@ -39,4 +39,4 @@ Map.addLayer(geometry,
 Map.addLayer(geometryConvexHull,
              {'color': 'red'},
              'Result [red]: geometry.convexHull');
-// [END earthengine__apidocs__geometry_convexhull]
+// [END earthengine__apidocs__ee_geometry_convexhull]

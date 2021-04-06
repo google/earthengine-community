@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-// [START earthengine__apidocs__multipolygon_simplify]
+// [START earthengine__apidocs__ee_geometry_multipolygon_simplify]
 // Define a MultiPolygon object.
 var multiPolygon = ee.Geometry.MultiPolygon(
     [[[[-122.092, 37.424],
@@ -29,7 +29,7 @@ var multiPolygon = ee.Geometry.MultiPolygon(
 var multiPolygonSimplify = multiPolygon.simplify({'maxError': 1});
 
 // Print the result to the console.
-print('multiPolygon.simplify(...) = ', multiPolygonSimplify);
+print('multiPolygon.simplify(...) =', multiPolygonSimplify);
 
 // Display relevant geometries on the map.
 Map.setCenter(-122.085, 37.422, 15);
@@ -39,4 +39,4 @@ Map.addLayer(multiPolygon,
 Map.addLayer(multiPolygonSimplify,
              {'color': 'red'},
              'Result [red]: multiPolygon.simplify');
-// [END earthengine__apidocs__multipolygon_simplify]
+// [END earthengine__apidocs__ee_geometry_multipolygon_simplify]

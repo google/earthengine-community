@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-// [START earthengine__apidocs__linestring_convexhull]
+// [START earthengine__apidocs__ee_geometry_linestring_convexhull]
 // Define a LineString object.
 var lineString = ee.Geometry.LineString([[-122.09, 37.42], [-122.08, 37.43]]);
 
@@ -22,7 +22,7 @@ var lineString = ee.Geometry.LineString([[-122.09, 37.42], [-122.08, 37.43]]);
 var lineStringConvexHull = lineString.convexHull({'maxError': 1});
 
 // Print the result to the console.
-print('lineString.convexHull(...) = ', lineStringConvexHull);
+print('lineString.convexHull(...) =', lineStringConvexHull);
 
 // Display relevant geometries on the map.
 Map.setCenter(-122.085, 37.422, 15);
@@ -32,4 +32,4 @@ Map.addLayer(lineString,
 Map.addLayer(lineStringConvexHull,
              {'color': 'red'},
              'Result [red]: lineString.convexHull');
-// [END earthengine__apidocs__linestring_convexhull]
+// [END earthengine__apidocs__ee_geometry_linestring_convexhull]

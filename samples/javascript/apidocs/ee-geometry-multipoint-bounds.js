@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-// [START earthengine__apidocs__multipoint_bounds]
+// [START earthengine__apidocs__ee_geometry_multipoint_bounds]
 // Define a MultiPoint object.
 var multiPoint = ee.Geometry.MultiPoint([[-122.082, 37.420], [-122.081, 37.426]]);
 
@@ -22,7 +22,7 @@ var multiPoint = ee.Geometry.MultiPoint([[-122.082, 37.420], [-122.081, 37.426]]
 var multiPointBounds = multiPoint.bounds();
 
 // Print the result to the console.
-print('multiPoint.bounds(...) = ', multiPointBounds);
+print('multiPoint.bounds(...) =', multiPointBounds);
 
 // Display relevant geometries on the map.
 Map.setCenter(-122.085, 37.422, 15);
@@ -32,4 +32,4 @@ Map.addLayer(multiPoint,
 Map.addLayer(multiPointBounds,
              {'color': 'red'},
              'Result [red]: multiPoint.bounds');
-// [END earthengine__apidocs__multipoint_bounds]
+// [END earthengine__apidocs__ee_geometry_multipoint_bounds]

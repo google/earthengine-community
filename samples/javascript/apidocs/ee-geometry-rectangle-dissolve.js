@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-// [START earthengine__apidocs__rectangle_dissolve]
+// [START earthengine__apidocs__ee_geometry_rectangle_dissolve]
 // Define a Rectangle object.
 var rectangle = ee.Geometry.Rectangle(-122.09, 37.42, -122.08, 37.43);
 
@@ -22,7 +22,7 @@ var rectangle = ee.Geometry.Rectangle(-122.09, 37.42, -122.08, 37.43);
 var rectangleDissolve = rectangle.dissolve({'maxError': 1});
 
 // Print the result to the console.
-print('rectangle.dissolve(...) = ', rectangleDissolve);
+print('rectangle.dissolve(...) =', rectangleDissolve);
 
 // Display relevant geometries on the map.
 Map.setCenter(-122.085, 37.422, 15);
@@ -32,4 +32,4 @@ Map.addLayer(rectangle,
 Map.addLayer(rectangleDissolve,
              {'color': 'red'},
              'Result [red]: rectangle.dissolve');
-// [END earthengine__apidocs__rectangle_dissolve]
+// [END earthengine__apidocs__ee_geometry_rectangle_dissolve]

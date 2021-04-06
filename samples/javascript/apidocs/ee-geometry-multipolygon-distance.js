@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-// [START earthengine__apidocs__multipolygon_distance]
+// [START earthengine__apidocs__ee_geometry_multipolygon_distance]
 // Define a MultiPolygon object.
 var multiPolygon = ee.Geometry.MultiPolygon(
     [[[[-122.092, 37.424],
@@ -32,7 +32,7 @@ var inputGeom = ee.Geometry.Point(-122.090, 37.423);
 var multiPolygonDistance = multiPolygon.distance({'right': inputGeom, 'maxError': 1});
 
 // Print the result to the console.
-print('multiPolygon.distance(...) = ', multiPolygonDistance);
+print('multiPolygon.distance(...) =', multiPolygonDistance);
 
 // Display relevant geometries on the map.
 Map.setCenter(-122.085, 37.422, 15);
@@ -42,4 +42,4 @@ Map.addLayer(multiPolygon,
 Map.addLayer(inputGeom,
              {'color': 'blue'},
              'Parameter [blue]: inputGeom');
-// [END earthengine__apidocs__multipolygon_distance]
+// [END earthengine__apidocs__ee_geometry_multipolygon_distance]

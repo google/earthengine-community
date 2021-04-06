@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-// [START earthengine__apidocs__point_convexhull]
+// [START earthengine__apidocs__ee_geometry_point_convexhull]
 // Define a Point object.
 var point = ee.Geometry.Point(-122.082, 37.42);
 
@@ -22,7 +22,7 @@ var point = ee.Geometry.Point(-122.082, 37.42);
 var pointConvexHull = point.convexHull({'maxError': 1});
 
 // Print the result to the console.
-print('point.convexHull(...) = ', pointConvexHull);
+print('point.convexHull(...) =', pointConvexHull);
 
 // Display relevant geometries on the map.
 Map.setCenter(-122.085, 37.422, 15);
@@ -32,4 +32,4 @@ Map.addLayer(point,
 Map.addLayer(pointConvexHull,
              {'color': 'red'},
              'Result [red]: point.convexHull');
-// [END earthengine__apidocs__point_convexhull]
+// [END earthengine__apidocs__ee_geometry_point_convexhull]

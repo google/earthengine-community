@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-// [START earthengine__apidocs__multilinestring_buffer]
+// [START earthengine__apidocs__ee_geometry_multilinestring_buffer]
 // Define a MultiLineString object.
 var multiLineString = ee.Geometry.MultiLineString(
    [[[-122.088, 37.418], [-122.086, 37.422], [-122.082, 37.418]],
@@ -24,7 +24,7 @@ var multiLineString = ee.Geometry.MultiLineString(
 var multiLineStringBuffer = multiLineString.buffer({'distance': 100});
 
 // Print the result to the console.
-print('multiLineString.buffer(...) = ', multiLineStringBuffer);
+print('multiLineString.buffer(...) =', multiLineStringBuffer);
 
 // Display relevant geometries on the map.
 Map.setCenter(-122.085, 37.422, 15);
@@ -34,4 +34,4 @@ Map.addLayer(multiLineString,
 Map.addLayer(multiLineStringBuffer,
              {'color': 'red'},
              'Result [red]: multiLineString.buffer');
-// [END earthengine__apidocs__multilinestring_buffer]
+// [END earthengine__apidocs__ee_geometry_multilinestring_buffer]

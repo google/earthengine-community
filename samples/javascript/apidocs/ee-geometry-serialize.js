@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-// [START earthengine__apidocs__geometry_serialize]
+// [START earthengine__apidocs__ee_geometry_serialize]
 // Define a Geometry object.
 var geometry = ee.Geometry({
   'type': 'Polygon',
@@ -29,11 +29,11 @@ var geometry = ee.Geometry({
 var geometrySerialize = geometry.serialize();
 
 // Print the result to the console.
-print('geometry.serialize(...) = ', geometrySerialize);
+print('geometry.serialize(...) =', geometrySerialize);
 
 // Display relevant geometries on the map.
 Map.setCenter(-122.085, 37.422, 15);
 Map.addLayer(geometry,
              {'color': 'black'},
              'Geometry [black]: geometry');
-// [END earthengine__apidocs__geometry_serialize]
+// [END earthengine__apidocs__ee_geometry_serialize]

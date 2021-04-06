@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-// [START earthengine__apidocs__point_symmetricdifference]
+// [START earthengine__apidocs__ee_geometry_point_symmetricdifference]
 // Define a Point object.
 var point = ee.Geometry.Point(-122.082, 37.42);
 
@@ -25,7 +25,7 @@ var inputGeom = ee.Geometry.BBox(-122.085, 37.415, -122.075, 37.425);
 var pointSymmetricDifference = point.symmetricDifference({'right': inputGeom, 'maxError': 1});
 
 // Print the result to the console.
-print('point.symmetricDifference(...) = ', pointSymmetricDifference);
+print('point.symmetricDifference(...) =', pointSymmetricDifference);
 
 // Display relevant geometries on the map.
 Map.setCenter(-122.085, 37.422, 15);
@@ -38,4 +38,4 @@ Map.addLayer(inputGeom,
 Map.addLayer(pointSymmetricDifference,
              {'color': 'red'},
              'Result [red]: point.symmetricDifference');
-// [END earthengine__apidocs__point_symmetricdifference]
+// [END earthengine__apidocs__ee_geometry_point_symmetricdifference]

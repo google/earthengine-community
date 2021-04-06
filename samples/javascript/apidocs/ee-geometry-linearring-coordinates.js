@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-// [START earthengine__apidocs__linearring_coordinates]
+// [START earthengine__apidocs__ee_geometry_linearring_coordinates]
 // Define a LinearRing object.
 var linearRing = ee.Geometry.LinearRing(
     [[-122.091, 37.420],
@@ -25,11 +25,11 @@ var linearRing = ee.Geometry.LinearRing(
 var linearRingCoordinates = linearRing.coordinates();
 
 // Print the result to the console.
-print('linearRing.coordinates(...) = ', linearRingCoordinates);
+print('linearRing.coordinates(...) =', linearRingCoordinates);
 
 // Display relevant geometries on the map.
 Map.setCenter(-122.085, 37.422, 15);
 Map.addLayer(linearRing,
              {'color': 'black'},
              'Geometry [black]: linearRing');
-// [END earthengine__apidocs__linearring_coordinates]
+// [END earthengine__apidocs__ee_geometry_linearring_coordinates]

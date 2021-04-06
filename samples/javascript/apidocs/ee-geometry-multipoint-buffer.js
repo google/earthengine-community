@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-// [START earthengine__apidocs__multipoint_buffer]
+// [START earthengine__apidocs__ee_geometry_multipoint_buffer]
 // Define a MultiPoint object.
 var multiPoint = ee.Geometry.MultiPoint([[-122.082, 37.420], [-122.081, 37.426]]);
 
@@ -22,7 +22,7 @@ var multiPoint = ee.Geometry.MultiPoint([[-122.082, 37.420], [-122.081, 37.426]]
 var multiPointBuffer = multiPoint.buffer({'distance': 100});
 
 // Print the result to the console.
-print('multiPoint.buffer(...) = ', multiPointBuffer);
+print('multiPoint.buffer(...) =', multiPointBuffer);
 
 // Display relevant geometries on the map.
 Map.setCenter(-122.085, 37.422, 15);
@@ -32,4 +32,4 @@ Map.addLayer(multiPoint,
 Map.addLayer(multiPointBuffer,
              {'color': 'red'},
              'Result [red]: multiPoint.buffer');
-// [END earthengine__apidocs__multipoint_buffer]
+// [END earthengine__apidocs__ee_geometry_multipoint_buffer]

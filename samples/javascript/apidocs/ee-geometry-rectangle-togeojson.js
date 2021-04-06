@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-// [START earthengine__apidocs__rectangle_togeojson]
+// [START earthengine__apidocs__ee_geometry_rectangle_togeojson]
 // Define a Rectangle object.
 var rectangle = ee.Geometry.Rectangle(-122.09, 37.42, -122.08, 37.43);
 
@@ -22,11 +22,11 @@ var rectangle = ee.Geometry.Rectangle(-122.09, 37.42, -122.08, 37.43);
 var rectangleToGeoJSON = rectangle.toGeoJSON();
 
 // Print the result to the console.
-print('rectangle.toGeoJSON(...) = ', rectangleToGeoJSON);
+print('rectangle.toGeoJSON(...) =', rectangleToGeoJSON);
 
 // Display relevant geometries on the map.
 Map.setCenter(-122.085, 37.422, 15);
 Map.addLayer(rectangle,
              {'color': 'black'},
              'Geometry [black]: rectangle');
-// [END earthengine__apidocs__rectangle_togeojson]
+// [END earthengine__apidocs__ee_geometry_rectangle_togeojson]

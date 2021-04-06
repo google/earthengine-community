@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-// [START earthengine__apidocs__multipolygon_contains]
+// [START earthengine__apidocs__ee_geometry_multipolygon_contains]
 // Define a MultiPolygon object.
 var multiPolygon = ee.Geometry.MultiPolygon(
     [[[[-122.092, 37.424],
@@ -32,7 +32,7 @@ var inputGeom = ee.Geometry.BBox(-122.085, 37.415, -122.075, 37.425);
 var multiPolygonContains = multiPolygon.contains({'right': inputGeom, 'maxError': 1});
 
 // Print the result to the console.
-print('multiPolygon.contains(...) = ', multiPolygonContains);
+print('multiPolygon.contains(...) =', multiPolygonContains);
 
 // Display relevant geometries on the map.
 Map.setCenter(-122.085, 37.422, 15);
@@ -42,4 +42,4 @@ Map.addLayer(multiPolygon,
 Map.addLayer(inputGeom,
              {'color': 'blue'},
              'Parameter [blue]: inputGeom');
-// [END earthengine__apidocs__multipolygon_contains]
+// [END earthengine__apidocs__ee_geometry_multipolygon_contains]

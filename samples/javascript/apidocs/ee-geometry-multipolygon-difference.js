@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-// [START earthengine__apidocs__multipolygon_difference]
+// [START earthengine__apidocs__ee_geometry_multipolygon_difference]
 // Define a MultiPolygon object.
 var multiPolygon = ee.Geometry.MultiPolygon(
     [[[[-122.092, 37.424],
@@ -32,7 +32,7 @@ var inputGeom = ee.Geometry.BBox(-122.085, 37.415, -122.075, 37.425);
 var multiPolygonDifference = multiPolygon.difference({'right': inputGeom, 'maxError': 1});
 
 // Print the result to the console.
-print('multiPolygon.difference(...) = ', multiPolygonDifference);
+print('multiPolygon.difference(...) =', multiPolygonDifference);
 
 // Display relevant geometries on the map.
 Map.setCenter(-122.085, 37.422, 15);
@@ -45,4 +45,4 @@ Map.addLayer(inputGeom,
 Map.addLayer(multiPolygonDifference,
              {'color': 'red'},
              'Result [red]: multiPolygon.difference');
-// [END earthengine__apidocs__multipolygon_difference]
+// [END earthengine__apidocs__ee_geometry_multipolygon_difference]

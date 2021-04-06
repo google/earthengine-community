@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-// [START earthengine__apidocs__rectangle_buffer]
+// [START earthengine__apidocs__ee_geometry_rectangle_buffer]
 // Define a Rectangle object.
 var rectangle = ee.Geometry.Rectangle(-122.09, 37.42, -122.08, 37.43);
 
@@ -22,7 +22,7 @@ var rectangle = ee.Geometry.Rectangle(-122.09, 37.42, -122.08, 37.43);
 var rectangleBuffer = rectangle.buffer({'distance': 100});
 
 // Print the result to the console.
-print('rectangle.buffer(...) = ', rectangleBuffer);
+print('rectangle.buffer(...) =', rectangleBuffer);
 
 // Display relevant geometries on the map.
 Map.setCenter(-122.085, 37.422, 15);
@@ -32,4 +32,4 @@ Map.addLayer(rectangle,
 Map.addLayer(rectangleBuffer,
              {'color': 'red'},
              'Result [red]: rectangle.buffer');
-// [END earthengine__apidocs__rectangle_buffer]
+// [END earthengine__apidocs__ee_geometry_rectangle_buffer]

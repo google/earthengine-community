@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-// [START earthengine__apidocs__linearring_contains]
+// [START earthengine__apidocs__ee_geometry_linearring_contains]
 // Define a LinearRing object.
 var linearRing = ee.Geometry.LinearRing(
     [[-122.091, 37.420],
@@ -28,7 +28,7 @@ var inputGeom = ee.Geometry.BBox(-122.085, 37.415, -122.075, 37.425);
 var linearRingContains = linearRing.contains({'right': inputGeom, 'maxError': 1});
 
 // Print the result to the console.
-print('linearRing.contains(...) = ', linearRingContains);
+print('linearRing.contains(...) =', linearRingContains);
 
 // Display relevant geometries on the map.
 Map.setCenter(-122.085, 37.422, 15);
@@ -38,4 +38,4 @@ Map.addLayer(linearRing,
 Map.addLayer(inputGeom,
              {'color': 'blue'},
              'Parameter [blue]: inputGeom');
-// [END earthengine__apidocs__linearring_contains]
+// [END earthengine__apidocs__ee_geometry_linearring_contains]

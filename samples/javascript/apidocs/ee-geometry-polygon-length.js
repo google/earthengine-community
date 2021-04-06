@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-// [START earthengine__apidocs__polygon_length]
+// [START earthengine__apidocs__ee_geometry_polygon_length]
 // Define a Polygon object.
 var polygon = ee.Geometry.Polygon(
     [[[-122.092, 37.424],
@@ -26,11 +26,11 @@ var polygon = ee.Geometry.Polygon(
 var polygonLength = polygon.length();
 
 // Print the result to the console.
-print('polygon.length(...) = ', polygonLength);
+print('polygon.length(...) =', polygonLength);
 
 // Display relevant geometries on the map.
 Map.setCenter(-122.085, 37.422, 15);
 Map.addLayer(polygon,
              {'color': 'black'},
              'Geometry [black]: polygon');
-// [END earthengine__apidocs__polygon_length]
+// [END earthengine__apidocs__ee_geometry_polygon_length]

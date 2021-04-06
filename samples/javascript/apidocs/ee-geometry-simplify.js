@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-// [START earthengine__apidocs__geometry_simplify]
+// [START earthengine__apidocs__ee_geometry_simplify]
 // Define a Geometry object.
 var geometry = ee.Geometry({
   'type': 'Polygon',
@@ -29,7 +29,7 @@ var geometry = ee.Geometry({
 var geometrySimplify = geometry.simplify({'maxError': 1});
 
 // Print the result to the console.
-print('geometry.simplify(...) = ', geometrySimplify);
+print('geometry.simplify(...) =', geometrySimplify);
 
 // Display relevant geometries on the map.
 Map.setCenter(-122.085, 37.422, 15);
@@ -39,4 +39,4 @@ Map.addLayer(geometry,
 Map.addLayer(geometrySimplify,
              {'color': 'red'},
              'Result [red]: geometry.simplify');
-// [END earthengine__apidocs__geometry_simplify]
+// [END earthengine__apidocs__ee_geometry_simplify]

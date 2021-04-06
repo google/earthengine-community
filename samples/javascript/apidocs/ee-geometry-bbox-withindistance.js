@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-// [START earthengine__apidocs__bbox_withindistance]
+// [START earthengine__apidocs__ee_geometry_bbox_withindistance]
 // Define a BBox object.
 var bBox = ee.Geometry.BBox(-122.09, 37.42, -122.08, 37.43);
 
@@ -25,7 +25,7 @@ var inputGeom = ee.Geometry.Point(-122.090, 37.423);
 var bBoxWithinDistance = bBox.withinDistance({'right': inputGeom, 'distance': 500, 'maxError': 1});
 
 // Print the result to the console.
-print('bBox.withinDistance(...) = ', bBoxWithinDistance);
+print('bBox.withinDistance(...) =', bBoxWithinDistance);
 
 // Display relevant geometries on the map.
 Map.setCenter(-122.085, 37.422, 15);
@@ -35,4 +35,4 @@ Map.addLayer(bBox,
 Map.addLayer(inputGeom,
              {'color': 'blue'},
              'Parameter [blue]: inputGeom');
-// [END earthengine__apidocs__bbox_withindistance]
+// [END earthengine__apidocs__ee_geometry_bbox_withindistance]

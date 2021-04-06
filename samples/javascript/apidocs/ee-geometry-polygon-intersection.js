@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-// [START earthengine__apidocs__polygon_intersection]
+// [START earthengine__apidocs__ee_geometry_polygon_intersection]
 // Define a Polygon object.
 var polygon = ee.Geometry.Polygon(
     [[[-122.092, 37.424],
@@ -29,7 +29,7 @@ var inputGeom = ee.Geometry.BBox(-122.085, 37.415, -122.075, 37.425);
 var polygonIntersection = polygon.intersection({'right': inputGeom, 'maxError': 1});
 
 // Print the result to the console.
-print('polygon.intersection(...) = ', polygonIntersection);
+print('polygon.intersection(...) =', polygonIntersection);
 
 // Display relevant geometries on the map.
 Map.setCenter(-122.085, 37.422, 15);
@@ -42,4 +42,4 @@ Map.addLayer(inputGeom,
 Map.addLayer(polygonIntersection,
              {'color': 'red'},
              'Result [red]: polygon.intersection');
-// [END earthengine__apidocs__polygon_intersection]
+// [END earthengine__apidocs__ee_geometry_polygon_intersection]

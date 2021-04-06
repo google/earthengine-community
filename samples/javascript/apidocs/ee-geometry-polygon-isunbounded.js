@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-// [START earthengine__apidocs__polygon_isunbounded]
+// [START earthengine__apidocs__ee_geometry_polygon_isunbounded]
 // Define a Polygon object.
 var polygon = ee.Geometry.Polygon(
     [[[-122.092, 37.424],
@@ -26,11 +26,11 @@ var polygon = ee.Geometry.Polygon(
 var polygonIsUnbounded = polygon.isUnbounded();
 
 // Print the result to the console.
-print('polygon.isUnbounded(...) = ', polygonIsUnbounded);
+print('polygon.isUnbounded(...) =', polygonIsUnbounded);
 
 // Display relevant geometries on the map.
 Map.setCenter(-122.085, 37.422, 15);
 Map.addLayer(polygon,
              {'color': 'black'},
              'Geometry [black]: polygon');
-// [END earthengine__apidocs__polygon_isunbounded]
+// [END earthengine__apidocs__ee_geometry_polygon_isunbounded]

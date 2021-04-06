@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-// [START earthengine__apidocs__geometry_centroid]
+// [START earthengine__apidocs__ee_geometry_centroid]
 // Define a Geometry object.
 var geometry = ee.Geometry({
   'type': 'Polygon',
@@ -29,7 +29,7 @@ var geometry = ee.Geometry({
 var geometryCentroid = geometry.centroid({'maxError': 1});
 
 // Print the result to the console.
-print('geometry.centroid(...) = ', geometryCentroid);
+print('geometry.centroid(...) =', geometryCentroid);
 
 // Display relevant geometries on the map.
 Map.setCenter(-122.085, 37.422, 15);
@@ -39,4 +39,4 @@ Map.addLayer(geometry,
 Map.addLayer(geometryCentroid,
              {'color': 'red'},
              'Result [red]: geometry.centroid');
-// [END earthengine__apidocs__geometry_centroid]
+// [END earthengine__apidocs__ee_geometry_centroid]

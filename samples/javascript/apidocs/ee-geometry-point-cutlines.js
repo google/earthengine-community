@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-// [START earthengine__apidocs__point_cutlines]
+// [START earthengine__apidocs__ee_geometry_point_cutlines]
 // Define a Point object.
 var point = ee.Geometry.Point(-122.082, 37.42);
 
@@ -22,7 +22,7 @@ var point = ee.Geometry.Point(-122.082, 37.42);
 var pointCutLines = point.cutLines({'distances': [10, 100], 'maxError': 1});
 
 // Print the result to the console.
-print('point.cutLines(...) = ', pointCutLines);
+print('point.cutLines(...) =', pointCutLines);
 
 // Display relevant geometries on the map.
 Map.setCenter(-122.085, 37.422, 15);
@@ -32,4 +32,4 @@ Map.addLayer(point,
 Map.addLayer(pointCutLines,
              {'color': 'red'},
              'Result [red]: point.cutLines');
-// [END earthengine__apidocs__point_cutlines]
+// [END earthengine__apidocs__ee_geometry_point_cutlines]

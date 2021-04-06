@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-// [START earthengine__apidocs__point_geodesic]
+// [START earthengine__apidocs__ee_geometry_point_geodesic]
 // Define a Point object.
 var point = ee.Geometry.Point(-122.082, 37.42);
 
@@ -22,11 +22,11 @@ var point = ee.Geometry.Point(-122.082, 37.42);
 var pointGeodesic = point.geodesic();
 
 // Print the result to the console.
-print('point.geodesic(...) = ', pointGeodesic);
+print('point.geodesic(...) =', pointGeodesic);
 
 // Display relevant geometries on the map.
 Map.setCenter(-122.085, 37.422, 15);
 Map.addLayer(point,
              {'color': 'black'},
              'Geometry [black]: point');
-// [END earthengine__apidocs__point_geodesic]
+// [END earthengine__apidocs__ee_geometry_point_geodesic]

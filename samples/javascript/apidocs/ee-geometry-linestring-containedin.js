@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-// [START earthengine__apidocs__linestring_containedin]
+// [START earthengine__apidocs__ee_geometry_linestring_containedin]
 // Define a LineString object.
 var lineString = ee.Geometry.LineString([[-122.09, 37.42], [-122.08, 37.43]]);
 
@@ -25,7 +25,7 @@ var inputGeom = ee.Geometry.BBox(-122.085, 37.415, -122.075, 37.425);
 var lineStringContainedIn = lineString.containedIn({'right': inputGeom, 'maxError': 1});
 
 // Print the result to the console.
-print('lineString.containedIn(...) = ', lineStringContainedIn);
+print('lineString.containedIn(...) =', lineStringContainedIn);
 
 // Display relevant geometries on the map.
 Map.setCenter(-122.085, 37.422, 15);
@@ -35,4 +35,4 @@ Map.addLayer(lineString,
 Map.addLayer(inputGeom,
              {'color': 'blue'},
              'Parameter [blue]: inputGeom');
-// [END earthengine__apidocs__linestring_containedin]
+// [END earthengine__apidocs__ee_geometry_linestring_containedin]

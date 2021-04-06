@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-// [START earthengine__apidocs__geometry_buffer]
+// [START earthengine__apidocs__ee_geometry_buffer]
 // Define a Geometry object.
 var geometry = ee.Geometry({
   'type': 'Polygon',
@@ -29,7 +29,7 @@ var geometry = ee.Geometry({
 var geometryBuffer = geometry.buffer({'distance': 100});
 
 // Print the result to the console.
-print('geometry.buffer(...) = ', geometryBuffer);
+print('geometry.buffer(...) =', geometryBuffer);
 
 // Display relevant geometries on the map.
 Map.setCenter(-122.085, 37.422, 15);
@@ -39,4 +39,4 @@ Map.addLayer(geometry,
 Map.addLayer(geometryBuffer,
              {'color': 'red'},
              'Result [red]: geometry.buffer');
-// [END earthengine__apidocs__geometry_buffer]
+// [END earthengine__apidocs__ee_geometry_buffer]

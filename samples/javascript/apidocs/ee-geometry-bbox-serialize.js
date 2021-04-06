@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-// [START earthengine__apidocs__bbox_serialize]
+// [START earthengine__apidocs__ee_geometry_bbox_serialize]
 // Define a BBox object.
 var bBox = ee.Geometry.BBox(-122.09, 37.42, -122.08, 37.43);
 
@@ -22,11 +22,11 @@ var bBox = ee.Geometry.BBox(-122.09, 37.42, -122.08, 37.43);
 var bBoxSerialize = bBox.serialize();
 
 // Print the result to the console.
-print('bBox.serialize(...) = ', bBoxSerialize);
+print('bBox.serialize(...) =', bBoxSerialize);
 
 // Display relevant geometries on the map.
 Map.setCenter(-122.085, 37.422, 15);
 Map.addLayer(bBox,
              {'color': 'black'},
              'Geometry [black]: bBox');
-// [END earthengine__apidocs__bbox_serialize]
+// [END earthengine__apidocs__ee_geometry_bbox_serialize]

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-// [START earthengine__apidocs__linearring_convexhull]
+// [START earthengine__apidocs__ee_geometry_linearring_convexhull]
 // Define a LinearRing object.
 var linearRing = ee.Geometry.LinearRing(
     [[-122.091, 37.420],
@@ -25,7 +25,7 @@ var linearRing = ee.Geometry.LinearRing(
 var linearRingConvexHull = linearRing.convexHull({'maxError': 1});
 
 // Print the result to the console.
-print('linearRing.convexHull(...) = ', linearRingConvexHull);
+print('linearRing.convexHull(...) =', linearRingConvexHull);
 
 // Display relevant geometries on the map.
 Map.setCenter(-122.085, 37.422, 15);
@@ -35,4 +35,4 @@ Map.addLayer(linearRing,
 Map.addLayer(linearRingConvexHull,
              {'color': 'red'},
              'Result [red]: linearRing.convexHull');
-// [END earthengine__apidocs__linearring_convexhull]
+// [END earthengine__apidocs__ee_geometry_linearring_convexhull]

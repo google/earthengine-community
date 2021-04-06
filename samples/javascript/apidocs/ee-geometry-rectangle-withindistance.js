@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-// [START earthengine__apidocs__rectangle_withindistance]
+// [START earthengine__apidocs__ee_geometry_rectangle_withindistance]
 // Define a Rectangle object.
 var rectangle = ee.Geometry.Rectangle(-122.09, 37.42, -122.08, 37.43);
 
@@ -25,7 +25,7 @@ var inputGeom = ee.Geometry.Point(-122.090, 37.423);
 var rectangleWithinDistance = rectangle.withinDistance({'right': inputGeom, 'distance': 500, 'maxError': 1});
 
 // Print the result to the console.
-print('rectangle.withinDistance(...) = ', rectangleWithinDistance);
+print('rectangle.withinDistance(...) =', rectangleWithinDistance);
 
 // Display relevant geometries on the map.
 Map.setCenter(-122.085, 37.422, 15);
@@ -35,4 +35,4 @@ Map.addLayer(rectangle,
 Map.addLayer(inputGeom,
              {'color': 'blue'},
              'Parameter [blue]: inputGeom');
-// [END earthengine__apidocs__rectangle_withindistance]
+// [END earthengine__apidocs__ee_geometry_rectangle_withindistance]

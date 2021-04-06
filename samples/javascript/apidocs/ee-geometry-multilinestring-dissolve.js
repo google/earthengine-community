@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-// [START earthengine__apidocs__multilinestring_dissolve]
+// [START earthengine__apidocs__ee_geometry_multilinestring_dissolve]
 // Define a MultiLineString object.
 var multiLineString = ee.Geometry.MultiLineString(
    [[[-122.088, 37.418], [-122.086, 37.422], [-122.082, 37.418]],
@@ -24,7 +24,7 @@ var multiLineString = ee.Geometry.MultiLineString(
 var multiLineStringDissolve = multiLineString.dissolve({'maxError': 1});
 
 // Print the result to the console.
-print('multiLineString.dissolve(...) = ', multiLineStringDissolve);
+print('multiLineString.dissolve(...) =', multiLineStringDissolve);
 
 // Display relevant geometries on the map.
 Map.setCenter(-122.085, 37.422, 15);
@@ -34,4 +34,4 @@ Map.addLayer(multiLineString,
 Map.addLayer(multiLineStringDissolve,
              {'color': 'red'},
              'Result [red]: multiLineString.dissolve');
-// [END earthengine__apidocs__multilinestring_dissolve]
+// [END earthengine__apidocs__ee_geometry_multilinestring_dissolve]

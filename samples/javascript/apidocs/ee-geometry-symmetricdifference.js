@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-// [START earthengine__apidocs__geometry_symmetricdifference]
+// [START earthengine__apidocs__ee_geometry_symmetricdifference]
 // Define a Geometry object.
 var geometry = ee.Geometry({
   'type': 'Polygon',
@@ -32,7 +32,7 @@ var inputGeom = ee.Geometry.BBox(-122.085, 37.415, -122.075, 37.425);
 var geometrySymmetricDifference = geometry.symmetricDifference({'right': inputGeom, 'maxError': 1});
 
 // Print the result to the console.
-print('geometry.symmetricDifference(...) = ', geometrySymmetricDifference);
+print('geometry.symmetricDifference(...) =', geometrySymmetricDifference);
 
 // Display relevant geometries on the map.
 Map.setCenter(-122.085, 37.422, 15);
@@ -45,4 +45,4 @@ Map.addLayer(inputGeom,
 Map.addLayer(geometrySymmetricDifference,
              {'color': 'red'},
              'Result [red]: geometry.symmetricDifference');
-// [END earthengine__apidocs__geometry_symmetricdifference]
+// [END earthengine__apidocs__ee_geometry_symmetricdifference]

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-// [START earthengine__apidocs__multipoint_togeojson]
+// [START earthengine__apidocs__ee_geometry_multipoint_togeojson]
 // Define a MultiPoint object.
 var multiPoint = ee.Geometry.MultiPoint([[-122.082, 37.420], [-122.081, 37.426]]);
 
@@ -22,11 +22,11 @@ var multiPoint = ee.Geometry.MultiPoint([[-122.082, 37.420], [-122.081, 37.426]]
 var multiPointToGeoJSON = multiPoint.toGeoJSON();
 
 // Print the result to the console.
-print('multiPoint.toGeoJSON(...) = ', multiPointToGeoJSON);
+print('multiPoint.toGeoJSON(...) =', multiPointToGeoJSON);
 
 // Display relevant geometries on the map.
 Map.setCenter(-122.085, 37.422, 15);
 Map.addLayer(multiPoint,
              {'color': 'black'},
              'Geometry [black]: multiPoint');
-// [END earthengine__apidocs__multipoint_togeojson]
+// [END earthengine__apidocs__ee_geometry_multipoint_togeojson]

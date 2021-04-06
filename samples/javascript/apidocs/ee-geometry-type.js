@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-// [START earthengine__apidocs__geometry_type]
+// [START earthengine__apidocs__ee_geometry_type]
 // Define a Geometry object.
 var geometry = ee.Geometry({
   'type': 'Polygon',
@@ -29,11 +29,11 @@ var geometry = ee.Geometry({
 var geometryType = geometry.type();
 
 // Print the result to the console.
-print('geometry.type(...) = ', geometryType);
+print('geometry.type(...) =', geometryType);
 
 // Display relevant geometries on the map.
 Map.setCenter(-122.085, 37.422, 15);
 Map.addLayer(geometry,
              {'color': 'black'},
              'Geometry [black]: geometry');
-// [END earthengine__apidocs__geometry_type]
+// [END earthengine__apidocs__ee_geometry_type]

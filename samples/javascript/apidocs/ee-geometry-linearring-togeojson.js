@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-// [START earthengine__apidocs__linearring_togeojson]
+// [START earthengine__apidocs__ee_geometry_linearring_togeojson]
 // Define a LinearRing object.
 var linearRing = ee.Geometry.LinearRing(
     [[-122.091, 37.420],
@@ -25,11 +25,11 @@ var linearRing = ee.Geometry.LinearRing(
 var linearRingToGeoJSON = linearRing.toGeoJSON();
 
 // Print the result to the console.
-print('linearRing.toGeoJSON(...) = ', linearRingToGeoJSON);
+print('linearRing.toGeoJSON(...) =', linearRingToGeoJSON);
 
 // Display relevant geometries on the map.
 Map.setCenter(-122.085, 37.422, 15);
 Map.addLayer(linearRing,
              {'color': 'black'},
              'Geometry [black]: linearRing');
-// [END earthengine__apidocs__linearring_togeojson]
+// [END earthengine__apidocs__ee_geometry_linearring_togeojson]

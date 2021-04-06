@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-// [START earthengine__apidocs__multipolygon_bounds]
+// [START earthengine__apidocs__ee_geometry_multipolygon_bounds]
 // Define a MultiPolygon object.
 var multiPolygon = ee.Geometry.MultiPolygon(
     [[[[-122.092, 37.424],
@@ -29,7 +29,7 @@ var multiPolygon = ee.Geometry.MultiPolygon(
 var multiPolygonBounds = multiPolygon.bounds();
 
 // Print the result to the console.
-print('multiPolygon.bounds(...) = ', multiPolygonBounds);
+print('multiPolygon.bounds(...) =', multiPolygonBounds);
 
 // Display relevant geometries on the map.
 Map.setCenter(-122.085, 37.422, 15);
@@ -39,4 +39,4 @@ Map.addLayer(multiPolygon,
 Map.addLayer(multiPolygonBounds,
              {'color': 'red'},
              'Result [red]: multiPolygon.bounds');
-// [END earthengine__apidocs__multipolygon_bounds]
+// [END earthengine__apidocs__ee_geometry_multipolygon_bounds]

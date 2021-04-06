@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-// [START earthengine__apidocs__point_centroid]
+// [START earthengine__apidocs__ee_geometry_point_centroid]
 // Define a Point object.
 var point = ee.Geometry.Point(-122.082, 37.42);
 
@@ -22,7 +22,7 @@ var point = ee.Geometry.Point(-122.082, 37.42);
 var pointCentroid = point.centroid({'maxError': 1});
 
 // Print the result to the console.
-print('point.centroid(...) = ', pointCentroid);
+print('point.centroid(...) =', pointCentroid);
 
 // Display relevant geometries on the map.
 Map.setCenter(-122.085, 37.422, 15);
@@ -32,4 +32,4 @@ Map.addLayer(point,
 Map.addLayer(pointCentroid,
              {'color': 'red'},
              'Result [red]: point.centroid');
-// [END earthengine__apidocs__point_centroid]
+// [END earthengine__apidocs__ee_geometry_point_centroid]

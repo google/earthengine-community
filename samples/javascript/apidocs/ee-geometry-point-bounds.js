@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-// [START earthengine__apidocs__point_bounds]
+// [START earthengine__apidocs__ee_geometry_point_bounds]
 // Define a Point object.
 var point = ee.Geometry.Point(-122.082, 37.42);
 
@@ -22,7 +22,7 @@ var point = ee.Geometry.Point(-122.082, 37.42);
 var pointBounds = point.bounds();
 
 // Print the result to the console.
-print('point.bounds(...) = ', pointBounds);
+print('point.bounds(...) =', pointBounds);
 
 // Display relevant geometries on the map.
 Map.setCenter(-122.085, 37.422, 15);
@@ -32,4 +32,4 @@ Map.addLayer(point,
 Map.addLayer(pointBounds,
              {'color': 'red'},
              'Result [red]: point.bounds');
-// [END earthengine__apidocs__point_bounds]
+// [END earthengine__apidocs__ee_geometry_point_bounds]

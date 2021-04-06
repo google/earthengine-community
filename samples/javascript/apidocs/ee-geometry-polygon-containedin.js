@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-// [START earthengine__apidocs__polygon_containedin]
+// [START earthengine__apidocs__ee_geometry_polygon_containedin]
 // Define a Polygon object.
 var polygon = ee.Geometry.Polygon(
     [[[-122.092, 37.424],
@@ -29,7 +29,7 @@ var inputGeom = ee.Geometry.BBox(-122.085, 37.415, -122.075, 37.425);
 var polygonContainedIn = polygon.containedIn({'right': inputGeom, 'maxError': 1});
 
 // Print the result to the console.
-print('polygon.containedIn(...) = ', polygonContainedIn);
+print('polygon.containedIn(...) =', polygonContainedIn);
 
 // Display relevant geometries on the map.
 Map.setCenter(-122.085, 37.422, 15);
@@ -39,4 +39,4 @@ Map.addLayer(polygon,
 Map.addLayer(inputGeom,
              {'color': 'blue'},
              'Parameter [blue]: inputGeom');
-// [END earthengine__apidocs__polygon_containedin]
+// [END earthengine__apidocs__ee_geometry_polygon_containedin]

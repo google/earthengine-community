@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-// [START earthengine__apidocs__point_simplify]
+// [START earthengine__apidocs__ee_geometry_point_simplify]
 // Define a Point object.
 var point = ee.Geometry.Point(-122.082, 37.42);
 
@@ -22,7 +22,7 @@ var point = ee.Geometry.Point(-122.082, 37.42);
 var pointSimplify = point.simplify({'maxError': 1});
 
 // Print the result to the console.
-print('point.simplify(...) = ', pointSimplify);
+print('point.simplify(...) =', pointSimplify);
 
 // Display relevant geometries on the map.
 Map.setCenter(-122.085, 37.422, 15);
@@ -32,4 +32,4 @@ Map.addLayer(point,
 Map.addLayer(pointSimplify,
              {'color': 'red'},
              'Result [red]: point.simplify');
-// [END earthengine__apidocs__point_simplify]
+// [END earthengine__apidocs__ee_geometry_point_simplify]

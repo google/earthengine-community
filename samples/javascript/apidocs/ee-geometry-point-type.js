@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-// [START earthengine__apidocs__point_type]
+// [START earthengine__apidocs__ee_geometry_point_type]
 // Define a Point object.
 var point = ee.Geometry.Point(-122.082, 37.42);
 
@@ -22,11 +22,11 @@ var point = ee.Geometry.Point(-122.082, 37.42);
 var pointType = point.type();
 
 // Print the result to the console.
-print('point.type(...) = ', pointType);
+print('point.type(...) =', pointType);
 
 // Display relevant geometries on the map.
 Map.setCenter(-122.085, 37.422, 15);
 Map.addLayer(point,
              {'color': 'black'},
              'Geometry [black]: point');
-// [END earthengine__apidocs__point_type]
+// [END earthengine__apidocs__ee_geometry_point_type]

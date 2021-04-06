@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-// [START earthengine__apidocs__linearring_buffer]
+// [START earthengine__apidocs__ee_geometry_linearring_buffer]
 // Define a LinearRing object.
 var linearRing = ee.Geometry.LinearRing(
     [[-122.091, 37.420],
@@ -25,7 +25,7 @@ var linearRing = ee.Geometry.LinearRing(
 var linearRingBuffer = linearRing.buffer({'distance': 100});
 
 // Print the result to the console.
-print('linearRing.buffer(...) = ', linearRingBuffer);
+print('linearRing.buffer(...) =', linearRingBuffer);
 
 // Display relevant geometries on the map.
 Map.setCenter(-122.085, 37.422, 15);
@@ -35,4 +35,4 @@ Map.addLayer(linearRing,
 Map.addLayer(linearRingBuffer,
              {'color': 'red'},
              'Result [red]: linearRing.buffer');
-// [END earthengine__apidocs__linearring_buffer]
+// [END earthengine__apidocs__ee_geometry_linearring_buffer]

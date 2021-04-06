@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-// [START earthengine__apidocs__polygon_type]
+// [START earthengine__apidocs__ee_geometry_polygon_type]
 // Define a Polygon object.
 var polygon = ee.Geometry.Polygon(
     [[[-122.092, 37.424],
@@ -26,11 +26,11 @@ var polygon = ee.Geometry.Polygon(
 var polygonType = polygon.type();
 
 // Print the result to the console.
-print('polygon.type(...) = ', polygonType);
+print('polygon.type(...) =', polygonType);
 
 // Display relevant geometries on the map.
 Map.setCenter(-122.085, 37.422, 15);
 Map.addLayer(polygon,
              {'color': 'black'},
              'Geometry [black]: polygon');
-// [END earthengine__apidocs__polygon_type]
+// [END earthengine__apidocs__ee_geometry_polygon_type]

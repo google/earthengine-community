@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-// [START earthengine__apidocs__multipolygon_convexhull]
+// [START earthengine__apidocs__ee_geometry_multipolygon_convexhull]
 // Define a MultiPolygon object.
 var multiPolygon = ee.Geometry.MultiPolygon(
     [[[[-122.092, 37.424],
@@ -29,7 +29,7 @@ var multiPolygon = ee.Geometry.MultiPolygon(
 var multiPolygonConvexHull = multiPolygon.convexHull({'maxError': 1});
 
 // Print the result to the console.
-print('multiPolygon.convexHull(...) = ', multiPolygonConvexHull);
+print('multiPolygon.convexHull(...) =', multiPolygonConvexHull);
 
 // Display relevant geometries on the map.
 Map.setCenter(-122.085, 37.422, 15);
@@ -39,4 +39,4 @@ Map.addLayer(multiPolygon,
 Map.addLayer(multiPolygonConvexHull,
              {'color': 'red'},
              'Result [red]: multiPolygon.convexHull');
-// [END earthengine__apidocs__multipolygon_convexhull]
+// [END earthengine__apidocs__ee_geometry_multipolygon_convexhull]

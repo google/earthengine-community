@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-// [START earthengine__apidocs__multipolygon_withindistance]
+// [START earthengine__apidocs__ee_geometry_multipolygon_withindistance]
 // Define a MultiPolygon object.
 var multiPolygon = ee.Geometry.MultiPolygon(
     [[[[-122.092, 37.424],
@@ -32,7 +32,7 @@ var inputGeom = ee.Geometry.Point(-122.090, 37.423);
 var multiPolygonWithinDistance = multiPolygon.withinDistance({'right': inputGeom, 'distance': 500, 'maxError': 1});
 
 // Print the result to the console.
-print('multiPolygon.withinDistance(...) = ', multiPolygonWithinDistance);
+print('multiPolygon.withinDistance(...) =', multiPolygonWithinDistance);
 
 // Display relevant geometries on the map.
 Map.setCenter(-122.085, 37.422, 15);
@@ -42,4 +42,4 @@ Map.addLayer(multiPolygon,
 Map.addLayer(inputGeom,
              {'color': 'blue'},
              'Parameter [blue]: inputGeom');
-// [END earthengine__apidocs__multipolygon_withindistance]
+// [END earthengine__apidocs__ee_geometry_multipolygon_withindistance]

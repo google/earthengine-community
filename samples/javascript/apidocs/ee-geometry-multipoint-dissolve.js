@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-// [START earthengine__apidocs__multipoint_dissolve]
+// [START earthengine__apidocs__ee_geometry_multipoint_dissolve]
 // Define a MultiPoint object.
 var multiPoint = ee.Geometry.MultiPoint([[-122.082, 37.420], [-122.081, 37.426]]);
 
@@ -22,7 +22,7 @@ var multiPoint = ee.Geometry.MultiPoint([[-122.082, 37.420], [-122.081, 37.426]]
 var multiPointDissolve = multiPoint.dissolve({'maxError': 1});
 
 // Print the result to the console.
-print('multiPoint.dissolve(...) = ', multiPointDissolve);
+print('multiPoint.dissolve(...) =', multiPointDissolve);
 
 // Display relevant geometries on the map.
 Map.setCenter(-122.085, 37.422, 15);
@@ -32,4 +32,4 @@ Map.addLayer(multiPoint,
 Map.addLayer(multiPointDissolve,
              {'color': 'red'},
              'Result [red]: multiPoint.dissolve');
-// [END earthengine__apidocs__multipoint_dissolve]
+// [END earthengine__apidocs__ee_geometry_multipoint_dissolve]

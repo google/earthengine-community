@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-// [START earthengine__apidocs__bbox_symmetricdifference]
+// [START earthengine__apidocs__ee_geometry_bbox_symmetricdifference]
 // Define a BBox object.
 var bBox = ee.Geometry.BBox(-122.09, 37.42, -122.08, 37.43);
 
@@ -25,7 +25,7 @@ var inputGeom = ee.Geometry.BBox(-122.085, 37.415, -122.075, 37.425);
 var bBoxSymmetricDifference = bBox.symmetricDifference({'right': inputGeom, 'maxError': 1});
 
 // Print the result to the console.
-print('bBox.symmetricDifference(...) = ', bBoxSymmetricDifference);
+print('bBox.symmetricDifference(...) =', bBoxSymmetricDifference);
 
 // Display relevant geometries on the map.
 Map.setCenter(-122.085, 37.422, 15);
@@ -38,4 +38,4 @@ Map.addLayer(inputGeom,
 Map.addLayer(bBoxSymmetricDifference,
              {'color': 'red'},
              'Result [red]: bBox.symmetricDifference');
-// [END earthengine__apidocs__bbox_symmetricdifference]
+// [END earthengine__apidocs__ee_geometry_bbox_symmetricdifference]

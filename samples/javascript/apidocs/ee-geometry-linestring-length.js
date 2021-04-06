@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-// [START earthengine__apidocs__linestring_length]
+// [START earthengine__apidocs__ee_geometry_linestring_length]
 // Define a LineString object.
 var lineString = ee.Geometry.LineString([[-122.09, 37.42], [-122.08, 37.43]]);
 
@@ -22,11 +22,11 @@ var lineString = ee.Geometry.LineString([[-122.09, 37.42], [-122.08, 37.43]]);
 var lineStringLength = lineString.length();
 
 // Print the result to the console.
-print('lineString.length(...) = ', lineStringLength);
+print('lineString.length(...) =', lineStringLength);
 
 // Display relevant geometries on the map.
 Map.setCenter(-122.085, 37.422, 15);
 Map.addLayer(lineString,
              {'color': 'black'},
              'Geometry [black]: lineString');
-// [END earthengine__apidocs__linestring_length]
+// [END earthengine__apidocs__ee_geometry_linestring_length]

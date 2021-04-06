@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-// [START earthengine__apidocs__linearring_centroid]
+// [START earthengine__apidocs__ee_geometry_linearring_centroid]
 // Define a LinearRing object.
 var linearRing = ee.Geometry.LinearRing(
     [[-122.091, 37.420],
@@ -25,7 +25,7 @@ var linearRing = ee.Geometry.LinearRing(
 var linearRingCentroid = linearRing.centroid({'maxError': 1});
 
 // Print the result to the console.
-print('linearRing.centroid(...) = ', linearRingCentroid);
+print('linearRing.centroid(...) =', linearRingCentroid);
 
 // Display relevant geometries on the map.
 Map.setCenter(-122.085, 37.422, 15);
@@ -35,4 +35,4 @@ Map.addLayer(linearRing,
 Map.addLayer(linearRingCentroid,
              {'color': 'red'},
              'Result [red]: linearRing.centroid');
-// [END earthengine__apidocs__linearring_centroid]
+// [END earthengine__apidocs__ee_geometry_linearring_centroid]

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-// [START earthengine__apidocs__polygon_distance]
+// [START earthengine__apidocs__ee_geometry_polygon_distance]
 // Define a Polygon object.
 var polygon = ee.Geometry.Polygon(
     [[[-122.092, 37.424],
@@ -29,7 +29,7 @@ var inputGeom = ee.Geometry.Point(-122.090, 37.423);
 var polygonDistance = polygon.distance({'right': inputGeom, 'maxError': 1});
 
 // Print the result to the console.
-print('polygon.distance(...) = ', polygonDistance);
+print('polygon.distance(...) =', polygonDistance);
 
 // Display relevant geometries on the map.
 Map.setCenter(-122.085, 37.422, 15);
@@ -39,4 +39,4 @@ Map.addLayer(polygon,
 Map.addLayer(inputGeom,
              {'color': 'blue'},
              'Parameter [blue]: inputGeom');
-// [END earthengine__apidocs__polygon_distance]
+// [END earthengine__apidocs__ee_geometry_polygon_distance]

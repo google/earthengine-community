@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-// [START earthengine__apidocs__polygon_projection]
+// [START earthengine__apidocs__ee_geometry_polygon_projection]
 // Define a Polygon object.
 var polygon = ee.Geometry.Polygon(
     [[[-122.092, 37.424],
@@ -26,11 +26,11 @@ var polygon = ee.Geometry.Polygon(
 var polygonProjection = polygon.projection();
 
 // Print the result to the console.
-print('polygon.projection(...) = ', polygonProjection);
+print('polygon.projection(...) =', polygonProjection);
 
 // Display relevant geometries on the map.
 Map.setCenter(-122.085, 37.422, 15);
 Map.addLayer(polygon,
              {'color': 'black'},
              'Geometry [black]: polygon');
-// [END earthengine__apidocs__polygon_projection]
+// [END earthengine__apidocs__ee_geometry_polygon_projection]

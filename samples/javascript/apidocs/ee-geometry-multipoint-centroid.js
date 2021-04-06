@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-// [START earthengine__apidocs__multipoint_centroid]
+// [START earthengine__apidocs__ee_geometry_multipoint_centroid]
 // Define a MultiPoint object.
 var multiPoint = ee.Geometry.MultiPoint([[-122.082, 37.420], [-122.081, 37.426]]);
 
@@ -22,7 +22,7 @@ var multiPoint = ee.Geometry.MultiPoint([[-122.082, 37.420], [-122.081, 37.426]]
 var multiPointCentroid = multiPoint.centroid({'maxError': 1});
 
 // Print the result to the console.
-print('multiPoint.centroid(...) = ', multiPointCentroid);
+print('multiPoint.centroid(...) =', multiPointCentroid);
 
 // Display relevant geometries on the map.
 Map.setCenter(-122.085, 37.422, 15);
@@ -32,4 +32,4 @@ Map.addLayer(multiPoint,
 Map.addLayer(multiPointCentroid,
              {'color': 'red'},
              'Result [red]: multiPoint.centroid');
-// [END earthengine__apidocs__multipoint_centroid]
+// [END earthengine__apidocs__ee_geometry_multipoint_centroid]

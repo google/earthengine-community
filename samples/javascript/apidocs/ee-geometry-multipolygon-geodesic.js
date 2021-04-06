@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-// [START earthengine__apidocs__multipolygon_geodesic]
+// [START earthengine__apidocs__ee_geometry_multipolygon_geodesic]
 // Define a MultiPolygon object.
 var multiPolygon = ee.Geometry.MultiPolygon(
     [[[[-122.092, 37.424],
@@ -29,11 +29,11 @@ var multiPolygon = ee.Geometry.MultiPolygon(
 var multiPolygonGeodesic = multiPolygon.geodesic();
 
 // Print the result to the console.
-print('multiPolygon.geodesic(...) = ', multiPolygonGeodesic);
+print('multiPolygon.geodesic(...) =', multiPolygonGeodesic);
 
 // Display relevant geometries on the map.
 Map.setCenter(-122.085, 37.422, 15);
 Map.addLayer(multiPolygon,
              {'color': 'black'},
              'Geometry [black]: multiPolygon');
-// [END earthengine__apidocs__multipolygon_geodesic]
+// [END earthengine__apidocs__ee_geometry_multipolygon_geodesic]

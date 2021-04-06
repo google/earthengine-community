@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-// [START earthengine__apidocs__point_togeojsonstring]
+// [START earthengine__apidocs__ee_geometry_point_togeojsonstring]
 // Define a Point object.
 var point = ee.Geometry.Point(-122.082, 37.42);
 
@@ -22,11 +22,11 @@ var point = ee.Geometry.Point(-122.082, 37.42);
 var pointToGeoJSONString = point.toGeoJSONString();
 
 // Print the result to the console.
-print('point.toGeoJSONString(...) = ', pointToGeoJSONString);
+print('point.toGeoJSONString(...) =', pointToGeoJSONString);
 
 // Display relevant geometries on the map.
 Map.setCenter(-122.085, 37.422, 15);
 Map.addLayer(point,
              {'color': 'black'},
              'Geometry [black]: point');
-// [END earthengine__apidocs__point_togeojsonstring]
+// [END earthengine__apidocs__ee_geometry_point_togeojsonstring]

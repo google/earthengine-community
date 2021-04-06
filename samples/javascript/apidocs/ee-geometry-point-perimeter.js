@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-// [START earthengine__apidocs__point_perimeter]
+// [START earthengine__apidocs__ee_geometry_point_perimeter]
 // Define a Point object.
 var point = ee.Geometry.Point(-122.082, 37.42);
 
@@ -22,11 +22,11 @@ var point = ee.Geometry.Point(-122.082, 37.42);
 var pointPerimeter = point.perimeter({'maxError': 1});
 
 // Print the result to the console.
-print('point.perimeter(...) = ', pointPerimeter);
+print('point.perimeter(...) =', pointPerimeter);
 
 // Display relevant geometries on the map.
 Map.setCenter(-122.085, 37.422, 15);
 Map.addLayer(point,
              {'color': 'black'},
              'Geometry [black]: point');
-// [END earthengine__apidocs__point_perimeter]
+// [END earthengine__apidocs__ee_geometry_point_perimeter]

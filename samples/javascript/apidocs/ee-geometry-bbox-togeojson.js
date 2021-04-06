@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-// [START earthengine__apidocs__bbox_togeojson]
+// [START earthengine__apidocs__ee_geometry_bbox_togeojson]
 // Define a BBox object.
 var bBox = ee.Geometry.BBox(-122.09, 37.42, -122.08, 37.43);
 
@@ -22,11 +22,11 @@ var bBox = ee.Geometry.BBox(-122.09, 37.42, -122.08, 37.43);
 var bBoxToGeoJSON = bBox.toGeoJSON();
 
 // Print the result to the console.
-print('bBox.toGeoJSON(...) = ', bBoxToGeoJSON);
+print('bBox.toGeoJSON(...) =', bBoxToGeoJSON);
 
 // Display relevant geometries on the map.
 Map.setCenter(-122.085, 37.422, 15);
 Map.addLayer(bBox,
              {'color': 'black'},
              'Geometry [black]: bBox');
-// [END earthengine__apidocs__bbox_togeojson]
+// [END earthengine__apidocs__ee_geometry_bbox_togeojson]

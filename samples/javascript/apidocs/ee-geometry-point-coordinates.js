@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-// [START earthengine__apidocs__point_coordinates]
+// [START earthengine__apidocs__ee_geometry_point_coordinates]
 // Define a Point object.
 var point = ee.Geometry.Point(-122.082, 37.42);
 
@@ -22,11 +22,11 @@ var point = ee.Geometry.Point(-122.082, 37.42);
 var pointCoordinates = point.coordinates();
 
 // Print the result to the console.
-print('point.coordinates(...) = ', pointCoordinates);
+print('point.coordinates(...) =', pointCoordinates);
 
 // Display relevant geometries on the map.
 Map.setCenter(-122.085, 37.422, 15);
 Map.addLayer(point,
              {'color': 'black'},
              'Geometry [black]: point');
-// [END earthengine__apidocs__point_coordinates]
+// [END earthengine__apidocs__ee_geometry_point_coordinates]

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-// [START earthengine__apidocs__geometry_dissolve]
+// [START earthengine__apidocs__ee_geometry_dissolve]
 // Define a Geometry object.
 var geometry = ee.Geometry({
   'type': 'Polygon',
@@ -29,7 +29,7 @@ var geometry = ee.Geometry({
 var geometryDissolve = geometry.dissolve({'maxError': 1});
 
 // Print the result to the console.
-print('geometry.dissolve(...) = ', geometryDissolve);
+print('geometry.dissolve(...) =', geometryDissolve);
 
 // Display relevant geometries on the map.
 Map.setCenter(-122.085, 37.422, 15);
@@ -39,4 +39,4 @@ Map.addLayer(geometry,
 Map.addLayer(geometryDissolve,
              {'color': 'red'},
              'Result [red]: geometry.dissolve');
-// [END earthengine__apidocs__geometry_dissolve]
+// [END earthengine__apidocs__ee_geometry_dissolve]

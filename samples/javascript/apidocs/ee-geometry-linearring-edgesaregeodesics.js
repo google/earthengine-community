@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-// [START earthengine__apidocs__linearring_edgesaregeodesics]
+// [START earthengine__apidocs__ee_geometry_linearring_edgesaregeodesics]
 // Define a LinearRing object.
 var linearRing = ee.Geometry.LinearRing(
     [[-122.091, 37.420],
@@ -25,11 +25,11 @@ var linearRing = ee.Geometry.LinearRing(
 var linearRingEdgesAreGeodesics = linearRing.edgesAreGeodesics();
 
 // Print the result to the console.
-print('linearRing.edgesAreGeodesics(...) = ', linearRingEdgesAreGeodesics);
+print('linearRing.edgesAreGeodesics(...) =', linearRingEdgesAreGeodesics);
 
 // Display relevant geometries on the map.
 Map.setCenter(-122.085, 37.422, 15);
 Map.addLayer(linearRing,
              {'color': 'black'},
              'Geometry [black]: linearRing');
-// [END earthengine__apidocs__linearring_edgesaregeodesics]
+// [END earthengine__apidocs__ee_geometry_linearring_edgesaregeodesics]

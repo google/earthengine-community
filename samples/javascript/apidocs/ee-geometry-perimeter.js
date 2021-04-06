@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-// [START earthengine__apidocs__geometry_perimeter]
+// [START earthengine__apidocs__ee_geometry_perimeter]
 // Define a Geometry object.
 var geometry = ee.Geometry({
   'type': 'Polygon',
@@ -29,11 +29,11 @@ var geometry = ee.Geometry({
 var geometryPerimeter = geometry.perimeter({'maxError': 1});
 
 // Print the result to the console.
-print('geometry.perimeter(...) = ', geometryPerimeter);
+print('geometry.perimeter(...) =', geometryPerimeter);
 
 // Display relevant geometries on the map.
 Map.setCenter(-122.085, 37.422, 15);
 Map.addLayer(geometry,
              {'color': 'black'},
              'Geometry [black]: geometry');
-// [END earthengine__apidocs__geometry_perimeter]
+// [END earthengine__apidocs__ee_geometry_perimeter]

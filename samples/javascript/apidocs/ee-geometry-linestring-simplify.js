@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-// [START earthengine__apidocs__linestring_simplify]
+// [START earthengine__apidocs__ee_geometry_linestring_simplify]
 // Define a LineString object.
 var lineString = ee.Geometry.LineString([[-122.09, 37.42], [-122.08, 37.43]]);
 
@@ -22,7 +22,7 @@ var lineString = ee.Geometry.LineString([[-122.09, 37.42], [-122.08, 37.43]]);
 var lineStringSimplify = lineString.simplify({'maxError': 1});
 
 // Print the result to the console.
-print('lineString.simplify(...) = ', lineStringSimplify);
+print('lineString.simplify(...) =', lineStringSimplify);
 
 // Display relevant geometries on the map.
 Map.setCenter(-122.085, 37.422, 15);
@@ -32,4 +32,4 @@ Map.addLayer(lineString,
 Map.addLayer(lineStringSimplify,
              {'color': 'red'},
              'Result [red]: lineString.simplify');
-// [END earthengine__apidocs__linestring_simplify]
+// [END earthengine__apidocs__ee_geometry_linestring_simplify]

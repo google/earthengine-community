@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-// [START earthengine__apidocs__multipoint_type]
+// [START earthengine__apidocs__ee_geometry_multipoint_type]
 // Define a MultiPoint object.
 var multiPoint = ee.Geometry.MultiPoint([[-122.082, 37.420], [-122.081, 37.426]]);
 
@@ -22,11 +22,11 @@ var multiPoint = ee.Geometry.MultiPoint([[-122.082, 37.420], [-122.081, 37.426]]
 var multiPointType = multiPoint.type();
 
 // Print the result to the console.
-print('multiPoint.type(...) = ', multiPointType);
+print('multiPoint.type(...) =', multiPointType);
 
 // Display relevant geometries on the map.
 Map.setCenter(-122.085, 37.422, 15);
 Map.addLayer(multiPoint,
              {'color': 'black'},
              'Geometry [black]: multiPoint');
-// [END earthengine__apidocs__multipoint_type]
+// [END earthengine__apidocs__ee_geometry_multipoint_type]

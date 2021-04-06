@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-// [START earthengine__apidocs__multipoint_contains]
+// [START earthengine__apidocs__ee_geometry_multipoint_contains]
 // Define a MultiPoint object.
 var multiPoint = ee.Geometry.MultiPoint([[-122.082, 37.420], [-122.081, 37.426]]);
 
@@ -25,7 +25,7 @@ var inputGeom = ee.Geometry.BBox(-122.085, 37.415, -122.075, 37.425);
 var multiPointContains = multiPoint.contains({'right': inputGeom, 'maxError': 1});
 
 // Print the result to the console.
-print('multiPoint.contains(...) = ', multiPointContains);
+print('multiPoint.contains(...) =', multiPointContains);
 
 // Display relevant geometries on the map.
 Map.setCenter(-122.085, 37.422, 15);
@@ -35,4 +35,4 @@ Map.addLayer(multiPoint,
 Map.addLayer(inputGeom,
              {'color': 'blue'},
              'Parameter [blue]: inputGeom');
-// [END earthengine__apidocs__multipoint_contains]
+// [END earthengine__apidocs__ee_geometry_multipoint_contains]

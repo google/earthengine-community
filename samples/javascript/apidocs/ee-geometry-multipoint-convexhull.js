@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-// [START earthengine__apidocs__multipoint_convexhull]
+// [START earthengine__apidocs__ee_geometry_multipoint_convexhull]
 // Define a MultiPoint object.
 var multiPoint = ee.Geometry.MultiPoint([[-122.082, 37.420], [-122.081, 37.426]]);
 
@@ -22,7 +22,7 @@ var multiPoint = ee.Geometry.MultiPoint([[-122.082, 37.420], [-122.081, 37.426]]
 var multiPointConvexHull = multiPoint.convexHull({'maxError': 1});
 
 // Print the result to the console.
-print('multiPoint.convexHull(...) = ', multiPointConvexHull);
+print('multiPoint.convexHull(...) =', multiPointConvexHull);
 
 // Display relevant geometries on the map.
 Map.setCenter(-122.085, 37.422, 15);
@@ -32,4 +32,4 @@ Map.addLayer(multiPoint,
 Map.addLayer(multiPointConvexHull,
              {'color': 'red'},
              'Result [red]: multiPoint.convexHull');
-// [END earthengine__apidocs__multipoint_convexhull]
+// [END earthengine__apidocs__ee_geometry_multipoint_convexhull]

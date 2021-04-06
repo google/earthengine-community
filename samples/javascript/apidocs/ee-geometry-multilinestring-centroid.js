@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-// [START earthengine__apidocs__multilinestring_centroid]
+// [START earthengine__apidocs__ee_geometry_multilinestring_centroid]
 // Define a MultiLineString object.
 var multiLineString = ee.Geometry.MultiLineString(
    [[[-122.088, 37.418], [-122.086, 37.422], [-122.082, 37.418]],
@@ -24,7 +24,7 @@ var multiLineString = ee.Geometry.MultiLineString(
 var multiLineStringCentroid = multiLineString.centroid({'maxError': 1});
 
 // Print the result to the console.
-print('multiLineString.centroid(...) = ', multiLineStringCentroid);
+print('multiLineString.centroid(...) =', multiLineStringCentroid);
 
 // Display relevant geometries on the map.
 Map.setCenter(-122.085, 37.422, 15);
@@ -34,4 +34,4 @@ Map.addLayer(multiLineString,
 Map.addLayer(multiLineStringCentroid,
              {'color': 'red'},
              'Result [red]: multiLineString.centroid');
-// [END earthengine__apidocs__multilinestring_centroid]
+// [END earthengine__apidocs__ee_geometry_multilinestring_centroid]

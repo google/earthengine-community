@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-// [START earthengine__apidocs__bbox_difference]
+// [START earthengine__apidocs__ee_geometry_bbox_difference]
 // Define a BBox object.
 var bBox = ee.Geometry.BBox(-122.09, 37.42, -122.08, 37.43);
 
@@ -25,7 +25,7 @@ var inputGeom = ee.Geometry.BBox(-122.085, 37.415, -122.075, 37.425);
 var bBoxDifference = bBox.difference({'right': inputGeom, 'maxError': 1});
 
 // Print the result to the console.
-print('bBox.difference(...) = ', bBoxDifference);
+print('bBox.difference(...) =', bBoxDifference);
 
 // Display relevant geometries on the map.
 Map.setCenter(-122.085, 37.422, 15);
@@ -38,4 +38,4 @@ Map.addLayer(inputGeom,
 Map.addLayer(bBoxDifference,
              {'color': 'red'},
              'Result [red]: bBox.difference');
-// [END earthengine__apidocs__bbox_difference]
+// [END earthengine__apidocs__ee_geometry_bbox_difference]

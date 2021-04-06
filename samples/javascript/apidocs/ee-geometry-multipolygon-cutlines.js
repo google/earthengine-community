@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-// [START earthengine__apidocs__multipolygon_cutlines]
+// [START earthengine__apidocs__ee_geometry_multipolygon_cutlines]
 // Define a MultiPolygon object.
 var multiPolygon = ee.Geometry.MultiPolygon(
     [[[[-122.092, 37.424],
@@ -29,7 +29,7 @@ var multiPolygon = ee.Geometry.MultiPolygon(
 var multiPolygonCutLines = multiPolygon.cutLines({'distances': [10, 100], 'maxError': 1});
 
 // Print the result to the console.
-print('multiPolygon.cutLines(...) = ', multiPolygonCutLines);
+print('multiPolygon.cutLines(...) =', multiPolygonCutLines);
 
 // Display relevant geometries on the map.
 Map.setCenter(-122.085, 37.422, 15);
@@ -39,4 +39,4 @@ Map.addLayer(multiPolygon,
 Map.addLayer(multiPolygonCutLines,
              {'color': 'red'},
              'Result [red]: multiPolygon.cutLines');
-// [END earthengine__apidocs__multipolygon_cutlines]
+// [END earthengine__apidocs__ee_geometry_multipolygon_cutlines]

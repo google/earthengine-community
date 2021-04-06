@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-// [START earthengine__apidocs__bbox_bounds]
+// [START earthengine__apidocs__ee_geometry_bbox_bounds]
 // Define a BBox object.
 var bBox = ee.Geometry.BBox(-122.09, 37.42, -122.08, 37.43);
 
@@ -22,7 +22,7 @@ var bBox = ee.Geometry.BBox(-122.09, 37.42, -122.08, 37.43);
 var bBoxBounds = bBox.bounds();
 
 // Print the result to the console.
-print('bBox.bounds(...) = ', bBoxBounds);
+print('bBox.bounds(...) =', bBoxBounds);
 
 // Display relevant geometries on the map.
 Map.setCenter(-122.085, 37.422, 15);
@@ -32,4 +32,4 @@ Map.addLayer(bBox,
 Map.addLayer(bBoxBounds,
              {'color': 'red'},
              'Result [red]: bBox.bounds');
-// [END earthengine__apidocs__bbox_bounds]
+// [END earthengine__apidocs__ee_geometry_bbox_bounds]

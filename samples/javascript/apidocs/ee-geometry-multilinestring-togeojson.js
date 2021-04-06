@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-// [START earthengine__apidocs__multilinestring_togeojson]
+// [START earthengine__apidocs__ee_geometry_multilinestring_togeojson]
 // Define a MultiLineString object.
 var multiLineString = ee.Geometry.MultiLineString(
    [[[-122.088, 37.418], [-122.086, 37.422], [-122.082, 37.418]],
@@ -24,11 +24,11 @@ var multiLineString = ee.Geometry.MultiLineString(
 var multiLineStringToGeoJSON = multiLineString.toGeoJSON();
 
 // Print the result to the console.
-print('multiLineString.toGeoJSON(...) = ', multiLineStringToGeoJSON);
+print('multiLineString.toGeoJSON(...) =', multiLineStringToGeoJSON);
 
 // Display relevant geometries on the map.
 Map.setCenter(-122.085, 37.422, 15);
 Map.addLayer(multiLineString,
              {'color': 'black'},
              'Geometry [black]: multiLineString');
-// [END earthengine__apidocs__multilinestring_togeojson]
+// [END earthengine__apidocs__ee_geometry_multilinestring_togeojson]

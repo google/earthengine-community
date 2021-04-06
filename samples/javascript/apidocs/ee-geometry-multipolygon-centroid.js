@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-// [START earthengine__apidocs__multipolygon_centroid]
+// [START earthengine__apidocs__ee_geometry_multipolygon_centroid]
 // Define a MultiPolygon object.
 var multiPolygon = ee.Geometry.MultiPolygon(
     [[[[-122.092, 37.424],
@@ -29,7 +29,7 @@ var multiPolygon = ee.Geometry.MultiPolygon(
 var multiPolygonCentroid = multiPolygon.centroid({'maxError': 1});
 
 // Print the result to the console.
-print('multiPolygon.centroid(...) = ', multiPolygonCentroid);
+print('multiPolygon.centroid(...) =', multiPolygonCentroid);
 
 // Display relevant geometries on the map.
 Map.setCenter(-122.085, 37.422, 15);
@@ -39,4 +39,4 @@ Map.addLayer(multiPolygon,
 Map.addLayer(multiPolygonCentroid,
              {'color': 'red'},
              'Result [red]: multiPolygon.centroid');
-// [END earthengine__apidocs__multipolygon_centroid]
+// [END earthengine__apidocs__ee_geometry_multipolygon_centroid]

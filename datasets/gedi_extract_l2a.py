@@ -16,10 +16,84 @@ limitations under the License.
 from absl import app
 from absl import logging
 import h5py
-import numpy as np
 import pandas as pd
 import os
 
+meta_variables = (
+    'beam',
+    'channel',
+    'degrade_flag',
+    'delta_time',
+    'digital_elevation_model',
+    'digital_elevation_model_srtm',
+    'elev_highestreturn',
+    'elev_lowestmode',
+    'elevation_bias_flag',
+    'elevation_bin0_error',
+    'energy_total',
+
+    'land_cover_data/landsat_treecover',
+    'land_cover_data/landsat_water_persistence',
+    'land_cover_data/leaf_off_doy',
+    'land_cover_data/leaf_off_flag',
+    'land_cover_data/leaf_on_cycle',
+    'land_cover_data/leaf_on_doy',
+    'land_cover_data/modis_nonvegetated',
+    'land_cover_data/modis_nonvegetated_sd',
+    'land_cover_data/modis_treecover',
+    'land_cover_data/modis_treecover_sd',
+    'land_cover_data/pft_class',
+    'land_cover_data/region_class',
+    'land_cover_data/urban_focal_window_size',
+    'land_cover_data/urban_proportion',
+
+    'lat_highestreturn',
+    'lat_lowestmode',
+    'latitude_bin0_error',
+    'lon_highestreturn',
+    'lon_lowestmode',
+    'longitude_bin0_error',
+
+    'master_frac',
+    'master_int',
+    'mean_sea_surface',
+    'num_detectedmodes',
+    'quality_flag',
+
+    'rx_1gaussfit/rx_gamplitude',
+    'rx_1gaussfit/rx_gamplitude_error',
+    'rx_1gaussfit/rx_gbias',
+    'rx_1gaussfit/rx_gbias_error',
+    'rx_1gaussfit/rx_gchisq',
+    'rx_1gaussfit/rx_gflag',
+    'rx_1gaussfit/rx_giters',
+    'rx_1gaussfit/rx_gloc',
+    'rx_1gaussfit/rx_gloc_error',
+    'rx_1gaussfit/rx_gwidth',
+    'rx_1gaussfit/rx_gwidth_error',
+
+    'rx_assess/mean',
+    'rx_assess/mean_64kadjusted',
+    'rx_assess/ocean_calibration_shot_flag',
+    'rx_assess/quality_flag',
+    'rx_assess/rx_assess_flag',
+    'rx_assess/rx_clipbin0',
+    'rx_assess/rx_clipbin_count',
+    'rx_assess/rx_energy',
+    'rx_assess/rx_maxamp',
+    'rx_assess/rx_maxpeakloc',
+    'rx_assess/sd_corrected',
+
+    'selected_algorithm',
+    'selected_mode',
+    'selected_mode_flag',
+
+    'sensitivity',
+    'shot_number',
+    'solar_azimuth',
+    'solar_elevation',
+    'surface_flag'
+)
 
 # pylint:disable=line-too-long
 def extract_values(input_path, output_path):
@@ -57,185 +131,27 @@ def num_algorithms():
 def write_csv(hdf_fh, csv_fh):
   """Writes a single CSV file based on the contents of HDF file."""
   is_first = True
+  rh_names = [f'rh{d}' for d in range(0, 101)]
   for k in hdf_fh.keys():
       if not k.startswith('BEAM'):
           continue
       print('\t',k)
-      lat_lowestmode = hdf_fh[f'{k}/lat_lowestmode']
-      lon_lowestmode = hdf_fh[f'{k}/lon_lowestmode']
-      beam = hdf_fh[f'{k}/beam']
-      channel = hdf_fh[f'{k}/channel']
-      degrade_flag = hdf_fh[f'{k}/degrade_flag']
-      delta_time = np.array(hdf_fh[f'{k}/delta_time']) #* 1000 + 1514764800000
-      
-      elev_highestreturn = hdf_fh[f'{k}/elev_highestreturn']
-      elev_lowestmode = hdf_fh[f'{k}/elev_lowestmode']
-      
-      elevation_bias_flag = hdf_fh[f'{k}/elevation_bias_flag']
-      elevation_bin0_error = hdf_fh[f'{k}/elevation_bin0_error']
-      energy_total = hdf_fh[f'{k}/energy_total']
 
-      # geolocation: see below for extraction by algorithms
+      df = pd.DataFrame()
 
-      #land_cover_data
-      landsat_treecover = hdf_fh[f'{k}/land_cover_data/landsat_treecover']
-      modis_nonvegetated = hdf_fh[f'{k}/land_cover_data/modis_nonvegetated']
-      modis_nonvegetated_sd = hdf_fh[f'{k}/land_cover_data/modis_nonvegetated_sd']
-      modis_treecover = hdf_fh[f'{k}/land_cover_data/modis_treecover']
-      modis_treecover_sd = hdf_fh[f'{k}/land_cover_data/modis_treecover_sd']
+      for v in meta_variables:
+          name = v.split('/')[-1]
+          # print(v, '==>', name)
 
-      lat_highestreturn = hdf_fh[f'{k}/lat_highestreturn']
-      #lat_lowestmode: see lat above
+          df[name] = hdf_fh[f'{k}/{v}']
 
-      latitude_bin0_error = hdf_fh[f'{k}/latitude_bin0_error']
+      rh = pd.DataFrame(hdf_fh[f'{k}/rh'], columns=rh_names)
 
-      lon_highestreturn = hdf_fh[f'{k}/lon_highestreturn']
-      #lon_lowestmode: see lon above
-      longitude_bin0_error = hdf_fh[f'{k}/longitude_bin0_error']
+      df = pd.concat((df, rh), axis=1)
 
-      master_frac = hdf_fh[f'{k}/master_frac']
-      master_int = hdf_fh[f'{k}/master_int']
-      mean_sea_surface = hdf_fh[f'{k}/mean_sea_surface']
-      num_detectedmodes = hdf_fh[f'{k}/num_detectedmodes']
-
-      quality_flag = hdf_fh[f'{k}/quality_flag']
-
-      #rh: this is essentially rh_a1, ignore
-
-      selected_algorithm = hdf_fh[f'{k}/selected_algorithm']
-      selected_mode = hdf_fh[f'{k}/selected_mode']
-
-      # should this be ignored
-      sensitivity = hdf_fh[f'{k}/sensitivity']
-
-      shot_number = hdf_fh[f'{k}/shot_number']
-      solar_azimuth = hdf_fh[f'{k}/solar_azimuth']
-      solar_elevation = hdf_fh[f'{k}/solar_elevation']
-      surface_flag = hdf_fh[f'{k}/surface_flag']
-
-      #group rx_1gaussfit
-      rx_gamplitude = hdf_fh[f'{k}/rx_1gaussfit/rx_gamplitude']
-      rx_gamplitude_error = hdf_fh[f'{k}/rx_1gaussfit/rx_gamplitude_error']
-      rx_gbias = hdf_fh[f'{k}/rx_1gaussfit/rx_gbias']
-      rx_gbias_error = hdf_fh[f'{k}/rx_1gaussfit/rx_gbias_error']
-      rx_gchisq = hdf_fh[f'{k}/rx_1gaussfit/rx_gchisq']
-      rx_gflag = hdf_fh[f'{k}/rx_1gaussfit/rx_gflag']
-      rx_giters = hdf_fh[f'{k}/rx_1gaussfit/rx_giters']
-      rx_gloc = hdf_fh[f'{k}/rx_1gaussfit/rx_gloc']
-      rx_gloc_error = hdf_fh[f'{k}/rx_1gaussfit/rx_gloc_error']
-      rx_gwidth = hdf_fh[f'{k}/rx_1gaussfit/rx_gwidth']
-      rx_gwidth_error = hdf_fh[f'{k}/rx_1gaussfit/rx_gwidth_error']
-
-      # These are single value array, ignoring
-      # mpfit_max_func_evals = hdf_fh[f'{k}/rx_1gaussfit/ancillary/mpfit_max_func_evals']
-      # mpfit_maxiters = hdf_fh[f'{k}/rx_1gaussfit/ancillary/mpfit_maxiters']
-      # mpfit_tolerance = hdf_fh[f'{k}/rx_1gaussfit/ancillary/mpfit_tolerance']
-      # rx_constraint_gamplitude_lower = hdf_fh[f'{k}/rx_1gaussfit/ancillary/rx_constraint_gamplitude_lower']
-      # rx_constraint_gamplitude_upper = hdf_fh[f'{k}/rx_1gaussfit/ancillary/rx_constraint_gamplitude_upper']
-      # rx_constraint_gloc_lower = hdf_fh[f'{k}/rx_1gaussfit/ancillary/rx_constraint_gloc_lower']
-      # rx_constraint_gloc_upper = hdf_fh[f'{k}/rx_1gaussfit/ancillary/rx_constraint_gloc_upper']
-      # rx_estimate_bias = hdf_fh[f'{k}/rx_1gaussfit/ancillary/rx_estimate_bias']
-      # rx_mean_noise_level = hdf_fh[f'{k}/rx_1gaussfit/ancillary/rx_mean_noise_level']
-      # rx_smoothwidth = hdf_fh[f'{k}/rx_1gaussfit/ancillary/rx_smoothwidth']
-
-      #group rx_assess
-      rx_assess_mean = hdf_fh[f'{k}/rx_assess/mean']
-      rx_assess_mean_64kadjusted = hdf_fh[f'{k}/rx_assess/mean_64kadjusted']
-      rx_assess_ocean_calibration_shot_flag = hdf_fh[f'{k}/rx_assess/ocean_calibration_shot_flag']
-      rx_assess_quality_flag = hdf_fh[f'{k}/rx_assess/quality_flag']
-      rx_assess_flag = hdf_fh[f'{k}/rx_assess/rx_assess_flag']
-      rx_clipbin0 = hdf_fh[f'{k}/rx_assess/rx_clipbin0']
-      rx_clipbin_count = hdf_fh[f'{k}/rx_assess/rx_clipbin_count']
-      rx_energy = hdf_fh[f'{k}/rx_assess/rx_energy']
-      rx_maxamp = hdf_fh[f'{k}/rx_assess/rx_maxamp']
-      rx_maxpeakloc = hdf_fh[f'{k}/rx_assess/rx_maxpeakloc']
-      sd_corrected = hdf_fh[f'{k}/rx_assess/sd_corrected']
-
-      # These are single valued array, ignoring
-      # rx_ampbounds_ll = hdf_fh[f'{k}/rx_assess/ancillary/rx_ampbounds_ll']
-      # rx_ampbounds_ul = hdf_fh[f'{k}/rx_assess/ancillary/rx_ampbounds_ul']
-      # rx_clipamp = hdf_fh[f'{k}/rx_assess/ancillary/rx_clipamp']
-      # rx_pulsethresh = hdf_fh[f'{k}/rx_assess/ancillary/rx_pulsethresh']
-      # rx_ringthresh = hdf_fh[f'{k}/rx_assess/ancillary/rx_ringthresh']
-      # smoothing_width_locs = hdf_fh[f'{k}/rx_assess/ancillary/smoothing_width_locs']
-
-      metadata = {
-        "lat_lowestmode":                 lat_lowestmode,
-        "lon_lowestmode":                 lon_lowestmode,
-        "beam":                           beam,
-        "channel":                        channel,
-        "degrade_flag":                   degrade_flag,
-        "delta_time":                     delta_time,
-        "elev_highestreturn":             elev_highestreturn,
-        "elev_lowestmode":                elev_lowestmode,
-        "elevation_bias_flag":            elevation_bias_flag,
-        "elevation_bin0_error":           elevation_bin0_error,
-        "energy_total":                   energy_total,
-        "landsat_treecover":              landsat_treecover,
-        "modis_nonvegetated":             modis_nonvegetated,
-        "modis_nonvegetated_sd":          modis_nonvegetated_sd,
-        "modis_treecover":                modis_treecover,
-        "modis_treecover_sd":             modis_treecover_sd,
-        "lat_highestreturn":              lat_highestreturn,
-        "latitude_bin0_error":            latitude_bin0_error,
-        "lon_highestreturn":              lon_highestreturn,
-        "longitude_bin0_error":           longitude_bin0_error,
-        "master_frac":                    master_frac,
-        "master_int":                     master_int,
-        "mean_sea_surface":               mean_sea_surface,
-        "num_detectedmodes":              num_detectedmodes,
-        "quality_flag":                   quality_flag,
-        "selected_algorithm":             selected_algorithm,
-        "selected_mode":                  selected_mode,
-        "sensitivity":                    sensitivity,
-        "shot_number":                    shot_number,
-        "solar_azimuth":                  solar_azimuth,
-        "solar_elevation":                solar_elevation,
-        "surface_flag":                   surface_flag,
-        "rx_gamplitude":                  rx_gamplitude,
-        "rx_gamplitude_error":            rx_gamplitude_error,
-        "rx_gbias":                       rx_gbias,
-        "rx_gbias_error":                 rx_gbias_error,
-        "rx_gchisq":                      rx_gchisq,
-        "rx_gflag":                       rx_gflag,
-        "rx_giters":                      rx_giters,
-        "rx_gloc":                        rx_gloc,
-        "rx_gloc_error":                  rx_gloc_error,
-        "rx_gwidth":                      rx_gwidth,
-        "rx_gwidth_error":                rx_gwidth_error,
-        "rx_assess_mean":                 rx_assess_mean,
-        "rx_assess_mean_64kadjusted":     rx_assess_mean_64kadjusted,
-        "rx_assess_ocean_calibration_sho":rx_assess_ocean_calibration_shot_flag,
-        "rx_assess_quality_flag":         rx_assess_quality_flag,
-        "rx_assess_flag":                 rx_assess_flag,
-        "rx_clipbin0":                    rx_clipbin0,
-        "rx_clipbin_count":               rx_clipbin_count,
-        "rx_energy":                      rx_energy,
-        "rx_maxamp":                      rx_maxamp,
-        "rx_maxpeakloc":                  rx_maxpeakloc,
-        "sd_corrected":                   sd_corrected
-      }
-
-      dataframe = pd.DataFrame(metadata)
-
-      for a in range(1, 1 + num_algorithms()):
-          rh = hdf_fh[f'{k}/geolocation/rh_a{a}']
-          qa = hdf_fh[f'{k}/geolocation/quality_flag_a{a}']
-
-          rx_algrunflag = hdf_fh[f'{k}/rx_processing_a{a}/rx_algrunflag']
-          zcross = hdf_fh[f'{k}/rx_processing_a{a}/zcross']
-          toploc = hdf_fh[f'{k}/rx_processing_a{a}/toploc']
-
-          rhq = np.column_stack((rh, qa, rx_algrunflag, zcross, toploc))
-          names = [f'rh{x}_a{a}' for x in range(101)] + [f'quality_flag_a{a}',f'rx_algrunflag_a{a}',f'zcross_a{a}',f'toploc_a{a}']
-          drhq = pd.DataFrame(rhq, columns=names)
-          tmp = pd.concat((dataframe, drhq), axis=1)
-          dataframe = tmp
-          tmp = None
-
-      dataframe.to_csv(csv_fh, float_format='%3.6f', index=False, header=is_first, line_terminator='\n')
+      df.to_csv(csv_file, float_format='%3.6f', index=False, header=is_first, mode='a', line_terminator='\n')
       is_first = False
-      dataframe = None
+      df = None
 
 def main(argv):
   extract_values(argv[1], argv[2])

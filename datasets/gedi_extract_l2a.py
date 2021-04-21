@@ -121,37 +121,31 @@ def extract_values(input_path, output_path):
     with open(output_path, 'w') as csv_fh:
       write_csv(hdf_fh, csv_fh)
 
-# Number of different L2A algorithms.
-# Moved to a function for stubbing out in tests.
-def num_algorithms():
-  return 6
 
-# TODO(simonf): refactor write_csv to methods by h5 group.
-# The idea is to dynamically construct a dataframe by using predefined list of variables.
 def write_csv(hdf_fh, csv_fh):
   """Writes a single CSV file based on the contents of HDF file."""
   is_first = True
   rh_names = [f'rh{d}' for d in range(0, 101)]
   for k in hdf_fh.keys():
-      if not k.startswith('BEAM'):
-          continue
-      print('\t',k)
+    if not k.startswith('BEAM'):
+      continue
+    print('\t',k)
 
-      df = pd.DataFrame()
+    df = pd.DataFrame()
 
-      for v in meta_variables:
-          name = v.split('/')[-1]
-          # print(v, '==>', name)
+    for v in meta_variables:
+      name = v.split('/')[-1]
+      df[name] = hdf_fh[f'{k}/{v}']
 
-          df[name] = hdf_fh[f'{k}/{v}']
+    rh = pd.DataFrame(hdf_fh[f'{k}/rh'], columns=rh_names)
 
-      rh = pd.DataFrame(hdf_fh[f'{k}/rh'], columns=rh_names)
+    df = pd.concat((df, rh), axis=1)
 
-      df = pd.concat((df, rh), axis=1)
-
-      df.to_csv(csv_file, float_format='%3.6f', index=False, header=is_first, mode='a', line_terminator='\n')
-      is_first = False
-      df = None
+    df.to_csv(
+        csv_fh, float_format='%3.6f', index=False, header=is_first,
+        mode='a', line_terminator='\n')
+    is_first = False
+    df = None
 
 def main(argv):
   extract_values(argv[1], argv[2])

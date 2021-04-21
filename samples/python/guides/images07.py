@@ -12,10 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-"""Earth Engine Developer's Guide examples for 'Images - Relational, conditional and Boolean operations' page."""
-
-import ee
-ee.Initialize()
+"""Google Earth Engine Developer's Guide examples for 'Images - Relational, conditional and Boolean operations'."""
 
 # [START earthengine__images07__thresholding]
 # Load a Landsat 8 image.
@@ -27,4 +24,11 @@ ndwi = image.normalizedDifference(['B3', 'B5'])
 
 # Create a binary layer using logical operations.
 bare = ndvi.lt(0.2).And(ndwi.lt(0))
+
+# Define a map centered on San Francisco Bay.
+map_bare = folium.Map(location=[37.7726, -122.3578], zoom_start=12)
+
+# Add the masked image layer to the map and display it.
+map_bare.add_ee_layer(bare.selfMask(), None, 'bare')
+display(map_bare)
 # [END earthengine__images07__thresholding]

@@ -19,10 +19,6 @@
  *   from 'Images - Object-based methods' page
  */
 
-
-
-
-
 // [START earthengine__images18__example_setup]
 // Make an area of interest geometry centered on San Francisco.
 var point = ee.Geometry.Point(-122.1899, 37.5010);
@@ -79,7 +75,9 @@ var pixelArea = ee.Image.pixelArea();
 var objectArea = objectSize.multiply(pixelArea);
 
 // Display object area to the Map.
-Map.addLayer(objectArea, null, 'Object area m^2');
+Map.addLayer(objectArea,
+             {min: 0, max: 30000, palette: ['0000FF', 'FF00FF']},
+             'Object area m^2');
 // [END earthengine__images18__object_area]
 
 // [START earthengine__images18__area_mask]

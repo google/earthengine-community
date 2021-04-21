@@ -126,7 +126,7 @@ def extract_values(input_path, output_path):
 def num_algorithms():
   return 6
 
-#TODO: refactor write_csv to methods by h5 group. 
+# TODO(simonf): refactor write_csv to methods by h5 group.
 # The idea is to dynamically construct a dataframe by using predefined list of variables.
 def write_csv(hdf_fh, csv_fh):
   """Writes a single CSV file based on the contents of HDF file."""

@@ -12,14 +12,17 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-"""Earth Engine Developer's Guide examples from 'Images - Image information' page."""
-
-import ee
-ee.Initialize()
+"""Google Earth Engine Developer's Guide examples for 'Images - Image information'."""
 
 # [START earthengine__images01__image_info]
+import pprint
+
 # Load an image.
 image = ee.Image('LANDSAT/LC08/C01/T1/LC08_044034_20140318')
+
+# All metadata.
+print('All metadata:')
+pprint.pprint(image.getInfo())
 
 # Get information about the bands as a list.
 band_names = image.bandNames()
@@ -46,13 +49,11 @@ print('Metadata properties:',
 cloudiness = image.get('CLOUD_COVER')
 print('CLOUD_COVER:', cloudiness.getInfo())  # ee.Number
 
-# Get the timestamp and convert it to a date.
+# Get the timestamp.
 ee_date = ee.Date(image.get('system:time_start'))
 print('Timestamp:', ee_date.getInfo())  # ee.Date
 
 # Date objects transferred to the client are milliseconds since UNIX epoch;
-# convert to human readable date with the datetime library.
-from datetime import datetime
-py_date = datetime.utcfromtimestamp(ee_date.getInfo()['value']/1000.0)
-print('Date:', py_date)
+# convert to human readable date with ee.Date.format().
+print('Datetime:', ee_date.format().getInfo())  # ISO standard date string
 # [END earthengine__images01__image_info]

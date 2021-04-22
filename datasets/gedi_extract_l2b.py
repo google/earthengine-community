@@ -21,57 +21,41 @@ import pandas as pd
 import os
 
 meta_variables = (
+    'cover',
+    'pai',
+    'fhd_normal',
+    'pgap_theta',
+
+    # 'cover_z',
+    # 'pai_z',
+    # 'pavd_z',
+
     'beam',
-    'degrade_flag',
-    'delta_time',
-    'digital_elevation_model',
-    'digital_elevation_model_srtm',
-    'elev_highestreturn',
-    'elev_lowestmode',
-    'elevation_bias_flag',
-    'energy_total',
-
-    'land_cover_data/landsat_treecover',
-    'land_cover_data/landsat_water_persistence',
-    'land_cover_data/leaf_off_doy',
-    'land_cover_data/leaf_off_flag',
-    'land_cover_data/leaf_on_cycle',
-    'land_cover_data/leaf_on_doy',
-    'land_cover_data/modis_nonvegetated',
-    'land_cover_data/modis_nonvegetated_sd',
-    'land_cover_data/modis_treecover',
-    'land_cover_data/modis_treecover_sd',
-    'land_cover_data/pft_class',
-    'land_cover_data/region_class',
-    'land_cover_data/urban_focal_window_size',
-    'land_cover_data/urban_proportion',
-
-    'lat_highestreturn',
-    'lat_lowestmode',
-    'lon_highestreturn',
-    'lon_lowestmode',
-
-    'num_detectedmodes',
-    'quality_flag',
-
-    'selected_algorithm',
-    'selected_mode',
-    'selected_mode_flag',
-
-    'sensitivity',
     'shot_number',
-    'solar_azimuth',
-    'solar_elevation',
-    'surface_flag'
+    'l2b_quality_flag',
+    'algorithmrun_flag',
+    'selected_rg_algorithm',
+    'selected_l2a_algorithm',
+    'sensitivity',
+    'geolocation/degrade_flag',
+    'geolocation/delta_time',
+    'geolocation/lat_lowestmode',
+    'geolocation/lon_lowestmode',
+    'geolocation/local_beam_azimuth',
+    'geolocation/local_beam_elevation',
+    'geolocation/solar_azimuth',
+    'geolocation/solar_elevation',
 )
+
 
 # pylint:disable=line-too-long
 def extract_values(input_path, output_path):
   """Extracts all rh (relative height) values from all algorithms and some qa flags.
 
   Args:
-     input_path: string, GEDI L2A file path
+     input_path: string, GEDI L2B file path
      output_path: string, csv output file path
+
   """
   basename = os.path.basename(input_path)
   if not basename.startswith('GEDI') or not basename.endswith('.h5'):
@@ -88,7 +72,9 @@ def extract_values(input_path, output_path):
 def write_csv(hdf_fh, csv_file):
     """Writes a single CSV file based on the contents of HDF file."""
     is_first = True
-    rh_names = [f'rh{d}' for d in range(0, 101)]
+    cover_names = [f'cover_z{d}' for d in range(30)]
+    pai_names = [f'pai_z{d}' for d in range(30)]
+    pavd_names = [f'pavd_z{d}' for d in range(30)]
     for k in hdf_fh.keys():
         if not k.startswith('BEAM'):
             continue
@@ -107,9 +93,22 @@ def write_csv(hdf_fh, csv_file):
                 values[values == ds.attrs.get('_FillValue')] = np.nan
             df[name] = values
 
-        rh = pd.DataFrame(hdf_fh[f'{k}/rh'], columns=rh_names)
+        ds = hdf_fh[f'{k}/cover_z']
+        cover_z = pd.DataFrame(ds, columns=cover_names)
+        cover_z.replace(ds.attrs.get('_FillValue'), np.nan, True)
 
-        df = pd.concat((df, rh), axis=1)
+        ds = hdf_fh[f'{k}/pai_z']
+        pai_z = pd.DataFrame(ds, columns=pai_names)
+        pai_z.replace(ds.attrs.get('_FillValue'), np.nan, True)
+
+        ds = hdf_fh[f'{k}/pavd_z']
+        pavd_z = pd.DataFrame(ds, columns=pavd_names)
+        pavd_z.replace(ds.attrs.get('_FillValue'), np.nan, True)
+
+        df = pd.concat((df, cover_z), axis=1)
+        df = pd.concat((df, pai_z), axis=1)
+        df = pd.concat((df, pavd_z), axis=1)
+
         df.fillna('', inplace=True)
 
         df.to_csv(csv_file, float_format='%3.6f', index=False, header=is_first, mode='a', line_terminator='\n')

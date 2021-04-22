@@ -83,8 +83,6 @@ def extract_values(input_path, output_path):
       write_csv(hdf_fh, csv_fh)
 
 
-# TODO(simonf): refactor write_csv to methods by h5 group.
-# The idea is to dynamically construct a dataframe by using predefined list of variables.
 def write_csv(hdf_fh, csv_file):
     """Writes a single CSV file based on the contents of HDF file."""
     is_first = True

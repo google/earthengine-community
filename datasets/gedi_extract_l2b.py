@@ -25,11 +25,6 @@ meta_variables = (
     'pai',
     'fhd_normal',
     'pgap_theta',
-
-    # 'cover_z',
-    # 'pai_z',
-    # 'pavd_z',
-
     'beam',
     'shot_number',
     'l2b_quality_flag',
@@ -50,12 +45,11 @@ meta_variables = (
 
 # pylint:disable=line-too-long
 def extract_values(input_path, output_path):
-  """Extracts all rh (relative height) values from all algorithms and some qa flags.
+  """Extracts all relative height values from all algorithms and some qa flags.
 
   Args:
      input_path: string, GEDI L2B file path
      output_path: string, csv output file path
-
   """
   basename = os.path.basename(input_path)
   if not basename.startswith('GEDI') or not basename.endswith('.h5'):
@@ -67,55 +61,61 @@ def extract_values(input_path, output_path):
       write_csv(hdf_fh, csv_fh)
 
 
-# TODO(simonf): refactor write_csv to methods by h5 group.
-# The idea is to dynamically construct a dataframe by using predefined list of variables.
 def write_csv(hdf_fh, csv_file):
-    """Writes a single CSV file based on the contents of HDF file."""
-    is_first = True
-    cover_names = [f'cover_z{d}' for d in range(30)]
-    pai_names = [f'pai_z{d}' for d in range(30)]
-    pavd_names = [f'pavd_z{d}' for d in range(30)]
-    for k in hdf_fh.keys():
-        if not k.startswith('BEAM'):
-            continue
-        print('\t', k)
+  """Writes a single CSV file based on the contents of HDF file."""
+  is_first = True
+  cover_names = [f'cover_z{d}' for d in range(30)]
+  pai_names = [f'pai_z{d}' for d in range(30)]
+  pavd_names = [f'pavd_z{d}' for d in range(30)]
+  for k in hdf_fh.keys():
+    if not k.startswith('BEAM'):
+      continue
+    print('\t', k)
 
-        df = pd.DataFrame()
+    df = pd.DataFrame()
 
-        for v in meta_variables:
-            if v.startswith('#'):
-                continue
+    for v in meta_variables:
+      if v.startswith('#'):
+        continue
 
-            name = v.split('/')[-1]
-            ds = hdf_fh[f'{k}/{v}']
-            values = ds[:]
-            if issubclass(values.dtype.type, np.floating):
-                values[values == ds.attrs.get('_FillValue')] = np.nan
-            df[name] = values
+      name = v.split('/')[-1]
+      ds = hdf_fh[f'{k}/{v}']
+      values = ds[:]
+      if issubclass(values.dtype.type, np.floating):
+        values[values == ds.attrs.get('_FillValue')] = np.nan
+      df[name] = values
 
-        ds = hdf_fh[f'{k}/cover_z']
-        cover_z = pd.DataFrame(ds, columns=cover_names)
-        cover_z.replace(ds.attrs.get('_FillValue'), np.nan, True)
+    ds = hdf_fh[f'{k}/cover_z']
+    cover_z = pd.DataFrame(ds, columns=cover_names)
+    cover_z.replace(ds.attrs.get('_FillValue'), np.nan, True)
 
-        ds = hdf_fh[f'{k}/pai_z']
-        pai_z = pd.DataFrame(ds, columns=pai_names)
-        pai_z.replace(ds.attrs.get('_FillValue'), np.nan, True)
+    ds = hdf_fh[f'{k}/pai_z']
+    pai_z = pd.DataFrame(ds, columns=pai_names)
+    pai_z.replace(ds.attrs.get('_FillValue'), np.nan, True)
 
-        ds = hdf_fh[f'{k}/pavd_z']
-        pavd_z = pd.DataFrame(ds, columns=pavd_names)
-        pavd_z.replace(ds.attrs.get('_FillValue'), np.nan, True)
+    ds = hdf_fh[f'{k}/pavd_z']
+    pavd_z = pd.DataFrame(ds, columns=pavd_names)
+    pavd_z.replace(ds.attrs.get('_FillValue'), np.nan, True)
 
-        df = pd.concat((df, cover_z), axis=1)
-        df = pd.concat((df, pai_z), axis=1)
-        df = pd.concat((df, pavd_z), axis=1)
+    df = pd.concat((df, cover_z), axis=1)
+    df = pd.concat((df, pai_z), axis=1)
+    df = pd.concat((df, pavd_z), axis=1)
 
-        df.fillna('', inplace=True)
+    df.fillna('', inplace=True)
 
-        df.to_csv(csv_file, float_format='%3.6f', index=False, header=is_first, mode='a', line_terminator='\n')
-        is_first = False
+    df.to_csv(
+        csv_file,
+        float_format='%3.6f',
+        index=False,
+        header=is_first,
+        mode='a',
+        line_terminator='\n')
+    is_first = False
+
 
 def main(argv):
   extract_values(argv[1], argv[2])
+
 
 if __name__ == '__main__':
   app.run(main)

@@ -49,6 +49,12 @@ print('Metadata properties:',
 cloudiness = image.get('CLOUD_COVER')
 print('CLOUD_COVER:', cloudiness.getInfo())  # ee.Number
 
+# Get version number (ingestion timestamp as microseconds since Unix epoch).
+version = image.get('system:version')
+print('Version:', version.getInfo())  # ee.Number
+print('Version (as ingestion date):',
+      ee.Date(ee.Number(version).divide(1000)).format().getInfo())  # ee.Date
+
 # Get the timestamp.
 ee_date = ee.Date(image.get('system:time_start'))
 print('Timestamp:', ee_date.getInfo())  # ee.Date

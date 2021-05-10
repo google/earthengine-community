@@ -50,6 +50,12 @@ print('Metadata properties:', properties);  // ee.List of metadata properties
 var cloudiness = image.get('CLOUD_COVER');
 print('CLOUD_COVER:', cloudiness);  // ee.Number
 
+// Get version number (ingestion timestamp as microseconds since Unix epoch).
+var version = image.get('system:version');
+print('Version:', version);  // ee.Number
+print('Version (as ingestion date):',
+      ee.Date(ee.Number(version).divide(1000)));  // ee.Date
+
 // Get the timestamp and convert it to a date.
 var date = ee.Date(image.get('system:time_start'));
 print('Timestamp:', date);  // ee.Date

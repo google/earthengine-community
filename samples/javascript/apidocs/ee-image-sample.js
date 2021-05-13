@@ -54,7 +54,7 @@ var samples = image.sample({
 var styled = samples
   .map(function (feature) {
     return feature.set('style', {
-      pointSize: ee.Number.unitScale(feature.get('elevation'), VIS_MIN, VIS_MAX)
+      pointSize: feature.getNumber('elevation').unitScale(VIS_MIN, VIS_MAX)
           .multiply(15),
     });
   })

@@ -10,12 +10,13 @@ from datetime import datetime
 import numpy as np
 from dateutil.parser import parse
 
-from pymodules.swathutils import (
+from swathutils import (
     write_tif,
     gdal_translate,
     create_dataset,
     swath_resample,
-    flag_band, get_keys
+    flags_band, 
+    get_keys
 )
 
 
@@ -40,8 +41,8 @@ def swath_pyresample_gdaltrans(file: str, var: str, subarea: dict, epsilon: floa
 
     Returns
     -------
-    task id: str
-    EE Task ID of the ingestion file
+        dict:
+            global and var attributes
     """
 
     # -----------
@@ -54,10 +55,10 @@ def swath_pyresample_gdaltrans(file: str, var: str, subarea: dict, epsilon: floa
     # resample swaths
     # ---------------
     if var in ('l2_flags', 'QA_flag'):
-        meta = flag_band(dataset=resample_dst,
-                         key=var,
-                         src_tif=src_tif,
-                         dst_tif=dst_tif)
+        meta = flags_band(dataset=resample_dst,
+                          key=var,
+                          src_tif=src_tif,
+                          dst_tif=dst_tif)
 
     else:
         attrs = resample_dst.pop(var)

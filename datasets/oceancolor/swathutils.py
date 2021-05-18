@@ -514,7 +514,7 @@ def split_flags(data: np.ndarray, flag_names: list):
     sds, bits = [], []
     append = sds.append
     bit_apn = bits.append
-    print(data.dtype)
+    # print(data.dtype)
 
     # -- dis --
     for i, flag in enumerate(flag_names):
@@ -526,7 +526,7 @@ def split_flags(data: np.ndarray, flag_names: list):
     return np.ma.dstack(sds), bits
 
 
-def flag_band(dataset: dict, key: str, src_tif: str, dst_tif: str):
+def flags_band(dataset: dict, key: str, src_tif: str, dst_tif: str):
     """Get the file geospatial boundaries
 
     Parameters

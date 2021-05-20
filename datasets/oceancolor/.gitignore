@@ -10,6 +10,8 @@ __pycache__/
 
 
 # ingone data files
+requirements.txt
+__init__.py
 eeutil.py
 filesanity.py
 getfile.py

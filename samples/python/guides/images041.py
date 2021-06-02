@@ -12,10 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-"""Earth Engine Developer's Guide examples for 'Image information' page."""
-
-import ee
-ee.Initialize()
+"""Google Earth Engine Developer's Guide examples for 'Images - Visualization'."""
 
 # [START earthengine__images041__sld_stretch]
 # Load a Landsat 8 raw image.
@@ -42,7 +39,15 @@ template_sld = """
 equalize_sld = template_sld.replace('_enhance_', 'Histogram')
 normalize_sld = template_sld.replace('_enhance_', 'Normalize')
 
-# Apply the SLD styles to the image.
-equalized = image.sldStyle(equalize_sld)
-normalized = image.sldStyle(normalize_sld)
+# Define a map centered on San Francisco Bay.
+map_sld_continuous = folium.Map(location=[37.5010, -122.1899], zoom_start=10)
+
+# Add the image layers to the map and display it.
+map_sld_continuous.add_ee_layer(
+    image, {'bands': ['B5', 'B4', 'B3'], 'min': 0, 'max': 15000}, 'Linear')
+map_sld_continuous.add_ee_layer(
+    image.sldStyle(equalize_sld), None, 'Equalized')
+map_sld_continuous.add_ee_layer(
+    image.sldStyle(normalize_sld), None, 'Normalized')
+display(map_sld_continuous.add_child(folium.LayerControl()))
 # [END earthengine__images041__sld_stretch]

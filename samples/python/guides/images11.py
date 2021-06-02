@@ -12,10 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-"""Earth Engine Developer's Guide examples from 'Images - Morphological operations' page."""
-
-import ee
-ee.Initialize()
+"""Google Earth Engine Developer's Guide examples for 'Images - Morphological operations'."""
 
 # [START earthengine__images11__morphology]
 # Load a Landsat 8 image, select the NIR band, threshold, display.
@@ -29,4 +26,12 @@ kernel = ee.Kernel.circle(radius=1)
 opened = image.focal_min(
     kernel=kernel, iterations=2).focal_max(
         kernel=kernel, iterations=2)
+
+# Define a map centered on Redwood City, California.
+map_opened = folium.Map(location=[37.5010, -122.1899], zoom_start=13)
+
+# Add the image layers to the map and display it.
+map_opened.add_ee_layer(image, None, 'NIR threshold')
+map_opened.add_ee_layer(opened, None, 'opened')
+display(map_opened.add_child(folium.LayerControl()))
 # [END earthengine__images11__morphology]

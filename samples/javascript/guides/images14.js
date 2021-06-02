@@ -47,5 +47,5 @@ var dog = fat.add(skinny);
 // Compute the zero crossings of the second derivative, display.
 var zeroXings = image.convolve(dog).zeroCrossing();
 Map.setCenter(-122.054, 37.7295, 10);
-Map.addLayer(zeroXings.updateMask(zeroXings), {palette: 'FF0000'}, 'zero crossings');
+Map.addLayer(zeroXings.selfMask(), {palette: 'FF0000'}, 'zero crossings');
 // [END earthengine__images14__zero_crossings]

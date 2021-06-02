@@ -439,7 +439,7 @@ geometry is changed.
 
 First, we will bundle all of the classification code into a single function
 called `classify` and make some modifications to the `Map.addLayer` calls to
-accomodate for the function running multiple times:
+accommodate for the function running multiple times:
 
 ```javascript
 function classify() {

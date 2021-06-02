@@ -1,4 +1,4 @@
-Thank you for opening a Pull Request! 
+Thank you for opening a Pull Request!
 
 Please provide answers to the following questions, delete examples.
 
@@ -20,10 +20,7 @@ Please provide answers to the following questions, delete examples.
 
 (Example) Closes #123
 (Example) Addresses #123
-(Example) No
 
 ## Does this PR concern a particular Earth Engine team member (who)?
 
-(Example) No
-(Example) Simon 
-(Example) Gino
+(Example) @gino-m

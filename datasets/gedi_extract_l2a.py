@@ -108,7 +108,6 @@ def write_csv(hdf_fh, csv_file):
         rh = pd.DataFrame(hdf_fh[f'{k}/rh'], columns=rh_names)
 
         df = pd.concat((df, rh), axis=1)
-        df.fillna('', inplace=True)
 
         df.to_csv(csv_file, float_format='%3.6f', index=False, header=is_first, mode='a', line_terminator='\n')
         is_first = False

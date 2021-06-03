@@ -101,8 +101,6 @@ def write_csv(hdf_fh, csv_file):
     df = pd.concat((df, pai_z), axis=1)
     df = pd.concat((df, pavd_z), axis=1)
 
-    df.fillna('', inplace=True)
-
     df.to_csv(
         csv_file,
         float_format='%3.6f',

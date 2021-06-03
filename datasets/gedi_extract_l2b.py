@@ -101,6 +101,11 @@ def write_csv(hdf_fh, csv_file):
     df = pd.concat((df, pai_z), axis=1)
     df = pd.concat((df, pavd_z), axis=1)
 
+    # Filter our rows with nan values for lat_lowestmode or lon_lowestmode.
+    # Such rows are not ingestable into EE.
+    df = df[df.lat_lowestmode.notnull()]
+    df = df[df.lon_lowestmode.notnull()]
+
     df.to_csv(
         csv_file,
         float_format='%3.6f',

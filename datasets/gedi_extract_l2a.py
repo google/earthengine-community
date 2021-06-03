@@ -84,33 +84,37 @@ def extract_values(input_path, output_path):
 
 
 def write_csv(hdf_fh, csv_file):
-    """Writes a single CSV file based on the contents of HDF file."""
-    is_first = True
-    rh_names = [f'rh{d}' for d in range(0, 101)]
-    for k in hdf_fh.keys():
-        if not k.startswith('BEAM'):
-            continue
-        print('\t', k)
+  """Writes a single CSV file based on the contents of HDF file."""
+  is_first = True
+  rh_names = [f'rh{d}' for d in range(0, 101)]
+  for k in hdf_fh.keys():
+    if not k.startswith('BEAM'):
+      continue
+    print('\t', k)
 
-        df = pd.DataFrame()
+    df = pd.DataFrame()
 
-        for v in meta_variables:
-            if v.startswith('#'):
-                continue
+    for v in meta_variables:
+      if v.startswith('#'):
+        continue
 
-            name = v.split('/')[-1]
-            ds = hdf_fh[f'{k}/{v}']
-            values = ds[:]
-            if issubclass(values.dtype.type, np.floating):
-                values[values == ds.attrs.get('_FillValue')] = np.nan
-            df[name] = values
+      name = v.split('/')[-1]
+      ds = hdf_fh[f'{k}/{v}']
+      values = ds[:]
+      if issubclass(values.dtype.type, np.floating):
+        values[values == ds.attrs.get('_FillValue')] = np.nan
+      df[name] = values
 
-        rh = pd.DataFrame(hdf_fh[f'{k}/rh'], columns=rh_names)
+    rh = pd.DataFrame(hdf_fh[f'{k}/rh'], columns=rh_names)
 
-        df = pd.concat((df, rh), axis=1)
+    df = pd.concat((df, rh), axis=1)
+    # Filter our rows with nan values for lat_lowestmode or lon_lowestmode.
+    # Such rows are not ingestable into EE.
+    df = df[df.lat_lowestmode.notnull()]
+    df = df[df.lon_lowestmode.notnull()]
 
-        df.to_csv(csv_file, float_format='%3.6f', index=False, header=is_first, mode='a', line_terminator='\n')
-        is_first = False
+    df.to_csv(csv_file, float_format='%3.6f', index=False, header=is_first, mode='a', line_terminator='\n')
+    is_first = False
 
 def main(argv):
   extract_values(argv[1], argv[2])

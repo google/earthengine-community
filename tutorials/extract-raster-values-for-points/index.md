@@ -125,7 +125,7 @@ function zonalStats(ic, fc, params) {
     imgProps: null,
     imgPropsRename: null,
     datetimeName: 'datetime',
-    datetimeFormat: 'YYYY-MM-dd HH:MM:ss'
+    datetimeFormat: 'YYYY-MM-dd HH:mm:ss'
   };
 
   // Replace initialized params with provided params.

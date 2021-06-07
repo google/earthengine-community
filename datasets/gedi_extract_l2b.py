@@ -64,6 +64,7 @@ def extract_values(input_path, output_path):
 def write_csv(hdf_fh, csv_file):
   """Writes a single CSV file based on the contents of HDF file."""
   is_first = True
+  # Iterating over metrics using a height profile defined for 30 slices.
   cover_names = [f'cover_z{d}' for d in range(30)]
   pai_names = [f'pai_z{d}' for d in range(30)]
   pavd_names = [f'pavd_z{d}' for d in range(30)]

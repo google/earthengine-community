@@ -25,8 +25,8 @@ developer community.
 * [Request a tutorial][request]
 * [Submit a tutorial][write]
 
-Files added to [`tutorials/`][folder] will appear at
-[developers.google.com/earth-engine/tutorials][tutorials].
+Files added to [`tutorials/`][folder] will appear under the
+[community tutorials section][tutorials] of the Earth Engine Developer's Guide.
 
 ## Contributing
 

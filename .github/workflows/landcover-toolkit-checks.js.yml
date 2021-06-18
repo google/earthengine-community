@@ -57,10 +57,10 @@ jobs:
       - uses: actions/checkout@v2
       - name: Use Node.js
         uses: actions/setup-node@v2
+      - run: echo "${SERVICE_ACCOUNT_CREDENTIALS}" > test/.private-key.json
+        shell: bash
         env:
           SERVICE_ACCOUNT_CREDENTIALS: ${{ secrets.SERVICE_ACCOUNT_CREDENTIALS }}
-      - shell: bash
-      - run: echo "${SERVICE_ACCOUNT_CREDENTIALS}" > test/.private-key.json
       - run: wc -c test/.private-key.json
       - run: npm install
       - run: npm run test:int

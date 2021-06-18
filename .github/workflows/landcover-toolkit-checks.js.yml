@@ -58,8 +58,10 @@ jobs:
       - name: Use Node.js
         uses: actions/setup-node@v2
       - run: |
+          echo key: "${SERVICE_ACCOUNT_CREDENTIALS}"
           echo "${SERVICE_ACCOUNT_CREDENTIALS}" > test/.private-key.json
           wc -c test/.private-key.json
+          cat test/.private-key.json
         shell: bash
         env:
           SERVICE_ACCOUNT_CREDENTIALS: ${{ secrets.SERVICE_ACCOUNT_CREDENTIALS }}

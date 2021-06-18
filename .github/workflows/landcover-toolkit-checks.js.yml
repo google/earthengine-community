@@ -25,7 +25,8 @@ on:
   push:
     branches: [master]
     paths: ["toolkits/landcover/**"]
-  pull_request:
+  # Required for PRs for forks to use secret keys.
+  pull_request_target:
     branches: [master]
     paths: ["toolkits/landcover/**"]
 

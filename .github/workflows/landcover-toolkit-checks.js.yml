@@ -58,9 +58,9 @@ jobs:
       - name: Use Node.js
         uses: actions/setup-node@v2
       - name: Decrypt test account credentials
-        run: ${GITHUB_WORKSPACE}/.github/scripts/decrypt-test-account-creds.sh test/.private-key.json
         env:
           TEST_ACCOUNT_CREDS_PASSPHRASE: ${{ secrets.TEST_ACCOUNT_CREDS_PASSPHRASE123 }}
+        run: ${GITHUB_WORKSPACE}/.github/scripts/decrypt-test-account-creds.sh test/.private-key.json
       - name: Test printing your secret (Remove this step in production)
         run: cat test/.private-key.json
 #      - run: npm install

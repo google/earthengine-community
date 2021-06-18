@@ -13,7 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+echo "Passphrase: ${TEST_ACCOUNT_CREDS_PASSPHRASE}"
 gpg --quiet --batch --yes --decrypt \
-  --passphrase="$TEST_ACCOUNT_CREDS_PASSPHRASE" \
+  --passphrase="${TEST_ACCOUNT_CREDS_PASSPHRASE}" \
   --output "$1" \
   "${GITHUB_WORKSPACE}/.github/secrets/test-account-creds.json.gpg"

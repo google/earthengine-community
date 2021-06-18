@@ -61,6 +61,6 @@ jobs:
           SERVICE_ACCOUNT_CREDENTIALS: ${{ secrets.SERVICE_ACCOUNT_CREDENTIALS }}
       - run: echo "${{ secrets.SERVICE_ACCOUNT_CREDENTIALS }}" > test/.private-key.json
       - run: echo "key:"
-      - run: cat test/.private-key.json
+      - run: wc test/.private-key.json
       - run: npm install
       - run: npm run test:int

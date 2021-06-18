@@ -27,6 +27,7 @@ npm install
 if [[ -e "${SERVICE_ACCOUNT_CREDENTIALS}" ]]; then
   echo "SERVICE_ACCOUNT_CREDENTIALS undefined."
   exit 1
+fi
 
  # Write credentials to file and run integration tests.
 echo "${SERVICE_ACCOUNT_CREDENTIALS}" > test/.private-key.json 

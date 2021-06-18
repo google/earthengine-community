@@ -16,4 +16,4 @@
 gpg --quiet --batch --yes --decrypt \
   --passphrase="$TEST_ACCOUNT_CREDS_PASSPHRASE" \
   --output "$1" \
-  .github/secrets/test-account-creds.json.gpg
+  "${GITHUB_WORKSPACE}/.github/secrets/test-account-creds.json.gpg"

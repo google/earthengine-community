@@ -24,7 +24,7 @@ npm install
 # npm run test:unit
 
 # Bail out if service key not available.
-if [[ -e "${SERVICE_ACCOUNT_CREDENTIALS}" ]]; then
+if [[ -z "${SERVICE_ACCOUNT_CREDENTIALS}" ]]; then
   echo "SERVICE_ACCOUNT_CREDENTIALS undefined."
   exit 1
 fi

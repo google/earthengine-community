@@ -16,13 +16,6 @@
 # Exit on error.
 set -e
 
-# Install dependencies.
-npm install
-
-# Run lint and unit tests.
-# npm run lint
-# npm run test:unit
-
 # Bail out if service key not available.
 if [[ -z "${SERVICE_ACCOUNT_CREDENTIALS}" ]]; then
   echo "SERVICE_ACCOUNT_CREDENTIALS undefined."
@@ -31,4 +24,5 @@ fi
 
  # Write credentials to file and run integration tests.
 echo "${SERVICE_ACCOUNT_CREDENTIALS}" > test/.private-key.json 
+npm install
 npm run test:int

@@ -57,13 +57,11 @@ jobs:
       - uses: actions/checkout@v2
       - name: Use Node.js
         uses: actions/setup-node@v2
-      - run: |
-          echo key: "${SERVICE_ACCOUNT_CREDENTIALS}"
-          echo "${SERVICE_ACCOUNT_CREDENTIALS}" > test/.private-key.json
-          wc -c test/.private-key.json
-          cat test/.private-key.json
-        shell: bash
+      - name: Decrypt test account credentials
+        run: ../.github/scripts/decrypt-test-account-creds.sh toolkits/landcover/test/.private-key.json
         env:
-          SERVICE_ACCOUNT_CREDENTIALS: ${{ secrets.SERVICE_ACCOUNT_CREDENTIALS }}
+          TEST_ACCOUNT_CREDS_PASSPHRASE: ${{ secrets.TEST_ACCOUNT_CREDS_PASSPHRASE }}
+      - name: Test printing your secret (Remove this step in production)
+        run: cat toolkits/landcover/test/.private-key.json
 #      - run: npm install
 #      - run: npm run test:int

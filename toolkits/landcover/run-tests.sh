@@ -16,29 +16,18 @@
 # Exit on error.
 set -e
 
-KEY_FILE_ENC="test/.private-key.json.enc"
-KEY_FILE="test/.private-key.json"
-KEY="${encrypted_44af26ab0da9_key}"
-IV="${encrypted_44af26ab0da9_iv}"
-
-# For PRs, skip tests if no changes.
-if [[ "${TRAVIS_EVENT_TYPE}" == "pull_request" ]]; then
-  bash `git rev-parse --show-toplevel`/.travis/require-changes.sh . || exit 0
-fi
-
-cd "${DIR}"
-
 # Install dependencies.
 npm install
 
 # Run lint and unit tests.
-npm run lint
-npm run test:unit
+# npm run lint
+# npm run test:unit
 
-# Run integration tests if private keys set in environment.
-if [[ -n "${KEY}" ]] && [[ -n "${IV}" ]]; then
-  openssl aes-256-cbc -K "${KEY}" -iv "${IV}" -in "${KEY_FILE_ENC}" -out "${KEY_FILE}" -d
-  npm run test:int
-else
-  echo "No keys; skipping integration tests."
-fi
+# Bail out if service key not available.
+if [[ -e "${SERVICE_ACCOUNT_CREDENTIALS}" ]]; then
+  echo "SERVICE_ACCOUNT_CREDENTIALS undefined."
+  exit 1
+
+ # Write credentials to file and run integration tests.
+echo "${SERVICE_ACCOUNT_CREDENTIALS}" > test/.private-key.json 
+npm run test:int

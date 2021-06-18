@@ -30,6 +30,20 @@ on:
     paths: ["toolkits/landcover/**"]
 
 jobs:
+  unit-tests:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Use Node.js
+        uses: actions/setup-node@v2
+      - run: npm run test:unit
+  lint-checks:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Use Node.js
+        uses: actions/setup-node@v2
+      - run: npm run lint
   integration-tests:
     runs-on: ubuntu-latest
     # PRs must be approved by at least one member of
@@ -39,10 +53,8 @@ jobs:
       name: testing
     steps:
       - uses: actions/checkout@v2
-      - name: Use Node.js 16.x
+      - name: Use Node.js
         uses: actions/setup-node@v2
-        with:
-          node-version: 16.x
         env:
           SERVICE_ACCOUNT_CREDENTIALS: ${{ secrets.SERVICE_ACCOUNT_CREDENTIALS }}
       - run: bash run-tests.sh

@@ -32,16 +32,16 @@ def timestamp_ms_for_datetime(dt):
   return time.mktime(dt.timetuple()) * 1000
 
 
-def parse_date_from_gedi_filename(vector_asset_id):
+def parse_date_from_gedi_filename(table_asset_id):
   return pytz.utc.localize(
       datetime.datetime.strptime(
-          os.path.basename(vector_asset_id).split('_')[2], '%Y%j%H%M%S'))
+          os.path.basename(table_asset_id).split('_')[2], '%Y%j%H%M%S'))
 
 
 def rasterize_gedi_by_utm_zone(
-    vector_asset_ids, grid_cell_id, grid_cell_feature, raster_collection):
+    table_asset_ids, grid_cell_id, grid_cell_feature, raster_collection):
   """Starts an Earth Engine task generating a raster asset covering a month."""
-  datetimes = [parse_date_from_gedi_filename(x) for x in vector_asset_ids]
+  datetimes = [parse_date_from_gedi_filename(x) for x in table_asset_ids]
   if len(set(x.month for x in datetimes)) > 1:
     raise ValueError('Found more than one month in filenames')
   month = datetimes[0].month
@@ -75,8 +75,8 @@ def rasterize_gedi_by_utm_zone(
   ]
 
   shots = []
-  for vector_asset_id in vector_asset_ids:
-    fshots = ee.FeatureCollection(vector_asset_id).filterMetadata(
+  for table_asset_id in table_asset_ids:
+    fshots = ee.FeatureCollection(table_asset_id).filterMetadata(
         'quality_flag', 'equals', 1)
     shots.append(fshots)
 

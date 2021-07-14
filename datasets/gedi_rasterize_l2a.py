@@ -39,7 +39,7 @@ def parse_date_from_gedi_filename(table_asset_id):
 
 
 def rasterize_gedi_by_utm_zone(
-    table_asset_ids, grid_cell_id, grid_cell_feature, raster_collection):
+    table_asset_ids, raster_asset_id, grid_cell_feature):
   """Starts an Earth Engine task generating a raster asset covering a month."""
   datetimes = [parse_date_from_gedi_filename(x) for x in table_asset_ids]
   if len(set(x.month for x in datetimes)) > 1:
@@ -80,9 +80,9 @@ def rasterize_gedi_by_utm_zone(
         'quality_flag', 'equals', 1)
     shots.append(fshots)
 
-  shots = ee.FeatureCollection(shots).flatten()
+  box = grid_cell_feature.geometry().buffer(2500, 25).bounds()
+  shots = ee.FeatureCollection(shots).flatten().filterBounds(box)
 
-  utm_zone_id = grid_cell_feature.get('grid_name').getInfo()
   crs = grid_cell_feature.get('crs').getInfo()
 
   month_start = datetime.datetime(year, month, 1)
@@ -102,13 +102,10 @@ def rasterize_gedi_by_utm_zone(
           ee.Reducer.first().forEach(props)).reproject(
               crs, None, 25).set(image_properties))
 
-  task_name = f'L2A_Grid{grid_cell_id}_{utm_zone_id}_{year}_{month:02d}'
-
-  box = grid_cell_feature.geometry().buffer(2500, 25).bounds()
   task = ee.batch.Export.image.toAsset(
       image=image.clip(box),
-      description=task_name,
-      assetId=f'{raster_collection}/{task_name}',
+      description=os.path.basename(raster_asset_id),
+      assetId=raster_asset_id,
       region=box,
       pyramidingPolicy={'.default': 'sample'},
       scale=25,
@@ -133,8 +130,9 @@ def main(argv):
                 'grid_id', 'equals', grid_cell_id)).first()
     with open(argv[1]) as fh:
       rasterize_gedi_by_utm_zone(
-          [x.strip() for x in fh], '%03d' % grid_cell_id, grid_cell_feature,
-          raster_collection)
+          [x.strip() for x in fh],
+          raster_collection + '/' + '%03d' % grid_cell_id,
+          grid_cell_feature)
 
 
 if __name__ == '__main__':

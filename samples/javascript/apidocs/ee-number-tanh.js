@@ -14,14 +14,17 @@
  * limitations under the License.
  */
 
-// [START earthengine__apidocs__ee_number_sin]
+// [START earthengine__apidocs__ee_number_tanh]
 // Input angle in radians.
-print('Sine of 0', ee.Number(0).sin());  // 0
-print('Sine of π/2', ee.Number(Math.PI/2).sin());  // 1
-print('Sine of 3π/2', ee.Number(3*Math.PI/2).sin());  // -1
+print('Hyperbolic tangent of -5', ee.Number(-5).tanh());  // -0.999909204
+print('Hyperbolic tangent of -1', ee.Number(-1).tanh());  // -0.761594155
+print('Hyperbolic tangent of 0', ee.Number(0).tanh());  // 0
+print('Hyperbolic tangent of 1', ee.Number(1).tanh());  // 0.761594155
+print('Hyperbolic tangent of 5', ee.Number(5).tanh());  // 0.999909204
 
 // Convert degrees to radians.
 var degrees = 45;
 var radians = degrees * (Math.PI/180);
-print('Sine of 45 degrees', ee.Number(radians).sin());  // 0.707106781
-// [END earthengine__apidocs__ee_number_sin]
+print('Hyperbolic tangent of 45 degrees',
+      ee.Number(radians).tanh());  // 0.655794202
+// [END earthengine__apidocs__ee_number_tanh]

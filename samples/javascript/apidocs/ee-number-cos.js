@@ -14,10 +14,14 @@
  * limitations under the License.
  */
 
-// [START earthengine__apidocs__ee_number_atan]
-print('Arctangent of -1e13', ee.Number(-1e13).atan());  // -1.570796326 (-π/2)
-print('Arctangent of -1', ee.Number(-1).atan());  // -0.785398163
-print('Arctangent of 0', ee.Number(0).atan());  // 0
-print('Arctangent of 1', ee.Number(1).atan());  // 0.785398163
-print('Arctangent of 1e13', ee.Number(1e13).atan());  // 1.570796326 (π/2)
-// [END earthengine__apidocs__ee_number_atan]
+// [START earthengine__apidocs__ee_number_cos]
+// Input angle in radians.
+print('Cosine of 0', ee.Number(0).cos());  // 1
+print('Cosine of π/2', ee.Number(Math.PI/2).cos());  // 0 (nearly)
+print('Cosine of π', ee.Number(Math.PI).cos());  // -1
+
+// Convert degrees to radians.
+var degrees = 45;
+var radians = degrees * (Math.PI/180);
+print('Cosine of 45 degrees', ee.Number(radians).cos());  // 0.707106781
+// [END earthengine__apidocs__ee_number_cos]

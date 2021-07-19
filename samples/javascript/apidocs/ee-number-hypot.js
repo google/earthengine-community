@@ -14,10 +14,11 @@
  * limitations under the License.
  */
 
-// [START earthengine__apidocs__ee_number_atan]
-print('Arctangent of -1e13', ee.Number(-1e13).atan());  // -1.570796326 (-π/2)
-print('Arctangent of -1', ee.Number(-1).atan());  // -0.785398163
-print('Arctangent of 0', ee.Number(0).atan());  // 0
-print('Arctangent of 1', ee.Number(1).atan());  // 0.785398163
-print('Arctangent of 1e13', ee.Number(1e13).atan());  // 1.570796326 (π/2)
-// [END earthengine__apidocs__ee_number_atan]
+// [START earthengine__apidocs__ee_number_hypot]
+// Left input is x and right input is y, representing point (x,y).
+print('Length from origin to point (0,0)', ee.Number(0).hypot(0));  // 0
+print('Length from origin to point (3,0)', ee.Number(3).hypot(0));  // 3
+print('Length from origin to point (3,4)', ee.Number(3).hypot(4));  // 5
+print('Length from origin to point (-3,4)', ee.Number(-3).hypot(4));  // 5
+print('Length from origin to point (-3,-4)', ee.Number(-3).hypot(-4));  // 5
+// [END earthengine__apidocs__ee_number_hypot]

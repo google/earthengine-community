@@ -14,14 +14,17 @@
  * limitations under the License.
  */
 
-// [START earthengine__apidocs__ee_number_sin]
+// [START earthengine__apidocs__ee_number_sinh]
 // Input angle in radians.
-print('Sine of 0', ee.Number(0).sin());  // 0
-print('Sine of π/2', ee.Number(Math.PI/2).sin());  // 1
-print('Sine of 3π/2', ee.Number(3*Math.PI/2).sin());  // -1
+print('Hyperbolic sine of -5', ee.Number(-5).sinh());  // -74.203210577
+print('Hyperbolic sine of -1', ee.Number(-1).sinh());  // -1.175201193
+print('Hyperbolic sine of 0', ee.Number(0).sinh());  // 0
+print('Hyperbolic sine of 1', ee.Number(1).sinh());  // 1.175201193
+print('Hyperbolic sine of 5', ee.Number(5).sinh());  // 74.203210577
 
 // Convert degrees to radians.
 var degrees = 45;
 var radians = degrees * (Math.PI/180);
-print('Sine of 45 degrees', ee.Number(radians).sin());  // 0.707106781
-// [END earthengine__apidocs__ee_number_sin]
+print('Hyperbolic sine of 45 degrees',
+      ee.Number(radians).sinh());  // 0.868670961
+// [END earthengine__apidocs__ee_number_sinh]

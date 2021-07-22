@@ -55,7 +55,7 @@ Export.image.toDrive({
 Export.image.toCloudStorage({
   image: landsat,
   description: 'imageToCloudExample',
-  bucket: 'ee-docs-demos',
+  bucket: 'your-bucket-name',
   fileNamePrefix: 'exampleExport',
   scale: 30,
   region: geometry
@@ -106,7 +106,7 @@ Export.table.toDrive({
 Export.table.toCloudStorage({
   collection: features,
   description:'vectorsToCloudStorageExample',
-  bucket: 'ee-docs-demos',
+  bucket: 'your-bucket-name',
   fileNamePrefix: 'exampleTableExport',
   fileFormat: 'KML'
 });
@@ -184,7 +184,7 @@ Export.map.toCloudStorage({
   // of the region.
   image: accessibilityBlended.clip(exportRegion),
   description: 'mapToCloudExample',
-  bucket: 'ee-docs-demos',
+  bucket: 'your-bucket-name',
   maxZoom: 13,
   region: exportRegion
 });

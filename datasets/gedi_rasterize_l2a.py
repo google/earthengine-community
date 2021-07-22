@@ -15,9 +15,11 @@ limitations under the License.
 import datetime
 import os
 import time
+from typing import Any, Dict, List
 
 from absl import app
 from absl import flags
+import attr
 from dateutil import relativedelta
 import pytz
 
@@ -26,6 +28,16 @@ import ee
 flags.DEFINE_integer('num_utm_grid_cells', 389, 'UTM grid cell count')
 
 FLAGS = flags.FLAGS
+
+
+@attr.s
+class ExportParameters:
+  """Arguments for starting export jobs."""
+  asset_id: str = attr.ib()
+  image: Any = attr.ib()  # ee.Image
+  pyramiding_policy: Dict[str, str] = attr.ib()
+  crs: str = attr.ib()
+  region: Any = attr.ib()  # ee.Geometry.Polygon | ee.Geometry.LinearRing
 
 
 def timestamp_ms_for_datetime(dt):
@@ -40,7 +52,33 @@ def parse_date_from_gedi_filename(table_asset_id):
 
 def rasterize_gedi_by_utm_zone(
     table_asset_ids, raster_asset_id, grid_cell_feature):
-  """Starts an Earth Engine task generating a raster asset covering a month."""
+  """Creates and runs an EE export job.
+
+  Args:
+    table_asset_ids: list of strings, table asset ids to rasterize
+    raster_asset_id: string, raster asset id to create
+    grid_cell_feature: ee.Feature
+  """
+
+  export_params = _create_export(
+      table_asset_ids, raster_asset_id, grid_cell_feature)
+  _start_task(export_params)
+
+
+def _create_export(
+    table_asset_ids: List[str],
+    raster_asset_id: str,
+    grid_cell_feature: Any) -> ExportParameters:
+  """Creates an EE export job definition.
+
+  Args:
+    table_asset_ids: list of strings, table asset ids to rasterize
+    raster_asset_id: string, raster asset id to create
+    grid_cell_feature: ee.Feature
+
+  Returns:
+    an ExportParameters object containing arguments for an export job.
+  """
   datetimes = [parse_date_from_gedi_filename(x) for x in table_asset_ids]
   if len(set(x.month for x in datetimes)) > 1:
     raise ValueError('Found more than one month in filenames')
@@ -102,14 +140,25 @@ def rasterize_gedi_by_utm_zone(
           ee.Reducer.first().forEach(props)).reproject(
               crs, None, 25).set(image_properties))
 
-  task = ee.batch.Export.image.toAsset(
+  return ExportParameters(
+      asset_id=raster_asset_id,
       image=image.clip(box),
-      description=os.path.basename(raster_asset_id),
-      assetId=raster_asset_id,
-      region=box,
-      pyramidingPolicy={'.default': 'sample'},
-      scale=25,
+      pyramiding_policy={'.default': 'sample'},
       crs=crs,
+      region=box)
+
+
+def _start_task(export_params: ExportParameters) -> str:
+  """Starts an EE export task with the given parameters."""
+  asset_id = export_params.asset_id
+  task = ee.batch.Export.image.toAsset(
+      image=export_params.image,
+      description=os.path.basename(asset_id),
+      assetId=asset_id,
+      region=export_params.region,
+      pyramidingPolicy=export_params.pyramiding_policy,
+      scale=25,
+      crs=export_params.crs,
       maxPixels=1e13)
 
   time.sleep(0.1)

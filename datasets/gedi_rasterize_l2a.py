@@ -60,12 +60,12 @@ def rasterize_gedi_by_utm_zone(
     grid_cell_feature: ee.Feature
   """
 
-  export_params = _create_export(
+  export_params = create_export(
       table_asset_ids, raster_asset_id, grid_cell_feature)
   _start_task(export_params)
 
 
-def _create_export(
+def create_export(
     table_asset_ids: List[str],
     raster_asset_id: str,
     grid_cell_feature: Any) -> ExportParameters:

@@ -14,8 +14,19 @@
  * limitations under the License.
  */
 
-// [START earthengine__apidocs__ee_number_add]
-print('5 + 10', ee.Number(5).add(ee.Number(10)));  // 15
-print('5 + 10.2', ee.Number(5).add(ee.Number(10.2)));  // 15.2
-print('5 + -10.2', ee.Number(5).add(ee.Number(-10.2)));  // -5.199999999
-// [END earthengine__apidocs__ee_number_add]
+// [START earthengine__apidocs__ee_number_parse]
+print('Client-side string converted to ee.Number',
+      ee.Number.parse('10'));  // 10
+
+print('ee.String converted to ee.Number',
+      ee.Number.parse(ee.String('100')));  // 100
+
+print('Ambiguous string object converted to ee.Number',
+      ee.Number.parse(ee.Feature(null, {id: '1000'}).get('id')));  // 1000
+
+print('Ambiguous number object converted to ee.Number',
+      ee.Number.parse(ee.Feature(null, {id: 1000}).get('id')));  // 1000
+
+print('Leading zeros are removed',
+      ee.Number.parse('0001'));  // 1
+// [END earthengine__apidocs__ee_number_parse]

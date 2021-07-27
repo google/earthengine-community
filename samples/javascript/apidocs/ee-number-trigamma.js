@@ -14,8 +14,11 @@
  * limitations under the License.
  */
 
-// [START earthengine__apidocs__ee_number_add]
-print('5 + 10', ee.Number(5).add(ee.Number(10)));  // 15
-print('5 + 10.2', ee.Number(5).add(ee.Number(10.2)));  // 15.2
-print('5 + -10.2', ee.Number(5).add(ee.Number(-10.2)));  // -5.199999999
-// [END earthengine__apidocs__ee_number_add]
+// [START earthengine__apidocs__ee_number_trigamma]
+print('Trigamma for -100', ee.Number(-100).trigamma());  // Infinity
+print('Trigamma for 0.001', ee.Number(0.001).trigamma());  // 1000001.642533195
+print('Trigamma for 0.5', ee.Number(0.5).trigamma());  // 4.934802200
+print('Trigamma for 1', ee.Number(1).trigamma());  // 1.644934066
+print('Trigamma for 100', ee.Number(100).trigamma());  // 0.010050166
+print('Trigamma for 200', ee.Number(200).trigamma());  // 0.005012520
+// [END earthengine__apidocs__ee_number_trigamma]

@@ -14,8 +14,7 @@
  * limitations under the License.
  */
 
-// [START earthengine__apidocs__ee_number_add]
-print('5 + 10', ee.Number(5).add(ee.Number(10)));  // 15
-print('5 + 10.2', ee.Number(5).add(ee.Number(10.2)));  // 15.2
-print('5 + -10.2', ee.Number(5).add(ee.Number(-10.2)));  // -5.199999999
-// [END earthengine__apidocs__ee_number_add]
+// [START earthengine__apidocs__ee_number_gt]
+print('5 greater than 10?', ee.Number(5).gt(ee.Number(10)));  // 0
+print('10 greater than 5?', ee.Number(10).gt(ee.Number(5)));  // 1
+// [END earthengine__apidocs__ee_number_gt]

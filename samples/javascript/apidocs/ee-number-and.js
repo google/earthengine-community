@@ -15,15 +15,6 @@
  */
 
 // [START earthengine__apidocs__ee_number_and]
-var zero = ee.Number(0);
-var one = ee.Number(1);
-
-print(one.and(0));  // 0
-print(zero.and(0));  // 0
-print(zero.and(1));  // 0
-
-print(one.and(1));  // 1
-print(one.and(2.3));  // 1
-print(one.and(-1));  // 1
-print(ee.Number(4.5).and(one));  // 1
+print('Both 5 and 10 are not 0?', ee.Number(5).and(ee.Number(10)));  // 1
+print('Both 5 and 0 are not 0?', ee.Number(5).and(ee.Number(0)));  // 0
 // [END earthengine__apidocs__ee_number_and]

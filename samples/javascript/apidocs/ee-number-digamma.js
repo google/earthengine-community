@@ -14,8 +14,12 @@
  * limitations under the License.
  */
 
-// [START earthengine__apidocs__ee_number_add]
-print('5 + 10', ee.Number(5).add(ee.Number(10)));  // 15
-print('5 + 10.2', ee.Number(5).add(ee.Number(10.2)));  // 15.2
-print('5 + -10.2', ee.Number(5).add(ee.Number(-10.2)));  // -5.199999999
-// [END earthengine__apidocs__ee_number_add]
+// [START earthengine__apidocs__ee_number_digamma]
+print('Digamma for -1.5', ee.Number(-1.5).digamma());  // 0.703156637
+print('Digamma for -1', ee.Number(-1).digamma());  // -Infinity
+print('Digamma for 0', ee.Number(0).digamma());  // -Infinity
+print('Digamma for 0.5', ee.Number(0.5).digamma());  // -1.963510028
+print('Digamma for 1', ee.Number(1).digamma());  // -0.577215667
+print('Digamma for 100', ee.Number(100).digamma());  // 4.600161852
+print('Digamma for 1e13', ee.Number(1e13).digamma());  // 29.933606208
+// [END earthengine__apidocs__ee_number_digamma]

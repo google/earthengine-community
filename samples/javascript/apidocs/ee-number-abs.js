@@ -15,7 +15,7 @@
  */
 
 // [START earthengine__apidocs__ee_number_abs]
-print(ee.Number(-1).abs());  // [1]
-print(ee.Number(0).abs());  // [0]
-print(ee.Number(2.3).abs());  // [2.3]
+print('Absolute value of -1', ee.Number(-1).abs());  // 1
+print('Absolute value of 0', ee.Number(0).abs());  // 0
+print('Absolute value of 2.3', ee.Number(2.3).abs());  // 2.3
 // [END earthengine__apidocs__ee_number_abs]

@@ -14,8 +14,19 @@
  * limitations under the License.
  */
 
-// [START earthengine__apidocs__ee_number_add]
-print('5 + 10', ee.Number(5).add(ee.Number(10)));  // 15
-print('5 + 10.2', ee.Number(5).add(ee.Number(10.2)));  // 15.2
-print('5 + -10.2', ee.Number(5).add(ee.Number(-10.2)));  // -5.199999999
-// [END earthengine__apidocs__ee_number_add]
+// [START earthengine__apidocs__ee_number_gammainc]
+print('Lower incomplete gamma function for x = 0, a = 1',
+      ee.Number(0).gammainc(1));  // 0
+
+print('Lower incomplete gamma function for x = 1, a = 1',
+      ee.Number(1).gammainc(1));  // 0.632120558
+
+print('Lower incomplete gamma function for x = 10, a = 1',
+      ee.Number(10).gammainc(1));  // 0.999954600
+
+print('Lower incomplete gamma function for x = -1, a = 1',
+      ee.Number(-1).gammainc(1));  // NaN
+
+print('Lower incomplete gamma function for x = 10, a = -1',
+      ee.Number(10).gammainc(-1));  // NaN
+// [END earthengine__apidocs__ee_number_gammainc]

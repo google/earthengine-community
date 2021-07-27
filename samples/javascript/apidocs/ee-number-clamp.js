@@ -14,8 +14,13 @@
  * limitations under the License.
  */
 
-// [START earthengine__apidocs__ee_number_add]
-print('5 + 10', ee.Number(5).add(ee.Number(10)));  // 15
-print('5 + 10.2', ee.Number(5).add(ee.Number(10.2)));  // 15.2
-print('5 + -10.2', ee.Number(5).add(ee.Number(-10.2)));  // -5.199999999
-// [END earthengine__apidocs__ee_number_add]
+// [START earthengine__apidocs__ee_number_clamp]
+// Numbers within range are unaffected.
+print('100 clamped to range [0,255]', ee.Number(100).clamp(0, 255));  // 100
+
+// Numbers greater than max in range are set to max.
+print('259 clamped to range [0,255]', ee.Number(259).clamp(0, 255));  // 255
+
+// Numbers less than min in range are set to min.
+print('-259 clamped to range [0,255]', ee.Number(-259).clamp(0, 255));  // 0
+// [END earthengine__apidocs__ee_number_clamp]

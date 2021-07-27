@@ -14,8 +14,11 @@
  * limitations under the License.
  */
 
-// [START earthengine__apidocs__ee_number_add]
-print('5 + 10', ee.Number(5).add(ee.Number(10)));  // 15
-print('5 + 10.2', ee.Number(5).add(ee.Number(10.2)));  // 15.2
-print('5 + -10.2', ee.Number(5).add(ee.Number(-10.2)));  // -5.199999999
-// [END earthengine__apidocs__ee_number_add]
+// [START earthengine__apidocs__ee_number_gamma]
+// Values less than or equal to 0 are invalid.
+print('Gamma for 0.001', ee.Number(0.001).gamma());  // 999.423772484
+print('Gamma for 0.5', ee.Number(0.5).gamma());  // 1.772453850
+print('Gamma for 1', ee.Number(1).gamma());  // 1
+print('Gamma for 100', ee.Number(100).gamma());  // 9.332621544e+155
+print('Gamma for 200', ee.Number(200).gamma());  // Infinity
+// [END earthengine__apidocs__ee_number_gamma]

@@ -14,8 +14,12 @@
  * limitations under the License.
  */
 
-// [START earthengine__apidocs__ee_number_add]
-print('5 + 10', ee.Number(5).add(ee.Number(10)));  // 15
-print('5 + 10.2', ee.Number(5).add(ee.Number(10.2)));  // 15.2
-print('5 + -10.2', ee.Number(5).add(ee.Number(-10.2)));  // -5.199999999
-// [END earthengine__apidocs__ee_number_add]
+// [START earthengine__apidocs__ee_number_divide]
+print('5 / 10', ee.Number(5).divide(ee.Number(10)));  // 0.5
+print('5 / 10.2', ee.Number(5).divide(ee.Number(10.2)));  // 0.490196078
+print('5 / -10.2', ee.Number(5).divide(ee.Number(-10.2)));  // -0.490196078
+print('-10.2 / 5', ee.Number(-10.2).divide(ee.Number(5)));  // -2.04
+print('-10.2 / -5', ee.Number(-10.2).divide(ee.Number(-5)));  // 2.04
+print('0 / 10', ee.Number(0).divide(ee.Number(10)));  // 0
+print('10 / 0', ee.Number(10).divide(ee.Number(0)));  // 0
+// [END earthengine__apidocs__ee_number_divide]

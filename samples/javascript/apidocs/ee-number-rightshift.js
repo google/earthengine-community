@@ -14,8 +14,15 @@
  * limitations under the License.
  */
 
-// [START earthengine__apidocs__ee_number_add]
-print('5 + 10', ee.Number(5).add(ee.Number(10)));  // 15
-print('5 + 10.2', ee.Number(5).add(ee.Number(10.2)));  // 15.2
-print('5 + -10.2', ee.Number(5).add(ee.Number(-10.2)));  // -5.199999999
-// [END earthengine__apidocs__ee_number_add]
+// [START earthengine__apidocs__ee_number_rightshift]
+/**
+ * Unsigned 8-bit type example.
+ *
+ * 20 as binary:   00010100
+ * Right shift 2:  00000101
+ *
+ * 00000101 is binary for 5.
+ */
+
+print(ee.Number(20).rightShift(2));  // 5
+// [END earthengine__apidocs__ee_number_rightshift]

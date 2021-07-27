@@ -14,8 +14,10 @@
  * limitations under the License.
  */
 
-// [START earthengine__apidocs__ee_number_add]
-print('5 + 10', ee.Number(5).add(ee.Number(10)));  // 15
-print('5 + 10.2', ee.Number(5).add(ee.Number(10.2)));  // 15.2
-print('5 + -10.2', ee.Number(5).add(ee.Number(-10.2)));  // -5.199999999
-// [END earthengine__apidocs__ee_number_add]
+// [START earthengine__apidocs__ee_number_erf]
+print('Error function of -10', ee.Number(-10).erf());  // -1
+print('Error function of -0.001', ee.Number(-0.001).erf());  // -0.001128378
+print('Error function of 0', ee.Number(0).erf());  // 0
+print('Error function of 0.001', ee.Number(0.001).erf());  // 0.001128378
+print('Error function of 10', ee.Number(10).erf());  // 1
+// [END earthengine__apidocs__ee_number_erf]

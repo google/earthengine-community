@@ -14,8 +14,13 @@
  * limitations under the License.
  */
 
-// [START earthengine__apidocs__ee_number_add]
-print('5 + 10', ee.Number(5).add(ee.Number(10)));  // 15
-print('5 + 10.2', ee.Number(5).add(ee.Number(10.2)));  // 15.2
-print('5 + -10.2', ee.Number(5).add(ee.Number(-10.2)));  // -5.199999999
-// [END earthengine__apidocs__ee_number_add]
+// [START earthengine__apidocs__ee_number_erfcinv]
+print('Inverse complementary error function of 0',
+      ee.Number(0).erfcInv());  // Infinity
+
+print('Inverse complementary error function of 0.001',
+      ee.Number(0.001).erfcInv());  // 2.326753765
+
+print('Inverse complementary error function of 1',
+      ee.Number(1).erfcInv());  // 0
+// [END earthengine__apidocs__ee_number_erfcinv]

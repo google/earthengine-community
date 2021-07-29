@@ -47,14 +47,14 @@ var classifier = ee.Classifier.amnhMaxent().train({
 // Classify the image using the Maxent classifier.
 var imageClassified = image.classify(classifier);
 
-// Display the layers to the map.
+// Display the layers on the map.
 // Species presence probability [0, 1] grades from black to white.
 Map.addLayer(image,
   {bands: ['B4', 'B3', 'B2'], min: 0, max: 3500}, 'Image');
 Map.addLayer(imageClassified,
   {bands: 'probability', min: 0, max: 1}, 'Probability');
-Map.addLayer(trainingData.filter(ee.Filter.eq('presence', 0)),
-  {color: 'red'}, 'Training data (species present)');
-Map.addLayer(trainingData.filter(ee.Filter.eq('presence', 1)),
-  {color: 'blue'}, 'Training data (species absent)');
+Map.addLayer(trainingData.filter('presence == 0'),
+  {color: 'red'}, 'Training data (species absent)');
+Map.addLayer(trainingData.filter('presence == 1'),
+  {color: 'blue'}, 'Training data (species present)');
 // [END earthengine__apidocs__ee_classifier_amnhmaxent]

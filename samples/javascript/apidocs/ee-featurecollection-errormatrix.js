@@ -21,30 +21,27 @@
 
 // Combine Landsat and NLCD images using only the bands representing
 // predictor variables (spectral reflectance) and target labels (land cover).
-var landcover =
-    ee.Image('USGS/NLCD_RELEASES/2016_REL/2016').select('landcover');
 var spectral =
     ee.Image('LANDSAT/LC08/C02/T1_L2/LC08_038032_20160820').select('SR_B[1-7]');
+var landcover =
+    ee.Image('USGS/NLCD_RELEASES/2016_REL/2016').select('landcover');
 var sampleSource = spectral.addBands(landcover);
 
-// Sample the combined images to generate a FeatureCollection where each
-// feature is a point with properties that define a given pixel's spectral
-// response and the corresponding NLCD land cover classification.
-var sample = sampleSource
-                 .sample({
-                   region: spectral.geometry(),
-                   scale: 30,
-                   numPixels: 2000,
-                   geometries: true
-                 })
-                 // Add a random value column with uniform distribution for
-                 // hold-out training/validation splitting.
-                 .randomColumn({distribution: 'uniform'});
-print('Sample for classifier development', sample);  // ee.FeatureCollection
+// Sample the combined images to generate a FeatureCollection.
+var sample = sampleSource.sample({
+  region: spectral.geometry(),  // sample only from within Landsat image extent
+  scale: 30,
+  numPixels: 2000,
+  geometries: true
+})
+// Add a random value column with uniform distribution for hold-out
+// training/validation splitting.
+.randomColumn({distribution: 'uniform'});
+print('Sample for classifier development', sample);
 
 // Split out ~80% of the sample for training the classifier.
 var training = sample.filter('random < 0.8');
-print('Training set', training);  // ee.FeatureCollection
+print('Training set', training);
 
 // Train a random forest classifier.
 var classifier = ee.Classifier.smileRandomForest(10).train({
@@ -56,15 +53,15 @@ var classifier = ee.Classifier.smileRandomForest(10).train({
 // Classify the sample.
 var predictions = sample.classify(
     {classifier: classifier, outputName: 'predicted_landcover'});
-print('Predictions', predictions);  // ee.FeatureCollection
+print('Predictions', predictions);
 
 // Split out the validation feature set.
 var validation = predictions.filter('random >= 0.8');
-print('Validation set', validation);  // ee.FeatureCollection
+print('Validation set', validation);
 
 // Get a list of possible class values to use for error matrix axis labels.
 var order = sample.aggregate_array('landcover').distinct().sort();
-print('Error matrix axis labels', order);  // ee.List
+print('Error matrix axis labels', order);
 
 // Compute an error matrix that compares predicted vs. expected values.
 var errorMatrix = validation.errorMatrix({
@@ -72,11 +69,11 @@ var errorMatrix = validation.errorMatrix({
   predicted: 'predicted_landcover',
   order: order
 });
-print('Error matrix', errorMatrix);  // ee.ConfusionMatrix
+print('Error matrix', errorMatrix);
 
 // Compute accuracy metrics from the error matrix.
-print('Overall accuracy', errorMatrix.accuracy());  // 0.6073170731707317
-print('Consumer\'s accuracy', errorMatrix.consumersAccuracy());  // ee.Array
-print('Producer\'s accuracy', errorMatrix.producersAccuracy());  // ee.Array
-print('Kappa', errorMatrix.kappa());  // 0.5010318006243716
+print("Overall accuracy", errorMatrix.accuracy());
+print("Consumer's accuracy", errorMatrix.consumersAccuracy());
+print("Producer's accuracy", errorMatrix.producersAccuracy());
+print("Kappa", errorMatrix.kappa());
 // [END earthengine__apidocs__ee_featurecollection_errormatrix]

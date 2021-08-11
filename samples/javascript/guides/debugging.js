@@ -80,7 +80,7 @@ print(s2image.get('myProperty')); // OK
 // [START earthengine__debugging__mapped_function1]
 var collection = ee.ImageCollection('MODIS/051/MOD44B');
 
-// Error: Expression variables must have non-null names.
+// Error: A mapped function's arguments cannot be used in client-side operations
 var badMap3 = collection.map(function(image) {
   print(image);
   return image;

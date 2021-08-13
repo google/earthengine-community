@@ -136,7 +136,7 @@ print(chart);
 
 // [START earthengine__charts_array__metadata_list]
 // Import a Landsat 8 collection and filter to a single path/row.
-var col = ee.ImageCollection('LANDSAT/LC08/C01/T1_SR')
+var col = ee.ImageCollection('LANDSAT/LC08/C02/T1_L2')
               .filter(ee.Filter.expression('WRS_PATH ==  45 && WRS_ROW == 30'));
 
 // Reduce image properties to a series of lists; one for each selected property.

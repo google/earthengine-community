@@ -37,8 +37,9 @@ training_data = ee.FeatureCollection([
 ])
 
 # Import a Landsat 8 image and select the reflectance bands.
-image = (ee.Image('LANDSAT/LC08/C01/T1_SR/LC08_044034_20200606')
-         .select(['B[0-9]*']))
+image = (ee.Image('LANDSAT/LC08/C02/T1_L2/LC08_044034_20200606')
+         .select(['SR_B[1-7]'])
+         .multiply(0.0000275).add(-0.2))  # Apply scaling factors.
 
 # Sample the image at the location of the points.
 training = image.sampleRegions(**{

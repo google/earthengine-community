@@ -20,5 +20,7 @@
 module.exports = {
   beforeJasmine: function() {
     return Promise.resolve();
-  }
+  },
+  // TODO(b/197776711): Remove the following hook implementation.
+  afterJasmine: function() {}
 };

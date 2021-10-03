@@ -65,6 +65,9 @@ meta_variables = (
     'surface_flag'
 )
 
+rh_names = [f'rh{d}' for d in range(101)]
+
+
 # pylint:disable=line-too-long
 def extract_values(input_path, output_path):
   """Extracts all rh (relative height) values from all algorithms and some qa flags.
@@ -87,7 +90,6 @@ def write_csv(hdf_fh, csv_file):
   """Writes a single CSV file based on the contents of HDF file."""
   is_first = True
   # Iterating over relative height percentage values from 0 to 100
-  rh_names = [f'rh{d}' for d in range(101)]
   for k in hdf_fh.keys():
     if not k.startswith('BEAM'):
       continue

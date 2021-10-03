@@ -91,11 +91,8 @@ def create_export(
       'elev_highestreturn', 'elev_lowestmode', 'elevation_bias_flag',
       'energy_total', 'landsat_treecover', 'landsat_water_persistence',
       'lat_highestreturn', 'leaf_off_doy', 'leaf_off_flag', 'leaf_on_cycle',
-      'leaf_on_doy', 'lon_highestreturn',
-      # Dropping modis_ fields, as they are frequently empty in the whole file,
-      # which makes the column type to be STRING, not FLOAT.
-      # 'modis_nonvegetated',
-      # 'modis_nonvegetated_sd', 'modis_treecover', 'modis_treecover_sd',
+      'leaf_on_doy', 'lon_highestreturn', 'modis_nonvegetated',
+      'modis_nonvegetated_sd', 'modis_treecover', 'modis_treecover_sd',
       'num_detectedmodes', 'pft_class', 'quality_flag', 'region_class',
       'selected_algorithm', 'selected_mode', 'selected_mode_flag',
       'sensitivity', 'shot_number', 'solar_azimuth', 'solar_elevation',

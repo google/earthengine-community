@@ -54,14 +54,23 @@ var increment = 'year';
 var start_date = '2015-01-01';
 var end_date = '2017-01-01';
 ```
-Create the `ranges` of year in order to map over the function later. [ee.Date](https://developers.google.com/earth-engine/apidocs/ee-date?hl=en)
+Create the `list` of year in order to map over the function later. [ee.Date](https://developers.google.com/earth-engine/apidocs/ee-date?hl=en)
 function can be used to construct the Date object for the start and end date.
 ```
-var secondDate = ee.Date(start_date).advance(interval, increment).millis();
-var increase = secondDate.subtract(startDate.millis());
-var list = ee.List.sequence(startDate.millis(), ee.Date(end_date).millis(), increase);
-//print(list)
-
+var nIntervals = ee.Date(end_date).difference(start_date, increment).subtract(1);
+var startDates = ee.List.sequence(0, nIntervals, interval);
+var ranges = startDates.map(function(i) {
+  var startRange = ee.Date(start_date).advance(i, increment);
+  var endRange = startRange.advance(interval, increment);
+  return ee.DateRange(startRange, endRange);
+});
+//print(ranges)
+var myList = ee.List.sequence(0, ranges.length().subtract(1), 1)
+var list = myList.map(function (number){
+  var range1 = ee.DateRange(ranges.get(number)).start().millis()  
+  return range1
+})
+// print(list)
 ```
 
 ## Evaluating Zonal Statistics
@@ -126,7 +135,7 @@ Now, return the table with new properties or columns as a final result.
 // return feature with new properties
   return newfeat 
 ```
-At last, user can define a new parameter to map over `NDVIstat` function by passing the `polygon` as a feature dataset.
+At last, user can define a new parameter to map over `EVIstat` function by passing the `polygon` as a feature dataset.
 
 ```
 var result = poly.map(EVIstat);

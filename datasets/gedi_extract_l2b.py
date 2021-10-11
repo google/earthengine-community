@@ -82,10 +82,11 @@ def write_csv(hdf_fh, csv_file):
 
       name = v.split('/')[-1]
       ds = hdf_fh[f'{k}/{v}']
-      values = ds[:]
-      if issubclass(values.dtype.type, np.floating):
-        values[values == ds.attrs.get('_FillValue')] = np.nan
-      df[name] = values
+      df[name] = ds[:]
+      df[name].replace([np.inf, -np.inf], np.nan, inplace=True)
+      if ds.attrs.get('_FillValue') is not None:
+        # We need to use pd.NA that works with integer types (np.nan does not)
+        df[name].replace(ds.attrs.get('_FillValue'), pd.NA, inplace=True)
 
     ds = hdf_fh[f'{k}/cover_z']
     cover_z = pd.DataFrame(ds, columns=cover_names)

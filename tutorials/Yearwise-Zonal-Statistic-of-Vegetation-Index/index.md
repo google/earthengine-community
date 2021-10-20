@@ -94,7 +94,7 @@ var reduce = function(feature) {
     // Append date to the statistic label.
     var keys = ee.Dictionary(stats).keys();
     var newKeys = keys.map(function(key) {
-      return ee.String(key).cat('_').cat(startDate.format('YYYY-MM-dd'));
+      return ee.String(key).cat('_').cat(startDate.format('YYYY'));
     });
     
     // Add the statistic properties to the feature.

@@ -38,39 +38,22 @@ var dataset = ee.ImageCollection('MODIS/006/MOD13Q1')
 
 Users can use the [Global Administrative Unit Layers (GAUL) administrative layer](https://developers.google.com/earth-engine/datasets/catalog/FAO_GAUL_2015_level2?hl=en), in order to extract their respective region. The GAUL provides the information on administrative units for all the countries in the world at three levels.
 ```
-var poly = ee.FeatureCollection("FAO/GAUL/2015/level2").filter(ee.Filter.inList('ADM1_NAME', ['Maharashtra']));
+var regions = ee.FeatureCollection("FAO/GAUL/2015/level2").filter(ee.Filter.inList('ADM1_NAME', ['Maharashtra']));
 ```
 or, they can upload the shapefile by [Importing Table Data](https://developers.google.com/earth-engine/guides/table_upload).
 
 ## Selecting the range of years
 
 Define the interval of year, the looping parameter and the start of the year. In order to loop over the year, i.e. to obtain zonal statistics yearly, 
-user can define `interval` as '1' and `increment` interval could be over the 'year'. 
+user can define `interval` as `1` and `increment` interval could be over the `year`. Also declare a variable with `interval_count` that 
+count the number of years for which you need to extract the data, say the user need the data for 2018, 2019 and 2020 then `interval_count` is `3`.
 
 ```
 // settings for the years to filter on
 var interval = 1;
-var increment = 'year';
-var start_date = '2015-01-01';
-var end_date = '2017-01-01';
-```
-Create the `list` of year in order to map over the function later. [ee.Date](https://developers.google.com/earth-engine/apidocs/ee-date?hl=en)
-function can be used to construct the Date object for the start and end date.
-```
-var nIntervals = ee.Date(end_date).difference(start_date, increment).subtract(1);
-var startDates = ee.List.sequence(0, nIntervals, interval);
-var ranges = startDates.map(function(i) {
-  var startRange = ee.Date(start_date).advance(i, increment);
-  var endRange = startRange.advance(interval, increment);
-  return ee.DateRange(startRange, endRange);
-});
-//print(ranges)
-var myList = ee.List.sequence(0, ranges.length().subtract(1), 1)
-var list = myList.map(function (number){
-  var range1 = ee.DateRange(ranges.get(number)).start().millis()  
-  return range1
-})
-// print(list)
+var interval_unit = 'year';
+var interval_count = 3
+var start_date = '2018-01-01';
 ```
 
 ## Evaluating Zonal Statistics
@@ -91,54 +74,44 @@ var reducers = ee.Reducer.mean().combine({
   });
 ```
 
-### 2. Define the looping function
+### 2. Define the function to calculate zonal statistics
 
-Define a nested loop function in order to compute mean, variance and standard deviation for each polygons for the range of years.
+Define a loop function in order to compute mean, variance and standard deviation for each polygons for the range of years.
 
 ```
-var feat
 //This function computes statistics for each district
-var EVIstat = function(feature) {
-  var composites_value = function(date, feat){
-    date = ee.Date(date)
-    feat = ee.Feature(feat)
-    var actualyear = date.get('year')
-    var filtCol = dataset.filterDate(ee.Date(date), ee.Date(date).advance(interval, increment));
-    var meanImage = filtCol.mean().clip(feature.geometry());
-    // add the mean to every image
-    var combineVal = meanImage.reduceRegion({
+var temporalMean;  // defined dynamically for each temporal image composite.
+var startDate;  // defined dynamically for each temporal image composite.
+var reduce = function(feature) {
+    // Calculate zonal statistics.
+    var stats = temporalMean.reduceRegion({
       reducer: reducers,
       geometry: feature.geometry(),
-      scale: 250
+      scale: dataset.first().projection().nominalScale(),
+      crs: dataset.first().projection()
     });
-    var mean = ee.Number(combineVal.get("EVI_mean"));
-    var mean_name = ee.String("EVI_mean_").cat(actualyear)
     
-    var stdDev = ee.Number(combineVal.get("EVI_stdDev"));
-    var stdDev_name = ee.String("EVI_stdDev_").cat(actualyear)
+    // Append date to the statistic label.
+    var keys = ee.Dictionary(stats).keys();
+    var newKeys = keys.map(function(key) {
+      return ee.String(key).cat('_').cat(startDate.format('YYYY-MM-dd'));
+    });
     
-    var variance = ee.Number(combineVal.get("EVI_variance"));
-    var variance_name = ee.String("EVI_variance_").cat(actualyear)
-    
-    return feat.set(mean_name, mean, stdDev_name, stdDev, variance_name, variance)
+    // Add the statistic properties to the feature.
+    return feature.set(stats.rename(keys, newKeys));
   };
 ```
-Iterate over the inner loop, by passing polygons as a feature data for the `composite_value` function.
+### 3. Define the loop to iterate over each year
 
+User can now create a for-loop to map over the `reduce` function defined above.
 ```
-// iterate over the sequence
-  var newfeat = ee.Feature(list.iterate(composites_value, feature))
-```
-Now, return the table with new properties or columns as a final result.
-
-```
-// return feature with new properties
-  return newfeat 
-```
-At last, user can define a new parameter to map over `EVIstat` function by passing the `polygon` as a feature dataset.
-
-```
-var result = poly.map(EVIstat);
+for (var i=0; i < interval_count; i++) {
+  var startDate = ee.Date(start_date).advance(i, interval_unit);
+  var endDate = startDate.advance(interval, interval_unit);
+  var temporalMean = dataset.filterDate(startDate, endDate).mean();
+  regions = regions.map(reduce);
+}
+//print(regions)
 ```
 
 ## Exporting Table
@@ -146,7 +119,7 @@ The user can export the final result as table using [Export.table.toDrive](https
 or [Export.table.toAsset](https://developers.google.com/earth-engine/guides/exporting?hl=en#to-asset_1).
 ```
 Export.table.toDrive({
-  collection: result,
+  collection: regions,
   description:'zonal_EVI',
 });
 ```

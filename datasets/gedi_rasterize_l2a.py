@@ -79,11 +79,23 @@ def create_export(
   Returns:
     an ExportParameters object containing arguments for an export job.
   """
-  datetimes = [parse_date_from_gedi_filename(x) for x in table_asset_ids]
-  if len(set(x.month for x in datetimes)) > 1:
-    raise ValueError('Found more than one month in filenames')
-  month = datetimes[0].month
-  year = datetimes[0].year
+  if not table_asset_ids:
+    raise ValueError('No table asset ids specified')
+  first_datetime = parse_date_from_gedi_filename(table_asset_ids[0])
+  month = first_datetime.month
+  year = first_datetime.year
+  # pylint:disable=g-tzinfo-datetime
+  # We don't care about pytz problems with DST - this is just UTC.
+  month_start = datetime.datetime(year, month, 1, tzinfo=pytz.UTC)
+  # pylint:enable=g-tzinfo-datetime
+  month_end = month_start + relativedelta.relativedelta(months=1)
+
+  for table_asset_id in table_asset_ids:
+    dt = parse_date_from_gedi_filename(table_asset_id)
+    if dt < month_start or dt >= month_end:
+      raise ValueError(
+          'Vector asset %s has datetime %s, which is outside of the expected '
+          'month %s-%s' % (table_asset_id, dt, year, month))
 
   props = [
       'beam', 'degrade_flag', 'delta_time',
@@ -114,17 +126,14 @@ def create_export(
 
   shots = []
   for table_asset_id in table_asset_ids:
-    fshots = ee.FeatureCollection(table_asset_id).filterMetadata(
+    good_shots = ee.FeatureCollection(table_asset_id).filterMetadata(
         'quality_flag', 'equals', 1)
-    shots.append(fshots)
+    shots.append(good_shots)
 
   box = grid_cell_feature.geometry().buffer(2500, 25).bounds()
   shots = ee.FeatureCollection(shots).flatten().filterBounds(box)
 
   crs = grid_cell_feature.get('crs').getInfo()
-
-  month_start = datetime.datetime(year, month, 1)
-  month_end = month_start + relativedelta.relativedelta(months=1)
 
   image_properties = {
       'month': month,

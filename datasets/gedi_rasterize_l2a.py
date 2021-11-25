@@ -58,11 +58,14 @@ def rasterize_gedi_by_utm_zone(
     table_asset_ids: list of strings, table asset ids to rasterize
     raster_asset_id: string, raster asset id to create
     grid_cell_feature: ee.Feature
+
+  Returns:
+    string, task id of the created task
   """
 
   export_params = create_export(
       table_asset_ids, raster_asset_id, grid_cell_feature)
-  _start_task(export_params)
+  return _start_task(export_params)
 
 
 def create_export(

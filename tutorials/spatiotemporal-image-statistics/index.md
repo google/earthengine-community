@@ -208,11 +208,3 @@ Export.table.toDrive({
   description:'zonal_stats_wide',
 });
 ```
-
-## Acknowledgements
-
-This tutorial was a collaboration between Saumyata Srivastava and Justin
-Braaten. Saumyata drafted the initial tutorial which included the wide
-format summary table. Justin edited the initial draft and added the long format
-summary table.
-

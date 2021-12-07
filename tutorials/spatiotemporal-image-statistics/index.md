@@ -30,7 +30,7 @@ range of years.
 ### Vegetation index
 
 Google Earth Engine has a range data products that provide time series of
-vegetation indices. Here, we use the MODIS 
+vegetation indices. Here, we use the MODIS
 [Terra Vegetation Indices for 16-days Global 250m](https://developers.google.com/earth-engine/datasets/catalog/MODIS_006_MOD13Q1)
 product (also available at 500m and 1km resolution). After importing, we select
 the 'EVI' band.
@@ -40,7 +40,7 @@ var dataset = ee.ImageCollection('MODIS/006/MOD13Q1')
                   .select('EVI');  // or 'NDVI'
 ```
 
-### Region of interest 
+### Region of interest
 
 A FeatureCollection (or Geometry) is needed to define regions to summarize
 vegetation index data over. For example, you can use the
@@ -103,7 +103,7 @@ other. The resulting tables are
 as a CSV file, but there are multiple
 [other ways to export](https://developers.google.com/earth-engine/guides/exporting#exporting-tables-and-vector-data),
 including downloading the CSV file directly using
-[`getDownloadURL`](https://developers.google.com/earth-engine/apidocs/ee-featurecollection-getdownloadurl). 
+[`getDownloadURL`](https://developers.google.com/earth-engine/apidocs/ee-featurecollection-getdownloadurl).
 
 ### Long table
 
@@ -129,7 +129,7 @@ var zonalStatsL = intervals.map(function(i) {
   var endRangeL = startRangeL.advance(interval, intervalUnit);
   var temporalStat = dataset.filterDate(startRangeL, endRangeL)
                               .reduce(temporalReducer);
-  
+
   // Calculate zonal statistics.
   var statsL = temporalStat.reduceRegions({
     collection: regions,
@@ -137,7 +137,7 @@ var zonalStatsL = intervals.map(function(i) {
     scale: dataset.first().projection().nominalScale(),
     crs: dataset.first().projection()
   });
-  
+
   // Set start date as a feature property.
   return statsL.map(function(feature) {
     return feature.set({
@@ -178,14 +178,14 @@ var reduce = function(feature) {
     scale: dataset.first().projection().nominalScale(),
     crs: dataset.first().projection()
   });
-  
+
   // Append date to the statistic label.
   var keys = ee.Dictionary(statsW).keys();
   var newKeys = keys.map(function(key) {
     return ee.String(key).cat('_')
                .cat(startRangeW.format('YYYY'));  // or 'YYYY-MM-dd'
   });
-  
+
   // Add the statistic properties to the feature.
   return feature.set(statsW.rename(keys, newKeys));
 };

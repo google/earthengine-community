@@ -1,6 +1,6 @@
 ---
 title: Spatiotemporal Statistics of Vegetation Indices
-description: Calculate zonal statistics over time and export as long and wide tables in common delimited format.
+description: Calculate zonal statistics over time and export as long and wide tables in comma delimited format.
 author: saumyatas
 tags: featurecollection, zonal, statistics, ndvi, evi, reducer
 date_published: 2021-09-21

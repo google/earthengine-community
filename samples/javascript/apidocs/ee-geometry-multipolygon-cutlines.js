@@ -15,28 +15,7 @@
  */
 
 // [START earthengine__apidocs__ee_geometry_multipolygon_cutlines]
-// Define a MultiPolygon object.
-var multiPolygon = ee.Geometry.MultiPolygon(
-    [[[[-122.092, 37.424],
-       [-122.086, 37.418],
-       [-122.079, 37.425],
-       [-122.085, 37.423]]],
-     [[[-122.081, 37.417],
-       [-122.086, 37.421],
-       [-122.089, 37.416]]]]);
-
-// Apply the cutLines method to the MultiPolygon object.
-var multiPolygonCutLines = multiPolygon.cutLines({'distances': [10, 100], 'maxError': 1});
-
-// Print the result to the console.
-print('multiPolygon.cutLines(...) =', multiPolygonCutLines);
-
-// Display relevant geometries on the map.
-Map.setCenter(-122.085, 37.422, 15);
-Map.addLayer(multiPolygon,
-             {'color': 'black'},
-             'Geometry [black]: multiPolygon');
-Map.addLayer(multiPolygonCutLines,
-             {'color': 'red'},
-             'Result [red]: multiPolygon.cutLines');
+// Notice: the cutLines geometry method applies only to LineString,
+// MultiLineString, and LinearRing geometries. All other geometry types result
+// in an empty MultiLineString.
 // [END earthengine__apidocs__ee_geometry_multipolygon_cutlines]

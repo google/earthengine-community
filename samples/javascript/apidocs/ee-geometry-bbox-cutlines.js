@@ -15,21 +15,7 @@
  */
 
 // [START earthengine__apidocs__ee_geometry_bbox_cutlines]
-// Define a BBox object.
-var bBox = ee.Geometry.BBox(-122.09, 37.42, -122.08, 37.43);
-
-// Apply the cutLines method to the BBox object.
-var bBoxCutLines = bBox.cutLines({'distances': [10, 100], 'maxError': 1});
-
-// Print the result to the console.
-print('bBox.cutLines(...) =', bBoxCutLines);
-
-// Display relevant geometries on the map.
-Map.setCenter(-122.085, 37.422, 15);
-Map.addLayer(bBox,
-             {'color': 'black'},
-             'Geometry [black]: bBox');
-Map.addLayer(bBoxCutLines,
-             {'color': 'red'},
-             'Result [red]: bBox.cutLines');
+// Notice: the cutLines geometry method applies only to LineString,
+// MultiLineString, and LinearRing geometries. All other geometry types result
+// in an empty MultiLineString.
 // [END earthengine__apidocs__ee_geometry_bbox_cutlines]

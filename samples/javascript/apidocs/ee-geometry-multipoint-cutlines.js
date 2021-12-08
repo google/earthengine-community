@@ -15,21 +15,7 @@
  */
 
 // [START earthengine__apidocs__ee_geometry_multipoint_cutlines]
-// Define a MultiPoint object.
-var multiPoint = ee.Geometry.MultiPoint([[-122.082, 37.420], [-122.081, 37.426]]);
-
-// Apply the cutLines method to the MultiPoint object.
-var multiPointCutLines = multiPoint.cutLines({'distances': [10, 100], 'maxError': 1});
-
-// Print the result to the console.
-print('multiPoint.cutLines(...) =', multiPointCutLines);
-
-// Display relevant geometries on the map.
-Map.setCenter(-122.085, 37.422, 15);
-Map.addLayer(multiPoint,
-             {'color': 'black'},
-             'Geometry [black]: multiPoint');
-Map.addLayer(multiPointCutLines,
-             {'color': 'red'},
-             'Result [red]: multiPoint.cutLines');
+// Notice: the cutLines geometry method applies only to LineString,
+// MultiLineString, and LinearRing geometries. All other geometry types result
+// in an empty MultiLineString.
 // [END earthengine__apidocs__ee_geometry_multipoint_cutlines]

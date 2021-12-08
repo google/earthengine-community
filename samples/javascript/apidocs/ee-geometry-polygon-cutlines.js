@@ -15,25 +15,7 @@
  */
 
 // [START earthengine__apidocs__ee_geometry_polygon_cutlines]
-// Define a Polygon object.
-var polygon = ee.Geometry.Polygon(
-    [[[-122.092, 37.424],
-      [-122.086, 37.418],
-      [-122.079, 37.425],
-      [-122.085, 37.423]]]);
-
-// Apply the cutLines method to the Polygon object.
-var polygonCutLines = polygon.cutLines({'distances': [10, 100], 'maxError': 1});
-
-// Print the result to the console.
-print('polygon.cutLines(...) =', polygonCutLines);
-
-// Display relevant geometries on the map.
-Map.setCenter(-122.085, 37.422, 15);
-Map.addLayer(polygon,
-             {'color': 'black'},
-             'Geometry [black]: polygon');
-Map.addLayer(polygonCutLines,
-             {'color': 'red'},
-             'Result [red]: polygon.cutLines');
+// Notice: the cutLines geometry method applies only to LineString,
+// MultiLineString, and LinearRing geometries. All other geometry types result
+// in an empty MultiLineString.
 // [END earthengine__apidocs__ee_geometry_polygon_cutlines]

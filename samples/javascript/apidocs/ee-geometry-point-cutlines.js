@@ -15,21 +15,7 @@
  */
 
 // [START earthengine__apidocs__ee_geometry_point_cutlines]
-// Define a Point object.
-var point = ee.Geometry.Point(-122.082, 37.42);
-
-// Apply the cutLines method to the Point object.
-var pointCutLines = point.cutLines({'distances': [10, 100], 'maxError': 1});
-
-// Print the result to the console.
-print('point.cutLines(...) =', pointCutLines);
-
-// Display relevant geometries on the map.
-Map.setCenter(-122.085, 37.422, 15);
-Map.addLayer(point,
-             {'color': 'black'},
-             'Geometry [black]: point');
-Map.addLayer(pointCutLines,
-             {'color': 'red'},
-             'Result [red]: point.cutLines');
+// Notice: the cutLines geometry method applies only to LineString,
+// MultiLineString, and LinearRing geometries. All other geometry types result
+// in an empty MultiLineString.
 // [END earthengine__apidocs__ee_geometry_point_cutlines]

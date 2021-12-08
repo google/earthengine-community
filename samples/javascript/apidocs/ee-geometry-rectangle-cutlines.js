@@ -15,21 +15,7 @@
  */
 
 // [START earthengine__apidocs__ee_geometry_rectangle_cutlines]
-// Define a Rectangle object.
-var rectangle = ee.Geometry.Rectangle(-122.09, 37.42, -122.08, 37.43);
-
-// Apply the cutLines method to the Rectangle object.
-var rectangleCutLines = rectangle.cutLines({'distances': [10, 100], 'maxError': 1});
-
-// Print the result to the console.
-print('rectangle.cutLines(...) =', rectangleCutLines);
-
-// Display relevant geometries on the map.
-Map.setCenter(-122.085, 37.422, 15);
-Map.addLayer(rectangle,
-             {'color': 'black'},
-             'Geometry [black]: rectangle');
-Map.addLayer(rectangleCutLines,
-             {'color': 'red'},
-             'Result [red]: rectangle.cutLines');
+// Notice: the cutLines geometry method applies only to LineString,
+// MultiLineString, and LinearRing geometries. All other geometry types result
+// in an empty MultiLineString.
 // [END earthengine__apidocs__ee_geometry_rectangle_cutlines]

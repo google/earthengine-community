@@ -41,8 +41,11 @@ print('Rename selected bands using two corresponding lists',
 print('Match "QA" followed by any two characters',
       img.select('QA..').bandNames());
 
-print('Match "B" followed by any single character and optional final character',
+print('Match "B" followed by any character, any number of times',
       img.select('B.*').bandNames());
+
+print('Match "B" followed by any character, and any optional third character',
+      img.select('B..?').bandNames());
 
 print('Match "B" followed by a character in the range 6-8',
       img.select('B[6-8]').bandNames());

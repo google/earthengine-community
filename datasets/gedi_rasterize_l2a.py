@@ -39,6 +39,61 @@ class ExportParameters:
   crs: str = attr.ib()
   region: Any = attr.ib()  # ee.Geometry.Polygon | ee.Geometry.LinearRing
 
+# From https://lpdaac.usgs.gov/products/gedi02_av002/
+# We list all known property names for safety, even though we might not
+# be currently using all of them during rasterization.
+INTEGER_PROPS = {
+    'beam',
+    'channel',
+    'degrade_flag',
+    'elevation_bias_flag',
+    'enable_select_mode',
+    'l2a_alg_count',
+    'landsat_water_persistence',
+    'leaf_off_doy',
+    'leaf_off_flag',
+    'leaf_on_cycle',
+    'leaf_on_doy',
+    'master_int',
+    'mpfit_max_func_evals',
+    'mpfit_maxiters',
+    'num_detectedmodes',
+    'num_detectedmodes_aN',
+    'ocean_calibration_shot_flag',
+    'pft_class',
+    'quality_flag',
+    'quality_flag',
+    'quality_flag_aN',
+    'region_class',
+    'rh_aN',
+    'rx_algrunflag',
+    'rx_assess_flag',
+    'rx_clipbin0',
+    'rx_clipbin_count',
+    'rx_estimate_bias',
+    'rx_gflag',
+    'rx_giters',
+    'rx_max_mode_count',
+    'rx_maxpeakloc',
+    'rx_nummodes',
+    'rx_subbin_resolution',
+    'rx_use_fixed_thresholds',
+    'selected_algorithm',
+    'selected_mode',
+    'selected_mode',
+    'selected_mode_flag',
+    'selected_mode_flag',
+    'shot_number',
+    'shot_number',
+    'shot_number',
+    'stale_return_flag',
+    'state_return_flag',
+    'surface_flag',
+    'toploc_miss',
+    'urban_focal_window_size',
+    'urban_proportion',
+}
+
 
 def timestamp_ms_for_datetime(dt):
   return time.mktime(dt.timetuple()) * 1000
@@ -100,7 +155,8 @@ def create_export(
           'Vector asset %s has datetime %s, which is outside of the expected '
           'month %s-%s' % (table_asset_id, dt, year, month))
 
-  props = [
+  # This is a subset of all available table properties.
+  raster_bands = [
       'beam', 'degrade_flag', 'delta_time',
       'digital_elevation_model', 'digital_elevation_model_srtm',
       'elev_highestreturn', 'elev_lowestmode', 'elevation_bias_flag',
@@ -148,13 +204,18 @@ def create_export(
 
   image = (
       shots.sort('sensitivity', False).reduceToImage(
-          props,
-          ee.Reducer.first().forEach(props)).reproject(
+          raster_bands,
+          ee.Reducer.first().forEach(raster_bands)).reproject(
               crs, None, 25).set(image_properties))
+
+  int_bands = [p for p in raster_bands if p in INTEGER_PROPS]
+  # This keeps the original (alphabetic) band order.
+  image_with_types = image.toFloat().addBands(
+      image.select(int_bands).toInt(), overwrite=True)
 
   return ExportParameters(
       asset_id=raster_asset_id,
-      image=image.clip(box),
+      image=image_with_types.clip(box),
       pyramiding_policy={'.default': 'sample'},
       crs=crs,
       region=box)

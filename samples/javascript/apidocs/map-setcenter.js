@@ -15,8 +15,7 @@
  */
 
 // [START earthengine__apidocs__map_setcenter]
-// Set the position and optional zoom level of the map. Arguments must be
-// unnamed, in order: longitude (x), latitude (y), zoom level. Latitude must be
+// Set the position and optional zoom level of the map. Latitude must be
 // within [-85, 85].
 Map.setCenter(-123.6, 47.7, 9);
 // [END earthengine__apidocs__map_setcenter]

@@ -34,7 +34,7 @@ var mask = scored.select(['cloud']).lte(20);
 // Apply the mask to the image and display the result.
 var masked = cloudy_scene.updateMask(mask);
 Map.addLayer(masked, {bands: ['B4', 'B3', 'B2'], max: 0.4}, 'masked');
-// [START earthengine__landsat02__cloud_score]
+// [END earthengine__landsat02__cloud_score]
 
 // [START earthengine__landsat02__sensor_id]
 // Load a Landsat 8 composite and set the SENSOR_ID property.

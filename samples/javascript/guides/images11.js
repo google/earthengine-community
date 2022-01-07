@@ -31,7 +31,7 @@ var kernel = ee.Kernel.circle({radius: 1});
 
 // Perform an erosion followed by a dilation, display.
 var opened = image
-             .focal_min({kernel: kernel, iterations: 2})
-             .focal_max({kernel: kernel, iterations: 2});
+             .focalMin({kernel: kernel, iterations: 2})
+             .focalMax({kernel: kernel, iterations: 2});
 Map.addLayer(opened, {}, 'opened');
 // [END earthengine__images11__morphology]

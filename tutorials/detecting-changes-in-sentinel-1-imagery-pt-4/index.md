@@ -21,7 +21,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 -->
 
-{% include "earth-engine/_widgets/_notebook_buttons.html" with github_path="google/earthengine-community/blob/master/tutorials/detecting-changes-in-sentinel-1-imagery-pt-4/Tutorial_pt_4.ipynb" %}
+{% include "earth-engine/_widgets/_notebook_buttons.html" with github_path="mortcanty/eesarseq/blob/main/src/Tutorial_pt_4.ipynb" %}
 
 In the fourth and final part of this Community Tutorial series on SAR change
 detection, we will have a look at some more examples using imagery taken from

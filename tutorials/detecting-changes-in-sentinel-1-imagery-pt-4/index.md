@@ -1,6 +1,6 @@
 ---
 title: Detecting Changes in Sentinel-1 Imagery (Part 4)
-description: Synthetic aperture radar (SAR) imagery: explorer widget.
+description: Synthetic aperture radar (SAR) imagery - explorer widget.
 author: mortcanty
 tags: sentinel-1, sar, change-detection, widgets, time-series
 date_published: 2022-01-05

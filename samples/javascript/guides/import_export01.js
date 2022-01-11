@@ -19,19 +19,29 @@
  *   from 'Import and Export data' section
  */
 
-// [START earthengine__import_export01__export_image]
+// [START earthengine__import_export01__export_setup]
 // Load a landsat image and select three bands.
 var landsat = ee.Image('LANDSAT/LC08/C01/T1_TOA/LC08_123032_20140515')
   .select(['B4', 'B3', 'B2']);
 
 // Create a geometry representing an export region.
 var geometry = ee.Geometry.Rectangle([116.2621, 39.8412, 116.4849, 40.01236]);
+// [END earthengine__import_export01__export_setup]
 
-// Export the image, specifying scale and region.
+// [START earthengine__import_export01__export_projection]
+// Retrieve the projection information from a band of the original image.
+// Call getInfo() on the projection to request a client-side object containing
+// the crs and transform information needed for the client-side Export function.
+var projection = landsat.select('B2').projection().getInfo();
+// [END earthengine__import_export01__export_projection]
+
+// [START earthengine__import_export01__export_image]
+// Export the image, specifying the CRS, transform, and region.
 Export.image.toDrive({
   image: landsat,
-  description: 'imageToDriveExample',
-  scale: 30,
+  description: 'imageToDriveExample_transform',
+  crs: projection.crs,
+  crsTransform: projection.transform,
   region: geometry
 });
 // [END earthengine__import_export01__export_image]
@@ -41,7 +51,8 @@ Export.image.toDrive({
 Export.image.toDrive({
   image: landsat,
   description: 'imageToCOGeoTiffExample',
-  scale: 30,
+  crs: projection.crs,
+  crsTransform: projection.transform,
   region: geometry,
   fileFormat: 'GeoTIFF',
   formatOptions: {
@@ -57,7 +68,8 @@ Export.image.toCloudStorage({
   description: 'imageToCloudExample',
   bucket: 'your-bucket-name',
   fileNamePrefix: 'exampleExport',
-  scale: 30,
+  crs: projection.crs,
+  crsTransform: projection.transform,
   region: geometry
 });
 // [END earthengine__import_export01__image_to_cloud]
@@ -73,7 +85,8 @@ Export.image.toAsset({
   image: band4,
   description: 'imageToAssetExample',
   assetId: 'exampleExport',
-  scale: 30,
+  crs: projection.crs,
+  crsTransform: projection.transform,
   region: geometry,
   pyramidingPolicy: {
     'b4_mean': 'mean',
@@ -133,7 +146,8 @@ var region = ee.Geometry.Rectangle(-122.2806, 37.1209, -122.0554, 37.2413);
 var means = image.reduceRegion({
   reducer: ee.Reducer.mean(),
   geometry: region,
-  scale: 30
+  crs: projection.crs,
+  crsTransform: projection.transform,
 });
 
 // Make a feature without geometry and set the properties to the dictionary of means.

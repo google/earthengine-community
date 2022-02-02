@@ -32,7 +32,7 @@ var ndwi = image.normalizedDifference(['B3', 'B5']);
 // Compute the weighted mean of the NDWI image clipped to the region.
 var weighted = ndwi.clip(geometry)
   .reduceRegion({
-    reducer: ee.Reducer.sum(),
+    reducer: ee.Reducer.mean(),
     geometry: geometry,
     scale: 30})
   .get('nd');
@@ -40,7 +40,7 @@ var weighted = ndwi.clip(geometry)
 // Compute the UN-weighted mean of the NDWI image clipped to the region.
 var unweighted = ndwi.clip(geometry)
   .reduceRegion({
-    reducer: ee.Reducer.sum().unweighted(),
+    reducer: ee.Reducer.mean().unweighted(),
     geometry: geometry,
     scale: 30})
   .get('nd');

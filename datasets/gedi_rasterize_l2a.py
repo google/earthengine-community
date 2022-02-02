@@ -185,9 +185,7 @@ def create_export(
 
   shots = []
   for table_asset_id in table_asset_ids:
-    good_shots = ee.FeatureCollection(table_asset_id).filterMetadata(
-        'quality_flag', 'equals', 1)
-    shots.append(good_shots)
+    shots.append(ee.FeatureCollection(table_asset_id))
 
   box = grid_cell_feature.geometry().buffer(2500, 25).bounds()
   shots = ee.FeatureCollection(shots).flatten().filterBounds(box)

@@ -16,7 +16,7 @@
 
 // [START earthengine__apidocs__ee_date]
 print(ee.Date(0));  // Date (1970-01-01 00:00:00)
-print(ee.Date(60000));  // Date (1970-01-01 00:01:00) - 1 hour past the epoch
+print(ee.Date(60000));  // Date (1970-01-01 00:01:00) - 1 minute past the epoch
 
 // Multiply seconds by 1000 to get milliseconds
 print(ee.Date(1498263286 * 1000));  // Date (2017-06-24 00:14:46)

@@ -21,7 +21,7 @@ print(ee.Date(0));  // Date (1970-01-01 00:00:00)
 // Scale factors can make numerical inputs more readable (e.g. 60 seconds).
 print(ee.Date(60 * 1000));  // Date (1970-01-01 00:01:00)
 
-// ISO Date string input examples.
+// ISO 8601 date string input examples.
 print(ee.Date('2020'));  // Date (2020-01-01 00:00:00)
 print(ee.Date('2017-6-24'));  // Date (2017-06-24 00:00:00)
 print(ee.Date('2017-06-24'));  // Date (2017-06-24 00:00:00)

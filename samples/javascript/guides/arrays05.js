@@ -23,7 +23,7 @@
 var bandNames = ee.List(['B2', 'B3', 'B4', 'B5', 'B6', 'B7', 'B10', 'B11']);
 
 // Load a landsat 8 image and select the bands of interest.
-var image = ee.Image('LANDSAT/LC08/C01/T1/LC08_044034_20140318')
+var image = ee.Image('LANDSAT/LC08/C02/T1/LC08_044034_20140318')
   .select(bandNames);
 
 // Display the input imagery and the region in which to do the PCA.
@@ -111,4 +111,3 @@ for (var i = 0; i < bandNames.length().getInfo(); i++) {
   var band = pcImage.bandNames().get(i).getInfo();
   Map.addLayer(pcImage.select([band]), {min: -2, max: 2}, band);
 }
-

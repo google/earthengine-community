@@ -15,12 +15,13 @@
  */
 
 // [START earthengine__apidocs__ee_date]
+// Numeric inputs are interpreted as milliseconds from Unix epoch.
 print(ee.Date(0));  // Date (1970-01-01 00:00:00)
-print(ee.Date(60000));  // Date (1970-01-01 00:01:00) - 1 minute past the epoch
 
-// Multiply seconds by 1000 to get milliseconds
-print(ee.Date(1498263286 * 1000));  // Date (2017-06-24 00:14:46)
+// Scale factors can make numerical inputs more readable (e.g. 60 seconds).
+print(ee.Date(60 * 1000));  // Date (1970-01-01 00:01:00)
 
+// ISO Date string input examples.
 print(ee.Date('2020'));  // Date (2020-01-01 00:00:00)
 print(ee.Date('2017-6-24'));  // Date (2017-06-24 00:00:00)
 print(ee.Date('2017-06-24'));  // Date (2017-06-24 00:00:00)

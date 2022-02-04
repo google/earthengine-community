@@ -189,6 +189,9 @@ def create_export(
 
   box = grid_cell_feature.geometry().buffer(2500, 25).bounds()
   shots = ee.FeatureCollection(shots).flatten().filterBounds(box)
+  # We use ee.Reducer.first() below, so this will pick the point with the
+  # higherst sensitivity.
+  shots = shots.sort('sensitivity', False)
 
   crs = grid_cell_feature.get('crs').getInfo()
 

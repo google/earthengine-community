@@ -52,4 +52,7 @@ print('Match "B" followed by a character in the range 6-8',
 
 print('Match "B" followed by a character in the range 1-9 and then 1-2',
       img.select('B[1-9][1-2]').bandNames());
+
+print('Match "B" or "QA" each followed by any character, any number of times.',
+      img.select('B.*|QA.*').bandNames());
 // [END earthengine__apidocs__ee_image_select]

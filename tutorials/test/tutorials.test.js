@@ -63,7 +63,7 @@ var MD_ABSOLUTE_IMAGE_PATHS_REGEXP = /!\[.*?\]\(.*?\/.*?\)/g;
 
 // Expected to be the first line of the first cell.
 // eslint-disable-next-line max-len
-var IPYNB_COPYRIGHT_REGEXP = /#@title Copyright \d\d\d\d The Earth Engine Community Authors \{ display-mode: "form" \}/;
+var IPYNB_COPYRIGHT_REGEXP = /#\s*@title Copyright \d\d\d\d The Earth Engine Community Authors \{ display-mode: "form" \}/;
 
 // Finds image tags in HTML that contain absolute paths.
 var HTML_ABSOLUTE_PATHS_REGEXP = /\bsrc=['"]?.*?\/.*?['"]?/g;

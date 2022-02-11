@@ -20,34 +20,48 @@
  */
 
 // [START earthengine__classification03__sample]
-// Define a region of interest as a point.  Change the coordinates
-// to get a classification of any place where there is imagery.
-var roi = ee.Geometry.Point(-122.3942, 37.7295);
+// Define a region of interest.
+var roi = ee.Geometry.BBox(-122.93, 36.99, -121.20, 38.16);
 
-// Load Landsat 5 input imagery.
-var landsat = ee.Image(ee.ImageCollection('LANDSAT/LT05/C01/T1_TOA')
-  // Filter to get only one year of images.
-  .filterDate('2011-01-01', '2011-12-31')
-  // Filter to get only images under the region of interest.
-  .filterBounds(roi)
-  // Sort by scene cloudiness, ascending.
-  .sort('CLOUD_COVER')
-  // Get the first (least cloudy) scene.
-  .first());
+// Define a function that scales and masks Landsat 8 surface reflectance images.
+// Define a function that scales and masks Landsat 8 surface reflectance images.
+function prepSrL8(image) {
+  // Develop masks for unwanted pixels (fill, cloud, cloud shadow).
+  var qaMask = image.select('QA_PIXEL').bitwiseAnd(parseInt('11111', 2)).eq(0);
+  var saturationMask = image.select('QA_RADSAT').eq(0);
 
-// Compute cloud score.
-var cloudScore = ee.Algorithms.Landsat.simpleCloudScore(landsat).select('cloud');
+  // Apply the scaling factors to the appropriate bands.
+  var getFactorImg = function(factorNames) {
+    var factorList = image.toDictionary().select(factorNames).values();
+    return ee.Image.constant(factorList);
+  };
+  var scaleImg = getFactorImg([
+    'REFLECTANCE_MULT_BAND_.|TEMPERATURE_MULT_BAND_ST_B10']);
+  var offsetImg = getFactorImg([
+    'REFLECTANCE_ADD_BAND_.|TEMPERATURE_ADD_BAND_ST_B10']);
+  var scaled = image.select('SR_B.|ST_B10').multiply(scaleImg).add(offsetImg);
 
-// Mask the input for clouds.  Compute the min of the input mask to mask
-// pixels where any band is masked.  Combine that with the cloud mask.
-var input = landsat.updateMask(landsat.mask().reduce('min').and(cloudScore.lte(50)));
+  // Replace original bands with scaled bands and apply masks.
+  return image.addBands(scaled, null, true)
+    .updateMask(qaMask).updateMask(saturationMask);
+}
+
+// Make a cloud-free Landsat 8 surface reflectance composite.
+var input = ee.ImageCollection('LANDSAT/LC08/C02/T1_L2')
+    .filterBounds(roi)
+    .filterDate('2020-03-01', '2020-07-01')
+    .map(prepSrL8)
+    .median()
+    .setDefaultProjection('EPSG:4326', null, 30)
+    .select(['SR_B2', 'SR_B3', 'SR_B4', 'SR_B5', 'SR_B6', 'SR_B7']);
 
 // Use MODIS land cover, IGBP classification, for training.
-var modis = ee.Image('MODIS/051/MCD12Q1/2011_01_01')
-    .select('Land_Cover_Type_1');
+var modis = ee.Image('MODIS/006/MCD12Q1/2020_01_01')
+    .select('LC_Type1');
 
 // Sample the input imagery to get a FeatureCollection of training data.
 var training = input.addBands(modis).sample({
+  region: roi,
   numPixels: 5000,
   seed: 0
 });
@@ -56,8 +70,8 @@ var training = input.addBands(modis).sample({
 var classifier = ee.Classifier.smileRandomForest(10)
     .train({
       features: training,
-      classProperty: 'Land_Cover_Type_1',
-      inputProperties: ['B1', 'B2', 'B3', 'B4', 'B5', 'B6', 'B7']
+      classProperty: 'LC_Type1',
+      inputProperties: ['SR_B2', 'SR_B3', 'SR_B4', 'SR_B5', 'SR_B6', 'SR_B7']
     });
 
 // Classify the input imagery.
@@ -70,16 +84,17 @@ print('Training overall accuracy: ', trainAccuracy.accuracy());
 
 // Sample the input with a different random seed to get validation data.
 var validation = input.addBands(modis).sample({
+  region: roi,
   numPixels: 5000,
   seed: 1
   // Filter the result to get rid of any null pixels.
-}).filter(ee.Filter.neq('B1', null));
+}).filter(ee.Filter.notNull(input.bandNames()));
 
 // Classify the validation data.
 var validated = validation.classify(classifier);
 
 // Get a confusion matrix representing expected accuracy.
-var testAccuracy = validated.errorMatrix('Land_Cover_Type_1', 'classification');
+var testAccuracy = validated.errorMatrix('LC_Type1', 'classification');
 print('Validation error matrix: ', testAccuracy);
 print('Validation overall accuracy: ', testAccuracy.accuracy());
 
@@ -99,8 +114,12 @@ var igbpPalette = [
 
 // Display the input and the classification.
 Map.centerObject(roi, 10);
-Map.addLayer(input, {bands: ['B3', 'B2', 'B1'], max: 0.4}, 'landsat');
-Map.addLayer(classified, {palette: igbpPalette, min: 0, max: 17}, 'classification');
+Map.addLayer(input.clip(roi),
+             {bands: ['SR_B4', 'SR_B3', 'SR_B2'], min: 0, max: 0.25},
+             'landsat');
+Map.addLayer(classified.clip(roi),
+             {palette: igbpPalette, min: 0, max: 17},
+             'classification');
 // [END earthengine__classification03__sample]
 
 // [START earthengine__classification03__one_sample]
@@ -121,7 +140,7 @@ var validation = sample.filter(ee.Filter.gte('random', split));
 // [START earthengine__classification03__spatial_autocorrelation]
 // Sample the input imagery to get a FeatureCollection of training data.
 var sample = input.addBands(modis).sample({
-  region: landsat.geometry(),
+  region: roi,
   numPixels: 5000,
   seed: 0,
   geometries: true,

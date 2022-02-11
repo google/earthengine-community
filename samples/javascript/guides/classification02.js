@@ -20,16 +20,37 @@
  */
 
 // [START earthengine__classification02__polygon_training]
-// Make a cloud-free Landsat 8 TOA composite (from raw imagery).
-var l8 = ee.ImageCollection('LANDSAT/LC08/C01/T1');
+// Define a function that scales and masks Landsat 8 surface reflectance images.
+function prepSrL8(image) {
+  // Develop masks for unwanted pixels (fill, cloud, cloud shadow).
+  var qaMask = image.select('QA_PIXEL').bitwiseAnd(parseInt('11111', 2)).eq(0);
+  var saturationMask = image.select('QA_RADSAT').eq(0);
 
-var image = ee.Algorithms.Landsat.simpleComposite({
-  collection: l8.filterDate('2018-01-01', '2018-12-31'),
-  asFloat: true
-});
+  // Apply the scaling factors to the appropriate bands.
+  var getFactorImg = function(factorNames) {
+    var factorList = image.toDictionary().select(factorNames).values();
+    return ee.Image.constant(factorList);
+  };
+  var scaleImg = getFactorImg([
+    'REFLECTANCE_MULT_BAND_.|TEMPERATURE_MULT_BAND_ST_B10']);
+  var offsetImg = getFactorImg([
+    'REFLECTANCE_ADD_BAND_.|TEMPERATURE_ADD_BAND_ST_B10']);
+  var scaled = image.select('SR_B.|ST_B10').multiply(scaleImg).add(offsetImg);
+
+  // Replace original bands with scaled bands and apply masks.
+  return image.addBands(scaled, null, true)
+    .updateMask(qaMask).updateMask(saturationMask);
+}
+
+// Make a cloud-free Landsat 8 surface reflectance composite.
+var image = ee.ImageCollection('LANDSAT/LC08/C02/T1_L2')
+  .filterDate('2018-01-01', '2019-01-01')
+  .map(prepSrL8)
+  .median();
 
 // Use these bands for prediction.
-var bands = ['B2', 'B3', 'B4', 'B5', 'B6', 'B7', 'B10', 'B11'];
+var bands = ['SR_B2', 'SR_B3', 'SR_B4', 'SR_B5',
+             'SR_B6', 'SR_B7'];
 
 // Manually created polygons.
 var forest1 = ee.Geometry.Rectangle(-63.0187, -9.3958, -62.9793, -9.3443);
@@ -70,9 +91,11 @@ var classified = image.classify(trained);
 
 // Display the classification result and the input image.
 Map.setCenter(-62.836, -9.2399, 9);
-Map.addLayer(image, {bands: ['B4', 'B3', 'B2'], max: 0.5, gamma: 2});
-Map.addLayer(polygons, {}, 'training polygons');
+Map.addLayer(image,
+             {bands: ['SR_B4', 'SR_B3', 'SR_B2'], min: 0, max: 0.25},
+             'image');
+Map.addLayer(polygons, {color: 'yellow'}, 'training polygons');
 Map.addLayer(classified,
-             {min: 0, max: 1, palette: ['red', 'green']},
+             {min: 0, max: 1, palette: ['orange', 'green']},
              'deforestation');
 // [END earthengine__classification02__polygon_training]

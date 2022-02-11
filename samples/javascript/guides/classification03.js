@@ -24,7 +24,6 @@
 var roi = ee.Geometry.BBox(-122.93, 36.99, -121.20, 38.16);
 
 // Define a function that scales and masks Landsat 8 surface reflectance images.
-// Define a function that scales and masks Landsat 8 surface reflectance images.
 function prepSrL8(image) {
   // Develop masks for unwanted pixels (fill, cloud, cloud shadow).
   var qaMask = image.select('QA_PIXEL').bitwiseAnd(parseInt('11111', 2)).eq(0);

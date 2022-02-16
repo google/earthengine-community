@@ -130,8 +130,8 @@ define temporal relationships between collection items and build functions to
 reduce this time.
 
 First, some very basic mathematical notation for time series. A time series
-is an array of the value being measured, sorted chronologically: {
-$\textbf{p}_{t}  = t_{0} + t_{1}... t_{N}$ }, where each *t* is the given
+is an array of the value being measured, sorted chronologically:
+$\textbf{p}_{t}  = t_{0} + t_{1}... t_{N}$, where each *t* is the given
 value in the series.
 
 ### Data preparation and preprocessing
@@ -252,7 +252,7 @@ To estimate linear trends over time, consider the following linear
 model, where $\epsilon_t$ is a random error:
 
 $$
-y = \beta_0 + \beta_1X_1 + ... + \beta_nX_n + \epsilon_t
+\tag{1} y = \beta_0 + \beta_1X_1 + ... + \beta_nX_n + \epsilon_t
 $$
 
 This is the model behind the trendline added to the chart you just created.
@@ -323,13 +323,13 @@ Consider the following linear model, where $e_t$ is random error, $A$ is
 amplitude, $\omega$ is frequency, and $\phi$ is phase:
 
 $$
-p_t = \beta_0 + \beta_1t + Acos(2\pi\omega t - \phi) + e_t
+\tag{2} p_t = \beta_0 + \beta_1t + Acos(2\pi\omega t - \phi) + e_t
 $$
 
 We can decompose our function into separate cosine and sine elements.
 
 $$
-p_t = \beta_0 + \beta_1t + \beta_2cos(2\pi\omega t) + \beta_3sin(2\pi\omega t) + e_t
+\tag{3} p_t = \beta_0 + \beta_1t + \beta_2cos(2\pi\omega t) + \beta_3sin(2\pi\omega t) + e_t
 $$
 
 Note that $\beta_2 = Acos(\phi)$ and $\beta_3 = Asin(\phi)$, implying

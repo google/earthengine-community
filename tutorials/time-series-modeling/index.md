@@ -252,7 +252,7 @@ To estimate linear trends over time, consider the following linear
 model, where $\epsilon_t$ is a random error:
 
 $$
-\tag{1} y = \beta_0 + \beta_1X_1 + ... + \beta_nX_n + \epsilon_t
+y = \beta_0 + \beta_1X_1 + ... + \beta_nX_n + \epsilon_t \tag{1}
 $$
 
 This is the model behind the trendline added to the chart you just created.
@@ -323,13 +323,13 @@ Consider the following linear model, where $e_t$ is random error, $A$ is
 amplitude, $\omega$ is frequency, and $\phi$ is phase:
 
 $$
-\tag{2} p_t = \beta_0 + \beta_1t + Acos(2\pi\omega t - \phi) + e_t
+p_t = \beta_0 + \beta_1t + Acos(2\pi\omega t - \phi) + e_t \tag{2}
 $$
 
 We can decompose our function into separate cosine and sine elements.
 
 $$
-\tag{3} p_t = \beta_0 + \beta_1t + \beta_2cos(2\pi\omega t) + \beta_3sin(2\pi\omega t) + e_t
+p_t = \beta_0 + \beta_1t + \beta_2cos(2\pi\omega t) + \beta_3sin(2\pi\omega t) + e_t \tag{3}
 $$
 
 Note that $\beta_2 = Acos(\phi)$ and $\beta_3 = Asin(\phi)$, implying

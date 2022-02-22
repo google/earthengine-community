@@ -23,6 +23,9 @@ print('Original list', list);
 // "count" are deleted. Here, the 3rd element is removed.
 print('Remove 1 element', list.splice({start: 2, count: 1, other: null}));
 
+// If "start" is negative, the position is from the end of the list.
+print('Remove 2nd from last element', list.splice(-2, 1));
+
 // Deletes 3 elements starting at position 1.
 print('Remove multiple sequential elements', list.splice(1, 3));
 

@@ -62,7 +62,6 @@ INTEGER_PROPS = {
     'ocean_calibration_shot_flag',
     'pft_class',
     'quality_flag',
-    'quality_flag',
     'quality_flag_aN',
     'region_class',
     'rh_aN',
@@ -80,12 +79,8 @@ INTEGER_PROPS = {
     'rx_use_fixed_thresholds',
     'selected_algorithm',
     'selected_mode',
-    'selected_mode',
     'selected_mode_flag',
-    'selected_mode_flag',
-    'shot_number',
-    'shot_number',
-    'shot_number',
+    # Note that 'shot_number' is a long, so we should not cast it to int.
     'stale_return_flag',
     'state_return_flag',
     'surface_flag',
@@ -93,6 +88,7 @@ INTEGER_PROPS = {
     'urban_focal_window_size',
     'urban_proportion',
 }
+LONG_PROPS = {'shot_number'}
 
 
 def timestamp_ms_for_datetime(dt):
@@ -210,9 +206,11 @@ def create_export(
               crs, None, 25).set(image_properties))
 
   int_bands = [p for p in raster_bands if p in INTEGER_PROPS]
+  long_bands = [p for p in raster_bands if p in LONG_PROPS]
   # This keeps the original (alphabetic) band order.
   image_with_types = image.toFloat().addBands(
-      image.select(int_bands).toInt(), overwrite=True)
+      image.select(int_bands).toInt(), overwrite=True).addBands(
+      image.select(long_bands).toLong(), overwrite=True)
 
   return ExportParameters(
       asset_id=raster_asset_id,

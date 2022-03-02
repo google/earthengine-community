@@ -40,7 +40,7 @@ print('defaultMap bounds as a list',
 print('defaultMap bounds as a dictionary',
       ee.Dictionary.fromLists(['w', 's', 'e', 'n'], defaultMap.getBounds()));
 print('defaultMap bounds as GeoJSON',
-      defaultMap.getBounds(true));
+      defaultMap.getBounds({asGeoJSON: true}));
 
 // Map center point can be fetched using the ui.Map.getCenter method.
 print('defaultMap center as a Point geometry', defaultMap.getCenter());

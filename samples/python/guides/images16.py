@@ -17,7 +17,7 @@
 # [START earthengine__images16__unmixing]
 # Load a Landsat 5 image and select the bands we want to unmix.
 bands = ['B1', 'B2', 'B3', 'B4', 'B5', 'B6', 'B7']
-image = ee.Image('LANDSAT/LT05/C01/T1/LT05_044034_20080214').select(bands)
+image = ee.Image('LANDSAT/LT05/C02/T1/LT05_044034_20080214').select(bands)
 
 # Define spectral endmembers.
 urban = [88, 42, 48, 38, 86, 115, 59]

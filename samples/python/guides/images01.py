@@ -18,7 +18,7 @@
 import pprint
 
 # Load an image.
-image = ee.Image('LANDSAT/LC08/C01/T1/LC08_044034_20140318')
+image = ee.Image('LANDSAT/LC08/C02/T1/LC08_044034_20140318')
 
 # All metadata.
 print('All metadata:')

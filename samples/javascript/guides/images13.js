@@ -21,7 +21,7 @@
 
 // [START earthengine__images13__canny]
 // Load a Landsat 8 image, select the panchromatic band.
-var image = ee.Image('LANDSAT/LC08/C01/T1/LC08_044034_20140318').select('B8');
+var image = ee.Image('LANDSAT/LC08/C02/T1/LC08_044034_20140318').select('B8');
 
 // Perform Canny edge detection and display the result.
 var canny = ee.Algorithms.CannyEdgeDetector({

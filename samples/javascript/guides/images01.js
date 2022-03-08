@@ -21,7 +21,7 @@
 
 // [START earthengine__images01__image_info]
 // Load an image.
-var image = ee.Image('LANDSAT/LC08/C01/T1/LC08_044034_20140318');
+var image = ee.Image('LANDSAT/LC08/C02/T1/LC08_044034_20140318');
 
 // Display all metadata.
 print('All metadata:', image);

@@ -20,24 +20,23 @@
  */
 
 // [START earthengine__images09__where_operator]
-// Load a cloudy Landsat 8 image.
-var image = ee.Image('LANDSAT/LC08/C01/T1_TOA/LC08_044034_20130603');
+// Load a cloudy Sentinel-2 image.
+var image = ee.Image(
+  'COPERNICUS/S2_SR/20210114T185729_20210114T185730_T10SEG');
 Map.addLayer(image,
-             {bands: ['B5', 'B4', 'B3'], min: 0, max: 0.5},
+             {bands: ['B4', 'B3', 'B2'], min: 0, max: 2000},
              'original image');
 
 // Load another image to replace the cloudy pixels.
-var replacement = ee.Image('LANDSAT/LC08/C01/T1_TOA/LC08_044034_20130416');
+var replacement = ee.Image(
+  'COPERNICUS/S2_SR/20210109T185751_20210109T185931_T10SEG');
 
-// Compute a cloud score band.
-var cloud = ee.Algorithms.Landsat.simpleCloudScore(image).select('cloud');
-
-// Set cloudy pixels to the other image.
-var replaced = image.where(cloud.gt(10), replacement);
+// Set cloudy pixels (greater than 5% probability) to the other image.
+var replaced = image.where(image.select('MSK_CLDPRB').gt(5), replacement);
 
 // Display the result.
-Map.centerObject(image, 9);
+Map.setCenter(-122.3769, 37.7349, 11);
 Map.addLayer(replaced,
-             {bands: ['B5', 'B4', 'B3'], min: 0, max: 0.5},
+             {bands: ['B4', 'B3', 'B2'], min: 0, max: 2000},
              'clouds replaced');
 // [END earthengine__images09__where_operator]

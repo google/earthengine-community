@@ -16,7 +16,7 @@
 
 # [START earthengine__images12__gradients]
 # Load a Landsat 8 image and select the panchromatic band.
-image = ee.Image('LANDSAT/LC08/C01/T1/LC08_044034_20140318').select('B8')
+image = ee.Image('LANDSAT/LC08/C02/T1/LC08_044034_20140318').select('B8')
 
 # Compute the image gradient in the X and Y directions.
 xy_grad = image.gradient()

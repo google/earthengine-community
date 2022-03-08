@@ -21,7 +21,7 @@
 
 // [START earthengine__images03__viz_image]
 // Load an image.
-var image = ee.Image('LANDSAT/LC08/C01/T1_TOA/LC08_044034_20140318');
+var image = ee.Image('LANDSAT/LC08/C02/T1_TOA/LC08_044034_20140318');
 
 // Define the visualization parameters.
 var vizParams = {
@@ -38,7 +38,7 @@ Map.addLayer(image, vizParams, 'false color composite');
 
 // [START earthengine__images03__palette]
 // Load an image.
-var image = ee.Image('LANDSAT/LC08/C01/T1_TOA/LC08_044034_20140318');
+var image = ee.Image('LANDSAT/LC08/C02/T1_TOA/LC08_044034_20140318');
 
 // Create an NDWI image, define visualization parameters and display.
 var ndwi = image.normalizedDifference(['B3', 'B5']);
@@ -73,5 +73,5 @@ Map.addLayer(mosaic, {}, 'mosaic');
 var roi = ee.Geometry.Point([-122.4481, 37.7599]).buffer(20000);
 
 // Display a clipped version of the mosaic.
-Map.addLayer(mosaic.clip(roi));
+Map.addLayer(mosaic.clip(roi), null, 'mosaic clipped');
 // [END earthengine__images03__clip]

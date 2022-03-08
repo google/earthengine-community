@@ -1,6 +1,6 @@
 ---
 title: Time Series Modeling
-description: Fundamentals of time series modeling: decomposition, autocorrelation, and modeling historical changes.
+description: Fundamentals of time series modeling - decomposition, autocorrelation, and modeling historical changes.
 author: ghidora77
 tags: remote-sensing, time-series, satellite, landsat
 date_published: 2022-02-01

@@ -130,9 +130,9 @@ define temporal relationships between collection items and build functions to
 reduce this time.
 
 First, some very basic mathematical notation for time series. A time series
-is an array of the value being measured, sorted chronologically:
-$\textbf{p}_{t}  = t_{0} + t_{1}... t_{N}$, where each *t* is the given
-value in the series.
+is an array of the value being measured, sorted
+chronologically: $\textbf{p}{t} = t{0} + t{1}... t{N}$, where each $\{t}$ is
+the given value in the series.
 
 ### Data preparation and preprocessing
 
@@ -281,7 +281,7 @@ var coefficients = trend.select('coefficients')
 ```
 
 The image added to the map is a two-band image in which each pixel contains
-values for $\beta_0$ and  $\beta_1$. Click around the map with the
+values for $\beta_0$ and $\beta_1$. Click around the map with the
 inspector, and look at some of the values. We can see that most pixels around
 our region of interest have a negative trend—although darker values
 indicate a shallow negative trend, while bright red pixels indicate a steeper

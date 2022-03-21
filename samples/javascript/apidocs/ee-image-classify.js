@@ -1,5 +1,5 @@
 /**
- * Copyright 2021 The Google Earth Engine Community Authors
+ * Copyright 2022 The Google Earth Engine Community Authors
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-// [START earthengine__apidocs__ee_classifier_smilerandomforest]
+// [START earthengine__apidocs__ee_image_classify]
 // A Sentinel-2 surface reflectance image, reflectance bands selected,
 // serves as the source for training and prediction in this contrived example.
 var img = ee.Image('COPERNICUS/S2_SR/20210109T185751_20210109T185931_T10SEG')
@@ -84,4 +84,4 @@ Map.addLayer(imgClassified, classVis, 'Classified');
 Map.addLayer(roi, {color: 'white'}, 'ROI', false, 0.5);
 Map.addLayer(trainingSample, {color: 'black'}, 'Training sample', false);
 Map.addLayer(validationSample, {color: 'white'}, 'Validation sample', false);
-// [END earthengine__apidocs__ee_classifier_smilerandomforest]
+// [END earthengine__apidocs__ee_image_classify]

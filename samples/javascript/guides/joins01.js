@@ -21,7 +21,7 @@
 
 // [START earthengine__joins01__simple_join]
 // Load a Landsat 8 image collection at a point of interest.
-var collection = ee.ImageCollection('LANDSAT/LC08/C01/T1_TOA')
+var collection = ee.ImageCollection('LANDSAT/LC08/C02/T1_TOA')
     .filterBounds(ee.Geometry.Point(-122.09, 37.42));
 
 // Define start and end dates with which to filter the collections.

@@ -131,7 +131,7 @@ reduce this time.
 
 First, some very basic mathematical notation for time series. A time series
 is an array of the value being measured, sorted
-chronologically: $\textbf{p}{t} = t{0} + t{1}... t{N}$, where each $\{t}$ is
+chronologically: $\textbf{p}{t} = t{0} + t{1}... t{N}$, where each $t$ is
 the given value in the series.
 
 ### Data preparation and preprocessing

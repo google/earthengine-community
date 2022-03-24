@@ -20,14 +20,15 @@
  */
 
 // [START earthengine__image_collections04__time_band]
-// Load a Landsat 8 collection for a single path-row.
-var collection = ee.ImageCollection('LANDSAT/LC08/C01/T1_TOA')
+// Load a Landsat 8 collection for a single path-row, 2021 images only.
+var collection = ee.ImageCollection('LANDSAT/LC08/C02/T1_TOA')
+  .filterDate('2021', '2022')
   .filter(ee.Filter.eq('WRS_PATH', 44))
   .filter(ee.Filter.eq('WRS_ROW', 34));
 
 // This function adds a band representing the image timestamp.
 var addTime = function(image) {
-  return image.addBands(image.metadata('system:time_start'));
+  return image.addBands(image.getNumber('system:time_start'));
 };
 
 // Map the function over the collection and display the result.
@@ -35,19 +36,21 @@ print(collection.map(addTime));
 // [END earthengine__image_collections04__time_band]
 
 // [START earthengine__image_collections04__if]
-// Load a Landsat 8 collection for a single path-row.
-var collection = ee.ImageCollection('LANDSAT/LC8_L1T_TOA')
+// Load a Landsat 8 collection for a single path-row, 2021 images only.
+var collection = ee.ImageCollection('LANDSAT/LC08/C02/T1_TOA')
+  .filterDate('2021', '2022')
   .filter(ee.Filter.eq('WRS_PATH', 44))
   .filter(ee.Filter.eq('WRS_ROW', 34));
 
 // This function uses a conditional statement to return the image if
-// the solar elevation > 40 degrees.  Otherwise it returns a zero image.
+// the solar elevation > 40 degrees. Otherwise it returns a "zero image".
 var conditional = function(image) {
   return ee.Algorithms.If(ee.Number(image.get('SUN_ELEVATION')).gt(40),
                           image,
                           ee.Image(0));
 };
 
-// Map the function over the collection, convert to a List and print the result.
-print('Expand this to see the result: ', collection.map(conditional));
+// Map the function over the collection and print the result. Expand the
+// collection and note that 7 of the 22 images are now "zero images'.
+print('Expand this to see the result', collection.map(conditional));
 // [END earthengine__image_collections04__if]

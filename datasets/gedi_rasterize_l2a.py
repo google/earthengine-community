@@ -42,7 +42,7 @@ class ExportParameters:
 # From https://lpdaac.usgs.gov/products/gedi02_av002/
 # We list all known property names for safety, even though we might not
 # be currently using all of them during rasterization.
-INTEGER_PROPS = {
+INTEGER_PROPS = frozenset({
     'beam',
     'channel',
     'degrade_flag',
@@ -55,8 +55,6 @@ INTEGER_PROPS = {
     'leaf_on_cycle',
     'leaf_on_doy',
     'master_int',
-    'mpfit_max_func_evals',
-    'mpfit_maxiters',
     'num_detectedmodes',
     'num_detectedmodes_aN',
     'ocean_calibration_shot_flag',
@@ -72,10 +70,8 @@ INTEGER_PROPS = {
     'rx_estimate_bias',
     'rx_gflag',
     'rx_giters',
-    'rx_max_mode_count',
     'rx_maxpeakloc',
     'rx_nummodes',
-    'rx_subbin_resolution',
     'rx_use_fixed_thresholds',
     'selected_algorithm',
     'selected_mode',
@@ -87,8 +83,14 @@ INTEGER_PROPS = {
     'toploc_miss',
     'urban_focal_window_size',
     'urban_proportion',
-}
-LONG_PROPS = {'shot_number'}
+})
+LONG_PROPS = frozenset({
+    'shot_number',
+    'mpfit_max_func_evals',
+    'mpfit_maxiters',
+    'rx_subbin_resolution',
+    'rx_max_mode_count',
+})
 
 
 def timestamp_ms_for_datetime(dt):

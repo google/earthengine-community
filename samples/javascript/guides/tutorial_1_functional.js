@@ -39,7 +39,7 @@ print(squares);  // [1, 4, 9, 16, 25, 36, 49, 64, 81]
 // [START earthengine__tutorial_1_functional__square_odd_numbers]
 // The following function determines if a number is even or odd.  The mod(2)
 // function returns 0 if the number is even and 1 if it is odd (the remainder
-// after dividing by 2).  The input is multipled by this remainder so even
+// after dividing by 2).  The input is multiplied by this remainder so even
 // numbers get set to 0 and odd numbers are left unchanged.
 var getOddNumbers = function(number) {
   number = ee.Number(number);   // Cast the input to a Number so we can use mod.

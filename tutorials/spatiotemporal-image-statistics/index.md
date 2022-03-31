@@ -165,7 +165,7 @@ by an underscore. The process uses a client-side for loop on the number
 of time windows, and for each one, zonal statistics are calculated and appended
 as new properties to the FeatureCollection. An alternative approach is to use
 Earth Engine's `iterate` function, but a comparison of the approaches'
-performance was equal, so we've choosen the for loop for improved readability.
+performance was equal, so we've chosen the for loop for improved readability.
 
 ```js
 var temporalStatW;  // defined dynamically for each temporal image composite

@@ -19,7 +19,7 @@
 var img = ee.Image('COPERNICUS/S2_SR/20210109T185751_20210109T185931_T10SEG');
 print('Original image', img);
 
-// Scale reflectance bands and overwrite the orginal bands.
+// Scale reflectance bands and overwrite the original bands.
 var reflBands = img.select('B.*').divide(10000);
 img = img.addBands({
   srcImg: reflBands,

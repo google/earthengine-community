@@ -23,7 +23,7 @@
 // Load a Landsat 8 input image.
 var image = ee.Image('LANDSAT/LC08/C01/T1/LC08_044034_20140318');
 
-// Creat an arbitrary region.
+// Create an arbitrary region.
 var geometry = ee.Geometry.Rectangle(-122.496, 37.532, -121.554, 37.538);
 
 // Make an NDWI image.  It will have one band named 'nd'.

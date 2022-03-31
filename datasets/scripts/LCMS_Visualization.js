@@ -12,13 +12,13 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- * 
- * 
+ *
+ *
  * Example script for visualizing LCMS change summaries, land cover, and land use.
- * 
+ *
  * A more in-depth visualization of LCMS products is available at:
  * https://apps.fs.usda.gov/lcms-viewer/
- * 
+ *
  * Contact sm.fs.lcms@usda.gov with any questions or specific data requests.
  */
 
@@ -139,7 +139,7 @@ function getMostRecentChange(c, code){
 var lcms = ee.ImageCollection('USFS/GTAC/LCMS/v2020-5');
 print('Available study areas:', lcms.aggregate_histogram('study_area').keys());
 print('Available LCMS products', lcms.first().bandNames());
-print(ui.Label('Learn more about visualization of LCMS products here', 
+print(ui.Label('Learn more about visualization of LCMS products here',
   null, 'https://apps.fs.usda.gov/lcms-viewer/'));
 
 // Set up time periods to compare land cover and land use

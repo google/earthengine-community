@@ -52,14 +52,14 @@ var VIS_WTH = {
 
 var palette_elv = ['C9EEE1', 'D6FEF0', 'F9F4E7', 'F9E8CB','F9EDCE', 'F9E3CE', 'F9E9E2', 'FAD9CC', 'F5B7B1', 'f4AAA3'];
 var VIS_ELV = {
-    min: -0.5, 
-    max: 10, 
+    min: -0.5,
+    max: 10,
     palette: palette_elv
 };
 
-var palette_dem = ['000000', '1276DC', '00B5AD', '00C777', '05CD67', 
+var palette_dem = ['000000', '1276DC', '00B5AD', '00C777', '05CD67',
   '3DD872', '21D36D', '71E37D', '55DD77', 'A5ED87', 'E5FA94', 'FEFE98', 'F2EE92', 'DCD286',
-  'CABB7C', 'BCA975', 'AE976D', 'A68D69', '8C6C5B', '815E56', '93756E', 'A9918C', 'C9BAB7', 
+  'CABB7C', 'BCA975', 'AE976D', 'A68D69', '8C6C5B', '815E56', '93756E', 'A9918C', 'C9BAB7',
   'E3DBD9', 'FFFFFF'];
 var VIS_DEM = {
     min:0,
@@ -223,7 +223,7 @@ panel.add(ui.Label('River channel network with permanent water body. '
       +'"Major" displays the channels detected by Landsat while '
       +'"Minor" displays the ones not detected.',
       {margin:'4px 4px 0 12px'}));
-      
+
 panel.add(ui.Label('Terrain', {fontWeight: 'bold', fontSize:'14px', margin:'12px 0 0 8px'}));
 panel.add(ui.Label('Terrain layer with "Elevation" and "Hand" (Height above the nearest drainage).',
       {margin:'4px 4px 0 12px'}));
@@ -244,7 +244,7 @@ var dirCheck = ui.Checkbox(FLOW_DIRECTION).setValue(true);
 // Register an onClick handler that populates and shows the inspector panel.
 map.onClick(function(coords) {
   // Gather the image bands into a single Image that we can asynchronously sample.
-  
+
   var point = ee.Geometry.Point(coords.lon, coords.lat);
 
 var lon = ui.Label();
@@ -253,7 +253,7 @@ var lat = ui.Label();
   // Add the dot as the second layer, so it shows up on top of the composite.
   var dot = ui.Map.Layer(point, {color: 'FF0000'}, 'clicked location');
   map.layers().set(0, dot);
-  
+
   var sample = merit.unmask(0).sample(point, 30).first().toDictionary();
   sample.evaluate(function(values) {
     inspector.clear();
@@ -301,7 +301,7 @@ var legendTitle_wth = ui.Label({value: 'River Width (m)', style: {fontWeight: 'b
 var legendTitle_dem = ui.Label({value: 'Elevation (m)', style: {fontWeight: 'bold'}});
 var legendTitle_hand = ui.Label({value: 'Hand (m)', style: {fontWeight: 'bold'}});
 
-// Fuction to create the legend image.
+// Function to create the legend image.
 function makeLegendImage(VIS) {
   var lon = ee.Image.pixelLonLat().select('latitude');
   var gradient = lon.multiply((VIS.max-VIS.min)/100.0).add(VIS.min);
@@ -389,7 +389,7 @@ function redraw() {
   map.layers().reset();
   map.remove(legendPanel_wth);
   map.remove(legendPanel_Terrain);
-  
+
   var layer = select.getValue();
 
   if (layer == RIVER_CHANNEL) {
@@ -400,9 +400,9 @@ function redraw() {
     map.addLayer(waterBody,{palette: '5F6EFF'}, 'Water Body')
     map.addLayer(viswidth.updateMask(viswidth.gt(0)).lte(30).selfMask(),
       {palette: '000000'}, 'River Channel (Minor)')
-    map.addLayer(viswidth.gt(30).selfMask(), 
+    map.addLayer(viswidth.gt(30).selfMask(),
       {palette: '071CEC'}, 'River Channel (Major)');
-   
+
 
   } else if (layer == RIVER_WIDTH) {
 
@@ -410,26 +410,26 @@ function redraw() {
     map.addLayer(hillshade,
     {min: 0, max: 600, palette: ['444444', 'e5e5e5']}, 'Hillshade');
     map.addLayer(waterBody, {palette: '000000'}, 'Water Body');
-    
-    // Visualize this layer when zooming-in at zoom level above 8  
+
+    // Visualize this layer when zooming-in at zoom level above 8
     map.addLayer(tributary, {palette: '281D2F'}, 'Tributaries', false);
 
     // Use 'global' at zoom level below 4
     map.addLayer(rwC_local, VIS_WTH, 'River Width (Local)', false);
     map.addLayer(rwC_regional, VIS_WTH, 'River Width (Regional)', true);
     map.addLayer(rwC_global, VIS_WTH, 'River Width (Global)', false);
-  
+
     map.add(legendPanel_wth);
-    
+
   } else if (layer == TERRAIN){
-    
+
     map.addLayer(ee.Image(1), { palette: ['FFFFFF']}, 'clicked location', false, 0);
     map.addLayer(waterBody, {palette: '000000'}, 'Water Body');
     map.addLayer(dem, VIS_DEM, 'Elevation', false);
     map.addLayer(handClass, VIS_HAND, 'Hand', true);
-    
+
     map.add(legendPanel_Terrain);
-    
+
   }
 }
 redraw();

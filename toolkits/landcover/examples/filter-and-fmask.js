@@ -15,7 +15,7 @@
  * limitations under the License.
  *
  * @fileoverview
- * Example code snippet to demostrate basic Landcover Toolkit functionality
+ * Example code snippet to demonstrate basic Landcover Toolkit functionality
  * in Code Editor.
  */
 

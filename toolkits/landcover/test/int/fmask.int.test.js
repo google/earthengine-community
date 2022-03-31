@@ -38,7 +38,7 @@ withEarthEngine('FMask', function() {
     var masked2 = FMask.maskCloudsAndShadows(cloudyPixel);
     var masked3 = FMask.maskCloudsAndShadows(shadowyPixel);
 
-    // Verify retured pixels
+    // Verify returned pixels
     var value1 = TestImage.reduceConstant(masked1).get('B4');
     var value2 = TestImage.reduceConstant(masked2).get('B4');
     var value3 = TestImage.reduceConstant(masked3).get('B4');

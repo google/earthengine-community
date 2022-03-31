@@ -50,7 +50,7 @@ print('A GeoJSON string needs to be converted to an object',
 // class to access their methods. In the following example an ee.Geometry
 // object is stored as a ee.Feature property. When it is retrieved with the
 // .get() function, a computed geometry object is returned. Cast the computed
-// object as a ee.Geomtry to get the geometry's bounds, for instance.
+// object as a ee.Geometry to get the geometry's bounds, for instance.
 var feature = ee.Feature(null, {geom: ee.Geometry(geojsonObject)});
 print('Cast computed geometry objects to ee.Geometry class',
       ee.Geometry(feature.get('geom')).bounds());

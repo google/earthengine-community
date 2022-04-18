@@ -24,8 +24,9 @@ from dateutil import relativedelta
 import pytz
 
 import ee
+from google3.pyglib.function_utils import memoize
 
-flags.DEFINE_integer('num_utm_grid_cells_l2a', 389, 'UTM grid cell count')
+flags.DEFINE_integer('num_utm_grid_cells_l2b', 389, 'UTM grid cell count')
 
 FLAGS = flags.FLAGS
 
@@ -43,53 +44,35 @@ class ExportParameters:
 # We list all known property names for safety, even though we might not
 # be currently using all of them during rasterization.
 INTEGER_PROPS = frozenset({
-    'beam',
+    'algorithmrun_flag',
+    'algorithmrun_flag_aN',
     'channel',
     'degrade_flag',
-    'elevation_bias_flag',
-    'enable_select_mode',
-    'l2a_alg_count',
-    'landsat_water_persistence',
-    'leaf_off_doy',
+    'l2a_quality_flag',
+    'l2b_quality_flag',
+    'landsat_water_persistencoe',
     'leaf_off_flag',
     'leaf_on_cycle',
-    'leaf_on_doy',
     'master_int',
     'num_detectedmodes',
-    'num_detectedmodes_aN',
-    'ocean_calibration_shot_flag',
     'pft_class',
-    'quality_flag',
-    'quality_flag_aN',
     'region_class',
-    'rh_aN',
-    'rx_algrunflag',
-    'rx_assess_flag',
-    'rx_clipbin0',
-    'rx_clipbin_count',
-    'rx_estimate_bias',
-    'rx_gflag',
-    'rx_giters',
-    'rx_maxpeakloc',
-    'rx_nummodes',
-    'rx_use_fixed_thresholds',
-    'selected_algorithm',
+    'rg_eg_constraint_center_buffer',
+    'rg_eg_flag_aN',
+    'rg_eg_niter_aN',
+    'selected_l2a_algorithm',
     'selected_mode',
     'selected_mode_flag',
-    # Note that 'shot_number' is a long, so we should not cast it to int.
+    'selected_rg_algorithm',
     'stale_return_flag',
-    'state_return_flag',
     'surface_flag',
-    'toploc_miss',
     'urban_focal_window_size',
-    'urban_proportion',
+    'urban_proportion'
 })
 LONG_PROPS = frozenset({
-    'shot_number',
-    'mpfit_max_func_evals',
-    'mpfit_maxiters',
-    'rx_subbin_resolution',
-    'rx_max_mode_count',
+    'l2a_alg_count',
+    'rx_sample_count',
+    'rx_sample_start_index',
 })
 
 
@@ -153,32 +136,19 @@ def create_export(
           'Vector asset %s has datetime %s, which is outside of the expected '
           'month %s-%s' % (table_asset_id, dt, year, month))
 
+  @memoize.Memoize()
+  def get_raster_bands(band):
+    return [band + str(count) for count in range(30)]
+
   # This is a subset of all available table properties.
   raster_bands = [
-      'beam', 'degrade_flag', 'delta_time',
-      'digital_elevation_model', 'digital_elevation_model_srtm',
-      'elev_highestreturn', 'elev_lowestmode', 'elevation_bias_flag',
-      'energy_total', 'landsat_treecover', 'landsat_water_persistence',
-      'lat_highestreturn', 'leaf_off_doy', 'leaf_off_flag', 'leaf_on_cycle',
-      'leaf_on_doy', 'lon_highestreturn', 'modis_nonvegetated',
-      'modis_nonvegetated_sd', 'modis_treecover', 'modis_treecover_sd',
-      'num_detectedmodes', 'pft_class', 'quality_flag', 'region_class',
-      'selected_algorithm', 'selected_mode', 'selected_mode_flag',
-      'sensitivity', 'shot_number', 'solar_azimuth', 'solar_elevation',
-      'surface_flag', 'urban_focal_window_size', 'urban_proportion',
-      'rh0', 'rh1', 'rh2', 'rh3', 'rh4', 'rh5', 'rh6', 'rh7', 'rh8', 'rh9',
-      # pylint:disable=line-too-long
-      'rh10', 'rh11', 'rh12', 'rh13', 'rh14', 'rh15', 'rh16', 'rh17', 'rh18', 'rh19',
-      'rh20', 'rh21', 'rh22', 'rh23', 'rh24', 'rh25', 'rh26', 'rh27', 'rh28', 'rh29',
-      'rh30', 'rh31', 'rh32', 'rh33', 'rh34', 'rh35', 'rh36', 'rh37', 'rh38', 'rh39',
-      'rh40', 'rh41', 'rh42', 'rh43', 'rh44', 'rh45', 'rh46', 'rh47', 'rh48', 'rh49',
-      'rh50', 'rh51', 'rh52', 'rh53', 'rh54', 'rh55', 'rh56', 'rh57', 'rh58', 'rh59',
-      'rh60', 'rh61', 'rh62', 'rh63', 'rh64', 'rh65', 'rh66', 'rh67', 'rh68', 'rh69',
-      'rh70', 'rh71', 'rh72', 'rh73', 'rh74', 'rh75', 'rh76', 'rh77', 'rh78', 'rh79',
-      'rh80', 'rh81', 'rh82', 'rh83', 'rh84', 'rh85', 'rh86', 'rh87', 'rh88', 'rh89',
-      'rh90', 'rh91', 'rh92', 'rh93', 'rh94', 'rh95', 'rh96', 'rh97', 'rh98', 'rh99',
-      # pylint:enable=line-too-long
-      'rh100'
+      'algorithmrun_flag', 'beam', 'cover'
+  ] + get_raster_bands('cover_z') + [
+      'degrade_flag', 'delta_time', 'fhd_normal', 'l2b_quality_flag',
+      'local_beam_azimuth', 'local_beam_elevation', 'pai'
+  ] + get_raster_bands('pai_z') + get_raster_bands('pavd_z') + [
+      'pgap_theta', 'selected_l2a_algorithm', 'selected_rg_algorithm',
+      'sensitivity', 'shot_number', 'solar_azimuth', 'solar_elevation'
   ]
 
   shots = []
@@ -244,9 +214,9 @@ def _start_task(export_params: ExportParameters) -> str:
 def main(argv):
   start_id = 1  # First UTM grid cell id
   ee.Initialize()
-  raster_collection = 'LARSE/GEDI/GEDI02_A_002_MONTHLY'
+  raster_collection = 'LARSE/GEDI/GEDI02_B_002_MONTHLY'
 
-  for grid_cell_id in range(start_id, start_id + FLAGS.num_utm_grid_cells_l2a):
+  for grid_cell_id in range(start_id, start_id + FLAGS.num_utm_grid_cells_l2b):
     grid_cell_feature = ee.Feature(
         ee.FeatureCollection(
             'users/yang/GEETables/GEDI/GEDI_UTM_GRIDS_LandOnly').filterMetadata(

@@ -57,13 +57,8 @@ var vegIndices = ee.ImageCollection('MODIS/006/MOD13A1')
 
 // Define a function to format an image timestamp as a JavaScript Date string.
 function formatDate(img) {
-  var year = img.date().get('year').format();
-  var month = img.date().get('month').subtract(1).format(); // zero-based month
-  var day = img.date().get('day').format();
-  return ee.String('Date(')
-    .cat(year).cat(',')
-    .cat(month).cat(',')
-    .cat(day).cat(')');
+  var millis = img.date().millis().format();
+  return ee.String('Date(').cat(millis).cat(')');
 }
 
 // Build a feature collection where each feature has a property that represents

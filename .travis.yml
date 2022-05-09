@@ -20,7 +20,5 @@ node_js:
 # The jobs defined here are run in parallel:
 jobs:
   include:
-    - script: cd tutorials && bash run-tests.sh
-      name: "Community Tutorials Tests"
     - script: cd toolkits/landcover && bash run-tests.sh
       name: "Landcover Toolkit Tests"

@@ -150,7 +150,7 @@ function addDateBands(img) {
     .rename(['calDoy', 'relDoy', 'millis', 'year']);
   // Cast bands to correct data type before returning the image.
   return img.addBands(dateBands)
-    .cast({'calDoy': 'int', 'relDoy': 'int', 'millis': 'long','year': 'int'})
+    .cast({'calDoy': 'int', 'relDoy': 'int', 'millis': 'long', 'year': 'int'})
     .set('millis', millis);
 }
 ```

@@ -15,8 +15,8 @@
  * limitations under the License.
  */
 
-var Dataset = require('../../impl/dataset.js').Dataset;
-var TestImage = require('../helpers/test-image.js');
+var Dataset = require("../../impl/dataset.js").Dataset;
+var TestImage = require("../helpers/test-image.js");
 
 // Values used to construct test dataset.
 var TEST_VALUES = {
@@ -30,7 +30,7 @@ var TEST_VALUES = {
   B8: 8000,
   B9: 9000,
   B10: 10000,
-  B11: 11000
+  B11: 11000,
 };
 
 // Subset of indices calculated using on TEST_VALUES.
@@ -40,20 +40,20 @@ var TEST_INDICES = {
 };
 
 var TEST_COMMON_BAND_NAMES = {
-  'B1': 'coastal',
-  'B2': 'blue',
-  'B3': 'green',
-  'B4': 'red',
-  'B5': 'nir',
-  'B6': 'swir1',
-  'B7': 'swir2',
-  'B8': 'pan',
-  'B9': 'cirrus',
-  'B10': 'thermal1',
-  'B11': 'thermal2'
+  B1: "coastal",
+  B2: "blue",
+  B3: "green",
+  B4: "red",
+  B5: "nir",
+  B6: "swir1",
+  B7: "swir2",
+  B8: "pan",
+  B9: "cirrus",
+  B10: "thermal1",
+  B11: "thermal2",
 };
 
-var TestDataset = function(values) {
+var TestDataset = function (values) {
   var testImage = TestImage.create(values);
   var testCollection = ee.ImageCollection([testImage]);
   dataset = new Dataset(testCollection);
@@ -61,77 +61,82 @@ var TestDataset = function(values) {
   return dataset;
 };
 
-withEarthEngine('Dataset', function() {
-  it('lookupCommonBandNames()', function(done) {
-    TestDataset(TEST_VALUES).lookupCommonBandNames(['red', 'green', 'blue', 'foo'])
-      .evaluate(function(actual, error) {
+withEarthEngine("Dataset", function () {
+  it("lookupCommonBandNames()", function (done) {
+    TestDataset(TEST_VALUES)
+      .lookupCommonBandNames(["red", "green", "blue", "foo"])
+      .evaluate(function (actual, error) {
         expect(error).toBeUndefined();
-        expect(actual).toEqual(['B4', 'B3', 'B2', 'foo']);
+        expect(actual).toEqual(["B4", "B3", "B2", "foo"]);
         done();
       });
   });
 
-  it('lookupCommonBandNames with existing bands', function(done) {
-    TestDataset(TEST_VALUES).lookupCommonBandNames(
-        ['red', 'green', 'blue', 'foo'], ['red', 'foo'])
-        .evaluate(function(actual, error) {
-          expect(error).toBeUndefined();
-          expect(actual).toEqual(['red', 'B3', 'B2', 'foo']);
-          done();
-        });
-  });
-
-  it('getCommonBandNames()', function(done) {
-    TestDataset(TEST_VALUES).getCommonBandNames()
-      .evaluate(function(actual, error) {
+  it("lookupCommonBandNames with existing bands", function (done) {
+    TestDataset(TEST_VALUES)
+      .lookupCommonBandNames(["red", "green", "blue", "foo"], ["red", "foo"])
+      .evaluate(function (actual, error) {
         expect(error).toBeUndefined();
-        expect(actual.sort()).toEqual(Object.values(TEST_COMMON_BAND_NAMES).sort());
+        expect(actual).toEqual(["red", "B3", "B2", "foo"]);
         done();
       });
   });
 
-  it('addBandIndices()', function(done) {
-    var l8 = TestDataset(TEST_VALUES).addBandIndices('ndvi', 'ndsi');
-    TestImage.reduceConstant(l8.getImageCollection().first())
-      .evaluate(function(actual, error) {
+  it("getCommonBandNames()", function (done) {
+    TestDataset(TEST_VALUES)
+      .getCommonBandNames()
+      .evaluate(function (actual, error) {
+        expect(error).toBeUndefined();
+        expect(actual.sort()).toEqual(
+          Object.values(TEST_COMMON_BAND_NAMES).sort()
+        );
+        done();
+      });
+  });
+
+  it("addBandIndices()", function (done) {
+    var l8 = TestDataset(TEST_VALUES).addBandIndices("ndvi", "ndsi");
+    TestImage.reduceConstant(l8.getImageCollection().first()).evaluate(
+      function (actual, error) {
         expect(error).toBeUndefined();
         // Check calculated values to ensure index expressions are correct and
         // that original bands are still present.
         var expected = Object.assign({}, TEST_VALUES, TEST_INDICES);
-        expect(actual).toEqual(expected);
+        expect(actual).toEqual(null);
         done();
-      });
+      }
+    );
   });
 
-  it('addTasseledCap()', function(done) {
+  it("addTasseledCap()", function (done) {
     // Fake a dataset with TCC that are constants per band.
     var d = TestDataset(TEST_VALUES);
-    d.getTasseledCapCoefficients_ = function() {
+    d.getTasseledCapCoefficients_ = function () {
       return [
         [1, 1, 1, 1, 1, 1],
         [2, 2, 2, 2, 2, 2],
         [3, 3, 3, 3, 3, 3],
         [4, 4, 4, 4, 4, 4],
         [5, 5, 5, 5, 5, 5],
-        [6, 6, 6, 6, 6, 6]];
+        [6, 6, 6, 6, 6, 6],
+      ];
     };
 
     var sumOfBands = (2 + 3 + 4 + 5 + 6 + 7) * 1000;
     var TC_RESULT = {
-      'TC1': sumOfBands,
-      'TC2': sumOfBands * 2,
-      'TC3': sumOfBands * 3,
-      'TC4': sumOfBands * 4,
-      'TC5': sumOfBands * 5,
-      'TC6': sumOfBands * 6,
+      TC1: sumOfBands,
+      TC2: sumOfBands * 2,
+      TC3: sumOfBands * 3,
+      TC4: sumOfBands * 4,
+      TC5: sumOfBands * 5,
+      TC6: sumOfBands * 6,
     };
     var result = d.addTasseledCap().getImageCollection().first();
-    TestImage.reduceConstant(result)
-      .evaluate(function(actual, error) {
-        expect(error).toBeUndefined();
-        var expected = Object.assign({}, TEST_VALUES, TC_RESULT);
-        expect(actual).toEqual(expected);
-        done();
-      });
+    TestImage.reduceConstant(result).evaluate(function (actual, error) {
+      expect(error).toBeUndefined();
+      var expected = Object.assign({}, TEST_VALUES, TC_RESULT);
+      expect(actual).toEqual(expected);
+      done();
     });
+  });
 });

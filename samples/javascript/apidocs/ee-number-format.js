@@ -28,6 +28,6 @@ print('Scientific notation with 3 decimal places shown',
       ee.Number(123476).format('%.3e'));  // 1.235e+05 (rounds up)
 
 print('Integer with 2 decimal places of precision',
-      ee.Number(123476).format('%.2f'));  // 1123476.00
+      ee.Number(123476).format('%.2f'));  // 123476.00
 // [END earthengine__apidocs__ee_number_format]
 

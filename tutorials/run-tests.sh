@@ -1,3 +1,4 @@
+#!/bin/bash
 # Copyright 2019 The Google Earth Engine Community Authors
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -12,15 +13,14 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-# Define environment.
-language: node_js
-node_js:
-  - 10
+# Exit on error.
+set -e
 
-# The jobs defined here are run in parallel:
-jobs:
-  include:
-    - script: cd tutorials && bash run-tests.sh
-      name: "Community Tutorials Tests"
-    - script: cd toolkits/landcover && bash run-tests.sh
-      name: "Landcover Toolkit Tests"
+# For PRs, skip tests if no changes.
+if [[ "${TRAVIS_EVENT_TYPE}" == "pull_request" ]]; then
+  bash `git rev-parse --show-toplevel`/.travis/require-changes.sh . || exit 0
+fi
+
+npm install
+npm run lint
+npm run test

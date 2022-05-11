@@ -26,8 +26,8 @@ var wdpa = ee.FeatureCollection('WCMC/WDPA/current/polygons');
 // Export the WDPA FeatureCollection as a FeatureView asset.
 Export.table.toFeatureView({
   collection: wdpa,
-  assetId: 'wdpa-feature-view-demo',
-  description: 'wdpa-feature-view-demo',
+  assetId: 'wdpa-featureview-demo',
+  description: 'wdpa-featureview-demo',
   maxFeaturesPerTile: 1500,
   thinningStrategy: 'HIGHER_DENSITY',
   thinningRanking: ['REP_AREA DESC'],
@@ -37,7 +37,7 @@ Export.table.toFeatureView({
 
 // [START earthengine__featureview_overview__visualizing]
 // Define the FeatureView asset ID.
-var assetId = 'projects/google/feature-view-demo/wdpa';
+var assetId = 'WCMC/WDPA/current/polygons_FeatureView';
 
 // Import the FeatureView asset as a FeatureViewLayer.
 var layer = ui.Map.FeatureViewLayer(assetId);
@@ -87,7 +87,7 @@ layer.setVisParams({
 
 // [START earthengine__featureview_overview__filtering]
 // Define the FeatureView asset ID.
-var assetId = 'projects/google/feature-view-demo/wdpa';
+var assetId = 'WCMC/WDPA/current/polygons_FeatureView';
 
 // Import the FeatureView asset as a FeatureViewLayer.
 var layer = ui.Map.FeatureViewLayer(assetId, null, 'WDPA FeatureViewLayer');

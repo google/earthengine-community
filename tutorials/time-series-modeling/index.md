@@ -420,8 +420,8 @@ note their phase and amplitude.
 ```js
 // Compute phase and amplitude.
 var phase = harmonicTrendCoefficients.select('sin')
-	.atan2(harmonicTrendCoefficients.select('cos'))
-	// Scale to [0, 1] from radians.
+  .atan2(harmonicTrendCoefficients.select('cos'))
+  // Scale to [0, 1] from radians.
   .unitScale(-Math.PI, Math.PI);
 var amplitude = harmonicTrendCoefficients.select('sin')
   .hypot(harmonicTrendCoefficients.select('cos'))

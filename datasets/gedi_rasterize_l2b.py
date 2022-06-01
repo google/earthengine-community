@@ -180,7 +180,7 @@ def create_export(
   int_bands = [p for p in raster_bands if p in INTEGER_PROPS]
   long_bands = [p for p in raster_bands if p in LONG_PROPS]
   # This keeps the original (alphabetic) band order.
-  image_with_types = image.toFloat().addBands(
+  image_with_types = image.toDouble().addBands(
       image.select(int_bands).toInt(), overwrite=True).addBands(
           image.select(long_bands).toLong(), overwrite=True)
 

@@ -76,6 +76,11 @@ LONG_PROPS = frozenset({
 })
 
 
+def gedi_deltatime_epoch(dt):
+  return dt.timestamp() - (datetime.datetime(2018, 1, 1) -
+                           datetime.datetime(1970, 1, 1)).total_seconds()
+
+
 def timestamp_ms_for_datetime(dt):
   return time.mktime(dt.timetuple()) * 1000
 
@@ -87,12 +92,13 @@ def parse_date_from_gedi_filename(table_asset_id):
 
 
 def rasterize_gedi_by_utm_zone(
-    table_asset_ids, raster_asset_id, grid_cell_feature):
+    table_asset_ids, raster_asset_id, grid_cell_feature, grill_month):
   """Creates and runs an EE export job.
 
   Args:
     table_asset_ids: list of strings, table asset ids to rasterize
     raster_asset_id: string, raster asset id to create
+    grill_month: grilled Month
     grid_cell_feature: ee.Feature
 
   Returns:
@@ -100,41 +106,50 @@ def rasterize_gedi_by_utm_zone(
   """
 
   export_params = create_export(
-      table_asset_ids, raster_asset_id, grid_cell_feature)
+      table_asset_ids, raster_asset_id, grid_cell_feature, grill_month)
   return _start_task(export_params)
 
 
 def create_export(
     table_asset_ids: List[str],
     raster_asset_id: str,
-    grid_cell_feature: Any) -> ExportParameters:
+    grid_cell_feature: Any,
+    grill_month: datetime.datetime) -> ExportParameters:
   """Creates an EE export job definition.
 
   Args:
     table_asset_ids: list of strings, table asset ids to rasterize
     raster_asset_id: string, raster asset id to create
     grid_cell_feature: ee.Feature
+    grill_month: grilled month
 
   Returns:
     an ExportParameters object containing arguments for an export job.
   """
   if not table_asset_ids:
     raise ValueError('No table asset ids specified')
-  first_datetime = parse_date_from_gedi_filename(table_asset_ids[0])
-  month = first_datetime.month
-  year = first_datetime.year
+  table_asset_dts = []
+  for asset_id in table_asset_ids:
+    date_obj = parse_date_from_gedi_filename(asset_id)
+    table_asset_dts.append(date_obj)
   # pylint:disable=g-tzinfo-datetime
   # We don't care about pytz problems with DST - this is just UTC.
-  month_start = datetime.datetime(year, month, 1, tzinfo=pytz.UTC)
+  month_start = grill_month.replace(day=1)
   # pylint:enable=g-tzinfo-datetime
   month_end = month_start + relativedelta.relativedelta(months=1)
+  if all((date < month_start or date >= month_end) for date in table_asset_dts):
+    raise ValueError(
+        'ALL the table files are outside of the expected month that is ranging'
+        ' from %s to %s' % (month_start, month_end))
 
-  for table_asset_id in table_asset_ids:
-    dt = parse_date_from_gedi_filename(table_asset_id)
-    if dt < month_start or dt >= month_end:
-      raise ValueError(
-          'Vector asset %s has datetime %s, which is outside of the expected '
-          'month %s-%s' % (table_asset_id, dt, year, month))
+  right_month_dts = [
+      dates for dates in table_asset_dts
+      if dates >= month_start and dates < month_end
+  ]
+  if len(right_month_dts) / len(table_asset_dts) < 0.95:
+    raise ValueError(
+        'The majority of table ids are not in the requested month %s' %
+        grill_month)
 
   @memoize.Memoize()
   def get_raster_bands(band):
@@ -156,7 +171,16 @@ def create_export(
     shots.append(ee.FeatureCollection(table_asset_id))
 
   box = grid_cell_feature.geometry().buffer(2500, 25).bounds()
-  shots = ee.FeatureCollection(shots).flatten().filterBounds(box)
+  # month_start and month_end are converted to epochs using the
+  # same scale as "delta_time."
+  # pytype: disable=attribute-error
+  shots = ee.FeatureCollection(shots).flatten().filterBounds(box).filter(
+      ee.Filter.rangeContains(
+          'delta_time',
+          gedi_deltatime_epoch(month_start),
+          gedi_deltatime_epoch(month_end))
+    )
+  # pytype: enable=attribute-error
   # We use ee.Reducer.first() below, so this will pick the point with the
   # higherst sensitivity.
   shots = shots.sort('sensitivity', False)
@@ -164,8 +188,8 @@ def create_export(
   crs = grid_cell_feature.get('crs').getInfo()
 
   image_properties = {
-      'month': month,
-      'year': year,
+      'month': grill_month.month,
+      'year': grill_month.year,
       'version': 1,
       'system:time_start': timestamp_ms_for_datetime(month_start),
       'system:time_end': timestamp_ms_for_datetime(month_end),
@@ -225,7 +249,7 @@ def main(argv):
       rasterize_gedi_by_utm_zone(
           [x.strip() for x in fh],
           raster_collection + '/' + '%03d' % grid_cell_id,
-          grid_cell_feature)
+          grid_cell_feature, argv[2])
 
 
 if __name__ == '__main__':

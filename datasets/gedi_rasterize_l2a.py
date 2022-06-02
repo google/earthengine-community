@@ -39,6 +39,7 @@ class ExportParameters:
   crs: str = attr.ib()
   region: Any = attr.ib()  # ee.Geometry.Polygon | ee.Geometry.LinearRing
 
+
 # From https://lpdaac.usgs.gov/products/gedi02_av002/
 # We list all known property names for safety, even though we might not
 # be currently using all of them during rasterization.
@@ -93,6 +94,11 @@ LONG_PROPS = frozenset({
 })
 
 
+def gedi_deltatime_epoch(dt):
+  return dt.timestamp() - (datetime.datetime(2018, 1, 1) -
+                           datetime.datetime(1970, 1, 1)).total_seconds()
+
+
 def timestamp_ms_for_datetime(dt):
   return time.mktime(dt.timetuple()) * 1000
 
@@ -103,80 +109,201 @@ def parse_date_from_gedi_filename(table_asset_id):
           os.path.basename(table_asset_id).split('_')[2], '%Y%j%H%M%S'))
 
 
-def rasterize_gedi_by_utm_zone(
-    table_asset_ids, raster_asset_id, grid_cell_feature):
+def rasterize_gedi_by_utm_zone(table_asset_ids, raster_asset_id,
+                               grid_cell_feature, grill_month):
   """Creates and runs an EE export job.
 
   Args:
     table_asset_ids: list of strings, table asset ids to rasterize
     raster_asset_id: string, raster asset id to create
     grid_cell_feature: ee.Feature
+    grill_month: datetime, the 1st of the month for the data to be rasterized
 
   Returns:
     string, task id of the created task
   """
 
-  export_params = create_export(
-      table_asset_ids, raster_asset_id, grid_cell_feature)
+  export_params = create_export(table_asset_ids, raster_asset_id,
+                                grid_cell_feature, grill_month)
   return _start_task(export_params)
 
 
-def create_export(
-    table_asset_ids: List[str],
-    raster_asset_id: str,
-    grid_cell_feature: Any) -> ExportParameters:
+def create_export(table_asset_ids: List[str], raster_asset_id: str,
+                  grid_cell_feature: Any,
+                  grill_month: datetime.datetime) -> ExportParameters:
   """Creates an EE export job definition.
 
   Args:
     table_asset_ids: list of strings, table asset ids to rasterize
     raster_asset_id: string, raster asset id to create
     grid_cell_feature: ee.Feature
+    grill_month: datetime.datetime
 
   Returns:
     an ExportParameters object containing arguments for an export job.
   """
   if not table_asset_ids:
     raise ValueError('No table asset ids specified')
-  first_datetime = parse_date_from_gedi_filename(table_asset_ids[0])
-  month = first_datetime.month
-  year = first_datetime.year
+  table_asset_dts = []
+  for asset_id in table_asset_ids:
+    date_obj = parse_date_from_gedi_filename(asset_id)
+    table_asset_dts.append(date_obj)
   # pylint:disable=g-tzinfo-datetime
   # We don't care about pytz problems with DST - this is just UTC.
-  month_start = datetime.datetime(year, month, 1, tzinfo=pytz.UTC)
+  month_start = grill_month.replace(day=1)
   # pylint:enable=g-tzinfo-datetime
   month_end = month_start + relativedelta.relativedelta(months=1)
-
-  for table_asset_id in table_asset_ids:
-    dt = parse_date_from_gedi_filename(table_asset_id)
-    if dt < month_start or dt >= month_end:
-      raise ValueError(
-          'Vector asset %s has datetime %s, which is outside of the expected '
-          'month %s-%s' % (table_asset_id, dt, year, month))
+  if all((date < month_start or date >= month_end) for date in table_asset_dts):
+    raise ValueError(
+        'ALL the table files are outside of the expected month that is ranging'
+        'from %s to %s' % (month_start, month_end))
+  right_month_dts = [
+      dates for dates in table_asset_dts
+      if dates >= month_start and dates < month_end
+  ]
+  if len(right_month_dts) / len(table_asset_dts) < 0.90:
+    raise ValueError(
+        'The majority of table ids are not in the requested month %s' %
+        grill_month)
 
   # This is a subset of all available table properties.
   raster_bands = [
-      'beam', 'degrade_flag', 'delta_time',
-      'digital_elevation_model', 'digital_elevation_model_srtm',
-      'elev_highestreturn', 'elev_lowestmode', 'elevation_bias_flag',
-      'energy_total', 'landsat_treecover', 'landsat_water_persistence',
-      'lat_highestreturn', 'leaf_off_doy', 'leaf_off_flag', 'leaf_on_cycle',
-      'leaf_on_doy', 'lon_highestreturn', 'modis_nonvegetated',
-      'modis_nonvegetated_sd', 'modis_treecover', 'modis_treecover_sd',
-      'num_detectedmodes', 'pft_class', 'quality_flag', 'region_class',
-      'selected_algorithm', 'selected_mode', 'selected_mode_flag',
-      'sensitivity', 'shot_number', 'solar_azimuth', 'solar_elevation',
-      'surface_flag', 'urban_focal_window_size', 'urban_proportion',
-      'rh0', 'rh1', 'rh2', 'rh3', 'rh4', 'rh5', 'rh6', 'rh7', 'rh8', 'rh9',
+      'beam',
+      'degrade_flag',
+      'delta_time',
+      'digital_elevation_model',
+      'digital_elevation_model_srtm',
+      'elev_highestreturn',
+      'elev_lowestmode',
+      'elevation_bias_flag',
+      'energy_total',
+      'landsat_treecover',
+      'landsat_water_persistence',
+      'lat_highestreturn',
+      'leaf_off_doy',
+      'leaf_off_flag',
+      'leaf_on_cycle',
+      'leaf_on_doy',
+      'lon_highestreturn',
+      'modis_nonvegetated',
+      'modis_nonvegetated_sd',
+      'modis_treecover',
+      'modis_treecover_sd',
+      'num_detectedmodes',
+      'pft_class',
+      'quality_flag',
+      'region_class',
+      'selected_algorithm',
+      'selected_mode',
+      'selected_mode_flag',
+      'sensitivity',
+      'shot_number',
+      'solar_azimuth',
+      'solar_elevation',
+      'surface_flag',
+      'urban_focal_window_size',
+      'urban_proportion',
+      'rh0',
+      'rh1',
+      'rh2',
+      'rh3',
+      'rh4',
+      'rh5',
+      'rh6',
+      'rh7',
+      'rh8',
+      'rh9',
       # pylint:disable=line-too-long
-      'rh10', 'rh11', 'rh12', 'rh13', 'rh14', 'rh15', 'rh16', 'rh17', 'rh18', 'rh19',
-      'rh20', 'rh21', 'rh22', 'rh23', 'rh24', 'rh25', 'rh26', 'rh27', 'rh28', 'rh29',
-      'rh30', 'rh31', 'rh32', 'rh33', 'rh34', 'rh35', 'rh36', 'rh37', 'rh38', 'rh39',
-      'rh40', 'rh41', 'rh42', 'rh43', 'rh44', 'rh45', 'rh46', 'rh47', 'rh48', 'rh49',
-      'rh50', 'rh51', 'rh52', 'rh53', 'rh54', 'rh55', 'rh56', 'rh57', 'rh58', 'rh59',
-      'rh60', 'rh61', 'rh62', 'rh63', 'rh64', 'rh65', 'rh66', 'rh67', 'rh68', 'rh69',
-      'rh70', 'rh71', 'rh72', 'rh73', 'rh74', 'rh75', 'rh76', 'rh77', 'rh78', 'rh79',
-      'rh80', 'rh81', 'rh82', 'rh83', 'rh84', 'rh85', 'rh86', 'rh87', 'rh88', 'rh89',
-      'rh90', 'rh91', 'rh92', 'rh93', 'rh94', 'rh95', 'rh96', 'rh97', 'rh98', 'rh99',
+      'rh10',
+      'rh11',
+      'rh12',
+      'rh13',
+      'rh14',
+      'rh15',
+      'rh16',
+      'rh17',
+      'rh18',
+      'rh19',
+      'rh20',
+      'rh21',
+      'rh22',
+      'rh23',
+      'rh24',
+      'rh25',
+      'rh26',
+      'rh27',
+      'rh28',
+      'rh29',
+      'rh30',
+      'rh31',
+      'rh32',
+      'rh33',
+      'rh34',
+      'rh35',
+      'rh36',
+      'rh37',
+      'rh38',
+      'rh39',
+      'rh40',
+      'rh41',
+      'rh42',
+      'rh43',
+      'rh44',
+      'rh45',
+      'rh46',
+      'rh47',
+      'rh48',
+      'rh49',
+      'rh50',
+      'rh51',
+      'rh52',
+      'rh53',
+      'rh54',
+      'rh55',
+      'rh56',
+      'rh57',
+      'rh58',
+      'rh59',
+      'rh60',
+      'rh61',
+      'rh62',
+      'rh63',
+      'rh64',
+      'rh65',
+      'rh66',
+      'rh67',
+      'rh68',
+      'rh69',
+      'rh70',
+      'rh71',
+      'rh72',
+      'rh73',
+      'rh74',
+      'rh75',
+      'rh76',
+      'rh77',
+      'rh78',
+      'rh79',
+      'rh80',
+      'rh81',
+      'rh82',
+      'rh83',
+      'rh84',
+      'rh85',
+      'rh86',
+      'rh87',
+      'rh88',
+      'rh89',
+      'rh90',
+      'rh91',
+      'rh92',
+      'rh93',
+      'rh94',
+      'rh95',
+      'rh96',
+      'rh97',
+      'rh98',
+      'rh99',
       # pylint:enable=line-too-long
       'rh100'
   ]
@@ -184,9 +311,14 @@ def create_export(
   shots = []
   for table_asset_id in table_asset_ids:
     shots.append(ee.FeatureCollection(table_asset_id))
-
   box = grid_cell_feature.geometry().buffer(2500, 25).bounds()
-  shots = ee.FeatureCollection(shots).flatten().filterBounds(box)
+  # month_start and month_end are converted to epochs using the
+  # same temporal offset as "delta_time."
+  # pytype: disable=attribute-error
+  shots = ee.FeatureCollection(shots).flatten().filterBounds(box).filter(
+      ee.Filter.rangeContains('delta_time', gedi_deltatime_epoch(month_start),
+                              gedi_deltatime_epoch(month_end)))
+  # pytype: enable=attribute-error
   # We use ee.Reducer.first() below, so this will pick the point with the
   # higherst sensitivity.
   shots = shots.sort('sensitivity', False)
@@ -194,8 +326,8 @@ def create_export(
   crs = grid_cell_feature.get('crs').getInfo()
 
   image_properties = {
-      'month': month,
-      'year': year,
+      'month': grill_month.month,
+      'year': grill_month.year,
       'version': 1,
       'system:time_start': timestamp_ms_for_datetime(month_start),
       'system:time_end': timestamp_ms_for_datetime(month_end),
@@ -255,7 +387,7 @@ def main(argv):
       rasterize_gedi_by_utm_zone(
           [x.strip() for x in fh],
           raster_collection + '/' + '%03d' % grid_cell_id,
-          grid_cell_feature)
+          grid_cell_feature, argv[2])
 
 
 if __name__ == '__main__':

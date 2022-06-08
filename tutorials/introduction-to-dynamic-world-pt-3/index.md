@@ -89,7 +89,6 @@ created, print it to see it in the console.
 var chart = ui.Chart.image.series(
     {imageCollection: dwTimeSeries, region: geometry, scale: 10});
 print(chart);
-
 ```
 
 The chart is useful but not very informative. We need to make several
@@ -108,7 +107,7 @@ arguments.
 ```js
 var lineStyle = function(label, color) {
   var styleDict =
-      {labelInLegend: label, color: color, lineWidth: 1, pointSize: 2};
+      {labelInLegend: label, color: color, lineWidth: 2, pointSize: 3};
   return styleDict;
 };
 ```
@@ -124,21 +123,21 @@ var chart = ui.Chart.image.series({
   scale: 10
 }).setOptions({
   vAxis: {
-    title: 'class probabilities',
+    title: 'Class probabilities',
     viewWindow: {min: 0, max: 1}},
   interpolateNulls: true,
   series: {
-              0: line_style('bare', '#A59B8F'),
-              1: line_style('built', '#C4281B'),
-              2: line_style('crops', '#E49635'),
-              3: line_style('flooded_vegetation', '#7A87C6'),
-              4: line_style('grass', '#88B053'),
-              5: line_style('shrub_and_scrub', '#DFC35A'),
-              6: line_style('snow_and_ice', '#B39FE1'),
-              7: line_style('trees', '#397D49'),
-              8: line_style('water', '#419BDF')}
-})
-print(chart)
+              0: lineStyle('Bare', '#A59B8F'),
+              1: lineStyle('Built', '#C4281B'),
+              2: lineStyle('Crops', '#E49635'),
+              3: lineStyle('Flooded vegetation', '#7A87C6'),
+              4: lineStyle('Grass', '#88B053'),
+              5: lineStyle('Shrub and scrub', '#DFC35A'),
+              6: lineStyle('Snow and ice', '#B39FE1'),
+              7: lineStyle('Trees', '#397D49'),
+              8: lineStyle('Water', '#419BDF')}
+});
+print(chart);
 ```
 
 ![](chart.png)
@@ -157,7 +156,7 @@ chart for any location in the world by simply changing the geometry and the
 date range.
 
 The full script for this section can be accessed from this Code Editor link:
-[https://code.earthengine.google.com/5f416a9faaa0891d34e04432315a8a6c](https://code.earthengine.google.com/5f416a9faaa0891d34e04432315a8a6c)
+[https://code.earthengine.google.com/3bf152cd06507cc984a1748de3f996b3](https://code.earthengine.google.com/3bf152cd06507cc984a1748de3f996b3)
 
 ## Change Detection using Probability Bands
 

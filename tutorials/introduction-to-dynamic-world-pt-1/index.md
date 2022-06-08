@@ -236,7 +236,7 @@ var probabilityBands = [
 
 var probabilityImage = dwImage.select(probabilityBands);
 
-// Create the image with the highest probability value at each pixel
+// Create the image with the highest probability value at each pixel.
 var top1Probability = probabilityImage.reduce(ee.Reducer.max());
 ```
 
@@ -246,10 +246,10 @@ multiplying them by 100. The hillshade algorithm returns an image from 0-255,
 so we divide the result by 255 to get an image with pixel values from 0-1.
 
 ```js
-// Convert the probability values to integers
+// Convert the probability values to integers.
 var top1Confidence = top1Probability.multiply(100).int();
 
-// Compute the hillshade
+// Compute the hillshade.
 var hillshade = ee.Terrain.hillshade(top1Confidence).divide(255);
 ```
 
@@ -257,10 +257,10 @@ For the last step, we colorize the hillshade by multiplying the
 classification image with the hillshade.
 
 ```js
-// Colorize the classification image
+// Colorize the classification image.
 var rgbImage = classification.visualize(dwVisParams).divide(255);
 
-// Colorize the hillshade
+// Colorize the hillshade.
 var probabilityHillshade = rgbImage.multiply(hillshade);
 
 var hillshadeVisParams = {min: 0, max: 0.8};
@@ -280,7 +280,7 @@ using the Top-1 confidence class. In the next section, we will learn how to
 create annual composites for a larger region.
 
 The full script for this section can be accessed from the link below
-[https://code.earthengine.google.com/bcf92d0282268c898f6ac6158fbea385](https://code.earthengine.google.com/bcf92d0282268c898f6ac6158fbea385)
+[https://code.earthengine.google.com/5a2d8406ed41ea177bf8e2bef34cd9e8](https://code.earthengine.google.com/5a2d8406ed41ea177bf8e2bef34cd9e8)
 
 | Sentinel-1C Image  | Class Labels  | Top-1 Confidence Hillshade |
 :-------------------:|:-------------:|:--------------------------:|
@@ -353,7 +353,7 @@ var dwVisParams = {
   ]
 };
 
-// Clip the composite and add it to the Map
+// Clip the composite and add it to the Map.
 Map.addLayer(dwComposite.clip(geometry), dwVisParams, 'Classified Composite');
 ```
 
@@ -378,11 +378,11 @@ var probabilityBands = [
   'built', 'bare', 'snow_and_ice'
 ];
 
-// Select probability bands
+// Select probability bands.
 var probabilityCol = dw.select(probabilityBands);
 
 // Create an image with the average pixel-wise probability
-// of each class across the time-period
+// of each class across the time-period.
 var meanProbability = probabilityCol.reduce(ee.Reducer.mean());
 ```
 
@@ -406,7 +406,7 @@ We can now proceed and create the colorized hillshade visualization as
 described in the previous section.
 
 ```js
-// Create the Top-1 Probability Hillshade
+// Create the Top-1 Probability Hillshade.
 var top1Probability = meanProbability.reduce(ee.Reducer.max());
 var top1Confidence = top1Probability.multiply(100).int();
 var hillshade = ee.Terrain.hillshade(top1Confidence).divide(255);
@@ -454,7 +454,7 @@ visualization. The code below creates an export task for the visualized
 composite.
 
 ```js
-// Top-1 Probability Hillshade Composite
+// Top-1 Probability Hillshade Composite.
 var hillshadeComposite = probabilityHillshade.visualize(hillshadeVisParams);
 
 Export.image.toDrive({

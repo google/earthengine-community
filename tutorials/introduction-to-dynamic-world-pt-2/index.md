@@ -62,7 +62,7 @@ var dw = ee.ImageCollection('GOOGLE/DYNAMICWORLD/V1')
              .filterDate(startDate, endDate)
              .filterBounds(geometry);
 
-// Create a mode composite
+// Create a mode composite.
 var classification = dw.select('label');
 var dwComposite = classification.reduce(ee.Reducer.mode());
 ```
@@ -72,7 +72,7 @@ represented with the pixel value **6**. We can use the boolean operator `.eq()`
 to extract all pixels with that value.
 
 ```js
-// Extract the Built Area class
+// Extract the Built Area class.
 var builtArea = dwComposite.eq(6);
 ```
 
@@ -90,7 +90,7 @@ var dwVisParams = {
   ]
 };
 
-// Clip the composite and add it to the Map
+// Clip the composite and add it to the Map.
 Map.addLayer(dwComposite.clip(geometry), dwVisParams, 'Classified Composite');
 Map.addLayer(builtArea.clip(geometry), {}, 'Built Areas');
 ```
@@ -115,7 +115,7 @@ we use the `selfMask()` function to mask all 0 values and count the remaining
 pixels.
 
 ```js
-// Count all pixels
+// Count all pixels.
 var statsTotal = builtArea.reduceRegion({
     reducer: ee.Reducer.count(),
     geometry: geometry,
@@ -124,7 +124,7 @@ var statsTotal = builtArea.reduceRegion({
     });
 var totalPixels = statsTotal.get('built_area');
 
-// Mask 0 pixel values and count remaining pixels
+// Mask 0 pixel values and count remaining pixels.
 var builtAreaMasked = builtArea.selfMask();
 
 var statsMasked = builtAreaMasked.reduceRegion({
@@ -176,13 +176,13 @@ We can rename the keys in the dictionary with the class names to make the
 results more readable.
 
 ```js
-// Format the results to make it more readable
+// Format the results to make it more readable.
 var classLabels = ee.List([
     'water', 'trees', 'grass', 'flooded_vegetation', 'crops',
     'shrub_and_scrub', 'built', 'bare', 'snow_and_ice'
     ]);
 
-// Rename keys with class names
+// Rename keys with class names.
 var pixelCountsFormatted = pixelCounts.rename(
   pixelCounts.keys(), classLabels);
 print(pixelCountsFormatted);
@@ -201,11 +201,11 @@ start the Export. Once the Export task finishes, you will have a file named
 `pixel_counts.csv` in your Google Drive with the result of the computation.
 
 ```js
-// Create a Feature Collection
+// Create a Feature Collection.
 var exportFc = ee.FeatureCollection(
   ee.Feature(null, pixelCountsFormatted));
 
-// Export the results as a CSV file
+// Export the results as a CSV file.
 Export.table.toDrive({
   collection: exportFc,
   description: 'pixel_counts_export',

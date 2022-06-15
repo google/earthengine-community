@@ -84,13 +84,16 @@ var title = {
 // Chart some interesting locations.
 var pt1 = ee.Geometry.Point(-65.544, -4.894);
 print('Amazon rainforest:',
-    Chart.image.series(cumulative, pt1, ee.Reducer.first(), 500).setOptions(title));
+    ui.Chart.image.series(
+      cumulative, pt1, ee.Reducer.first(), 500).setOptions(title));
 
 var pt2 = ee.Geometry.Point(116.4647, 40.1054);
 print('Beijing urbanization:',
-    Chart.image.series(cumulative, pt2, ee.Reducer.first(), 500).setOptions(title));
+    ui.Chart.image.series(
+      cumulative, pt2, ee.Reducer.first(), 500).setOptions(title));
 
 var pt3 = ee.Geometry.Point(-110.3412, 34.1982);
 print('Arizona forest disturbance and recovery:',
-    Chart.image.series(cumulative, pt3, ee.Reducer.first(), 500).setOptions(title));
+    ui.Chart.image.series(
+      cumulative, pt3, ee.Reducer.first(), 500).setOptions(title));
 // [END earthengine__image_collections09__iterate]

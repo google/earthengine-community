@@ -20,7 +20,7 @@ import numpy as np
 import pandas as pd
 import os
 
-meta_variables = (
+numeric_variables = (
     'beam',
     'degrade_flag',
     'delta_time',
@@ -65,6 +65,10 @@ meta_variables = (
     'surface_flag'
 )
 
+long_variables = ('shot_number',)
+
+meta_variables = numeric_variables + long_variables
+
 rh_names = [f'rh{d}' for d in range(101)]
 
 
@@ -84,6 +88,29 @@ def extract_values(input_path, output_path):
   with h5py.File(input_path, 'r') as hdf_fh:
     with open(output_path, 'w') as csv_fh:
       write_csv(hdf_fh, csv_fh)
+
+
+def add_shot_number_breakdown(df):
+  """Adds fields obtained by breaking down shot_number.
+
+  Example: from 154341234599141100 we obtain:
+    orbit_number = 15434
+    beam_number = 12 (we ignore it)
+    minor_frame_number = 345
+    shot_number_within_beam = 99141101
+
+  Args:
+    df: pd.DataFrame
+
+  Returns:
+    pd.DataFrame
+  """
+  # It's simpler to use substrings than to do math.
+  df['shot_number_within_beam'] = [
+      int(str(x)[-8:]) for x in df['shot_number']]
+  df['minor_frame_number'] = [int(str(x)[-11:-8]) for x in df['shot_number']]
+  # beam number, [-13:-11], is already in the 'beam' property
+  df['orbit_number'] = [int(str(x)[:-13]) for x in df['shot_number']]
 
 
 def write_csv(hdf_fh, csv_file):
@@ -117,7 +144,15 @@ def write_csv(hdf_fh, csv_file):
     df = df[df.lat_lowestmode.notnull()]
     df = df[df.lon_lowestmode.notnull()]
 
-    df.to_csv(csv_file, float_format='%3.6f', index=False, header=is_first, mode='a', line_terminator='\n')
+    add_shot_number_breakdown(df)
+
+    df.to_csv(
+        csv_file,
+        float_format='%3.6f',
+        index=False,
+        header=is_first,
+        mode='a',
+        line_terminator='\n')
     is_first = False
 
 def main(argv):

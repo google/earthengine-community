@@ -84,6 +84,10 @@ INTEGER_PROPS = frozenset({
     'toploc_miss',
     'urban_focal_window_size',
     'urban_proportion',
+    # Fields added by splitting shot_number
+    'minor_frame_number',
+    'orbit_number',
+    'shot_number_within_beam',
 })
 LONG_PROPS = frozenset({
     'shot_number',

@@ -64,15 +64,21 @@ INTEGER_PROPS = frozenset({
     'selected_mode',
     'selected_mode_flag',
     'selected_rg_algorithm',
+    # Note that 'shot_number' is a long, so we should not cast it to int.
     'stale_return_flag',
     'surface_flag',
     'urban_focal_window_size',
-    'urban_proportion'
+    'urban_proportion',
+    # Fields added by splitting shot_number
+    'minor_frame_number',
+    'orbit_number',
+    'shot_number_within_beam',
 })
 LONG_PROPS = frozenset({
     'l2a_alg_count',
     'rx_sample_count',
     'rx_sample_start_index',
+    'shot_number'
 })
 
 

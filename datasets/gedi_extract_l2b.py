@@ -20,6 +20,8 @@ import numpy as np
 import pandas as pd
 import os
 
+import gedi_lib
+
 numeric_variables = (
     'cover',
     'pai',
@@ -70,29 +72,6 @@ def extract_values(input_path, output_path):
       write_csv(hdf_fh, csv_fh)
 
 
-def add_shot_number_breakdown(df):
-  """Adds fields obtained by breaking down shot_number.
-
-  Example: from 154341234599141100 we obtain:
-    orbit_number = 15434
-    beam_number = 12 (we ignore it)
-    minor_frame_number = 345
-    shot_number_within_beam = 99141101
-
-  Args:
-    df: pd.DataFrame
-
-  Returns:
-    pd.DataFrame
-  """
-  # It's simpler to use substrings than to do math.
-  df['shot_number_within_beam'] = [
-      int(str(x)[-8:]) for x in df['shot_number']]
-  df['minor_frame_number'] = [int(str(x)[-11:-8]) for x in df['shot_number']]
-  # beam number, [-13:-11], is already in the 'beam' property
-  df['orbit_number'] = [int(str(x)[:-13]) for x in df['shot_number']]
-
-
 def write_csv(hdf_fh, csv_file):
   """Writes a single CSV file based on the contents of HDF file."""
   is_first = True
@@ -105,16 +84,7 @@ def write_csv(hdf_fh, csv_file):
     df = pd.DataFrame()
 
     for v in meta_variables:
-      if v.startswith('#'):
-        continue
-
-      name = v.split('/')[-1]
-      ds = hdf_fh[f'{k}/{v}']
-      df[name] = ds[:]
-      df[name].replace([np.inf, -np.inf], np.nan, inplace=True)
-      if ds.attrs.get('_FillValue') is not None:
-        # We need to use pd.NA that works with integer types (np.nan does not)
-        df[name].replace(ds.attrs.get('_FillValue'), pd.NA, inplace=True)
+      gedi_lib.hdf_to_df(hdf_fh, k, v, df)
 
     ds = hdf_fh[f'{k}/cover_z']
     cover_z = pd.DataFrame(ds, columns=cover_names)
@@ -137,7 +107,7 @@ def write_csv(hdf_fh, csv_file):
     df = df[df.lat_lowestmode.notnull()]
     df = df[df.lon_lowestmode.notnull()]
 
-    add_shot_number_breakdown(df)
+    gedi_lib.add_shot_number_breakdown(df)
 
     df.to_csv(
         csv_file,

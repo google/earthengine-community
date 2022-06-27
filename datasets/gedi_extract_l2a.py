@@ -18,6 +18,7 @@ from absl import logging
 import h5py
 import pandas as pd
 import os
+from typing import List
 
 import gedi_lib
 
@@ -70,31 +71,37 @@ long_variables = ('shot_number',)
 
 meta_variables = numeric_variables + long_variables
 
-rh_names = [f'rh{d}' for d in range(101)]
+l2b_variables = ('local_beam_azimuth', 'local_beam_elevation')
+
+rh_names = tuple([f'rh{d}' for d in range(101)])
 
 
-def extract_values(input_path, output_path):
+def extract_values(input_paths: List[str], output_path: str) -> None:
   """Extracts all rh (relative heights) from all algorithms and some qa flags.
 
   Args:
-     input_path: string, GEDI L2A file path
-     output_path: string, csv output file path
+     input_paths: GEDI L2A and GEDI L2B file paths
+     output_path: csv output file path
   """
-  basename = os.path.basename(input_path)
+  l2a_path = input_paths[0]
+  l2b_path = input_paths[1]
+
+  basename = os.path.basename(l2a_path)
   if not basename.startswith('GEDI') or not basename.endswith('.h5'):
-    logging.error('Input path is not a GEDI filename: %s', input_path)
+    logging.error('Input path is not a GEDI filename: %s', l2a_path)
     return
 
-  with h5py.File(input_path, 'r') as hdf_fh:
-    with open(output_path, 'w') as csv_fh:
-      write_csv(hdf_fh, csv_fh)
+  with h5py.File(l2a_path, 'r') as l2a_hdf_fh:
+    with h5py.File(l2b_path, 'r') as l2b_hdf_fh:
+      with open(output_path, 'w') as csv_fh:
+        write_csv(l2a_hdf_fh, l2b_hdf_fh, csv_fh)
 
 
-def write_csv(hdf_fh, csv_file):
+def write_csv(l2a_hdf_fh, l2b_hdf_fh, csv_file):
   """Writes a single CSV file based on the contents of HDF file."""
   is_first = True
   # Iterating over relative height percentage values from 0 to 100
-  for k in hdf_fh.keys():
+  for k in l2a_hdf_fh.keys():
     if not k.startswith('BEAM'):
       continue
     print('\t', k)
@@ -102,9 +109,9 @@ def write_csv(hdf_fh, csv_file):
     df = pd.DataFrame()
 
     for v in meta_variables:
-      gedi_lib.hdf_to_df(hdf_fh, k, v, df)
+      gedi_lib.hdf_to_df(l2a_hdf_fh, k, v, df)
 
-    rh = pd.DataFrame(hdf_fh[f'{k}/rh'], columns=rh_names)
+    rh = pd.DataFrame(l2a_hdf_fh[f'{k}/rh'], columns=rh_names)
 
     df = pd.concat((df, rh), axis=1)
     # Filter our rows with nan values for lat_lowestmode or lon_lowestmode.
@@ -113,6 +120,10 @@ def write_csv(hdf_fh, csv_file):
     df = df[df.lon_lowestmode.notnull()]
 
     gedi_lib.add_shot_number_breakdown(df)
+
+    # Add the incidence angle variables from the corresponding L2B file.
+    for l2b_var in l2b_variables:
+      gedi_lib.hdf_to_df(l2b_hdf_fh, k, 'geolocation/' + l2b_var, df)
 
     df.to_csv(
         csv_file,

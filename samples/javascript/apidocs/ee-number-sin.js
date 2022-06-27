@@ -15,39 +15,13 @@
  */
 
 // [START earthengine__apidocs__ee_number_sin]
-// Examples using the sin() math function.
-print(ee.Number(-Math.PI).sin());  // Almost 0.0
-print(ee.Number(0).sin());  // 0
-print(ee.Number(Math.PI / 2.0).sin());  // 1
-print(ee.Number(Math.PI).sin());  // Almost 0.0
+// Input angle in radians.
+print('Sine of 0', ee.Number(0).sin());  // 0
+print('Sine of π/2', ee.Number(Math.PI/2).sin());  // 1
+print('Sine of 3π/2', ee.Number(3*Math.PI/2).sin());  // -1
 
-// Define a sequence from -2pi to +2pi in 50 increments.
-var start = -2 * Math.PI;
-var end = 2 * Math.PI;
-var points = ee.List.sequence(start, end, null, 50);
-
-// Evaluate the sin() function for each value in the `points` sequence.
-var values = points.map(function(val) {
-  return ee.Number(val).sin();
-});
-
-// Evaluate and plot the equations defined above.
-var chart = ui.Chart.array.values(values, 0, points)
-    .setOptions({
-      viewWindow: {min: start, max: end},
-      hAxis: {
-        title: 'radians',
-        viewWindowMode: 'maximized',
-        ticks: [
-          {v: start, f: '-2π'},
-          {v: -Math.PI, f: '-π'},
-          {v: 0, f: '0'},
-          {v: Math.PI, f: 'π'},
-          {v: end, f: '2π'}]
-      },
-      vAxis: {title: 'sin(x)'},
-      lineWidth: 1,
-      pointSize: 3,
-    });
-print(chart);
+// Convert degrees to radians.
+var degrees = 45;
+var radians = degrees * (Math.PI/180);
+print('Sine of 45 degrees', ee.Number(radians).sin());  // 0.707106781
 // [END earthengine__apidocs__ee_number_sin]

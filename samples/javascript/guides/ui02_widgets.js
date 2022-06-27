@@ -157,26 +157,24 @@ print(redLabel);
 // [START earthengine__ui02_widgets__thumbnail]
 // Create a box around an area in the Brazilian Amazon.
 var box = ee.Geometry.Polygon([[
-  [-62.9564, 2.5596], [-62.9550, 2.4313],
-  [-62.8294, 2.4327], [-62.8294, 2.5596]
+  [-62.9564, 2.5596], [-62.9550, 2.4313], [-62.8294, 2.4327], [-62.8294, 2.5596]
 ]]);
 
 // Visualize the image in RGB.
-var image = ee.Image('LANDSAT/LE07/C01/T1_SR/LE07_233058_20011113').visualize({
-  bands: ['B3', 'B2', 'B1'],
-  min: 0,
-  max: 1200,
-  gamma: [1.3, 1.3, 1]
-});
+var image = ee.Image('LANDSAT/LE07/C02/T1_L2/LE07_233058_20011113')
+                .select(['SR_B[1-3]'])  // blue, green, red reflectance
+                .multiply(0.0000275).add(-0.2)  // apply scaling factors
+                .visualize({
+                  bands: ['SR_B3', 'SR_B2', 'SR_B1'],
+                  min: 0,
+                  max: 0.12,
+                  gamma: 1.3
+                });
 
 // Print a thumbnail to the console.
 print(ui.Thumbnail({
   image: image,
-  params: {
-    dimensions: '256x256',
-    region: box,
-    format: 'png'
-  },
+  params: {dimensions: '256x256', region: box, format: 'png'},
   style: {height: '300px', width: '300px'}
 }));
 // [END earthengine__ui02_widgets__thumbnail]

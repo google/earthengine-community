@@ -57,8 +57,8 @@ var vegIndices = ee.ImageCollection('MODIS/006/MOD13A1')
 
 // Define a function to format an image timestamp as a JavaScript Date string.
 function formatDate(img) {
-  var date = ee.String(img.date().format('YYYY, MM, dd'));
-  return ee.String('Date(').cat(date).cat(ee.String(')'));
+  var millis = img.date().millis().format();
+  return ee.String('Date(').cat(millis).cat(')');
 }
 
 // Build a feature collection where each feature has a property that represents
@@ -98,14 +98,16 @@ dataTableServer = columnHeader.cat(dataTableServer);
 // Use 'evaluate' to transfer the server-side table to the client, define the
 // chart and print it to the console.
 dataTableServer.evaluate(function(dataTableClient) {
-  var chart = ui.Chart(dataTableClient).setChartType('LineChart').setOptions({
-    title: 'Annual NDVI Time Series with Inter-Annual Variance',
-    intervals: {style: 'area'},
+  var chart = ui.Chart(dataTableClient).setOptions({
+    title: 'Average Vegetation Index Value by Date for Forest',
     hAxis: {
-      title: 'Day of year',
+      title: 'Date',
       titleTextStyle: {italic: false, bold: true},
     },
-    vAxis: {title: 'NDVI (x1e4)', titleTextStyle: {italic: false, bold: true}},
+    vAxis: {
+      title: 'Vegetation index (x1e4)',
+      titleTextStyle: {italic: false, bold: true}
+    },
     lineWidth: 5,
     colors: ['e37d05', '1d6b99'],
     curveType: 'function'

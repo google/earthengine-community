@@ -16,7 +16,7 @@
 
 # [START earthengine__images03__viz_image]
 # Load an image.
-image = ee.Image('LANDSAT/LC08/C01/T1_TOA/LC08_044034_20140318')
+image = ee.Image('LANDSAT/LC08/C02/T1_TOA/LC08_044034_20140318')
 
 # Define the visualization parameters.
 image_viz_params = {
@@ -36,7 +36,7 @@ display(map_l8)
 
 # [START earthengine__images03__palette]
 # Load an image.
-image = ee.Image('LANDSAT/LC08/C01/T1_TOA/LC08_044034_20140318')
+image = ee.Image('LANDSAT/LC08/C02/T1_TOA/LC08_044034_20140318')
 
 # Create an NDWI image, define visualization parameters and display.
 ndwi = image.normalizedDifference(['B3', 'B5'])

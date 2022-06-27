@@ -375,7 +375,7 @@ The last example is adapting the
 to be more interactive. This example runs a machine learning classification
 using points defined in three `FeatureCollections`, one for urban, vegetation,
 and water. Currently, if we wanted to rerun the classification on new points, we
-would have to run the script after we edit the points. **What if we wanted the
+would have to run the script after we edit the points. **What if we wanted to
 rerun the classification automatically when we edit the points?**
 
 We can refactor the classification to rely on the points in the drawing
@@ -439,7 +439,7 @@ geometry is changed.
 
 First, we will bundle all of the classification code into a single function
 called `classify` and make some modifications to the `Map.addLayer` calls to
-accomodate for the function running multiple times:
+accommodate for the function running multiple times:
 
 ```javascript
 function classify() {
@@ -488,7 +488,7 @@ function classify() {
   var testingPartition = withRandom.filter(ee.Filter.gte('random', split));
 
   // Trained with 70% of our data.
-  var trainedClassifier = ee.Classifier.gmoMaxEnt().train({
+  var trainedClassifier = ee.Classifier.smileRandomForest(5).train({
     features: trainingPartition,
     classProperty: classProperty,
     inputProperties: bands
@@ -524,7 +524,7 @@ Map.centerObject(urban);
 ```
 
 That's all there is to it!
-**[Here's a link to the full script.](https://code.earthengine.google.com/281685736496e769a96f12f0c5dd3a6b)**
+**[Here's a link to the full script.](https://code.earthengine.google.com/b1348a7de6194a9e8197d3f07c3e6ec0)**
 
 ## Conclusion
 

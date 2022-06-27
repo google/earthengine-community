@@ -21,7 +21,7 @@
 
 // [START earthengine__images15__pan_sharpening]
 // Load a Landsat 8 top-of-atmosphere reflectance image.
-var image = ee.Image('LANDSAT/LC08/C01/T1_TOA/LC08_044034_20140318');
+var image = ee.Image('LANDSAT/LC08/C02/T1_TOA/LC08_044034_20140318');
 Map.addLayer(
     image,
     {bands: ['B4', 'B3', 'B2'], min: 0, max: 0.25, gamma: [1.1, 1.1, 1]},

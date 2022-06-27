@@ -27,15 +27,13 @@ var trainingData = ee.FeatureCollection([
   ee.Feature(ee.Geometry.Point([-122.03010, 37.66660]), {presence: 0})
 ]);
 
-// Import a Landsat 8 image and select the reflectance bands.
-var image = ee.Image('LANDSAT/LC08/C01/T1_SR/LC08_044034_20200606')
-  .select(['B[0-9]*']);
+// Import a Landsat 8 surface reflectance image.
+var image = ee.Image('LANDSAT/LC08/C02/T1_L2/LC08_044034_20200606')
+                // Select the optical and thermal bands.
+                .select(['.._B.*']);
 
 // Sample the image at the location of the points.
-var training = image.sampleRegions({
-  collection: trainingData,
-  scale: 30
-});
+var training = image.sampleRegions({collection: trainingData, scale: 30});
 
 // Define and train a Maxent classifier from the image-sampled points.
 var classifier = ee.Classifier.amnhMaxent().train({
@@ -47,14 +45,18 @@ var classifier = ee.Classifier.amnhMaxent().train({
 // Classify the image using the Maxent classifier.
 var imageClassified = image.classify(classifier);
 
-// Display the layers to the map.
+// Display the layers on the map.
 // Species presence probability [0, 1] grades from black to white.
-Map.addLayer(image,
-  {bands: ['B4', 'B3', 'B2'], min: 0, max: 3500}, 'Image');
-Map.addLayer(imageClassified,
-  {bands: 'probability', min: 0, max: 1}, 'Probability');
-Map.addLayer(trainingData.filter(ee.Filter.eq('presence', 0)),
-  {color: 'red'}, 'Training data (species present)');
-Map.addLayer(trainingData.filter(ee.Filter.eq('presence', 1)),
-  {color: 'blue'}, 'Training data (species absent)');
+Map.centerObject(image, 9);
+Map.addLayer(
+    image.select(['SR_B4', 'SR_B3', 'SR_B2']).multiply(0.0000275).add(-0.2),
+    {min: 0, max: 0.3}, 'Image');
+Map.addLayer(
+    imageClassified, {bands: 'probability', min: 0, max: 1}, 'Probability');
+Map.addLayer(
+    trainingData.filter('presence == 0'), {color: 'red'},
+    'Training data (species absent)');
+Map.addLayer(
+    trainingData.filter('presence == 1'), {color: 'blue'},
+    'Training data (species present)');
 // [END earthengine__apidocs__ee_classifier_amnhmaxent]

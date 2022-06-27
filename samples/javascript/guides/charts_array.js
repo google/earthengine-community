@@ -136,7 +136,7 @@ print(chart);
 
 // [START earthengine__charts_array__metadata_list]
 // Import a Landsat 8 collection and filter to a single path/row.
-var col = ee.ImageCollection('LANDSAT/LC08/C01/T1_SR')
+var col = ee.ImageCollection('LANDSAT/LC08/C02/T1_L2')
               .filter(ee.Filter.expression('WRS_PATH ==  45 && WRS_ROW == 30'));
 
 // Reduce image properties to a series of lists; one for each selected property.
@@ -170,3 +170,43 @@ var chart = ui.Chart.array.values({array: y, axis: 0, xLabels: x})
                 });
 print(chart);
 // [END earthengine__charts_array__metadata_list]
+
+// [START earthengine__charts_array__mapped_list]
+// Define a sequence from -2pi to +2pi in 50 increments.
+var start = -2 * Math.PI;
+var end = 2 * Math.PI;
+var points = ee.List.sequence(start, end, null, 50);
+
+// Evaluate the sin() function for each value in the points sequence.
+var values = points.map(function(val) {
+  return ee.Number(val).sin();
+});
+
+// Define the chart and print it to the console.
+var chart = ui.Chart.array.values({array: values, axis: 0, xLabels: points})
+                .setOptions({
+                  title: 'Sine Function',
+                  hAxis: {
+                    title: 'radians',
+                    viewWindowMode: 'maximized',
+                    ticks: [
+                      {v: start, f: '-2π'},
+                      {v: -Math.PI, f: '-π'},
+                      {v: 0, f: '0'},
+                      {v: Math.PI, f: 'π'},
+                      {v: end, f: '2π'}
+                    ],
+                    titleTextStyle: {italic: false, bold: true}
+                  },
+                  vAxis: {
+                    title: 'sin(x)',
+                    titleTextStyle: {italic: false, bold: true}
+                  },
+                  colors: ['39a8a7'],
+                  lineWidth: 3,
+                  pointSize: 7,
+                  viewWindow: {min: start, max: end},
+                  legend: {position: 'none'}
+                });
+print(chart);
+// [END earthengine__charts_array__mapped_list]

@@ -15,11 +15,7 @@
  */
 
 // [START earthengine__apidocs__ee_number_add]
-print(ee.Number(0).add(0.0));  // 0
-print(ee.Number(0).add(1.2));  // 1.2
-print(ee.Number(0).add(-3.4));  // -3.4
-
-// Converting to a smaller integer type does not limit the range
-print(ee.Number(0).toUint8().add(-1));  // -1
-print(ee.Number(255).toUint8().add(123));  // 378
+print('5 + 10', ee.Number(5).add(ee.Number(10)));  // 15
+print('5 + 10.2', ee.Number(5).add(ee.Number(10.2)));  // 15.2
+print('5 + -10.2', ee.Number(5).add(ee.Number(-10.2)));  // -5.199999999
 // [END earthengine__apidocs__ee_number_add]

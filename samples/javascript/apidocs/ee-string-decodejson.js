@@ -15,5 +15,7 @@
  */
 
 // [START earthengine__apidocs__ee_string_decodejson]
-print(ee.String('{"a": "abc", "b": 1}').decodeJSON());
+var data = ee.Dictionary(ee.String('{"a": "abc", "b": 1}').decodeJSON());
+print(data);
+print(data.get('a'));
 // [END earthengine__apidocs__ee_string_decodejson]

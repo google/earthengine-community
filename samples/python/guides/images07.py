@@ -16,7 +16,7 @@
 
 # [START earthengine__images07__thresholding]
 # Load a Landsat 8 image.
-image = ee.Image('LANDSAT/LC08/C01/T1_TOA/LC08_044034_20140318')
+image = ee.Image('LANDSAT/LC08/C02/T1_TOA/LC08_044034_20140318')
 
 # Create NDVI and NDWI spectral indices.
 ndvi = image.normalizedDifference(['B5', 'B4'])

@@ -21,7 +21,7 @@ aoi = point.buffer(10000)
 
 # Import a Landsat 8 image, subset the thermal band, and clip to the
 # area of interest.
-kelvin = ee.Image('LANDSAT/LC08/C01/T1_TOA/LC08_044034_20140318').select(
+kelvin = ee.Image('LANDSAT/LC08/C02/T1_TOA/LC08_044034_20140318').select(
     ['B10'], ['kelvin']).clip(aoi)
 
 # Threshold the thermal band to set hot pixels as value 1, mask all else.

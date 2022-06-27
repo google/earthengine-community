@@ -22,7 +22,7 @@
 // [START earthengine__images16__unmixing]
 // Load a Landsat 5 image and select the bands we want to unmix.
 var bands = ['B1', 'B2', 'B3', 'B4', 'B5', 'B6', 'B7'];
-var image = ee.Image('LANDSAT/LT05/C01/T1/LT05_044034_20080214')
+var image = ee.Image('LANDSAT/LT05/C02/T1/LT05_044034_20080214')
   .select(bands);
 Map.setCenter(-122.1899, 37.5010, 10); // San Francisco Bay
 Map.addLayer(image, {bands: ['B4', 'B3', 'B2'], min: 0, max: 128}, 'image');

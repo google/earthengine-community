@@ -15,7 +15,8 @@
  */
 
 // [START earthengine__apidocs__ee_number_asin]
-print(ee.Number(-1).asin());  // [-π/2]
-print(ee.Number(0).asin());  // [0]
-print(ee.Number(1).asin());  // [π/2]
+// The domain of arcsine is [-1,1], inputs outside the domain are invalid.
+print('Arcsine of -1', ee.Number(-1).asin());  // -1.570796326 (-π/2)
+print('Arcsine of 0', ee.Number(0).asin());  // 0
+print('Arcsine of 1', ee.Number(1).asin());  // 1.570796326 (π/2)
 // [END earthengine__apidocs__ee_number_asin]

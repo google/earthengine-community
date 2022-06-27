@@ -151,5 +151,5 @@ var image = ee.Image('MODIS/006/MOD13A1/2014_05_09').select(0);
 var reprojected = image
     .unitScale(-2000, 10000)
     .reproject('EPSG:4326', null, 500);
-Map.addLayer(reprojected, visParams, 'Reprojected');
+Map.addLayer(reprojected, {min: 0.15, max: 0.7}, 'Reprojected');
 // [END earthengine__concepts__reproject]

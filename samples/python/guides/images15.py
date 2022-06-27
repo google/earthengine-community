@@ -16,7 +16,7 @@
 
 # [START earthengine__images15__pan_sharpening]
 # Load a Landsat 8 top-of-atmosphere reflectance image.
-image = ee.Image('LANDSAT/LC08/C01/T1_TOA/LC08_044034_20140318')
+image = ee.Image('LANDSAT/LC08/C02/T1_TOA/LC08_044034_20140318')
 
 # Convert the RGB bands to the HSV color space.
 hsv = image.select(['B4', 'B3', 'B2']).rgbToHsv()

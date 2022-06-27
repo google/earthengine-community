@@ -20,7 +20,7 @@
  */
 
 // [START earthengine__charts_image_collection__doy_series_line_chart]
-// Import the example feature collection and subset the glassland feature.
+// Import the example feature collection and subset the grassland feature.
 var grassland = ee.FeatureCollection('projects/google/charts_feature_example')
                     .filter(ee.Filter.eq('label', 'Grassland'));
 
@@ -59,7 +59,7 @@ print(chart);
 // [END earthengine__charts_image_collection__doy_series_line_chart]
 
 // [START earthengine__charts_image_collection__doy_series_by_year_line_chart]
-// Import the example feature collection and subset the glassland feature.
+// Import the example feature collection and subset the grassland feature.
 var grassland = ee.FeatureCollection('projects/google/charts_feature_example')
                     .filter(ee.Filter.eq('label', 'Grassland'));
 

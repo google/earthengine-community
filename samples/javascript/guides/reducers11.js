@@ -23,7 +23,7 @@
 // Load a Landsat 8 input image.
 var image = ee.Image('LANDSAT/LC08/C01/T1/LC08_044034_20140318');
 
-// Creat an arbitrary region.
+// Create an arbitrary region.
 var geometry = ee.Geometry.Rectangle(-122.496, 37.532, -121.554, 37.538);
 
 // Make an NDWI image.  It will have one band named 'nd'.
@@ -32,7 +32,7 @@ var ndwi = image.normalizedDifference(['B3', 'B5']);
 // Compute the weighted mean of the NDWI image clipped to the region.
 var weighted = ndwi.clip(geometry)
   .reduceRegion({
-    reducer: ee.Reducer.sum(),
+    reducer: ee.Reducer.mean(),
     geometry: geometry,
     scale: 30})
   .get('nd');
@@ -40,7 +40,7 @@ var weighted = ndwi.clip(geometry)
 // Compute the UN-weighted mean of the NDWI image clipped to the region.
 var unweighted = ndwi.clip(geometry)
   .reduceRegion({
-    reducer: ee.Reducer.sum().unweighted(),
+    reducer: ee.Reducer.mean().unweighted(),
     geometry: geometry,
     scale: 30})
   .get('nd');

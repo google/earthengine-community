@@ -16,5 +16,5 @@
 
 // [START earthengine__apidocs__ee_geometry_point]
 // Construct a point from coordinates.
-var point = ee.Geometry.Point([-122.09672, 37.42807]);
+var point = ee.Geometry.Point([-122.08412, 37.42189]);
 // [END earthengine__apidocs__ee_geometry_point]

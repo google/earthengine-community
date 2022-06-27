@@ -20,25 +20,25 @@
  */
 
 // [START earthengine__image_collections03__filtering]
-// Load Landsat 5 data, filter by date and bounds.
-var collection = ee.ImageCollection('LANDSAT/LT05/C01/T2')
-  .filterDate('1987-01-01', '1990-05-01')
-  .filterBounds(ee.Geometry.Point(25.8544, -18.08874));
+// Load Landsat 8 data, filter by date, month, and bounds.
+var collection = ee.ImageCollection('LANDSAT/LC08/C02/T1_TOA')
+  .filterDate('2015-01-01', '2018-01-01')  // Three years of data
+  .filter(ee.Filter.calendarRange(11, 2, 'month'))  // Only Nov-Feb observations
+  .filterBounds(ee.Geometry.Point(25.8544, -18.08874));  // Intersecting ROI
 
-// Also filter the collection by the IMAGE_QUALITY property.
-var filtered = collection
-  .filterMetadata('IMAGE_QUALITY', 'equals', 9);
+// Also filter the collection by the CLOUD_COVER property.
+var filtered = collection.filter(ee.Filter.eq('CLOUD_COVER', 0));
 
-// Create two composites to check the effect of filtering by IMAGE_QUALITY.
-var badComposite = ee.Algorithms.Landsat.simpleComposite(collection, 75, 3);
-var goodComposite = ee.Algorithms.Landsat.simpleComposite(filtered, 75, 3);
+// Create two composites to check the effect of filtering by CLOUD_COVER.
+var badComposite = collection.mean();
+var goodComposite = filtered.mean();
 
 // Display the composites.
 Map.setCenter(25.8544, -18.08874, 13);
 Map.addLayer(badComposite,
-             {bands: ['B3', 'B2', 'B1'], gain: 3.5},
-             'bad composite');
+             {bands: ['B3', 'B2', 'B1'], min: 0.05, max: 0.35, gamma: 1.1},
+             'Bad composite');
 Map.addLayer(goodComposite,
-             {bands: ['B3', 'B2', 'B1'], gain: 3.5},
-             'good composite');
+             {bands: ['B3', 'B2', 'B1'], min: 0.05, max: 0.35, gamma: 1.1},
+             'Good composite');
 // [END earthengine__image_collections03__filtering]

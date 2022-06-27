@@ -15,7 +15,8 @@
  */
 
 // [START earthengine__apidocs__ee_number_acos]
-print(ee.Number(-1).acos());  // [π]
-print(ee.Number(0).acos());  // [π/2]
-print(ee.Number(1).acos());  // [0]
+// The domain of arccosine is [-1,1], inputs outside the domain are invalid.
+print('Arccosine of -1', ee.Number(-1).acos());  // 3.141592653 (π)
+print('Arccosine of 0', ee.Number(0).acos());  // 1.570796326 (π/2)
+print('Arccosine of 1', ee.Number(1).acos());  // 0
 // [END earthengine__apidocs__ee_number_acos]

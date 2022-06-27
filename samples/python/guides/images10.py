@@ -16,7 +16,7 @@
 
 # [START earthengine__images10__smoothing]
 # Load and display an image.
-image = ee.Image('LANDSAT/LC08/C01/T1_TOA/LC08_044034_20140318')
+image = ee.Image('LANDSAT/LC08/C02/T1_TOA/LC08_044034_20140318')
 
 # Define a boxcar or low-pass kernel.
 boxcar = ee.Kernel.square(radius=7, units='pixels', normalize=True)

@@ -16,7 +16,7 @@
 
 # [START earthengine__images14__zero_crossings]
 # Load a Landsat 8 image, select the panchromatic band.
-image = ee.Image('LANDSAT/LC08/C01/T1/LC08_044034_20140318').select('B8')
+image = ee.Image('LANDSAT/LC08/C02/T1/LC08_044034_20140318').select('B8')
 
 # Define a "fat" Gaussian kernel.
 fat = ee.Kernel.gaussian(

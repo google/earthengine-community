@@ -15,7 +15,9 @@
  */
 
 // [START earthengine__apidocs__ee_number_atan]
-print(ee.Number(-5).atan());  // [-1.3734]
-print(ee.Number(0).atan());  // [0]
-print(ee.Number(5).atan());  // [1.3734]
+print('Arctangent of -1e13', ee.Number(-1e13).atan());  // -1.570796326 (-π/2)
+print('Arctangent of -1', ee.Number(-1).atan());  // -0.785398163
+print('Arctangent of 0', ee.Number(0).atan());  // 0
+print('Arctangent of 1', ee.Number(1).atan());  // 0.785398163
+print('Arctangent of 1e13', ee.Number(1e13).atan());  // 1.570796326 (π/2)
 // [END earthengine__apidocs__ee_number_atan]

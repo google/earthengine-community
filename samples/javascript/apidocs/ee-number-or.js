@@ -15,15 +15,6 @@
  */
 
 // [START earthengine__apidocs__ee_number_or]
-var zero = ee.Number(0);
-var one = ee.Number(1);
-
-print(zero.or(0));  // 0
-
-print(zero.or(1));  // 1
-print(one.or(0));  // 1
-print(one.or(1));  // 1
-print(one.or(2.3));  // 1
-print(one.or(-1));  // 1
-print(ee.Number(4.5).or(one));  // 1
+print('Either 0 or 5 non-zero?', ee.Number(0).or(ee.Number(5)));  // 1
+print('Either 0 or 0 non-zero?', ee.Number(0).or(ee.Number(0)));  // 0
 // [END earthengine__apidocs__ee_number_or]

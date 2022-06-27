@@ -16,7 +16,7 @@
 
 # [START earthengine__images041__sld_stretch]
 # Load a Landsat 8 raw image.
-image = ee.Image('LANDSAT/LC08/C01/T1/LC08_044034_20140318')
+image = ee.Image('LANDSAT/LC08/C02/T1/LC08_044034_20140318')
 
 # Define a RasterSymbolizer element with '_enhance_' for a placeholder.
 template_sld = """

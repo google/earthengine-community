@@ -17,9 +17,9 @@
 // [START earthengine__apidocs__ee_blob_string]
 // Parse a SpatioTemporal Asset Catalog (STAC) entry from Google Cloud
 // Storage (GCS). This is a non-traditional use of ee.Blob.
-var url = 'gs://earthengine-stac/0.8.1/catalog/NOAA_GOES_16_MCMIPF.json';
+var url = 'gs://ee-docs-demos/vector/geojson/point.json';
 var blob = ee.Blob(url);
 var entry = ee.Dictionary(blob.string().decodeJSON());
-print(entry.get('title'));  // GOES-16 MCMIPF Series ABI Level 2 Cloud...
-print(entry.get('description'));  // [GOES](https://www.goes.noaa.gov)...
+print(entry);  // Point (1.00, 2.00)...
+print(entry.get('a_field'));  // "a demo field"
 // [END earthengine__apidocs__ee_blob_string]

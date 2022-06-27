@@ -54,7 +54,7 @@ Export.video.toDrive({
 Export.video.toCloudStorage({
   collection: collection,
   description: 'sfVideoExampleToCloud',
-  bucket: 'ee-docs-demos',
+  bucket: 'your-bucket-name',
   dimensions: 720,
   framesPerSecond: 12,
   region: polygon

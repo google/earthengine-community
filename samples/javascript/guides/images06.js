@@ -21,7 +21,7 @@
 
 // [START earthengine__images06__evi_expression]
 // Load a Landsat 8 image.
-var image = ee.Image('LANDSAT/LC08/C01/T1_TOA/LC08_044034_20140318');
+var image = ee.Image('LANDSAT/LC08/C02/T1_TOA/LC08_044034_20140318');
 
 // Compute the EVI using an expression.
 var evi = image.expression(
@@ -32,5 +32,5 @@ var evi = image.expression(
 });
 
 Map.centerObject(image, 9);
-Map.addLayer(evi, {min: -1, max: 1, palette: ['FF0000', '00FF00']});
+Map.addLayer(evi, {min: -1, max: 1, palette: ['a6611a', 'f5f5f5', '4dac26']});
 // [END earthengine__images06__evi_expression]

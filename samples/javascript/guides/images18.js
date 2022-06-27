@@ -19,10 +19,6 @@
  *   from 'Images - Object-based methods' page
  */
 
-
-
-
-
 // [START earthengine__images18__example_setup]
 // Make an area of interest geometry centered on San Francisco.
 var point = ee.Geometry.Point(-122.1899, 37.5010);
@@ -30,7 +26,7 @@ var aoi = point.buffer(10000);
 
 // Import a Landsat 8 image, subset the thermal band, and clip to the
 // area of interest.
-var kelvin = ee.Image('LANDSAT/LC08/C01/T1_TOA/LC08_044034_20140318')
+var kelvin = ee.Image('LANDSAT/LC08/C02/T1_TOA/LC08_044034_20140318')
   .select(['B10'], ['kelvin'])
   .clip(aoi);
 
@@ -79,7 +75,9 @@ var pixelArea = ee.Image.pixelArea();
 var objectArea = objectSize.multiply(pixelArea);
 
 // Display object area to the Map.
-Map.addLayer(objectArea, null, 'Object area m^2');
+Map.addLayer(objectArea,
+             {min: 0, max: 30000, palette: ['0000FF', 'FF00FF']},
+             'Object area m^2');
 // [END earthengine__images18__object_area]
 
 // [START earthengine__images18__area_mask]

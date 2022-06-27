@@ -36,13 +36,14 @@ Map.addLayer(toa, {bands: ['B4', 'B3', 'B2'], max: 0.2}, 'toa reflectance');
 // [END earthengine__landsat01__radiance_toa]
 
 // [START earthengine__landsat01__sr_image]
-var srImage = ee.Image('LANDSAT/LE07/C01/T1_SR/LE07_044034_19990707');
+var srImage = ee.Image('LANDSAT/LC08/C02/T1_L2/LC08_044034_20201028');
 // [END earthengine__landsat01__sr_image]
 
 // [START earthengine__landsat01__sr_collections]
-var surfaceReflectanceL4 = ee.ImageCollection('LANDSAT/LT04/C01/T1_SR');
-var surfaceReflectanceL5 = ee.ImageCollection('LANDSAT/LT05/C01/T1_SR');
-var surfaceReflectanceL7 = ee.ImageCollection('LANDSAT/LE07/C01/T1_SR');
+var surfaceReflectanceL4 = ee.ImageCollection('LANDSAT/LT04/C02/T1_L2');
+var surfaceReflectanceL5 = ee.ImageCollection('LANDSAT/LT05/C02/T1_L2');
+var surfaceReflectanceL7 = ee.ImageCollection('LANDSAT/LE07/C02/T1_L2');
+var surfaceReflectanceL8 = ee.ImageCollection('LANDSAT/LC08/C02/T1_L2');
 // [END earthengine__landsat01__sr_collections]
 
 

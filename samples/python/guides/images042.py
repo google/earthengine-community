@@ -12,10 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-"""Earth Engine Developer's Guide examples for 'Image information' page."""
-
-import ee
-ee.Initialize()
+"""Google Earth Engine Developer's Guide examples for 'Images - Visualization'."""
 
 # [START earthengine__images042__sld_elevation]
 # Load SRTM Digital Elevation Model data.
@@ -47,7 +44,12 @@ sld_ramp = """
       </ColorMap>
     </RasterSymbolizer>"""
 
-# Apply the SLD styles to the image.
-intervals = image.sldStyle(sld_intervals)
-ramp = image.sldStyle(sld_ramp)
+# Define a map centered on the United States.
+map_sld_interval = folium.Map(location=[40.413, -99.229], zoom_start=5)
+
+# Add the image layers to the map and display it.
+map_sld_interval.add_ee_layer(
+    image.sldStyle(sld_intervals), None, 'SLD intervals')
+map_sld_interval.add_ee_layer(image.sldStyle(sld_ramp), None, 'SLD ramp')
+display(map_sld_interval.add_child(folium.LayerControl()))
 # [END earthengine__images042__sld_elevation]

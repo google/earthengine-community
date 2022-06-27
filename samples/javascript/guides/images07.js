@@ -21,7 +21,7 @@
 
 // [START earthengine__images07__thresholding]
 // Load a Landsat 8 image.
-var image = ee.Image('LANDSAT/LC08/C01/T1_TOA/LC08_044034_20140318');
+var image = ee.Image('LANDSAT/LC08/C02/T1_TOA/LC08_044034_20140318');
 
 // Create NDVI and NDWI spectral indices.
 var ndvi = image.normalizedDifference(['B5', 'B4']);
@@ -33,5 +33,5 @@ var bare = ndvi.lt(0.2).and(ndwi.lt(0));
 // Mask and display the binary layer.
 Map.setCenter(-122.3578, 37.7726, 12);
 Map.setOptions('satellite');
-Map.addLayer(bare.updateMask(bare), {}, 'bare');
+Map.addLayer(bare.selfMask(), {}, 'bare');
 // [END earthengine__images07__thresholding]

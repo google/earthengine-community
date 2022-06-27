@@ -12,14 +12,11 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-"""Earth Engine Developer's Guide examples from 'Images - Edge detectors' page."""
-
-import ee
-ee.Initialize()
+"""Google Earth Engine Developer's Guide examples for 'Images - Edge detectors'."""
 
 # [START earthengine__images14__zero_crossings]
 # Load a Landsat 8 image, select the panchromatic band.
-image = ee.Image('LANDSAT/LC08/C01/T1/LC08_044034_20140318').select('B8')
+image = ee.Image('LANDSAT/LC08/C02/T1/LC08_044034_20140318').select('B8')
 
 # Define a "fat" Gaussian kernel.
 fat = ee.Kernel.gaussian(
@@ -31,6 +28,15 @@ skinny = ee.Kernel.gaussian(radius=3, sigma=1, units='pixels', normalize=True)
 # Compute a difference-of-Gaussians (DOG) kernel.
 dog = fat.add(skinny)
 
-# Compute the zero crossings of the second derivative.
+# Compute the zero crossings of the second derivative, display.
 zero_xings = image.convolve(dog).zeroCrossing()
+
+# Define a map centered on San Francisco Bay.
+map_zero_xings = folium.Map(location=[37.7295, -122.054], zoom_start=10)
+
+# Add the image layers to the map and display it.
+map_zero_xings.add_ee_layer(image, {'max': 12000}, 'image')
+map_zero_xings.add_ee_layer(
+    zero_xings.selfMask(), {'palette': 'FF0000'}, 'zero crossings')
+display(map_zero_xings.add_child(folium.LayerControl()))
 # [END earthengine__images14__zero_crossings]

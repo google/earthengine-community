@@ -21,7 +21,7 @@
 
 // [START earthengine__joins05__save_all]
 // Load a primary collection: Landsat imagery.
-var primary = ee.ImageCollection('LANDSAT/LC08/C01/T1_TOA')
+var primary = ee.ImageCollection('LANDSAT/LC08/C02/T1_TOA')
     .filterDate('2014-04-01', '2014-06-01')
     .filterBounds(ee.Geometry.Point(-122.092, 37.42));
 

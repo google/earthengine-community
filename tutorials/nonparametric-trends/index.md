@@ -284,20 +284,20 @@ Map.addLayer(p, {min: 0, max: 1}, 'p');
 // Pixels that can have the null hypothesis (there is no trend) rejected.
 // Specifically, if the true trend is zero, there would be less than 5%
 // chance of randomly obtaining the observed result (that there is a trend).
-Map.addLayer(p.lte(0.0275), {min: 0, max: 1}, 'significant trends');
+Map.addLayer(p.lte(0.025), {min: 0, max: 1}, 'significant trends');
 ```
 
 The following shows a map of the "significant" pixels (in white), or the
-pixels that pass the `p.lte(0.0275)` test.  If our assumptions are correct
+pixels that pass the `p.lte(0.025)` test.  If our assumptions are correct
 and you are satisfied with the computation, you may wish to treat these
-pixels differently, by using `p.lte(0.0275)` as a mask.  Note that the pixel
+pixels differently, by using `p.lte(0.025)` as a mask.  Note that the pixel
 with the time series shown above (red in the map below) does NOT have a
 significant trend.
 
 ![Statistically Significant Pixels](statistically_significant_pixels.png)
 
 Some call this process significance testing.  Pixels that are "significant"
-satisfy the condition that `p.lte(0.0275)` and are assumed to have a real
+satisfy the condition that `p.lte(0.025)` and are assumed to have a real
 trend.  Other pixels are assumed to not have a trend and are removed from
 further analysis.  Some consider this process cultish
 ([Ziliak and McCloskey 2009](https://www.deirdremccloskey.com/docs/jsm.pdf)).

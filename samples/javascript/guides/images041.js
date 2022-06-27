@@ -21,7 +21,7 @@
 
 // [START earthengine__images041__sld_stretch]
 // Load a Landsat 8 raw image.
-var image = ee.Image('LANDSAT/LC08/C01/T1/LC08_044034_20140318');
+var image = ee.Image('LANDSAT/LC08/C02/T1/LC08_044034_20140318');
 
 // Define a RasterSymbolizer element with '_enhance_' for a placeholder.
 var template_sld =

@@ -21,7 +21,7 @@
 
 // [START earthengine__images10__smoothing]
 // Load and display an image.
-var image = ee.Image('LANDSAT/LC08/C01/T1_TOA/LC08_044034_20140318');
+var image = ee.Image('LANDSAT/LC08/C02/T1_TOA/LC08_044034_20140318');
 Map.setCenter(-121.9785, 37.8694, 11);
 Map.addLayer(image, {bands: ['B5', 'B4', 'B3'], max: 0.5}, 'input image');
 

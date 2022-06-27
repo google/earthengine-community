@@ -12,85 +12,86 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-"""Earth Engine Developer's Guide examples from 'Images - Visualization' page."""
-
-import ee
-ee.Initialize()
+"""Google Earth Engine Developer's Guide examples for 'Images - Visualization'."""
 
 # [START earthengine__images03__viz_image]
 # Load an image.
-image = ee.Image('LANDSAT/LC08/C01/T1_TOA/LC08_044034_20140318')
+image = ee.Image('LANDSAT/LC08/C02/T1_TOA/LC08_044034_20140318')
 
 # Define the visualization parameters.
 image_viz_params = {
-    'bands': ['B5', 'B4', 'B3'], 'min': 0, 'max': 0.5, 'gamma': [0.95, 1.1, 1]
+    'bands': ['B5', 'B4', 'B3'],
+    'min': 0,
+    'max': 0.5,
+    'gamma': [0.95, 1.1, 1]
 }
 
-# Create an RGB image based on the visualization parameters.
-image_viz = image.visualize(**image_viz_params)
-print(
-    'image_viz thumbnail:',
-    image_viz.getThumbURL(params={
-        'dimensions': 512,
-        'crs': 'EPSG:3857',
-        'region': image.geometry().centroid().buffer(4e4)
-    }))
+# Define a map centered on San Francisco Bay.
+map_l8 = folium.Map(location=[37.5010, -122.1899], zoom_start=10)
+
+# Add the image layer to the map and display it.
+map_l8.add_ee_layer(image, image_viz_params, 'false color composite')
+display(map_l8)
 # [END earthengine__images03__viz_image]
 
 # [START earthengine__images03__palette]
 # Load an image.
-image = ee.Image('LANDSAT/LC08/C01/T1_TOA/LC08_044034_20140318')
+image = ee.Image('LANDSAT/LC08/C02/T1_TOA/LC08_044034_20140318')
 
-# Create an NDWI image, define visualization parameters, convert to RGB image.
+# Create an NDWI image, define visualization parameters and display.
 ndwi = image.normalizedDifference(['B3', 'B5'])
-ndwi_viz_params = {'min': 0.5, 'max': 1, 'palette': ['00FFFF', '0000FF']}
-ndwi_viz = ndwi.visualize(**ndwi_viz_params)
-print(
-    'ndwi_viz thumbnail:',
-    ndwi_viz.getThumbURL(params={
-        'dimensions': 512,
-        'crs': 'EPSG:3857',
-        'region': image.geometry().centroid().buffer(4e4)
-    }))
+ndwi_viz = {'min': 0.5, 'max': 1, 'palette': ['00FFFF', '0000FF']}
+
+# Define a map centered on San Francisco Bay.
+map_ndwi = folium.Map(location=[37.5010, -122.1899], zoom_start=10)
+
+# Add the image layer to the map and display it.
+map_ndwi.add_ee_layer(ndwi, ndwi_viz, 'NDWI')
+display(map_ndwi)
 # [END earthengine__images03__palette]
 
 # [START earthengine__images03__mask]
 # Mask the non-watery parts of the image, where NDWI < 0.4.
-ndwi_viz_masked = ndwi_viz.updateMask(ndwi.gte(0.4))
-print(
-    'ndwi_viz_masked thumbnail:',
-    ndwi_viz_masked.getThumbURL(params={
-        'dimensions': 512,
-        'crs': 'EPSG:3857',
-        'region': image.geometry().centroid().buffer(4e4)
-    }))
+ndwi_masked = ndwi.updateMask(ndwi.gte(0.4))
+
+# Define a map centered on San Francisco Bay.
+map_ndwi_masked = folium.Map(location=[37.5010, -122.1899], zoom_start=10)
+
+# Add the image layer to the map and display it.
+map_ndwi_masked.add_ee_layer(ndwi_masked, ndwi_viz, 'NDWI masked')
+display(map_ndwi_masked)
 # [END earthengine__images03__mask]
 
 # [START earthengine__images03__visualize]
-# These layers were created previously.
+image_rgb = image.visualize(**{'bands': ['B5', 'B4', 'B3'], 'max': 0.5})
+ndwi_rgb = ndwi_masked.visualize(**{
+    'min': 0.5,
+    'max': 1,
+    'palette': ['00FFFF', '0000FF']
+})
 # [END earthengine__images03__visualize]
 
 # [START earthengine__images03__mosaic]
 # Mosaic the visualization layers and display (or export).
-mosaic = ee.ImageCollection([image_viz, ndwi_viz_masked]).mosaic()
-print(
-    'mosaic thumbnail:',
-    mosaic.getThumbURL(params={
-        'dimensions': 512,
-        'crs': 'EPSG:3857',
-        'region': image.geometry().centroid().buffer(4e4)
-    }))
+mosaic = ee.ImageCollection([image_rgb, ndwi_rgb]).mosaic()
+
+# Define a map centered on San Francisco Bay.
+map_mosaic = folium.Map(location=[37.5010, -122.1899], zoom_start=10)
+
+# Add the image layer to the map and display it.
+map_mosaic.add_ee_layer(mosaic, None, 'mosaic')
+display(map_mosaic)
 # [END earthengine__images03__mosaic]
 
 # [START earthengine__images03__clip]
 # Create a circle by drawing a 20000 meter buffer around a point.
 roi = ee.Geometry.Point([-122.4481, 37.7599]).buffer(20000)
 mosaic_clipped = mosaic.clip(roi)
-print(
-    'mosaic_clipped thumbnail:',
-    mosaic_clipped.getThumbURL(params={
-        'dimensions': 512,
-        'crs': 'EPSG:3857',
-        'region': roi.buffer(5e3)
-    }))
+
+# Define a map centered on San Francisco.
+map_mosaic_clipped = folium.Map(location=[37.7599, -122.4481], zoom_start=10)
+
+# Add the image layer to the map and display it.
+map_mosaic_clipped.add_ee_layer(mosaic_clipped, None, 'mosaic clipped')
+display(map_mosaic_clipped)
 # [END earthengine__images03__clip]

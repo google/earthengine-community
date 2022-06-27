@@ -79,7 +79,7 @@ function makeButton(position) {
   });
 }
 
-// Add labled buttons to the panel.
+// Add labeled buttons to the panel.
 ui.root.add(makeButton('top-left'));
 ui.root.add(makeButton('top-center'));
 ui.root.add(makeButton('top-right'));

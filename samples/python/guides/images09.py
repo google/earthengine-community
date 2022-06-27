@@ -12,21 +12,26 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-"""Earth Engine Developer's Guide examples from 'Images - Relational, conditional and Boolean operations' page."""
-
-import ee
-ee.Initialize()
+"""Google Earth Engine Developer's Guide examples for 'Images - Relational, conditional and Boolean operations'."""
 
 # [START earthengine__images09__where_operator]
-# Load a cloudy Landsat 8 image.
-image = ee.Image('LANDSAT/LC08/C01/T1_TOA/LC08_044034_20130603')
+# Load a cloudy Sentinel-2 image.
+image = ee.Image(
+    'COPERNICUS/S2_SR/20210114T185729_20210114T185730_T10SEG')
 
 # Load another image to replace the cloudy pixels.
-replacement = ee.Image('LANDSAT/LC08/C01/T1_TOA/LC08_044034_20130416')
+replacement = ee.Image(
+    'COPERNICUS/S2_SR/20210109T185751_20210109T185931_T10SEG')
 
-# Compute a cloud score band.
-cloud = ee.Algorithms.Landsat.simpleCloudScore(image).select('cloud')
+# Set cloudy pixels (greater than 5% probability) to the other image.
+replaced = image.where(image.select('MSK_CLDPRB').gt(5), replacement)
 
-# Set cloudy pixels to the other image.
-replaced = image.where(cloud.gt(10), replacement)
+# Define a map centered on San Francisco Bay.
+map_replaced = folium.Map(location=[37.7349, -122.3769], zoom_start=11)
+
+# Display the images on a map.
+vis_params = {'bands': ['B4', 'B3', 'B2'], 'min': 0, 'max': 2000}
+map_replaced.add_ee_layer(image, vis_params, 'original image')
+map_replaced.add_ee_layer(replaced, vis_params, 'clouds replaced')
+display(map_replaced.add_child(folium.LayerControl()))
 # [END earthengine__images09__where_operator]

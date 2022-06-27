@@ -117,7 +117,7 @@ var ndviCompCol = ee.ImageCollection.fromImages(ndviCompList);
 // [START earthengine__image_collections10__compositing03]
 // Assemble a collection of Landsat surface reflectance images for a given
 // region and day-of-year range.
-var lsCol = ee.ImageCollection('LANDSAT/LT05/C01/T1_SR')
+var lsCol = ee.ImageCollection('LANDSAT/LT05/C02/T1_L2')
   .filterBounds(ee.Geometry.Point(-122.9, 43.6))
   .filter(ee.Filter.dayOfYear(182, 243))
   // Add the observation year as a property to each image.
@@ -125,12 +125,27 @@ var lsCol = ee.ImageCollection('LANDSAT/LT05/C01/T1_SR')
     return img.set('year', ee.Image(img).date().get('year'));
   });
 
-// Define a function to mask out image clouds and shadows.
-var cloudMask = function(img) {
-  var qa = img.select('pixel_qa');
-  var cloud = qa.bitwiseAnd(1 << 5).or(qa.bitwiseAnd(1 << 3));
-  return img.updateMask(cloud.not());
-};
+
+// Define a function to scale the data and mask unwanted pixels.
+function maskL457sr(image) {
+  // Bit 0 - Fill
+  // Bit 1 - Dilated Cloud
+  // Bit 2 - Unused
+  // Bit 3 - Cloud
+  // Bit 4 - Cloud Shadow
+  var qaMask = image.select('QA_PIXEL').bitwiseAnd(parseInt('11111', 2)).eq(0);
+  var saturationMask = image.select('QA_RADSAT').eq(0);
+
+  // Apply the scaling factors to the appropriate bands.
+  var opticalBands = image.select('SR_B.').multiply(0.0000275).add(-0.2);
+  var thermalBand = image.select('ST_B6').multiply(0.00341802).add(149.0);
+
+  // Replace the original bands with the scaled ones and apply the masks.
+  return image.addBands(opticalBands, null, true)
+      .addBands(thermalBand, null, true)
+      .updateMask(qaMask)
+      .updateMask(saturationMask);
+}
 
 // Define a list of unique observation years from the image collection.
 var years = ee.List(lsCol.aggregate_array('year')).distinct().sort();
@@ -141,7 +156,7 @@ var lsCompList = years.map(function(year) {
     // Filter image collection by year.
     .filterMetadata('year', 'equals', year)
     // Apply cloud mask.
-    .map(cloudMask)
+    .map(maskL457sr)
     // Reduce image collection by median.
     .reduce(ee.Reducer.median())
     // Set composite year as an image property.
@@ -159,7 +174,7 @@ var lsCompCol = ee.ImageCollection.fromImages(lsCompList);
 // [START earthengine__image_collections10__compositing04]
 // Assemble a collection of Landsat surface reflectance images for a given
 // region and day-of-year range.
-var lsCol = ee.ImageCollection('LANDSAT/LT05/C01/T1_SR')
+var lsCol = ee.ImageCollection('LANDSAT/LT05/C02/T1_L2')
   .filterBounds(ee.Geometry.Point(-122.9, 43.6))
   .filter(ee.Filter.dayOfYear(182, 243))
   // Add the observation year as a property to each image.
@@ -176,17 +191,31 @@ var filter = ee.Filter.equals({leftField: 'year', rightField: 'year'});
 // Define a join.
 var join = ee.Join.saveAll('year_match');
 
-// Apply the join; results in ‘year_match’ property being added to each distinct
+// Apply the join; results in 'year_match' property being added to each distinct
 // year representative image. The list includes all images in the collection
 // belonging to the respective year.
 var joinCol = join.apply(distinctYears, lsCol, filter);
 
-// Define a function to mask out image clouds and shadows.
-var cloudMask = function(img) {
-  var qa = img.select('pixel_qa');
-  var cloud = qa.bitwiseAnd(1 << 5).or(qa.bitwiseAnd(1 << 3));
-  return img.updateMask(cloud.not());
-};
+// Define a function to scale the data and mask unwanted pixels.
+function maskL457sr(image) {
+  // Bit 0 - Fill
+  // Bit 1 - Dilated Cloud
+  // Bit 2 - Unused
+  // Bit 3 - Cloud
+  // Bit 4 - Cloud Shadow
+  var qaMask = image.select('QA_PIXEL').bitwiseAnd(parseInt('11111', 2)).eq(0);
+  var saturationMask = image.select('QA_RADSAT').eq(0);
+
+  // Apply the scaling factors to the appropriate bands.
+  var opticalBands = image.select('SR_B.').multiply(0.0000275).add(-0.2);
+  var thermalBand = image.select('ST_B6').multiply(0.00341802).add(149.0);
+
+  // Replace the original bands with the scaled ones and apply the masks.
+  return image.addBands(opticalBands, null, true)
+      .addBands(thermalBand, null, true)
+      .updateMask(qaMask)
+      .updateMask(saturationMask);
+}
 
 // Map over the distinct years collection to build a list of annual image
 // composites.
@@ -194,7 +223,7 @@ var lsCompList = joinCol.map(function(img) {
   // Get the list of images belonging to the given year.
   return ee.ImageCollection.fromImages(img.get('year_match'))
     // Apply cloud mask.
-    .map(cloudMask)
+    .map(maskL457sr)
     // Reduce image collection by median.
     .reduce(ee.Reducer.median())
     // Set composite year as an image property.
@@ -210,7 +239,7 @@ var lsCompCol = ee.ImageCollection(lsCompList);
 
 
 // [START earthengine__image_collections10__compositing05]
-var lsCol = ee.ImageCollection('LANDSAT/LC08/C01/T1_SR')
+var lsCol = ee.ImageCollection('LANDSAT/LC08/C02/T1_L2')
   .filterDate('2017-01-01', '2019-01-01')
   .filter('WRS_PATH == 38 && (WRS_ROW == 28 || WRS_ROW == 29)')
   .map(function(img) {

@@ -21,7 +21,7 @@
 
 // [START earthengine__image_collections01__collection_info]
 // Load a Landsat 8 ImageCollection for a single path-row.
-var collection = ee.ImageCollection('LANDSAT/LC08/C01/T1_TOA')
+var collection = ee.ImageCollection('LANDSAT/LC08/C02/T1_TOA')
     .filter(ee.Filter.eq('WRS_PATH', 44))
     .filter(ee.Filter.eq('WRS_ROW', 34))
     .filterDate('2014-03-01', '2014-08-01');
@@ -32,7 +32,7 @@ var count = collection.size();
 print('Count: ', count);
 
 // Get the date range of images in the collection.
-var range = collection.reduceColumns(ee.Reducer.minMax(), ["system:time_start"])
+var range = collection.reduceColumns(ee.Reducer.minMax(), ['system:time_start'])
 print('Date range: ', ee.Date(range.get('min')), ee.Date(range.get('max')))
 
 // Get statistics for a property of the images in the collection.

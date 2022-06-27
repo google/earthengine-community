@@ -51,7 +51,7 @@ var cover = ee.Image('MODIS/051/MCD12Q1/2012_01_01').select('Land_Cover_Type_1')
 // Define an SLD style of discrete intervals to apply to the image.
 var sld_intervals =
 '<RasterSymbolizer>' +
- ' <ColorMap type="intervals" extended="false" >' +
+  '<ColorMap type="intervals" extended="false">' +
     '<ColorMapEntry color="#aec3d4" quantity="0" label="Water"/>' +
     '<ColorMapEntry color="#152106" quantity="1" label="Evergreen Needleleaf Forest"/>' +
     '<ColorMapEntry color="#225129" quantity="2" label="Evergreen Broadleaf Forest"/>' +

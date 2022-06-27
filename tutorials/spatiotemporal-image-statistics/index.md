@@ -152,7 +152,7 @@ print('Spatiotemporal statistics (long)', zonalStatsL);
 
 Export.table.toDrive({
   collection: zonalStatsL,
-  description:'zonal_stats_long',
+  description: 'zonal_stats_long',
 });
 ```
 

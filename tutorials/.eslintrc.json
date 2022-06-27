@@ -24,6 +24,7 @@
         "code": 100
     }],
     "new-cap": "off",
+    "no-multi-spaces": "off",
     "no-var": "off",
     "prefer-const": "off",
     "prefer-rest-params": "off",

@@ -61,15 +61,12 @@ numeric_variables = (
     'selected_mode_flag',
 
     'sensitivity',
-    'shot_number',
     'solar_azimuth',
     'solar_elevation',
     'surface_flag'
 )
 
-long_variables = ('shot_number',)
-
-meta_variables = numeric_variables + long_variables
+string_variables = ('shot_number',)
 
 l2b_variables = ('local_beam_azimuth', 'local_beam_elevation')
 
@@ -108,7 +105,7 @@ def write_csv(l2a_hdf_fh, l2b_hdf_fh, csv_file):
 
     df = pd.DataFrame()
 
-    for v in meta_variables:
+    for v in numeric_variables + string_variables:
       gedi_lib.hdf_to_df(l2a_hdf_fh, k, v, df)
 
     rh = pd.DataFrame(l2a_hdf_fh[f'{k}/rh'], columns=rh_names)

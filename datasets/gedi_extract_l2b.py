@@ -44,10 +44,7 @@ numeric_variables = (
     'geolocation/solar_elevation',
 )
 
-long_variables = ('shot_number',)
-
-meta_variables = numeric_variables + long_variables
-
+string_variables = ('shot_number',)
 
 cover_names = [f'cover_z{d}' for d in range(30)]
 pai_names = [f'pai_z{d}' for d in range(30)]
@@ -83,7 +80,7 @@ def write_csv(hdf_fh, csv_file):
 
     df = pd.DataFrame()
 
-    for v in meta_variables:
+    for v in numeric_variables + string_variables:
       gedi_lib.hdf_to_df(hdf_fh, k, v, df)
 
     ds = hdf_fh[f'{k}/cover_z']

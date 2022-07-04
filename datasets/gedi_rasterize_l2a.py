@@ -77,7 +77,8 @@ INTEGER_PROPS = frozenset({
     'selected_algorithm',
     'selected_mode',
     'selected_mode_flag',
-    # Note that 'shot_number' is a long, so we should not cast it to int.
+    # Note that 'shot_number' is a long ingested as a string, so
+    # we don't rasterize it.
     'stale_return_flag',
     'state_return_flag',
     'surface_flag',
@@ -88,13 +89,6 @@ INTEGER_PROPS = frozenset({
     'minor_frame_number',
     'orbit_number',
     'shot_number_within_beam',
-})
-LONG_PROPS = frozenset({
-    'shot_number',
-    'mpfit_max_func_evals',
-    'mpfit_maxiters',
-    'rx_subbin_resolution',
-    'rx_max_mode_count',
 })
 
 
@@ -344,11 +338,9 @@ def create_export(table_asset_ids: List[str], raster_asset_id: str,
               crs, None, 25).set(image_properties))
 
   int_bands = [p for p in raster_bands if p in INTEGER_PROPS]
-  long_bands = [p for p in raster_bands if p in LONG_PROPS]
   # This keeps the original (alphabetic) band order.
   image_with_types = image.toDouble().addBands(
-      image.select(int_bands).toInt(), overwrite=True).addBands(
-          image.select(long_bands).toLong(), overwrite=True)
+      image.select(int_bands).toInt(), overwrite=True)
 
   return ExportParameters(
       asset_id=raster_asset_id,

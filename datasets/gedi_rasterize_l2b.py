@@ -194,6 +194,7 @@ def create_export(
       'version': 1,
       'system:time_start': timestamp_ms_for_datetime(month_start),
       'system:time_end': timestamp_ms_for_datetime(month_end),
+      'table_asset_ids': table_asset_ids
   }
 
   image = (

@@ -328,6 +328,7 @@ def create_export(table_asset_ids: List[str], raster_asset_id: str,
       'version': 1,
       'system:time_start': timestamp_ms_for_datetime(month_start),
       'system:time_end': timestamp_ms_for_datetime(month_end),
+      'table_asset_ids': table_asset_ids
   }
 
   image = (

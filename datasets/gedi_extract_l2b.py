@@ -52,13 +52,15 @@ pavd_names = [f'pavd_z{d}' for d in range(30)]
 
 
 # pylint:disable=line-too-long
-def extract_values(input_path, output_path):
+def extract_values(input_paths: list[str], output_path: str) -> None:
   """Extracts all relative height values from all algorithms and some qa flags.
 
   Args:
-     input_path: string, GEDI L2B file path
-     output_path: string, csv output file path
+     input_paths: GEDI L2B file path in a single-element list
+     output_path: csv output file path
   """
+  assert len(input_paths) == 1
+  input_path = input_paths[0]
   basename = os.path.basename(input_path)
   if not basename.startswith('GEDI') or not basename.endswith('.h5'):
     logging.error('Input path is not a GEDI filename: %s', input_path)

@@ -18,7 +18,6 @@ from absl import logging
 import h5py
 import pandas as pd
 import os
-from typing import List
 
 import gedi_lib
 
@@ -73,7 +72,7 @@ l2b_variables = ('local_beam_azimuth', 'local_beam_elevation')
 rh_names = tuple([f'rh{d}' for d in range(101)])
 
 
-def extract_values(input_paths: List[str], output_path: str) -> None:
+def extract_values(input_paths: list[str], output_path: str) -> None:
   """Extracts all rh (relative heights) from all algorithms and some qa flags.
 
   Args:

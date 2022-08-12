@@ -15,7 +15,7 @@ limitations under the License.
 import datetime
 import os
 import time
-from typing import Any, Dict, List
+from typing import Any
 
 from absl import app
 from absl import flags
@@ -36,7 +36,7 @@ class ExportParameters:
   """Arguments for starting export jobs."""
   asset_id: str = attr.ib()
   image: Any = attr.ib()  # ee.Image
-  pyramiding_policy: Dict[str, str] = attr.ib()
+  pyramiding_policy: dict[str, str] = attr.ib()
   crs: str = attr.ib()
   region: Any = attr.ib()  # ee.Geometry.Polygon | ee.Geometry.LinearRing
 
@@ -112,7 +112,7 @@ def rasterize_gedi_by_utm_zone(
 
 
 def create_export(
-    table_asset_ids: List[str],
+    table_asset_ids: list[str],
     raster_asset_id: str,
     grid_cell_feature: Any,
     grill_month: datetime.datetime) -> ExportParameters:

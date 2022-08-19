@@ -164,7 +164,8 @@ def create_export(
       'local_beam_azimuth', 'local_beam_elevation', 'pai'
   ] + get_raster_bands('pai_z') + get_raster_bands('pavd_z') + [
       'pgap_theta', 'selected_l2a_algorithm', 'selected_rg_algorithm',
-      'sensitivity', 'solar_azimuth', 'solar_elevation'
+      'sensitivity', 'solar_azimuth', 'solar_elevation',
+      'minor_frame_number', 'orbit_number', 'shot_number_within_beam'
   ]
 
   shots = []

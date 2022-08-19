@@ -302,7 +302,10 @@ def create_export(table_asset_ids: list[str], raster_asset_id: str,
       'rh98',
       'rh99',
       # pylint:enable=line-too-long
-      'rh100'
+      'rh100',
+      'minor_frame_number',
+      'orbit_number',
+      'shot_number_within_beam',
   ]
 
   shots = []
@@ -365,7 +368,6 @@ def _start_task(export_params: ExportParameters) -> str:
 
   time.sleep(0.1)
   task.start()
-
   return task.status()['id']
 
 

@@ -70,7 +70,7 @@ import to suit your study.
 var mod13 = ee.ImageCollection('MODIS/006/MOD13Q1');
 
 // Get features of the forest national parks.
-var nps = ee.FeatureCollection('WCMC/WDPA/current/polygons')
+var nps = ee.FeatureCollection('WCMC/WDPA/202006/polygons')
   .filter(ee.Filter.inList('NAME', ['Bandipur', 'Rajiv Gandhi (Nagarhole)']));
 ```
 

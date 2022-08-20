@@ -30,4 +30,11 @@ var list = [
   'B3', 443
 ];
 print('ee.Dictionary from list input', ee.Dictionary(list));
+
+// To create an ee.Dictionary from two corresponding lists of keys and values,
+// use the ee.Dictionary.fromLists constructor.
+var keys = ['B1', 'B2', 'B3'];
+var values = [182, 219, 443];
+print('Dictionary from lists of keys and values',
+      ee.Dictionary.fromLists(keys, values));
 // [END earthengine__apidocs__ee_dictionary]

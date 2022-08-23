@@ -24,9 +24,9 @@ ui.root.clear();
 // [END earthengine__ui03_panels__ui_root]
 
 // [START earthengine__ui03_panels__root_map]
-// Load a Landsat 8 composite and display on the map.
-var image = ee.Image('LANDSAT/LC8_L1T_32DAY_TOA/20130407').select('B[1-7]');
-Map.addLayer(image, {bands:['B4','B3','B2'], min: 0, max: 0.3});
+// Load a VIIRS surface reflectance image and display on the map.
+var image = ee.Image('NOAA/VIIRS/001/VNP09GA/2022_06_05').select('M.*');
+Map.addLayer(image, {bands: ['M5', 'M4', 'M3'], min: 0, max: 4e3, gamma: 1.5});
 
 // Create the title label.
 var title = ui.Label('Click to inspect');
@@ -42,6 +42,7 @@ panel.style().set({
 Map.add(panel);
 
 // Register a function to draw a chart when a user clicks on the map.
+Map.style().set('cursor', 'crosshair');
 Map.onClick(function(coords) {
   panel.clear();
   var point = ee.Geometry.Point(coords.lon, coords.lat);
@@ -59,7 +60,7 @@ var panel = ui.Panel({
 });
 
 // Add a bunch of buttons.
-for (var i=0; i<30; i++) {
+for (var i = 0; i < 30; i++) {
   panel.add(ui.Button({label: 'Button ' + i, style: {stretch: 'horizontal'}}));
 }
 
@@ -92,9 +93,10 @@ ui.root.add(makeButton('bottom-right'));
 
 // [START earthengine__ui03_panels__panel_widgets]
 // Load and display NDVI data.
-var ndvi = ee.ImageCollection('LANDSAT/LC8_L1T_8DAY_NDVI')
-    .filterDate('2014-01-01', '2015-01-01');
-Map.addLayer(ndvi.median(), {min: 0, max: 1, palette: ['99c199', '006400']}, 'NDVI');
+var ndvi = ee.ImageCollection('NOAA/VIIRS/001/VNP13A1')
+    .filterDate('2021-01-01', '2022-01-01').select('NDVI');
+Map.addLayer(
+  ndvi.median(), {min: 0, max: 10000, palette: ['99c199', '006400']}, 'NDVI');
 
 // Configure the map.
 Map.setCenter(-94.84497, 39.01918, 8);

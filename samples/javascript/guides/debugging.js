@@ -30,14 +30,14 @@ var silly = image.selfAnalyze();
 // [END earthengine__debugging__client_logic]
 
 // [START earthengine__debugging__cast]
-var collection = ee.ImageCollection('MODIS/051/MOD44B');
+var collection = ee.FeatureCollection('USDOS/LSIB_SIMPLE/2017');
 
-// Error: collection.first(...).date is not a function
-var date = collection.first().date();
+// Error: collection.first(...).area is not a function
+var area = collection.first().area();
 // [END earthengine__debugging__cast]
 
 // [START earthengine__debugging__cast_corrected]
-var date = ee.Image(collection.first()).date();
+var area = ee.Feature(collection.first()).area();
 // [END earthengine__debugging__cast_corrected]
 
 // [START earthengine__debugging__tricky]

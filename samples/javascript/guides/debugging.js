@@ -78,7 +78,7 @@ print(s2image.get('myProperty')); // OK
 // [END earthengine__debugging__result_capture_corrected]
 
 // [START earthengine__debugging__mapped_function1]
-var collection = ee.ImageCollection('MODIS/051/MOD44B');
+var collection = ee.ImageCollection('MODIS/006/MOD44B');
 
 // Error: A mapped function's arguments cannot be used in client-side operations
 var badMap3 = collection.map(function(image) {
@@ -88,7 +88,7 @@ var badMap3 = collection.map(function(image) {
 // [END earthengine__debugging__mapped_function1]
 
 // [START earthengine__debugging__mapped_function2]
-var collection = ee.ImageCollection('MODIS/051/MOD44B');
+var collection = ee.ImageCollection('MODIS/006/MOD44B');
 
 // Error: User-defined methods must return a value.
 var badMap1 = collection.map(function(image) {
@@ -97,7 +97,7 @@ var badMap1 = collection.map(function(image) {
 // [END earthengine__debugging__mapped_function2]
 
 // [START earthengine__debugging__mapped_function3]
-var collection = ee.ImageCollection('MODIS/051/MOD44B');
+var collection = ee.ImageCollection('MODIS/006/MOD44B');
 
 var badMap2 = collection.map(function(image) {
   return image.date();
@@ -108,7 +108,7 @@ print(badMap2);
 // [END earthengine__debugging__mapped_function3]
 
 // [START earthengine__debugging__mapped_function4]
-var collection = ee.ImageCollection('MODIS/051/MOD44B');
+var collection = ee.ImageCollection('MODIS/006/MOD44B');
 
 var okMap2 = collection.map(function(image) {
   return image.set('date', image.date());
@@ -155,7 +155,7 @@ Export.table.toDrive({
 // [END earthengine__debugging__ridiculous_computation_solution]
 
 // [START earthengine__debugging__terrible_aggregations]
-var collection = ee.ImageCollection('LANDSAT/LT05/C01/T1')
+var collection = ee.ImageCollection('LANDSAT/LT05/C02/T1')
     .filterBounds(ee.Geometry.Point([-123, 43]));
 
 var terribleAggregations = collection.map(function(image) {
@@ -180,11 +180,11 @@ Export.table.toDrive({
 // [END earthengine__debugging__terrible_aggregations_solution]
 
 // [START earthengine__debugging__memory_hog]
-var memoryHog = ee.ImageCollection('LANDSAT/LT05/C01/T1')
+var memoryHog = ee.ImageCollection('LANDSAT/LT05/C02/T1').select('B.')
   .toArray()
   .arrayReduce(ee.Reducer.mean(), [0])
   .arrayProject([1])
-  .arrayFlatten([['B1', 'B2', 'B3', 'B4', 'B5', 'B6', 'B7', 'QA']])
+  .arrayFlatten([['B1', 'B2', 'B3', 'B4', 'B5', 'B6', 'B7']])
   .reduceRegion({
     reducer: 'mean',
     geometry: ee.Geometry.Point([-122.27, 37.87]).buffer(1000),
@@ -197,11 +197,11 @@ print(memoryHog);
 // [END earthengine__debugging__memory_hog]
 
 // [START earthengine__debugging__memory_hog_solution1]
-var smallerHog = ee.ImageCollection('LANDSAT/LT05/C01/T1')
+var smallerHog = ee.ImageCollection('LANDSAT/LT05/C02/T1').select('B.')
   .toArray()
   .arrayReduce(ee.Reducer.mean(), [0])
   .arrayProject([1])
-  .arrayFlatten([['B1', 'B2', 'B3', 'B4', 'B5', 'B6', 'B7', 'QA']])
+  .arrayFlatten([['B1', 'B2', 'B3', 'B4', 'B5', 'B6', 'B7']])
   .reduceRegion({
     reducer: 'mean',
     geometry: ee.Geometry.Point([-122.27, 37.87]).buffer(1000),
@@ -214,7 +214,7 @@ print(smallerHog);
 // [END earthengine__debugging__memory_hog_solution1]
 
 // [START earthengine__debugging__memory_hog_solution2]
-var okMemory = ee.ImageCollection('LANDSAT/LT05/C01/T1')
+var okMemory = ee.ImageCollection('LANDSAT/LT05/C02/T1').select('B.')
   .mean()
   .reduceRegion({
     reducer: 'mean',
@@ -235,8 +235,8 @@ var image = ee.Image(ee.ImageCollection('COPERNICUS/S2')
 // [END earthengine__debugging__aside]
 
 // [START earthengine__debugging__aside_composite]
-var composite = ee.ImageCollection('LANDSAT/LC08/C01/T1_TOA')
-    .filterBounds(geometry)
+var composite = ee.ImageCollection('LANDSAT/LC08/C02/T1_TOA')
+    .filterBounds(ee.Geometry.Point([106.9155, 47.9177]))
     .map(function(image) {
       return image.addBands(image.normalizedDifference(['B5', 'B4']));
     })

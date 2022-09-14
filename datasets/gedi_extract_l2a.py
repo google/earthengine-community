@@ -108,18 +108,17 @@ def write_csv(l2a_hdf_fh, l2b_hdf_fh, csv_file):
       gedi_lib.hdf_to_df(l2a_hdf_fh, k, v, df)
 
     rh = pd.DataFrame(l2a_hdf_fh[f'{k}/rh'], columns=rh_names)
-
     df = pd.concat((df, rh), axis=1)
+
+    gedi_lib.add_shot_number_breakdown(df)
+    # Add the incidence angle variables from the corresponding L2B file.
+    for l2b_var in l2b_variables:
+      gedi_lib.hdf_to_df(l2b_hdf_fh, k, 'geolocation/' + l2b_var, df)
+
     # Filter our rows with nan values for lat_lowestmode or lon_lowestmode.
     # Such rows are not ingestable into EE.
     df = df[df.lat_lowestmode.notnull()]
     df = df[df.lon_lowestmode.notnull()]
-
-    gedi_lib.add_shot_number_breakdown(df)
-
-    # Add the incidence angle variables from the corresponding L2B file.
-    for l2b_var in l2b_variables:
-      gedi_lib.hdf_to_df(l2b_hdf_fh, k, 'geolocation/' + l2b_var, df)
 
     df.to_csv(
         csv_file,

@@ -17,6 +17,8 @@ import h5py
 import numpy as np
 import pandas as pd
 
+l2b_variables_for_l2a = ('local_beam_azimuth', 'local_beam_elevation')
+
 
 def add_shot_number_breakdown(df: pd.DataFrame) -> None:
   """Adds fields obtained by breaking down shot_number.

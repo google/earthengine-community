@@ -24,6 +24,7 @@ from dateutil import relativedelta
 import pytz
 
 import ee
+import gedi_lib
 
 flags.DEFINE_integer('num_utm_grid_cells_l2a', 389, 'UTM grid cell count')
 
@@ -165,7 +166,7 @@ def create_export(table_asset_ids: list[str], raster_asset_id: str,
         grill_month)
 
   # This is a subset of all available table properties.
-  raster_bands = [
+  raster_bands = (
       'beam',
       'degrade_flag',
       'delta_time',
@@ -306,7 +307,7 @@ def create_export(table_asset_ids: list[str], raster_asset_id: str,
       'minor_frame_number',
       'orbit_number',
       'shot_number_within_beam',
-  ]
+  ) + gedi_lib.l2b_variables_for_l2a
 
   shots = []
   for table_asset_id in table_asset_ids:

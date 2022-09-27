@@ -67,8 +67,6 @@ numeric_variables = (
 
 string_variables = ('shot_number',)
 
-l2b_variables = ('local_beam_azimuth', 'local_beam_elevation')
-
 rh_names = tuple([f'rh{d}' for d in range(101)])
 
 
@@ -112,7 +110,7 @@ def write_csv(l2a_hdf_fh, l2b_hdf_fh, csv_file):
 
     gedi_lib.add_shot_number_breakdown(df)
     # Add the incidence angle variables from the corresponding L2B file.
-    for l2b_var in l2b_variables:
+    for l2b_var in gedi_lib.l2b_variables_for_l2a:
       gedi_lib.hdf_to_df(l2b_hdf_fh, k, 'geolocation/' + l2b_var, df)
 
     # Filter our rows with nan values for lat_lowestmode or lon_lowestmode.

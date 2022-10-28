@@ -1,10 +1,11 @@
 ---
-title: HISTARFM, how to work with gap-filled databases.
-description: This tutorial provides a quick learning about the HISTARFM database. From how to load the data and few experiments that will provide an idea about the potential of the database.
-authors: EIzquierdo, almoma153, Jordi-
+title: HISTARFM- how to work with gap-filled imagery
+description: Experiment with a collection of monthly Landsat gap-filled data from the HISTARFM data fusion system.
+authors: EIzquierdo
 tags: gap-filled, Landsat, MODIS, fusion, phenology, interpolation, biophysical parameter retrieval
 date_published: YYYY-MM-DD
 ---
+
 <!--
 Copyright 2022 The Google Earth Engine Community Authors
 
@@ -20,19 +21,20 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 -->
+
 # Overview
 
 Although there is an extensive array of optical remote sensing sensors from a variety of satellites providing long time data records, their data are incapable of retrieving reliable land surface information when clouds, aerosols, shadows, and strong angular effects are present in the scenes. The mitigation of noise and gap filling of satellite data are preliminary and almost mandatory tasks for any remote sensing application aimed at effectively analyzing the earth's surface continuously through time.
+
 <p align="center">
-<img src="https://user-images.githubusercontent.com/49197052/186401357-3d22602b-539e-4c1e-80e9-74bf8a319241.png">
+<img src="RGB_conus.png">
 </p>
 <p align="center">
 <em>An example of cloud contaminated Landsat surface reflectance data</em>
 </p>
 
 In 2020, to tackle this challenging problem [Moreno-Martinez et al. (2020)](https://www.sciencedirect.com/science/article/pii/S0034425720302716) proposed using the Google Earth Engine (GEE) cloud computing platform to implement the HIghly Scalable Temporal Adaptive Reflectance Fusion Model (HISTARFM). This method generates reduced noise and gap-free estimates of Landsat reflectance values at vast scales. 
-
-Despite the computational power of GEE and the optimizations of HISTARFM, the computational burden and memory costs of HISTARFM are too high to carry out any extra computations after the gap-filling process. Therefore, the data have to be pre-processed in different study areas. This tutorial will show how to use HISTARFM-generated data and provide examples of how you can improve your research and applications with this enhanced Landsat-based dataset.  
+Despite the computational power of GEE and the optimizations of HISTARFM, the computational burden and memory costs of HISTARFM are too high to carry out any extra computations after the gap-filling process. Therefore, the data have to be pre-processed in different study areas. We have generated data for number of world regions already, and in this tutorial we will show how to use it and provide examples of how you can improve your research and applications with this enhanced Landsat-based dataset.  
 
 
 ## Background
@@ -53,19 +55,18 @@ Version 2 datasets will be updated to Version 5 in the future, but it will take 
 
 To access the databases, ask any questions and stay updated on the latest information and upcoming data, please join the following google group: [histarfm-collection@googlegroups.com](mailto:histarfm-collection@googlegroups.com).
 
-
 ## Study areas
 
 HISTARFM contains two study areas so far, but the dataset is continuously being expanded in time and spatial coverage.
 
 1. The CONUS database contains 154 images stored as assets. It corresponds with **version 2**, and temporal coverage ranges from 2009 to 2021. Each image in the ImageCollection covers the full CONUS, and each has the properties 'version', 'month', and 'year'. This information is also present in their file names. For example, the image called Gap_Filled_Landsat_CONUS_month_10_2009_v2 is an October 2009 image for the CONUS area. The CONUS database is available in [this asset](https://code.earthengine.google.com/?asset=projects/KalmanGFwork/GFLandsat_V1). 
-2. The European database is currently being generated with **version 5** of the algorithm. It contains 8208 images from 2017 to 2020, and the study area is divided into tiles stored in the Google Cloud Plattform as Cloud Optimized Geotiffs. In this case, the images have all the properties needed in their generation, but the name of the image only includes the month, year, study area, and the tile. As an example, the image called GF_2018_10_EUROPA_1 represents the image in October 2018 over the first tile in Europe. The European database is available [here](https://code.earthengine.google.com/?asset=projects/ee-emma/assets/GF_Landsat_Europe_C2).
+2. The European database is currently being generated with **version 5** of the algorithm. It contains 8208 images from 2017 to 2020, and the study area is divided into tiles stored in the Google Cloud Plattform as Cloud Optimized Geotiffs (COG). These COGs are provided as COG-backed Earth Engine assets in a publicly readable ImageCollection available [here](https://code.earthengine.google.com/?asset=projects/ee-emma/assets/GF_Landsat_Europe_C2). In this case, the images have all the properties needed in their generation, but the name of the image only includes the month, year, study area, and the tile. As an example, the image called GF_2018_10_EUROPA_1 represents the image in October 2018 over the first tile in Europe.
 
-# Some examples of use of the HISTARFM database
+# Examples of use of the HISTARFM database
 
 ## 1. Importing and visualizing the database
 
-### a. Import the imageCollection. 
+### a. Import the ImageCollection. 
 
 In this tutorial, we focus on 2019 in the European continent. Using the code below, you will load the European HISTARFM database from 2017 to 2020. The ImageCollection is filtered in the desired year (e.g., 2019) using the ee function **filter**. After that, a function called *EuropeanMosaic* to map the image collection is defined to generate a mosaic image of the entire continent per month. The images in the new image collection will contain the properties: 'system:time_start', 'month', and 'year' from the original images. These properties will be necessary for the next steps of this tutorial. After that, a function called *scaleError* is defined to scale and mask the error bands and set 'DOY,' 'month', and 'year' properties in the images together with the 'system:time_start' of the original images.
 
@@ -83,7 +84,7 @@ var months = GF_Landsat.aggregate_array('month').distinct().sort();
 function EuropeanMosaic(num){
   var ic = GF_Landsat.filter(ee.Filter.eq('month', num));
   var img = ee.Image(ic.first());
-  ic = ic.mosaic().updateMask(ic.mosaic().neq(0));
+  ic = ic.mosaic().selfMask();
   return ic.copyProperties(img,['system:time_start','month','year']);
 }
 var GF_Landsat = ee.ImageCollection(months.map(EuropeanMosaic));
@@ -96,29 +97,34 @@ function scaleError(img){
   var m=ee.Number.parse(img.get('month'));
   var d = ee.Date.fromYMD(y,m,15);
   var doy= d.getRelative('day', 'year').add(1);
-  var scaled=img.select(['P.*']).updateMask(img.select(['P.*']).neq(32767)).toFloat().multiply(0.5);
-  return img.toFloat().addBands(scaled,null,true).set({'month':m,'year':y,'DOY':doy}).copyProperties(img,['system:time_start']);
+  var scaled=img.select(['P.*']).multiply(0.5);
+  return img.addBands(scaled,null,true).set({'month':m,'year':y,'DOY':doy}).copyProperties(img,['system:time_start']);
 }
 
 GF_Landsat = GF_Landsat.map(scaleError);
 ```
 ### b. Visualization of HISTARFM data.
 
-Once the HISTARFM dataset is prepared, the RGB gap-filled Landsat reflectance mosaic and the error of the first band are displayed considering their visualization parameters.
+Once the HISTARFM dataset is prepared, the RGB gap-filled Landsat reflectance mosaic filtered to a specific month and its first band error are displayed considering their visualization parameters.
+
 ```js
 // Set map options.
 Map.setOptions('HYBRID');
 
+// Subset a single month for display (e.g. July, the 7th month).
+var julyImg = GF_Landsat.filter(ee.Filter.eq('month', 7));
+
 // Display the RGB gap-filled Landsat reflectance mosaic to the map.
 var imageVisParam = {"opacity":1,"bands":["B3_mean_post","B2_mean_post","B1_mean_post"],"min":0,"max":2500,"gamma":1};
-Map.addLayer(GF_Landsat,imageVisParam,'example RGB');
+Map.addLayer(julyImg,imageVisParam,'example July RGB');
 
 // Display the error gap-filled Landsat reflectance mosaic to the map.
 var imageVisParam = {"opacity":1,"bands":["P1_postSD"],"min":0,"max":200,"gamma":1};
 Map.addLayer(GF_Landsat,imageVisParam,'example error B1');
 ```
+
 <p align="center">
-  <img width="560" height="300" src="https://user-images.githubusercontent.com/49197052/186387339-22983374-9adb-4385-9368-8d6d82646075.png">
+  <img width="560" height="300" src="RGB_Europe.png">
 </p>
 <p align="center">    
 <em> Example of a mosaic of the HISTARFM data over Europe for a given date </em>
@@ -139,40 +145,47 @@ Reminder: NIR reflectance is the band called B4_mean_post and the RED is B3_mean
 Therefore, a function to calculate the NDVI and its error of the image collection is defined. The function *ndvicompGF* calculates NDVI and the error for each image. Additionally, the properties 'system:time_start', 'DOY', 'month', and 'year' are also included in the images from the original ones.
 ```javascript
 function ndvicompGF(img){
-  var ndvi=img.normalizedDifference(['B4_mean_post','B3_mean_post']).toFloat().select([0],['NDVI']);
-  var errorNDVI = ee.Image(2).divide((img.select('B4_mean_post').add(img.select('B3_mean_post'))).pow(2))
-  .multiply((img.select('B4_mean_post').pow(2).multiply(img.select('P3_postSD').pow(2)).add(img.select('B3_mean_post').pow(2)
-  .multiply(img.select('P4_postSD').pow(2)))).sqrt()).select([0],['errorNDVI']);
-  return img.addBands(ndvi).addBands(errorNDVI).copyProperties(img,['system:time_start','month','year','DOY']);
+  var ndvi=img.normalizedDifference(['B4_mean_post','B3_mean_post']).rename('NDVI');
+  var errorNDVI = ee.Image().expression({
+    expression: 'errorNDVI = 2 / pow(NIR + RED, 2) * ' +
+    'sqrt(pow(NIR, 2) * pow(SD_RED, 2) + pow(RED, 2) * pow(SD_NIR, 2))',
+    map: {
+      RED: img.select('B3_mean_post'),
+      NIR: img.select('B4_mean_post'),
+      SD_RED: img.select('P3_postSD'),
+      SD_NIR: img.select('P4_postSD')
+      }
+    });
+  return img.addBands([ndvi,errorNDVI]).copyProperties(img,['system:time_start','month','year','DOY']);
 }
 
 //Let's compute the NDVI and its error
 GF_Landsat = GF_Landsat.map(ndvicompGF);
 ```
-![image](https://user-images.githubusercontent.com/49197052/186459480-ee6f983e-6677-4ba9-9a15-a5e08346b4b7.png)
+
+![image](ndvi_error.png)
 <p align="center">    
 <em> An example of the computed NDVI and its corresponding propagated error</em>
 </p>
 
 ### b. Extracting the timing and value of the maximum NDVI over the growing season
 
-First, we compute the maximum value of NDVI using the reducer `ee.Reducer.max`. Consequently, a function called *maxMonth* is defined to obtain the month when the maximum NDVI value is reached. Within this function, the NDVI image is multiplied by a constant image of zero (`ee.Image.constant`). That image is defined to keep the geometry and properties information of the original images. Afterward, and using the function `where`, the timing of the maximum NDVI month is only stored in the imageCollection if the condition is met (i.e., the month when the NDVI is equal to its maximum). The result of this step is an imageCollection with zero values except for the month when the maximum NDVI value is reached. Thus, finally, using a reducer `ee.Reducer.max`, we obtain an image with the month of maximum NDVI values.
+A function called *maxMonth* is defined to obtain the maximum NDVI value and the month when it is reached. Within this function, the GF_Landsat imageCollection is mapped to add the month value as a band. Afterward, NDVI and Month bands are selected from the collection and reduced using a reducer `ee.Reducer.max`.
+
 ```js
 //Calculate the NDVI maximum value image
-var ndvi_max = ee.Image(GF_Landsat.select('NDVI').max());
-
-function maxMonth(img){
-  var ndvi = img.select('NDVI');
-  var MaxMonth = ndvi.multiply(ee.Image.constant(0));
-  var monthdate = ee.Number.parse(img.get('month'));  
-  return MaxMonth.where(ndvi.eq(ndvi_max),monthdate).copyProperties(img);
+function maxMonth(col){
+  col = col.map(function(img){
+    return img.addBands(ee.Image(ee.Number.parse(img.get('month'))).toByte().rename('Month'));
+});
+var theseBands = ['NDVI', 'Month'];
+return col.select(theseBands).reduce(ee.Reducer.max(theseBands.length)).rename(theseBands);
 }
-
-// Reduce the imageCollection to an image with the month values
-var monthMax = GF_Landsat.map(maxMonth).max();
+var maxMonthNdvi = maxMonth(GF_Landsat);
 ```
+
 ### c. Visualization of maximum NDVI value and the month.
-Once the variables are calculated, the NDVI maximum is displayed in whitenish (lower), greenish (medium) and blackish tones (higher values). The month is also display with a specific palette: bluenish tones for Autum and Winter periods and greenish and redish tones for Spring and Summer periods. 
+Once the variables are calculated, the NDVI maximum is displayed in whitenish (lower), greenish (medium) and blackish tones (higher values). The month is also displayed with a specific palette: bluenish tones for Autumn and Winter periods and greenish and reddish tones for Spring and Summer periods. 
 ```js
 var imageVisParam = {"opacity":1,"min":-1, "palette":["ffffff","c5ff15","94c00f","617e0a","000000"]};
 Map.addLayer(ndvi_max,imageVisParam,'max NDVI');
@@ -193,45 +206,47 @@ var imageVisParam = {"opacity":1,"bands":["NDVI"],"min":1,"max":12,
   "4d4d4d"]};// Decembre
 Map.addLayer(monthMax,imageVisParam,'max month');
 ```
-![image](https://user-images.githubusercontent.com/49197052/186651398-35e9f262-b323-4c65-9263-c7685f423c96.png)
+![image](maxNDVI.png)
 <p align="center">    
 <em> Timing of the maximum value of the NDVI for Europe (2019) </em>
 </p>
 
 ## 3. Temporal interpolation of the HISTARFM database
 
-### a. Creating a dummy imageCollection with the desired temporal resolution
+### a. Creating a dummy ImageCollection with the desired temporal resolution
 
 The first step to interpolating the HISTARFM database is the creation of a dummy (empty) imageCollection with a regular time step sampling defined by *tResolution*. The function *RegTimeColl* requires a list of dates (interpreted as milliseconds since 1970-01-01T00:00:00Z) as input (*timeRange* in our example). Therefore, *RegTimeColl* creates the desired imageCollection with the metadata ready ('DOY', 'system:time_start', and 'month'), which will be used to store the results of the interpolation. 
 
 ```js
-// Desired interpolation temporal resolution
-var tResolution=5; 
+// Desired interpolation temporal resolution in day units
+var tUnit = 'days';
+var tResolution = 5;  
 
 // Create a list of DOYs
 var dateini = ee.Date(year + "-01-01");
 var dateend = ee.Date(year + "-12-31");
-var timeRange = ee.List.sequence({
-  start: dateini.millis().add(12*3600*1000),
-  end: dateend.millis(),
-  step: 1000 * 60 * 60 * 24 * tResolution
+var nSteps = dateend.difference(dateini, tUnit).divide(tResolution).floor();
+var steps = ee.List.sequence(0, nSteps);
+var timeRange = steps.map(function(i) {
+  return dateini.advance(ee.Number(i).multiply(tResolution), tUnit).millis();
 });
 
 // Create a dummy collection with regular time space
 function RegTimeColl(date){
-    var DOY = ee.Date(date).getRelative('day','year');
+    var DOY = ee.Date(date).getRelative('day','year').add(1);
     var m = ee.Number(ee.Date(date).get('month'));
-    return ee.Image(DOY.add(1)).rename('DOY').float()
+    return ee.Image(DOY).rename('DOY').short()
       .set({
         'dummy': true,
-        'system:time_start': ee.Date(date).millis(),
-        'DOY': DOY.add(1),
+        'system:time_start': date,
+        'DOY': DOY,
         'month':m
     });
 }
   
 var fiveDaysRes =  ee.ImageCollection(timeRange.map(RegTimeColl));
 ```
+
 ### b. HISTARFM linear interpolation
 
 This section comprises two sub-steps: 1) Joining the imageCollection created in the previous section called fiveDaysRes with the *GF_Landsat* imageCollection from section 2.a, and 2) the interpolation step using the join from step 1.
@@ -242,8 +257,9 @@ This step joins the *fiveDaysRes* imageCollection with *GF_Landsat* imageCollect
 
 ```js
 var join = ee.Join.saveAll('LS', 'system:time_start', true, null, true);
-var difference = (31*24*3600*1000);
-var filter = ee.Filter.maxDifference(difference, 'system:time_start', null, 'system:time_start');
+var nDays = 31;
+var maxMilliDif = (nDays*24*3600*1000);
+var filter = ee.Filter.maxDifference(maxMilliDif, 'system:time_start', null, 'system:time_start');
 var fiveDaysRes = ee.ImageCollection(join.apply(fiveDaysRes, GF_Landsat, filter));
 ```
 
@@ -315,7 +331,7 @@ chart.style().set({
 Map.add(chart);
 ```
 
-![ee-chart](https://user-images.githubusercontent.com/49197052/186947265-f79f312f-a859-42c5-b07d-84db8b272bcb.png)
+![ee-chart](ndvi_temporalserie.png)
 <p align="center">    
 <em> NDVI interpolated time series from monthly to 5 days temporal resolution </em>
 </p>
@@ -388,7 +404,7 @@ chart.style().set({
 });
 Map.add(chart);
 ```
-![image](https://user-images.githubusercontent.com/49197052/188179371-4caec891-dd5e-4329-b1b6-512f582abe8a.png)
+![image](lai.png)
 
 <p align="center">    
 <em> Example of the computed LAI over Europe and its temporal profile in cropland area in Spain </em>
@@ -422,7 +438,7 @@ var LAIvis = lai.select(par).map(gifImages);
 
 var gifParams = {
   'region': reg,
-  'dimensions': 700,
+  'dimensions': 512,
   'crs': 'EPSG:4326',
   'framesPerSecond': 2,
   'format': 'gif'
@@ -430,9 +446,10 @@ var gifParams = {
 // Generate Thumbnail:
 Map.add(ui.Thumbnail(ee.ImageCollection(LAIvis), gifParams, null, {position: 'bottom-right'}));
 ```
+
 Once the animation appears in the map, you can download the image by right-clicking on it. 
 <p align="center">
-  <img width="600" height="400" src="https://user-images.githubusercontent.com/49197052/188435763-e96edb94-a3bf-4cd3-9724-eda2bda106b8.gif">
+  <img width="600" height="400" src="lai.gif">
 </p>   
 
 <p align="center"> 
@@ -444,4 +461,7 @@ Now you know how to work with HISTARFM database and few tips of what you can do 
 Moreno-Martínez, Á., Izquierdo-Verdiguier, E., Maneta, M. P., Camps-Valls, G., Robinson, N., Muñoz-Marí, J., Sedano, F., Clinton, N. & Running, S. W. (2020). Multispectral high resolution sensor fusion for smoothing and gap-filling in the cloud. Remote Sensing of Environment, 247, 111901.
 
 ## Acknowledgement
+
+Emma Izquierdo-Verdiguier and Alvaro Moreno-Martinez devised and directed tutorial development. Jordi Muñoz-Marí assisted in the method implementation. All authors contributed text, code and analysis examples.
+
 The tutorial's authors would like to thank all the bioNet and HISTARFM creators and Gennadii Donchyts from [Deltares](https://www.deltares.nl/en/) for his routines, *text*, and *style*, which have been used in this tutorial. Also, we would like to thank the broad Google Earth Engine community for their help and comments. Special thanks to Nicolas Clinton from Google Inc. for actively supporting us during these years.

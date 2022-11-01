@@ -186,11 +186,12 @@ var maxMonthNdvi = maxMonth(GF_Landsat);
 
 ### c. Visualization of maximum NDVI value and the month.
 Once the variables are calculated, the NDVI maximum is displayed in whitenish (lower), greenish (medium) and blackish tones (higher values). The month is also displayed with a specific palette: bluenish tones for Autumn and Winter periods and greenish and reddish tones for Spring and Summer periods. 
-```js
-var imageVisParam = {"opacity":1,"min":-1, "palette":["ffffff","c5ff15","94c00f","617e0a","000000"]};
-Map.addLayer(ndvi_max,imageVisParam,'max NDVI');
 
-var imageVisParam = {"opacity":1,"bands":["NDVI"],"min":1,"max":12,
+```js
+var imageVisParam = {"opacity":1, "bands": ["NDVI"], "min":-1, "palette":["ffffff","c5ff15","94c00f","617e0a","000000"]};
+Map.addLayer(maxMonthNdvi,imageVisParam,'max NDVI');
+
+var imageVisParam = {"opacity":1,"bands":["Month"],"min":1,"max":12,
 "palette":[
   "4306ff", // January
   "4992ff",// February
@@ -204,8 +205,9 @@ var imageVisParam = {"opacity":1,"bands":["NDVI"],"min":1,"max":12,
   "ceffe8",// October
   "629fad",// November
   "4d4d4d"]};// Decembre
-Map.addLayer(monthMax,imageVisParam,'max month');
+Map.addLayer(maxMonthNdvi,imageVisParam,'max month');
 ```
+
 ![image](maxNDVI.png)
 <p align="center">    
 <em> Timing of the maximum value of the NDVI for Europe (2019) </em>

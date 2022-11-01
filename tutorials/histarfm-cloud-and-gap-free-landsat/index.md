@@ -103,6 +103,7 @@ function scaleError(img){
 
 GF_Landsat = GF_Landsat.map(scaleError);
 ```
+
 ### b. Visualization of HISTARFM data.
 
 Once the HISTARFM dataset is prepared, the RGB gap-filled Landsat reflectance mosaic filtered to a specific month and its first band error are displayed considering their visualization parameters.
@@ -110,6 +111,7 @@ Once the HISTARFM dataset is prepared, the RGB gap-filled Landsat reflectance mo
 ```js
 // Set map options.
 Map.setOptions('HYBRID');
+Map.setCenter(14.76, 49.28, 4);
 
 // Subset a single month for display (e.g. July, the 7th month).
 var julyImg = GF_Landsat.filter(ee.Filter.eq('month', 7));

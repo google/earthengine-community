@@ -1,7 +1,7 @@
 ---
-title: HISTARFM – How to Work with Gap-Filled Imagery
+title: HISTARFM: How to Work with Gap-Filled Imagery
 description: Experiment with a collection of monthly Landsat gap-filled data from the HISTARFM data fusion system.
-authors: EIzquierdo
+author: EIzquierdo
 tags: gap-filled, landsat, modis, fusion, phenology, interpolation
 date_published: 2022-10-01
 ---

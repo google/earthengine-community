@@ -1,5 +1,4 @@
-"""
-Copyright 2020 The Google Earth Engine Community Authors
+"""Copyright 2020 The Google Earth Engine Community Authors.
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -57,6 +56,8 @@ def hdf_to_df(
 
   ds = hdf_fh[hdf_key]
   df[df_key] = ds[:]
+  if len(df[df_key]) and isinstance(df[df_key][0], bytes):
+    df[df_key] = df[df_key].apply(lambda x: x.decode())
   df[df_key].replace([np.inf, -np.inf], np.nan, inplace=True)
   if ds.attrs.get('_FillValue') is not None:
     # We need to use pd.NA that works with integer types (np.nan does not)

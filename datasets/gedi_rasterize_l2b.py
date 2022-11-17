@@ -27,6 +27,10 @@ import ee
 from google3.pyglib.function_utils import memoize
 
 flags.DEFINE_integer('num_utm_grid_cells_l2b', 389, 'UTM grid cell count')
+flags.DEFINE_bool(
+    'allow_gedi_rasterize_l2b_overwrite', False,
+    'Whether exported assets from gedi_rasterize_l2b are allowed to overwrite '
+    'existing assets.')
 
 FLAGS = flags.FLAGS
 
@@ -39,6 +43,7 @@ class ExportParameters:
   pyramiding_policy: dict[str, str] = attr.ib()
   crs: str = attr.ib()
   region: Any = attr.ib()  # ee.Geometry.Polygon | ee.Geometry.LinearRing
+  overwrite: bool = attr.ib()
 
 # From https://lpdaac.usgs.gov/products/gedi02_av002/
 # We list all known property names for safety, even though we might not
@@ -92,8 +97,11 @@ def parse_date_from_gedi_filename(table_asset_id):
           os.path.basename(table_asset_id).split('_')[2], '%Y%j%H%M%S'))
 
 
-def rasterize_gedi_by_utm_zone(
-    table_asset_ids, raster_asset_id, grid_cell_feature, grill_month):
+def rasterize_gedi_by_utm_zone(table_asset_ids,
+                               raster_asset_id,
+                               grid_cell_feature,
+                               grill_month,
+                               overwrite=False):
   """Creates and runs an EE export job.
 
   Args:
@@ -101,21 +109,19 @@ def rasterize_gedi_by_utm_zone(
     raster_asset_id: string, raster asset id to create
     grill_month: grilled Month
     grid_cell_feature: ee.Feature
+    overwrite: bool, if any of the assets can be replaced if they already exist
 
   Returns:
     string, task id of the created task
   """
-
-  export_params = create_export(
-      table_asset_ids, raster_asset_id, grid_cell_feature, grill_month)
+  export_params = create_export(table_asset_ids, raster_asset_id,
+                                grid_cell_feature, grill_month, overwrite)
   return _start_task(export_params)
 
 
-def create_export(
-    table_asset_ids: list[str],
-    raster_asset_id: str,
-    grid_cell_feature: Any,
-    grill_month: datetime.datetime) -> ExportParameters:
+def create_export(table_asset_ids: list[str], raster_asset_id: str,
+                  grid_cell_feature: Any, grill_month: datetime.datetime,
+                  overwrite: bool) -> ExportParameters:
   """Creates an EE export job definition.
 
   Args:
@@ -214,7 +220,8 @@ def create_export(
       image=image_with_types.clip(box),
       pyramiding_policy={'.default': 'sample'},
       crs=crs,
-      region=box)
+      region=box,
+      overwrite=overwrite)
 
 
 def _start_task(export_params: ExportParameters) -> str:
@@ -228,7 +235,8 @@ def _start_task(export_params: ExportParameters) -> str:
       pyramidingPolicy=export_params.pyramiding_policy,
       scale=25,
       crs=export_params.crs,
-      maxPixels=1e13)
+      maxPixels=1e13,
+      overwrite=export_params.overwrite)
 
   time.sleep(0.1)
   task.start()
@@ -250,7 +258,9 @@ def main(argv):
       rasterize_gedi_by_utm_zone(
           [x.strip() for x in fh],
           raster_collection + '/' + '%03d' % grid_cell_id,
-          grid_cell_feature, argv[2])
+          grid_cell_feature,
+          argv[2],
+          overwrite=FLAGS.allow_gedi_rasterize_l2b_overwrite)
 
 
 if __name__ == '__main__':

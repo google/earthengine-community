@@ -166,12 +166,6 @@ def write_csv(l4a_hdf_fh, csv_file):
     for v in numeric_variables + string_variables:
       gedi_lib.hdf_to_df(l4a_hdf_fh, k, v, df)
 
-    # Filter our rows with nan values for lat_lowestmode or lon_lowestmode.
-    # Such rows are not ingestable into EE.
-    df = df[df.lat_lowestmode.notnull()]
-    df = df[df.lon_lowestmode.notnull()]
-
-    gedi_lib.add_shot_number_breakdown(df)
 
     # Add the incidence angle variables from the corresponding L2B file.
     for group_var in group_vars:
@@ -179,6 +173,12 @@ def write_csv(l4a_hdf_fh, csv_file):
         gedi_lib.hdf_to_df(l4a_hdf_fh, k, f'{group_var}/{l4a_var}', df)
     df[filled_vars] = df.loc[:, filled_vars].replace(
         to_replace=-9999, value=np.nan)
+
+    # Filter our rows with nan values for lat_lowestmode or lon_lowestmode.
+    # Such rows are not ingestable into EE.
+    df = df[df.lat_lowestmode.notnull()]
+    df = df[df.lon_lowestmode.notnull()]
+    gedi_lib.add_shot_number_breakdown(df)
 
     df.to_csv(
         csv_file,

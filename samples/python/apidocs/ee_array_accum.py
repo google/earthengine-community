@@ -23,16 +23,22 @@ print(ee.Array([[1, 3], [5, 7]]).accum(1).getInfo())  # [[1, 4],[5, 12]]
 
 # sum is the default reducer.
 print(ee.Array([2, -2, 3, 1]).accum(0).getInfo())  # [2, 0, 3, 4]
-print(ee.Array([2, -2, 3, 1]).accum(0, ee.Reducer.sum()).getInfo())
+
 # [2, 0, 3, 4]
+print(ee.Array([2, -2, 3, 1]).accum(0, ee.Reducer.sum()).getInfo())
+
 
 # Some example reducers.
-print(ee.Array([2, -2, 3, 1]).accum(0, ee.Reducer.max()).getInfo())
 # [2, 2, 3, 3]
-print(ee.Array([2, -2, 3, 1]).accum(0, ee.Reducer.mean()).getInfo())
+print(ee.Array([2, -2, 3, 1]).accum(0, ee.Reducer.max()).getInfo())
+
+
 # [2, 0, 1, 1]
-print(ee.Array([2, -2, 3, 1]).accum(0, ee.Reducer.min()).getInfo())
+print(ee.Array([2, -2, 3, 1]).accum(0, ee.Reducer.mean()).getInfo())
+
 # [2, -2, -2, -2]
-print(ee.Array([2, -2, 3]).accum(0, ee.Reducer.product()).getInfo())
+print(ee.Array([2, -2, 3, 1]).accum(0, ee.Reducer.min()).getInfo())
+
 # [2, -4, -12]
+print(ee.Array([2, -2, 3]).accum(0, ee.Reducer.product()).getInfo())
 # [END earthengine__apidocs__ee_array_accum]

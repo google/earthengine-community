@@ -23,6 +23,6 @@ print(ee.Array(1).bitwise_xor(ee.Array(1)).getInfo())  # 0
 
 print(ee.Array(0x00FF).bitwise_xor(ee.Array(0xFF00)).getInfo())  # 65535
 
-print(ee.Array([1, 2, 3]).bitwise_xor(ee.Array([5, 8, 16])).getInfo())
 # [4, 10, 19]
+print(ee.Array([1, 2, 3]).bitwise_xor(ee.Array([5, 8, 16])).getInfo())
 # [END earthengine__apidocs__ee_array_bitwise_xor]

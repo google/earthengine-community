@@ -12,17 +12,12 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-# [START earthengine__apidocs__ee_array_bitwisexor]
+# [START earthengine__apidocs__ee_array_first]
 empty = ee.Array([], ee.PixelType.int8())
-print(empty.bitwiseXor(empty).getInfo())  # []
+print(empty.first(empty).getInfo())  # []
 
-print(ee.Array(0).bitwiseXor(ee.Array(0)).getInfo())  # 0
-print(ee.Array(0).bitwiseXor(ee.Array(1)).getInfo())  # 1
-print(ee.Array(1).bitwiseXor(ee.Array(0)).getInfo())  # 1
-print(ee.Array(1).bitwiseXor(ee.Array(1)).getInfo())  # 0
-
-print(ee.Array(0x00FF).bitwiseXor(ee.Array(0xFF00)).getInfo())  # 65535
-
-# [4, 10, 19]
-print(ee.Array([1, 2, 3]).bitwiseXor(ee.Array([5, 8, 16])).getInfo())
-# [END earthengine__apidocs__ee_array_bitwisexor]
+print(ee.Array([0]).first(0).getInfo())  # [0]
+print(ee.Array([0, 1, 2]).first(1).getInfo())  # [0,1,2]
+print(ee.Array([0, 1, 2]).first(ee.Array([3, 4, 5])).getInfo())  # [0, 1, 2]
+print(ee.Array([3, 4, 5]).first(ee.Array([0, 1, 2])).getInfo())  # [3, 4, 5]
+# [END earthengine__apidocs__ee_array_first]

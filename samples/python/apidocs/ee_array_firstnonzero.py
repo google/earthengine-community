@@ -12,17 +12,18 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-# [START earthengine__apidocs__ee_array_bitwisexor]
+# [START earthengine__apidocs__ee_array_firstnonzero]
 empty = ee.Array([], ee.PixelType.int8())
-print(empty.bitwiseXor(empty).getInfo())  # []
+print(empty.firstNonZero(empty).getInfo())  # []
 
-print(ee.Array(0).bitwiseXor(ee.Array(0)).getInfo())  # 0
-print(ee.Array(0).bitwiseXor(ee.Array(1)).getInfo())  # 1
-print(ee.Array(1).bitwiseXor(ee.Array(0)).getInfo())  # 1
-print(ee.Array(1).bitwiseXor(ee.Array(1)).getInfo())  # 0
+print(ee.Array([0]).firstNonZero(0).getInfo())  # [0]
+print(ee.Array([0]).firstNonZero([0]).getInfo())  # [0]
+print(ee.Array([0]).firstNonZero([1]).getInfo())  # [1]
+print(ee.Array([2]).firstNonZero([3]).getInfo())  # [2]
+print(ee.Array([1]).firstNonZero([0]).getInfo())  # [1]
 
-print(ee.Array(0x00FF).bitwiseXor(ee.Array(0xFF00)).getInfo())  # 65535
+print(ee.Array([-1, 0, 1]).firstNonZero([2, -1, 2]).getInfo())  # [-1, -1, 1]
 
-# [4, 10, 19]
-print(ee.Array([1, 2, 3]).bitwiseXor(ee.Array([5, 8, 16])).getInfo())
-# [END earthengine__apidocs__ee_array_bitwisexor]
+# [[1, 2], [3, 4]]
+print(ee.Array([[1, 2], [0, 0]]).firstNonZero([[0, 0], [3, 4]]).getInfo())
+# [END earthengine__apidocs__ee_array_firstnonzero]

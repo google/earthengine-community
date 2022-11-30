@@ -12,17 +12,19 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-# [START earthengine__apidocs__ee_array_bitwisexor]
+# [START earthengine__apidocs__ee_array_multiply]
+print(ee.Array([1]).multiply(0).getInfo())  # [0]
+print(ee.Array([1]).multiply(1).getInfo())  # [1]
+
+print(ee.Array([1]).multiply([0]).getInfo())  # [0]
+print(ee.Array([1]).multiply([1]).getInfo())  # [1]
+
+# [-1, 8, -2, 4.8]
+print(ee.Array([1, -2, 2, 4]).multiply([-1, -4, -1, 1.2]).getInfo())
+
+# [-1, 2, -2, -3]
+print(ee.Array([1, -2, 2, 3]).multiply(-1).getInfo())
+
 empty = ee.Array([], ee.PixelType.int8())
-print(empty.bitwiseXor(empty).getInfo())  # []
-
-print(ee.Array(0).bitwiseXor(ee.Array(0)).getInfo())  # 0
-print(ee.Array(0).bitwiseXor(ee.Array(1)).getInfo())  # 1
-print(ee.Array(1).bitwiseXor(ee.Array(0)).getInfo())  # 1
-print(ee.Array(1).bitwiseXor(ee.Array(1)).getInfo())  # 0
-
-print(ee.Array(0x00FF).bitwiseXor(ee.Array(0xFF00)).getInfo())  # 65535
-
-# [4, 10, 19]
-print(ee.Array([1, 2, 3]).bitwiseXor(ee.Array([5, 8, 16])).getInfo())
-# [END earthengine__apidocs__ee_array_bitwisexor]
+print(empty.multiply(empty).getInfo())  # []
+# [END earthengine__apidocs__ee_array_multiply]

@@ -94,7 +94,7 @@ group_var_dict = {
          'selected_mode_flag_a1', 'selected_mode_flag_a10',
          'selected_mode_flag_a2', 'selected_mode_flag_a3',
          'selected_mode_flag_a4', 'selected_mode_flag_a5',
-         'selected_mode_flag_a6', 'shot_number'),
+         'selected_mode_flag_a6'),
     'geolocation':
         ('elev_lowestmode_a1', 'elev_lowestmode_a10', 'elev_lowestmode_a2',
          'elev_lowestmode_a3', 'elev_lowestmode_a4', 'elev_lowestmode_a5',
@@ -105,15 +105,14 @@ group_var_dict = {
          'lon_lowestmode_a4', 'lon_lowestmode_a5', 'lon_lowestmode_a6',
          'sensitivity_a1', 'sensitivity_a10', 'sensitivity_a2',
          'sensitivity_a3', 'sensitivity_a4', 'sensitivity_a5', 'sensitivity_a6',
-         'shot_number', 'stale_return_flag'),
+         'stale_return_flag'),
     'land_cover_data':
         ('landsat_treecover', 'landsat_water_persistence', 'leaf_off_doy',
          'leaf_off_flag', 'leaf_on_cycle', 'leaf_on_doy', 'pft_class',
-         'region_class', 'shot_number', 'urban_focal_window_size',
-         'urban_proportion')
+         'region_class', 'urban_focal_window_size', 'urban_proportion')
 }
 
-filled_vars = [
+filled_vars_float = [
     'agbd', 'agbd_pi_lower', 'agbd_pi_upper', 'agbd_se', 'agbd_t', 'agbd_t_se',
     'agbd_a1', 'agbd_a10', 'agbd_a2', 'agbd_a3', 'agbd_a4', 'agbd_a5',
     'agbd_a6', 'agbd_pi_lower_a1', 'agbd_pi_lower_a10', 'agbd_pi_lower_a2',
@@ -130,6 +129,25 @@ filled_vars = [
     'agbd_t_pi_upper_a4', 'agbd_t_pi_upper_a5', 'agbd_t_pi_upper_a6',
     'agbd_t_se_a1', 'agbd_t_se_a10', 'agbd_t_se_a2', 'agbd_t_se_a3',
     'agbd_t_se_a4', 'agbd_t_se_a5', 'agbd_t_se_a6'
+]
+
+filled_vars_byte = [
+    'predictor_limit_flag',
+    'predictor_limit_flag_a1',
+    'predictor_limit_flag_a10',
+    'predictor_limit_flag_a2',
+    'predictor_limit_flag_a3',
+    'predictor_limit_flag_a4',
+    'predictor_limit_flag_a5',
+    'predictor_limit_flag_a6',
+    'response_limit_flag',
+    'response_limit_flag_a1',
+    'response_limit_flag_a10',
+    'response_limit_flag_a2',
+    'response_limit_flag_a3',
+    'response_limit_flag_a4',
+    'response_limit_flag_a5',
+    'response_limit_flag_a6'
 ]
 
 
@@ -166,13 +184,14 @@ def write_csv(l4a_hdf_fh, csv_file):
     for v in numeric_variables + string_variables:
       gedi_lib.hdf_to_df(l4a_hdf_fh, k, v, df)
 
-
     # Add the incidence angle variables from the corresponding L2B file.
     for group_var in group_vars:
       for l4a_var in group_var_dict[group_var]:
         gedi_lib.hdf_to_df(l4a_hdf_fh, k, f'{group_var}/{l4a_var}', df)
-    df[filled_vars] = df.loc[:, filled_vars].replace(
+    df[filled_vars_float] = df.loc[:, filled_vars_float].replace(
         to_replace=-9999, value=np.nan)
+    df[filled_vars_byte] = df.loc[:, filled_vars_byte].replace(
+        to_replace=255, value=np.nan)
 
     # Filter our rows with nan values for lat_lowestmode or lon_lowestmode.
     # Such rows are not ingestable into EE.

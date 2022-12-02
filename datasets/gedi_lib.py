@@ -12,11 +12,81 @@ See the License for the specific language governing permissions and
 limitations under the License.
 """
 
+import os
+import time
+from typing import Any
+from absl import flags
+import attr
 import h5py
 import numpy as np
 import pandas as pd
 
+import ee
+
 l2b_variables_for_l2a = ('local_beam_azimuth', 'local_beam_elevation')
+
+
+NUM_UTM_GRID_CELLS = flags.DEFINE_integer(
+    'num_utm_grid_cells', 389, 'UTM grid cell count')
+
+ALLOW_GEDI_RASTERIZE_OVERWRITE = flags.DEFINE_bool(
+    'allow_gedi_rasterize_overwrite', False,
+    'Whether exported assets from gedi_rasterize are allowed to overwrite '
+    'existing assets.')
+
+
+@attr.s
+class ExportParameters:
+  """Arguments for starting export jobs."""
+  asset_id: str = attr.ib()
+  image: Any = attr.ib()  # ee.Image
+  pyramiding_policy: dict[str, str] = attr.ib()
+  crs: str = attr.ib()
+  region: Any = attr.ib()  # ee.Geometry.Polygon | ee.Geometry.LinearRing
+  overwrite: bool = attr.ib()
+
+
+def _start_task(export_params: ExportParameters) -> str:
+  """Starts an EE export task with the given parameters."""
+  asset_id = export_params.asset_id
+  task = ee.batch.Export.image.toAsset(
+      image=export_params.image,
+      description=os.path.basename(asset_id),
+      assetId=asset_id,
+      region=export_params.region,
+      pyramidingPolicy=export_params.pyramiding_policy,
+      scale=25,
+      crs=export_params.crs,
+      maxPixels=1e13,
+      overwrite=export_params.overwrite)
+
+  time.sleep(0.1)
+  task.start()
+  return task.status()['id']
+
+
+def rasterize_gedi_by_utm_zone(table_asset_ids,
+                               raster_asset_id,
+                               grid_cell_feature,
+                               grill_month,
+                               export_function,
+                               overwrite=False):
+  """Creates and runs an EE export job.
+
+  Args:
+    table_asset_ids: list of strings, table asset ids to rasterize
+    raster_asset_id: string, raster asset id to create
+    grid_cell_feature: ee.Feature
+    grill_month: datetime, the 1st of the month for the data to be rasterized
+    export_function: function to create export
+    overwrite: bool, if any of the assets can be replaced if they already exist
+
+  Returns:
+    string, task id of the created task
+  """
+  export_params = export_function(table_asset_ids, raster_asset_id,
+                                  grid_cell_feature, grill_month, overwrite)
+  return _start_task(export_params)
 
 
 def add_shot_number_breakdown(df: pd.DataFrame) -> None:

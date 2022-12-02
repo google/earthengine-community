@@ -127,7 +127,7 @@ def write_csv(l2a_hdf_fh, l2b_hdf_fh, csv_file):
         line_terminator='\n')
     is_first = False
 
-def main(argv):
+def main(argv): 
   extract_values(argv[1], argv[2])
 
 if __name__ == '__main__':

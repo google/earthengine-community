@@ -79,7 +79,7 @@ print(datetime.format('ZZ'));  // +00:00
 print(datetime.format('ZZZ'));  // UTC
 print(datetime.format('Z', 'PST8PDT'));  // -0700
 print(datetime.format('ZZ', 'PST8PDT'));  // -07:00
-print(datetime.format('ZZZ', 'PST8PDT'));  // Pacific Daylight Time
+print(datetime.format('ZZZ', 'PST8PDT'));  // PST8PDT
 
 // single quotes for text
 print(datetime.format("YY 'yada' MM"));  // 75 yada 07

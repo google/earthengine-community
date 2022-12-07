@@ -40,7 +40,7 @@
 # last edited November 30, 2022 by Karyn Tabor
 
 
-#module load python/MINIpyD/3.9  # NCCS module 
+#module load python/MINIpyD/3.9  # NCCS module
 from osgeo import gdal
 import glob
 import os
@@ -74,9 +74,12 @@ band_desc = ['soil_moisture_AM','tb_h_corrected_AM','tb_v_corrected_AM','vegetat
 
 #########
 def SMAP_retrievalQC_fail(x):
-    '''
+  """Returns pass/fail for QC flags.
+
     Returns pass/fail for QC flags based on the SMAP l3 QC protocol for the
-    `retrieval_qual_flag` band: Bad pixels have either `1` in the first bit ("Soil
+
+    `retrieval_qual_flag` band: Bad pixels have either `1` in the first bit
+    ("Soil
     moisture retrieval doesn't have recommended quality") or 1` in the third bit
     (Soil moisture retrieval was not successful").
     Output array is True wherever the array fails QC criteria. Compare to:
@@ -94,151 +97,161 @@ def SMAP_retrievalQC_fail(x):
     numpy.ndarray
         Boolean array with True wherever QC criteria are failed
        example Returns: array([[0, 0, 0, 0, 0, 0, 1, 0]], dtype=uint8)
-    '''
-    #import ipdb
-    #ipdb.set_trace()
-    y = dec2bin_unpack(x.astype(np.uint8))
-    # Emit 1 = FAIL if 1st bit == 1 ("Soil moisture retrieval doesn't have recommended quality")
-    c1 = y[...,7]
-    # 
-    #Third bit is ==1 "Soil moisture retrieval was not successful"
-    c2 = y[...,5]
-    # 
-    # Intermediate arrays are 1 = FAIL, 0 = PASS
-    return (c1 + c2) > 0
+  """
+  #import ipdb
+  #ipdb.set_trace()
+  y = dec2bin_unpack(x.astype(np.uint8))
+  # Emit 1 = FAIL if 1st bit == 1
+  # ("Soil moisture retrieval doesn't have recommended quality")
+  c1 = y[...,7]
+  #
+  #Third bit is ==1 "Soil moisture retrieval was not successful"
+  c2 = y[...,5]
+  #
+  # Intermediate arrays are 1 = FAIL, 0 = PASS
+  return (c1 + c2) > 0
 
 #########
 def SMAP_TB_QC_fail(x):
-    '''
-    Returns pass/fail for QC flags based on the SMAPL3 QC protocol for the
-    `tb_qual_flag_v'` and tb_qual_flag_h' layers: Bad pixels have either `1` in the first bit
-    ("Observation does not have acceptable quality")
-    Output array is True wherever the array fails QC criteria. Compare to:
+  """Returns pass/fail for QC flags.
 
-        np.vectorize(lambda v: v[0] == 1 or v[3:5] != '00')
+  Returns pass/fail for QC flags based on the SMAPL3 QC protocol for the
 
-    Parameters
-    ----------
-    x : numpy.ndarray
-        Array where the last axis enumerates the unpacked bits
-        (ones and zeros)
+  `tb_qual_flag_v'` and tb_qual_flag_h' layers: Bad pixels have either `1` in
+  the first bit
+  ("Observation does not have acceptable quality")
+  Output array is True wherever the array fails QC criteria. Compare to:
 
-    Returns
-    -------
-    numpy.ndarray
-        Boolean array with True wherever QC criteria are failed
-    '''
-    y = dec2bin_unpack(x.astype(np.uint8))
-    # Emit 1 = FAIL if 1st bit == 1 ("Data has acceptable quality")
-    c1 = y[...,7]
-    # Intermediate arrays are 1 = FAIL, 0 = PASS
-    return (c1) > 0
+      np.vectorize(lambda v: v[0] == 1 or v[3:5] != '00')
+
+  Parameters
+  ----------
+  x : numpy.ndarray
+      Array where the last axis enumerates the unpacked bits
+      (ones and zeros)
+
+  Returns
+  -------
+  numpy.ndarray
+      Boolean array with True wherever QC criteria are failed
+  """
+  y = dec2bin_unpack(x.astype(np.uint8))
+  # Emit 1 = FAIL if 1st bit == 1 ("Data has acceptable quality")
+  c1 = y[...,7]
+  # Intermediate arrays are 1 = FAIL, 0 = PASS
+  return (c1) > 0
 
 ##############
 def convert_EASEv2HDF5_GeoTiff(source_h5, var_list, target_tif):
 
-    # Options for gdal_translate
-    translate_options = gdal.TranslateOptions(
-        format           = 'GTiff', 
-        outputSRS        = '+proj=cea +lon_0=0 +lat_ts=30 +ellps=WGS84 +units=m',    
-        outputBounds     =[-17367530.45, 7314540.11, 17367530.45, -7314540.11],	 
-        noData           = -9999 
-    )
+  # Options for gdal_translate
+  translate_options = gdal.TranslateOptions(
+      format           = 'GTiff',
+      outputSRS        = '+proj=cea +lon_0=0 +lat_ts=30 +ellps=WGS84 +units=m',
+      outputBounds     =[-17367530.45, 7314540.11, 17367530.45, -7314540.11],
+      noData           = -9999
+  )
 
-    #array_to_raster params
-    gt = EASE2_GRID_PARAMS['M09']['geotransform']
-    wkt = EPSG[6933]
-    #number to add to band to number the temp tiff band 1 for am and 7 for pm
-    bnum=1
-    #initiate temp tiff list
-    tif_list =[]
+  #array_to_raster params
+  gt = EASE2_GRID_PARAMS['M09']['geotransform']
+  wkt = EPSG[6933]
+  #number to add to band to number the temp tiff band 1 for am and 7 for pm
+  bnum=1
+  #initiate temp tiff list
+  tif_list =[]
 
-    SMAP_opass = ['AM','PM']
-    for i in range(0,2):
-        print("SMAP overpass is %s" % (SMAP_opass[i]))
-        if i == 1:
-            #add '_pm' to all the variables in the list
-            var_list = [s + '_pm' for s in var_list]
-            bnum=8
+  SMAP_opass = ['AM','PM']
+  for i in range(0,2):
+    print('SMAP overpass is %s' % (SMAP_opass[i]))
+    if i == 1:
+      #add '_pm' to all the variables in the list
+      var_list = [s + '_pm' for s in var_list]
+      bnum=8
 
-        # convert individual variables to separate GeoTiff files
+    # convert individual variables to separate GeoTiff files
 
-        for iband in range(0,4):
-             var = var_list[iband]
-             print(var)
-             sds = gdal.Open('HDF5:'+source_h5+'://Soil_Moisture_Retrieval_Data_'+SMAP_opass[i]+'/'+var)
-             sds_array = sds.ReadAsArray()
-             dst_tmp = 'tmp'+str(iband+bnum)+'.tif'
-             sds_gdal = array_to_raster(sds_array,gt,wkt)
-             ds = gdal.Translate(dst_tmp,sds_gdal,options=translate_options)
-             ds = None
-             tif_list.append(dst_tmp)
+    for iband in range(0,4):
+      var = var_list[iband]
+      print(var)
+      sds = gdal.Open(
+          'HDF5:'+source_h5+'://Soil_Moisture_Retrieval_Data_'+SMAP_opass[i]+
+          '/'+var)
+      sds_array = sds.ReadAsArray()
+      dst_tmp = 'tmp'+str(iband+bnum)+'.tif'
+      sds_gdal = array_to_raster(sds_array,gt,wkt)
+      ds = gdal.Translate(dst_tmp,sds_gdal,options=translate_options)
+      ds = None
+      tif_list.append(dst_tmp)
 
-        # convert individual QA vars to separate GeoTiff files for Soil moisture
-        iband=4
-        var = var_list[iband]
-        print(var)
+    # convert individual QA vars to separate GeoTiff files for Soil moisture
+    iband=4
+    var = var_list[iband]
+    print(var)
 
-        sds = gdal.Open('HDF5:'+source_h5+'://Soil_Moisture_Retrieval_Data_'+SMAP_opass[i]+'/'+var)
-        sds_array = sds.ReadAsArray()
-        dst_tmp = 'tmp'+str(iband+bnum)+'.tif'
+    sds = gdal.Open(
+        'HDF5:'+source_h5+'://Soil_Moisture_Retrieval_Data_'+SMAP_opass[i]+
+        '/'+var)
+    sds_array = sds.ReadAsArray()
+    dst_tmp = 'tmp'+str(iband+bnum)+'.tif'
 
-        #Call to  QA function here
-        qa = SMAP_retrievalQC_fail(sds_array).astype(np.uint8)
-        qa_gdal = array_to_raster(qa,gt,wkt)
-        ds = gdal.Translate(dst_tmp,qa_gdal,options=translate_options)
-        ds = None
-        tif_list.append(dst_tmp)
-             
-        # convert individual QA vars to separate GeoTiff files for TB
+    #Call to  QA function here
+    qa = SMAP_retrievalQC_fail(sds_array).astype(np.uint8)
+    qa_gdal = array_to_raster(qa,gt,wkt)
+    ds = gdal.Translate(dst_tmp,qa_gdal,options=translate_options)
+    ds = None
+    tif_list.append(dst_tmp)
 
-        for iband in range(5,7):
-            var = var_list[iband]
-            print(var)
+    # convert individual QA vars to separate GeoTiff files for TB
 
-            sds = gdal.Open('HDF5:'+source_h5+'://Soil_Moisture_Retrieval_Data_'+SMAP_opass[i]+'/'+var)
-            sds_array = sds.ReadAsArray()
-            dst_tmp = 'tmp'+str(iband+bnum)+'.tif'
+    for iband in range(5,7):
+      var = var_list[iband]
+      print(var)
 
-            #Call to  QA function here
-            qa = SMAP_TB_QC_fail(sds_array).astype(np.uint8)
-            qa_gdal = array_to_raster(qa,gt,wkt)
-            ds = gdal.Translate(dst_tmp,qa_gdal,options=translate_options)
-            ds = None
-            tif_list.append(dst_tmp)
+      sds = gdal.Open(
+          'HDF5:'+source_h5+'://Soil_Moisture_Retrieval_Data_'+SMAP_opass[i]+
+          '/'+var)
+      sds_array = sds.ReadAsArray()
+      dst_tmp = 'tmp'+str(iband+bnum)+'.tif'
+
+      #Call to  QA function here
+      qa = SMAP_TB_QC_fail(sds_array).astype(np.uint8)
+      qa_gdal = array_to_raster(qa,gt,wkt)
+      ds = gdal.Translate(dst_tmp,qa_gdal,options=translate_options)
+      ds = None
+      tif_list.append(dst_tmp)
 
 
-    ############
-    # build a VRT(Virtual Dataset) that includes the list of input tif files
-    print(tif_list)
-    gdal.BuildVRT('tmp.vrt',tif_list,options="-separate")
+  ############
+  # build a VRT(Virtual Dataset) that includes the list of input tif files
+  print(tif_list)
+  gdal.BuildVRT('tmp.vrt', tif_list, options='-separate')
 
-    warp_options = gdal.WarpOptions(
-        creationOptions  = ["COMPRESS=LZW"],    
-        srcSRS           = 'EPSG:6933',
-        dstSRS           = 'EPSG:4326',
-        xRes             = 0.08,
-        yRes             = 0.08,
-        srcNodata        = -9999,
-        dstNodata        = -9999
-     )
+  warp_options = gdal.WarpOptions(
+      creationOptions=['COMPRESS=LZW'],
+      srcSRS='EPSG:6933',
+      dstSRS='EPSG:4326',
+      xRes=0.08,
+      yRes=0.08,
+      srcNodata=-9999,
+      dstNodata=-9999
+   )
 
-    # run gdal_Warp to reproject the VRT data and save in the target tif file with
-    # compression
-    ds = gdal.Warp(target_tif,'tmp.vrt', options=warp_options)
-    ds = None 
+  # run gdal_Warp to reproject the VRT data and save in the target tif file with
+  # compression
+  ds = gdal.Warp(target_tif,'tmp.vrt', options=warp_options)
+  ds = None
 
-    # remove temporary files
-    os.remove('tmp.vrt')
-    for f in tif_list:
-        os.remove(f)
+  # remove temporary files
+  os.remove('tmp.vrt')
+  for f in tif_list:
+    os.remove(f)
 
 ### CALL TO FUNCTION HERE
 #for the L3 data, the var list is very specific; the order matters for retrieving specific datasets
-        #1:4 are data sets; 4 is SM QA; 5:6 is TB QA
+#1:4 are data sets; 4 is SM QA; 5:6 is TB QA
 #var_list = ['soil_moisture','tb_h_corrected','tb_v_corrected','vegetation_water_content',
-        #'retrieval_qual_flag',
-        #'tb_qual_flag_h','tb_qual_flag_v']
+#'retrieval_qual_flag',
+#'tb_qual_flag_h','tb_qual_flag_v']
 
 convert_EASEv2HDF5_GeoTiff(in_hdf, var_list, out_tif)
 
@@ -248,8 +261,7 @@ convert_EASEv2HDF5_GeoTiff(in_hdf, var_list, out_tif)
 ds = gdal.Open(out_tif, gdal.GA_Update)
 sizeoflist=len(band_desc)
 for band in range (0,sizeoflist):
-    rb = ds.GetRasterBand(band+1)
-    rb.SetDescription(band_desc[band])
+  rb = ds.GetRasterBand(band+1)
+  rb.SetDescription(band_desc[band])
 rb = None
 ds = None
-

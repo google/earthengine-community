@@ -29,7 +29,7 @@
 # 10) soil_temp_layer3
 # 11) soil_temp_layer4
 # 12) soil_temp_layer5
-# 13) soil_temp_layer6 
+# 13) soil_temp_layer6
 # 14) snow_mass
 # 15) snow_depth
 # 16) land_evapotranspiration_flux
@@ -68,7 +68,7 @@
 # last edited November 30, 2022 by Karyn Tabor
 
 
-#module load python/MINIpyD/3.9  # NCCS module 
+#module load python/MINIpyD/3.9  # NCCS module
 from osgeo import gdal
 import glob
 import os
@@ -102,58 +102,58 @@ out_tif = '/Users/ktabor/Documents/SMAP/GEE/SMAP_L4_SM_gph_20221120T013000_Vv703
 ##############
 def convert_EASEv2HDF5_GeoTiff(source_h5, var_list, target_tif):
 
-    # Options for gdal_translate
-    translate_options = gdal.TranslateOptions(
-        format           = 'GTiff', 
-        outputSRS        = '+proj=cea +lon_0=0 +lat_ts=30 +ellps=WGS84 +units=m',    
-        outputBounds     =[-17367530.45, 7314540.11, 17367530.45, -7314540.11],	 
-        noData           = -9999 
-    )
-    
-    #array_to_raster params
-    gt = EASE2_GRID_PARAMS['M09']['geotransform']
-    wkt = EPSG[6933]
-    
-    #initiate temp tiff list
-    tif_list =[]
+  # Options for gdal_translate
+  translate_options = gdal.TranslateOptions(
+      format           = 'GTiff',
+      outputSRS        = '+proj=cea +lon_0=0 +lat_ts=30 +ellps=WGS84 +units=m',
+      outputBounds     =[-17367530.45, 7314540.11, 17367530.45, -7314540.11],
+      noData           = -9999
+  )
+
+  #array_to_raster params
+  gt = EASE2_GRID_PARAMS['M09']['geotransform']
+  wkt = EPSG[6933]
+
+  #initiate temp tiff list
+  tif_list =[]
 
 
-    # convert individual variables to separate GeoTiff files
-    sizeoflist=len(var_list)
-    for iband in range(0,sizeoflist):
-         var = var_list[iband]
-         print(var)
-         sds = gdal.Open('HDF5:'+source_h5+'://Geophysical_Data/'+var)
-         sds_array = sds.ReadAsArray()
-         dst_tmp = 'tmp'+str(iband+1)+'.tif'
-         sds_gdal = array_to_raster(sds_array,gt,wkt)
-         ds = gdal.Translate(dst_tmp,sds_gdal,options=translate_options)
-         ds = None
-         tif_list.append(dst_tmp)
+  # convert individual variables to separate GeoTiff files
+  sizeoflist=len(var_list)
+  for iband in range(0,sizeoflist):
+    var = var_list[iband]
+    print(var)
+    sds = gdal.Open('HDF5:'+source_h5+'://Geophysical_Data/'+var)
+    sds_array = sds.ReadAsArray()
+    dst_tmp = 'tmp'+str(iband+1)+'.tif'
+    sds_gdal = array_to_raster(sds_array,gt,wkt)
+    ds = gdal.Translate(dst_tmp,sds_gdal,options=translate_options)
+    ds = None
+    tif_list.append(dst_tmp)
 
 
-    ############
-    # build a VRT(Virtual Dataset) that includes the list of input tif files
-    print(tif_list)
-    gdal.BuildVRT('tmp.vrt',tif_list,options="-separate")
+  ############
+  # build a VRT(Virtual Dataset) that includes the list of input tif files
+  print(tif_list)
+  gdal.BuildVRT('tmp.vrt', tif_list, options='-separate')
 
-    warp_options = gdal.WarpOptions(
-        creationOptions  = ["COMPRESS=LZW"],    
-        srcSRS           = 'EPSG:6933',
-        dstSRS           = 'EPSG:4326',
-        srcNodata        = -9999,
-        dstNodata        = -9999
-     )
+  warp_options = gdal.WarpOptions(
+      creationOptions=['COMPRESS=LZW'],
+      srcSRS='EPSG:6933',
+      dstSRS='EPSG:4326',
+      srcNodata=-9999,
+      dstNodata=-9999
+   )
 
-    # run gdal_Warp to reproject the VRT data and save in the target tif file with
-    # compression
-    ds = gdal.Warp(target_tif,'tmp.vrt', options=warp_options)
-    ds = None 
+  # run gdal_Warp to reproject the VRT data and save in the target tif file with
+  # compression
+  ds = gdal.Warp(target_tif,'tmp.vrt', options=warp_options)
+  ds = None
 
-    # remove temporary files
-    os.remove('tmp.vrt')
-    for f in tif_list:
-        os.remove(f)
+  # remove temporary files
+  os.remove('tmp.vrt')
+  for f in tif_list:
+    os.remove(f)
 
 ### CALL TO FUNCTION HERE
 
@@ -165,8 +165,7 @@ convert_EASEv2HDF5_GeoTiff(in_hdf, var_list, out_tif)
 ds = gdal.Open(out_tif, gdal.GA_Update)
 sizeoflist=len(var_list)
 for band in range (0,sizeoflist):
-    rb = ds.GetRasterBand(band+1)
-    rb.SetDescription(var_list[band])
+  rb = ds.GetRasterBand(band+1)
+  rb.SetDescription(var_list[band])
 rb = None
 ds = None
-

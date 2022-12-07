@@ -67,8 +67,8 @@
 # written by Qing Liu, Aurthur Endsley, and Karyn Tabor
 # last edited November 30, 2022 by Karyn Tabor
 
+from absl import app
 
-#module load python/MINIpyD/3.9  # NCCS module
 from osgeo import gdal
 import glob
 import os
@@ -81,9 +81,12 @@ from pyl4c.epsg import EPSG
 
 # function to convert single EASEv2 h5 file to GeoTiff file with multiple
 # variables.
-in_hdf = '/Users/ktabor/Documents/SMAP/DATA/L4/SMAP_L4_SM_gph_20221120T013000_Vv7030_001.h5'
 
-var_list = ['sm_surface','sm_rootzone','sm_profile','sm_surface_wetness','sm_rootzone_wetness',\
+
+def convert(source_h5, target_tif):
+  """Converts a SMAP L4 HDF file to a geotiff."""
+
+  var_list = ['sm_surface','sm_rootzone','sm_profile','sm_surface_wetness','sm_rootzone_wetness',\
             'sm_profile_wetness','surface_temp','soil_temp_layer1','soil_temp_layer2','soil_temp_layer3', \
             'soil_temp_layer4','soil_temp_layer5','soil_temp_layer6','snow_mass','snow_depth', \
             'land_evapotranspiration_flux','overland_runoff_flux','baseflow_flux','snow_melt_flux', \
@@ -95,12 +98,6 @@ var_list = ['sm_surface','sm_rootzone','sm_profile','sm_surface_wetness','sm_roo
             'height_lowatmmodlay','temp_lowatmmodlay','specific_humidity_lowatmmodlay','windspeed_lowatmmodlay', \
             'vegetation_greenness_fraction','leaf_area_index','sm_rootzone_pctl','sm_profile_pctl', \
             'depth_to_water_table_from_surface_in_peat','free_surface_water_on_peat_flux','mwrtm_vegopacity']
-
-#Name of output GeoTiff
-out_tif = '/Users/ktabor/Documents/SMAP/GEE/SMAP_L4_SM_gph_20221120T013000_Vv7030_001.tif'
-
-##############
-def convert_EASEv2HDF5_GeoTiff(source_h5, var_list, target_tif):
 
   # Options for gdal_translate
   translate_options = gdal.TranslateOptions(
@@ -122,10 +119,9 @@ def convert_EASEv2HDF5_GeoTiff(source_h5, var_list, target_tif):
   sizeoflist=len(var_list)
   for iband in range(0,sizeoflist):
     var = var_list[iband]
-    print(var)
     sds = gdal.Open('HDF5:'+source_h5+'://Geophysical_Data/'+var)
     sds_array = sds.ReadAsArray()
-    dst_tmp = 'tmp'+str(iband+1)+'.tif'
+    dst_tmp = '/tmp/tmp'+str(iband+1)+'.tif'
     sds_gdal = array_to_raster(sds_array,gt,wkt)
     ds = gdal.Translate(dst_tmp,sds_gdal,options=translate_options)
     ds = None
@@ -134,8 +130,7 @@ def convert_EASEv2HDF5_GeoTiff(source_h5, var_list, target_tif):
 
   ############
   # build a VRT(Virtual Dataset) that includes the list of input tif files
-  print(tif_list)
-  gdal.BuildVRT('tmp.vrt', tif_list, options='-separate')
+  gdal.BuildVRT('/tmp/tmp.vrt', tif_list, options='-separate')
 
   warp_options = gdal.WarpOptions(
       creationOptions=['COMPRESS=LZW'],
@@ -147,25 +142,18 @@ def convert_EASEv2HDF5_GeoTiff(source_h5, var_list, target_tif):
 
   # run gdal_Warp to reproject the VRT data and save in the target tif file with
   # compression
-  ds = gdal.Warp(target_tif,'tmp.vrt', options=warp_options)
+  ds = gdal.Warp(target_tif, '/tmp/tmp.vrt', options=warp_options)
   ds = None
 
   # remove temporary files
-  os.remove('tmp.vrt')
+  os.remove('/tmp/tmp.vrt')
   for f in tif_list:
     os.remove(f)
 
-### CALL TO FUNCTION HERE
 
-convert_EASEv2HDF5_GeoTiff(in_hdf, var_list, out_tif)
+def main(argv):
+  convert(argv[1], argv[2])
 
-#change bandnames
-#import ipdb
-#ipdb.set_trace()
-ds = gdal.Open(out_tif, gdal.GA_Update)
-sizeoflist=len(var_list)
-for band in range (0,sizeoflist):
-  rb = ds.GetRasterBand(band+1)
-  rb.SetDescription(var_list[band])
-rb = None
-ds = None
+
+if __name__ == '__main__':
+  app.run(main)

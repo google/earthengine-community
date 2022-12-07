@@ -40,7 +40,7 @@
 # last edited November 30, 2022 by Karyn Tabor
 
 
-#module load python/MINIpyD/3.9  # NCCS module
+from absl import app
 from osgeo import gdal
 import glob
 import os
@@ -53,12 +53,7 @@ from pyl4c.epsg import EPSG
 
 # function to convert single EASEv2 h5 file to GeoTiff file with multiple
 # variables.
-in_hdf = '/Users/ktabor/Documents/SMAP/DATA/L3/SMAP_L3_SM_P_E_20220510_R18290_001.h5'
-var_list = ['soil_moisture','tb_h_corrected','tb_v_corrected','vegetation_water_content', \
-            'retrieval_qual_flag','tb_qual_flag_h','tb_qual_flag_v']
 
-#Name of output GeoTiff
-out_tif = '/Users/ktabor/Documents/SMAP/GEE/SMAP_L3_SM_P_E_20220510_R18290_001.tif'
 
 #Name of bands in Geotiff
 band_desc = ['soil_moisture_AM','tb_h_corrected_AM','tb_v_corrected_AM','vegetation_water_content_AM',\
@@ -142,8 +137,11 @@ def SMAP_TB_QC_fail(x):
   return (c1) > 0
 
 ##############
-def convert_EASEv2HDF5_GeoTiff(source_h5, var_list, target_tif):
+def convert(source_h5, target_tif):
+  """Converts a SMAP L3 HDF file to a geotiff."""
 
+  var_list = ['soil_moisture','tb_h_corrected','tb_v_corrected','vegetation_water_content', \
+            'retrieval_qual_flag','tb_qual_flag_h','tb_qual_flag_v']
   # Options for gdal_translate
   translate_options = gdal.TranslateOptions(
       format           = 'GTiff',
@@ -172,12 +170,11 @@ def convert_EASEv2HDF5_GeoTiff(source_h5, var_list, target_tif):
 
     for iband in range(0,4):
       var = var_list[iband]
-      print(var)
       sds = gdal.Open(
           'HDF5:'+source_h5+'://Soil_Moisture_Retrieval_Data_'+SMAP_opass[i]+
           '/'+var)
       sds_array = sds.ReadAsArray()
-      dst_tmp = 'tmp'+str(iband+bnum)+'.tif'
+      dst_tmp = '/tmp/tmp'+str(iband+bnum)+'.tif'
       sds_gdal = array_to_raster(sds_array,gt,wkt)
       ds = gdal.Translate(dst_tmp,sds_gdal,options=translate_options)
       ds = None
@@ -186,13 +183,12 @@ def convert_EASEv2HDF5_GeoTiff(source_h5, var_list, target_tif):
     # convert individual QA vars to separate GeoTiff files for Soil moisture
     iband=4
     var = var_list[iband]
-    print(var)
 
     sds = gdal.Open(
         'HDF5:'+source_h5+'://Soil_Moisture_Retrieval_Data_'+SMAP_opass[i]+
         '/'+var)
     sds_array = sds.ReadAsArray()
-    dst_tmp = 'tmp'+str(iband+bnum)+'.tif'
+    dst_tmp = '/tmp/tmp'+str(iband+bnum)+'.tif'
 
     #Call to  QA function here
     qa = SMAP_retrievalQC_fail(sds_array).astype(np.uint8)
@@ -205,13 +201,12 @@ def convert_EASEv2HDF5_GeoTiff(source_h5, var_list, target_tif):
 
     for iband in range(5,7):
       var = var_list[iband]
-      print(var)
 
       sds = gdal.Open(
           'HDF5:'+source_h5+'://Soil_Moisture_Retrieval_Data_'+SMAP_opass[i]+
           '/'+var)
       sds_array = sds.ReadAsArray()
-      dst_tmp = 'tmp'+str(iband+bnum)+'.tif'
+      dst_tmp = '/tmp/tmp'+str(iband+bnum)+'.tif'
 
       #Call to  QA function here
       qa = SMAP_TB_QC_fail(sds_array).astype(np.uint8)
@@ -223,8 +218,7 @@ def convert_EASEv2HDF5_GeoTiff(source_h5, var_list, target_tif):
 
   ############
   # build a VRT(Virtual Dataset) that includes the list of input tif files
-  print(tif_list)
-  gdal.BuildVRT('tmp.vrt', tif_list, options='-separate')
+  gdal.BuildVRT('/tmp/tmp.vrt', tif_list, options='-separate')
 
   warp_options = gdal.WarpOptions(
       creationOptions=['COMPRESS=LZW'],
@@ -238,11 +232,11 @@ def convert_EASEv2HDF5_GeoTiff(source_h5, var_list, target_tif):
 
   # run gdal_Warp to reproject the VRT data and save in the target tif file with
   # compression
-  ds = gdal.Warp(target_tif,'tmp.vrt', options=warp_options)
+  ds = gdal.Warp(target_tif, '/tmp/tmp.vrt', options=warp_options)
   ds = None
 
   # remove temporary files
-  os.remove('tmp.vrt')
+  os.remove('/tmp/tmp.vrt')
   for f in tif_list:
     os.remove(f)
 
@@ -253,15 +247,10 @@ def convert_EASEv2HDF5_GeoTiff(source_h5, var_list, target_tif):
 #'retrieval_qual_flag',
 #'tb_qual_flag_h','tb_qual_flag_v']
 
-convert_EASEv2HDF5_GeoTiff(in_hdf, var_list, out_tif)
 
-#change bandnames
-#import ipdb
-#ipdb.set_trace()
-ds = gdal.Open(out_tif, gdal.GA_Update)
-sizeoflist=len(band_desc)
-for band in range (0,sizeoflist):
-  rb = ds.GetRasterBand(band+1)
-  rb.SetDescription(band_desc[band])
-rb = None
-ds = None
+def main(argv):
+  convert(argv[1], argv[2])
+
+
+if __name__ == '__main__':
+  app.run(main)

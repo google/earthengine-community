@@ -18,7 +18,6 @@
   "rules": {
     "comma-dangle": "off",
     "guard-for-in": "off",
-    "ignoreEOLComments": 0,
     "indent": "off",
     "max-len": ["error", {
         "code": 100

@@ -16,6 +16,7 @@
     "impliedStrict": false
   },
   "rules": {
+    "camelcase": "off",
     "comma-dangle": "off",
     "guard-for-in": "off",
     "indent": "off",

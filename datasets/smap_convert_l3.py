@@ -51,23 +51,17 @@ from pyl4c.spatial import array_to_raster
 from pyl4c.data.fixtures import EASE2_GRID_PARAMS
 from pyl4c.epsg import EPSG
 
-# function to convert single EASEv2 h5 file to GeoTiff file with multiple
-# variables.
+
+# For the L3 data, the var list is very specific; the order matters
+# for retrieving specific datasets
+# 1:4 are data sets; 4 is SM QA; 5:6 is TB QA
+VAR_LIST = [
+    'soil_moisture', 'tb_h_corrected', 'tb_v_corrected',
+    'vegetation_water_content', 'retrieval_qual_flag', 'tb_qual_flag_h',
+    'tb_qual_flag_v'
+]
 
 
-#Name of bands in Geotiff
-band_desc = ['soil_moisture_AM','tb_h_corrected_AM','tb_v_corrected_AM','vegetation_water_content_AM',\
-            'retrieval_qual_flag_AM','tb_qual_flag_h_AM','tb_qual_flag_v_AM','soil_moisture_PM','tb_h_corrected_PM',\
-             'tb_v_corrected_PM','vegetation_water_content_PM','retrieval_qual_flag_PM','tb_qual_flag_h_PM','tb_qual_flag_v_PM']
-
-#Name of bands in Geotiff
-#band_desc = ['SoilMoistureAM','TBh_corrAM','TBv_corrAM','vegH20contentAM',\
-#            'SM_qualAM','TBh_qualAM','TBv_qualAM','SoilMoisturePM','TBh_corrPM',\
-#            'TBv_corrPM','vegH20contentPM','SM_qualPM','TBh_qualPM','TBv_qualPM']
-
-###########
-
-#########
 def SMAP_retrievalQC_fail(x):
   """Returns pass/fail for QC flags.
 
@@ -93,20 +87,18 @@ def SMAP_retrievalQC_fail(x):
         Boolean array with True wherever QC criteria are failed
        example Returns: array([[0, 0, 0, 0, 0, 0, 1, 0]], dtype=uint8)
   """
-  #import ipdb
-  #ipdb.set_trace()
   y = dec2bin_unpack(x.astype(np.uint8))
   # Emit 1 = FAIL if 1st bit == 1
   # ("Soil moisture retrieval doesn't have recommended quality")
   c1 = y[...,7]
   #
-  #Third bit is ==1 "Soil moisture retrieval was not successful"
+  # Third bit is ==1 "Soil moisture retrieval was not successful"
   c2 = y[...,5]
   #
   # Intermediate arrays are 1 = FAIL, 0 = PASS
   return (c1 + c2) > 0
 
-#########
+
 def SMAP_TB_QC_fail(x):
   """Returns pass/fail for QC flags.
 
@@ -136,26 +128,20 @@ def SMAP_TB_QC_fail(x):
   # Intermediate arrays are 1 = FAIL, 0 = PASS
   return (c1) > 0
 
-##############
+
 def convert(source_h5, target_tif):
   """Converts a SMAP L3 HDF file to a geotiff."""
 
-  var_list = ['soil_moisture','tb_h_corrected','tb_v_corrected','vegetation_water_content', \
-            'retrieval_qual_flag','tb_qual_flag_h','tb_qual_flag_v']
   # Options for gdal_translate
   translate_options = gdal.TranslateOptions(
-      format           = 'GTiff',
-      outputSRS        = '+proj=cea +lon_0=0 +lat_ts=30 +ellps=WGS84 +units=m',
-      outputBounds     =[-17367530.45, 7314540.11, 17367530.45, -7314540.11],
-      noData           = -9999
+      format='GTiff',
+      outputSRS='+proj=cea +lon_0=0 +lat_ts=30 +ellps=WGS84 +units=m',
+      outputBounds=[-17367530.45, 7314540.11, 17367530.45, -7314540.11],
   )
 
-  #array_to_raster params
+  # array_to_raster params
   gt = EASE2_GRID_PARAMS['M09']['geotransform']
   wkt = EPSG[6933]
-  #number to add to band to number the temp tiff band 1 for am and 7 for pm
-  bnum=1
-  #initiate temp tiff list
   tif_list =[]
 
   SMAP_opass = ['AM','PM']
@@ -163,13 +149,18 @@ def convert(source_h5, target_tif):
     print('SMAP overpass is %s' % (SMAP_opass[i]))
     if i == 1:
       #add '_pm' to all the variables in the list
-      var_list = [s + '_pm' for s in var_list]
+      pass_var_list = [s + '_pm' for s in VAR_LIST]
       bnum=8
+    else:
+      pass_var_list = VAR_LIST
+      bnum = 1
+
+    # 'bnum' is the number to add to band to number the temp tiff
+    # band 1 for am and 7 for pm
 
     # convert individual variables to separate GeoTiff files
-
     for iband in range(0,4):
-      var = var_list[iband]
+      var = pass_var_list[iband]
       sds = gdal.Open(
           'HDF5:'+source_h5+'://Soil_Moisture_Retrieval_Data_'+SMAP_opass[i]+
           '/'+var)
@@ -182,7 +173,7 @@ def convert(source_h5, target_tif):
 
     # convert individual QA vars to separate GeoTiff files for Soil moisture
     iband=4
-    var = var_list[iband]
+    var = pass_var_list[iband]
 
     sds = gdal.Open(
         'HDF5:'+source_h5+'://Soil_Moisture_Retrieval_Data_'+SMAP_opass[i]+
@@ -200,7 +191,7 @@ def convert(source_h5, target_tif):
     # convert individual QA vars to separate GeoTiff files for TB
 
     for iband in range(5,7):
-      var = var_list[iband]
+      var = pass_var_list[iband]
 
       sds = gdal.Open(
           'HDF5:'+source_h5+'://Soil_Moisture_Retrieval_Data_'+SMAP_opass[i]+
@@ -216,7 +207,6 @@ def convert(source_h5, target_tif):
       tif_list.append(dst_tmp)
 
 
-  ############
   # build a VRT(Virtual Dataset) that includes the list of input tif files
   gdal.BuildVRT('/tmp/tmp.vrt', tif_list, options='-separate')
 
@@ -239,13 +229,6 @@ def convert(source_h5, target_tif):
   os.remove('/tmp/tmp.vrt')
   for f in tif_list:
     os.remove(f)
-
-### CALL TO FUNCTION HERE
-#for the L3 data, the var list is very specific; the order matters for retrieving specific datasets
-#1:4 are data sets; 4 is SM QA; 5:6 is TB QA
-#var_list = ['soil_moisture','tb_h_corrected','tb_v_corrected','vegetation_water_content',
-#'retrieval_qual_flag',
-#'tb_qual_flag_h','tb_qual_flag_v']
 
 
 def main(argv):

@@ -83,28 +83,36 @@ from pyl4c.epsg import EPSG
 # variables.
 
 
+VAR_LIST = [
+    'sm_surface', 'sm_rootzone', 'sm_profile', 'sm_surface_wetness',
+    'sm_rootzone_wetness', 'sm_profile_wetness', 'surface_temp',
+    'soil_temp_layer1', 'soil_temp_layer2', 'soil_temp_layer3',
+    'soil_temp_layer4', 'soil_temp_layer5', 'soil_temp_layer6',
+    'snow_mass', 'snow_depth', 'land_evapotranspiration_flux',
+    'overland_runoff_flux', 'baseflow_flux', 'snow_melt_flux',
+    'soil_water_infiltration_flux', 'land_fraction_saturated',
+    'land_fraction_unsaturated', 'land_fraction_wilting',
+    'land_fraction_snow_covered', 'heat_flux_sensible',
+    'heat_flux_latent', 'heat_flux_ground', 'net_downward_shortwave_flux',
+    'net_downward_longwave_flux', 'radiation_shortwave_downward_flux',
+    'radiation_longwave_absorbed_flux', 'precipitation_total_surface_flux',
+    'snowfall_surface_flux', 'surface_pressure', 'height_lowatmmodlay',
+    'temp_lowatmmodlay', 'specific_humidity_lowatmmodlay',
+    'windspeed_lowatmmodlay', 'vegetation_greenness_fraction',
+    'leaf_area_index', 'sm_rootzone_pctl', 'sm_profile_pctl',
+    'depth_to_water_table_from_surface_in_peat',
+    'free_surface_water_on_peat_flux', 'mwrtm_vegopacity'
+]
+
+
 def convert(source_h5, target_tif):
   """Converts a SMAP L4 HDF file to a geotiff."""
-
-  var_list = ['sm_surface','sm_rootzone','sm_profile','sm_surface_wetness','sm_rootzone_wetness',\
-            'sm_profile_wetness','surface_temp','soil_temp_layer1','soil_temp_layer2','soil_temp_layer3', \
-            'soil_temp_layer4','soil_temp_layer5','soil_temp_layer6','snow_mass','snow_depth', \
-            'land_evapotranspiration_flux','overland_runoff_flux','baseflow_flux','snow_melt_flux', \
-            'soil_water_infiltration_flux','land_fraction_saturated','land_fraction_unsaturated', \
-            'land_fraction_wilting','land_fraction_snow_covered','heat_flux_sensible','heat_flux_latent',\
-            'heat_flux_ground','net_downward_shortwave_flux','net_downward_longwave_flux', \
-            'radiation_shortwave_downward_flux','radiation_longwave_absorbed_flux',\
-            'precipitation_total_surface_flux','snowfall_surface_flux','surface_pressure', \
-            'height_lowatmmodlay','temp_lowatmmodlay','specific_humidity_lowatmmodlay','windspeed_lowatmmodlay', \
-            'vegetation_greenness_fraction','leaf_area_index','sm_rootzone_pctl','sm_profile_pctl', \
-            'depth_to_water_table_from_surface_in_peat','free_surface_water_on_peat_flux','mwrtm_vegopacity']
 
   # Options for gdal_translate
   translate_options = gdal.TranslateOptions(
       format           = 'GTiff',
       outputSRS        = '+proj=cea +lon_0=0 +lat_ts=30 +ellps=WGS84 +units=m',
       outputBounds     =[-17367530.45, 7314540.11, 17367530.45, -7314540.11],
-      noData           = -9999
   )
 
   #array_to_raster params
@@ -114,11 +122,10 @@ def convert(source_h5, target_tif):
   #initiate temp tiff list
   tif_list =[]
 
-
   # convert individual variables to separate GeoTiff files
-  sizeoflist=len(var_list)
+  sizeoflist = len(VAR_LIST)
   for iband in range(0,sizeoflist):
-    var = var_list[iband]
+    var = VAR_LIST[iband]
     sds = gdal.Open('HDF5:'+source_h5+'://Geophysical_Data/'+var)
     sds_array = sds.ReadAsArray()
     dst_tmp = '/tmp/tmp'+str(iband+1)+'.tif'
@@ -127,8 +134,6 @@ def convert(source_h5, target_tif):
     ds = None
     tif_list.append(dst_tmp)
 
-
-  ############
   # build a VRT(Virtual Dataset) that includes the list of input tif files
   gdal.BuildVRT('/tmp/tmp.vrt', tif_list, options='-separate')
 

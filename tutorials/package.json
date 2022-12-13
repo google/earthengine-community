@@ -10,7 +10,7 @@
   "devDependencies": {
     "eslint": "^6.3.0",
     "eslint-config-google": "^0.13.0",
-    "eslint-plugin-markdown": "^1.0.0",
+    "eslint-plugin-markdown": "^3.0.0",
     "jasmine": "^3.4.0"
   }
 }

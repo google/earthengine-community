@@ -205,6 +205,6 @@ print('Spatiotemporal statistics (wide)', zonalStatsW);
 
 Export.table.toDrive({
   collection: zonalStatsW,
-  description:'zonal_stats_wide',
+  description: 'zonal_stats_wide',
 });
 ```

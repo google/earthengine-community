@@ -39,7 +39,7 @@ Export.table.toDrive({
   collection: samp,
   description: 'image_sample_demo_prop_subset',
   folder: 'earth_engine_demos',
-  fileFormat: 'CSV',
+  fileFormat: 'GeoJSON',
   selectors: ['B8', 'B11', 'B12', '.geo']
 });
 

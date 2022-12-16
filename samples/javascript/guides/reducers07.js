@@ -20,7 +20,7 @@
  */
 
 // [START earthengine__reducers07__reduce_columns]
-// Load US cenus data as a FeatureCollection.
+// Load US census data as a FeatureCollection.
 var census = ee.FeatureCollection('TIGER/2010/Blocks');
 
 // Filter the collection to include only Benton County, OR.
@@ -31,7 +31,7 @@ var benton = census.filter(
   )
 );
 
-// Display Benton County cenus blocks.
+// Display Benton County census blocks.
 Map.setCenter(-123.27, 44.57, 13);
 Map.addLayer(benton);
 

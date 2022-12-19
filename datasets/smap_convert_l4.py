@@ -79,6 +79,8 @@ from pyl4c.spatial import array_to_raster
 from pyl4c.data.fixtures import EASE2_GRID_PARAMS
 from pyl4c.epsg import EPSG
 
+from google3.third_party.earthengine_community.datasets import smap_lib
+
 # function to convert single EASEv2 h5 file to GeoTiff file with multiple
 # variables.
 
@@ -126,7 +128,7 @@ def convert(source_h5, target_tif):
   sizeoflist = len(VAR_LIST)
   for iband in range(0,sizeoflist):
     var = VAR_LIST[iband]
-    sds = gdal.Open('HDF5:'+source_h5+'://Geophysical_Data/'+var)
+    sds = smap_lib.gdal_safe_open('HDF5:'+source_h5+'://Geophysical_Data/'+var)
     sds_array = sds.ReadAsArray()
     dst_tmp = '/tmp/tmp'+str(iband+1)+'.tif'
     sds_gdal = array_to_raster(sds_array,gt,wkt)
@@ -153,7 +155,8 @@ def convert(source_h5, target_tif):
   # remove temporary files
   os.remove('/tmp/tmp.vrt')
   for f in tif_list:
-    os.remove(f)
+    if os.path.exists(f):
+      os.remove(f)
 
 
 def main(argv):

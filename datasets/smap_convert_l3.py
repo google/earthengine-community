@@ -51,6 +51,8 @@ from pyl4c.spatial import array_to_raster
 from pyl4c.data.fixtures import EASE2_GRID_PARAMS
 from pyl4c.epsg import EPSG
 
+from google3.third_party.earthengine_community.datasets import smap_lib
+
 
 # For the L3 data, the var list is very specific; the order matters
 # for retrieving specific datasets
@@ -161,7 +163,7 @@ def convert(source_h5, target_tif):
     # convert individual variables to separate GeoTiff files
     for iband in range(0,4):
       var = pass_var_list[iband]
-      sds = gdal.Open(
+      sds = smap_lib.gdal_safe_open(
           'HDF5:'+source_h5+'://Soil_Moisture_Retrieval_Data_'+SMAP_opass[i]+
           '/'+var)
       sds_array = sds.ReadAsArray()
@@ -175,7 +177,7 @@ def convert(source_h5, target_tif):
     iband=4
     var = pass_var_list[iband]
 
-    sds = gdal.Open(
+    sds = smap_lib.gdal_safe_open(
         'HDF5:'+source_h5+'://Soil_Moisture_Retrieval_Data_'+SMAP_opass[i]+
         '/'+var)
     sds_array = sds.ReadAsArray()
@@ -193,7 +195,7 @@ def convert(source_h5, target_tif):
     for iband in range(5,7):
       var = pass_var_list[iband]
 
-      sds = gdal.Open(
+      sds = smap_lib.gdal_safe_open(
           'HDF5:'+source_h5+'://Soil_Moisture_Retrieval_Data_'+SMAP_opass[i]+
           '/'+var)
       sds_array = sds.ReadAsArray()
@@ -228,7 +230,8 @@ def convert(source_h5, target_tif):
   # remove temporary files
   os.remove('/tmp/tmp.vrt')
   for f in tif_list:
-    os.remove(f)
+    if os.path.exists(f):
+      os.remove(f)
 
 
 def main(argv):

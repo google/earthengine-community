@@ -21,6 +21,13 @@ See the License for the specific language governing permissions and
 limitations under the License.
 -->
 
+<meta name="robots" content="noindex" />
+
+Caution: The procedures described in this tutorial to harmonize Landsat ETM+ and
+OLI data may be outdated and not recommended or necessary when working with
+Landsat Collection 2 surface reflectance data. For more information, see the
+[FAQ entry on Landsat harmonization](https://developers.google.com/earth-engine/faq#is_cross-sensor_landsat_surface_reflectance_harmonization_needed).
+
 [Open In Code Editor](https://code.earthengine.google.com/798ae7a268f8e2c8022433b9562785c0)
 
 This tutorial concerns harmonizing Landsat ETM+ surface reflectance to Landsat

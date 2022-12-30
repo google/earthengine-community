@@ -101,7 +101,7 @@ print('SRTM scale in meters', scale);
 // PAGE: Image Collections
 
 // [START earthengine__tutorial_1__collection_load]
-var l8 = ee.ImageCollection('LANDSAT/LC08/C01/T1_TOA');
+var l8 = ee.ImageCollection('LANDSAT/LC08/C02/T1_TOA');
 // [END earthengine__tutorial_1__collection_load]
 
 // [START earthengine__tutorial_1__filtering]
@@ -131,7 +131,7 @@ Map.addLayer(scene, visParams, 'true-color composite');
 // [END earthengine__tutorial_1__true_color]
 
 // [START earthengine__tutorial_1__collection_mosaic]
-var l8 = ee.ImageCollection('LANDSAT/LC08/C01/T1_TOA');
+var l8 = ee.ImageCollection('LANDSAT/LC08/C02/T1_TOA');
 var landsat2016 = l8.filterDate('2016-01-01', '2016-12-31');
 Map.addLayer(landsat2016, visParams, 'l8 collection');
 // [END earthengine__tutorial_1__collection_mosaic]
@@ -190,7 +190,7 @@ Map.addLayer(mosaic, {}, 'custom mosaic');
 var point = ee.Geometry.Point([-122.292, 37.9018]);
 
 // Import the Landsat 8 TOA image collection.
-var l8 = ee.ImageCollection('LANDSAT/LC08/C01/T1_TOA');
+var l8 = ee.ImageCollection('LANDSAT/LC08/C02/T1_TOA');
 
 // Get the least cloudy image in 2015.
 var image = ee.Image(
@@ -246,7 +246,7 @@ Map.addLayer(greenest, visParams, 'Greenest pixel composite');
 
 // [START earthengine__tutorial_1__ndvi_series]
 // Import the Landsat 8 TOA image collection.
-var l8 = ee.ImageCollection('LANDSAT/LC08/C01/T1_TOA');
+var l8 = ee.ImageCollection('LANDSAT/LC08/C02/T1_TOA');
 
 // Map a function over the Landsat 8 TOA collection to add an NDVI band.
 var withNDVI = l8.map(function(image) {

@@ -19,7 +19,7 @@
  */
 
 // Load a landsat 8 image, select the bands of interest.
-var image = ee.Image('LANDSAT/LC08/C01/T1/LC08_044034_20140318')
+var image = ee.Image('LANDSAT/LC08/C02/T1/LC08_044034_20140318')
   .select(['B2', 'B3', 'B4', 'B5', 'B6', 'B7', 'B10', 'B11']);
 
 // Display the input imagery and the region in which to do the PCA.

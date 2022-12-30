@@ -21,7 +21,7 @@
 
 // [START earthengine__reducers01__ic_median]
 // Load an image collection, filtered so it's not too much data.
-var collection = ee.ImageCollection('LANDSAT/LT05/C01/T1')
+var collection = ee.ImageCollection('LANDSAT/LT05/C02/T1')
   .filterDate('2008-01-01', '2008-12-31')
   .filter(ee.Filter.eq('WRS_PATH', 44))
   .filter(ee.Filter.eq('WRS_ROW', 34));

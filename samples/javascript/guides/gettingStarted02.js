@@ -24,5 +24,5 @@ print('Hello world!');
 // [END earthengine__gettingStarted02__js_hello]
 
 // [START earthengine__gettingStarted02__ee_hello]
-print(ee.Image('LANDSAT/LC08/C01/T1/LC08_044034_20140318'));
+print(ee.Image('LANDSAT/LC08/C02/T1_TOA/LC08_044034_20140318'));
 // [END earthengine__gettingStarted02__ee_hello]

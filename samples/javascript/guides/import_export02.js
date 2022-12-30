@@ -21,7 +21,7 @@
 
 // [START earthengine__import_export02__export_video]
 // Load a Landsat 5 image collection.
-var collection = ee.ImageCollection('LANDSAT/LT05/C01/T1_TOA')
+var collection = ee.ImageCollection('LANDSAT/LT05/C02/T1_TOA')
   // San Francisco Bay.
   .filter(ee.Filter.eq('WRS_PATH', 44))
   .filter(ee.Filter.eq('WRS_ROW', 34))
@@ -29,11 +29,9 @@ var collection = ee.ImageCollection('LANDSAT/LT05/C01/T1_TOA')
   .filter(ee.Filter.lt('CLOUD_COVER', 30))
   // Get 20 years of imagery.
   .filterDate('1991-01-01','2011-12-30')
-  // Need to have 3-band imagery for the video.
-  .select(['B4', 'B3', 'B2'])
-  // Need to make the data 8-bit.
+  // Make each image an 8-bit RGB image.
   .map(function(image) {
-    return image.multiply(512).uint8();
+    return image.visualize({bands: ['B4', 'B3', 'B2'], min: 0.02, max: 0.35});
   });
 
 // Define an area to export.

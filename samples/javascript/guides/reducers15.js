@@ -24,7 +24,7 @@
 var sanFrancisco = ee.Geometry.Rectangle([-122.45, 37.74, -122.4, 37.8]);
 
 // Import a Landsat 8 TOA image for this region.
-var img = ee.Image('LANDSAT/LC08/C01/T1_TOA/LC08_044034_20140318');
+var img = ee.Image('LANDSAT/LC08/C02/T1_TOA/LC08_044034_20140318');
 
 // Subset the SWIR1 and SWIR2 bands. In the regression reducer, independent
 // variables come first followed by the dependent variables. In this case,
@@ -51,7 +51,7 @@ print('Slope:', linearFit.get('scale'));
 var sanFrancisco = ee.Geometry.Rectangle([-122.45, 37.74, -122.4, 37.8]);
 
 // Import a Landsat 8 TOA image for this region.
-var img = ee.Image('LANDSAT/LC08/C01/T1_TOA/LC08_044034_20140318');
+var img = ee.Image('LANDSAT/LC08/C02/T1_TOA/LC08_044034_20140318');
 
 // Create a new image that is the concatenation of three images: a constant,
 // the SWIR1 band, and the SWIR2 band.
@@ -180,7 +180,7 @@ print('Residuals:', residuals);
 var s2ImgSwir1 = ee.Image('COPERNICUS/S2/20191022T185429_20191022T185427_T10SEH');
 
 // Import a Landsat 8 TOA image from 12 days earlier than the S2 image.
-var l8ImgSwir1 = ee.Image('LANDSAT/LC08/C01/T1_TOA/LC08_044033_20191010');
+var l8ImgSwir1 = ee.Image('LANDSAT/LC08/C02/T1_TOA/LC08_044033_20191010');
 
 // Get the intersection between the two images - the area of interest (aoi).
 var aoi = s2ImgSwir1.geometry().intersection(l8ImgSwir1.geometry());

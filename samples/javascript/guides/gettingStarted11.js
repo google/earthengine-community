@@ -32,7 +32,7 @@ var cloudMask = function(image) {
 };
 
 // Load a Landsat collection, map the NDVI and cloud masking functions over it.
-var collection = ee.ImageCollection('LANDSAT/LC08/C01/T1_TOA')
+var collection = ee.ImageCollection('LANDSAT/LC08/C02/T1_TOA')
   .filterBounds(ee.Geometry.Point([-122.262, 37.8719]))
   .filterDate('2014-03-01', '2014-05-31')
   .map(addNDVI)
@@ -40,11 +40,11 @@ var collection = ee.ImageCollection('LANDSAT/LC08/C01/T1_TOA')
 
 // Reduce the collection to the mean of each pixel and display.
 var meanImage = collection.reduce(ee.Reducer.mean());
-var vizParams = {bands: ['B5_mean', 'B4_mean', 'B3_mean'], min: 0, max: 0.5};
+var vizParams = {bands: ['B5_mean', 'B4_mean', 'B3_mean'], min: 0.02, max: 0.4};
 Map.addLayer(meanImage, vizParams, 'mean');
 
 // Load a region in which to compute the mean and display it.
-var counties = ee.FeatureCollection('TIGER/2016/Counties');
+var counties = ee.FeatureCollection('TIGER/2018/Counties');
 var santaClara = ee.Feature(counties.filter(ee.Filter.eq('NAME', 'Santa Clara')).first());
 Map.addLayer(santaClara);
 

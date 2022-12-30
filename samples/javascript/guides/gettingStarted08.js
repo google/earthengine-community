@@ -25,8 +25,8 @@ var getGeom = function(image) {
   return ee.Feature(image.geometry().centroid(), {foo: 1});
 };
 
-// Load a Landsat 8 collection.
-var collection = ee.ImageCollection('LANDSAT/LC08/C01/T1')
+// Load a Landsat 8 TOA collection.
+var collection = ee.ImageCollection('LANDSAT/LC08/C02/T1_TOA')
   .filterBounds(ee.Geometry.Point(-122.262, 37.8719))
   .filterDate('2014-06-01', '2014-10-01');
 

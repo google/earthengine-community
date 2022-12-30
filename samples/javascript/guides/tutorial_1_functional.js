@@ -57,12 +57,16 @@ print(squares);  // [1, 9, 25, 49, 81]
 // [END earthengine__tutorial_1_functional__square_odd_numbers]
 
 // [START earthengine__tutorial_1_functional__filter_collections]
-var collection = ee.ImageCollection('LANDSAT/LC08/C01/T1_TOA');
+// Import Landsat 8 TOA collection and filter to 2018 images.
+var collection = ee.ImageCollection('LANDSAT/LC08/C02/T1_TOA')
+  .filterDate('2018-01-01', '2019-01-01');
 
 // Divide the collection into 2 subsets and apply a different algorithm on them.
 var subset1 = collection.filter(ee.Filter.lt('SUN_ELEVATION', 40));
 var subset2 = collection.filter(ee.Filter.gte('SUN_ELEVATION', 40));
 
+// Multiply all images in subset1 collection by 2;
+// do nothing to subset2 collection.
 var processed1 = subset1.map(function(image) {
   return image.multiply(2);
 });

@@ -21,7 +21,7 @@
 
 // [START earthengine__gettingStarted03__image_display]
 // Load an image.
-var image = ee.Image('LANDSAT/LC08/C01/T1/LC08_044034_20140318');
+var image = ee.Image('LANDSAT/LC08/C02/T1_TOA/LC08_044034_20140318');
 
 // Center the map on the image.
 Map.centerObject(image, 9);
@@ -32,10 +32,10 @@ Map.addLayer(image);
 
 // [START earthengine__gettingStarted03__image_visualization]
 // Load the image from the archive.
-var image = ee.Image('LANDSAT/LC08/C01/T1/LC08_044034_20140318');
+var image = ee.Image('LANDSAT/LC08/C02/T1_TOA/LC08_044034_20140318');
 
 // Define visualization parameters in an object literal.
-var vizParams = {bands: ['B5', 'B4', 'B3'], min: 5000, max: 15000, gamma: 1.3};
+var vizParams = {bands: ['B5', 'B4', 'B3'], min: 0.02, max: 0.4, gamma: 1.3};
 
 // Center the map on the image and display.
 Map.centerObject(image, 9);
@@ -43,6 +43,6 @@ Map.addLayer(image, vizParams, 'Landsat 8 false color');
 // [END earthengine__gettingStarted03__image_visualization]
 
 // [START earthengine__gettingStarted03__fc_display]
-var counties = ee.FeatureCollection('TIGER/2016/Counties');
+var counties = ee.FeatureCollection('TIGER/2018/Counties');
 Map.addLayer(counties, {}, 'counties');
 // [END earthengine__gettingStarted03__fc_display]

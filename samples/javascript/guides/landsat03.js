@@ -21,7 +21,7 @@
 
 // [START earthengine__landsat03__simple_composite]
 // Load a raw Landsat 5 ImageCollection for a single year.
-var collection = ee.ImageCollection('LANDSAT/LT05/C01/T1')
+var collection = ee.ImageCollection('LANDSAT/LT05/C02/T1')
     .filterDate('2010-01-01', '2010-12-31');
 
 // Create a cloud-free composite with default parameters.

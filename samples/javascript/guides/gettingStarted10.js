@@ -21,7 +21,7 @@
 
 // [START earthengine__gettingStarted10__spatial_reduce]
 // Load and display a Landsat TOA image.
-var image = ee.Image('LANDSAT/LC08/C01/T1_TOA/LC08_044034_20140318');
+var image = ee.Image('LANDSAT/LC08/C02/T1_TOA/LC08_044034_20140318');
 Map.addLayer(image, {bands: ['B4', 'B3', 'B2'], max: 0.3});
 
 // Create an arbitrary rectangle as a region and display it.

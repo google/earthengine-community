@@ -21,7 +21,7 @@
 
 // [START earthengine__import_export01__export_setup]
 // Load a landsat image and select three bands.
-var landsat = ee.Image('LANDSAT/LC08/C01/T1_TOA/LC08_123032_20140515')
+var landsat = ee.Image('LANDSAT/LC08/C02/T1_TOA/LC08_123032_20140515')
   .select(['B4', 'B3', 'B2']);
 
 // Create a geometry representing an export region.

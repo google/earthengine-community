@@ -21,7 +21,7 @@
 
 // [START earthengine__reducers12__split_weights]
 // Load an input Landsat 8 image.
-var image = ee.Image('LANDSAT/LC08/C01/T1_TOA/LC08_186059_20130419');
+var image = ee.Image('LANDSAT/LC08/C02/T1_TOA/LC08_186059_20130419');
 
 // Compute cloud score and reverse it such that the highest
 // weight (100) is for the least cloudy pixels.

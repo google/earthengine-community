@@ -21,7 +21,7 @@
 
 // [START earthengine__resample__resample]
 // Load a Landsat image over San Francisco, California, UAS.
-var landsat = ee.Image('LANDSAT/LC08/C01/T1_TOA/LC08_044034_20160323');
+var landsat = ee.Image('LANDSAT/LC08/C02/T1_TOA/LC08_044034_20160323');
 
 // Set display and visualization parameters.
 Map.setCenter(-122.37383, 37.6193, 15);

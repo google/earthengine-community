@@ -21,7 +21,7 @@
 
 // [START earthengine__reducers011__image_reduce]
 // Load an image and select some bands of interest.
-var image = ee.Image('LANDSAT/LC08/C01/T1/LC08_044034_20140318')
+var image = ee.Image('LANDSAT/LC08/C02/T1/LC08_044034_20140318')
     .select(['B4', 'B3', 'B2']);
 
 // Reduce the image to get a one-band maximum value image.

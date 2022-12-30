@@ -54,5 +54,6 @@ var featureCollection = ee.FeatureCollection('TIGER/2016/States');
 var filteredFC = featureCollection.filter(ee.Filter.eq('NAME', 'California'));
 
 // Display the collection.
+Map.setCenter(-119.604, 37.798, 6);
 Map.addLayer(filteredFC, {}, 'California');
 // [END earthengine__gettingStarted04__filter_fc]

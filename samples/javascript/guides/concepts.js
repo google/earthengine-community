@@ -94,7 +94,7 @@ print(operation);
 // [END earthengine__concepts__scripting]
 
 // [START earthengine__concepts__scale]
-var image = ee.Image('LANDSAT/LC08/C01/T1/LC08_044034_20140318').select('B4');
+var image = ee.Image('LANDSAT/LC08/C02/T1_TOA/LC08_044034_20140318').select('B4');
 
 var printAtScale = function(scale) {
   print('Pixel value at '+scale+' meters scale',
@@ -106,35 +106,35 @@ var printAtScale = function(scale) {
   }).get('B4'));
 };
 
-printAtScale(10); // 8883
-printAtScale(30); // 8883
-printAtScale(50); // 8337
-printAtScale(70); // 9215
-printAtScale(200); // 8775
-printAtScale(500); // 8300
+printAtScale(10); // 0.10394100844860077
+printAtScale(30); // 0.10394100844860077
+printAtScale(50); // 0.09130698442459106
+printAtScale(70); // 0.1150854229927063
+printAtScale(200); // 0.102478988468647
+printAtScale(500); // 0.09072770178318024
 // [END earthengine__concepts__scale]
 
 // [START earthengine__concepts__map_scale]
-var image = ee.Image('LANDSAT/LC08/C01/T1/LC08_044034_20140318');
+var image = ee.Image('LANDSAT/LC08/C02/T1_TOA/LC08_044034_20140318');
 Map.centerObject(image, 17);
-Map.addLayer(image, {bands: ['B4', 'B3', 'B2'], max: 12000}, 'image');
+Map.addLayer(image, {bands: ['B4', 'B3', 'B2'], max: 0.35}, 'image');
 // [END earthengine__concepts__map_scale]
 
 // [START earthengine__concepts__projection]
-var image = ee.Image('LANDSAT/LC08/C01/T1/LC08_044034_20140318').select(0);
+var image = ee.Image('LANDSAT/LC08/C02/T1_TOA/LC08_044034_20140318').select(0);
 print('Projection, crs, and crs_transform:', image.projection());
 print('Scale in meters:', image.projection().nominalScale());
 // [END earthengine__concepts__projection]
 
 // [START earthengine__concepts__default_projection]
-var collection = ee.ImageCollection('LANDSAT/LC08/C01/T1');
-var mosaic = collection.mosaic();
+var collection = ee.ImageCollection('LANDSAT/LC08/C02/T1_TOA');
+var mosaic = collection.filterDate('2018-01-01', '2019-01-01').mosaic();
 print(mosaic.projection());
 // [END earthengine__concepts__default_projection]
 
 // [START earthengine__concepts__projections1]
 // The input image has a SR-ORG:6974 (sinusoidal) projection.
-var image = ee.Image('MODIS/006/MOD13A1/2014_05_09').select(0);
+var image = ee.Image('MODIS/061/MOD13A1/2014_05_09').select(0);
 
 // Normalize the image and add it to the map.
 var rescaled = image.unitScale(-2000, 10000);
@@ -144,7 +144,7 @@ Map.addLayer(rescaled, visParams, 'Rescaled');
 
 // [START earthengine__concepts__reproject]
 // The input image has a SR-ORG:6974 (sinusoidal) projection.
-var image = ee.Image('MODIS/006/MOD13A1/2014_05_09').select(0);
+var image = ee.Image('MODIS/061/MOD13A1/2014_05_09').select(0);
 
 // Operations *before* the reproject call will be done in the projection
 // specified by reproject().  The output results in another reprojection.

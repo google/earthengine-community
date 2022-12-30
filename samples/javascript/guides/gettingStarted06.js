@@ -25,8 +25,8 @@ var addNDVI = function(image) {
   return image.addBands(image.normalizedDifference(['B5', 'B4']));
 };
 
-// Load the Landsat 8 raw data, filter by location and date.
-var collection = ee.ImageCollection('LANDSAT/LC08/C01/T1')
+// Load the Landsat 8 TOA data, filter by location and date.
+var collection = ee.ImageCollection('LANDSAT/LC08/C02/T1_TOA')
   .filterBounds(ee.Geometry.Point(-122.262, 37.8719))
   .filterDate('2014-06-01', '2014-10-01');
 

@@ -24,7 +24,7 @@
  * for exporting a multi-layer overlay as a single RGB image.
  */
 
-var image = ee.Image('LANDSAT/LC08/C01/T1_TOA/LC08_044034_20140318');
+var image = ee.Image('LANDSAT/LC08/C02/T1_TOA/LC08_044034_20140318');
 Map.setCenter(-122.1899, 37.5010, 10); // SF Bay
 
 // Return the percentile values for each band in an image.

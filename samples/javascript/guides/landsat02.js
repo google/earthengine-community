@@ -21,7 +21,7 @@
 
 // [START earthengine__landsat02__cloud_score]
 // Load a cloudy Landsat scene and display it.
-var cloudy_scene = ee.Image('LANDSAT/LC08/C01/T1_TOA/LC08_044034_20140926');
+var cloudy_scene = ee.Image('LANDSAT/LC08/C02/T1_TOA/LC08_044034_20140926');
 Map.centerObject(cloudy_scene);
 Map.addLayer(cloudy_scene, {bands: ['B4', 'B3', 'B2'], max: 0.4}, 'TOA', false);
 
@@ -37,8 +37,9 @@ Map.addLayer(masked, {bands: ['B4', 'B3', 'B2'], max: 0.4}, 'masked');
 // [END earthengine__landsat02__cloud_score]
 
 // [START earthengine__landsat02__sensor_id]
-// Load a Landsat 8 composite and set the SENSOR_ID property.
-var mosaic = ee.Image(ee.ImageCollection('LANDSAT/LC8_L1T_8DAY_TOA').first())
+// Load a Landsat 8 TOA collection, make 15-day mosaic, set SENSOR_ID property.
+var mosaic = ee.ImageCollection('LANDSAT/LC08/C02/T1_TOA')
+  .filterDate('2019-06-01', '2019-06-16').mosaic()
   .set('SENSOR_ID', 'OLI_TIRS');
 
 // Cloud score the mosaic and display the result.

@@ -20,8 +20,8 @@
  */
 
 // [START earthengine__gettingStarted09__temporal_reduce]
-// Load a Landsat 8 collection.
-var collection = ee.ImageCollection('LANDSAT/LC08/C01/T1')
+// Load a Landsat 8 TOA collection.
+var collection = ee.ImageCollection('LANDSAT/LC08/C02/T1_TOA')
   // Filter by date and location.
   .filterBounds(ee.Geometry.Point(-122.262, 37.8719))
   .filterDate('2014-01-01', '2014-12-31')
@@ -32,9 +32,9 @@ var collection = ee.ImageCollection('LANDSAT/LC08/C01/T1')
 var median = collection.limit(5).reduce(ee.Reducer.median());
 // [END earthengine__gettingStarted09__temporal_reduce]
 
-// Define an object of visualization parameters to control how the image is rendered.
+// Define a visualization parameter object to control how the image is rendered.
 var vizParams = {
-  bands: ['B5_median', 'B4_median', 'B3_median'], min: 5000, max: 15000
+  bands: ['B5_median', 'B4_median', 'B3_median'], min: 0.02, max: 0.4
 };
 
 // Display the image using the predefined visualization parameters.

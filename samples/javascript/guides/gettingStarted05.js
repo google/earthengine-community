@@ -26,8 +26,8 @@ var getNDVI = function(image) {
 };
 
 // Load two Landsat 5 images, 20 years apart.
-var image1 = ee.Image('LANDSAT/LT05/C01/T1_TOA/LT05_044034_19900604');
-var image2 = ee.Image('LANDSAT/LT05/C01/T1_TOA/LT05_044034_20100611');
+var image1 = ee.Image('LANDSAT/LT05/C02/T1_TOA/LT05_044034_19900604');
+var image2 = ee.Image('LANDSAT/LT05/C02/T1_TOA/LT05_044034_20100611');
 
 // Compute NDVI from the scenes.
 var ndvi1 = getNDVI(image1);

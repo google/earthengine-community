@@ -21,7 +21,7 @@
 
 // [START earthengine__landsat01__radiance_toa]
 // Load a raw Landsat scene and display it.
-var raw = ee.Image('LANDSAT/LC08/C01/T1/LC08_044034_20140318');
+var raw = ee.Image('LANDSAT/LC08/C02/T1/LC08_044034_20140318');
 Map.centerObject(raw, 10);
 Map.addLayer(raw, {bands: ['B4', 'B3', 'B2'], min: 6000, max: 12000}, 'raw');
 

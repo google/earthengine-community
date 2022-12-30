@@ -194,9 +194,10 @@ ui.Map.Linker([left, right], 'change-bounds');
 
 // [START earthengine__ui02_widgets__split_panel]
 // Load an image of the Santa Rosa, California 2017 fires.
-var image = ee.Image('LANDSAT/LC08/C01/T1_RT_TOA/LC08_045033_20171011');
+var image = ee.Image('LANDSAT/LC08/C02/T1_TOA/LC08_045033_20171011');
 
 // Add a color-SWIR composite to the default Map.
+Map.setCenter(-122.6624, 38.5011, 12);
 Map.addLayer(image, {bands: ['B7', 'B5', 'B3'], max: 0.3}, 'color-SWIR');
 
 // Make another map and add a color-NIR composite to it.
@@ -206,7 +207,7 @@ linkedMap.addLayer(image, {bands: ['B5', 'B4', 'B3'], max: 0.3}, 'color-NIR');
 linkedMap.addLayer(image, {
   bands: ['B11'],
   min: 290,
-  max: 310,
+  max: 305,
   palette: ['gray', 'white', 'yellow', 'red']
 }, 'Thermal');
 
@@ -214,7 +215,9 @@ linkedMap.addLayer(image, {
 var linker = ui.Map.Linker([ui.root.widgets().get(0), linkedMap]);
 
 // Make an inset map and add it to the linked map.
-var inset = ui.Map({style: {position: "bottom-right"}});
+var inset = ui.Map();
+inset.style().set({position: 'bottom-right', width: '300px', height: '250px'});
+inset.setControlVisibility({all: false, mapTypeControl: true});
 linkedMap.add(inset);
 
 // Register a function to the linked map to update the inset map.
@@ -235,12 +238,11 @@ var splitPanel = ui.SplitPanel({
 
 // Set the SplitPanel as the only thing in root.
 ui.root.widgets().reset([splitPanel]);
-linkedMap.setCenter(-122.5048, 38.3998, 12);
 // [END earthengine__ui02_widgets__split_panel]
 
 // [START earthengine__ui02_widgets__date_slider]
 // Use a DateSlider to create annual composites of this collection.
-var collection = ee.ImageCollection('LANDSAT/LC08/C01/T1');
+var collection = ee.ImageCollection('LANDSAT/LC08/C02/T1');
 // Use the start of the collection and now to bound the slider.
 var start = ee.Image(collection.first()).date().get('year').format();
 var now = Date.now();
@@ -266,10 +268,14 @@ var dateRange = ee.DateRange(start, end).evaluate(function(range) {
     end: range['dates'][1],
     value: null,
     period: 365,
-    onChange: showMosaic
+    onChange: showMosaic,
+    style: {width: '180px'}
   });
   Map.add(dateSlider.setValue(now));
 });
+
+// Initialize the map location at southern Africa.
+Map.setCenter(23.861, -27.144, 6);
 // [END earthengine__ui02_widgets__date_slider]
 
 // [START earthengine__ui02_widgets__show_tools]

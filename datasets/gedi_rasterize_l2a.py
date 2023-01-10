@@ -331,7 +331,7 @@ def main(argv):
     grid_cell_feature = ee.Feature(
         ee.FeatureCollection(
             'users/yang/GEETables/GEDI/GEDI_UTM_GRIDS_LandOnly').filterMetadata(
-                'grid_id', 'equals', grid_cell_id)).first()
+                'grid_id', 'equals', grid_cell_id).first())
     with open(argv[1]) as fh:
       gedi_lib.rasterize_gedi_by_utm_zone(
           [x.strip() for x in fh],

@@ -25,7 +25,7 @@
     "\n",
     "The Multivariate Alteration Detection (MAD) transformation was proposed and developed some time ago by [Allan Nielsen and his coworkers](https://www2.imm.dtu.dk/pubdb/pubs/1220-full.html)  at the Technical University of Denmark and later [extended to an iteratively re-weighted version](https://www2.imm.dtu.dk/pubdb/pubs/4695-full.html) called IR-MAD or iMAD. The iMAD algorithm has since found widespread application for the generation of change information from visual/infrared imagery as well as for performing [relative radiometric normalization](http://www2.imm.dtu.dk/pubdb/pubs/5362-full.html) of image pairs.\n",
     "\n",
-    "This Tutorial is intended to familiarize GEE users with the iMAD method so that they may use it with confidence in their research wherever they think it might be appropriate. It is based on material taken from Chapter 9 of my [textbook](https://www.taylorfrancis.com/books/image-analysis-classification-change-detection-remote-sensing-morton-john-canty/10.1201/9780429464348). In preparing the Tutorial I have tried to take as much advantage as possible of the GEE platform to illustrate and demonstrate the theory interactively.\n",
+    "This Tutorial is intended to familiarize GEE users with the iMAD method so that they may use it with confidence in their research wherever they think it might be appropriate. It is based on material taken from Chapter 9 of [Canty (2019)](https://www.taylorfrancis.com/books/image-analysis-classification-change-detection-remote-sensing-morton-john-canty/10.1201/9780429464348). In preparing the Tutorial we have tried to take as much advantage as possible of the GEE platform to illustrate and demonstrate the theory interactively.\n",
     "\n",
     "## Outline\n",
     "\n",
@@ -256,7 +256,7 @@
   },
   {
    "cell_type": "code",
-   "execution_count": 6,
+   "execution_count": 7,
    "metadata": {
     "cellView": "form",
     "id": "Xs39zZmNSdru"
@@ -278,7 +278,7 @@
   },
   {
    "cell_type": "code",
-   "execution_count": 7,
+   "execution_count": 8,
    "metadata": {
     "colab": {
      "base_uri": "https://localhost:8080/"
@@ -337,7 +337,7 @@
   },
   {
    "cell_type": "code",
-   "execution_count": 8,
+   "execution_count": 9,
    "metadata": {
     "colab": {
      "base_uri": "https://localhost:8080/",
@@ -364,7 +364,7 @@
     {
      "data": {
       "application/vnd.jupyter.widget-view+json": {
-       "model_id": "24a94755052943809eb5bbffc4f27704",
+       "model_id": "e0b87693aa0e4004bfe9728c24029617",
        "version_major": 2,
        "version_minor": 0
       },
@@ -372,7 +372,7 @@
        "Map(center=[51.08617675675536, 7.976478425048881], controls=(ZoomControl(options=['position', 'zoom_in_text', …"
       ]
      },
-     "execution_count": 8,
+     "execution_count": 9,
      "metadata": {},
      "output_type": "execute_result"
     }
@@ -396,7 +396,7 @@
   },
   {
    "cell_type": "code",
-   "execution_count": 9,
+   "execution_count": 10,
    "metadata": {
     "id": "W8_al6RlBpNq"
    },
@@ -472,7 +472,7 @@
     "{\\rm var}(U)={\\rm var}(V)=1. \\tag{4}\n",
     "$$\n",
     "\n",
-    "For those more versed in linear algebra the details of CCA are given in [my textbook](https://www.taylorfrancis.com/books/image-analysis-classification-change-detection-remote-sensing-morton-john-canty/10.1201/9780429464348) beginning on page 385. It all boils down to solving two so-called *generalized eigenvalue problems* for determining the transformation vectors ${\\bf a}$ and ${\\bf b}$ in Equations (1) and (2), respectively. There is not just one solution but rather $N$ solutions. They consist of the $N$ pairs of _eigenvectors_ $({\\bf a}^i, {\\bf b}^i)$,\n",
+    "For those more versed in linear algebra the details of CCA are given in [Canty (2019)](https://www.taylorfrancis.com/books/image-analysis-classification-change-detection-remote-sensing-morton-john-canty/10.1201/9780429464348) beginning on page 385. It all boils down to solving two so-called *generalized eigenvalue problems* for determining the transformation vectors ${\\bf a}$ and ${\\bf b}$ in Equations (1) and (2), respectively. There is not just one solution but rather $N$ solutions. They consist of the $N$ pairs of _eigenvectors_ $({\\bf a}^i, {\\bf b}^i)$,\n",
     "\n",
     "$$\n",
     "{\\bf a}^i=\\begin{pmatrix}a_1\\cr a_2\\cr\\vdots\\cr a_N \\end{pmatrix}_i,\\quad {\\bf b}^i=\\begin{pmatrix}b_1\\cr b_2\\cr\\vdots\\cr b_N \\end{pmatrix}_i, \\quad i=1\\dots N\n",
@@ -509,7 +509,7 @@
   },
   {
    "cell_type": "code",
-   "execution_count": 10,
+   "execution_count": 11,
    "metadata": {
     "id": "xJXqZ3ZJsSg_"
    },
@@ -564,7 +564,7 @@
   },
   {
    "cell_type": "code",
-   "execution_count": 11,
+   "execution_count": 12,
    "metadata": {
     "id": "olCi6RvJsShA"
    },
@@ -591,7 +591,7 @@
   },
   {
    "cell_type": "code",
-   "execution_count": 12,
+   "execution_count": 13,
    "metadata": {
     "colab": {
      "base_uri": "https://localhost:8080/"
@@ -637,7 +637,7 @@
   },
   {
    "cell_type": "code",
-   "execution_count": 13,
+   "execution_count": 14,
    "metadata": {
     "colab": {
      "base_uri": "https://localhost:8080/"
@@ -680,7 +680,7 @@
   },
   {
    "cell_type": "code",
-   "execution_count": 14,
+   "execution_count": 15,
    "metadata": {
     "cellView": "form",
     "id": "lK3AMH709Sg5"
@@ -737,7 +737,7 @@
   },
   {
    "cell_type": "code",
-   "execution_count": 15,
+   "execution_count": 16,
    "metadata": {
     "id": "-4I6Ig_zFICj"
    },
@@ -807,12 +807,12 @@
     "id": "jLuzqZ4lR1Ck"
    },
    "source": [
-    "After setting up the MAD transformation on the six visual and infrared bands of the  *Rothaargebirge* images, "
+    "After setting up the MAD transformation on the six visual and infrared bands of the  Landkreis Olpe images, "
    ]
   },
   {
    "cell_type": "code",
-   "execution_count": 16,
+   "execution_count": 17,
    "metadata": {
     "id": "zTK-8PV5NvtO",
     "scrolled": false
@@ -833,7 +833,7 @@
   },
   {
    "cell_type": "code",
-   "execution_count": 17,
+   "execution_count": 18,
    "metadata": {
     "colab": {
      "base_uri": "https://localhost:8080/",
@@ -861,7 +861,7 @@
     {
      "data": {
       "application/vnd.jupyter.widget-view+json": {
-       "model_id": "a5fc7949776e4486b74cb38a69818240",
+       "model_id": "d878b118af164e5ab857fb502688bfee",
        "version_major": 2,
        "version_minor": 0
       },
@@ -869,7 +869,7 @@
        "Map(center=[51.08617675675536, 7.976478425048881], controls=(ZoomControl(options=['position', 'zoom_in_text', …"
       ]
      },
-     "execution_count": 17,
+     "execution_count": 18,
      "metadata": {},
      "output_type": "execute_result"
     }
@@ -892,7 +892,7 @@
    "source": [
     "The richness in colors in the MAD image is a consequence of the decoupling (orthogonalization) of the MAD components, as will be explained below. \n",
     "\n",
-    "Pretty colors notwithstanding, when compared with the simple difference image the result is only _mittelprächtig_ (German slang for \"not so hot\"), and certainly no easier to interpret. However we're not finished.\n",
+    "Pretty colors notwithstanding, when compared with the simple difference image the result is  _mittelprächtig_ (German slang for \"not so hot\"), and certainly no easier to interpret. However we're not finished.\n",
     "\n",
     "The canonical variates have very nice properties indeed. They are _all mutually uncorrelated_ except for the pairs $(U_i,V_i)$, and these are ordered by decreasing positive correlation:\n",
     "\n",
@@ -907,7 +907,7 @@
   },
   {
    "cell_type": "code",
-   "execution_count": 18,
+   "execution_count": 19,
    "metadata": {
     "colab": {
      "base_uri": "https://localhost:8080/"
@@ -922,22 +922,22 @@
      "text": [
       "array([[ 0.999,  0.001, -0.   ,  0.   , -0.   ,  0.   ,  0.923,  0.   ,\n",
       "        -0.   ,  0.   , -0.   , -0.   ],\n",
-      "       [ 0.001,  0.999,  0.   ,  0.   , -0.   , -0.   ,  0.   ,  0.864,\n",
+      "       [ 0.001,  1.   ,  0.   ,  0.   , -0.   , -0.   ,  0.   ,  0.864,\n",
       "         0.   ,  0.   , -0.   , -0.   ],\n",
-      "       [-0.   ,  0.   ,  1.   ,  0.   ,  0.   , -0.   , -0.   ,  0.   ,\n",
+      "       [-0.   ,  0.   ,  0.999,  0.   ,  0.   , -0.   , -0.   ,  0.   ,\n",
       "         0.707, -0.   ,  0.   , -0.   ],\n",
-      "       [ 0.   ,  0.   ,  0.   ,  1.   ,  0.   ,  0.   ,  0.   ,  0.   ,\n",
+      "       [ 0.   ,  0.   ,  0.   ,  0.999,  0.   ,  0.   ,  0.   ,  0.   ,\n",
       "        -0.   ,  0.642,  0.   ,  0.   ],\n",
-      "       [-0.   , -0.   ,  0.   ,  0.   ,  1.   ,  0.   , -0.   , -0.   ,\n",
+      "       [-0.   , -0.   ,  0.   ,  0.   ,  0.999,  0.   , -0.   , -0.   ,\n",
       "         0.   ,  0.   ,  0.536,  0.   ],\n",
       "       [ 0.   , -0.   , -0.   ,  0.   ,  0.   ,  1.   , -0.   , -0.   ,\n",
       "        -0.   ,  0.   ,  0.   ,  0.369],\n",
-      "       [ 0.923,  0.   , -0.   ,  0.   , -0.   , -0.   ,  1.   ,  0.   ,\n",
+      "       [ 0.923,  0.   , -0.   ,  0.   , -0.   , -0.   ,  0.999,  0.   ,\n",
       "        -0.   ,  0.   , -0.   , -0.   ],\n",
-      "       [ 0.   ,  0.864,  0.   ,  0.   , -0.   , -0.   ,  0.   ,  0.999,\n",
+      "       [ 0.   ,  0.864,  0.   ,  0.   , -0.   , -0.   ,  0.   ,  1.   ,\n",
       "         0.   ,  0.   , -0.   , -0.   ],\n",
       "       [-0.   ,  0.   ,  0.707, -0.   ,  0.   , -0.   , -0.   ,  0.   ,\n",
-      "         0.999, -0.   ,  0.   , -0.   ],\n",
+      "         1.   , -0.   ,  0.   , -0.   ],\n",
       "       [ 0.   ,  0.   , -0.   ,  0.642,  0.   ,  0.   ,  0.   ,  0.   ,\n",
       "        -0.   ,  1.   ,  0.   ,  0.   ],\n",
       "       [-0.   , -0.   ,  0.   ,  0.   ,  0.536,  0.   , -0.   , -0.   ,\n",
@@ -978,7 +978,7 @@
   },
   {
    "cell_type": "code",
-   "execution_count": 19,
+   "execution_count": 20,
    "metadata": {
     "colab": {
      "base_uri": "https://localhost:8080/"
@@ -998,7 +998,7 @@
        " [0.0, 0.0, -0.0, 0.0, 0.0, 0.654]]"
       ]
      },
-     "execution_count": 19,
+     "execution_count": 20,
      "metadata": {},
      "output_type": "execute_result"
     }

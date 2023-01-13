@@ -13,13 +13,9 @@
 # limitations under the License.
 
 import datetime
-import os
-import time
 from typing import Any
 
 from absl import app
-from dateutil import relativedelta
-import pytz
 
 import ee
 from google3.pyglib.function_utils import memoize
@@ -63,24 +59,28 @@ INTEGER_PROPS = frozenset({
 })
 
 
-def gedi_deltatime_epoch(dt):
-  return dt.timestamp() - (datetime.datetime(2018, 1, 1) -
-                           datetime.datetime(1970, 1, 1)).total_seconds()
+@memoize.Memoize()
+def get_raster_bands(band):
+  return [band + str(count) for count in range(30)]
+
+# This is a subset of all available table properties.
+raster_bands = [
+    'algorithmrun_flag', 'beam', 'cover'
+] + get_raster_bands('cover_z') + [
+    'degrade_flag', 'delta_time', 'fhd_normal', 'l2b_quality_flag',
+    'local_beam_azimuth', 'local_beam_elevation', 'pai'
+] + get_raster_bands('pai_z') + get_raster_bands('pavd_z') + [
+    'pgap_theta', 'selected_l2a_algorithm', 'selected_rg_algorithm',
+    'sensitivity', 'solar_azimuth', 'solar_elevation',
+    'minor_frame_number', 'orbit_number', 'shot_number_within_beam'
+]
+
+int_bands = [p for p in raster_bands if p in INTEGER_PROPS]
 
 
-def timestamp_ms_for_datetime(dt):
-  return time.mktime(dt.timetuple()) * 1000
-
-
-def parse_date_from_gedi_filename(table_asset_id):
-  return pytz.utc.localize(
-      datetime.datetime.strptime(
-          os.path.basename(table_asset_id).split('_')[2], '%Y%j%H%M%S'))
-
-
-def create_export(table_asset_ids: list[str], raster_asset_id: str,
-                  grid_cell_feature: Any, grill_month: datetime.datetime,
-                  overwrite: bool) -> gedi_lib.ExportParameters:
+def export_wrapper(table_asset_ids: list[str], raster_asset_id: str,
+                   grid_cell_feature: Any, grill_month: datetime.datetime,
+                   overwrite: bool) -> gedi_lib.ExportParameters:
   """Creates an EE export job definition.
 
   Args:
@@ -93,94 +93,13 @@ def create_export(table_asset_ids: list[str], raster_asset_id: str,
   Returns:
     an ExportParameters object containing arguments for an export job.
   """
-  if not table_asset_ids:
-    raise ValueError('No table asset ids specified')
-  table_asset_dts = []
-  for asset_id in table_asset_ids:
-    date_obj = parse_date_from_gedi_filename(asset_id)
-    table_asset_dts.append(date_obj)
-  # pylint:disable=g-tzinfo-datetime
-  # We don't care about pytz problems with DST - this is just UTC.
-  month_start = grill_month.replace(day=1)
-  # pylint:enable=g-tzinfo-datetime
-  month_end = month_start + relativedelta.relativedelta(months=1)
-  if all((date < month_start or date >= month_end) for date in table_asset_dts):
-    raise ValueError(
-        'ALL the table files are outside of the expected month that is ranging'
-        ' from %s to %s' % (month_start, month_end))
-
-  right_month_dts = [
-      dates for dates in table_asset_dts
-      if dates >= month_start and dates < month_end
-  ]
-  if len(right_month_dts) / len(table_asset_dts) < 0.95:
-    raise ValueError(
-        'The majority of table ids are not in the requested month %s' %
-        grill_month)
-
-  @memoize.Memoize()
-  def get_raster_bands(band):
-    return [band + str(count) for count in range(30)]
-
-  # This is a subset of all available table properties.
-  raster_bands = [
-      'algorithmrun_flag', 'beam', 'cover'
-  ] + get_raster_bands('cover_z') + [
-      'degrade_flag', 'delta_time', 'fhd_normal', 'l2b_quality_flag',
-      'local_beam_azimuth', 'local_beam_elevation', 'pai'
-  ] + get_raster_bands('pai_z') + get_raster_bands('pavd_z') + [
-      'pgap_theta', 'selected_l2a_algorithm', 'selected_rg_algorithm',
-      'sensitivity', 'solar_azimuth', 'solar_elevation',
-      'minor_frame_number', 'orbit_number', 'shot_number_within_beam'
-  ]
-
-  shots = []
-  for table_asset_id in table_asset_ids:
-    shots.append(ee.FeatureCollection(table_asset_id))
-
-  box = grid_cell_feature.geometry().buffer(2500, 25).bounds()
-  # month_start and month_end are converted to epochs using the
-  # same scale as "delta_time."
-  # pytype: disable=attribute-error
-  shots = ee.FeatureCollection(shots).flatten().filterBounds(box).filter(
-      ee.Filter.rangeContains(
-          'delta_time',
-          gedi_deltatime_epoch(month_start),
-          gedi_deltatime_epoch(month_end))
-    )
-  # pytype: enable=attribute-error
-  # We use ee.Reducer.first() below, so this will pick the point with the
-  # higherst sensitivity.
-  shots = shots.sort('sensitivity', False)
-
-  crs = grid_cell_feature.get('crs').getInfo()
-
-  image_properties = {
-      'month': grill_month.month,
-      'year': grill_month.year,
-      'version': 1,
-      'system:time_start': timestamp_ms_for_datetime(month_start),
-      'system:time_end': timestamp_ms_for_datetime(month_end),
-      'table_asset_ids': table_asset_ids
-  }
-
-  image = (
-      shots.sort('sensitivity', False).reduceToImage(
-          raster_bands,
-          ee.Reducer.first().forEach(raster_bands)).reproject(
-              crs, None, 25).set(image_properties))
-
-  int_bands = [p for p in raster_bands if p in INTEGER_PROPS]
-  # This keeps the original (alphabetic) band order.
-  image_with_types = image.toDouble().addBands(
-      image.select(int_bands).toInt(), overwrite=True)
-
-  return gedi_lib.ExportParameters(
-      asset_id=raster_asset_id,
-      image=image_with_types.clip(box),
-      pyramiding_policy={'.default': 'sample'},
-      crs=crs,
-      region=box,
+  return gedi_lib.create_export(
+      table_asset_ids=table_asset_ids,
+      raster_asset_id=raster_asset_id,
+      raster_bands=raster_bands,
+      int_bands=int_bands,
+      grid_cell_feature=grid_cell_feature,
+      grill_month=grill_month,
       overwrite=overwrite)
 
 
@@ -201,7 +120,7 @@ def main(argv):
           raster_collection + '/' + '%03d' % grid_cell_id,
           grid_cell_feature,
           argv[2],
-          create_export,
+          export_wrapper,
           overwrite=gedi_lib.ALLOW_GEDI_RASTERIZE_OVERWRITE.value)
 
 

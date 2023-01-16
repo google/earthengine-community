@@ -194,7 +194,7 @@ def create_export(
       dates for dates in table_asset_dts
       if dates >= month_start and dates < month_end
   ]
-  if len(right_month_dts) / len(table_asset_dts) < 0.95:
+  if len(right_month_dts) / len(table_asset_dts) < 0.55:
     raise ValueError(
         'The majority of table ids are not in the requested month %s' %
         grill_month)

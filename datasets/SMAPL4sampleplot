@@ -1,0 +1,63 @@
+/**
+ * Copyright 2023 The Google Earth Engine Community Authors
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+ 
+// plots SMAP L4 version 7, 3-hourly soil moisture over user-determined time period
+//Last edited by Karyn Tabor 01/10/2023
+var SMAPL4 = ee.ImageCollection("NASA/SMAP/SPL4SMGP/007_RAW")
+var point = ee.Geometry.Point([ -97.808804,34.975981,]);
+Map.setCenter(-97.808804,34.975981,  7);
+Map.addLayer(point,
+             {'color': 'black'},
+             'Geometry [black]: point');
+
+//user input: set timeframe (June-July-August)
+var startdate = ('2022-06-01');
+var enddate = ('2022-08-31')
+
+// Load the input collection, filter by date, and select the soil moisture data.
+var soilMoisture = SMAPL4.filter(ee.Filter.date(startdate,enddate)).select(['sm_surface','sm_rootzone']);
+var soilMoistureVis = {
+  min: 0.0,
+  max: 0.8,
+  palette: ['ff0303','efff07','418504', '0300ff','8006f3'],
+};
+Map.addLayer(soilMoisture.select('sm_surface'), soilMoistureVis, 'Soil Moisture');
+Map.addLayer(point,
+             {'color': 'black'},
+             'Geometry [black]: point');
+// Define the chart and print it to the console.
+var chart =
+    ui.Chart.image
+        .series({
+          imageCollection: soilMoisture,
+          region: point,
+          reducer: ee.Reducer.mean(),
+          scale: 10000,
+          xProperty: 'system:time_start'
+        })
+        .setSeriesNames(['root zone soil moisture', 'surface soil moisture'])
+        .setOptions({
+          title: 'SMAP L4 version 7, 3-hourly surface and root zone soil moisture (34.975981 N, 97.808804 W)',
+          hAxis: {title: 'Date', titleTextStyle: {italic: false, bold: true}},
+          vAxis: {
+            title: 'Soil Moisture cm3/cm3',
+            titleTextStyle: {italic: false, bold: true}
+          },
+          lineWidth: 5,
+          colors: ['4F7942', 'C7EA46'],
+          curveType: 'function'
+        });
+print(chart);

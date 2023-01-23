@@ -8,14 +8,14 @@ date_published: 2023-02-01
 <!--
 Copyright 2023 The Google Earth Engine Community Authors
 
-Licensed under the Apache License, Version 2.0 (the "License");
+Licensed under the Apache License, Version 2.0 (the ‘License’);
 you may not use this file except in compliance with the License.
 You may obtain a copy of the License at
 
     http://www.apache.org/licenses/LICENSE-2.0
 
 Unless required by applicable law or agreed to in writing, software
-distributed under the License is distributed on an "AS IS" BASIS,
+distributed under the License is distributed on an ‘AS IS’ BASIS,
 WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
@@ -31,13 +31,13 @@ hackathon, and later updated for Yale GIS Day 2018 and 2019.
 ```javascript
 // Define basemap style.
 var basemapStyle = [{
-        featureType: "all",
-        elementType: "labels.text.fill",
+        featureType: ‘all’,
+        elementType: ‘labels.text.fill’,
         stylers: [{
                 saturation: 36
             },
             {
-                color: "#000000"
+                color: ‘#000000’
             },
             {
                 lightness: 40
@@ -45,13 +45,13 @@ var basemapStyle = [{
         ],
     },
     {
-        featureType: "all",
-        elementType: "labels.text.stroke",
+        featureType: ‘all’,
+        elementType: ‘labels.text.stroke’,
         stylers: [{
-                visibility: "on"
+                visibility: ‘on’
             },
             {
-                color: "#000000"
+                color: ‘#000000’
             },
             {
                 lightness: 16
@@ -59,17 +59,17 @@ var basemapStyle = [{
         ],
     },
     {
-        featureType: "all",
-        elementType: "labels.icon",
+        featureType: ‘all’,
+        elementType: ‘labels.icon’,
         stylers: [{
-            visibility: "off"
+            visibility: ‘off’
         }, ],
     },
     {
-        featureType: "administrative",
-        elementType: "geometry.fill",
+        featureType: ‘administrative’,
+        elementType: ‘geometry.fill’,
         stylers: [{
-                color: "#000000"
+                color: ‘#000000’
             },
             {
                 lightness: 20
@@ -77,10 +77,10 @@ var basemapStyle = [{
         ],
     },
     {
-        featureType: "administrative",
-        elementType: "geometry.stroke",
+        featureType: ‘administrative’,
+        elementType: ‘geometry.stroke’,
         stylers: [{
-                color: "#000000"
+                color: ‘#000000’
             },
             {
                 lightness: 17
@@ -91,17 +91,17 @@ var basemapStyle = [{
         ],
     },
     {
-        featureType: "administrative",
-        elementType: "labels.text.fill",
+        featureType: ‘administrative’,
+        elementType: ‘labels.text.fill’,
         stylers: [{
-            lightness: "38"
+            lightness: ‘38’
         }, ],
     },
     {
-        featureType: "landscape",
-        elementType: "geometry",
+        featureType: ‘landscape’,
+        elementType: ‘geometry’,
         stylers: [{
-                color: "#000000"
+                color: ‘#000000’
             },
             {
                 lightness: 20
@@ -109,17 +109,17 @@ var basemapStyle = [{
         ],
     },
     {
-        featureType: "landscape",
-        elementType: "geometry.fill",
+        featureType: ‘landscape’,
+        elementType: ‘geometry.fill’,
         stylers: [{
-            lightness: "-32"
+            lightness: ‘-32’
         }, ],
     },
     {
-        featureType: "poi",
-        elementType: "geometry",
+        featureType: ‘poi’,
+        elementType: ‘geometry’,
         stylers: [{
-                color: "#000000"
+                color: ‘#000000’
             },
             {
                 lightness: 21
@@ -127,17 +127,17 @@ var basemapStyle = [{
         ],
     },
     {
-        featureType: "poi",
-        elementType: "labels.text.fill",
+        featureType: ‘poi’,
+        elementType: ‘labels.text.fill’,
         stylers: [{
-            lightness: "36"
+            lightness: ‘36’
         }, ],
     },
     {
-        featureType: "road.highway",
-        elementType: "geometry.fill",
+        featureType: ‘road.highway’,
+        elementType: ‘geometry.fill’,
         stylers: [{
-                color: "#000000"
+                color: ‘#000000’
             },
             {
                 lightness: 17
@@ -145,10 +145,10 @@ var basemapStyle = [{
         ],
     },
     {
-        featureType: "road.highway",
-        elementType: "geometry.stroke",
+        featureType: ‘road.highway’,
+        elementType: ‘geometry.stroke’,
         stylers: [{
-                color: "#000000"
+                color: ‘#000000’
             },
             {
                 lightness: 29
@@ -159,42 +159,42 @@ var basemapStyle = [{
         ],
     },
     {
-        featureType: "road.highway",
-        elementType: "labels.text.fill",
+        featureType: ‘road.highway’,
+        elementType: ‘labels.text.fill’,
         stylers: [{
-            color: "#bdbdbd"
+            color: ‘#bdbdbd’
         }, ],
     },
     {
-        featureType: "road.arterial",
-        elementType: "geometry",
+        featureType: ‘road.arterial’,
+        elementType: ‘geometry’,
         stylers: [{
             lightness: 18
         }, ],
     },
     {
-        featureType: "road.arterial",
-        elementType: "geometry.fill",
+        featureType: ‘road.arterial’,
+        elementType: ‘geometry.fill’,
         stylers: [{
-            lightness: "-62"
+            lightness: ‘-62’
         }, ],
     },
     {
-        featureType: "road.arterial",
-        elementType: "labels.text.fill",
+        featureType: ‘road.arterial’,
+        elementType: ‘labels.text.fill’,
         stylers: [{
-                color: "#e5e5e5"
+                color: ‘#e5e5e5’
             },
             {
-                visibility: "off"
+                visibility: ‘off’
             },
         ],
     },
     {
-        featureType: "road.local",
-        elementType: "geometry",
+        featureType: ‘road.local’,
+        elementType: ‘geometry’,
         stylers: [{
-                color: "#000000"
+                color: ‘#000000’
             },
             {
                 lightness: 16
@@ -202,24 +202,24 @@ var basemapStyle = [{
         ],
     },
     {
-        featureType: "road.local",
-        elementType: "geometry.fill",
+        featureType: ‘road.local’,
+        elementType: ‘geometry.fill’,
         stylers: [{
-            lightness: "21"
+            lightness: ‘21’
         }, ],
     },
     {
-        featureType: "road.local",
-        elementType: "labels.text.fill",
+        featureType: ‘road.local’,
+        elementType: ‘labels.text.fill’,
         stylers: [{
-            color: "#a0a0a0"
+            color: ‘#a0a0a0’
         }, ],
     },
     {
-        featureType: "transit",
-        elementType: "geometry",
+        featureType: ‘transit’,
+        elementType: ‘geometry’,
         stylers: [{
-                color: "#000000"
+                color: ‘#000000’
             },
             {
                 lightness: 19
@@ -227,10 +227,10 @@ var basemapStyle = [{
         ],
     },
     {
-        featureType: "water",
-        elementType: "geometry",
+        featureType: ‘water’,
+        elementType: ‘geometry’,
         stylers: [{
-                color: "#232222"
+                color: ‘#232222’
             },
             {
                 lightness: 17
@@ -249,7 +249,7 @@ var map = ui.Map();
 ui.root.add(map);
 
 // Set basemap options.
-map.setOptions("Base", {
+map.setOptions(‘Base’, {
     Base: basemapStyle
 });
 
@@ -263,8 +263,8 @@ map.setControlVisibility({
     fullscreenControl: false
 });
 
-// Set the default map's cursor to a "crosshair".
-map.style().set("cursor", "crosshair");
+// Set the default map's cursor to a ‘crosshair’.
+map.style().set(‘cursor’, ‘crosshair’);
 
 // Set the center and zoom level of the new map.
 map.setCenter(79.32, 26.56, 4);
@@ -279,17 +279,17 @@ function panelcreate() {
     // Create an intro panel with labels.
     var intro = ui.Panel([
         ui.Label({
-            value: "Global Air Pollution Explorer",
+            value: ‘Global Air Pollution Explorer’,
             style: {
-                fontSize: "1.4vw",
-                fontWeight: "bold"
+                fontSize: ‘1.4vw’,
+                fontWeight: ‘bold’
             },
         }),
         ui.Label({
-            value: "This app visualizes global population and its annual exposure to ground-level PM₂.₅ pollution for the year 2020. Click on any point to retrieve the annual average PM₂.₅ concentration, the population, and the exceedance factor, defined here as the actual concentration divided by the WHO standard (5 µg/m3 for annual average PM₂.₅), of the corresponding pixel. The data layers can be switched from the legend panel. The long-term changes in annual average PM₂.₅ from 1998 to 2021 is also shown for the corresponding pixel.",
+            value: ‘This app visualizes global population and its annual exposure to ground-level PM₂.₅ pollution for the year 2020. Click on any point to retrieve the annual average PM₂.₅ concentration, the population, and the exceedance factor, defined here as the actual concentration divided by the WHO standard (5 µg/m3 for annual average PM₂.₅), of the corresponding pixel. The data layers can be switched from the legend panel. The long-term changes in annual average PM₂.₅ from 1998 to 2021 is also shown for the corresponding pixel.’,
             style: {
-                fontSize: ".9vw",
-                fontWeight: "normal"
+                fontSize: ‘.9vw’,
+                fontWeight: ‘normal’
             },
         }),
     ]);
@@ -321,47 +321,47 @@ panelcreate();
 // Function to create reference panel.
 function referencecreate() {
     var referenceZero = ui.Label({
-        value: "Data Source:",
+        value: ‘Data Source:’,
         style: {
-            color: "black",
-            fontWeight: "bold",
-            textAlign: "center"
+            color: ‘black’,
+            fontWeight: ‘bold’,
+            textAlign: ‘center’
         },
     });
     var referenceOne = ui.Label({
-        value: "Gridded Population of the World",
+        value: ‘Gridded Population of the World’,
         style: {
-            color: "black",
-            fontWeight: "bold",
-            textAlign: "center"
+            color: ‘black’,
+            fontWeight: ‘bold’,
+            textAlign: ‘center’
         },
-        targetUrl: "https://doi.org/10.7927/H4JW8BX5"
+        targetUrl: ‘https://doi.org/10.7927/H4JW8BX5’
     });
     var referenceTwo = ui.Label({
-        value: "Surface PM₂.₅",
+        value: ‘Surface PM₂.₅’,
         style: {
-            color: "black",
-            fontWeight: "bold",
-            textAlign: "center"
+            color: ‘black’,
+            fontWeight: ‘bold’,
+            textAlign: ‘center’
         },
-        targetUrl: "https://sites.wustl.edu/acag/datasets/surface-pm2-5/"
+        targetUrl: ‘https://sites.wustl.edu/acag/datasets/surface-pm2-5/’
     });
     var referenceThree = ui.Label({
-        value: "Created by:",
+        value: ‘Created by:’,
         style: {
-            color: "black",
-            fontWeight: "bold",
-            textAlign: "center"
+            color: ‘black’,
+            fontWeight: ‘bold’,
+            textAlign: ‘center’
         },
     });
     var referenceFour = ui.Label({
-        value: "TC",
+        value: ‘TC’,
         style: {
-            color: "black",
-            fontWeight: "bold",
-            textAlign: "center"
+            color: ‘black’,
+            fontWeight: ‘bold’,
+            textAlign: ‘center’
         },
-        targetUrl: "https://tc25.github.io/"
+        targetUrl: ‘https://tc25.github.io/’
     });
 
     // Add reference to the panel.
@@ -382,18 +382,18 @@ referencecreate();
 
 // Create an inspector panel with a horizontal layout.
 var inspector = ui.Panel({
-    layout: ui.Panel.Layout.flow("vertical"),
+    layout: ui.Panel.Layout.flow(‘vertical’),
 });
 
 // Add a label to the panel.
 inspector.add(
     ui.Label({
-        value: "Click on a location to extract variables",
+        value: ‘Click on a location to extract variables’,
         style: {
-            fontSize: "1.7vmin",
-            fontWeight: "bold",
-            textAlign: "center",
-            margin: "0px 0px 0px 0px"
+            fontSize: ‘1.7vmin’,
+            fontWeight: ‘bold’,
+            textAlign: ‘center’,
+            margin: ‘0px 0px 0px 0px’
         },
     })
 );
@@ -427,15 +427,15 @@ map.onClick(function(coords) {
     var efPixel = ui.Label();
 
     // Add panels to show longitude, latitude, and pixel values to the main panel.
-    panel.add(ui.Panel([lat, lon], ui.Panel.Layout.flow("horizontal")));
-    panel.add(ui.Panel([popPixel], ui.Panel.Layout.flow("horizontal")));
-    panel.add(ui.Panel([pmPixel], ui.Panel.Layout.flow("horizontal")));
-    panel.add(ui.Panel([efPixel], ui.Panel.Layout.flow("horizontal")));
+    panel.add(ui.Panel([lat, lon], ui.Panel.Layout.flow(‘horizontal’)));
+    panel.add(ui.Panel([popPixel], ui.Panel.Layout.flow(‘horizontal’)));
+    panel.add(ui.Panel([pmPixel], ui.Panel.Layout.flow(‘horizontal’)));
+    panel.add(ui.Panel([efPixel], ui.Panel.Layout.flow(‘horizontal’)));
 
     // Add a red dot showing the point clicked on.
     var point = ee.Geometry.Point(coords.lon, coords.lat);
     var dot = ui.Map.Layer(point, {
-        color: "red"
+        color: ‘red’
     });
     map.layers().set(1, dot);
 
@@ -443,16 +443,16 @@ map.onClick(function(coords) {
     inspector.clear();
 
     // Show the inspector panel and add a loading label
-    inspector.style().set("shown", true);
+    inspector.style().set(‘shown’, true);
     inspector.add(
         ui.Label({
-            value: "Loading...",
+            value: ‘Loading...’,
             style: {
-                color: "gray",
-                fontSize: "1.7vmin",
-                fontWeight: "normal",
-                textAlign: "center",
-                margin: "0px 0px 0px 0px"
+                color: ‘gray’,
+                fontSize: ‘1.7vmin’,
+                fontWeight: ‘normal’,
+                textAlign: ‘center’,
+                margin: ‘0px 0px 0px 0px’
             },
         })
     );
@@ -463,41 +463,41 @@ map.onClick(function(coords) {
     var sampleEF = ee.Image(exceedanceFactor).sample(point, 300).first().toDictionary();
 
     // Update the lon/lat panel with values from the click event.
-    lat.setValue("Lat: " + coords.lat.toFixed(2));
-    lon.setValue("Lon: " + coords.lon.toFixed(2));
+    lat.setValue(‘Lat: ‘ + coords.lat.toFixed(2));
+    lon.setValue(‘Lon: ‘ + coords.lon.toFixed(2));
 
     // Update the pmPixel, popPixel, and efPixel panels with their respective values
-    pmPixel.setValue("PM₂.₅ concentration (µg/m3): " + samplePM.get("b1").getInfo().toFixed(1));
-    popPixel.setValue("Population count: " + samplePop.get("population_count").getInfo().toFixed(0));
-    efPixel.setValue("Exceedance factor: " + sampleEF.get("b1").getInfo().toFixed(2));
+    pmPixel.setValue(‘PM₂.₅ concentration (µg/m3): ‘ + samplePM.get(‘b1’).getInfo().toFixed(1));
+    popPixel.setValue(‘Population count: ‘ + samplePop.get(‘population_count’).getInfo().toFixed(0));
+    efPixel.setValue(‘Exceedance factor: ‘ + sampleEF.get(‘b1’).getInfo().toFixed(2));
     // Create a pmChart line chart.
     // Create a line chart from the pmTime image and point data.
     var pmChart = ui.Chart.image
         .series(pmTime, point)
-        .setChartType("LineChart");
+        .setChartType(‘LineChart’);
     // Set the chart type to be a line chart.
     pmChart.setOptions({
         // Set the title of the chart. 
-        title: "Long-term change in annual PM₂.₅ concentration",
+        title: ‘Long-term change in annual PM₂.₅ concentration’,
         vAxes: {
             0: {
                 // Set the title of the vertical axis.
-                title: "PM₂.₅ concentration (µg/m3)", 
+                title: ‘PM₂.₅ concentration (µg/m3)’, 
                 // Set the format of the numbers on the axis.
-                format: "#.##", 
+                format: ‘#.##’, 
                 // Set the style of the text.
                 titleTextStyle: {
                     bold: true,
-                    color: "#bd0026",
+                    color: ‘#bd0026’,
                     italic: false
                 }, 
             },
         },
         hAxis: {
             // Set the title of the horizontal axis.
-            title: "Year", 
+            title: ‘Year’, 
             // Set the format of the numbers on the axis.
-            format: "yyyy", 
+            format: ‘yyyy’, 
             // Set the number of gridlines on the axis.
             gridlines: {
                 count: 22
@@ -509,19 +509,19 @@ map.onClick(function(coords) {
             }, 
         },
         // Set the type of curve for the line chart.
-        curveType: "function", 
+        curveType: ‘function’, 
         // Set the color of the line.
-        colors: ["#bd0026"], 
+        colors: [‘#bd0026’], 
         // Set the width of the line.
         lineWidth: 3, 
         // Set the size of the points on the line chart.
         pointSize: 5,
         // set the height of the chart area
         chartArea: {
-            height: "53%"
+            height: ‘53%’
         }, 
         tooltip: {
-            trigger: "none"
+            trigger: ‘none’
         },
         series: {
             0: {
@@ -537,16 +537,16 @@ map.onClick(function(coords) {
     // Clear inspector again and display a new label.
     inspector.clear();
 
-    inspector.style().set("shown", true);
+    inspector.style().set(‘shown’, true);
     inspector.add(
         // Set the label text.
         ui.Label({
-            value: "Click on another location...", 
+            value: ‘Click on another location...’, 
             style: {
-                fontSize: "1.7vmin",
-                fontWeight: "bold",
-                textAlign: "center",
-                margin: "0px 0px 0px 0px"
+                fontSize: ‘1.7vmin’,
+                fontWeight: ‘bold’,
+                textAlign: ‘center’,
+                margin: ‘0px 0px 0px 0px’
             },
         })
     );
@@ -565,8 +565,8 @@ var vis = {
 
 var legend = ui.Panel({
     style: {
-        position: "bottom-left",
-        width: "25%"
+        position: ‘bottom-left’,
+        width: ‘25%’
     }
 });
 
@@ -585,32 +585,32 @@ legendcreate();
 
 // Load in all relevant datasets.
 // PM2.5 data for the year 2020 regridded to the same grids as the population estimates.
-var PM = ee.Image("users/tirthankar25/PM_2020_regrid");
+var PM = ee.Image(‘users/tirthankar25/PM_2020_regrid’);
 
 // Image collection of the original annual mean PM2.5 data. 
-var pmTime = ee.ImageCollection("projects/gee-datastore/assets/PM25_v5GL03");
+var pmTime = ee.ImageCollection(‘projects/gee-datastore/assets/PM25_v5GL03’);
 
 // Population data.
 var Pop = ee.Image(
-    "CIESIN/GPWv411/GPW_Population_Count/gpw_v4_population_count_rev11_2020_30_sec"
+    ‘CIESIN/GPWv411/GPW_Population_Count/gpw_v4_population_count_rev11_2020_30_sec’
 );
 
 // Exceedence factor of PM2.5 concentration.
-var exceedanceFactor = ee.Image("users/tirthankar25/PMtimes_2020");
+var exceedanceFactor = ee.Image(‘users/tirthankar25/PMtimes_2020’);
 
 // Define color palette:
 var thePalette = [
-    "#40004b",
-    "#762a83",
-    "#9970ab",
-    "#c2a5cf",
-    "#e7d4e8",
-    "#f7f7f7",
-    "#d9f0d3",
-    "#a6dba0",
-    "#5aae61",
-    "#1b7837",
-    "#00441b"
+    ‘#40004b’,
+    ‘#762a83’,
+    ‘#9970ab’,
+    ‘#c2a5cf’,
+    ‘#e7d4e8’,
+    ‘#f7f7f7’,
+    ‘#d9f0d3’,
+    ‘#a6dba0’,
+    ‘#5aae61’,
+    ‘#1b7837’,
+    ‘#00441b’
 ].reverse();
 
 // Define visualization options for the images displayed.
@@ -639,10 +639,10 @@ var popVis = Pop.visualize({
 ```javascript
 
 // Define the text corresponding to options for the following layer selector.
-var pm_Times = "Exceedance factor";
-var pm_Dat = "PM₂.₅ concentration";
-var pop_Dat = "Population count";
-var none = "Remove all";
+var pm_Times = ‘Exceedance factor’;
+var pm_Dat = ‘PM₂.₅ concentration’;
+var pop_Dat = ‘Population count’;
+var none = ‘Remove all’;
 
 // Create a layer selector that dictates which layer is visible on the map.
 var select = ui.Select({
@@ -653,11 +653,11 @@ var select = ui.Select({
 legend
     .add(
         ui.Label({
-            value: "Choose display layer:",
+            value: ‘Choose display layer:’,
             style: {
-                fontSize: "14px",
-                fontWeight: "bold",
-                textAlign: "left"
+                fontSize: ‘14px’,
+                fontWeight: ‘bold’,
+                textAlign: ‘left’
             },
         })
     )
@@ -684,11 +684,11 @@ function redraw() {
     legend
         .add(
             ui.Label({
-                value: "Choose display layer:",
+                value: ‘Choose display layer:’,
                 style: {
-                    fontSize: "14px",
-                    fontWeight: "bold",
-                    textAlign: "left"
+                    fontSize: ‘14px’,
+                    fontWeight: ‘bold’,
+                    textAlign: ‘left’
                 },
             })
         )
@@ -710,9 +710,9 @@ function redraw() {
                // Bounding box for color bar.
                 bbox: [0, 0, 1, 0.1], 
                 // Dimensions of color bar.
-                dimensions: "100x10", 
+                dimensions: ‘100x10’, 
                 // Format of color bar.
-                format: "png", 
+                format: ‘png’, 
                 // Min value for color bar.
                 min: 0, 
                 // Max value for color bar.
@@ -730,13 +730,13 @@ function redraw() {
             params: makeColorBarParams(vis.palette), 
             style: {
                 // Stretch color bar horizontally.
-                stretch: "horizontal", 
+                stretch: ‘horizontal’, 
                 // No margin for color bar.
-                margin: "0px 0px", 
+                margin: ‘0px 0px’, 
                 // Max height of color bar.
-                maxHeight: "10%", 
+                maxHeight: ‘10%’, 
                 // Width of color bar.
-                width: "100%" 
+                width: ‘100%’ 
             },
         });
 
@@ -744,27 +744,27 @@ function redraw() {
         var legendLabels = ui.Panel({
             widgets: [
                 ui.Label(vis.min, {
-                    margin: "0px 0px"
+                    margin: ‘0px 0px’
                 }),
-                ui.Label("10.5", {
-                    margin: "0px 0px",
-                    textAlign: "center",
-                    stretch: "horizontal"
+                ui.Label(‘10.5’, {
+                    margin: ‘0px 0px’,
+                    textAlign: ‘center’,
+                    stretch: ‘horizontal’
                 }),
                 ui.Label(vis.max, {
-                    margin: "0px 0px"
+                    margin: ‘0px 0px’
                 }),
             ],
-            layout: ui.Panel.Layout.flow("horizontal")
+            layout: ui.Panel.Layout.flow(‘horizontal’)
         });
         
         // Add label to legend.
         legend.add(
             ui.Label({
-                value: "Actual concentration of PM₂.₅ divided by the WHO standard",
+                value: ‘Actual concentration of PM₂.₅ divided by the WHO standard’,
                 style: {
-                    fontSize: "14px",
-                    textAlign: "left"
+                    fontSize: ‘14px’,
+                    textAlign: ‘left’
                 },
             })
         );
@@ -790,8 +790,8 @@ function redraw() {
         function makeColorBarParams(palette) {
             return {
                 bbox: [0, 0, 1, 0.1],
-                dimensions: "100x10",
-                format: "png",
+                dimensions: ‘100x10’,
+                format: ‘png’,
                 min: 0,
                 max: 1,
                 palette: palette
@@ -803,10 +803,10 @@ function redraw() {
             image: ee.Image.pixelLonLat().select(0),
             params: makeColorBarParams(vis.palette),
             style: {
-                stretch: "horizontal",
-                margin: "0px 0px",
-                maxHeight: "10%",
-                width: "100%"
+                stretch: ‘horizontal’,
+                margin: ‘0px 0px’,
+                maxHeight: ‘10%’,
+                width: ‘100%’
             },
         });
 
@@ -814,28 +814,28 @@ function redraw() {
         var legendLabels = ui.Panel({
             widgets: [
                 ui.Label(vis.min, {
-                    margin: "0px 0px"
+                    margin: ‘0px 0px’
                 }),
-                ui.Label("55", {
-                    margin: "0px 0px",
-                    textAlign: "center",
-                    stretch: "horizontal"
+                ui.Label(‘55’, {
+                    margin: ‘0px 0px’,
+                    textAlign: ‘center’,
+                    stretch: ‘horizontal’
                 }),
                 ui.Label(vis.max, {
-                    margin: "0px 0px"
+                    margin: ‘0px 0px’
                 }),
             ],
-            layout: ui.Panel.Layout.flow("horizontal")
+            layout: ui.Panel.Layout.flow(‘horizontal’)
         });
         
         // Add label to legend.
         legend.add(
             ui.Label({
-                value: "PM₂.₅ concentration (µg/m3)",
+                value: ‘PM₂.₅ concentration (µg/m3)’,
                 style: {
-                    fontSize: "16px",
-                    fontWeight: "bold",
-                    textAlign: "left"
+                    fontSize: ‘16px’,
+                    fontWeight: ‘bold’,
+                    textAlign: ‘left’
                 },
             })
         );
@@ -843,10 +843,10 @@ function redraw() {
         // Add label to legend.
         legend.add(
             ui.Label({
-                value: "Annual average PM₂.₅ concentration",
+                value: ‘Annual average PM₂.₅ concentration’,
                 style: {
-                    fontSize: "14px",
-                    textAlign: "left"
+                    fontSize: ‘14px’,
+                    textAlign: ‘left’
                 },
             })
         );
@@ -871,8 +871,8 @@ function redraw() {
         function makeColorBarParams(palette) {
             return {
                 bbox: [0, 0, 1, 0.1], 
-                dimensions: "100x10", 
-                format: "png", 
+                dimensions: ‘100x10’, 
+                format: ‘png’, 
                 min: 0, 
                 max: 1, 
                 palette: palette
@@ -884,10 +884,10 @@ function redraw() {
             image: ee.Image.pixelLonLat().select(0), 
             params: makeColorBarParams(vis.palette),
             style: {
-                stretch: "horizontal", 
-                margin: "0px 0px", 
-                maxHeight: "10%", 
-                width: "100%"
+                stretch: ‘horizontal’, 
+                margin: ‘0px 0px’, 
+                maxHeight: ‘10%’, 
+                width: ‘100%’
             },
         });
 
@@ -896,32 +896,32 @@ function redraw() {
             widgets: [
                 // Add minimum, center, and maximum values for legend.
                 ui.Label(vis.min, {
-                    margin: "0px 0px"
+                    margin: ‘0px 0px’
                 }), 
-                ui.Label("10000", {
-                    margin: "0px 0px",
-                    textAlign: "center",
-                    stretch: "horizontal"
+                ui.Label(‘10000’, {
+                    margin: ‘0px 0px’,
+                    textAlign: ‘center’,
+                    stretch: ‘horizontal’
                 }), 
                 ui.Label(vis.max, {
-                    margin: "0px 0px"
+                    margin: ‘0px 0px’
                 })
             ],
             
             // Layout for legend.
-            layout: ui.Panel.Layout.flow("horizontal")
+            layout: ui.Panel.Layout.flow(‘horizontal’)
         });
 
         // Add label to legend.
         legend.add(
             // Label for legend.
             ui.Label({
-                value: "Population count", 
+                value: ‘Population count’, 
                 // Font style of label.
                 style: {
-                    fontSize: "16px", 
-                    fontWeight: "bold", 
-                    textAlign: "left"
+                    fontSize: ‘16px’, 
+                    fontWeight: ‘bold’, 
+                    textAlign: ‘left’
                 },
             })
         );
@@ -930,11 +930,11 @@ function redraw() {
         legend.add(
            // Label for legend.
             ui.Label({
-                value: "Number of people", 
+                value: ‘Number of people’, 
                 // Font style of label.
                 style: {
-                    fontSize: "14px",
-                    textAlign: "left"
+                    fontSize: ‘14px’,
+                    textAlign: ‘left’
                 }, 
             })
         );

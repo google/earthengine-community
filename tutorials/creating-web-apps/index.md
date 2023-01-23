@@ -298,7 +298,7 @@ function panelcreate() {
     panel.add(intro);
 }
 
-// Create main panel. 
+// Create main panel.
 var panel = ui.Panel();
 
 // Set the width and font style for the main panel.
@@ -409,7 +409,7 @@ map.add(inspector);
 // Register a callback on the default map to be invoked when the map is clicked.
 map.onClick(function(coords) {
 
-    // Clear the main panel. 
+    // Clear the main panel.
     panel.clear();
 
     // Call the panel creation function again.
@@ -477,49 +477,49 @@ map.onClick(function(coords) {
         .setChartType('LineChart');
     // Set the chart type to be a line chart.
     pmChart.setOptions({
-        // Set the title of the chart. 
+        // Set the title of the chart.
         title: 'Long-term change in annual PM₂.₅ concentration',
         vAxes: {
             0: {
                 // Set the title of the vertical axis.
-                title: 'PM₂.₅ concentration (µg/m3)', 
+                title: 'PM₂.₅ concentration (µg/m3)',
                 // Set the format of the numbers on the axis.
-                format: '#.##', 
+                format: '#.##',
                 // Set the style of the text.
                 titleTextStyle: {
                     bold: true,
                     color: '#bd0026',
                     italic: false
-                }, 
+                },
             },
         },
         hAxis: {
             // Set the title of the horizontal axis.
-            title: 'Year', 
+            title: 'Year',
             // Set the format of the numbers on the axis.
-            format: 'yyyy', 
+            format: 'yyyy',
             // Set the number of gridlines on the axis.
             gridlines: {
                 count: 22
-            }, 
+            },
             // Set the style of the text.
             titleTextStyle: {
                 bold: true,
                 italic: false
-            }, 
+            },
         },
         // Set the type of curve for the line chart.
-        curveType: 'function', 
+        curveType: 'function',
         // Set the color of the line.
-        colors: ['#bd0026'], 
+        colors: ['#bd0026'],
         // Set the width of the line.
-        lineWidth: 3, 
+        lineWidth: 3,
         // Set the size of the points on the line chart.
         pointSize: 5,
         // set the height of the chart area
         chartArea: {
             height: '53%'
-        }, 
+        },
         tooltip: {
             trigger: 'none'
         },
@@ -530,9 +530,9 @@ map.onClick(function(coords) {
             },
         },
     });
-    
+
     // Add the chart to the panel.
-    panel.widgets().set(9, pmChart); 
+    panel.widgets().set(9, pmChart);
 
     // Clear inspector again and display a new label.
     inspector.clear();
@@ -541,7 +541,7 @@ map.onClick(function(coords) {
     inspector.add(
         // Set the label text.
         ui.Label({
-            value: 'Click on another location...', 
+            value: 'Click on another location...',
             style: {
                 fontSize: '1.7vmin',
                 fontWeight: 'bold',
@@ -587,7 +587,7 @@ legendcreate();
 // PM2.5 data for the year 2020 regridded to the same grids as the population estimates.
 var PM = ee.Image('users/tirthankar25/PM_2020_regrid');
 
-// Image collection of the original annual mean PM2.5 data. 
+// Image collection of the original annual mean PM2.5 data.
 var pmTime = ee.ImageCollection('projects/gee-datastore/assets/PM25_v5GL03');
 
 // Population data.
@@ -696,7 +696,7 @@ function redraw() {
 
     // Check which layer is selected and create the corresponding legend.
     if (layer == pm_Times) {
-      
+
         // Color labels and palette
         vis = {
             min: 1,
@@ -708,35 +708,35 @@ function redraw() {
         function makeColorBarParams(palette) {
             return {
                // Bounding box for color bar.
-                bbox: [0, 0, 1, 0.1], 
+                bbox: [0, 0, 1, 0.1],
                 // Dimensions of color bar.
-                dimensions: '100x10', 
+                dimensions: '100x10',
                 // Format of color bar.
-                format: 'png', 
+                format: 'png',
                 // Min value for color bar.
-                min: 0, 
+                min: 0,
                 // Max value for color bar.
-                max: 1, 
+                max: 1,
                 // Color palette for color bar.
-                palette: palette 
+                palette: palette
             };
         }
-        
+
         // Create the color bar for the legend.
         var colorBar = ui.Thumbnail({
            // Image to use for color bar.
-            image: ee.Image.pixelLonLat().select(0), 
+            image: ee.Image.pixelLonLat().select(0),
             // Parameters for color bar.
-            params: makeColorBarParams(vis.palette), 
+            params: makeColorBarParams(vis.palette),
             style: {
                 // Stretch color bar horizontally.
-                stretch: 'horizontal', 
+                stretch: 'horizontal',
                 // No margin for color bar.
-                margin: '0px 0px', 
+                margin: '0px 0px',
                 // Max height of color bar.
-                maxHeight: '10%', 
+                maxHeight: '10%',
                 // Width of color bar.
-                width: '100%' 
+                width: '100%'
             },
         });
 
@@ -757,7 +757,7 @@ function redraw() {
             ],
             layout: ui.Panel.Layout.flow('horizontal')
         });
-        
+
         // Add label to legend.
         legend.add(
             ui.Label({
@@ -768,18 +768,18 @@ function redraw() {
                 },
             })
         );
-        
+
         // Add colorbar to legend.
         legend.add(colorBar);
-        
+
         // Add labels to legend.
         legend.add(legendLabels);
-        
+
         // Set the image variable to pmTimeVis.
         image = pmTimeVis;
 
     } else if (layer == pm_Dat) {
-      
+
         // Set visualization parameters.
         vis = {
             min: 10,
@@ -797,7 +797,7 @@ function redraw() {
                 palette: palette
             };
         }
-        
+
         // Create color bar for legend.
         var colorBar = ui.Thumbnail({
             image: ee.Image.pixelLonLat().select(0),
@@ -827,7 +827,7 @@ function redraw() {
             ],
             layout: ui.Panel.Layout.flow('horizontal')
         });
-        
+
         // Add label to legend.
         legend.add(
             ui.Label({
@@ -839,7 +839,7 @@ function redraw() {
                 },
             })
         );
-        
+
         // Add label to legend.
         legend.add(
             ui.Label({
@@ -850,17 +850,17 @@ function redraw() {
                 },
             })
         );
-        
+
         // Add colorbar to legend.
         legend.add(colorBar);
-        
+
         // Add labels to legend.
         legend.add(legendLabels);
-        
+
         // Set image variable to pmVis.
         image = pmVis;
     } else if (layer == pop_Dat) {
-      
+
         // Set visualization parameters.
         vis = {
             min: 2000,
@@ -870,23 +870,23 @@ function redraw() {
         // Function to create parameters for color bar.
         function makeColorBarParams(palette) {
             return {
-                bbox: [0, 0, 1, 0.1], 
-                dimensions: '100x10', 
-                format: 'png', 
-                min: 0, 
-                max: 1, 
+                bbox: [0, 0, 1, 0.1],
+                dimensions: '100x10',
+                format: 'png',
+                min: 0,
+                max: 1,
                 palette: palette
             };
         }
-        
+
         // Create the color bar for the legend.
         var colorBar = ui.Thumbnail({
-            image: ee.Image.pixelLonLat().select(0), 
+            image: ee.Image.pixelLonLat().select(0),
             params: makeColorBarParams(vis.palette),
             style: {
-                stretch: 'horizontal', 
-                margin: '0px 0px', 
-                maxHeight: '10%', 
+                stretch: 'horizontal',
+                margin: '0px 0px',
+                maxHeight: '10%',
                 width: '100%'
             },
         });
@@ -897,17 +897,17 @@ function redraw() {
                 // Add minimum, center, and maximum values for legend.
                 ui.Label(vis.min, {
                     margin: '0px 0px'
-                }), 
+                }),
                 ui.Label('10000', {
                     margin: '0px 0px',
                     textAlign: 'center',
                     stretch: 'horizontal'
-                }), 
+                }),
                 ui.Label(vis.max, {
                     margin: '0px 0px'
                 })
             ],
-            
+
             // Layout for legend.
             layout: ui.Panel.Layout.flow('horizontal')
         });
@@ -916,35 +916,35 @@ function redraw() {
         legend.add(
             // Label for legend.
             ui.Label({
-                value: 'Population count', 
+                value: 'Population count',
                 // Font style of label.
                 style: {
-                    fontSize: '16px', 
-                    fontWeight: 'bold', 
+                    fontSize: '16px',
+                    fontWeight: 'bold',
                     textAlign: 'left'
                 },
             })
         );
-        
+
         // Add label to legend.
         legend.add(
            // Label for legend.
             ui.Label({
-                value: 'Number of people', 
+                value: 'Number of people',
                 // Font style of label.
                 style: {
                     fontSize: '14px',
                     textAlign: 'left'
-                }, 
+                },
             })
         );
-        
+
         // Add colorbar to legend.
         legend.add(colorBar);
-        
+
         // Add labels to legend.
         legend.add(legendLabels);
-        
+
         // Set image variable to popVis.
         image = popVis;
     }

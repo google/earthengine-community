@@ -29,4 +29,7 @@ print('Ambiguous number object converted to ee.Number',
 
 print('Leading zeros are removed',
       ee.Number.parse('0001'));  // 1
+
+print('Radix 16',
+      ee.Number.parse('3E8', 16)); // 1000
 // [END earthengine__apidocs__ee_number_parse]

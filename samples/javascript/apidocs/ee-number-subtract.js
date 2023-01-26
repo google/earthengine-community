@@ -15,8 +15,8 @@
  */
 
 // [START earthengine__apidocs__ee_number_subtract]
-print('5 - 10', ee.Number(5).subtract(ee.Number(10)));  // -5
-print('10 - 5', ee.Number(10).subtract(ee.Number(5)));  // 5
-print('5 - 10.2', ee.Number(5).subtract(ee.Number(10.2)));  // -5.199999999
-print('5 - -10.2', ee.Number(5).subtract(ee.Number(-10.2)));  // 15.2
+print('5 - 10', ee.Number(5).subtract(10));  // -5
+print('10 - 5', ee.Number(10).subtract(5));  // 5
+print('5 - 10.2', ee.Number(5).subtract(10.2));  // -5.199999999
+print('5 - -10.2', ee.Number(5).subtract(-10.2));  // 15.2
 // [END earthengine__apidocs__ee_number_subtract]

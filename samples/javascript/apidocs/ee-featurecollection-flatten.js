@@ -19,7 +19,7 @@
 var counties = ee.FeatureCollection('TIGER/2018/Counties')
                    .filter('STATEFP == "35"');
 
-// Monthly climate and climatic water balance surfaces for 2020.
+// Monthly climate and climatic water balance surfaces for January 2020.
 var climate = ee.ImageCollection('IDAHO_EPSCOR/TERRACLIMATE')
                   .filterDate('2020-01', '2020-04');
 

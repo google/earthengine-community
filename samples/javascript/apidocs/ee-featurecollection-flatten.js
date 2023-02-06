@@ -21,7 +21,7 @@ var counties = ee.FeatureCollection('TIGER/2018/Counties')
 
 // Monthly climate and climatic water balance surfaces for January 2020.
 var climate = ee.ImageCollection('IDAHO_EPSCOR/TERRACLIMATE')
-                  .filterDate('2020-01', '2020-04');
+                  .filterDate('2020-01', '2020-02');
 
 // Calculate mean climate variables for each county per climate surface
 // time step. The result is a FeatureCollection of FeatureCollections.

@@ -247,7 +247,7 @@ $$
 {\rm var}(Z_i) = {\rm var}(X_i - Y_i) = {\rm var}(X_i) + {\rm var}(Y_i) - 2\cdot{\rm cov}(X_i,Y_i),\quad i=1\dots N,
 $$
 
-or, if the bands are uncorrelated, about twice as noisy as the individual image bands. Normally $X_i$ and $Y_i$ are positively correlated (${\rm cov}(X_i,Y_i) > 0$) so the variance of $Z_i$ is somewhat smaller. When the difference signatures in the spectral channels are combined so as to try to characterize the nature of the changes that have taken place, one speaks of _spectral change vector analysis_.
+or, if the bands are uncorrelated, about twice as noisy as the individual image bands. Normally $X_i$ and $Y_i$ are positively correlated $({\rm cov}(X_i,Y_i) > 0)$ so the variance of $Z_i$ is somewhat smaller. When the difference signatures in the spectral channels are combined so as to try to characterize the nature of the changes that have taken place, one speaks of _spectral change vector analysis_.
 
 While the recent clear cuts are fairly easily identified as (some but not all of) the dark areas in the simple difference image above, it is possible to derive a better and more informative change map. This involves taking greater advantage of the statistical properties of the images.
 
@@ -258,7 +258,13 @@ $$
 U  = a_1X_1 + a_2X_2 + \dots + a_NX_N = {\bf a}^\top X. \tag{1}
 $$
 
-The symbol ${\bf a}^\top$ denotes the transpose of the column vector ${\bf a}=\begin{pmatrix}a_1\cr a_2\cr\vdots\cr a_N\end{pmatrix}$, in other words the row vector ${\bf a}^\top = (a_1,a_2 \dots a_N)$.
+The symbol ${\bf a}^\top$ denotes the transpose of the column vector 
+
+$$
+{\bf a}=\begin{pmatrix}a_1\cr a_2\cr\vdots\cr a_N\end{pmatrix}
+$$ 
+
+in other words the row vector ${\bf a}^\top = (a_1,a_2 \dots a_N)$.
 
 
 The expression ${\bf a}^\top X$ is called an _inner vector product_. The vector of coefficients ${\bf a}$ is as yet unspecified.

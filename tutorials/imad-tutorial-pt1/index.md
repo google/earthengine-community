@@ -168,6 +168,7 @@ Z = X-Y
 $$
 
 where
+
 $$
 X= \begin{pmatrix}X_1\cr X_2\cr\vdots\cr X_N\end{pmatrix},\quad Y= \begin{pmatrix}Y_1\cr Y_2\cr\vdots\cr Y_N\end{pmatrix}
 $$

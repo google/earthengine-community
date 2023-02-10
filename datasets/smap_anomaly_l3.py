@@ -20,11 +20,12 @@ import ee
 def anomaly(image):
   SMAPL3 = ee.ImageCollection('NASA/SMAP/SPL3SMP_E/005_RAW')
   current_date = ee.Date(datetime.datetime.now())
+  image_date = ee.Date(image.get('system:time_start'))
 
   # create list of years to calculate climatology
   start_year = 2015  # first year of SMAP data
   current_year = current_date.get('year')
-  image_year = ee.Date(image.get('system:time_start')).get('year')
+  image_year = image_date.get('year')
   years = ee.List.sequence(start_year, current_year).remove(image_year)
 
   soilmoisture_AM = image.select('soil_moisture_am')
@@ -41,7 +42,7 @@ def anomaly(image):
   # create climatologies
   # function calculating image of climatology means for AM
   def am_clim(year):
-    date_object = current_date.update(year=year)
+    date_object = image_date.update(year=year)
     begindate = ee.Date(date_object).advance(-15, 'day')
     enddate = ee.Date(date_object).advance(+16, 'day')
     annual = SMAPL3.filter(ee.Filter.date(
@@ -55,7 +56,7 @@ def anomaly(image):
 
   # repeat above function for PM
   def pm_clim(year):
-    date_object = current_date.update(year=year)
+    date_object = image_date.update(year=year)
     begindate = ee.Date(date_object).advance(-15, 'day')
     enddate = ee.Date(date_object).advance(+15, 'day')
     annual = SMAPL3.filter(ee.Filter.date(

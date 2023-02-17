@@ -1,7 +1,7 @@
 ---
 title: Change Detection in GEE - Part 1 The MAD Transformation
 description: Iteratively re-weighted Multivariate Alteration Detection.
-author: mortcanty,allannielsen
+author: mortcanty
 tags: change-detection, imad
 date_published: 2023-02-07
 ---

@@ -24,7 +24,7 @@ limitations under the License.
 Earth Engine allows users to develop and deploy web apps to make datasets and results easy to explore and query. In addition to being able to control how others interact with your data, this makes individuals without Earth Engine access explore your data without having to use the code editor. In this tutorial, we will provide an introduction to developing a simple Earth Engine web app for a sample dataset. The tutorial breaks down the web app development process into some major stages, with relevant comments for important line of the script, for accessibility. All web app development starts by writing a regular script on the code editor using the Earth Engine JavaScript API.
 
 ## Generating a new base map for your web app
-To better control how to visualize your data, you can generate a new base map for your web app. Earth Engine uses Google's Map API to set the base map style. An example is given below, but you can learn more about these options in [this](https://developers.google.com/earth-engine/tutorials/community/customizing-base-map-styles) community tutorial.
+To better control how to visualize your data, you can generate a new base map for your web app and add it to the map. Earth Engine uses Google's Map API to set the base map style. An example is given below, but you can learn more about these options in [this](https://developers.google.com/earth-engine/tutorials/community/customizing-base-map-styles) community tutorial.
 
 ```javascript
 // Define base map style.
@@ -270,7 +270,7 @@ map.setCenter(79.32, 26.56, 4);
 Now our web app will use this custom base map, which can be modified to optimize the visualization or highlight certain features.
 
 ## Setting up a panel to hold your text, widgets, and charts
-We start by creating a panel that can hold all of our textm widgets and charts.
+To hold all of the introductory text, widgets, and charts that will be used by or displayed by our web app, we create a panel object and add it to the map.
 
 ```javascript
 // Function to create the intro panel with labels.

@@ -270,7 +270,7 @@ map.setCenter(79.32, 26.56, 4);
 Now our web app will use this custom base map, which can be modified to optimize the visualization or highlight certain features.
 
 ## Setting up a panel to hold your text, widgets, and charts
-To hold all of the introductory text, widgets, and charts that will be used by or displayed by our web app, we create a panel object and add it to the map.
+To hold all of the introductory text, widgets, and charts that will be used by or displayed on our web app, we create a function to generate a panel object and call it to add this panel to the map.
 
 ```javascript
 // Function to create the intro panel with labels.

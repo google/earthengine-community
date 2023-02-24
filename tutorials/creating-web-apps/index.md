@@ -21,12 +21,13 @@ See the License for the specific language governing permissions and
 limitations under the License.
 -->
 
-Earth Engine allows one to develop and deploy web apps to make datasets and results easy to explore and query. In addition to being able to control how others interact with your data, this makes individuals without Earth Engine access explore your data without having to use the code editor. In this tutorial, we will provide a introduction to developing a simple Earth Engine web app. The tutorial breaks down the web app development process into some major blocks for accessibility. All web app development starts by writing a regular script on the code editor using the Earth Engine JavaScript API.
+Earth Engine allows users to develop and deploy web apps to make datasets and results easy to explore and query. In addition to being able to control how others interact with your data, this makes individuals without Earth Engine access explore your data without having to use the code editor. In this tutorial, we will provide an introduction to developing a simple Earth Engine web app for a sample dataset. The tutorial breaks down the web app development process into some major stages for accessibility. All web app development starts by writing a regular script on the code editor using the Earth Engine JavaScript API.
 
-## Generating a new basemap for your web app
+## Generating a new base map for your web app
+To better control how to visualize your data, you can generate a new base map for your web app. Earth Engine uses Google's Map API to set the base map style. An example is given below, but you can learn more about these options on this community tutorial.
 
 ```javascript
-// Define basemap style.
+// Define base map style.
 var basemapStyle = [{
         featureType: 'all',
         elementType: 'labels.text.fill',

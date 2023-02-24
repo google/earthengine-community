@@ -21,10 +21,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 -->
 
-In this tutorial, we will introduce several types of geospatial data, and
-enumerate key Earth Engine functions for analyzing and visualizing them. This
-cookbook was originally created as a workshop during Yale-NUS Data 2.0
-hackathon, and later updated for Yale GIS Day 2018 and 2019.
+Earth Engine allows one to develop and deploy web apps to make datasets and results easy to explore and query. In addition to being able to control how others interact with your data, this makes individuals without Earth Engine access explore your data without having to use the code editor. In this tutorial, we will provide a introduction to developing a simple Earth Engine web app. The tutorial breaks down the web app development process into some major blocks for accessibility. All web app development starts by writing a regular script on the code editor using the Earth Engine JavaScript API.
 
 ## Generating a new basemap for your web app
 

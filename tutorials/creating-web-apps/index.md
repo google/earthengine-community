@@ -21,10 +21,11 @@ See the License for the specific language governing permissions and
 limitations under the License.
 -->
 
-Earth Engine allows users to develop and deploy web apps to make datasets and results easy to explore and query. In addition to being able to control how others interact with your data, this makes individuals without Earth Engine access explore your data without having to use the code editor. In this tutorial, we will provide an introduction to developing a simple Earth Engine web app for a sample dataset. The tutorial breaks down the web app development process into some major stages, with relevant comments for important line of the script, for accessibility. All web app development starts by writing a regular script on the code editor using the Earth Engine JavaScript API.
+The Earth Engine Javascript API allows users to develop and deploy web apps to make datasets and results easy to explore and query. In addition to being able to control how others interact with your data, this lets individuals without Earth Engine access explore your data without having to use the code editor. In this tutorial, we will give an introduction to developing a simple Earth Engine web app for a sample dataset (in this case, some global gridded ground-level concentration estimates for particulate matter under 2.5 microns (PM2.5). The tutorial breaks down the web app development process into some major stages, with relevant comments accompanying the code blocks, for accessibility. All web app development starts by writing a regular script on the code editor using the Earth Engine JavaScript API.
 
 ## Generating a new base map for your web app
-To better control how to visualize your data, you can generate a new base map for your web app and add it to the map. Earth Engine uses Google's Map API to set the base map style. An example is given below, but you can learn more about these options in [this](https://developers.google.com/earth-engine/tutorials/community/customizing-base-map-styles) community tutorial.
+
+To better control how to visualize our data, we can generate a new base map for our web app and add it to the map. Earth Engine uses Google's Map API to set the base map style. An example is given below, but you can learn more about these options in [this](https://developers.google.com/earth-engine/tutorials/community/customizing-base-map-styles) community tutorial.
 
 ```javascript
 // Define base map style.
@@ -267,9 +268,11 @@ map.style().set('cursor', 'crosshair');
 // Set the center and zoom level of the new map.
 map.setCenter(79.32, 26.56, 4);
 ```
-Now our web app will use this custom base map, which can be modified to optimize the visualization or highlight certain features.
+Now our web app will use this custom base map, which can be further modified, if required, to optimize the visualization or highlight certain features.
+![base-map](base-map.png)
 
 ## Setting up a panel to hold your text, widgets, and charts
+
 To hold all of the introductory text, widgets, and charts that will be used by or displayed on our web app, we create a function to generate a panel object and call it to add this panel to the map.
 
 ```javascript
@@ -286,7 +289,7 @@ function panelcreate() {
             },
         }),
         ui.Label({
-            value: 'This app visualizes global population and its annual exposure to ground-level PM₂.₅ pollution for the year 2020. Click on any point to retrieve the annual average PM₂.₅ concentration, the population, and the exceedance factor, defined here as the actual concentration divided by the WHO standard (5 µg/m3 for annual average PM₂.₅), of the corresponding pixel. The data layers can be switched from the legend panel. The long-term changes in annual average PM₂.₅ from 1998 to 2021 is also shown for the corresponding pixel.',
+            value: 'This app visualizes global population and its annual exposure to ground-level PM₂.₅ pollution for the year 2020. Click on any point to retrieve the annual average PM₂.₅ concentration, the population, and the exceedance factor, defined here as the actual concentration divided by the WHO standard (5 µg/m3 for annual average PM₂.₅), of the corresponding pixel. The data layers can be switched from the legend panel. The long-term changes in annual average PM₂.₅ from 1998 to 2021 are also shown for the corresponding pixel.',
             style: {
                 fontSize: '.9vw',
                 fontWeight: 'normal'
@@ -316,6 +319,8 @@ panelcreate();
 ```
 
 ## Adding links and references to main panel
+
+You can add links to the main panel, which is helpful when you want to refer back to a published paper, a doi, or your website. Some examples are provided below.
 
 ```javascript
 // Function to create reference panel.
@@ -375,8 +380,12 @@ function referencecreate() {
 // Call the reference panel creation function.
 referencecreate();
 ```
+Here is what the initial panel looks like. 
+![base-map-panel](base-map-panel.png)
 
 ## Defining a panel to interact with the layers and update values on the main panel
+
+Now we can start adding more functionality to the app. We start by adding a panel that can help users interact with the app by providing some simple instructions. This is added to the top of the map for visibility.
 
 ```javascript
 
@@ -403,6 +412,8 @@ map.add(inspector);
 ```
 
 ## Function to interact with layers
+
+We will write a simple callback function that is invoked whenever the map is clicked. The location of the clicked point and other relevant information for the layers being displayed can then be extracted. These values, including a chart that shows the entire time series for the selected point, will be added to our main panel on each map click. 
 
 ```javascript
 
@@ -555,6 +566,8 @@ map.onClick(function(coords) {
 
 ## Creating the legend panel
 
+Next, we create another panel that will hold our legend. The legend panel will be initialized at the end of the script. 
+
 ```javascript
 
 var vis = {
@@ -580,6 +593,8 @@ legendcreate();
 ```
 
 ## Loading in images to display and defining visualization options
+
+We now add the datasets that we want to interact with in this web app. Many of these have been preprocessed for this tutorial, but you can use any of the datasets in the Earth Engine data catalog to generate similar web apps. 
 
 ```javascript
 
@@ -633,41 +648,10 @@ var popVis = Pop.visualize({
     opacity: 0.65
 });
 ```
+With all data loaded in, we can now click on different parts of the map and the relevant values will be added to the main panel. 
+![base-map-panel2](base-map-panel2.png)
 
-## Adding a layer selector to the legend
-
-```javascript
-
-// Define the text corresponding to options for the following layer selector.
-var pm_Times = 'Exceedance factor';
-var pm_Dat = 'PM₂.₅ concentration';
-var pop_Dat = 'Population count';
-var none = 'Remove all';
-
-// Create a layer selector that dictates which layer is visible on the map.
-var select = ui.Select({
-    items: [pm_Times, pm_Dat, pop_Dat, none],
-    value: pm_Times,
-    onChange: redraw
-});
-legend
-    .add(
-        ui.Label({
-            value: 'Choose display layer:',
-            style: {
-                fontSize: '14px',
-                fontWeight: 'bold',
-                textAlign: 'left'
-            },
-        })
-    )
-    .add(select);
-var vis = {
-    min: 1,
-    max: 20,
-    palette: thePalette
-};
-```
+Note, however, that the layers themselves are not visible. This is because we will link the layers to a legend bar with a layer selector, which is described below.
 
 ## Function to update visualization based on layer selected
 
@@ -958,6 +942,43 @@ function redraw() {
     }
 }
 ```
+
+
+## Adding a layer selector to the legend
+
+```javascript
+
+// Define the text corresponding to options for the following layer selector.
+var pm_Times = 'Exceedance factor';
+var pm_Dat = 'PM₂.₅ concentration';
+var pop_Dat = 'Population count';
+var none = 'Remove all';
+
+// Create a layer selector that dictates which layer is visible on the map.
+var select = ui.Select({
+    items: [pm_Times, pm_Dat, pop_Dat, none],
+    value: pm_Times,
+    onChange: redraw
+});
+legend
+    .add(
+        ui.Label({
+            value: 'Choose display layer:',
+            style: {
+                fontSize: '14px',
+                fontWeight: 'bold',
+                textAlign: 'left'
+            },
+        })
+    )
+    .add(select);
+var vis = {
+    min: 1,
+    max: 20,
+    palette: thePalette
+};
+```
+
 
 ## Initialiating the script
 

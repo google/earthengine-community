@@ -381,7 +381,7 @@ function referencecreate() {
 referencecreate();
 ```
 Here is what the initial panel looks like. 
-![base-map-panel](base-map-panel.png)
+![base-map-panel](base-map-panel.PNG)
 
 ## Defining a panel to interact with the layers and update values on the main panel
 
@@ -649,7 +649,7 @@ var popVis = Pop.visualize({
 });
 ```
 With all data loaded in, we can now click on different parts of the map and the relevant values will be added to the main panel. 
-![base-map-panel2](base-map-panel2.png)
+![base-map-panel2](base-map-panel2.PNG)
 
 Note, however, that the layers themselves are not visible. This is because we will link the layers to a legend bar with a layer selector, which is described below.
 

@@ -651,9 +651,10 @@ var popVis = Pop.visualize({
 With all data loaded in, we can now click on different parts of the map and the relevant values will be added to the main panel. 
 ![base-map-panel2](base-map-panel2.PNG)
 
-Note, however, that the layers themselves are not visible. This is because we will link the layers to a legend bar with a layer selector, which is described below.
+Note, however, that the layers themselves are not visible. This is because we will link the layers to a legend bar with a layer selector, which is described in the steps below.
 
 ## Function to update visualization based on layer selected
+First, we define a callback function that will reset the map and update the dataset displayed based on lhe layer selected.
 
 ```javascript
 
@@ -943,8 +944,8 @@ function redraw() {
 }
 ```
 
-
 ## Adding a layer selector to the legend
+Second, we define a selector object that is added to the legend panel and can be used to update the layer being displayed. The callback function we defined above will be called whenever a new selection is made.
 
 ```javascript
 
@@ -981,6 +982,7 @@ var vis = {
 
 
 ## Initialiating the script
+Finally, to initialize the script, we will invoke the function to display the layer and add the legend to the map.
 
 ```javascript
 // Invoke the redraw function once at start up to initialize the map.
@@ -989,6 +991,8 @@ redraw();
 // Add legend to map.
 map.add(legend);
 ```
+The sript now has all the functionality through the code editor.
+![base-map-final](base-map-final.PNG)
 
 ## Publishing your web app
 

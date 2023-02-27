@@ -996,15 +996,12 @@ The sript now has all the functionality through the code editor.
 
 ## Publishing your web app
 
+To publish the web app, we just need to go to the manage app option on the Javascript code editor and follow the steps. See below:
 
+![steps](steps.png)
 
-![Urban growth in Dubai](dubai-change.png)
+You can find more information about publishing apps using Earth Engine [here](https://developers.google.com/earth-engine/guides/apps).
 
-## Example applications
-
- What can you do with Google Earth Engine?
-
-- [EE Population Explorer](https://google.earthengine.app/view/population-explorer)
 
 ## Additional resources
 

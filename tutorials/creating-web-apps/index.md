@@ -998,7 +998,7 @@ The sript now has all the functionality through the code editor.
 
 To publish the web app, we just need to go to the manage app option on the Javascript code editor and follow the steps. See below:
 
-![steps](steps.png)
+![Steps](Steps.png)
 
 You can find more information about publishing apps using Earth Engine [here](https://developers.google.com/earth-engine/guides/apps).
 

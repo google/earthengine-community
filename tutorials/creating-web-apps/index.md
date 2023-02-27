@@ -992,7 +992,7 @@ redraw();
 map.add(legend);
 ```
 The sript now has all the functionality through the code editor.
-![base-map-final](base-map-final.PNG)
+![base-map-final](base-map-final.png)
 
 ## Publishing your web app
 

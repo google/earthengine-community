@@ -1006,3 +1006,4 @@ You can find more information about publishing apps using Earth Engine [here](ht
 ## Additional resources
 
 - [Google Earth Engine API documentation](https://developers.google.com/earth-engine/)
+- [Google Earth curated apps](https://www.earthengine.app/)

@@ -136,8 +136,9 @@ Export.table.toAsset({
 
 
 // [START earthengine__import_export01__export_table]
-// Load a Landsat TOA image.
-var image = ee.Image('LANDSAT/LC08/T1_TOA/LC08_044034_20140318');
+// Load a Landsat image.
+var image = ee.Image('LANDSAT/LC08/C02/T1_TOA/LC08_044034_20140318');
+var projection = image.select('B2').projection().getInfo();
 
 // Create an arbitrary rectangle.
 var region = ee.Geometry.Rectangle(-122.2806, 37.1209, -122.0554, 37.2413);

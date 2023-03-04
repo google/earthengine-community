@@ -771,7 +771,6 @@ function redraw() {
 
         // Set the image variable to pmTimeVis.
         image = pmTimeVis;
-
     } else if (layer == pm_Dat) {
         // Set visualization parameters.
         vis = {

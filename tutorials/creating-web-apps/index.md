@@ -174,7 +174,7 @@ var basemapStyle = [{
         elementType: 'geometry',
         stylers: [{
             lightness: 18
-        }, 
+        },
         ],
     },
     {
@@ -284,7 +284,6 @@ Now our web app will use this custom base map, which can be further modified, if
 ## Setting up a panel to hold your text, widgets, and charts
 
 To hold all of the introductory text, widgets, and charts that will be used by or displayed on our web app, we create a function to generate a panel object and call it to add this panel to the map.
-
 ```javascript
 // Function to create the intro panel with labels.
 function panelcreate() {

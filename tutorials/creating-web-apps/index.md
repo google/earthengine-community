@@ -62,7 +62,7 @@ var basemapStyle = [{
         elementType: 'labels.icon',
         stylers: [{
             visibility: 'off'
-        }, 
+        },
         ],
     },
     {
@@ -95,7 +95,7 @@ var basemapStyle = [{
         elementType: 'labels.text.fill',
         stylers: [{
             lightness: '38'
-        }, 
+        },
         ],
     },
     {
@@ -114,7 +114,7 @@ var basemapStyle = [{
         elementType: 'geometry.fill',
         stylers: [{
             lightness: '-32'
-        }, 
+        },
         ],
     },
     {
@@ -133,7 +133,7 @@ var basemapStyle = [{
         elementType: 'labels.text.fill',
         stylers: [{
             lightness: '36'
-        }, 
+        },
         ],
     },
     {
@@ -166,7 +166,7 @@ var basemapStyle = [{
         elementType: 'labels.text.fill',
         stylers: [{
             color: '#bdbdbd'
-        }, 
+        },
         ],
     },
     {
@@ -182,7 +182,7 @@ var basemapStyle = [{
         elementType: 'geometry.fill',
         stylers: [{
             lightness: '-62'
-        }, 
+        },
         ],
     },
     {
@@ -212,7 +212,7 @@ var basemapStyle = [{
         elementType: 'geometry.fill',
         stylers: [{
             lightness: '21'
-        }, 
+        },
         ],
     },
     {
@@ -220,7 +220,7 @@ var basemapStyle = [{
         elementType: 'labels.text.fill',
         stylers: [{
             color: '#a0a0a0'
-        }, 
+        },
         ],
     },
     {

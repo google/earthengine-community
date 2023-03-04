@@ -21,7 +21,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 -->
 
-The Earth Engine Javascript API allows users to develop and deploy web apps to make datasets and results easy to explore and query. In addition to being able to control how others interact with your data, this lets individuals without Earth Engine access explore your data without having to use the code editor. In this tutorial, we will give an introduction to developing a simple Earth Engine web app for a sample dataset (in this case, some global gridded ground-level concentration estimates for particulate matter under 2.5 microns (PM2.5). The tutorial breaks down the web app development process into some major stages, with relevant comments accompanying the code blocks, for accessibility. All web app development starts by writing a regular script on the code editor using the Earth Engine JavaScript API.
+The Earth Engine Javascript API allows users to develop and deploy web apps to make datasets and results easy to explore and query. In addition to being able to control how others interact with your data, this lets individuals without Earth Engine access explore your data without having to use the code editor. In this tutorial, we will give an introduction to developing a simple Earth Engine web app for a sample dataset (in this case, some global gridded ground-level concentration estimates for particulate matter under 2.5 microns (PM2.5)). The tutorial breaks down the web app development process into some major stages, with relevant comments accompanying the code blocks. All web app development starts by writing a regular script on the code editor using the Earth Engine JavaScript API.
 
 ## Generating a new base map for your web app
 
@@ -268,6 +268,7 @@ map.style().set('cursor', 'crosshair');
 // Set the center and zoom level of the new map.
 map.setCenter(79.32, 26.56, 4);
 ```
+
 Now our web app will use this custom base map, which can be further modified, if required, to optimize the visualization or highlight certain features.
 ![base-map](base-map.png)
 
@@ -320,7 +321,7 @@ panelcreate();
 
 ## Adding links and references to main panel
 
-You can add links to the main panel, which is helpful when you want to refer back to a published paper, a doi, or your website. Some examples are provided below.
+We can add links to the main panel, which is helpful when we want to refer back to a published paper, a doi, or a personal website. Some examples are provided below.
 
 ```javascript
 // Function to create reference panel.
@@ -380,6 +381,7 @@ function referencecreate() {
 // Call the reference panel creation function.
 referencecreate();
 ```
+
 Here is what the initial panel looks like. 
 ![base-map-panel](base-map-panel.PNG)
 
@@ -648,6 +650,7 @@ var popVis = Pop.visualize({
     opacity: 0.65
 });
 ```
+
 With all data loaded in, we can now click on different parts of the map and the relevant values will be added to the main panel. 
 ![base-map-panel2](base-map-panel2.PNG)
 
@@ -980,7 +983,6 @@ var vis = {
 };
 ```
 
-
 ## Initialiating the script
 Finally, to initialize the script, we will invoke the function to display the layer and add the legend to the map.
 
@@ -1000,10 +1002,8 @@ To publish the web app, we just need to go to the manage app option on the Javas
 
 ![Steps](Steps.png)
 
-You can find more information about publishing apps using Earth Engine [here](https://developers.google.com/earth-engine/guides/apps).
-
-
 ## Additional resources
 
-- [Google Earth Engine API documentation](https://developers.google.com/earth-engine/)
-- [Google Earth curated apps](https://www.earthengine.app/)
+- You can find more information about publishing apps using Earth Engine [here](https://developers.google.com/earth-engine/guides/apps).
+- The Google Earth Engine API documentation can be found [here](https://developers.google.com/earth-engine/).
+- Curated Earth Engine apps are listed [here](https://www.earthengine.app/)

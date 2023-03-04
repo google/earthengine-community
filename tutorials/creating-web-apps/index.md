@@ -284,10 +284,10 @@ Now our web app will use this custom base map, which can be further modified, if
 ## Setting up a panel to hold your text, widgets, and charts
 
 To hold all of the introductory text, widgets, and charts that will be used by or displayed on our web app, we create a function to generate a panel object and call it to add this panel to the map.
+
 ```javascript
 // Function to create the intro panel with labels.
 function panelcreate() {
-
     // Create an intro panel with labels.
     var intro = ui.Panel([
         ui.Label({
@@ -429,7 +429,6 @@ We will write a simple callback function that is invoked whenever the map is cli
 
 // Register a callback on the default map to be invoked when the map is clicked.
 map.onClick(function(coords) {
-
     // Clear the main panel.
     panel.clear();
 
@@ -692,7 +691,6 @@ function redraw() {
 
     // Check which layer is selected and create the corresponding legend.
     if (layer == pm_Times) {
-
         // Color labels and palette
         vis = {
             min: 1,
@@ -775,7 +773,6 @@ function redraw() {
         image = pmTimeVis;
 
     } else if (layer == pm_Dat) {
-
         // Set visualization parameters.
         vis = {
             min: 10,
@@ -856,7 +853,6 @@ function redraw() {
         // Set image variable to pmVis.
         image = pmVis;
     } else if (layer == pop_Dat) {
-
         // Set visualization parameters.
         vis = {
             min: 2000,

@@ -493,7 +493,7 @@ map.onClick(function(coords) {
     lat.setValue('Lat: ' + coords.lat.toFixed(2));
     lon.setValue('Lon: ' + coords.lon.toFixed(2));
 
-    // Update the pmPixel, popPixel, and efPixel panels with their respective values
+    // Update pmPixel, popPixel, and efPixel panels with their respective values
     pmPixel.setValue('PM₂.₅ concentration (µg/m3): ' + samplePM.get('b1').getInfo().toFixed(1));
     popPixel.setValue('Population count: ' + samplePop.get('population_count').getInfo().toFixed(0));
     efPixel.setValue('Exceedance factor: ' + sampleEF.get('b1').getInfo().toFixed(2));

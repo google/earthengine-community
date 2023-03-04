@@ -449,15 +449,15 @@ map.onClick(function(coords) {
     var lat = ui.Label();
     var lon = ui.Label();
     var Value = ui.Label();
-    var pmPixel = ui.Label();
-    var popPixel = ui.Label();
-    var efPixel = ui.Label();
+    var pmPix = ui.Label();
+    var popPix = ui.Label();
+    var efPix = ui.Label();
 
     // Add panels to show longitude, latitude, and pixel values to the main panel.
     panel.add(ui.Panel([lat, lon], ui.Panel.Layout.flow('horizontal')));
-    panel.add(ui.Panel([popPixel], ui.Panel.Layout.flow('horizontal')));
-    panel.add(ui.Panel([pmPixel], ui.Panel.Layout.flow('horizontal')));
-    panel.add(ui.Panel([efPixel], ui.Panel.Layout.flow('horizontal')));
+    panel.add(ui.Panel([popPix], ui.Panel.Layout.flow('horizontal')));
+    panel.add(ui.Panel([pmPix], ui.Panel.Layout.flow('horizontal')));
+    panel.add(ui.Panel([efPix], ui.Panel.Layout.flow('horizontal')));
 
     // Add a red dot showing the point clicked on.
     var point = ee.Geometry.Point(coords.lon, coords.lat);
@@ -493,10 +493,10 @@ map.onClick(function(coords) {
     lat.setValue('Lat: ' + coords.lat.toFixed(2));
     lon.setValue('Lon: ' + coords.lon.toFixed(2));
 
-    // Update pmPixel, popPixel, and efPixel panels with their respective values
-    pmPixel.setValue('PM₂.₅ concentration (µg/m3): ' + samplePM.get('b1').getInfo().toFixed(1));
-    popPixel.setValue('Population count: ' + samplePop.get('population_count').getInfo().toFixed(0));
-    efPixel.setValue('Exceedance factor: ' + sampleEF.get('b1').getInfo().toFixed(2));
+    // Update the pmPix, popPix, and efPix panels with their respective values
+    pmPix.setValue('PM₂.₅ concentration (µg/m3): ' + samplePM.get('b1').getInfo().toFixed(1));
+    popPix.setValue('Population count: ' + samplePop.get('population_count').getInfo().toFixed(0));
+    efPix.setValue('Exceedance factor: ' + sampleEF.get('b1').getInfo().toFixed(2));
     // Create a pmChart line chart.
     // Create a line chart from the pmTime image and point data.
     var pmChart = ui.Chart.image

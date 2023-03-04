@@ -300,11 +300,11 @@ function panelcreate() {
         ui.Label({
             value: 'This app visualizes global population and its annual exposure to ' +
             'ground-level PM₂.₅ pollution for the year 2020. Click on any point to retrieve ' +
-            'the annual average PM₂.₅ concentration, the population, and the' +
-            'exceedance factor, defined here as the actual concentration divided by the' +
-            'WHO standard (5 µg/m3 for annual average PM₂.₅), of the corresponding pixel.' +
-            'The data layers can be switched from the legend panel.' +
-            'The long-term changes in annual average PM₂.₅ from 1998 to 2021' +
+            'the annual average PM₂.₅ concentration, the population, and the ' +
+            'exceedance factor, defined here as the actual concentration divided by the ' +
+            'WHO standard (5 µg/m3 for annual average PM₂.₅), of the corresponding pixel. ' +
+            'The data layers can be switched from the legend panel. ' +
+            'The long-term changes in annual average PM₂.₅ from 1998 to 2021 ' +
             'are also shown for the corresponding pixel.',
             style: {
                 fontSize: '.9vw',

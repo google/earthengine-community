@@ -62,7 +62,8 @@ var basemapStyle = [{
         elementType: 'labels.icon',
         stylers: [{
             visibility: 'off'
-        }, ],
+        }, 
+        ],
     },
     {
         featureType: 'administrative',
@@ -94,7 +95,8 @@ var basemapStyle = [{
         elementType: 'labels.text.fill',
         stylers: [{
             lightness: '38'
-        }, ],
+        }, 
+        ],
     },
     {
         featureType: 'landscape',
@@ -112,7 +114,8 @@ var basemapStyle = [{
         elementType: 'geometry.fill',
         stylers: [{
             lightness: '-32'
-        }, ],
+        }, 
+        ],
     },
     {
         featureType: 'poi',
@@ -130,7 +133,8 @@ var basemapStyle = [{
         elementType: 'labels.text.fill',
         stylers: [{
             lightness: '36'
-        }, ],
+        }, 
+        ],
     },
     {
         featureType: 'road.highway',
@@ -162,21 +166,24 @@ var basemapStyle = [{
         elementType: 'labels.text.fill',
         stylers: [{
             color: '#bdbdbd'
-        }, ],
+        }, 
+        ],
     },
     {
         featureType: 'road.arterial',
         elementType: 'geometry',
         stylers: [{
             lightness: 18
-        }, ],
+        }, 
+        ],
     },
     {
         featureType: 'road.arterial',
         elementType: 'geometry.fill',
         stylers: [{
             lightness: '-62'
-        }, ],
+        }, 
+        ],
     },
     {
         featureType: 'road.arterial',
@@ -205,14 +212,16 @@ var basemapStyle = [{
         elementType: 'geometry.fill',
         stylers: [{
             lightness: '21'
-        }, ],
+        }, 
+        ],
     },
     {
         featureType: 'road.local',
         elementType: 'labels.text.fill',
         stylers: [{
             color: '#a0a0a0'
-        }, ],
+        }, 
+        ],
     },
     {
         featureType: 'transit',

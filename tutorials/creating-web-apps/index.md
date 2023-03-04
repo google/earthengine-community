@@ -1006,4 +1006,4 @@ To publish the web app, we just need to go to the manage app option on the Javas
 
 - You can find more information about publishing apps using Earth Engine [here](https://developers.google.com/earth-engine/guides/apps).
 - The Google Earth Engine API documentation can be found [here](https://developers.google.com/earth-engine/).
-- Curated Earth Engine apps are listed [here](https://www.earthengine.app/)
+- Curated Earth Engine apps are listed [here](https://www.earthengine.app/).

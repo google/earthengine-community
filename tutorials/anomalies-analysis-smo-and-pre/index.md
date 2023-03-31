@@ -1,7 +1,6 @@
 ---
 title: anomalies time series analysis of soil moisture and precipitation over a river basin
-description: this script uses NASA-USDA Enhanced SMAP soil moisture and GPM IMERG precipitation to 
-extract soil moisture and precipitation information for identifying prolonged drought in a river basin.
+description: this script extracts soil moisture and precipitation information for identifying prolonged drought in a river basin.
 author: nasa-gsfc-soilmoisture (NASA-USDA SMAP team - Hydrological Sciences Laboratory - Goddard Space Flight Center)
 tags: smap, gpm, drought, anomalies, iraq
 date_published: 2023-03-20

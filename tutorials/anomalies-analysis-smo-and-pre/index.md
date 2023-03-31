@@ -257,7 +257,10 @@ the Mosul reservoir dropped due to a severe drought. Using Earth observations,
 a prolonged drought was detected from mid-2020 to the end of 2021 by tracking 
 the water balance flowing to the Mosul river reservoir. This basin is challenging 
 to estimate the water budget with in-situ observations due to insufficient 
-ground observations. It provides a practical approach for other regions 
+ground observations. Therefore, Earth observations are the only feasible way to have 
+a completed picture of water availability throught the basin. 
+
+This tutorial provides a practical approach for other regions 
 which have similar limited-ground problems as the Mosul River does. 
 There are, however, limited timeframes for NASA-USDA Enhanced SMAP and monthly 
 GPM IMERG Final products. In lieu of real-time products, you can use NASA SMAP L3, SMAP L4, 

@@ -128,7 +128,7 @@ This first option does not require coding expertise. You can access the [SMAP vi
 ### New to GEE
 
 ```js
-//View a single day of SMAP L3 data for both ascending and descending overpasses   
+//View a single day of SMAP L3 data for both ascending and descending overpasses
 //Change date in line below to see the SMAP L3 image for that day
 var dataset = ee.ImageCollection('NASA/SMAP/SPL3SMP_E/005')
                   .filter(ee.Filter.date('2023-04-05'));
@@ -136,12 +136,12 @@ var dataset = ee.ImageCollection('NASA/SMAP/SPL3SMP_E/005')
 //select descending pass of instrument (am)
 var soilMoistureSurfaceAM = dataset.select('soil_moisture_am');
 //print collection properties to console for inspection
-print(soilMoistureSurfaceAM)
+print(soilMoistureSurfaceAM);
 
 //select ascending pass of instrument (pm)
 var soilMoistureSurfacePM = dataset.select('soil_moisture_pm');
 //print collection properties to console for inspection
-print(soilMoistureSurfaceAM)
+print(soilMoistureSurfaceAM);
 
 //set visualization parameters
 var soilMoistureVis = {
@@ -160,22 +160,22 @@ Map.addLayer(soilMoistureSurfacePM, soilMoistureVis, 'Soil Moisture PM');
 ### Intermediate
 
 ```js
-// This code selects the Soil Moisture AM band from L3 SMAP global soil moisture data 
+// This code selects the Soil Moisture AM band from L3 SMAP global soil moisture data
 // 1) masks the data with the retrieval quality flag
-// 2) computes a mean image from multiple images in a series 
+// 2) computes a mean image from multiple images in a series
 // 3) Clips results to country boundary
 // 4) Exports data to GeoTiff
 
 //Import county polygons by ISO Alpha-3 code
 //This example uses the Uruguay
-var iso_code ='URY'
+var iso_code ='URY';
 var country = ee.FeatureCollection("USDOS/LSIB/2013").filter(ee.Filter.eq('iso_alpha3', iso_code));
-var SMAPL3 = ee.ImageCollection(ee.ImageCollection("NASA/SMAP/SPL3SMP_E/005"))
+var SMAPL3 = ee.ImageCollection(ee.ImageCollection("NASA/SMAP/SPL3SMP_E/005"));
 //print collection properties to console for inspection
 print(SMAPL3);
 
 //select 1 month of SMAP images to create mean composite
-//Remember SMAP L3 data are unavailable for the following dates: 
+//Remember SMAP L3 data are unavailable for the following dates:
 //June 19-July 23, 2019 and September 20-October 6th, 2022
 var dataset = SMAPL3.filter(ee.Filter.date('2022-07-01','2022-07-31'));
 var soilMoisture = dataset.select('soil_moisture_am');
@@ -197,7 +197,7 @@ var SM_MEAN = soilmoisture_am.reduce(ee.Reducer.mean());
 var soilmoisture_am_qamask = dataset.select('retrieval_qual_flag_am').toBands();
 
 //invert QA values to create mask
-var QA_mask = soilmoisture_am_qamask.eq(0);  
+var QA_mask = soilmoisture_am_qamask.eq(0);
 
 //add QA mask to soil moisture
 var SM_masked = soilmoisture_am.updateMask(QA_mask);
@@ -242,7 +242,7 @@ Map.addLayer(point,
 //zoom to point with zoom level 7
 Map.centerObject(point, 7);
 
-//Create visualization parameters 
+//Create visualization parameters
 var soilMoistureVis = {
   min: 0.0,
   max: 0.7,
@@ -251,7 +251,7 @@ var soilMoistureVis = {
 
 //user input: set timeframe (June-July-August)
 var startdate = ('2022-06-01');
-var enddate = ('2022-08-31')
+var enddate = ('2022-08-31');
 
 // Load the input collection, filter by date, and select the surface soil moisture data.
 var soilMoisture = SMAPL4.filter(ee.Filter.date(startdate,enddate)).select(['sm_surface','sm_rootzone']);

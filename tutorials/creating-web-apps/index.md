@@ -504,34 +504,34 @@ var dataInfo = {
     'ex': {
         name: 'Exceedance factor',
         desc: 'Actual concentration of PM₂.₅ divided by the WHO standard',
-        img: exceedanceFactor, 
+        img: exceedanceFactor,
         vis: {
             min: 1,
             max: 20,
             palette: thePalette,
-            opacity: 0.65      
+            opacity: 0.65
         }
     },
     'pm': {
         name: 'PM₂.₅ concentration',
         desc: 'Annual average PM₂.₅ concentration (µg/m3)',
-        img: PM, 
+        img: PM,
         vis: {
             min: 10,
             max: 100,
             palette: thePalette,
-            opacity: 0.65      
+            opacity: 0.65
         }
     },
     'pop': {
         name: 'Population count',
         desc: 'Number of people',
-        img: Pop, 
+        img: Pop,
         vis: {
             min: 2000,
             max: 18000,
             palette: thePalette,
-            opacity: 0.65      
+            opacity: 0.65
         }
     },
 };

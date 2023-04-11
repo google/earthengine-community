@@ -473,7 +473,7 @@ selection, in a later step.
 // population estimates.
 var PM = ee.Image('users/tirthankar25/PM_2020_regrid');
 
-// Image collection of the original annual mean PM2.5 data. 
+// Image collection of the original annual mean PM2.5 data.
 var pmTime = ee.ImageCollection('projects/gee-datastore/assets/PM25_v5GL03');
 
 // Population data.

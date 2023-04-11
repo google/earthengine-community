@@ -246,7 +246,7 @@ Map.centerObject(point, 7);
 var soilMoistureVis = {
   min: 0.0,
   max: 0.7,
-  palette: ['a67c00', 'FFE625', 'C2E5D3', '90DCD0', '2FBDBD', '0C9BBD','068682'],
+  palette: ['a67c00', 'FFE625', 'C2E5D3', '90DCD0', '2FBDBD', '0C9BBD', '068682'],
 };
 
 // User input: set timeframe (June-July-August)

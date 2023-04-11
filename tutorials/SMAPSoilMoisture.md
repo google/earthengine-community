@@ -169,22 +169,22 @@ Map.addLayer(soilMoistureSurfacePM, soilMoistureVis, 'Soil Moisture PM');
 // Import county polygons by ISO Alpha-3 code
 // This example uses the Uruguay
 var iso_code ='URY';
-var country = ee.FeatureCollection("USDOS/LSIB/2013").filter(ee.Filter.eq('iso_alpha3', iso_code));
-var SMAPL3 = ee.ImageCollection(ee.ImageCollection("NASA/SMAP/SPL3SMP_E/005"));
+var country = ee.FeatureCollection('USDOS/LSIB/2013').filter(ee.Filter.eq('iso_alpha3', iso_code));
+var SMAPL3 = ee.ImageCollection(ee.ImageCollection('NASA/SMAP/SPL3SMP_E/005'));
 // Print collection properties to console for inspection
 print(SMAPL3);
 
 // Select 1 month of SMAP images to create mean composite
 // Remember SMAP L3 data are unavailable for the following dates:
 // June 19-July 23, 2019 and September 20-October 6th, 2022
-var dataset = SMAPL3.filter(ee.Filter.date('2022-07-01','2022-07-31'));
+var dataset = SMAPL3.filter(ee.Filter.date('2022-07-01', '2022-07-31'));
 var soilMoisture = dataset.select('soil_moisture_am');
 
 // Set visualization parameters for mean image
 var soilMoistureVis = {
   min: 0.0,
   max: 0.6,
-  palette: ['fC6238','FFEC59','8DD7BF' ,'00B0BA','0065A2'],
+  palette: ['fC6238', 'FFEC59', '8DD7BF', '00B0BA', '0065A2'],
 };
 // Set map center [lat,lon] and zoom scale [n]
 Map.centerObject(country, 4);
@@ -231,7 +231,7 @@ Plotting a time series of daily surface and root zone soil moisture.
 // Create single-day average of SMAP L4 version 7, 3-hourly soil moisture to view
 // Plot surface soil moisture and root zone soil moisture over user-determined time period
 // Last edited by Karyn Tabor 04/10/2023
-var SMAPL4 = ee.ImageCollection("NASA/SMAP/SPL4SMGP/007")
+var SMAPL4 = ee.ImageCollection('NASA/SMAP/SPL4SMGP/007');
 // Set long, lat of point of interest
 var point = ee.Geometry.Point([ -97.808804,34.975981,]);
 

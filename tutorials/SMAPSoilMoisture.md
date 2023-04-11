@@ -233,7 +233,7 @@ Plotting a time series of daily surface and root zone soil moisture.
 // Last edited by Karyn Tabor 04/10/2023
 var SMAPL4 = ee.ImageCollection('NASA/SMAP/SPL4SMGP/007');
 // Set long, lat of point of interest
-var point = ee.Geometry.Point([ -97.808804,34.975981,]);
+var point = ee.Geometry.Point([-97.808804, 34.975981]);
 
 // Draw point on map
 Map.addLayer(point,
@@ -246,7 +246,7 @@ Map.centerObject(point, 7);
 var soilMoistureVis = {
   min: 0.0,
   max: 0.7,
-  palette: ['a67c00', 'FFE625', 'C2E5D3','90DCD0', '2FBDBD','0C9BBD','068682'],
+  palette: ['a67c00', 'FFE625', 'C2E5D3', '90DCD0', '2FBDBD', '0C9BBD','068682'],
 };
 
 // User input: set timeframe (June-July-August)
@@ -254,11 +254,13 @@ var startdate = ('2022-06-01');
 var enddate = ('2022-08-31');
 
 // Load the input collection, filter by date, and select the surface soil moisture data.
-var soilMoisture = SMAPL4.filter(ee.Filter.date(startdate,enddate)).select(['sm_surface','sm_rootzone']);
+var soilMoisture = SMAPL4.filter(ee.Filter.date(startdate, enddate))
+                            .select(['sm_surface', 'sm_rootzone']);
 
 
 // Select soil moisture for last day in time frame
-var soilMoisture1 = soilMoisture.filter(ee.Filter.date(enddate, enddate)).select(['sm_surface']);
+var soilMoisture1 = soilMoisture.filter(ee.Filter.date(enddate, enddate))
+                                .select(['sm_surface']);
 // Create average soil moisture for the last day for visualization
 var soilMoisture_oneday = soilMoisture1.reduce(ee.Reducer.mean());
 Map.addLayer(soilMoisture.select('sm_surface'), soilMoistureVis, 'Soil Moisture');
@@ -277,7 +279,8 @@ var chart =
         })
         .setSeriesNames(['root zone soil moisture', 'surface soil moisture'])
         .setOptions({
-          title: 'SMAP L4 version 7, 3-hourly surface and root zone soil moisture (34.975981 N, 97.808804 W)',
+          title: 'SMAP L4 version 7, 3-hourly surface and root zone soil moisture '
+            + '(34.975981 N, 97.808804 W)',
           hAxis: {title: 'Date', titleTextStyle: {italic: false, bold: true}},
           vAxis: {
             title: 'Soil Moisture cm3/cm3',

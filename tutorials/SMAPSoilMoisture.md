@@ -128,28 +128,28 @@ This first option does not require coding expertise. You can access the [SMAP vi
 ### New to GEE
 
 ```js
-//View a single day of SMAP L3 data for both ascending and descending overpasses
-//Change date in line below to see the SMAP L3 image for that day
+// View a single day of SMAP L3 data for both ascending and descending overpasses
+// Change date in line below to see the SMAP L3 image for that day
 var dataset = ee.ImageCollection('NASA/SMAP/SPL3SMP_E/005')
                   .filter(ee.Filter.date('2023-04-05'));
 
-//select descending pass of instrument (am)
+// Select descending pass of instrument (am)
 var soilMoistureSurfaceAM = dataset.select('soil_moisture_am');
-//print collection properties to console for inspection
+// Print collection properties to console for inspection
 print(soilMoistureSurfaceAM);
 
-//select ascending pass of instrument (pm)
+// Select ascending pass of instrument (pm)
 var soilMoistureSurfacePM = dataset.select('soil_moisture_pm');
-//print collection properties to console for inspection
+// Print collection properties to console for inspection
 print(soilMoistureSurfaceAM);
 
-//set visualization parameters
+// Set visualization parameters
 var soilMoistureVis = {
   min: 0.0,
   max: 0.6,
-  palette: ['fC6238','FFEC59','8DD7BF' ,'00B0BA','0065A2'],
-};
-//set map center [lat,lon] and zoom scale [n]
+  palette: ['fC6238', 'FFEC59', '8DD7BF', '00B0BA', '0065A2'],
+  };
+// Set map center [lat,lon] and zoom scale [n]
 Map.setCenter(-6.746, 46.529, 2);
 Map.addLayer(soilMoistureSurfaceAM, soilMoistureVis, 'Soil Moisture AM');
 Map.addLayer(soilMoistureSurfacePM, soilMoistureVis, 'Soil Moisture PM');
@@ -166,57 +166,57 @@ Map.addLayer(soilMoistureSurfacePM, soilMoistureVis, 'Soil Moisture PM');
 // 3) Clips results to country boundary
 // 4) Exports data to GeoTiff
 
-//Import county polygons by ISO Alpha-3 code
-//This example uses the Uruguay
+// Import county polygons by ISO Alpha-3 code
+// This example uses the Uruguay
 var iso_code ='URY';
 var country = ee.FeatureCollection("USDOS/LSIB/2013").filter(ee.Filter.eq('iso_alpha3', iso_code));
 var SMAPL3 = ee.ImageCollection(ee.ImageCollection("NASA/SMAP/SPL3SMP_E/005"));
-//print collection properties to console for inspection
+// Print collection properties to console for inspection
 print(SMAPL3);
 
-//select 1 month of SMAP images to create mean composite
-//Remember SMAP L3 data are unavailable for the following dates:
-//June 19-July 23, 2019 and September 20-October 6th, 2022
+// Select 1 month of SMAP images to create mean composite
+// Remember SMAP L3 data are unavailable for the following dates:
+// June 19-July 23, 2019 and September 20-October 6th, 2022
 var dataset = SMAPL3.filter(ee.Filter.date('2022-07-01','2022-07-31'));
 var soilMoisture = dataset.select('soil_moisture_am');
 
-//set visualization parameters for mean image
+// Set visualization parameters for mean image
 var soilMoistureVis = {
   min: 0.0,
   max: 0.6,
   palette: ['fC6238','FFEC59','8DD7BF' ,'00B0BA','0065A2'],
 };
-//set map center [lat,lon] and zoom scale [n]
+// Set map center [lat,lon] and zoom scale [n]
 Map.centerObject(country, 4);
 
-//select AM soil moisture
+// Select AM soil moisture
 var soilmoisture_am = dataset.select('soil_moisture_am').toBands();
 var SM_MEAN = soilmoisture_am.reduce(ee.Reducer.mean());
 
-//select QA values
+// Select QA values
 var soilmoisture_am_qamask = dataset.select('retrieval_qual_flag_am').toBands();
 
-//invert QA values to create mask
+// Invert QA values to create mask
 var QA_mask = soilmoisture_am_qamask.eq(0);
 
-//add QA mask to soil moisture
+// Add QA mask to soil moisture
 var SM_masked = soilmoisture_am.updateMask(QA_mask);
 
-//reduce image stack to single image with mean reducer
+// Reduce image stack to single image with mean reducer
 var SM_masked_MEAN = SM_masked.reduce(ee.Reducer.mean());
 
-//Visualize Soil Mean Moisture global (cm3/cm3)*1000
-//Map.addLayer(SM_masked_MEAN, soilMoistureVis, 'Mean Soil Moisture Masked');
-//Map.addLayer(SM_MEAN, soilMoistureVis, 'Mean Soil Moisture');
+// Visualize Soil Mean Moisture global (cm3/cm3)*1000
+// Map.addLayer(SM_masked_MEAN, soilMoistureVis, 'Mean Soil Moisture Masked');
+// Map.addLayer(SM_MEAN, soilMoistureVis, 'Mean Soil Moisture');
 
-//select this option to clip map to Uruguay (cm3/cm3)*1000
+// Select this option to clip map to Uruguay (cm3/cm3)*1000
 Map.addLayer(SM_MEAN.clip(country), soilMoistureVis, 'Mean Soil Moisture');
 Map.addLayer(SM_masked_MEAN.clip(country), soilMoistureVis, 'Mean Soil Moisture Masked');
 
 // Export with maps Mercator projection at 10 km scale.
 var exportParams = {scale: 10000, region: country, crs: 'EPSG:3857'};
-//create export task and go to tasks tab to run
-//set output file names
+// Create export task and go to tasks tab to run
+// Set output file names
 Export.image(SM_masked_MEAN, 'SM_MaskedJuly2022MEAN_URY', exportParams);
 Export.image(SM_MEAN, 'SM_July2022MEAN_URY', exportParams);
 ```
@@ -228,28 +228,28 @@ Export.image(SM_MEAN, 'SM_July2022MEAN_URY', exportParams);
 Plotting a time series of daily surface and root zone soil moisture.
 
 ```js
-//Create single-day average of SMAP L4 version 7, 3-hourly soil moisture to view
-//Plot surface soil moisture and root zone soil moisture over user-determined time period
-//Last edited by Karyn Tabor 04/10/2023
+// Create single-day average of SMAP L4 version 7, 3-hourly soil moisture to view
+// Plot surface soil moisture and root zone soil moisture over user-determined time period
+// Last edited by Karyn Tabor 04/10/2023
 var SMAPL4 = ee.ImageCollection("NASA/SMAP/SPL4SMGP/007")
-//set long, lat of point of interest
+// Set long, lat of point of interest
 var point = ee.Geometry.Point([ -97.808804,34.975981,]);
 
-//draw point on map
+// Draw point on map
 Map.addLayer(point,
              {'color': 'black'},
              'Geometry [black]: point');
-//zoom to point with zoom level 7
+// Zoom to point with zoom level 7
 Map.centerObject(point, 7);
 
-//Create visualization parameters
+// Create visualization parameters
 var soilMoistureVis = {
   min: 0.0,
   max: 0.7,
   palette: ['a67c00', 'FFE625', 'C2E5D3','90DCD0', '2FBDBD','0C9BBD','068682'],
 };
 
-//user input: set timeframe (June-July-August)
+// User input: set timeframe (June-July-August)
 var startdate = ('2022-06-01');
 var enddate = ('2022-08-31');
 
@@ -257,9 +257,9 @@ var enddate = ('2022-08-31');
 var soilMoisture = SMAPL4.filter(ee.Filter.date(startdate,enddate)).select(['sm_surface','sm_rootzone']);
 
 
-//select soil moisture for last day in time frame
+// Select soil moisture for last day in time frame
 var soilMoisture1 = soilMoisture.filter(ee.Filter.date(enddate, enddate)).select(['sm_surface']);
-//create average soil moisture for the last day for visualization
+// Create average soil moisture for the last day for visualization
 var soilMoisture_oneday = soilMoisture1.reduce(ee.Reducer.mean());
 Map.addLayer(soilMoisture.select('sm_surface'), soilMoistureVis, 'Soil Moisture');
 Map.addLayer(point,

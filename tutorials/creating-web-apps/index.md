@@ -426,7 +426,7 @@ referencecreate();
 
 Here is what the initial panel looks like.
 
-![base-map-panel](base-map-panel.PNG)
+![base-map-panel](base-map-panel.png)
 
 ## Defining a panel to interact with the layers and update values on the main panel
 
@@ -712,7 +712,7 @@ map.onClick(function(coords) {
 We can now click on different parts of the map and the relevant values will be
 added to the main panel. 
 
-![base-map-panel2](base-map-panel2.PNG)
+![base-map-panel2](base-map-panel2.png)
 
 Note, however, that the layers themselves are not visible. This is because we
 will link the layers to a legend bar with a layer selector, which is described
@@ -900,7 +900,7 @@ To publish the web app, we just need to go to the manage app option on the
 Javascript Code Editor and
 [follow the UI prompts](https://developers.google.com/earth-engine/guides/apps#publishing-your-app). See below:
 
-![Steps](Steps.png)
+![steps](steps.png)
 
 ## Additional resources
 

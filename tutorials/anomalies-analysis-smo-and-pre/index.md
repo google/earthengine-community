@@ -81,18 +81,20 @@ var gpm_imerg = ee.ImageCollection('NASA/GPM_L3/IMERG_MONTHLY_V06');
 
 ```js
 // Define study period.
-var startYear = 2001,
-    endYear = 2022,
-    startMonth = 1,
-    endMonth = 12;
+var startYear = 2001;
+var endYear = 2022;
+var startMonth = 1;
+var endMonth = 12;
 
-var startDate = ee.Date.fromYMD(startYear, startMonth, 1),
-    endDate = ee.Date.fromYMD(endYear , endMonth, 31),
-    years = ee.List.sequence(startYear, endYear),
-    months = ee.List.sequence(1, 12);
+var startDate = ee.Date.fromYMD(startYear, startMonth, 1);
+var endDate = ee.Date.fromYMD(endYear, endMonth, 31);
+var years = ee.List.sequence(startYear, endYear);
+var months = ee.List.sequence(1, 12);
 
 // Define a function to clip an image given an area of interest.
-var aoiClip = function(image) {return image.clip(basin_boundary)};
+var aoiClip = function(image) {
+  return image.clip(basin_boundary)
+};
 
 // Define a function to convert GPM IMERG from mm/hr to mm/day.
 var gpmScale = function(image) {
@@ -103,8 +105,8 @@ var gpmScale = function(image) {
 // Define a function to compute the anomaly for a given month.
 var computeAnomalyPrecipitation = function(image) {
   // Get the month of the image.
-  var year = image.date().get('year'),
-      month = image.date().get('month');
+  var year = image.date().get('year');
+  var month = image.date().get('month');
   // Get the corresponding reference image for the month.
   var referenceImage = meanMonthlyPrecipitation.filter(
       ee.Filter.eq('month', month)).first();
@@ -131,7 +133,7 @@ var ssma =  nasa_usda_smap
 
 // Compute monthly anomalies surface soil moisture.
 var monthlySsma =  ee.ImageCollection.fromImages(
-  years.map(function (y) {
+  years.map(function(y) {
     return months.map(function(m) {
       var filtered = ssma.filter(ee.Filter.calendarRange(y, y, 'year'))
                          .filter(ee.Filter.calendarRange(m, m, 'month'))
@@ -158,7 +160,7 @@ var susma =  nasa_usda_smap
 
 // Compute monthly anomalies subsurface soil moisture
 var monthlySusma =  ee.ImageCollection.fromImages(
-  years.map(function (y) {
+  years.map(function(y) {
     return months.map(function(m) {
       var filtered = susma.filter(ee.Filter.calendarRange(y, y, 'year'))
                           .filter(ee.Filter.calendarRange(m, m, 'month'))
@@ -237,9 +239,8 @@ var smpreDatasets  = monthlySsma
                         .combine(monthlyPrecipitationAnomalies);
 
 var chart =
-  ui.Chart.image.series
-    ({
-      imageCollection: smpreDatasets ,
+  ui.Chart.image.series({
+      imageCollection: smpreDatasets,
       region: basin_boundary,
       scale: 10000,
       xProperty: 'system:time_start'
@@ -250,34 +251,34 @@ var chart =
        'moisture, and precipitation' ,
       series: {
         0: {
-            targetAxisIndex: 0, type: "line", lineWidth: 3,
-            pointSize: 1 , color: "#ffc61a"
-           },
-        1: {
-            targetAxisIndex: 0 , type: "line" , lineWidth: 3, pointSize: 1,
-            lineDashStyle: [2, 2], color: "#330000"
-            },
-        2: {
-            targetAxisIndex: 1, type: "line", lineWidth: 3, pointSize: 1,
-            lineDashStyle: [4, 4], color: "#1a1aff"
-            },
+            targetAxisIndex: 0, type: 'line', lineWidth: 3,
+            pointSize: 1 , color: '#ffc61a'
         },
+        1: {
+            targetAxisIndex: 0, type: 'line', lineWidth: 3, pointSize: 1,
+            lineDashStyle: [2, 2], color: '#330000'
+        },
+        2: {
+            targetAxisIndex: 1, type: 'line', lineWidth: 3, pointSize: 1,
+            lineDashStyle: [4, 4], color: '#1a1aff'
+        },
+      },
       hAxis: {
         title: 'Date' ,
         titleTextStyle: { italic: false, bold: true }
-        } ,
+      },
       vAxes: {
         0: {
             title: 'soil moisture (mm)',
             baseline: 0, titleTextStyle: {bold: true, color: '#ffc61a'},
             viewWindow: {min: -4, max: 4}
-           } ,
+        },
         1: {
             title: 'precipitation (mm)' ,
             baseline: 0, titleTextStyle: { bold: true, color: '#1a1aff' },
             viewWindow: {min: -2.5, max: 2.5}
-           }
-        },
+        }
+      },
       curveType: 'function'
     });
 

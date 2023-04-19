@@ -1,6 +1,6 @@
 ---
-title: anomalies time series analysis of soil moisture and precipitation over a river basin
-description: this script extracts soil moisture and precipitation information for identifying prolonged drought in a river basin.
+title: Anomalies Analysis of Soil Moisture and Precipitation Over a River Basin
+description: Soil moisture and precipitation analysis to identify prolonged drought.
 author: nasa-gsfc-soilmoisture
 tags: smap, gpm, drought, anomalies, iraq
 date_published: 2023-03-20
@@ -21,52 +21,66 @@ See the License for the specific language governing permissions and
 limitations under the License.
 -->
 
-We demonstrates the value of NASA's Earth observation in detecting prolonged droughts over the Mosul River basin in the Middle East 
-where in-situ measurements are not available or are inaccessible. We simply used anomalies of soil moisture (surface and sursurface) 
-as well as precipitation to highlight drought periods during 2020-2021 where negative anomalies were observed persistently for months. 
-This tutorial presents a simple yet effective method for analyzing water budget dynamics in areas with limited ground data by using 
-Earth observation data in Google Earth Engine.
+We demonstrate the value of NASA's Earth observation in detecting prolonged
+droughts over the Mosul River basin in the Middle East where in-situ
+measurements are not available or are inaccessible. We use anomalies of soil
+moisture (surface and subsurface) as well as precipitation to highlight drought
+periods during 2020–2021 where negative anomalies were observed persistently for
+months.
+
+This tutorial presents a simple yet effective method for analyzing water budget
+dynamics in areas with limited ground data by using Earth observation data in
+Google Earth Engine.
 
 Link to Google Earth Engine code: https://code.earthengine.google.com/1ebd7fee309987fa5d72e5e9fe739fff
 
 ## 1. Importing Mosul river basin boundary
-The Mosul Dam is a large water reservoir located on the Tigris River, which originates in eastern Turkey and flows through Iraq. 
-The water flow to the dam reservoir is supplied by the Tigris River, which discharges between 60 and 5000 m3/s of water. Since its construction in 1985, 
-the outflow has ranged between 100 and 1000 m3/s. The Mosul dam reservoir is a shared river basin between Iraq and Turkey, with a 
-drainage area of 52,000 km2, of which 8% is in Iraq and 92% outside Iraq.
 
-```
-var basin_boundary = ee.FeatureCollection("projects/ee-nasagsfcsoils/assets/mosul_dissolve");
+The Mosul Dam is a large water reservoir located on the Tigris River, which
+originates in eastern Turkey and flows through Iraq. The water flow to the dam
+reservoir is supplied by the Tigris River, which discharges between
+60 and 5000 m³/s of water. Since its construction in 1985, the outflow has
+ranged between 100 and 1000 m³/s. The Mosul dam reservoir is a shared river
+basin between Iraq and Turkey, with a drainage area of 52,000 km², of which 8%
+is in Iraq and 92% outside Iraq.
 
-// add basin boundary in the map
-Map.addLayer(basin_boundary, {},"Area of interest");
+```js
+var basin_boundary = ee.FeatureCollection(
+    'projects/ee-nasagsfcsoils/assets/mosul_dissolve');
+
+// Add basin boundary in the map.
+Map.addLayer(basin_boundary, {}, 'Area of interest');
 Map.centerObject(basin_boundary, 5);
-
 ```
+
 ## 2. Importing soil moisture and precipitation datasets
-The NASA-USDA Enhanced SMAP dataset integrates SMAP Level 2 soil moisture observations into 
-a modified Palmer model using a 1-D Ensemble Kalman Filter, improving model-based soil moisture 
-estimation, especially in areas  with a lack of quality precipitation instruments. In this demonstration,
-we used surface and subsurface soil moisture, which are available from April 2015 to August 2022.
 
-Global Precipitation Mission (GPM) is a satellite mission that observes rain and snow every three hours. 
-The Integrated Multi-satellitE Retrievals for GPM (IMERG) is the algorithm that provides rainfall estimates 
-using data from all GPM instruments. In this demonstraion, we used monthly GPM IMERG Final product, 
-which is available from June 2001 to September 2021.
+The [NASA-USDA Enhanced SMAP dataset](https://developers.google.com/earth-engine/datasets/catalog/NASA_USDA_HSL_SMAP10KM_soil_moisture)
+integrates SMAP Level 2 soil moisture
+observations into a modified Palmer model using a 1-D Ensemble Kalman Filter,
+improving model-based soil moisture estimation, especially in areas with a lack
+of quality precipitation instruments. In this demonstration, we used surface and
+subsurface soil moisture, which are available from April, 2015 to August, 2022.
 
-```
-// Enhanced soil moisture datasets
-var nasa_usda_smap = ee.ImageCollection("NASA_USDA/HSL/SMAP10KM_soil_moisture");
-    
-// Precipitation datasets
-var gpm_imerg = ee.ImageCollection("NASA/GPM_L3/IMERG_MONTHLY_V06");
+Global Precipitation Mission (GPM) is a satellite mission that observes rain and
+snow every three hours. The Integrated Multi-satellitE Retrievals for
+GPM (IMERG) is the algorithm that provides rainfall estimates using data from
+all GPM instruments. In this demonstration, we used
+[monthly GPM IMERG Final product](https://developers.google.com/earth-engine/datasets/catalog/NASA_GPM_L3_IMERG_MONTHLY_V06),
+which is available from June, 2001 to September, 2021.
 
+```js
+// Enhanced soil moisture datasets.
+var nasa_usda_smap = ee.ImageCollection('NASA_USDA/HSL/SMAP10KM_soil_moisture');
+
+// Precipitation datasets.
+var gpm_imerg = ee.ImageCollection('NASA/GPM_L3/IMERG_MONTHLY_V06');
 ```
 
 ## 3. Define study period and functions
 
-```
-// Define study period
+```js
+// Define study period.
 var startYear = 2001,
     endYear = 2022,
     startMonth = 1,
@@ -76,59 +90,66 @@ var startDate = ee.Date.fromYMD(startYear, startMonth, 1),
     endDate = ee.Date.fromYMD(endYear , endMonth, 31),
     years = ee.List.sequence(startYear, endYear),
     months = ee.List.sequence(1, 12);
-  
-// Define a function to clip an image given an area of interest
-var aoiClip = function(image){return image.clip(basin_boundary)};
 
-// Define a function to convert GPM IMERG from mm/hr to mm/day
-var gpmScale = function(image){ 
+// Define a function to clip an image given an area of interest.
+var aoiClip = function(image) {return image.clip(basin_boundary)};
+
+// Define a function to convert GPM IMERG from mm/hr to mm/day.
+var gpmScale = function(image) {
   return image.multiply(24)
-              .copyProperties(image, ['system:time_start'])
+              .copyProperties(image, ['system:time_start']);
 };
 
-// Define a function to compute the anomaly for a given month
+// Define a function to compute the anomaly for a given month.
 var computeAnomalyPrecipitation = function(image) {
-  // Get the month of the image
-  var year = ee.Date(image.get('system:time_start')).get('year'),
-      month = ee.Date(image.get('system:time_start')).get('month');
-  // Get the corresponding reference image for the month
-  var referenceImage = meanMonthlyPrecipitation.filter(ee.Filter.eq('month', month)).first();
-  // Compute the anomaly by subtracting the reference image from the input image
+  // Get the month of the image.
+  var year = image.date().get('year'),
+      month = image.date().get('month');
+  // Get the corresponding reference image for the month.
+  var referenceImage = meanMonthlyPrecipitation.filter(
+      ee.Filter.eq('month', month)).first();
+  // Compute the anomaly by subtracting reference image from input image.
   var anomalyImage = image.subtract(referenceImage);
-  // Return the anomaly image with timestamp
-  return anomalyImage.set('system:time_start', ee.Date.fromYMD(year, month, 1));
-}
-
+  // Return the anomaly image with timestamp.
+  return anomalyImage.set(
+    'system:time_start', ee.Date.fromYMD(year, month, 1).millis());
+};
 ```
 
 ## 4. Processing surface soil moisture datasets
-We directly  use anomalies surface products from NASA-USDA Enhanced SMAP soil moisture
 
-```
-// Anomalies surface soil moisture, unit in mm
+We directly use anomalies surface products from NASA-USDA Enhanced SMAP soil
+moisture.
+
+```js
+// Anomalies surface soil moisture (mm).
 var ssma =  nasa_usda_smap
   .select('ssma')
   .filterDate(startDate, endDate)
-  .sort('system:time_start', true) // sort a collection inascending order
-  .map(aoiClip); // clip to the study area
+  .sort('system:time_start', true)  // sort a collection in ascending order
+  .map(aoiClip);  // clip to the study area
 
-// Compute monthly anomalies surface soil moisture
+// Compute monthly anomalies surface soil moisture.
 var monthlySsma =  ee.ImageCollection.fromImages(
-  years.map(function (y){
+  years.map(function (y) {
     return months.map(function(m) {
       var filtered = ssma.filter(ee.Filter.calendarRange(y, y, 'year'))
                          .filter(ee.Filter.calendarRange(m, m, 'month'))
                          .mean();
-      return filtered.set('system:time_start', ee.Date.fromYMD(y, m, 1));
+      return filtered.set(
+        'system:time_start', ee.Date.fromYMD(y, m, 1).millis());
     });
   }).flatten()
-);  
+);
 ```
-## 5. Processing subsurface soil moisture datasets
-We  directly use anomalies subsurface products from NASA-USDA Enhanced SMAP soil moisture
 
-```
-// Anomalies subsurface soil moisture, unit in mm
+## 5. Processing subsurface soil moisture datasets
+
+We directly use anomalies subsurface products from NASA-USDA Enhanced SMAP soil
+moisture.
+
+```js
+// Anomalies subsurface soil moisture (mm)
 var susma =  nasa_usda_smap
   .select('susma')
   .filterDate(startDate, endDate)
@@ -142,20 +163,23 @@ var monthlySusma =  ee.ImageCollection.fromImages(
       var filtered = susma.filter(ee.Filter.calendarRange(y, y, 'year'))
                           .filter(ee.Filter.calendarRange(m, m, 'month'))
                           .mean();
-      return filtered.set('system:time_start', ee.Date.fromYMD(y, m, 1));
+      return filtered.set(
+        'system:time_start', ee.Date.fromYMD(y, m, 1).millis());
     });
   }).flatten()
-);  
+);
 ```
 
 ## 6. Processing precipitation datasets
-GPM IMERG does not have anomalies product. To calculate anomalies monthly precipitation timeseries 
-from a monthly precipitation timeseries, subtract the mean value of each month across all years from the original 
-value of that month in each year.
 
-```
-// Precipitation from monthly GPM IMERG Final product, unit in mm/day
-var rawMonthlyPrecipitation = 
+GPM IMERG does not have anomalies product. To calculate anomalies monthly
+precipitation time series from a monthly precipitation time series, subtract the
+mean value of each month across all years from the original value of that month
+in each year.
+
+```js
+// Precipitation from monthly GPM IMERG Final product (mm/day).
+var rawMonthlyPrecipitation =
   gpm_imerg
   .select('precipitation')
   .filterDate(startDate, endDate)
@@ -163,20 +187,23 @@ var rawMonthlyPrecipitation =
   .map(aoiClip)   // clip to the study area
   .map(gpmScale); // convert rainfall unit from mm/hr to mm/d
 
-// Make sure the monthly precipitation data has the same duration as the soil moisture dataset.
+// Make sure monthly precipitation has same duration as soil moisture.
 var monthlyPrecipitation =  ee.ImageCollection.fromImages(
-  years.map(function (y) {
+  years.map(function(y) {
     return months.map(function(m) {
-      var filtered = rawMonthlyPrecipitation.filter(ee.Filter.calendarRange(y, y, 'year'))
+      var filtered = rawMonthlyPrecipitation
+                          .filter(ee.Filter.calendarRange(y, y, 'year'))
                           .filter(ee.Filter.calendarRange(m, m, 'month'))
                           .mean();
-      return filtered.set('month', m)
-                     .set('system:time_start', ee.Date.fromYMD(y, m, 1));
+      return filtered.set({
+        'month': m,
+        'system:time_start': ee.Date.fromYMD(y, m, 1).millis()
+      });
     });
   }).flatten()
-);  
+);
 
-// Compute climatological monthly precipitation
+// Compute climatological monthly precipitation.
 var meanMonthlyPrecipitation = ee.ImageCollection.fromImages(
   ee.List.sequence(1, 12).map(function(m) {
     var filtered = monthlyPrecipitation.filter(ee.Filter.eq('month', m)).mean();
@@ -184,50 +211,56 @@ var meanMonthlyPrecipitation = ee.ImageCollection.fromImages(
   })
 );
 
-// Map the function over the monthly precipitation collection to compute 
-// the anomaly precipitation for each month
-var monthlyPrecipitationAnomalies = monthlyPrecipitation.map(computeAnomalyPrecipitation);
+// Map the function over the monthly precipitation collection to compute
+// the anomaly precipitation for each month.
+var monthlyPrecipitationAnomalies = monthlyPrecipitation.map(
+    computeAnomalyPrecipitation);
 ```
+
 ## 7. Plot anomalies time series for both soil moisture and precipitation
 
-Use the ui.Chart.image.series() function to extract the time series of 
-soil moisture or precipitaton pixel values from the soil moisture or precipitation image 
-and display the chart.
+Use the `ui.Chart.image.series` function to extract the time series of
+soil moisture or precipitaton pixel values from the soil moisture or
+precipitation image and display the chart.
 
-Create a plot that displays three anomaly time series for surface and subsurface soil moisture 
-and precipitation, with soil moisture values on the primary y-axis and precipitation values 
-on the secondary y-axis.
+Create a plot that displays three anomaly time series for surface and subsurface
+soil moisture and precipitation, with soil moisture values on the primary y-axis
+and precipitation values on the secondary y-axis.
 
-This anomalies timeseries analysis presents the overlap period between these two datasets,
-which could span from April 2015 to September 2021.
+This anomalies time series analysis presents the overlap period between these
+two datasets, which could span from April, 2015 to September, 2021.
 
-```
-// Combine three image collections into one collection
+```js
+// Combine three image collections into one collection.
 var smpreDatasets  = monthlySsma
                         .combine(monthlySusma)
                         .combine(monthlyPrecipitationAnomalies);
 
-var chart = 
+var chart =
   ui.Chart.image.series
     ({
-    imageCollection: smpreDatasets ,
-    region: basin_boundary,
-    scale: 10000,
-    xProperty: 'system:time_start'
+      imageCollection: smpreDatasets ,
+      region: basin_boundary,
+      scale: 10000,
+      xProperty: 'system:time_start'
     })
-    .setSeriesNames(['surface SM', 'subsurface SM','precipitation'])
+    .setSeriesNames(['surface SM', 'subsurface SM', 'precipitation'])
     .setOptions({
-      title: 'Anomalies time series: surface soil moisture, sub-surface soil moisture, and precipitation' ,
+      title: 'Anomalies time series: surface soil moisture, sub-surface soil ' +
+       'moisture, and precipitation' ,
       series: {
         0: {
-            targetAxisIndex: 0, type: "line",lineWidth: 3, pointSize: 1 , color: "#ffc61a" 
+            targetAxisIndex: 0, type: "line", lineWidth: 3,
+            pointSize: 1 , color: "#ffc61a"
            },
         1: {
-            targetAxisIndex: 0 , type: "line" , lineWidth: 3, pointSize: 1, lineDashStyle: [2, 2], color: "#330000" 
+            targetAxisIndex: 0 , type: "line" , lineWidth: 3, pointSize: 1,
+            lineDashStyle: [2, 2], color: "#330000"
             },
         2: {
-            targetAxisIndex: 1, type: "line", lineWidth: 3, pointSize: 1, lineDashStyle: [4, 4], color: "#1a1aff" 
-            },    
+            targetAxisIndex: 1, type: "line", lineWidth: 3, pointSize: 1,
+            lineDashStyle: [4, 4], color: "#1a1aff"
+            },
         },
       hAxis: {
         title: 'Date' ,
@@ -236,11 +269,13 @@ var chart =
       vAxes: {
         0: {
             title: 'soil moisture (mm)',
-            baseline: 0, titleTextStyle: {bold: true, color: '#ffc61a'}, viewWindow: {min: -4, max: 4}
+            baseline: 0, titleTextStyle: {bold: true, color: '#ffc61a'},
+            viewWindow: {min: -4, max: 4}
            } ,
         1: {
             title: 'precipitation (mm)' ,
-            baseline: 0, titleTextStyle: { bold: true, color: '#1a1aff' }, viewWindow: {min: -2.5, max: 2.5}
+            baseline: 0, titleTextStyle: { bold: true, color: '#1a1aff' },
+            viewWindow: {min: -2.5, max: 2.5}
            }
         },
       curveType: 'function'
@@ -251,39 +286,36 @@ print(chart);
 
 ## 8. Remarks
 
-In 2022, a 3,400-year-old city was discovered in Iraq after the water level in 
-the Mosul reservoir dropped due to a severe drought. Using Earth observations, 
-a prolonged drought was detected from mid-2020 to the end of 2021 by tracking 
-the water balance flowing to the Mosul river reservoir. This basin is challenging 
-to estimate the water budget with in-situ observations due to insufficient 
-ground observations. Therefore, Earth observations are the only feasible way to have 
-a completed picture of water availability throught the basin. 
+In 2022, a 3,400-year-old city was discovered in Iraq after the water level
+in the Mosul reservoir dropped due to a severe drought. Using Earth
+observations, a prolonged drought was detected from mid-2020 to the end of 2021
+by tracking the water balance flowing to the Mosul river reservoir. This basin
+is challenging to estimate the water budget with in-situ observations due to
+insufficient ground observations. Therefore, Earth observations are the only
+feasible way to have a completed picture of water availability throughout the
+basin.
 
-This tutorial provides a practical approach for other regions 
-which have similar limited-ground problems as the Mosul River does. 
-There are, however, limited timeframes for NASA-USDA Enhanced SMAP and monthly 
-GPM IMERG Final products. In lieu of real-time products, you can use NASA SMAP L3, SMAP L4, 
-and GPM IMERG Late products instead.
-
-
+This tutorial provides a practical approach for other regions which have
+similar limited-ground problems as the Mosul River does. There are, however,
+limited timeframes for NASA-USDA Enhanced SMAP and monthly GPM IMERG Final
+products. In lieu of real-time products, you can use NASA SMAP L3, SMAP L4, and
+GPM IMERG Late products instead.
 
 ## 9. References
 
 A 3,400-year-old city in Iraq emerges from underwater after an extreme drought.
-https://www.cnn.com/2022/06/20/world/iraq-city-unearthed-drought-scn/index.html. 
+https://www.cnn.com/2022/06/20/world/iraq-city-unearthed-drought-scn/index.html.
 Accessed Date: Mar 20, 2023
 
-Albarakat, R., Le, M. H., & Lakshmi, V.,2022. Assessment of drought conditions over 
-Iraqi transboundary rivers using FLDAS and satellite datasets. 
-Journal of Hydrology: Regional Studies, 41, 101075. doi: 10.1016/j.ejrh.2022.101075
+Albarakat, R., Le, M. H., & Lakshmi, V.,2022. Assessment of drought conditions
+over Iraqi transboundary rivers using FLDAS and satellite datasets.
+Journal of Hydrology: Regional Studies, 41, 101075.
+doi: 10.1016/j.ejrh.2022.101075
 
-Sazib, N., Mladenova, I. and Bolten, J., 2018. Leveraging the google earth engine 
-for drought assessment using global soil moisture data. Remote sensing, 10(8): 
-1265. doi:10.3390/rs10081265
+Sazib, N., Mladenova, I. and Bolten, J., 2018. Leveraging the google earth
+engine for drought assessment using global soil moisture data. Remote sensing,
+10(8): 1265. doi:10.3390/rs10081265
 
-Huffman, G.J., E.F. Stocker, D.T. Bolvin, E.J. Nelkin, Jackson Tan (2019), GPM IMERG 
-Final Precipitation L3 1 month 0.1 degree x 0.1 degree V06, Greenbelt, MD, 
-Goddard Earth Sciences Data and Information Services Center (GES DISC), 
-Accessed: [Data Access Date], 10.5067/GPM/IMERG/3B-MONTH/06
-
-
+Huffman, G.J., E.F. Stocker, D.T. Bolvin, E.J. Nelkin, Jackson Tan (2019), GPM
+IMERG Final Precipitation L3 1 month 0.1 degree x 0.1 degree V06, Greenbelt, MD,
+Goddard Earth Sciences Data and Information Services Center (GES DISC)

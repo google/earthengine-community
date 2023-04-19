@@ -93,7 +93,7 @@ var months = ee.List.sequence(1, 12);
 
 // Define a function to clip an image given an area of interest.
 var aoiClip = function(image) {
-  return image.clip(basin_boundary)
+  return image.clip(basin_boundary);
 };
 
 // Define a function to convert GPM IMERG from mm/hr to mm/day.
@@ -248,11 +248,11 @@ var chart =
     .setSeriesNames(['surface SM', 'subsurface SM', 'precipitation'])
     .setOptions({
       title: 'Anomalies time series: surface soil moisture, sub-surface soil ' +
-       'moisture, and precipitation' ,
+       'moisture, and precipitation',
       series: {
         0: {
             targetAxisIndex: 0, type: 'line', lineWidth: 3,
-            pointSize: 1 , color: '#ffc61a'
+            pointSize: 1, color: '#ffc61a'
         },
         1: {
             targetAxisIndex: 0, type: 'line', lineWidth: 3, pointSize: 1,
@@ -264,8 +264,8 @@ var chart =
         },
       },
       hAxis: {
-        title: 'Date' ,
-        titleTextStyle: { italic: false, bold: true }
+        title: 'Date',
+        titleTextStyle: {italic: false, bold: true}
       },
       vAxes: {
         0: {
@@ -274,8 +274,8 @@ var chart =
             viewWindow: {min: -4, max: 4}
         },
         1: {
-            title: 'precipitation (mm)' ,
-            baseline: 0, titleTextStyle: { bold: true, color: '#1a1aff' },
+            title: 'precipitation (mm)',
+            baseline: 0, titleTextStyle: {bold: true, color: '#1a1aff'},
             viewWindow: {min: -2.5, max: 2.5}
         }
       },

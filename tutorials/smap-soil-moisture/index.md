@@ -159,9 +159,10 @@ There are three different SMAP products available in the catalog.
         |---------------------|---------------------|--------------------------------|-----------------------------------------------------------------------------------------------------------------|
         | Daily               | 10 km               | April 2, 2015 - August 2, 2022 | Modeled surface and root zone soil moisture from the USDA-FAS Palmer model for agricultural drought monitoring. |
 
-     - As of August 2022, the NASA-USDA Enhanced SMAP Global soil moisture
-       product has been discontinued.
+    - As of August 2022, the NASA-USDA Enhanced SMAP Global soil moisture
+      product has been discontinued.
 
+<br>
 The table below describes the surface soil moisture, root-zone soil moisture,
 and soil moisture anomaly bands available with each product.
 

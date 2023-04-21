@@ -32,7 +32,7 @@ This tutorial presents a simple yet effective method for analyzing water budget
 dynamics in areas with limited ground data by using Earth observation data in
 Google Earth Engine.
 
-Link to Google Earth Engine code: https://code.earthengine.google.com/1ebd7fee309987fa5d72e5e9fe739fff
+Link to Google Earth Engine code: https://code.earthengine.google.com/36a2a18f0f804ed078dc1965876ef597
 
 ## 1. Importing Mosul river basin boundary
 
@@ -91,11 +91,6 @@ var endDate = ee.Date.fromYMD(endYear, endMonth, 31);
 var years = ee.List.sequence(startYear, endYear);
 var months = ee.List.sequence(1, 12);
 
-// Define a function to clip an image given an area of interest.
-var aoiClip = function(image) {
-  return image.clip(basin_boundary);
-};
-
 // Define a function to convert GPM IMERG from mm/hr to mm/day.
 var gpmScale = function(image) {
   return image.multiply(24)
@@ -110,26 +105,28 @@ var computeAnomalyPrecipitation = function(image) {
   // Get the corresponding reference image for the month.
   var referenceImage = meanMonthlyPrecipitation.filter(
       ee.Filter.eq('month', month)).first();
+  // Check if the images have bands
+  var hasBands = image.bandNames().size().gt(0);
   // Compute the anomaly by subtracting reference image from input image.
-  var anomalyImage = image.subtract(referenceImage);
-  // Return the anomaly image with timestamp.
-  return anomalyImage.set(
-    'system:time_start', ee.Date.fromYMD(year, month, 1).millis());
+  var anomalyImage = ee.Algorithms.If(hasBands,
+                                 image.subtract(referenceImage).set('system:time_start', ee.Date.fromYMD(year, month, 1).millis()),
+                                 image.set('system:time_start', ee.Date.fromYMD(year, month, 1).millis()));
+  
+  return(anomalyImage)
 };
 ```
 
-## 4. Processing surface soil moisture datasets
+## 4. Processing soil moisture datasets
 
-We directly use anomalies surface products from NASA-USDA Enhanced SMAP soil
-moisture.
+We directly use anomalies soil moisture products from NASA-USDA Enhanced SMAP soil
+moisture. The following script extracts surface soil moisture anomalies
 
 ```js
 // Anomalies surface soil moisture (mm).
 var ssma =  nasa_usda_smap
   .select('ssma')
   .filterDate(startDate, endDate)
-  .sort('system:time_start', true)  // sort a collection in ascending order
-  .map(aoiClip);  // clip to the study area
+  .sort('system:time_start', true);  // sort a collection in ascending order
 
 // Compute monthly anomalies surface soil moisture.
 var monthlySsma =  ee.ImageCollection.fromImages(
@@ -145,18 +142,14 @@ var monthlySsma =  ee.ImageCollection.fromImages(
 );
 ```
 
-## 5. Processing subsurface soil moisture datasets
-
-We directly use anomalies subsurface products from NASA-USDA Enhanced SMAP soil
-moisture.
+The following script extracts subsurface soil moisture anomalies
 
 ```js
 // Anomalies subsurface soil moisture (mm)
 var susma =  nasa_usda_smap
   .select('susma')
   .filterDate(startDate, endDate)
-  .sort('system:time_start', true)
-  .map(aoiClip); // clip to the study area
+  .sort('system:time_start', true) ;('system:time_start', true)
 
 // Compute monthly anomalies subsurface soil moisture
 var monthlySusma =  ee.ImageCollection.fromImages(
@@ -172,7 +165,7 @@ var monthlySusma =  ee.ImageCollection.fromImages(
 );
 ```
 
-## 6. Processing precipitation datasets
+## 5. Processing precipitation datasets
 
 GPM IMERG does not have anomalies product. To calculate anomalies monthly
 precipitation time series from a monthly precipitation time series, subtract the
@@ -186,7 +179,6 @@ var rawMonthlyPrecipitation =
   .select('precipitation')
   .filterDate(startDate, endDate)
   .sort('system:time_start', true)
-  .map(aoiClip)   // clip to the study area
   .map(gpmScale); // convert rainfall unit from mm/hr to mm/d
 
 // Make sure monthly precipitation has same duration as soil moisture.
@@ -219,7 +211,7 @@ var monthlyPrecipitationAnomalies = monthlyPrecipitation.map(
     computeAnomalyPrecipitation);
 ```
 
-## 7. Plot anomalies time series for both soil moisture and precipitation
+## 6. Plot anomalies time series for both soil moisture and precipitation
 
 Use the `ui.Chart.image.series` function to extract the time series of
 soil moisture or precipitaton pixel values from the soil moisture or
@@ -237,6 +229,7 @@ two datasets, which could span from April, 2015 to September, 2021.
 var smpreDatasets  = monthlySsma
                         .combine(monthlySusma)
                         .combine(monthlyPrecipitationAnomalies);
+print('soil moisture and precipitation', smpreDatasets);
 
 var chart =
   ui.Chart.image.series({
@@ -283,6 +276,40 @@ var chart =
     });
 
 print(chart);
+```
+## 7. Plot spatial distribution of soil moisture and precipitation anomalies
+
+Based on the timeseries anomalies chart, we detected the most negative anomalies 
+in soil moisture and precipitation in May 2021. The following scripts investigate 
+spatial variations in these variables across the studied basin during that month. 
+Pixels with more brown color have more negative values
+
+```js
+// Setup colors for soil moisture anomalies
+var soilMoistureVis = {
+  min: -4,
+  max: 4,
+  opacity: 0.9,
+  palette: ['8c510a','bf812d','dfc27d','f6e8c3','white','white','c7eae5','80cdc1','35978f','01665e'],
+};
+// Setup colors for precipitation anomalies
+var preVis = {
+  min: -3,
+  max: 3,
+  opacity: 0.9,
+  palette: ['8c510a','bf812d','dfc27d','f6e8c3','white','white','c7eae5','80cdc1','35978f','01665e'],
+};
+// Filter surface soil moisture to May 2021
+var specificSsma = monthlySsma.filterDate('2021-05-01', '2021-05-31').first();
+// Filter surface soil moisture to May 2021
+var specificSusma = monthlySusma.filterDate('2021-05-01', '2021-05-31').first();
+// Filter precipitation to May 2021
+var specificPre = monthlyPrecipitationAnomalies.filterDate('2021-05-01', '2021-05-31').first();
+
+// Display the image on the map
+Map.addLayer(specificSsma.clip(basin_boundary), soilMoistureVis, 'Surface Soil Moisture');
+Map.addLayer(specificSusma.clip(basin_boundary), soilMoistureVis, 'Subsurface Soil Moisture');
+Map.addLayer(specificPre.clip(basin_boundary), preVis, 'Precipitation');
 ```
 
 ## 8. Remarks

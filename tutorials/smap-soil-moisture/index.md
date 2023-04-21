@@ -69,10 +69,9 @@ predictions, agriculture, and more.
   20-foot-wide mesh antenna that rotates 14 times per minute – the largest such
   spinning antenna in space.
 
-[![How SMAP gathers data](footprintofSMAPpath.jpg)](https://www.youtube.com/watch?v=GAilsFVPmP4)
+![How SMAP gathers data](footprintofSMAPpath.jpg)
 
-Click on the image above to [watch an animation](https://youtu.be/GAilsFVPmP4)
-on how SMAP gathers data.
+[Watch an animation](https://youtu.be/GAilsFVPmP4) on how SMAP gathers data.
 
 ### What does SMAP measure?
 
@@ -97,10 +96,9 @@ on how SMAP gathers data.
   frequency). This wavelength of energy penetrates clouds, so SMAP can measure
   soil moisture regardless of cloudy conditions.
 
-[![How SMAP measures soil moisture](lightwavelengths_SARbands.jpg)](https://youtu.be/AuO0pH-1JYg)
+![How SMAP measures soil moisture](lightwavelengths_SARbands.jpg)
 
-Click on the image above to [watch a video](https://youtu.be/AuO0pH-1JYg) on how
-SMAP measures soil moisture.
+[Watch a video](https://youtu.be/AuO0pH-1JYg) on how SMAP measures soil moisture.
 
 ## SMAP products in GEE
 

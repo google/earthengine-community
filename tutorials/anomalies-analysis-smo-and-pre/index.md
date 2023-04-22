@@ -128,7 +128,7 @@ var ssSusMa =  nasa_usda_smap
   .sort('system:time_start', true)  // sort a collection in ascending order
   .select(['ssma', 'susma'])  // surface and subsurface soil moisture bands
 
-// Compute monthly anomalies suface and subsurface soil moisture.
+// Compute monthly anomalies surface and subsurface soil moisture.
 var monthlySsSusMa =  ee.ImageCollection.fromImages(
   years.map(function(y) {
     return months.map(function(m) {
@@ -277,7 +277,7 @@ var preVis = {
 };
 // Filter surface soil moisture to May 2021
 var specificSsma = monthlySsSusMa.select('ssma').filterDate('2021-05-01', '2021-05-31').first();
-// Filter surface soil moisture to May 2021
+// Filter subsurface soil moisture to May 2021
 var specificSusma = monthlySsSusMa.select('susma').filterDate('2021-05-01', '2021-05-31').first();
 // Filter precipitation to May 2021
 var specificPre = monthlyPrecipitationAnomalies.filterDate('2021-05-01', '2021-05-31').first();

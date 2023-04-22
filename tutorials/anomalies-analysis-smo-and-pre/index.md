@@ -32,7 +32,7 @@ This tutorial presents a simple yet effective method for analyzing water budget
 dynamics in areas with limited ground data by using Earth observation data in
 Google Earth Engine.
 
-Link to Google Earth Engine code: https://code.earthengine.google.com/36a2a18f0f804ed078dc1965876ef597
+Link to Google Earth Engine code: https://code.earthengine.google.com/ab2af766072bfef5461a08ee8790fb0b
 
 ## 1. Importing Mosul river basin boundary
 
@@ -50,7 +50,7 @@ var basin_boundary = ee.FeatureCollection(
 
 // Add basin boundary in the map.
 Map.addLayer(basin_boundary, {}, 'Area of interest');
-Map.centerObject(basin_boundary, 5);
+Map.centerObject(basin_boundary, 7);
 ```
 
 ## 2. Importing soil moisture and precipitation datasets
@@ -119,45 +119,22 @@ var computeAnomalyPrecipitation = function(image) {
 ## 4. Processing soil moisture datasets
 
 We directly use anomalies soil moisture products from NASA-USDA Enhanced SMAP soil
-moisture. The following script extracts surface soil moisture anomalies
+moisture. 
 
 ```js
-// Anomalies surface soil moisture (mm).
-var ssma =  nasa_usda_smap
-  .select('ssma')
+// Anomalies surface and subsurface soil moisture (mm).
+var ssSusMa =  nasa_usda_smap
   .filterDate(startDate, endDate)
-  .sort('system:time_start', true);  // sort a collection in ascending order
+  .sort('system:time_start', true)  // sort a collection in ascending order
+  .select(['ssma', 'susma'])  // surface and subsurface soil moisture bands
 
-// Compute monthly anomalies surface soil moisture.
-var monthlySsma =  ee.ImageCollection.fromImages(
+// Compute monthly anomalies suface and subsurface soil moisture.
+var monthlySsSusMa =  ee.ImageCollection.fromImages(
   years.map(function(y) {
     return months.map(function(m) {
-      var filtered = ssma.filter(ee.Filter.calendarRange(y, y, 'year'))
+      var filtered = ssSusMa.filter(ee.Filter.calendarRange(y, y, 'year'))
                          .filter(ee.Filter.calendarRange(m, m, 'month'))
                          .mean();
-      return filtered.set(
-        'system:time_start', ee.Date.fromYMD(y, m, 1).millis());
-    });
-  }).flatten()
-);
-```
-
-The following script extracts subsurface soil moisture anomalies
-
-```js
-// Anomalies subsurface soil moisture (mm)
-var susma =  nasa_usda_smap
-  .select('susma')
-  .filterDate(startDate, endDate)
-  .sort('system:time_start', true) ;('system:time_start', true)
-
-// Compute monthly anomalies subsurface soil moisture
-var monthlySusma =  ee.ImageCollection.fromImages(
-  years.map(function(y) {
-    return months.map(function(m) {
-      var filtered = susma.filter(ee.Filter.calendarRange(y, y, 'year'))
-                          .filter(ee.Filter.calendarRange(m, m, 'month'))
-                          .mean();
       return filtered.set(
         'system:time_start', ee.Date.fromYMD(y, m, 1).millis());
     });
@@ -226,8 +203,7 @@ two datasets, which could span from April, 2015 to September, 2021.
 
 ```js
 // Combine three image collections into one collection.
-var smpreDatasets  = monthlySsma
-                        .combine(monthlySusma)
+var smpreDatasets  = monthlySsSusMa
                         .combine(monthlyPrecipitationAnomalies);
 print('soil moisture and precipitation', smpreDatasets);
 
@@ -300,9 +276,9 @@ var preVis = {
   palette: ['8c510a','bf812d','dfc27d','f6e8c3','white','white','c7eae5','80cdc1','35978f','01665e'],
 };
 // Filter surface soil moisture to May 2021
-var specificSsma = monthlySsma.filterDate('2021-05-01', '2021-05-31').first();
+var specificSsma = monthlySsSusMa.select('ssma').filterDate('2021-05-01', '2021-05-31').first();
 // Filter surface soil moisture to May 2021
-var specificSusma = monthlySusma.filterDate('2021-05-01', '2021-05-31').first();
+var specificSusma = monthlySsSusMa.select('susma').filterDate('2021-05-01', '2021-05-31').first();
 // Filter precipitation to May 2021
 var specificPre = monthlyPrecipitationAnomalies.filterDate('2021-05-01', '2021-05-31').first();
 

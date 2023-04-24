@@ -32,7 +32,7 @@ This tutorial presents a simple yet effective method for analyzing water budget
 dynamics in areas with limited ground data by using Earth observation data in
 Google Earth Engine.
 
-Link to Google Earth Engine code: https://code.earthengine.google.com/ab2af766072bfef5461a08ee8790fb0b
+Link to Google Earth Engine code: https://code.earthengine.google.com/13c8776e7d2370cbe8a5ff953c89fe75
 
 ## 1. Importing Mosul river basin boundary
 
@@ -108,25 +108,27 @@ var computeAnomalyPrecipitation = function(image) {
   // Check if the images have bands
   var hasBands = image.bandNames().size().gt(0);
   // Compute the anomaly by subtracting reference image from input image.
-  var anomalyImage = ee.Algorithms.If(hasBands,
-                                 image.subtract(referenceImage).set('system:time_start', ee.Date.fromYMD(year, month, 1).millis()),
-                                 image.set('system:time_start', ee.Date.fromYMD(year, month, 1).millis()));
+  var anomalyImage = ee.Algorithms.If(
+    hasBands,
+    image.subtract(referenceImage),
+    image);
   
-  return(anomalyImage)
+  return ee.Image(anomalyImage).set(
+    'system:time_start', ee.Date.fromYMD(year, month, 1).millis());
 };
 ```
 
 ## 4. Processing soil moisture datasets
 
-We directly use anomalies soil moisture products from NASA-USDA Enhanced SMAP soil
-moisture. 
+We directly use anomalies soil moisture products from NASA-USDA Enhanced SMAP
+soil moisture. 
 
 ```js
 // Anomalies surface and subsurface soil moisture (mm).
 var ssSusMa =  nasa_usda_smap
   .filterDate(startDate, endDate)
   .sort('system:time_start', true)  // sort a collection in ascending order
-  .select(['ssma', 'susma'])  // surface and subsurface soil moisture bands
+  .select(['ssma', 'susma']);  // surface and subsurface soil moisture bands
 
 // Compute monthly anomalies surface and subsurface soil moisture.
 var monthlySsSusMa =  ee.ImageCollection.fromImages(
@@ -191,7 +193,7 @@ var monthlyPrecipitationAnomalies = monthlyPrecipitation.map(
 ## 6. Plot anomalies time series for both soil moisture and precipitation
 
 Use the `ui.Chart.image.series` function to extract the time series of
-soil moisture or precipitaton pixel values from the soil moisture or
+soil moisture or precipitation pixel values from the soil moisture or
 precipitation image and display the chart.
 
 Create a plot that displays three anomaly time series for surface and subsurface
@@ -202,9 +204,8 @@ This anomalies time series analysis presents the overlap period between these
 two datasets, which could span from April, 2015 to September, 2021.
 
 ```js
-// Combine three image collections into one collection.
-var smpreDatasets  = monthlySsSusMa
-                        .combine(monthlyPrecipitationAnomalies);
+// Combine two image collections into one collection.
+var smpreDatasets  = monthlySsSusMa.combine(monthlyPrecipitationAnomalies);
 print('soil moisture and precipitation', smpreDatasets);
 
 var chart =
@@ -253,39 +254,42 @@ var chart =
 
 print(chart);
 ```
+
 ## 7. Plot spatial distribution of soil moisture and precipitation anomalies
 
-Based on the timeseries anomalies chart, we detected the most negative anomalies 
-in soil moisture and precipitation in May 2021. The following scripts investigate 
-spatial variations in these variables across the studied basin during that month. 
-Pixels with more brown color have more negative values
+Based on the time series anomalies chart, we detected the most negative
+anomalies in soil moisture and precipitation in May 2021. The following code
+block displays spatial variations in these variables across the studied basin
+during that month. Pixels with more brown color have more negative values.
 
 ```js
-// Setup colors for soil moisture anomalies
-var soilMoistureVis = {
+// Setup colors for soil moisture anomalies.
+var palette = ['8c510a', 'bf812d', 'dfc27d', 'f6e8c3', 'ffffff',
+               'ffffff', 'c7eae5', '80cdc1', '35978f', '01665e'];
+var smVis = {
   min: -4,
   max: 4,
   opacity: 0.9,
-  palette: ['8c510a','bf812d','dfc27d','f6e8c3','white','white','c7eae5','80cdc1','35978f','01665e'],
+  palette: palette,
 };
-// Setup colors for precipitation anomalies
+// Setup colors for precipitation anomalies.
 var preVis = {
   min: -3,
   max: 3,
   opacity: 0.9,
-  palette: ['8c510a','bf812d','dfc27d','f6e8c3','white','white','c7eae5','80cdc1','35978f','01665e'],
+  palette: palette,
 };
-// Filter surface soil moisture to May 2021
-var specificSsma = monthlySsSusMa.select('ssma').filterDate('2021-05-01', '2021-05-31').first();
-// Filter subsurface soil moisture to May 2021
-var specificSusma = monthlySsSusMa.select('susma').filterDate('2021-05-01', '2021-05-31').first();
-// Filter precipitation to May 2021
-var specificPre = monthlyPrecipitationAnomalies.filterDate('2021-05-01', '2021-05-31').first();
+// Filter soil moisture to May 2021, subset first image, and clip to AOI.
+var thisSsSusMa = monthlySsSusMa.filterDate(
+  '2021-05-01', '2021-05-31').first().clip(basin_boundary);
+// Filter precipitation to May 2021, subset first image, and clip to AOI.
+var thisPre = monthlyPrecipitationAnomalies.filterDate(
+  '2021-05-01', '2021-05-31').first().clip(basin_boundary);
 
-// Display the image on the map
-Map.addLayer(specificSsma.clip(basin_boundary), soilMoistureVis, 'Surface Soil Moisture');
-Map.addLayer(specificSusma.clip(basin_boundary), soilMoistureVis, 'Subsurface Soil Moisture');
-Map.addLayer(specificPre.clip(basin_boundary), preVis, 'Precipitation');
+// Display the images on the map.
+Map.addLayer(thisSsSusMa.select('ssma'), smVis, 'Surface Soil Moisture');
+Map.addLayer(thisSsSusMa.select('susma'), smVis, 'Subsurface Soil Moisture');
+Map.addLayer(thisPre, preVis, 'Precipitation');
 ```
 
 ## 8. Remarks

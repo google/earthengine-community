@@ -199,7 +199,7 @@ soil moisture and precipitation, with soil moisture values on the primary y-axis
 and precipitation values on the secondary y-axis.
 
 This anomalies time series analysis presents the overlap period between these
-two datasets, which could span from April, 2015 to September, 2021.
+two datasets, which could span from April, 2015 to August, 2021.
 
 ```js
 // Combine three image collections into one collection.

@@ -112,7 +112,7 @@ var computeAnomalyPrecipitation = function(image) {
     hasBands,
     image.subtract(referenceImage),
     image);
-  
+
   return ee.Image(anomalyImage).set(
     'system:time_start', ee.Date.fromYMD(year, month, 1).millis());
 };

@@ -18,7 +18,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 -->
 
-![Soil Moisture Active Passive](SMAP_header.png)
+![Soil Moisture Active Passive](SMAP_header.png){: width="700"}
 
 The thematic focus is learning about the SMAP instrument for water resources
 management applications.
@@ -69,7 +69,7 @@ predictions, agriculture, and more.
   20-foot-wide mesh antenna that rotates 14 times per minute – the largest such
   spinning antenna in space.
 
-![How SMAP gathers data](footprintofSMAPpath.jpg)
+![How SMAP gathers data](footprintofSMAPpath.jpg){: width="700"}
 
 [Watch an animation](https://youtu.be/GAilsFVPmP4) on how SMAP gathers data.
 
@@ -96,7 +96,7 @@ predictions, agriculture, and more.
   frequency). This wavelength of energy penetrates clouds, so SMAP can measure
   soil moisture regardless of cloudy conditions.
 
-![How SMAP measures soil moisture](lightwavelengths_SARbands.jpg)
+![How SMAP measures soil moisture](lightwavelengths_SARbands.jpg){: width="700"}
 
 [Watch a video](https://youtu.be/AuO0pH-1JYg) on how SMAP measures soil moisture.
 

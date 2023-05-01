@@ -135,7 +135,7 @@ var sheds = ee.FeatureCollection('USGS/WBD/2017/HUC06')
 var areaDiff = function(feature) {
   // Compute area in sq. km directly from the geometry.
   var area = feature.geometry().area().divide(1000 * 1000);
-  // Compute the differece between computed area and the area property.
+  // Compute the difference between computed area and the area property.
   var diff = area.subtract(ee.Number.parse(feature.get('areasqkm')));
   // Return the feature with the squared difference set to the 'diff' property.
   return feature.set('diff', diff.pow(2));

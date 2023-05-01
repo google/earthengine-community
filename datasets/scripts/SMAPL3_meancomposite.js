@@ -1,9 +1,9 @@
-//Code by Karyn Tabor 
+//Code by Karyn Tabor
 //Last edited 12-13-2022
 
-// This code selects the Soil Moisture AM band from L3 SMAP Global soil moisture data 
+// This code selects the Soil Moisture AM band from L3 SMAP Global soil moisture data
 // 1) masks the data with the retrieval quality flag.
-// 2) computes a mean image from multiple images in a series 
+// 2) computes a mean image from multiple images in a series
 
 //Import county polygons by ISO code
 //This example uses Tanzania
@@ -15,7 +15,7 @@ print(SMAPL3)
 //select 1 month of SMAP images to create mean composite
 var dataset = SMAPL3.filter(ee.Filter.date('2022-07-01','2022-07-31'));
 var soilMoisture = dataset.select('soil_moisture_am');
-//set vizualization parameters for mean image
+//set visualization parameters for mean image
 var soilMoistureVis = {
   min: 0.0,
   max: 0.5,
@@ -28,7 +28,7 @@ var SM_MEAN = soilmoisture_am.reduce(ee.Reducer.mean());
 //select QA values
 var soilmoisture_am_qamask = dataset.select('retrieval_qual_flag_am').toBands();
 //invert QA values to create mask
-var QA_mask = soilmoisture_am_qamask.eq(0);  
+var QA_mask = soilmoisture_am_qamask.eq(0);
 //add QA mask to soil moisture
 var SM_masked = soilmoisture_am.updateMask(QA_mask);
 //reduce image stack to single image with mean reducer

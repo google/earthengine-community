@@ -26,7 +26,7 @@ print('Collection', col);
 // that intersects 2 image pixels at 30-meter scale.
 var roi = ee.Geometry.BBox(-90.496353, 34.851971, -90.495749, 34.852197);
 
-// Display the region of interest overlayed on an image representative. Note
+// Display the region of interest overlaid on an image representative. Note
 // the ROI intersection with 2 pixels.
 var visParams = {
   bands: ['B4', 'B3', 'B2'],

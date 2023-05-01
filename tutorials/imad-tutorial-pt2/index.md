@@ -491,7 +491,7 @@ def run_imad(aoi, image1, image2, assetFN, scale=20, maxiter=100):
         rhos = ee.String.encodeJSON(ee.List(result.get('allrhos')).get(-1))
         Z = ee.Image(result.get('Z'))
         niter = result.getNumber('niter')
-        # Export iMAD and Z as a singe image, including rhos and number of iterations in properties.
+        # Export iMAD and Z as a single image, including rhos and number of iterations in properties.
         iMAD_export = ee.Image.cat(iMAD, Z).rename(imadnames).set('rhos', rhos, 'niter', niter)
         assetId = EXPORT_PATH + assetFN
         assexport = ee.batch.Export.image.toAsset(iMAD_export,
@@ -559,7 +559,7 @@ M1
 ```
 
 Gray pixels point to no change, while the wide range of color in the iMAD variates
-indicates a good discrimination of the types of change occuring.
+indicates a good discrimination of the types of change occurring.
 
 **Aside:** We are of course primarily interested in extracting the changes in the iMAD
 image, especially those which mark clear cutting, and we'll come back to them in a moment.
@@ -600,7 +600,7 @@ clusterer = ee.Clusterer.wekaKMeans(4).train(training)
 result = im_imadstd.cluster(clusterer)
 ```
 
-Here we display the four clusters overlayed onto the two Sentinel 2 images:
+Here we display the four clusters overlaid onto the two Sentinel 2 images:
 
 ```python
 M2 = Map(**{'center': location, 'zoom': 13})

@@ -258,11 +258,11 @@ $$
 U  = a_1X_1 + a_2X_2 + \dots + a_NX_N = {\bf a}^\top X. \tag{1}
 $$
 
-The symbol ${\bf a}^\top$ denotes the transpose of the column vector 
+The symbol ${\bf a}^\top$ denotes the transpose of the column vector
 
 $$
 {\bf a}=\begin{pmatrix}a_1\cr a_2\cr\vdots\cr a_N\end{pmatrix}
-$$ 
+$$
 
 in other words the row vector ${\bf a}^\top = (a_1,a_2 \dots a_N)$.
 
@@ -430,7 +430,7 @@ def geneiv(C,B):
         print('Error: %s'%e)
 ```
 
-The next cell codes the MAD transformation itself in the funcion *mad_run()*, taking as input two multiband images and returning the _canonical variates_
+The next cell codes the MAD transformation itself in the function *mad_run()*, taking as input two multiband images and returning the _canonical variates_
 
 $$
 U_i, \ V_i, \quad i=1\dots N,

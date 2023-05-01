@@ -130,7 +130,7 @@ data including Landsat, vegetation index, rainfall, temperature etc).
 Considering the context, you will apply relevant filters to restrict selected
 image tiles to the AOI and date range for the growing season in 2017 (to
 coincide with the period of data collection). Clouds are masked from each image
-using their corresponding [cloud probablity](https://developers.google.com/earth-engine/datasets/catalog/COPERNICUS_S2_CLOUD_PROBABILITY)
+using their corresponding [cloud probability](https://developers.google.com/earth-engine/datasets/catalog/COPERNICUS_S2_CLOUD_PROBABILITY)
 layer. Two functions are provided to achieve cloud masking: a function to join
 the cloud probability layer to the relevant image and one to apply the mask
 where cloud probability is greater than 50 percent. Finally, a medoid composite

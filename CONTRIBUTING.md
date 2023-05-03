@@ -29,7 +29,7 @@ intend to make a change and allow us to give early feedback.
 We accept several [contribution types](#contribution-types); relevant issue
 templates include:
 
-- [New tutorial proposals](https://github.com/google/earthengine-community/issues/new?assignees=gino-m%2C+tylere&labels=tutorial+proposal&template=propose-a-tutorial.md&title=%5BTutorial+proposal%5D+Your+tutorial+title+here)
+- [New tutorial proposals](https://github.com/google/earthengine-community/issues/new?assignees=gino-m%2C+jdbcode&labels=tutorial+proposal&template=propose-a-tutorial.md&title=%5BTutorial+proposal%5D+Your+tutorial+title+here)
 - [Tutorial edits](https://github.com/google/earthengine-community/issues/new/?assignees=jdbcode&labels=tutorial%2C+edit+existing&title=%5BTutorial+edit%5D+Your+tutorial+issue+title+here)
 - [New dataset scripts](https://github.com/google/earthengine-community/issues/new/?assignees=simonff%2C+schwehr&labels=dataset&title=%5BDataset+new%5D+Your+dataset+issue+title+here)
 - [Dataset script edits](https://github.com/google/earthengine-community/issues/new/?assignees=simonff%2C+schwehr&labels=dataset%2C+edit+existing&title=%5BDataset+edit%5D+Your+dataset+issue+title+here)

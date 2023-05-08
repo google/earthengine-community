@@ -3,7 +3,7 @@ name: Propose a tutorial
 about: Submit an idea for a new Earth Engine community tutorial
 title: "[Tutorial proposal] Your tutorial title here"
 labels: tutorial proposal
-assignees: gino-m, tylere
+assignees: gino-m, jdbcode
 ---
 <!--
 Copyright 2021 The Google Earth Engine Community Authors

@@ -6,7 +6,7 @@ tags: pseudo-invariant-feature-matching, radiometric-normalization, change-detec
 date_published: 2023-05-07
 ---
 <!--
-Copyright 2020 The Google Earth Engine Community Authors
+Copyright 2023 The Google Earth Engine Community Authors
 
 Licensed under the Apache License, Version 2.0 (the 'License');
 you may not use this file except in compliance with the License.
@@ -21,17 +21,33 @@ See the License for the specific language governing permissions and
 limitations under the License.
 -->
 
-This tutorial demonstrates how pseudo-invariant feature (PIF) matching can be used to harmonize radiometric characteristics between images by applying the technique to a pair of [Planet SkySat](https://developers.google.com/earth-engine/datasets/catalog/SKYSAT_GEN-A_PUBLIC_ORTHO_MULTISPECTRAL) images acquired before and after a deforestation event in Peru.
+This tutorial demonstrates how pseudo-invariant feature (PIF) matching can be
+used to harmonize radiometric characteristics between images by applying the
+technique to a pair of [Planet SkySat](https://developers.google.com/earth-engine/datasets/catalog/SKYSAT_GEN-A_PUBLIC_ORTHO_MULTISPECTRAL)
+images acquired before and after a deforestation event in Peru.
 
 [Open in the Code Editor](https://code.earthengine.google.com/2519effefdc6e25ad98eb07b23a21999)
 
 ## Background
 
-Relative radiometric normalization techniques like [histogram matching](https://developers.google.com/earth-engine/tutorials/community/histogram-matching), [multivariate alteration detection (MAD)](https://developers.google.com/earth-engine/tutorials/community/imad-tutorial-pt1), and PIF matching apply transformations between images that were acquired at different times, under different conditions, or by different sensors, reducing radiometric differences to allow for more accurate comparisons and change detection ([Schroeder et al., 2006](#references)). PIF matching works by identifying areas with minimal spectral change between images, known as pseudo-invariant features, and applying a linear transformation to the entire image based on the spectral differences between these areas.
+Relative radiometric normalization techniques like
+[histogram matching](https://developers.google.com/earth-engine/tutorials/community/histogram-matching),
+[multivariate alteration detection (MAD)](https://developers.google.com/earth-engine/tutorials/community/imad-tutorial-pt1),
+and PIF matching apply transformations between images that were acquired at
+different times, under different conditions, or by different sensors,
+reducing radiometric differences to allow for more accurate comparisons and
+change detection ([Schroeder et al., 2006](#references)). PIF matching works by
+identifying areas with minimal spectral change between images, known as
+pseudo-invariant features, and applying a linear transformation to the entire
+image based on the spectral differences between these areas.
 
 ## Input Data
 
-The code below loads two Planet SkySat images acquired before and after a logging operation in Peru, clips them to a small area of interest, selects the relevant multispectral bands, and uses the [`register`](https://developers.google.com/earth-engine/apidocs/ee-image-register) method to correct a slight misregistration between images.
+The code below loads two Planet SkySat images acquired before and after a
+logging operation in Peru, clips them to a small area of interest, selects the
+relevant multispectral bands, and uses the
+[`register`](https://developers.google.com/earth-engine/apidocs/ee-image-register)
+method to correct a slight misregistration between images.
 
 ```javascript
 var aoi = ee.Geometry.Point([-75.0608, -8.2736]).buffer(3000).bounds();
@@ -46,7 +62,9 @@ var after = ee.Image('SKYSAT/GEN-A/PUBLIC/ORTHO/MULTISPECTRAL/s01_20150910T15421
   .register(before, 100);
 ```
 
-Adding the images to the map shows the radiometric mismatch between them: the 'after' image appears much brighter than the 'before' image, making direct comparisons more difficult.
+Adding the images to the map shows the radiometric mismatch between them:
+the 'after' image appears much brighter than the 'before' image, making direct
+comparisons more difficult.
 
 ```javascript
 Map.addLayer(before, {min: 1000, max: 5000}, 'Before');
@@ -59,25 +77,41 @@ Map.addLayer(after, {min: 1000, max: 5000}, 'After');
 
 ## Identifying Pseudo-Invariant Features
 
-With the before and after images loaded and aligned, the next step is to identify spectrally stable, pseudo-invariant features that can be used to match the images.
-While PIFs *can* be selected manually by identifying unchanged areas and digitizing points or polygons around them, this approach can be time-consuming and subjective. Spectral distance metrics provide an automated method for measuring similarity between pixels, which can then be used to select a subset of pixels with the smallest spectral changes. 
+With the before and after images loaded and aligned, the next step is to
+identify spectrally stable, pseudo-invariant features that can be used to
+match the images. While PIFs *can* be selected manually by identifying
+unchanged areas and digitizing points or polygons around them, this approach
+can be time-consuming and subjective. Spectral distance metrics provide an
+automated method for measuring similarity between pixels, which can then be
+used to select a subset of pixels with the smallest spectral changes.
 
 ### Measuring Spectral Distance
 
-The code below uses the [`spectralDistance`](https://developers.google.com/earth-engine/apidocs/ee-image-spectraldistance) method to calculate spectral information divergence (SID) between the before and after images. You can also experiment with other distance metrics like spectral angle mapper (SAM) or squared euclidean distance (SED) to see how they affect results.
+The code below uses the [`spectralDistance`](https://developers.google.com/earth-engine/apidocs/ee-image-spectraldistance)
+method to calculate spectral information divergence (SID) between the before
+and after images. You can also experiment with other distance metrics like
+spectral angle mapper (SAM) or squared euclidean distance (SED) to see how
+they affect results.
 
 ```javascript
 var distance = before.spectralDistance(after, 'SID');
 Map.addLayer(distance, {min: 0, max: 0.4}, 'Spectral distance');
 ```
 
-Visualizing spectral distance highlights areas of change that correspond with logging, road construction, and cloud shadows:
+Visualizing spectral distance highlights areas of change that correspond with
+logging, road construction, and cloud shadows:
 
 ![Spectral distance](pif_distance.png)
 
 ### Selecting Stable Pixels
 
-The next step is to select a subset of pixels that experienced little or no change. This can be done by applying a percentile reducer over the area of interest to identify a spectral distance threshold, then selecting pixels with distances below that threshold. The code below uses a 10th percentile threshold, but you may want to modify the percentile to see how it affects results. Higher percentiles will select more pixels and include more variability, leading to more aggressive transformations.
+The next step is to select a subset of pixels that experienced little or no
+change. This can be done by applying a percentile reducer over the area of
+interest to identify a spectral distance threshold, then selecting pixels with
+distances below that threshold. The code below uses a 10th percentile
+threshold, but you may want to modify the percentile to see how it affects
+results. Higher percentiles will select more pixels and include more
+variability, leading to more aggressive transformations.
 
 ```javascript
 var threshold = distance.reduceRegion({
@@ -94,14 +128,19 @@ Map.addLayer(pif, {}, 'PIF mask');
 
 ![PIF mask](pif_mask.png)
 
-
 ## Applying the Transformation
 
-With pseudo-invariant pixels identified, the next step is to build linear transformations between these areas in the before and after image, which can then be applied to the entire image. This can be done by mapping over each band and: 
+With pseudo-invariant pixels identified, the next step is to build linear
+transformations between these areas in the before and after image, which can
+then be applied to the entire image. This can be done by mapping over each
+band and:
 
 1. Masking the before and after image to the PIF.
-2. Using a [`linearFit`](https://developers.google.com/earth-engine/apidocs/ee-reducer-linearfit) reducer to calculate regression coefficients between the masked images in the area of interest.
-3. Applying the linear coefficients to match the after image to the before image.
+2. Using a [`linearFit`](https://developers.google.com/earth-engine/apidocs/ee-reducer-linearfit)
+   reducer to calculate regression coefficients between the masked images in
+   the area of interest.
+3. Applying the linear coefficients to match the after image to the before
+   image.
 
 The function below applies all three steps to a single band for convenience:
 
@@ -128,14 +167,17 @@ function matchBand(band) {
 }
 ```
 
-Mapping that function over the list of `bands` defined at the beginning of the tutorial will return a list of matched single-band images, which can then be combined back into a multi-band image.
+Mapping that function over the list of `bands` defined at the beginning of
+the tutorial will return a list of matched single-band images, which can then
+be combined back into a multi-band image.
 
 ```javascript
 var matchedBands = bands.map(matchBand);
 var matched = ee.ImageCollection(matchedBands).toBands().rename(bands);
 ```
 
-Here are the results, showing the before, after (matched), and after (original) images:
+Here are the results, showing the before, after (matched), and after (original)
+images:
 
 ```javascript
 Map.addLayer(before, {min: 1000, max: 5000}, 'Before');

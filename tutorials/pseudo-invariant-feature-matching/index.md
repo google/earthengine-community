@@ -67,6 +67,7 @@ the 'after' image appears much brighter than the 'before' image, making direct
 comparisons more difficult.
 
 ```javascript
+Map.centerObject(aoi);
 Map.addLayer(before, {min: 1000, max: 5000}, 'Before');
 Map.addLayer(after, {min: 1000, max: 5000}, 'After');
 ```
@@ -110,8 +111,9 @@ change. This can be done by applying a percentile reducer over the area of
 interest to identify a spectral distance threshold, then selecting pixels with
 distances below that threshold. The code below uses a 10th percentile
 threshold, but you may want to modify the percentile to see how it affects
-results. Higher percentiles will select more pixels and include more
-variability, leading to more aggressive transformations.
+results. Higher percentiles will select pixels with greater spectral distances,
+allowing transformations to normalize larger radiometric differences at the
+risk of introducing bias from outlying pixels.
 
 ```javascript
 var threshold = distance.reduceRegion({

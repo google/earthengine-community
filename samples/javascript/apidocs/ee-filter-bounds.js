@@ -15,6 +15,7 @@
  */
 
 // [START earthengine__apidocs__ee_filter_bounds]
+// collection.filterBounds() is preferred.
 // A Sentinel-2 surface reflectance image collection for 3 months in 2021.
 var ic = ee.ImageCollection('COPERNICUS/S2_SR')
              .filterDate('2021-07-01', '2021-10-01');

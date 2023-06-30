@@ -19,11 +19,11 @@
 // Separate the two groups using ee.Filter.eq.
 var goes17_mcmipm = ee.ImageCollection('NOAA/GOES/17/MCMIPM');
 var goes17_mcmipm_2019 =
-    goes17_mcmipm.filterDate(ee.Date('2019-11'), ee.Date('2019-12'));
+    goes17_mcmipm.filterDate(ee.Date('2019-11-01'), ee.Date('2019-11-05'));
 
 var d1 = goes17_mcmipm_2019.filter(ee.Filter.eq('domain', 1));
 var d2 = goes17_mcmipm_2019.filter(ee.Filter.eq('domain', 2));
-print(goes17_mcmipm_2019.size());  // 55509
-print(d1.size());                  // 27842
-print(d2.size());                  // 27667
+print(goes17_mcmipm_2019.size()); 
+print(d1.size());
+print(d2.size());
 // [END earthengine__apidocs__ee_filter_eq]

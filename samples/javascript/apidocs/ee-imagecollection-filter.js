@@ -26,8 +26,8 @@ var d2 = goes17_mcmipm_day.filter('domain == 2');
 // domain 3 does not exist.
 var d3 = goes17_mcmipm_day.filter('domain == 3');
 
-print(goes17_mcmipm_day.size());  // 2880
-print(d1.size());                 // 1440
-print(d2.size());                 // 1440
-print(d3.size());                 // 0
+print(goes17_mcmipm_day.size());
+print(d1.size());
+print(d2.size());
+print(d3.size());
 // [END earthengine__apidocs__ee_imagecollection_filter]

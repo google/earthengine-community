@@ -113,7 +113,8 @@ def write_csv(hdf_fh, csv_file):
         index=False,
         header=is_first,
         mode='a',
-        line_terminator='\n')
+        lineterminator='\n',
+    )
     is_first = False
 
 

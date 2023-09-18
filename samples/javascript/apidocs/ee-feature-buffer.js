@@ -16,7 +16,7 @@
 
 // [START earthengine__apidocs__ee_feature_buffer]
 // Polygon feature of Serengeti National Park.
-var feature = ee.FeatureCollection('WCMC/WDPA/current/polygons')
+var feature = ee.FeatureCollection('WCMC/WDPA/202307/polygons')
                   .filter('ORIG_NAME == "Serengeti National Park"')
                   .first();
 

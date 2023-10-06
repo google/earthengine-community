@@ -14,7 +14,8 @@
 
 # [START earthengine__apidocs__ee_date_millis]
 from datetime import datetime
+
 date = ee.Date(datetime.now())
 
-print('Milliseconds since Unix epoch:', date.millis().getInfo())
+display('Milliseconds since Unix epoch:', date.millis())
 # [END earthengine__apidocs__ee_date_millis]

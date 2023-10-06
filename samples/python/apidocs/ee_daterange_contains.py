@@ -19,8 +19,12 @@ date_range_2 = ee.DateRange('2017-06-30', '2017-07-10')
 date_range_3 = ee.DateRange('2010-06-24', '2020-07-24')
 
 # Determine if an ee.DateRange is contained within another.
-print('Does date_range_1 contain date_range_2?',
-      date_range_1.contains(date_range_2).getInfo())
-print('Does date_range_1 contain date_range_3?',
-      date_range_1.contains(date_range_3).getInfo())
+display(
+    'Does date_range_1 contain date_range_2?',
+    date_range_1.contains(date_range_2)
+)
+display(
+    'Does date_range_1 contain date_range_3?',
+    date_range_1.contains(date_range_3)
+)
 # [END earthengine__apidocs__ee_daterange_contains]

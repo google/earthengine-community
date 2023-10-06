@@ -20,10 +20,16 @@ date_range_3 = ee.DateRange('1970-06-24', '1971-07-24')
 date_range_4 = ee.DateRange('2017-06-25', '2017-07-25')
 
 # Determine if an ee.DateRange intersects another.
-print('Does date_range_1 contain date_range_2?',
-      date_range_1.intersects(date_range_2).getInfo())
-print('Does date_range_1 contain date_range_3?',
-      date_range_1.intersects(date_range_3).getInfo())
-print('Does date_range_1 contain date_range_4?',
-      date_range_1.intersects(date_range_4).getInfo())
+display(
+    'Does date_range_1 contain date_range_2?',
+    date_range_1.intersects(date_range_2)
+)
+display(
+    'Does date_range_1 contain date_range_3?',
+    date_range_1.intersects(date_range_3)
+)
+display(
+    'Does date_range_1 contain date_range_4?',
+    date_range_1.intersects(date_range_4)
+)
 # [END earthengine__apidocs__ee_daterange_intersects]

@@ -13,8 +13,8 @@
 # limitations under the License.
 
 # [START earthengine__apidocs__ee_date_unitratio]
-print('Minutes in a day:', ee.Date.unitRatio('day', 'minute').getInfo())
-print('Seconds in a year:', ee.Date.unitRatio('year', 'second').getInfo())
-print('Years in a month:', ee.Date.unitRatio('month', 'year').getInfo())
-print('Hours in a week:', ee.Date.unitRatio('week', 'hour').getInfo())
+display('Minutes in a day:', ee.Date.unitRatio('day', 'minute'))
+display('Seconds in a year:', ee.Date.unitRatio('year', 'second'))
+display('Years in a month:', ee.Date.unitRatio('month', 'year'))
+display('Hours in a week:', ee.Date.unitRatio('week', 'hour'))
 # [END earthengine__apidocs__ee_date_unitratio]

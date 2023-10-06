@@ -15,15 +15,13 @@
 # [START earthengine__apidocs__ee_date_getrelative]
 date = ee.Date('2021-4-30T07:15:31.24')
 
-print('0-based month of year:', date.getRelative('year', 'year').getInfo())
-print('0-based week of year:', date.getRelative('week', 'year').getInfo())
-print('0-based day of year:', date.getRelative('day', 'year').getInfo())
-print('0-based day of month:', date.getRelative('day', 'month').getInfo())
-print('0-based minute of day:', date.getRelative('minute', 'day').getInfo())
-print('0-based second of minute:',
-      date.getRelative('second', 'minute').getInfo())
+display('0-based month of year:', date.getRelative('year', 'year'))
+display('0-based week of year:', date.getRelative('week', 'year'))
+display('0-based day of year:', date.getRelative('day', 'year'))
+display('0-based day of month:', date.getRelative('day', 'month'))
+display('0-based minute of day:', date.getRelative('minute', 'day'))
+display('0-based second of minute:', date.getRelative('second', 'minute'))
 
 # 0 is returned when unit argument is larger than inUnit argument.
-print('0-based year of month (bad form):',
-      date.getRelative('year', 'month').getInfo())
+display('0-based year of month (bad form):', date.getRelative('year', 'month'))
 # [END earthengine__apidocs__ee_date_getrelative]

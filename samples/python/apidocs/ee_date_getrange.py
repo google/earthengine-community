@@ -15,14 +15,11 @@
 # [START earthengine__apidocs__ee_date_getrange]
 date = ee.Date('2021-4-30T07:15:31.24')
 
-print('1-year date range covering input date:', date.getRange('year').getInfo())
-print('1-month date range covering input date:',
-      date.getRange('month').getInfo())
-print('1-week date range covering input date:', date.getRange('week').getInfo())
-print('1-day date range covering input date:', date.getRange('day').getInfo())
-print('1-hour date range covering input date:', date.getRange('hour').getInfo())
-print('1-minute date range covering input date:',
-      date.getRange('minute').getInfo())
-print('1-second date range covering input date:',
-      date.getRange('second').getInfo())
+display('1-year date range covering input date:', date.getRange('year'))
+display('1-month date range covering input date:', date.getRange('month'))
+display('1-week date range covering input date:', date.getRange('week'))
+display('1-day date range covering input date:', date.getRange('day'))
+display('1-hour date range covering input date:', date.getRange('hour'))
+display('1-minute date range covering input date:', date.getRange('minute'))
+display('1-second date range covering input date:', date.getRange('second'))
 # [END earthengine__apidocs__ee_date_getrange]

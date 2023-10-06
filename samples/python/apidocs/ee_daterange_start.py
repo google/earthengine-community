@@ -17,6 +17,5 @@
 date_range = ee.DateRange('2017-06-24', '2017-07-24')
 
 # Return the start of the ee.DateRange as an ee.Date.
-print('The start of this ee.DateRange is',
-      date_range.start().format().getInfo())
+display('The start of this ee.DateRange is', date_range.start())
 # [END earthengine__apidocs__ee_daterange_start]

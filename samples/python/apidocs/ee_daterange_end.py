@@ -17,5 +17,5 @@
 date_range = ee.DateRange('2017-06-24', '2017-07-24')
 
 # Return the end of the ee.DateRange as an ee.Date.
-print('The end of dateRange is', date_range.end().format().getInfo())
+display('The end of dateRange is', date_range.end())
 # [END earthengine__apidocs__ee_daterange_end]

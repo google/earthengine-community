@@ -18,8 +18,8 @@ date_range_bounded = ee.DateRange('2017-06-24', '2017-07-24')
 date_range_unbounded = ee.DateRange.unbounded()
 
 # Determine if an ee.DateRange object is unbounded.
-print('Is date_range_bounded unbounded?',
-      date_range_bounded.isUnbounded().getInfo())
-print('Is date_range_unbounded unbounded?',
-      date_range_unbounded.isUnbounded().getInfo())
+display('Is date_range_bounded unbounded?', date_range_bounded.isUnbounded())
+display(
+    'Is date_range_unbounded unbounded?', date_range_unbounded.isUnbounded()
+)
 # [END earthengine__apidocs__ee_daterange_isunbounded]

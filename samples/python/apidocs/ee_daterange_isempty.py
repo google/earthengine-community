@@ -19,7 +19,7 @@ date_range_2 = ee.DateRange('2017-07-24', '2017-06-24')
 date_range_3 = ee.DateRange('2017-07-24', '2017-07-24')
 
 # Determine if the ee.DateRange is empty.
-print('Is date_range_1 empty?', date_range_1.isEmpty().getInfo())
-print('Is date_range_2 empty?', date_range_2.isEmpty().getInfo())
-print('Is date_range_3 empty?', date_range_3.isEmpty().getInfo())
+display('Is date_range_1 empty?', date_range_1.isEmpty())
+display('Is date_range_2 empty?', date_range_2.isEmpty())
+display('Is date_range_3 empty?', date_range_3.isEmpty())
 # [END earthengine__apidocs__ee_daterange_isempty]

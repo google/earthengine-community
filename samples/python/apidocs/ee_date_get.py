@@ -15,11 +15,11 @@
 # [START earthengine__apidocs__ee_date_get]
 date = ee.Date('2021-4-30T07:15:31')
 
-print('Year:', date.get('year').getInfo())
-print('Month:', date.get('month').getInfo())
-print('Week:', date.get('week').getInfo())
-print('Day:', date.get('day').getInfo())
-print('Hour:', date.get('hour').getInfo())
-print('Minute:', date.get('minute').getInfo())
-print('Second:', date.get('second').getInfo())
+display('Year:', date.get('year'))
+display('Month:', date.get('month'))
+display('Week:', date.get('week'))
+display('Day:', date.get('day'))
+display('Hour:', date.get('hour'))
+display('Minute:', date.get('minute'))
+display('Second:', date.get('second'))
 # [END earthengine__apidocs__ee_date_get]

@@ -18,6 +18,8 @@ date_range_1 = ee.DateRange('2017-06-24', '2017-07-24')
 date_range_2 = ee.DateRange('2017-07-01', '2018-08-24')
 
 # Determine the intersection of two ee.DateRange objects.
-print('Intersection of date_range_1 and date_range_2:',
-      date_range_1.intersection(date_range_2).getInfo())
+display(
+    'Intersection of date_range_1 and date_range_2:',
+    date_range_1.intersection(date_range_2)
+)
 # [END earthengine__apidocs__ee_daterange_intersection]

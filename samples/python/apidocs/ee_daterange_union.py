@@ -19,8 +19,12 @@ date_range_2 = ee.DateRange('2017-06-30', '2018-07-10')
 date_range_3 = ee.DateRange('1970-06-24', '1971-07-24')
 
 # Determine the union of ee.DateRange objects.
-print('Union of date_range_1 and date_range_2, which overlap:',
-      date_range_1.union(date_range_2).getInfo())
-print('Union of date_range_1 and date_range_3, which do not overlap:',
-      date_range_1.union(date_range_3).getInfo())
+display(
+    'Union of date_range_1 and date_range_2, which overlap:',
+    date_range_1.union(date_range_2)
+)
+display(
+    'Union of date_range_1 and date_range_3, which do not overlap:',
+    date_range_1.union(date_range_3)
+)
 # [END earthengine__apidocs__ee_daterange_union]

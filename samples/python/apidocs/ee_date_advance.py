@@ -13,29 +13,14 @@
 # limitations under the License.
 
 # [START earthengine__apidocs__ee_date_advance]
-"""Demonstrates the ee.Date.advance method."""
-
-import ee
-
-
-# Authenticates to the Earth Engine servers.
-ee.Authenticate()
-# Initializes the client library.
-ee.Initialize()
-
-
-def print_date(ee_date, message):
-  """Prints a formatted date, along with a descriptive message."""
-  print(ee_date.format().getInfo(), message)
-
 # Defines a base date/time for the following examples.
 BASE_DATE = ee.Date('2020-01-01T00:00', 'UTC')
-print_date(BASE_DATE, 'The base date/time')
+display('The base date/time', BASE_DATE)
 
 # Demonstrates basic usage.
-print_date(BASE_DATE.advance(1, 'week'), '+1 week')
-print_date(BASE_DATE.advance(2, 'years'), '+2 years')
+display('+1 week', BASE_DATE.advance(1, 'week'))
+display('+2 years', BASE_DATE.advance(2, 'years'))
 
 # Demonstrates that negative delta moves back in time.
-print_date(BASE_DATE.advance(-1, 'second'), '-1 second')
+display('-1 second', BASE_DATE.advance(-1, 'second'))
 # [END earthengine__apidocs__ee_date_advance]

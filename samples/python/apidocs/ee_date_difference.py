@@ -13,16 +13,6 @@
 # limitations under the License.
 
 # [START earthengine__apidocs__ee_date_difference]
-"""Demonstrates the ee.Date.difference method."""
-
-import ee
-
-
-# Authenticates to the Earth Engine servers.
-ee.Authenticate()
-# Initializes the client library.
-ee.Initialize()
-
 DATE_1 = ee.Date('2020-01-01')
 DATE_2 = ee.Date('2020-01-15')
 

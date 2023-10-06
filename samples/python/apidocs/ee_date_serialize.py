@@ -15,5 +15,5 @@
 # [START earthengine__apidocs__ee_date_serialize]
 date = ee.Date('2021-4-30')
 
-print('Serialized representation of ee.Date:', date.serialize())
+display('Serialized representation of ee.Date:', date.serialize())
 # [END earthengine__apidocs__ee_date_serialize]

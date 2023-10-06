@@ -14,5 +14,5 @@
 
 # [START earthengine__apidocs__ee_daterange_unbounded]
 date_range_unbounded = ee.DateRange.unbounded()
-print('An unbounded ee.DateRange object:', date_range_unbounded.getInfo())
+display('An unbounded ee.DateRange object:', date_range_unbounded)
 # [END earthengine__apidocs__ee_daterange_unbounded]

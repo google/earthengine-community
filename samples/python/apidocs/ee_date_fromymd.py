@@ -13,9 +13,10 @@
 # limitations under the License.
 
 # [START earthengine__apidocs__ee_date_fromymd]
-print('Date with default UTC:',
-      ee.Date.fromYMD(2021, 4, 30).format().getInfo())
+display('Date with default UTC:', ee.Date.fromYMD(2021, 4, 30))
 
-print('Date with time zone specified:',
-      ee.Date.fromYMD(2021, 4, 30, 'America/Los_Angeles').format().getInfo())
+display(
+    'Date with time zone specified:',
+    ee.Date.fromYMD(2021, 4, 30, 'America/Los_Angeles')
+)
 # [END earthengine__apidocs__ee_date_fromymd]

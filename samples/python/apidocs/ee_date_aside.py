@@ -17,7 +17,7 @@ from datetime import datetime
 
 def print_date(ee_date, message):
   """Prints a formatted date, along with a descriptive message."""
-  print(message, ee_date.format().getInfo())
+  display(message, ee_date.format("YYYY-mm-dd"))
 
 # Print a message when constructing the ee.Date.
 ee_date = ee.Date(datetime.now()).aside(print_date, "Today's date (UTC):")

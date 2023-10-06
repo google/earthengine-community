@@ -15,11 +15,11 @@
 # [START earthengine__apidocs__ee_date_getfraction]
 date = ee.Date('2021-4-30T07:15:31.24')
 
-print('Elapsed fraction of a year:', date.getFraction('year').getInfo())
-print('Elapsed fraction of a month:', date.getFraction('month').getInfo())
-print('Elapsed fraction of a week:', date.getFraction('week').getInfo())
-print('Elapsed fraction of a day:', date.getFraction('day').getInfo())
-print('Elapsed fraction of an hour:', date.getFraction('hour').getInfo())
-print('Elapsed fraction of a minute:', date.getFraction('minute').getInfo())
-print('Elapsed fraction of a second:', date.getFraction('second').getInfo())
+display('Elapsed fraction of a year:', date.getFraction('year'))
+display('Elapsed fraction of a month:', date.getFraction('month'))
+display('Elapsed fraction of a week:', date.getFraction('week'))
+display('Elapsed fraction of a day:', date.getFraction('day'))
+display('Elapsed fraction of an hour:', date.getFraction('hour'))
+display('Elapsed fraction of a minute:', date.getFraction('minute'))
+display('Elapsed fraction of a second:', date.getFraction('second'))
 # [END earthengine__apidocs__ee_date_getfraction]

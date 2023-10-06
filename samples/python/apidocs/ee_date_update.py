@@ -15,6 +15,8 @@
 # [START earthengine__apidocs__ee_date_update]
 date = ee.Date('2021-4-30T07:15:31.24')
 
-print('Updated year and minute components of the input date:',
-      date.update(year=2010, minute=59).format().getInfo())
+display(
+    'Updated year and minute components of the input date:',
+    date.update(year=2010, minute=59)
+)
 # [END earthengine__apidocs__ee_date_update]

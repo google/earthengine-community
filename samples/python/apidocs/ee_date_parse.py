@@ -13,11 +13,10 @@
 # limitations under the License.
 
 # [START earthengine__apidocs__ee_date_parse]
-print(ee.Date.parse('YYYY MM dd', '2021 4 30').format().getInfo())
-print(ee.Date.parse('YYYY-MM-dd', '2021-4-30').format().getInfo())
-print(ee.Date.parse('YYYY/MM/dd', '2021/4/30').format().getInfo())
-print(ee.Date.parse('MM/dd/YY', '4/30/21').format().getInfo())
-print(ee.Date.parse('MMM. dd, YYYY', 'Apr. 30, 2021').format().getInfo())
-print(ee.Date.parse('YYYY-MM-dd HH:mm:ss', '2021-4-30 00:00:00').format()
-      .getInfo())
+display(ee.Date.parse('YYYY MM dd', '2021 4 30'))
+display(ee.Date.parse('YYYY-MM-dd', '2021-4-30'))
+display(ee.Date.parse('YYYY/MM/dd', '2021/4/30'))
+display(ee.Date.parse('MM/dd/YY', '4/30/21'))
+display(ee.Date.parse('MMM. dd, YYYY', 'Apr. 30, 2021'))
+display(ee.Date.parse('YYYY-MM-dd HH:mm:ss', '2021-4-30 00:00:00'))
 # [END earthengine__apidocs__ee_date_parse]

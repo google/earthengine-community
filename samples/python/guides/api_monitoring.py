@@ -15,15 +15,16 @@
 """Examples for /earth-engine/cloud/api_monitoring page."""
 
 # [START earthengine__cloud_api_monitoring__workload_tags]
-import ee
-
 # Authenticate, then initialize with your Cloud Project.
 ee.Initialize(project='your-project')
 
 # Set a default workload tag.
 ee.data.setDefaultWorkloadTag('landsat-compositing')
-composite = ee.ImageCollection('LANDSAT/LC08/C02/T1_L2').filterDate(
-    '2020-01-01', '2021-01-01').median()
+composite = (
+    ee.ImageCollection('LANDSAT/LC08/C02/T1_L2')
+    .filterDate('2020-01-01', '2021-01-01')
+    .median()
+)
 
 # Set a workload tag for export.
 ee.data.setWorkloadTag('export-jobs')

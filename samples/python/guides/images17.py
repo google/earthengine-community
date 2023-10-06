@@ -28,12 +28,13 @@ square = ee.Kernel.square(radius=4)
 entropy = nir.entropy(square)
 
 # Define a map centered on Golden Gate Park, San Francisco.
-map_texture = folium.Map(location=[37.769833, -122.466123], zoom_start=17)
+map_texture = geemap.Map(center=[37.769833, -122.466123], zoom=17)
 
 # Add the image layers to the map.
 map_texture.add_ee_layer(image, {'max': 255}, 'image')
 map_texture.add_ee_layer(
-    entropy, {'min': 1, 'max': 5, 'palette': ['0000CC', 'CC0000']}, 'entropy')
+    entropy, {'min': 1, 'max': 5, 'palette': ['0000CC', 'CC0000']}, 'entropy'
+)
 # [END earthengine__images17__entropy]
 
 # [START earthengine__images17__glcm]
@@ -42,9 +43,11 @@ glcm = nir.glcmTexture(size=4)
 contrast = glcm.select('N_contrast')
 
 # Add the contrast layer to the map.
-map_texture.add_ee_layer(contrast,
-                   {'min': 0, 'max': 1500, 'palette': ['0000CC', 'CC0000']},
-                   'contrast')
+map_texture.add_ee_layer(
+    contrast,
+    {'min': 0, 'max': 1500, 'palette': ['0000CC', 'CC0000']},
+    'contrast',
+)
 # [END earthengine__images17__glcm]
 
 # [START earthengine__images17__gearys]
@@ -65,8 +68,10 @@ neighs = nir.neighborhoodToBands(kernel)
 gearys = nir.subtract(neighs).pow(2).reduce(ee.Reducer.sum()).divide(pow(9, 2))
 
 # Add the Geary's C layer to the map and display it.
-map_texture.add_ee_layer(gearys,
-                   {'min': 20, 'max': 2500, 'palette': ['0000CC', 'CC0000']},
-                   "Geary's C")
-display(map_texture.add_child(folium.LayerControl()))
+map_texture.add_ee_layer(
+    gearys,
+    {'min': 20, 'max': 2500, 'palette': ['0000CC', 'CC0000']},
+    "Geary's C",
+)
+display(map_texture)
 # [END earthengine__images17__gearys]

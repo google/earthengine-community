@@ -20,7 +20,8 @@ image = ee.Image('LANDSAT/LC08/C02/T1/LC08_044034_20140318').select('B8')
 
 # Define a "fat" Gaussian kernel.
 fat = ee.Kernel.gaussian(
-    radius=3, sigma=3, units='pixels', normalize=True, magnitude=-1)
+    radius=3, sigma=3, units='pixels', normalize=True, magnitude=-1
+)
 
 # Define a "skinny" Gaussian kernel.
 skinny = ee.Kernel.gaussian(radius=3, sigma=1, units='pixels', normalize=True)
@@ -32,11 +33,12 @@ dog = fat.add(skinny)
 zero_xings = image.convolve(dog).zeroCrossing()
 
 # Define a map centered on San Francisco Bay.
-map_zero_xings = folium.Map(location=[37.7295, -122.054], zoom_start=10)
+map_zero_xings = geemap.Map(center=[37.7295, -122.054], zoom=10)
 
 # Add the image layers to the map and display it.
 map_zero_xings.add_ee_layer(image, {'max': 12000}, 'image')
 map_zero_xings.add_ee_layer(
-    zero_xings.selfMask(), {'palette': 'FF0000'}, 'zero crossings')
-display(map_zero_xings.add_child(folium.LayerControl()))
+    zero_xings.selfMask(), {'palette': 'FF0000'}, 'zero crossings'
+)
+display(map_zero_xings)
 # [END earthengine__images14__zero_crossings]

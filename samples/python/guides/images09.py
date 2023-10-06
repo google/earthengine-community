@@ -16,22 +16,22 @@
 
 # [START earthengine__images09__where_operator]
 # Load a cloudy Sentinel-2 image.
-image = ee.Image(
-    'COPERNICUS/S2_SR/20210114T185729_20210114T185730_T10SEG')
+image = ee.Image('COPERNICUS/S2_SR/20210114T185729_20210114T185730_T10SEG')
 
 # Load another image to replace the cloudy pixels.
 replacement = ee.Image(
-    'COPERNICUS/S2_SR/20210109T185751_20210109T185931_T10SEG')
+    'COPERNICUS/S2_SR/20210109T185751_20210109T185931_T10SEG'
+)
 
 # Set cloudy pixels (greater than 5% probability) to the other image.
 replaced = image.where(image.select('MSK_CLDPRB').gt(5), replacement)
 
 # Define a map centered on San Francisco Bay.
-map_replaced = folium.Map(location=[37.7349, -122.3769], zoom_start=11)
+map_replaced = geemap.Map(center=[37.7349, -122.3769], zoom=11)
 
 # Display the images on a map.
 vis_params = {'bands': ['B4', 'B3', 'B2'], 'min': 0, 'max': 2000}
 map_replaced.add_ee_layer(image, vis_params, 'original image')
 map_replaced.add_ee_layer(replaced, vis_params, 'clouds replaced')
-display(map_replaced.add_child(folium.LayerControl()))
+display(map_replaced)
 # [END earthengine__images09__where_operator]

@@ -25,15 +25,17 @@ boxcar = ee.Kernel.square(radius=7, units='pixels', normalize=True)
 smooth = image.convolve(boxcar)
 
 # Define a map centered on Oakland, California.
-map_smooth = folium.Map(location=[37.8694, -121.9785], zoom_start=11)
+map_smooth = geemap.Map(center=[37.8694, -121.9785], zoom=11)
 
 # Add the image layers to the map and display it. Compare the smoothed result to
 # the original.
 map_smooth.add_ee_layer(
-    image, {'bands': ['B5', 'B4', 'B3'], 'max': 0.5}, 'input image')
+    image, {'bands': ['B5', 'B4', 'B3'], 'max': 0.5}, 'input image'
+)
 map_smooth.add_ee_layer(
-    smooth, {'bands': ['B5', 'B4', 'B3'], 'max': 0.5}, 'smoothed')
-display(map_smooth.add_child(folium.LayerControl()))
+    smooth, {'bands': ['B5', 'B4', 'B3'], 'max': 0.5}, 'smoothed'
+)
+display(map_smooth)
 # [END earthengine__images10__smoothing]
 
 # [START earthengine__images10__edges]
@@ -44,15 +46,17 @@ laplacian = ee.Kernel.laplacian8(normalize=False)
 edgy = image.convolve(laplacian)
 
 # Define a map centered on Oakland, California.
-map_edgy = folium.Map(location=[37.8694, -121.9785], zoom_start=11)
+map_edgy = geemap.Map(center=[37.8694, -121.9785], zoom=11)
 
 # Add the image layers to the map and display it. Compare the edges result to
 # the original.
 map_edgy.add_ee_layer(
-    image, {'bands': ['B5', 'B4', 'B3'], 'max': 0.5}, 'input image')
+    image, {'bands': ['B5', 'B4', 'B3'], 'max': 0.5}, 'input image'
+)
 map_edgy.add_ee_layer(
-    edgy, {'bands': ['B5', 'B4', 'B3'], 'max': 0.5, 'format': 'png'}, 'edges')
-display(map_edgy.add_child(folium.LayerControl()))
+    edgy, {'bands': ['B5', 'B4', 'B3'], 'max': 0.5, 'format': 'png'}, 'edges'
+)
+display(map_edgy)
 # [END earthengine__images10__edges]
 
 # [START earthengine__images10__fixed]
@@ -64,5 +68,5 @@ center_row = [1, 1, 1, 1, 0, 1, 1, 1, 1]
 rows = [row, row, row, row, center_row, row, row, row, row]
 # Create the kernel from the weights.
 kernel = ee.Kernel.fixed(9, 9, rows, -4, -4, False)
-print(kernel)
+display(kernel)
 # [END earthengine__images10__fixed]

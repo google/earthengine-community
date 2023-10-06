@@ -41,3 +41,26 @@ def add_ee_layer(self, ee_image_object, vis_params, name):
 
 folium.Map.add_ee_layer = add_ee_layer
 # [END earthengine__dependencies__folium_setup]
+
+# [START earthengine__dependencies__geemap_import]
+import geemap
+# [END earthengine__dependencies__geemap_import]
+
+# [START earthengine__dependencies__python_setup]
+import ee
+import geemap
+# [END earthengine__dependencies__python_setup]
+
+# [START earthengine__dependencies__geemap_example]
+# Initialize a map object.
+m = geemap.Map()
+
+# Define an example image.
+img = ee.Image.random()
+
+# Add the image to the map.
+m.add_ee_layer(img, None, 'Random image')
+
+# Display the map (you can call the object directly if it is the final line).
+display(m)
+# [END earthengine__dependencies__geemap_example]

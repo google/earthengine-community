@@ -23,27 +23,31 @@ lights = nl_2012.select('stable_lights')
 zones = lights.gt(30).add(lights.gt(55)).add(lights.gt(62))
 
 # Define a map centered on Paris, France.
-map_zones = folium.Map(location=[48.8683, 2.373], zoom_start=8)
+map_zones = geemap.Map(center=[48.8683, 2.373], zoom=8)
 
 # Display the thresholded image as three distinct zones near Paris.
 palette = ['000000', '0000FF', '00FF00', 'FF0000']
 map_zones.add_ee_layer(
-    zones, {'min': 0, 'max': 3, 'palette': palette}, 'development zones')
+    zones, {'min': 0, 'max': 3, 'palette': palette}, 'development zones'
+)
 display(map_zones)
 # [END earthengine__images08__conditional]
 
 # [START earthengine__images08__conditional_exp]
 # Create zones using an expression, display.
-zones_exp = nl_2012.expression("(b('stable_lights') > 62) ? 3 "
-                               ": (b('stable_lights') > 55) ? 2 "
-                               ": (b('stable_lights') > 30) ? 1 "
-                               ": 0")
+zones_exp = nl_2012.expression(
+    "(b('stable_lights') > 62) ? 3 "
+    ": (b('stable_lights') > 55) ? 2 "
+    ": (b('stable_lights') > 30) ? 1 "
+    ': 0'
+)
 
 # Define a map centered on Paris, France.
-map_zones_exp = folium.Map(location=[48.8683, 2.373], zoom_start=8)
+map_zones_exp = geemap.Map(center=[48.8683, 2.373], zoom=8)
 
 # Add the image layer to the map and display it.
 map_zones_exp.add_ee_layer(
-    zones_exp, {'min': 0, 'max': 3, 'palette': palette}, 'zones exp')
+    zones_exp, {'min': 0, 'max': 3, 'palette': palette}, 'zones exp'
+)
 display(map_zones_exp)
 # [END earthengine__images08__conditional_exp]

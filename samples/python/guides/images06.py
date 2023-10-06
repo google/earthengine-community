@@ -20,20 +20,20 @@ image = ee.Image('LANDSAT/LC08/C02/T1_TOA/LC08_044034_20140318')
 
 # Compute the EVI using an expression.
 evi = image.expression(
-    '2.5 * ((NIR - RED) / (NIR + 6 * RED - 7.5 * BLUE + 1))', {
+    '2.5 * ((NIR - RED) / (NIR + 6 * RED - 7.5 * BLUE + 1))',
+    {
         'NIR': image.select('B5'),
         'RED': image.select('B4'),
-        'BLUE': image.select('B2')
-    })
+        'BLUE': image.select('B2'),
+    },
+)
 
 # Define a map centered on San Francisco Bay.
-map_evi = folium.Map(location=[37.4675, -122.1363], zoom_start=9)
+map_evi = geemap.Map(center=[37.4675, -122.1363], zoom=9)
 
 # Add the image layer to the map and display it.
-map_evi.add_ee_layer(evi, {
-    'min': -1,
-    'max': 1,
-    'palette': ['a6611a', 'f5f5f5', '4dac26']
-}, 'evi')
+map_evi.add_ee_layer(
+    evi, {'min': -1, 'max': 1, 'palette': ['a6611a', 'f5f5f5', '4dac26']}, 'evi'
+)
 display(map_evi)
 # [END earthengine__images06__evi_expression]

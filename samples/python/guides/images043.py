@@ -32,7 +32,13 @@ thumbnail_2 = image.getThumbURL({
     'min': 0,
     'max': 3000,
     'palette': [
-        '00A600', '63C600', 'E6E600', 'E9BD3A', 'ECB176', 'EFC2B3', 'F2F2F2'
+        '00A600',
+        '63C600',
+        'E6E600',
+        'E9BD3A',
+        'ECB176',
+        'EFC2B3',
+        'F2F2F2',
     ],
     'dimensions': 500,
     'region': ee.Geometry.Rectangle([-84.6, -55.9, -32.9, 15.7]),
@@ -44,12 +50,19 @@ thumbnail_3 = image.getThumbURL({
     'min': 0,
     'max': 3000,
     'palette': [
-        '00A600', '63C600', 'E6E600', 'E9BD3A', 'ECB176', 'EFC2B3', 'F2F2F2'
+        '00A600',
+        '63C600',
+        'E6E600',
+        'E9BD3A',
+        'ECB176',
+        'EFC2B3',
+        'F2F2F2',
     ],
-    'region':
-        ee.Geometry.LinearRing([[-84.6, 15.7], [-84.6, -55.9], [-32.9, -55.9]]),
+    'region': ee.Geometry.LinearRing(
+        [[-84.6, 15.7], [-84.6, -55.9], [-32.9, -55.9]]
+    ),
     'dimensions': 500,
-    'crs': 'EPSG:3857'
+    'crs': 'EPSG:3857',
 })
 print('Linear ring region and specified crs:', thumbnail_3)
 # [END earthengine__images043__get_thumb]

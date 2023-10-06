@@ -17,9 +17,11 @@
 # [START earthengine__register__displacement]
 # Load the two images to be registered.
 image1 = ee.Image(
-    'SKYSAT/GEN-A/PUBLIC/ORTHO/MULTISPECTRAL/s01_20150502T082736Z')
+    'SKYSAT/GEN-A/PUBLIC/ORTHO/MULTISPECTRAL/s01_20150502T082736Z'
+)
 image2 = ee.Image(
-    'SKYSAT/GEN-A/PUBLIC/ORTHO/MULTISPECTRAL/s01_20150305T081019Z')
+    'SKYSAT/GEN-A/PUBLIC/ORTHO/MULTISPECTRAL/s01_20150305T081019Z'
+)
 
 # Use bicubic resampling during registration.
 image1_orig = image1.resample('bicubic')
@@ -30,11 +32,9 @@ image1_red_band = image1_orig.select('R')
 image2_red_band = image2_orig.select('R')
 
 # Determine the displacement by matching only the 'R' bands.
-displacement = image2_red_band.displacement(**{
-    'referenceImage': image1_red_band,
-    'maxOffset': 50.0,
-    'patchWidth': 100.0
-})
+displacement = image2_red_band.displacement(
+    referenceImage=image1_red_band, maxOffset=50.0, patchWidth=100.0
+)
 
 # Compute image offset and direction.
 offset = displacement.select('dx').hypot(displacement.select('dy'))
@@ -44,7 +44,7 @@ angle = displacement.select('dx').atan2(displacement.select('dy'))
 import math
 
 # Define a map centered on Central Kenya.
-map_registration = folium.Map(location=[0.58, 37.46], zoom_start=15)
+map_registration = geemap.Map(center=[0.58, 37.46], zoom=15)
 
 # Add the image layers to the map.
 map_registration.add_ee_layer(offset, {'min': 0, 'max': 20}, 'offset')
@@ -65,13 +65,11 @@ map_registration.add_ee_layer(registered, vis_params, 'After Registration')
 # [END earthengine__register__displace]
 
 # [START earthengine__register__register]
-also_registered = image2_orig.register(**{
-    'referenceImage': image1_orig,
-    'maxOffset': 50.0,
-    'patchWidth': 100.0
-})
+also_registered = image2_orig.register(
+    referenceImage=image1_orig, maxOffset=50.0, patchWidth=100.0
+)
 
 # Add the image layer to the map and display it.
 map_registration.add_ee_layer(also_registered, vis_params, 'Also Registered')
-display(map_registration.add_child(folium.LayerControl()))
+display(map_registration)
 # [END earthengine__register__register]

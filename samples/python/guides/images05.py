@@ -19,8 +19,11 @@
 landsat_1999 = ee.Image('LANDSAT/LE7_TOA_5YEAR/1999_2003')
 
 # Compute NDVI.
-ndvi_1999 = (landsat_1999.select('B4').subtract(landsat_1999.select('B3'))
-             .divide(landsat_1999.select('B4').add(landsat_1999.select('B3'))))
+ndvi_1999 = (
+    landsat_1999.select('B4')
+    .subtract(landsat_1999.select('B3'))
+    .divide(landsat_1999.select('B4').add(landsat_1999.select('B3')))
+)
 # [END earthengine__images05__ndvi]
 
 # [START earthengine__images05__per_band]
@@ -35,14 +38,16 @@ diff = landsat_2008.subtract(landsat_1999)
 squared_difference = diff.pow(2)
 
 # Define a map centered on Australia.
-map_diff = folium.Map(location=[-24.003, 133.565], zoom_start=5)
+map_diff = geemap.Map(center=[-24.003, 133.565], zoom=5)
 
 # Add the image layers to the map and display it.
-map_diff.add_ee_layer(diff,
-                   {'bands': ['B4', 'B3', 'B2'], 'min': -32, 'max': 32},
-                   'diff.')
-map_diff.add_ee_layer(squared_difference,
-                   {'bands': ['B4', 'B3', 'B2'], 'max': 1000},
-                   'squared diff.')
-display(map_diff.add_child(folium.LayerControl()))
+map_diff.add_ee_layer(
+    diff, {'bands': ['B4', 'B3', 'B2'], 'min': -32, 'max': 32}, 'diff.'
+)
+map_diff.add_ee_layer(
+    squared_difference,
+    {'bands': ['B4', 'B3', 'B2'], 'max': 1000},
+    'squared diff.',
+)
+display(map_diff)
 # [END earthengine__images05__per_band]

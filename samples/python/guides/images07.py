@@ -26,7 +26,7 @@ ndwi = image.normalizedDifference(['B3', 'B5'])
 bare = ndvi.lt(0.2).And(ndwi.lt(0))
 
 # Define a map centered on San Francisco Bay.
-map_bare = folium.Map(location=[37.7726, -122.3578], zoom_start=12)
+map_bare = geemap.Map(center=[37.7726, -122.3578], zoom=12)
 
 # Add the masked image layer to the map and display it.
 map_bare.add_ee_layer(bare.selfMask(), None, 'bare')

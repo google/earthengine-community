@@ -22,7 +22,7 @@ image = ee.Image('LANDSAT/LC08/C02/T1/LC08_044034_20140318').select('B8')
 canny = ee.Algorithms.CannyEdgeDetector(image=image, threshold=10, sigma=1)
 
 # Define a map centered on San Francisco Bay and add the image layer to it.
-map_canny = folium.Map(location=[37.7295, -122.054], zoom_start=10)
+map_canny = geemap.Map(center=[37.7295, -122.054], zoom=10)
 map_canny.add_ee_layer(canny, None, 'canny')
 # [END earthengine__images13__canny]
 
@@ -32,5 +32,5 @@ hough = ee.Algorithms.HoughTransform(canny, 256, 600, 100)
 
 # Add the image layer to the map and display it.
 map_canny.add_ee_layer(hough, None, 'hough')
-display(map_canny.add_child(folium.LayerControl()))
+display(map_canny)
 # [END earthengine__images13__hough]

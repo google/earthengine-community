@@ -37,16 +37,17 @@ igbp_palette = [
     '33280d',  # crop mosaic
     'd7cdcc',  # snow and ice
     'f7e084',  # barren
-    '6f6f6f'   # tundra
+    '6f6f6f',  # tundra
 ]
 
 # Define a map centered on the United States.
-map_palette = folium.Map(location=[40.413, -99.229], zoom_start=5)
+map_palette = geemap.Map(center=[40.413, -99.229], zoom=5)
 
 # Add the image layer to the map and display it. Specify the min and max labels
 # and the color palette matching the labels.
 map_palette.add_ee_layer(
-    cover, {'min': 0, 'max': 17, 'palette': igbp_palette}, 'IGBP classes')
+    cover, {'min': 0, 'max': 17, 'palette': igbp_palette}, 'IGBP classes'
+)
 display(map_palette)
 # [END earthengine__images04__palettized]
 
@@ -82,7 +83,7 @@ sld_intervals = """
 cover_sld = cover.sldStyle(sld_intervals)
 
 # Define a map centered on the United States.
-map_sld_categorical = folium.Map(location=[40.413, -99.229], zoom_start=5)
+map_sld_categorical = geemap.Map(center=[40.413, -99.229], zoom=5)
 
 # Add the image layer to the map and display it.
 map_sld_categorical.add_ee_layer(cover_sld, None, 'IGBP classes styled')

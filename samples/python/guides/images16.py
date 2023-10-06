@@ -28,11 +28,12 @@ water = [51, 20, 14, 9, 7, 116, 4]
 fractions = image.unmix([urban, veg, water])
 
 # Define a map centered on San Francisco Bay.
-map_fractions = folium.Map(location=[37.5010, -122.1899], zoom_start=10)
+map_fractions = geemap.Map(center=[37.5010, -122.1899], zoom=10)
 
 # Add the image layers to the map and display it.
 map_fractions.add_ee_layer(
-    image, {'bands': ['B4', 'B3', 'B2'], 'min': 0, 'max': 128}, 'image')
+    image, {'bands': ['B4', 'B3', 'B2'], 'min': 0, 'max': 128}, 'image'
+)
 map_fractions.add_ee_layer(fractions, None, 'unmixed')
-display(map_fractions.add_child(folium.LayerControl()))
+display(map_fractions)
 # [END earthengine__images16__unmixing]

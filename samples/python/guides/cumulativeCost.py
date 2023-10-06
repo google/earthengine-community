@@ -30,28 +30,25 @@ cover = ee.Image('ESA/GLOBCOVER_L4_200901_200912_V2_3').select(0)
 # Classes 60, 80, 110, 140 have cost 1.
 # Classes 40, 90, 120, 130, 170 have cost 2.
 # Classes 50, 70, 150, 160 have cost 3.
-before_remap = [60, 80, 110, 140,
-                40, 90, 120, 130, 170,
-                50, 70, 150, 160]
-after_remap = [1, 1, 1, 1,
-               2, 2, 2, 2, 2,
-               3, 3, 3, 3]
+before_remap = [60, 80, 110, 140, 40, 90, 120, 130, 170, 50, 70, 150, 160]
+after_remap = [1, 1, 1, 1, 2, 2, 2, 2, 2, 3, 3, 3, 3]
 cost = cover.remap(before_remap, after_remap, 0)
 
 # Compute the cumulative cost to traverse the land cover.
-cumulative_cost = cost.cumulativeCost(**{
-    'source': sources,
-    'maxDistance': 80 * 1000  # 80 kilometers
-})
+cumulative_cost = cost.cumulativeCost(
+    source=sources, maxDistance=(80 * 1000)  # 80 kilometers
+)
 
 # Define a map centered on Central Africa.
-map_cost = folium.Map(location=[4.2, 18.71], zoom_start=9)
+map_cost = geemap.Map(center=[4.2, 18.71], zoom=9)
 
 # Add the image layers to the map and display it.
 map_cost.add_ee_layer(cover, None, 'Globcover')
-map_cost.add_ee_layer(cumulative_cost, {'min': 0, 'max': 5e4}, 'accumulated cost')
-map_cost.add_ee_layer(ee.Image().byte().paint(geometry),
-                      {'palette': 'FF0000'},
-                      'source geometry')
-display(map_cost.add_child(folium.LayerControl()))
+map_cost.add_ee_layer(
+    cumulative_cost, {'min': 0, 'max': 5e4}, 'accumulated cost'
+)
+map_cost.add_ee_layer(
+    ee.Image().byte().paint(geometry), {'palette': 'FF0000'}, 'source geometry'
+)
+display(map_cost)
 # [END earthengine__cumulativeCost__cost]

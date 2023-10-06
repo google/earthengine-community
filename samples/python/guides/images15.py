@@ -23,19 +23,27 @@ hsv = image.select(['B4', 'B3', 'B2']).rgbToHsv()
 
 # Swap in the panchromatic band and convert back to RGB.
 sharpened = ee.Image.cat(
-    [hsv.select('hue'),
-     hsv.select('saturation'),
-     image.select('B8')]).hsvToRgb()
+    [hsv.select('hue'), hsv.select('saturation'), image.select('B8')]
+).hsvToRgb()
 
 # Define a map centered on San Francisco, California.
-map_sharpened = folium.Map(location=[37.76664, -122.44829], zoom_start=13)
+map_sharpened = geemap.Map(center=[37.76664, -122.44829], zoom=13)
 
 # Add the image layers to the map and display it.
-map_sharpened.add_ee_layer(image, {
-    'bands': ['B4', 'B3', 'B2'], 'min': 0, 'max': 0.25, 'gamma': [1.1, 1.1, 1]
-}, 'rgb')
-map_sharpened.add_ee_layer(sharpened, {
-    'min': 0, 'max': 0.25, 'gamma': [1.3, 1.3, 1.3]
-}, 'pan-sharpened')
-display(map_sharpened.add_child(folium.LayerControl()))
+map_sharpened.add_ee_layer(
+    image,
+    {
+        'bands': ['B4', 'B3', 'B2'],
+        'min': 0,
+        'max': 0.25,
+        'gamma': [1.1, 1.1, 1],
+    },
+    'rgb',
+)
+map_sharpened.add_ee_layer(
+    sharpened,
+    {'min': 0, 'max': 0.25, 'gamma': [1.3, 1.3, 1.3]},
+    'pan-sharpened',
+)
+display(map_sharpened)
 # [END earthengine__images15__pan_sharpening]

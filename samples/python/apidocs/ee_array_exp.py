@@ -17,10 +17,10 @@ import altair as alt
 import pandas as pd
 
 empty = ee.Array([], ee.PixelType.int8())
-print(empty.exp().getInfo())  # []
+display(empty.exp())  # []
 
 # [pow(math.e, -1), 1, math.e, 7.389]
-print(ee.Array([-1, 0, 1, 2]).exp().getInfo())
+display(ee.Array([-1, 0, 1, 2]).exp())
 
 start = -5
 end = 2

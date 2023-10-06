@@ -13,10 +13,10 @@
 # limitations under the License.
 
 # [START earthengine__apidocs__ee_array_bitstoarray]
-print(ee.Array.bitsToArray(0).getInfo())  # [0]
-print(ee.Array.bitsToArray(1).getInfo())  # [1]
-print(ee.Array.bitsToArray(5).getInfo())  # [1, 0 , 1]
-print(ee.Array.bitsToArray(0xFF).getInfo())  # [1, 1, 1, 1, 1, 1, 1, 1]
-print(ee.Array.bitsToArray(-1).getInfo())  # Array of 64 "1" values
-print(ee.Array.bitsToArray(-1).toInt8().getInfo())  # Array of 64 "1" values
+display(ee.Array.bitsToArray(0))  # [0]
+display(ee.Array.bitsToArray(1))  # [1]
+display(ee.Array.bitsToArray(5))  # [1, 0 , 1]
+display(ee.Array.bitsToArray(0xFF))  # [1, 1, 1, 1, 1, 1, 1, 1]
+display(ee.Array.bitsToArray(-1))  # Array of 64 "1" values
+display(ee.Array.bitsToArray(-1).toInt8())  # Array of 64 "1" values
 # [END earthengine__apidocs__ee_array_bitstoarray]

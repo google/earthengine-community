@@ -14,8 +14,8 @@
 
 # [START earthengine__apidocs__ee_array_or]
 empty = ee.Array([], ee.PixelType.int8())
-print(empty.Or(empty).getInfo())  # []
+display(empty.Or(empty))  # []
 
 # [0, 1, 1, 1]
-print(ee.Array([0, 0, 1, 1]).Or(ee.Array([0, 1, 0, 1])).getInfo())
+display(ee.Array([0, 0, 1, 1]).Or(ee.Array([0, 1, 0, 1])))
 # [END earthengine__apidocs__ee_array_or]

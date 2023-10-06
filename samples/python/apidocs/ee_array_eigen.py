@@ -13,62 +13,62 @@
 # limitations under the License.
 
 # [START earthengine__apidocs__ee_array_eigen]
-print(ee.Array([[0, 0], [0, 0]]).eigen().getInfo())  # [[0, 0, 1], [0, 1, 0]]
+display(ee.Array([[0, 0], [0, 0]]).eigen())  # [[0, 0, 1], [0, 1, 0]]
 
-print(ee.Array([[1, 0], [0, 0]]).eigen().getInfo())  # [[1, 1, 0], [0,0,1]]
-print(ee.Array([[0, 1], [0, 0]]).eigen().getInfo())  # [[0, 0, 1], [0, 1, 0]]
-print(ee.Array([[0, 0], [1, 0]]).eigen().getInfo())  # [[0, -1, 0], [0, 0, -1]]
-print(ee.Array([[0, 0], [0, 1]]).eigen().getInfo())  # [[1, 0, 1], [0, 1, 0]]
+display(ee.Array([[1, 0], [0, 0]]).eigen())  # [[1, 1, 0], [0,0,1]]
+display(ee.Array([[0, 1], [0, 0]]).eigen())  # [[0, 0, 1], [0, 1, 0]]
+display(ee.Array([[0, 0], [1, 0]]).eigen())  # [[0, -1, 0], [0, 0, -1]]
+display(ee.Array([[0, 0], [0, 1]]).eigen())  # [[1, 0, 1], [0, 1, 0]]
 
 # [[1, 1, 0], [0, -1/√2, 1/√2]]
-print(ee.Array([[1, 1], [0, 0]]).eigen().getInfo())
+display(ee.Array([[1, 1], [0, 0]]).eigen())
 
 # [[1, 0, -1], [0, -1/√2, 1/√2]]]
-print(ee.Array([[0, 0], [1, 1]]).eigen().getInfo())
+display(ee.Array([[0, 0], [1, 1]]).eigen())
 
 # [[1, 1/√2, 1/√2], [0, 0, 1]]
-print(ee.Array([[1, 0], [1, 0]]).eigen().getInfo())
-print(ee.Array([[1, 0], [0, 1]]).eigen().getInfo())  # [[1, 1, 0], [1, 0, 1]]
+display(ee.Array([[1, 0], [1, 0]]).eigen())
+display(ee.Array([[1, 0], [0, 1]]).eigen())  # [[1, 1, 0], [1, 0, 1]]
 
 # [[1, 1/√2, 1/√2], [-1, 1/√2, -1/√2]]
-print(ee.Array([[0, 1], [1, 0]]).eigen().getInfo())
+display(ee.Array([[0, 1], [1, 0]]).eigen())
 
 # [[1, 1/√2, 1/√2], [0, 1, 0]]
-print(ee.Array([[0, 1], [0, 1]]).eigen().getInfo())
+display(ee.Array([[0, 1], [0, 1]]).eigen())
 
 # [[1.62, 0.85, 0.53], [-0.62, 0.53]]
-print(ee.Array([[1, 1], [1, 0]]).eigen().getInfo())
-print(ee.Array([[1, 1], [0, 1]]).eigen().getInfo())  # [[1, 0, 1], [1, 1, 0]]
-print(ee.Array([[1, 0], [1, 1]]).eigen().getInfo())  # [[1, -1, 0], [1, 0, -1]]
+display(ee.Array([[1, 1], [1, 0]]).eigen())
+display(ee.Array([[1, 1], [0, 1]]).eigen())  # [[1, 0, 1], [1, 1, 0]]
+display(ee.Array([[1, 0], [1, 1]]).eigen())  # [[1, -1, 0], [1, 0, -1]]
 
 # [[1.62, -0.53, -0.85], [-0.62, -0.85, 0.53]]
-print(ee.Array([[0, 1], [1, 1]]).eigen().getInfo())
+display(ee.Array([[0, 1], [1, 1]]).eigen())
 
 # [[2, 1/√2, 1/√2], [0, 1/√2, -1/√2]]
-print(ee.Array([[1, 1], [1, 1]]).eigen().getInfo())
+display(ee.Array([[1, 1], [1, 1]]).eigen())
 
 matrix = ee.Array([
   [1, 0, 0],
   [0, 1, 0],
   [0, 0, 1]])
-print(matrix.eigen().getInfo())  # [[1, 1, 0, 0], [1, 0, 1, 0], [1, 0, 0, 1]]
+display(matrix.eigen())  # [[1, 1, 0, 0], [1, 0, 1, 0], [1, 0, 0, 1]]
 
 matrix = ee.Array([
   [2, 0, 0],
   [0, 3, 0],
   [0, 0, 4]])
-print(matrix.eigen().getInfo())  # [[4, 0, 0, 1], [3, 0, 1, 0], [2, 1, 0, 0]]
+display(matrix.eigen())  # [[4, 0, 0, 1], [3, 0, 1, 0], [2, 1, 0, 0]]
 
 matrix = ee.Array([
   [1, 0, 0],
   [0, 0, 0],
   [0, 0, 0]])
-print(matrix.eigen().getInfo())  # [[1, 1, 0, 0], [0, 0, 1, 0], [0, 0, 0, 1]]
+display(matrix.eigen())  # [[1, 1, 0, 0], [0, 0, 1, 0], [0, 0, 0, 1]]
 
 matrix = ee.Array([
   [1, 1, 1],
   [1, 1, 1],
   [1, 1, 1]])
 # [[3, -0.58, -0.58, -0.58], [0, 0, -1/√2, 1/√2], [0, -0.82, 0.41, 0.41]]
-print(matrix.eigen().getInfo())
+display(matrix.eigen())
 # [END earthengine__apidocs__ee_array_eigen]

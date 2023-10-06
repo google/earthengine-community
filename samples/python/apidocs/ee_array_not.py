@@ -14,10 +14,10 @@
 
 # [START earthengine__apidocs__ee_array_not]
 empty = ee.Array([], ee.PixelType.int8())
-print(empty.Not().getInfo())  # []
+display(empty.Not())  # []
 
-print(ee.Array([0]).Not().getInfo())  # [1]
-print(ee.Array([1]).Not().getInfo())  # [0]
+display(ee.Array([0]).Not())  # [1]
+display(ee.Array([1]).Not())  # [0]
 
-print(ee.Array([-1, -0.1, 0, 0.1, 1]).Not().getInfo())  # [0, 0, 1, 0, 0]
+display(ee.Array([-1, -0.1, 0, 0.1, 1]).Not())  # [0, 0, 1, 0, 0]
 # [END earthengine__apidocs__ee_array_not]

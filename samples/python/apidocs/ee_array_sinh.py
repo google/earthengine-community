@@ -16,9 +16,9 @@
 import altair as alt
 import pandas as pd
 
-print(ee.Array([-5]).sinh().getInfo())  # [~ -74.20]
-print(ee.Array([0]).sinh().getInfo())  # [0]
-print(ee.Array([5]).sinh().getInfo())  # [~ 74.20]
+display(ee.Array([-5]).sinh())  # [~ -74.20]
+display(ee.Array([0]).sinh())  # [0]
+display(ee.Array([5]).sinh())  # [~ 74.20]
 
 start = -5
 end = 5

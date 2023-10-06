@@ -14,17 +14,17 @@
 
 # [START earthengine__apidocs__ee_array_bitwise_and]
 empty = ee.Array([], ee.PixelType.int8())
-print(empty.bitwise_and(empty).getInfo())  # []
+display(empty.bitwise_and(empty))  # []
 
-print(ee.Array(0).bitwise_and(ee.Array(0)).getInfo())  # 0
-print(ee.Array(0).bitwise_and(ee.Array(1)).getInfo())  # 0
-print(ee.Array(1).bitwise_and(ee.Array(0)).getInfo())  # 0
-print(ee.Array(1).bitwise_and(ee.Array(1)).getInfo())  # 1
-print(ee.Array(0xFF).bitwise_and(ee.Array(0xFFFF)).getInfo())  # 255
-print(ee.Array(0xFFFF).bitwise_and(ee.Array(0xFF)).getInfo())  # 255
+display(ee.Array(0).bitwise_and(ee.Array(0)))  # 0
+display(ee.Array(0).bitwise_and(ee.Array(1)))  # 0
+display(ee.Array(1).bitwise_and(ee.Array(0)))  # 0
+display(ee.Array(1).bitwise_and(ee.Array(1)))  # 1
+display(ee.Array(0xFF).bitwise_and(ee.Array(0xFFFF)))  # 255
+display(ee.Array(0xFFFF).bitwise_and(ee.Array(0xFF)))  # 255
 
-print(ee.Array(-1).bitwise_and(ee.Array(0xFF)).getInfo())  # 255
-print(ee.Array(-1).bitwise_and(ee.Array(-2)).getInfo())  # -2
+display(ee.Array(-1).bitwise_and(ee.Array(0xFF)))  # 255
+display(ee.Array(-1).bitwise_and(ee.Array(-2)))  # -2
 
-print(ee.Array([6, 6]).bitwise_and(ee.Array([1, 11])).getInfo())  # [0, 2]
+display(ee.Array([6, 6]).bitwise_and(ee.Array([1, 11])))  # [0, 2]
 # [END earthengine__apidocs__ee_array_bitwise_and]

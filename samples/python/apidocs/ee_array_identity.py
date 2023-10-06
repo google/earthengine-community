@@ -14,17 +14,17 @@
 
 # [START earthengine__apidocs__ee_array_identity]
 # []
-print(ee.Array.identity(0).getInfo())
+display(ee.Array.identity(0))
 
 # [[1]]
-print(ee.Array.identity(1).getInfo())
+display(ee.Array.identity(1))
 
 # [[1, 0],
 #  [0, 1]]
-print(ee.Array.identity(2).getInfo())
+display(ee.Array.identity(2))
 
 # [[1, 0, 0],
 #  [0, 1, 0],
 #  [0, 0, 1]]
-print(ee.Array.identity(3).getInfo())
+display(ee.Array.identity(3))
 # [END earthengine__apidocs__ee_array_identity]

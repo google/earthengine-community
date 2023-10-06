@@ -16,12 +16,12 @@
 # Return the position of the maximum value in each dimension.
 
 # Returns null if the array is empty.
-print(ee.Array([], ee.PixelType.int8()).argmax().getInfo())  # None
+display(ee.Array([], ee.PixelType.int8()).argmax())  # None
 
-print(ee.Array([9]).argmax().getInfo())  # [0]
-print(ee.Array([0, -1, 2, 1]).argmax().getInfo())  # [2]
-print(ee.Array([[3, 4, 2], [6, 5, 7]]).argmax().getInfo())  # [1, 2]
+display(ee.Array([9]).argmax())  # [0]
+display(ee.Array([0, -1, 2, 1]).argmax())  # [2]
+display(ee.Array([[3, 4, 2], [6, 5, 7]]).argmax())  # [1, 2]
 
 # Returns the first occurrence of the maximum.
-print(ee.Array([1, 1, 1, 9, 9, 9]).argmax().getInfo())  # [3]
+display(ee.Array([1, 1, 1, 9, 9, 9]).argmax())  # [3]
 # [END earthengine__apidocs__ee_array_argmax]

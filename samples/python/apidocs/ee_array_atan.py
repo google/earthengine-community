@@ -17,9 +17,9 @@ import math
 import altair as alt
 import pandas as pd
 
-print(ee.Array([-5]).atan().getInfo())  # [-1.3734]
-print(ee.Array([0]).atan().getInfo())  # [0]
-print(ee.Array([5]).atan().getInfo())  # [1.3734]
+display(ee.Array([-5]).atan())  # [-1.3734]
+display(ee.Array([0]).atan())  # [0]
+display(ee.Array([5]).atan())  # [1.3734]
 
 start = -5
 end = 5

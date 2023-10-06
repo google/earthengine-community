@@ -13,12 +13,12 @@
 # limitations under the License.
 
 # [START earthengine__apidocs__ee_array_get]
-print(ee.Array([9]).get([0]).getInfo())  # 9
-print(ee.Array([8, 7, 6]).get([2]).getInfo())  # 6
+display(ee.Array([9]).get([0]))  # 9
+display(ee.Array([8, 7, 6]).get([2]))  # 6
 
 array = ee.Array([[0, 1, 2], [3, 4, 5]])
-print(array.get([0, 0]).getInfo())  # 0
-print(array.get([0, 1]).getInfo())  # 1
-print(array.get([1, 0]).getInfo())  # 3
-print(array.get([1, 2]).getInfo())  # 5
+display(array.get([0, 0]))  # 0
+display(array.get([0, 1]))  # 1
+display(array.get([1, 0]))  # 3
+display(array.get([1, 2]))  # 5
 # [END earthengine__apidocs__ee_array_get]

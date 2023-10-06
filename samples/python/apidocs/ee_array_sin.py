@@ -19,11 +19,11 @@ import pandas as pd
 
 π = math.pi
 
-print(ee.Array([-π]).sin().getInfo())  # [Almost zero]
-print(ee.Array([-π / 2.0]).sin().getInfo())  # [-1]
-print(ee.Array([0]).sin().getInfo())  # [0]
-print(ee.Array([π / 2.0]).sin().getInfo())  # [1]
-print(ee.Array([π]).sin().getInfo())  # [Almost zero]
+display(ee.Array([-π]).sin())  # [Almost zero]
+display(ee.Array([-π / 2.0]).sin())  # [-1]
+display(ee.Array([0]).sin())  # [0]
+display(ee.Array([π / 2.0]).sin())  # [1]
+display(ee.Array([π]).sin())  # [Almost zero]
 
 start = -π
 end = π

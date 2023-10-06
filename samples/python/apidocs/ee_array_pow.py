@@ -14,25 +14,25 @@
 
 # [START earthengine__apidocs__ee_array_pow]
 empty = ee.Array([], ee.PixelType.int8())
-print(empty.pow(empty).getInfo())  # []
+display(empty.pow(empty))  # []
 
 # [0.25, -0.5, 1, -2, 4, -8]
-print(ee.Array([-2, -2, -2, -2, -2, -2]).pow([-2, -1, 0, 1, 2, 3]).getInfo())
+display(ee.Array([-2, -2, -2, -2, -2, -2]).pow([-2, -1, 0, 1, 2, 3]))
 
 # [1, -1, 1, -1, 1, -1]
-print(ee.Array([-1, -1, -1, -1, -1, -1]).pow([-2, -1, 0, 1, 2, 3]).getInfo())
+display(ee.Array([-1, -1, -1, -1, -1, -1]).pow([-2, -1, 0, 1, 2, 3]))
 
 # ['Infinity', 'Infinity', 1, 0, 0, 0]
-print(ee.Array([0, 0, 0, 0, 0, 0]).pow([-2, -1, 0, 1, 2, 3]).getInfo())
+display(ee.Array([0, 0, 0, 0, 0, 0]).pow([-2, -1, 0, 1, 2, 3]))
 
 # [1, 0, 0, 0]
-print(ee.Array([0, 0, 0, 0]).pow([0, 1, 2, 3]).getInfo())
+display(ee.Array([0, 0, 0, 0]).pow([0, 1, 2, 3]))
 
 # [1, 1, 1, 1, 1, 1]
-print(ee.Array([1, 1, 1, 1, 1, 1]).pow([-2, -1, 0, 1, 2, 3]).getInfo())
+display(ee.Array([1, 1, 1, 1, 1, 1]).pow([-2, -1, 0, 1, 2, 3]))
 
 # [0.25, 0.5, 1, 2, 4, 8]
-print(ee.Array([2, 2, 2, 2, 2, 2]).pow([-2, -1, 0, 1, 2, 3]).getInfo())
+display(ee.Array([2, 2, 2, 2, 2, 2]).pow([-2, -1, 0, 1, 2, 3]))
 
 # [0.009999999776482582,
 #  0.10000000149011612,
@@ -40,7 +40,7 @@ print(ee.Array([2, 2, 2, 2, 2, 2]).pow([-2, -1, 0, 1, 2, 3]).getInfo())
 #  10,
 #  100,
 #  1000]
-print(ee.Array([10, 10, 10, 10, 10, 10]).pow([-2, -1, 0, 1, 2, 3]).getInfo())
+display(ee.Array([10, 10, 10, 10, 10, 10]).pow([-2, -1, 0, 1, 2, 3]))
 
 # [0.009999999776482582,
 #  0.10000000149011612,
@@ -48,6 +48,6 @@ print(ee.Array([10, 10, 10, 10, 10, 10]).pow([-2, -1, 0, 1, 2, 3]).getInfo())
 #  10,
 #  100,
 #  1000]
-print(ee.Array([10, 10, 10, 10, 10, 10], ee.PixelType.int32())
-        .pow([-2, -1, 0, 1, 2, 3]).getInfo())
+display(ee.Array([10, 10, 10, 10, 10, 10], ee.PixelType.int32())
+        .pow([-2, -1, 0, 1, 2, 3]))
 # [END earthengine__apidocs__ee_array_pow]

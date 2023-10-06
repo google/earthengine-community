@@ -16,9 +16,9 @@
 import altair as alt
 import pandas as pd
 
-print(ee.Array([-6]).erfc().getInfo())  # [2]
-print(ee.Array([0]).erfc().getInfo())  # [1]
-print(ee.Array([28]).erfc().getInfo())  # [0]
+display(ee.Array([-6]).erfc())  # [2]
+display(ee.Array([0]).erfc())  # [1]
+display(ee.Array([28]).erfc())  # [0]
 
 start = -3
 end = 3

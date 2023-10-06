@@ -14,8 +14,8 @@
 
 # [START earthengine__apidocs__ee_array_min]
 empty = ee.Array([], ee.PixelType.int8())
-print(empty.min(empty).getInfo())  # []
+display(empty.min(empty))  # []
 
 # [-1, 1, 0, 2]
-print(ee.Array([0, 1, 2, 3]).min(ee.Array([-1, 3, 0, 2])).getInfo())
+display(ee.Array([0, 1, 2, 3]).min(ee.Array([-1, 3, 0, 2])))
 # [END earthengine__apidocs__ee_array_min]

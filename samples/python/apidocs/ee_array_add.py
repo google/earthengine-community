@@ -14,15 +14,15 @@
 
 # [START earthengine__apidocs__ee_array_add]
 empty = ee.Array([], ee.PixelType.int8())
-print(empty.add(empty).getInfo())  # []
+display(empty.add(empty))  # []
 
-print(ee.Array([0]).add(1).getInfo())  # [1]
-print(ee.Array([1]).add([2]).getInfo())  # [3]
-print(ee.Array([-3]).add([-4]).getInfo())  # [-7]
+display(ee.Array([0]).add(1))  # [1]
+display(ee.Array([1]).add([2]))  # [3]
+display(ee.Array([-3]).add([-4]))  # [-7]
 
-print(ee.Array([5, 6]).add([7, 8]).getInfo())  # [12 ,14]
+display(ee.Array([5, 6]).add([7, 8]))  # [12 ,14]
 
 array2x3 = ee.Array([[0, 1, 2], [3, 4, 5]])
-print(array2x3.add(1).getInfo())  # [[1, 2 ,3], [4, 5, 6]]
-print(array2x3.add(array2x3).getInfo())  # [[0, 2, 4], [6, 8, 10]]
+display(array2x3.add(1))  # [[1, 2 ,3], [4, 5, 6]]
+display(array2x3.add(array2x3))  # [[0, 2, 4], [6, 8, 10]]
 # [END earthengine__apidocs__ee_array_add]

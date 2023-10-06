@@ -14,16 +14,16 @@
 
 # [START earthengine__apidocs__ee_array_first_nonzero]
 empty = ee.Array([], ee.PixelType.int8())
-print(empty.first_nonzero(empty).getInfo())  # []
+display(empty.first_nonzero(empty))  # []
 
-print(ee.Array([0]).first_nonzero(0).getInfo())  # [0]
-print(ee.Array([0]).first_nonzero([0]).getInfo())  # [0]
-print(ee.Array([0]).first_nonzero([1]).getInfo())  # [1]
-print(ee.Array([2]).first_nonzero([3]).getInfo())  # [2]
-print(ee.Array([1]).first_nonzero([0]).getInfo())  # [1]
+display(ee.Array([0]).first_nonzero(0))  # [0]
+display(ee.Array([0]).first_nonzero([0]))  # [0]
+display(ee.Array([0]).first_nonzero([1]))  # [1]
+display(ee.Array([2]).first_nonzero([3]))  # [2]
+display(ee.Array([1]).first_nonzero([0]))  # [1]
 
-print(ee.Array([-1, 0, 1]).first_nonzero([2, -1, 2]).getInfo())  # [-1, -1, 1]
+display(ee.Array([-1, 0, 1]).first_nonzero([2, -1, 2]))  # [-1, -1, 1]
 
 # [[1, 2], [3, 4]]
-print(ee.Array([[1, 2], [0, 0]]).first_nonzero([[0, 0], [3, 4]]).getInfo())
+display(ee.Array([[1, 2], [0, 0]]).first_nonzero([[0, 0], [3, 4]]))
 # [END earthengine__apidocs__ee_array_first_nonzero]

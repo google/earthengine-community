@@ -13,19 +13,19 @@
 # limitations under the License.
 
 # [START earthengine__apidocs__ee_array_bitcount]
-print(ee.Array([], ee.PixelType.int8()).bitCount().getInfo())  # []
+display(ee.Array([], ee.PixelType.int8()).bitCount())  # []
 
-print(ee.Array([0]).bitCount().getInfo())        # [0]
-print(ee.Array([1]).bitCount().getInfo())        # [1]
-print(ee.Array([2]).bitCount().getInfo())        # [1]
-print(ee.Array([3]).bitCount().getInfo())        # [2]
-print(ee.Array([0xFFFF]).bitCount().getInfo())   # [16]
-print(ee.Array([1, 2, 3]).bitCount().getInfo())  # [1, 1, 2]
+display(ee.Array([0]).bitCount())        # [0]
+display(ee.Array([1]).bitCount())        # [1]
+display(ee.Array([2]).bitCount())        # [1]
+display(ee.Array([3]).bitCount())        # [2]
+display(ee.Array([0xFFFF]).bitCount())   # [16]
+display(ee.Array([1, 2, 3]).bitCount())  # [1, 1, 2]
 
-print(ee.Array([[0, 1], [6, 13]]).bitCount().getInfo())  # [[0, 1], [2, 3]]
+display(ee.Array([[0, 1], [6, 13]]).bitCount())  # [[0, 1], [2, 3]]
 
 # https://en.wikipedia.org/wiki/Two's_complement signed values.
-print(ee.Array([-1]).bitCount().getInfo())                       # [64]
-print(ee.Array([-1], ee.PixelType.int8()).bitCount().getInfo())  # [64]
-print(ee.Array([-2]).bitCount().getInfo())                       # [63]
+display(ee.Array([-1]).bitCount())                       # [64]
+display(ee.Array([-1], ee.PixelType.int8()).bitCount())  # [64]
+display(ee.Array([-2]).bitCount())                       # [63]
 # [END earthengine__apidocs__ee_array_bitcount]

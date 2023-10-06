@@ -18,9 +18,9 @@ import altair as alt
 import pandas as pd
 
 π = math.pi
-print(ee.Array([-π / 4]).tan().getInfo())  # [Almost -1]
-print(ee.Array([0]).tan().getInfo())  # [0]
-print(ee.Array([π / 4]).tan().getInfo())  # [Almost 1]
+display(ee.Array([-π / 4]).tan())  # [Almost -1]
+display(ee.Array([0]).tan())  # [0]
+display(ee.Array([π / 4]).tan())  # [Almost 1]
 
 start = -π / 3
 end = π / 3

@@ -13,7 +13,7 @@
 # limitations under the License.
 
 # [START earthengine__apidocs__ee_array_abs]
-print(ee.Array([-1]).abs().getInfo())  # [1]
-print(ee.Array([-2, 0, 2]).abs().getInfo())  # [2, 0, 2]
-print(ee.Array([[-3.1, -2], [-1, 0]]).abs().getInfo())  # [[3.1, 2], [1, 0]]
+display(ee.Array([-1]).abs())  # [1]
+display(ee.Array([-2, 0, 2]).abs())  # [2, 0, 2]
+display(ee.Array([[-3.1, -2], [-1, 0]]).abs())  # [[3.1, 2], [1, 0]]
 # [END earthengine__apidocs__ee_array_abs]

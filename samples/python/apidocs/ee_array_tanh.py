@@ -16,9 +16,9 @@
 import altair as alt
 import pandas as pd
 
-print(ee.Array([-5]).tanh().getInfo())  # [~ -1]
-print(ee.Array([0]).tanh().getInfo())  # [0]
-print(ee.Array([5]).tanh().getInfo())  # [~ 1]
+display(ee.Array([-5]).tanh())  # [~ -1]
+display(ee.Array([0]).tanh())  # [0]
+display(ee.Array([5]).tanh())  # [~ 1]
 
 start = -5
 end = 5

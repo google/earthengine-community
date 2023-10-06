@@ -17,26 +17,26 @@ import altair as alt
 import pandas as pd
 
 empty = ee.Array([], ee.PixelType.int8())
-print(empty.mod(empty).getInfo())  # []
+display(empty.mod(empty))  # []
 
-print(ee.Array([0, 0]).mod(ee.Array([-1, 2])).getInfo())  # [0,0]
+display(ee.Array([0, 0]).mod(ee.Array([-1, 2])))  # [0,0]
 
 # [0,0,0,0,0]
-print(ee.Array([0, 1, 2, 3, 4]).mod(ee.Array([1, 1, 1, 1, 1])).getInfo())
+display(ee.Array([0, 1, 2, 3, 4]).mod(ee.Array([1, 1, 1, 1, 1])))
 
 # [0,1,0,1,0]
-print(ee.Array([0, 1, 2, 3, 4]).mod(ee.Array([2, 2, 2, 2, 2])).getInfo())
+display(ee.Array([0, 1, 2, 3, 4]).mod(ee.Array([2, 2, 2, 2, 2])))
 
 # [0,1,7,0,1]
-print(ee.Array([0, 1, 7, 8, 9]).mod(ee.Array([8, 8, 8, 8, 8])).getInfo())
+display(ee.Array([0, 1, 7, 8, 9]).mod(ee.Array([8, 8, 8, 8, 8])))
 
 # [-1,-7,0,-1]
-print(ee.Array([-1, -7, -8, -9]).mod(ee.Array([8, 8, 8, 8])).getInfo())
+display(ee.Array([-1, -7, -8, -9]).mod(ee.Array([8, 8, 8, 8])))
 
 # [0,1,0,8]
-print(ee.Array([8, 8, 8, 8]).mod(ee.Array([-1, -7, -8, -9])).getInfo())
+display(ee.Array([8, 8, 8, 8]).mod(ee.Array([-1, -7, -8, -9])))
 
-print(ee.Array([2.5]).mod(ee.Array([1.2])).getInfo())  # [0.10000000000000009]
+display(ee.Array([2.5]).mod(ee.Array([1.2])))  # [0.10000000000000009]
 
 # Generate a square wave graph using mod.
 start = -10

@@ -13,11 +13,11 @@
 # limitations under the License.
 
 # [START earthengine__apidocs__ee_array_subtract]
-print(ee.Array([10]).subtract(1).getInfo())  # [9]
+display(ee.Array([10]).subtract(1))  # [9]
 
-print(ee.Array([-1, 0, 1]).subtract(2).getInfo())  # [-3, -2, -1]
-print(ee.Array([-1, 0, 1]).subtract([-5, 6, 7]).getInfo())  # [4, -6, -6]
+display(ee.Array([-1, 0, 1]).subtract(2))  # [-3, -2, -1]
+display(ee.Array([-1, 0, 1]).subtract([-5, 6, 7]))  # [4, -6, -6]
 
 empty = ee.Array([], ee.PixelType.int8())
-print(empty.subtract(empty).getInfo())  # []
+display(empty.subtract(empty))  # []
 # [END earthengine__apidocs__ee_array_subtract]

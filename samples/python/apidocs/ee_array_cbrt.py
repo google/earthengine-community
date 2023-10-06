@@ -14,14 +14,14 @@
 
 # [START earthengine__apidocs__ee_array_cbrt]
 # Requires an explicit PixelType if no data.
-print(ee.Array([], ee.PixelType.int8()).cbrt().getInfo())  # []
+display(ee.Array([], ee.PixelType.int8()).cbrt())  # []
 
-print(ee.Array([0]).cbrt().getInfo())  # [0]
-print(ee.Array([27]).cbrt().getInfo())  # [3]
-print(ee.Array([-27]).cbrt().getInfo())  # -3
+display(ee.Array([0]).cbrt())  # [0]
+display(ee.Array([27]).cbrt())  # [3]
+display(ee.Array([-27]).cbrt())  # -3
 
-print(ee.Array([0, 1, 8, 27]).cbrt().getInfo())  # [0, 1, 2, 3]
+display(ee.Array([0, 1, 8, 27]).cbrt())  # [0, 1, 2, 3]
 
 # [[0, 1, 2], [3, 4, 5]]
-print(ee.Array([[0, 1, 8], [27, 64, 125]]).cbrt().getInfo())
+display(ee.Array([[0, 1, 8], [27, 64, 125]]).cbrt())
 # [END earthengine__apidocs__ee_array_cbrt]

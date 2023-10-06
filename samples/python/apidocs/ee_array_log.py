@@ -17,7 +17,7 @@ import math
 import altair as alt
 import pandas as pd
 
-print(ee.Array([pow(math.e, -1), 1, math.e]).log().getInfo())  # [-1,0,1]
+display(ee.Array([pow(math.e, -1), 1, math.e]).log())  # [-1,0,1]
 
 start = 0.1
 end = 6

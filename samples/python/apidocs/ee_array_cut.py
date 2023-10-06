@@ -13,16 +13,16 @@
 # limitations under the License.
 
 # [START earthengine__apidocs__ee_array_cut]
-print(ee.Array([9]).cut([0]).getInfo())  # [9]
-print(ee.Array([9]).cut([-1]).getInfo())  # [9]
+display(ee.Array([9]).cut([0]))  # [9]
+display(ee.Array([9]).cut([-1]))  # [9]
 
 array1x3 = ee.Array([0, 1, 2])
-print(array1x3.cut([-1]).getInfo())  # [0, 1, 2]
-print(array1x3.cut([0]).getInfo())  # [0]
-print(array1x3.cut([2]).getInfo())  # [2]
+display(array1x3.cut([-1]))  # [0, 1, 2]
+display(array1x3.cut([0]))  # [0]
+display(array1x3.cut([2]))  # [2]
 
 array2x3 = ee.Array([[0, 1, 2], [3, 4, 5]])
-print(array2x3.cut([-1, -1]).getInfo())  # [[0, 1, 2], [3 , 4, 5]]
-print(array2x3.cut([-1, 0]).getInfo())  # [[0], [3]]
-print(array2x3.cut([1, -1]).getInfo())  # [[3, 4, 5]]
+display(array2x3.cut([-1, -1]))  # [[0, 1, 2], [3 , 4, 5]]
+display(array2x3.cut([-1, 0]))  # [[0], [3]]
+display(array2x3.cut([1, -1]))  # [[3, 4, 5]]
 # [END earthengine__apidocs__ee_array_cut]

@@ -14,15 +14,15 @@
 
 # [START earthengine__apidocs__ee_array_neq]
 empty = ee.Array([], ee.PixelType.int8())
-print(empty.neq(empty).getInfo())  # []
+display(empty.neq(empty))  # []
 
-print(ee.Array([0]).neq(ee.Array([1])).getInfo());  # 1
-print(ee.Array([1]).neq(ee.Array([1])).getInfo());  # 0
+display(ee.Array([0]).neq(ee.Array([1])));  # 1
+display(ee.Array([1]).neq(ee.Array([1])));  # 0
 
-print(ee.Array([1.1]).neq(ee.Array([1.1])).getInfo())  # 0
-print(ee.Array([1.1]).float().neq(ee.Array([1.1])).getInfo())  # 1
-print(ee.Array([1.1]).double().neq(ee.Array([1.1])).getInfo())  # 0
+display(ee.Array([1.1]).neq(ee.Array([1.1])))  # 0
+display(ee.Array([1.1]).float().neq(ee.Array([1.1])))  # 1
+display(ee.Array([1.1]).double().neq(ee.Array([1.1])))  # 0
 
-print(ee.Array([1]).int8().neq(ee.Array([1])).getInfo())  # 0
-print(ee.Array([1]).int8().neq(ee.Array([1]).int32()).getInfo())  # 0
+display(ee.Array([1]).int8().neq(ee.Array([1])))  # 0
+display(ee.Array([1]).int8().neq(ee.Array([1]).int32()))  # 0
 # [END earthengine__apidocs__ee_array_neq]

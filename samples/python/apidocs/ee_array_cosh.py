@@ -16,9 +16,9 @@
 import altair as alt
 import pandas as pd
 
-print(ee.Array([-4]).cosh().getInfo())  # [~27.31]
-print(ee.Array([0]).cosh().getInfo())  # [1]
-print(ee.Array([4]).cosh().getInfo())  # [~27.31]
+display(ee.Array([-4]).cosh())  # [~27.31]
+display(ee.Array([0]).cosh())  # [1]
+display(ee.Array([4]).cosh())  # [~27.31]
 
 start = -4
 end = 4

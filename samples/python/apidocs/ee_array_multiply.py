@@ -13,18 +13,18 @@
 # limitations under the License.
 
 # [START earthengine__apidocs__ee_array_multiply]
-print(ee.Array([1]).multiply(0).getInfo())  # [0]
-print(ee.Array([1]).multiply(1).getInfo())  # [1]
+display(ee.Array([1]).multiply(0))  # [0]
+display(ee.Array([1]).multiply(1))  # [1]
 
-print(ee.Array([1]).multiply([0]).getInfo())  # [0]
-print(ee.Array([1]).multiply([1]).getInfo())  # [1]
+display(ee.Array([1]).multiply([0]))  # [0]
+display(ee.Array([1]).multiply([1]))  # [1]
 
 # [-1, 8, -2, 4.8]
-print(ee.Array([1, -2, 2, 4]).multiply([-1, -4, -1, 1.2]).getInfo())
+display(ee.Array([1, -2, 2, 4]).multiply([-1, -4, -1, 1.2]))
 
 # [-1, 2, -2, -3]
-print(ee.Array([1, -2, 2, 3]).multiply(-1).getInfo())
+display(ee.Array([1, -2, 2, 3]).multiply(-1))
 
 empty = ee.Array([], ee.PixelType.int8())
-print(empty.multiply(empty).getInfo())  # []
+display(empty.multiply(empty))  # []
 # [END earthengine__apidocs__ee_array_multiply]

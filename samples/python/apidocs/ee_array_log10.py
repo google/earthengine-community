@@ -16,7 +16,7 @@
 import altair as alt
 import pandas as pd
 
-print(ee.Array([0.1, 1, 10, 100]).log10().getInfo())  # [-1,0,1,2]
+display(ee.Array([0.1, 1, 10, 100]).log10())  # [-1,0,1,2]
 
 start = 0.1
 end = 100

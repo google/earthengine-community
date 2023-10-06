@@ -17,9 +17,9 @@ import math
 import altair as alt
 import pandas as pd
 
-print(ee.Array([-1]).asin().getInfo())  # [-π/2]
-print(ee.Array([0]).asin().getInfo())  # [0]
-print(ee.Array([1]).asin().getInfo())  # [π/2]
+display(ee.Array([-1]).asin())  # [-π/2]
+display(ee.Array([0]).asin())  # [0]
+display(ee.Array([1]).asin())  # [π/2]
 
 start = -1
 end = 1

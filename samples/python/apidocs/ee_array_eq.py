@@ -14,15 +14,15 @@
 
 # [START earthengine__apidocs__ee_array_eq]
 empty = ee.Array([], ee.PixelType.int8())
-print(empty.eq(empty).getInfo())  # []
+display(empty.eq(empty))  # []
 
-print(ee.Array([0]).eq(ee.Array([1])).getInfo())  # 0
-print(ee.Array([0]).eq(ee.Array([0])).getInfo())  # 1
+display(ee.Array([0]).eq(ee.Array([1])))  # 0
+display(ee.Array([0]).eq(ee.Array([0])))  # 1
 
-print(ee.Array([1.1]).eq(ee.Array([1.1])).getInfo())  # 1
-print(ee.Array([1.1]).float().eq(ee.Array([1.1])).getInfo())  # 0
-print(ee.Array([1.1]).double().eq(ee.Array([1.1])).getInfo())  # 1
+display(ee.Array([1.1]).eq(ee.Array([1.1])))  # 1
+display(ee.Array([1.1]).float().eq(ee.Array([1.1])))  # 0
+display(ee.Array([1.1]).double().eq(ee.Array([1.1])))  # 1
 
-print(ee.Array([1]).int8().eq(ee.Array([1])).getInfo())  # 1
-print(ee.Array([1]).int8().eq(ee.Array([1]).int32()).getInfo())  # 1
+display(ee.Array([1]).int8().eq(ee.Array([1])))  # 1
+display(ee.Array([1]).int8().eq(ee.Array([1]).int32()))  # 1
 # [END earthengine__apidocs__ee_array_eq]

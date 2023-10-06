@@ -14,15 +14,15 @@
 
 # [START earthengine__apidocs__ee_array_bitwise_not]
 empty = ee.Array([], ee.PixelType.int8())
-print(empty.bitwise_not().getInfo())  # []
+display(empty.bitwise_not())  # []
 
-print(ee.Array(0).bitwise_not().getInfo())  # -1
-print(ee.Array(1).bitwise_not().getInfo())  # -2
-print(ee.Array(0xFF).bitwise_not().getInfo())  # -256
+display(ee.Array(0).bitwise_not())  # -1
+display(ee.Array(1).bitwise_not())  # -2
+display(ee.Array(0xFF).bitwise_not())  # -256
 
-print(ee.Array(-1).bitwise_not().getInfo())  # 0
-print(ee.Array(-2).bitwise_not().getInfo())  # 1
-print(ee.Array(-3).bitwise_not().getInfo())  # 2
+display(ee.Array(-1).bitwise_not())  # 0
+display(ee.Array(-2).bitwise_not())  # 1
+display(ee.Array(-3).bitwise_not())  # 2
 
-print(ee.Array(0xFF).toInt64().bitwise_not().getInfo())  # -256
+display(ee.Array(0xFF).toInt64().bitwise_not())  # -256
 # [END earthengine__apidocs__ee_array_bitwise_not]

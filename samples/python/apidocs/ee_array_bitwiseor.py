@@ -14,19 +14,19 @@
 
 # [START earthengine__apidocs__ee_array_bitwiseor]
 empty = ee.Array([], ee.PixelType.int8())
-print(empty.bitwiseOr(empty).getInfo())  # []
+display(empty.bitwiseOr(empty))  # []
 
-print(ee.Array(0).bitwiseOr(ee.Array(0)).getInfo())  # 0
-print(ee.Array(0).bitwiseOr(ee.Array(1)).getInfo())  # 1
-print(ee.Array(1).bitwiseOr(ee.Array(0)).getInfo())  # 1
-print(ee.Array(1).bitwiseOr(ee.Array(1)).getInfo())  # 1
+display(ee.Array(0).bitwiseOr(ee.Array(0)))  # 0
+display(ee.Array(0).bitwiseOr(ee.Array(1)))  # 1
+display(ee.Array(1).bitwiseOr(ee.Array(0)))  # 1
+display(ee.Array(1).bitwiseOr(ee.Array(1)))  # 1
 
-print(ee.Array(0xFF).bitwiseOr(ee.Array(0xFFFF)).getInfo())  # 65535
-print(ee.Array(0xFFFF).bitwiseOr(ee.Array(0xFF)).getInfo())  # 65535
+display(ee.Array(0xFF).bitwiseOr(ee.Array(0xFFFF)))  # 65535
+display(ee.Array(0xFFFF).bitwiseOr(ee.Array(0xFF)))  # 65535
 
-print(ee.Array(-1).bitwiseOr(ee.Array(0xFF)).getInfo())  # -1
-print(ee.Array(-2).bitwiseOr(ee.Array(-3)).getInfo())  # -1
-print(ee.Array(-2).bitwiseOr(ee.Array(-4)).getInfo())  # -2
+display(ee.Array(-1).bitwiseOr(ee.Array(0xFF)))  # -1
+display(ee.Array(-2).bitwiseOr(ee.Array(-3)))  # -1
+display(ee.Array(-2).bitwiseOr(ee.Array(-4)))  # -2
 
-print(ee.Array([6, 6]).bitwiseOr(ee.Array([1, 11])).getInfo())  # [7, 15]
+display(ee.Array([6, 6]).bitwiseOr(ee.Array([1, 11])))  # [7, 15]
 # [END earthengine__apidocs__ee_array_bitwiseor]

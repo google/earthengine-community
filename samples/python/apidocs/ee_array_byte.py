@@ -14,14 +14,14 @@
 
 # [START earthengine__apidocs__ee_array_byte]
 # Clamps below at 0.
-print(ee.Array([-1]).byte().getInfo())  # [0]
-print(ee.Array([255]).byte().getInfo())  # [255]
+display(ee.Array([-1]).byte())  # [0]
+display(ee.Array([255]).byte())  # [255]
 # Clamps above at 255.
-print(ee.Array([256]).byte().getInfo())  # [255]
+display(ee.Array([256]).byte())  # [255]
 
 # Rounds. [0, 0, 1, 127, 255, 255]
-print(ee.Array([-0.1, 0.1, 0.5, 127.1, 255.1, 255.9]).byte().getInfo())
+display(ee.Array([-0.1, 0.1, 0.5, 127.1, 255.1, 255.9]).byte())
 
 # Requires an explicit PixelType if no data.
-print(ee.Array([[], []], ee.PixelType.float()).byte().getInfo())  # [[], []]
+display(ee.Array([[], []], ee.PixelType.float()).byte())  # [[], []]
 # [END earthengine__apidocs__ee_array_byte]

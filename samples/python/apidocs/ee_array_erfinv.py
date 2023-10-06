@@ -16,9 +16,9 @@
 import altair as alt
 import pandas as pd
 
-print(ee.Array([-0.99]).erfInv().getInfo())  # [-1.82]
-print(ee.Array([0]).erfInv().getInfo())  # [0]
-print(ee.Array([0.99]).erfInv().getInfo())  # [1.82]
+display(ee.Array([-0.99]).erfInv())  # [-1.82]
+display(ee.Array([0]).erfInv())  # [0]
+display(ee.Array([0.99]).erfInv())  # [1.82]
 
 start = -0.99
 end = 0.99

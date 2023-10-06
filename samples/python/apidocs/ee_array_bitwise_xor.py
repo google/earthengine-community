@@ -14,15 +14,15 @@
 
 # [START earthengine__apidocs__ee_array_bitwise_xor]
 empty = ee.Array([], ee.PixelType.int8())
-print(empty.bitwise_xor(empty).getInfo())  # []
+display(empty.bitwise_xor(empty))  # []
 
-print(ee.Array(0).bitwise_xor(ee.Array(0)).getInfo())  # 0
-print(ee.Array(0).bitwise_xor(ee.Array(1)).getInfo())  # 1
-print(ee.Array(1).bitwise_xor(ee.Array(0)).getInfo())  # 1
-print(ee.Array(1).bitwise_xor(ee.Array(1)).getInfo())  # 0
+display(ee.Array(0).bitwise_xor(ee.Array(0)))  # 0
+display(ee.Array(0).bitwise_xor(ee.Array(1)))  # 1
+display(ee.Array(1).bitwise_xor(ee.Array(0)))  # 1
+display(ee.Array(1).bitwise_xor(ee.Array(1)))  # 0
 
-print(ee.Array(0x00FF).bitwise_xor(ee.Array(0xFF00)).getInfo())  # 65535
+display(ee.Array(0x00FF).bitwise_xor(ee.Array(0xFF00)))  # 65535
 
 # [4, 10, 19]
-print(ee.Array([1, 2, 3]).bitwise_xor(ee.Array([5, 8, 16])).getInfo())
+display(ee.Array([1, 2, 3]).bitwise_xor(ee.Array([5, 8, 16])))
 # [END earthengine__apidocs__ee_array_bitwise_xor]

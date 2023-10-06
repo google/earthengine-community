@@ -14,9 +14,9 @@
 
 # [START earthengine__apidocs__ee_array_max]
 empty = ee.Array([], ee.PixelType.int8())
-print(empty.max(empty).getInfo())  # []
+display(empty.max(empty))  # []
 
 array1 = ee.Array([0, -3, 5, 3])
 array2 = ee.Array([0, -1, 2, 4])
-print(array1.max(array2).getInfo())  # [0, -1, 5, 4]
+display(array1.max(array2))  # [0, -1, 5, 4]
 # [END earthengine__apidocs__ee_array_max]

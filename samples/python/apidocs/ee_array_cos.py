@@ -18,11 +18,11 @@ import altair as alt
 import pandas as pd
 
 π = math.pi
-print(ee.Array([-π]).cos().getInfo())  # [-1]
-print(ee.Array([-π / 2.0]).cos().getInfo())  # [Almost zero]
-print(ee.Array([0]).cos().getInfo())  # [1]
-print(ee.Array([π / 2.0]).cos().getInfo())  # [Almost zero]
-print(ee.Array([π]).cos().getInfo())  # [-1]
+display(ee.Array([-π]).cos())  # [-1]
+display(ee.Array([-π / 2.0]).cos())  # [Almost zero]
+display(ee.Array([0]).cos())  # [1]
+display(ee.Array([π / 2.0]).cos())  # [Almost zero]
+display(ee.Array([π]).cos())  # [-1]
 
 start = -π
 end = π

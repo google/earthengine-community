@@ -30,9 +30,9 @@ display('rectangle.symmetricDifference(...) =', rectangle_symmetric_difference)
 # Display relevant geometries on the map.
 m = geemap.Map()
 m.set_center(-122.085, 37.422, 15)
-m.add_ee_layer(rectangle, {'color': 'black'}, 'Geometry [black]: rectangle')
-m.add_ee_layer(input_geom, {'color': 'blue'}, 'Parameter [blue]: input_geom')
-m.add_ee_layer(
+m.add_layer(rectangle, {'color': 'black'}, 'Geometry [black]: rectangle')
+m.add_layer(input_geom, {'color': 'blue'}, 'Parameter [blue]: input_geom')
+m.add_layer(
     rectangle_symmetric_difference,
     {'color': 'red'},
     'Result [red]: rectangle.symmetricDifference',

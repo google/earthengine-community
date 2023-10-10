@@ -23,21 +23,21 @@ dem_clip = dem.clip(geom_poly)
 display('Clipped image retains metadata and band names', dem_clip)
 m = geemap.Map()
 m.set_center(-121.12, 38.13, 8)
-m.add_ee_layer(dem_clip, dem_vis, 'Polygon clip')
-m.add_ee_layer(geom_poly, {'color': 'green'}, 'Polygon geometry', False)
+m.add_layer(dem_clip, dem_vis, 'Polygon clip')
+m.add_layer(geom_poly, {'color': 'green'}, 'Polygon geometry', False)
 
 # Clip the DEM by a line geometry.
 geom_line = ee.Geometry.LinearRing(
     [[-121.19, 38.10], [-120.53, 38.54], [-120.22, 37.83], [-121.19, 38.10]]
 )
-m.add_ee_layer(dem.clip(geom_line), dem_vis, 'Line clip')
-m.add_ee_layer(geom_line, {'color': 'orange'}, 'Line geometry', False)
+m.add_layer(dem.clip(geom_line), dem_vis, 'Line clip')
+m.add_layer(geom_line, {'color': 'orange'}, 'Line geometry', False)
 
 # Images have geometry clip the dem image by the geometry of an S2 image.
 s_2_img = ee.Image('COPERNICUS/S2_SR/20210109T185751_20210109T185931_T10SEG')
 geom_s_2_img = s_2_img.geometry()
-m.add_ee_layer(dem.clip(geom_s_2_img), dem_vis, 'Image geometry clip')
-m.add_ee_layer(geom_s_2_img, {'color': 'blue'}, 'Image geometry', False)
+m.add_layer(dem.clip(geom_s_2_img), dem_vis, 'Image geometry clip')
+m.add_layer(geom_s_2_img, {'color': 'blue'}, 'Image geometry', False)
 
 # Don't use ee.Image.clip prior to ee.Image.regionReduction, the "geometry"
 # parameter handles it more efficiently.
@@ -51,7 +51,7 @@ display('Max elevation (m)', zonal_max.get('elevation'))
 watersheds = ee.FeatureCollection('USGS/WBD/2017/HUC10').filterBounds(
     ee.Geometry.Point(-122.754, 38.606).buffer(2e4)
 )
-m.add_ee_layer(dem.clipToCollection(watersheds), dem_vis, 'Watersheds clip')
-m.add_ee_layer(watersheds, {'color': 'red'}, 'Watersheds', False)
+m.add_layer(dem.clipToCollection(watersheds), dem_vis, 'Watersheds clip')
+m.add_layer(watersheds, {'color': 'red'}, 'Watersheds', False)
 m
 # [END earthengine__apidocs__ee_image_clip]

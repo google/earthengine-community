@@ -25,8 +25,8 @@ display('linestring.dissolve(...) =', linestring_dissolve)
 # Display relevant geometries on the map.
 m = geemap.Map()
 m.set_center(-122.085, 37.422, 15)
-m.add_ee_layer(linestring, {'color': 'black'}, 'Geometry [black]: linestring')
-m.add_ee_layer(
+m.add_layer(linestring, {'color': 'black'}, 'Geometry [black]: linestring')
+m.add_layer(
     linestring_dissolve, {'color': 'red'}, 'Result [red]: linestring.dissolve'
 )
 m

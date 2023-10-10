@@ -31,9 +31,9 @@ fractions = image.unmix([urban, veg, water])
 map_fractions = geemap.Map(center=[37.5010, -122.1899], zoom=10)
 
 # Add the image layers to the map and display it.
-map_fractions.add_ee_layer(
+map_fractions.add_layer(
     image, {'bands': ['B4', 'B3', 'B2'], 'min': 0, 'max': 128}, 'image'
 )
-map_fractions.add_ee_layer(fractions, None, 'unmixed')
+map_fractions.add_layer(fractions, None, 'unmixed')
 display(map_fractions)
 # [END earthengine__images16__unmixing]

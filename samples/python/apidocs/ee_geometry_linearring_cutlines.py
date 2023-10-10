@@ -27,8 +27,8 @@ display('linearring.cutLines(...) =', linearring_cut_lines)
 # Display relevant geometries on the map.
 m = geemap.Map()
 m.set_center(-122.085, 37.422, 15)
-m.add_ee_layer(linearring, {'color': 'black'}, 'Geometry [black]: linearring')
-m.add_ee_layer(
+m.add_layer(linearring, {'color': 'black'}, 'Geometry [black]: linearring')
+m.add_layer(
     linearring_cut_lines, {'color': 'red'}, 'Result [red]: linearring.cutLines'
 )
 m

@@ -30,7 +30,7 @@ display('polygon.buffer(...) =', polygon_buffer)
 # Display relevant geometries on the map.
 m = geemap.Map()
 m.set_center(-122.085, 37.422, 15)
-m.add_ee_layer(polygon, {'color': 'black'}, 'Geometry [black]: polygon')
-m.add_ee_layer(polygon_buffer, {'color': 'red'}, 'Result [red]: polygon.buffer')
+m.add_layer(polygon, {'color': 'black'}, 'Geometry [black]: polygon')
+m.add_layer(polygon_buffer, {'color': 'red'}, 'Result [red]: polygon.buffer')
 m
 # [END earthengine__apidocs__ee_geometry_polygon_buffer]

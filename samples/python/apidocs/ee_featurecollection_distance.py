@@ -24,7 +24,7 @@ distance = fc.distance(searchRadius=50000, maxError=50)
 # Display the image and FeatureCollection on the map.
 m = geemap.Map()
 m.set_center(4.56, 50.78, 7)
-m.add_ee_layer(distance, {'max': 50000}, 'Distance to power plants')
-m.add_ee_layer(fc, {'color': 'red'}, 'Power plants')
+m.add_layer(distance, {'max': 50000}, 'Distance to power plants')
+m.add_layer(fc, {'color': 'red'}, 'Power plants')
 m
 # [END earthengine__apidocs__ee_featurecollection_distance]

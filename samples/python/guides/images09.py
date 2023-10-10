@@ -31,7 +31,7 @@ map_replaced = geemap.Map(center=[37.7349, -122.3769], zoom=11)
 
 # Display the images on a map.
 vis_params = {'bands': ['B4', 'B3', 'B2'], 'min': 0, 'max': 2000}
-map_replaced.add_ee_layer(image, vis_params, 'original image')
-map_replaced.add_ee_layer(replaced, vis_params, 'clouds replaced')
+map_replaced.add_layer(image, vis_params, 'original image')
+map_replaced.add_layer(replaced, vis_params, 'clouds replaced')
 display(map_replaced)
 # [END earthengine__images09__where_operator]

@@ -86,14 +86,14 @@ class_vis = {
 }
 m = geemap.Map()
 m.set_center(-122.184, 37.796, 12)
-m.add_ee_layer(
+m.add_layer(
     img, {'bands': ['B11', 'B8', 'B3'], 'min': 100, 'max': 3500}, 'img'
 )
-m.add_ee_layer(lc, class_vis, 'lc')
-m.add_ee_layer(img_classified, class_vis, 'Classified')
-m.add_ee_layer(roi, {'color': 'white'}, 'ROI', False, 0.5)
-m.add_ee_layer(training_sample, {'color': 'black'}, 'Training sample', False)
-m.add_ee_layer(
+m.add_layer(lc, class_vis, 'lc')
+m.add_layer(img_classified, class_vis, 'Classified')
+m.add_layer(roi, {'color': 'white'}, 'ROI', False, 0.5)
+m.add_layer(training_sample, {'color': 'black'}, 'Training sample', False)
+m.add_layer(
     validation_sample, {'color': 'white'}, 'Validation sample', False
 )
 m

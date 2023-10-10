@@ -25,8 +25,8 @@ display('rectangle.bounds(...) =', rectangle_bounds)
 # Display relevant geometries on the map.
 m = geemap.Map()
 m.set_center(-122.085, 37.422, 15)
-m.add_ee_layer(rectangle, {'color': 'black'}, 'Geometry [black]: rectangle')
-m.add_ee_layer(
+m.add_layer(rectangle, {'color': 'black'}, 'Geometry [black]: rectangle')
+m.add_layer(
     rectangle_bounds, {'color': 'red'}, 'Result [red]: rectangle.bounds'
 )
 m

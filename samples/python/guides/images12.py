@@ -31,10 +31,10 @@ direction = xy_grad.select('y').atan2(xy_grad.select('x'))
 map_gradient = geemap.Map(center=[37.7295, -122.054], zoom=10)
 
 # Add the image layers to the map and display it.
-map_gradient.add_ee_layer(
+map_gradient.add_layer(
     direction, {'min': -2, 'max': 2, 'format': 'png'}, 'direction'
 )
-map_gradient.add_ee_layer(
+map_gradient.add_layer(
     gradient, {'min': -7, 'max': 7, 'format': 'png'}, 'gradient'
 )
 display(map_gradient)

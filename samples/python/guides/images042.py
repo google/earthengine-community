@@ -48,9 +48,9 @@ sld_ramp = """
 map_sld_interval = geemap.Map(center=[40.413, -99.229], zoom=5)
 
 # Add the image layers to the map and display it.
-map_sld_interval.add_ee_layer(
+map_sld_interval.add_layer(
     image.sldStyle(sld_intervals), None, 'SLD intervals'
 )
-map_sld_interval.add_ee_layer(image.sldStyle(sld_ramp), None, 'SLD ramp')
+map_sld_interval.add_layer(image.sldStyle(sld_ramp), None, 'SLD ramp')
 display(map_sld_interval)
 # [END earthengine__images042__sld_elevation]

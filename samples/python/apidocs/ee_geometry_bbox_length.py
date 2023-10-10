@@ -25,6 +25,6 @@ display('bbox.length(...) =', bbox_length)
 # Display relevant geometries on the map.
 m = geemap.Map()
 m.set_center(-122.085, 37.422, 15)
-m.add_ee_layer(bbox, {'color': 'black'}, 'Geometry [black]: bbox')
+m.add_layer(bbox, {'color': 'black'}, 'Geometry [black]: bbox')
 m
 # [END earthengine__apidocs__ee_geometry_bbox_length]

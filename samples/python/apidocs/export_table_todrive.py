@@ -17,13 +17,13 @@
 img = ee.Image('COPERNICUS/S2_SR/20210109T185751_20210109T185931_T10SEG')
 m = geemap.Map()
 m.set_center(-122.359, 37.428, 9)
-m.add_ee_layer(
+m.add_layer(
     img, {'bands': ['B11', 'B8', 'B3'], 'min': 100, 'max': 3500}, 'img'
 )
 
 # Sample the image at 20 m scale, a point feature collection is returned.
 samp = img.sample(scale=20, numPixels=50, geometries=True)
-m.add_ee_layer(samp, {'color': 'white'}, 'samp')
+m.add_layer(samp, {'color': 'white'}, 'samp')
 display(m)
 display('Image sample feature collection', samp)
 

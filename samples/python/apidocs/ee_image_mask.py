@@ -24,17 +24,17 @@ true_color_viz = {
 display('Sentinel-2 image', img)
 m = geemap.Map()
 m.set_center(-122.36, 37.47, 10)
-m.add_ee_layer(img, true_color_viz, 'Sentinel-2 image')
+m.add_layer(img, true_color_viz, 'Sentinel-2 image')
 
 # Get masks for all image bands each band has an independent mask.
 # Valid pixels are value 1, invalid are 0.
 multi_band_mask_img = img.mask()
 display('Multi-band mask image', multi_band_mask_img)
-m.add_ee_layer(multi_band_mask_img, None, 'Multi-band mask image')
+m.add_layer(multi_band_mask_img, None, 'Multi-band mask image')
 
 # Get the mask for a single image band.
 single_band_mask_img = img.select('B1').mask()
 display('Single-band mask image', single_band_mask_img)
-m.add_ee_layer(single_band_mask_img, None, 'Single-band mask image')
+m.add_layer(single_band_mask_img, None, 'Single-band mask image')
 m
 # [END earthengine__apidocs__ee_image_mask]

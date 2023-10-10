@@ -36,8 +36,8 @@ display('geometry.union(...) =', geometry_union)
 # Display relevant geometries on the map.
 m = geemap.Map()
 m.set_center(-122.085, 37.422, 15)
-m.add_ee_layer(geometry, {'color': 'black'}, 'Geometry [black]: geometry')
-m.add_ee_layer(input_geom, {'color': 'blue'}, 'Parameter [blue]: input_geom')
-m.add_ee_layer(geometry_union, {'color': 'red'}, 'Result [red]: geometry.union')
+m.add_layer(geometry, {'color': 'black'}, 'Geometry [black]: geometry')
+m.add_layer(input_geom, {'color': 'blue'}, 'Parameter [blue]: input_geom')
+m.add_layer(geometry_union, {'color': 'red'}, 'Result [red]: geometry.union')
 m
 # [END earthengine__apidocs__ee_geometry_union]

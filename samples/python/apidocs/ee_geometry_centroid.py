@@ -33,8 +33,8 @@ display('geometry.centroid(...) =', geometry_centroid)
 # Display relevant geometries on the map.
 m = geemap.Map()
 m.set_center(-122.085, 37.422, 15)
-m.add_ee_layer(geometry, {'color': 'black'}, 'Geometry [black]: geometry')
-m.add_ee_layer(
+m.add_layer(geometry, {'color': 'black'}, 'Geometry [black]: geometry')
+m.add_layer(
     geometry_centroid, {'color': 'red'}, 'Result [red]: geometry.centroid'
 )
 m

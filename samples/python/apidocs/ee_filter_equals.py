@@ -21,7 +21,7 @@ fc = ee.FeatureCollection('BLM/AIM/v1/TerrADat/TerrestrialAIM').filter(
 # Display field plots on the map.
 m = geemap.Map()
 m.set_center(-107.792, 39.871, 7)
-m.add_ee_layer(fc)
+m.add_layer(fc)
 m
 
 # Compare the per-feature values of two properties and filter the collection

@@ -26,7 +26,7 @@ display('Pixel area default projection', pixel_area.projection())
 # performing a computation, provide an argument to the `scale` or
 # `crsTransform` parameters whenever a function gives you the option.
 m = geemap.Map()
-m.add_ee_layer(pixel_area, None, 'Pixel area for inspection', False)
+m.add_layer(pixel_area, None, 'Pixel area for inspection', False)
 
 # The "area" band produced by the `pixel_area` function can be useful for
 # calculating the area of a certain condition of another image. For example,
@@ -50,8 +50,8 @@ ecoregion = ee.FeatureCollection('RESOLVE/ECOREGIONS/2017').filter(
 
 # Display the ecoregion and high elevation area.
 m.set_center(-121.127, 48.389, 7)
-m.add_ee_layer(ecoregion, None, 'North Cascades ecoregion')
-m.add_ee_layer(
+m.add_layer(ecoregion, None, 'North Cascades ecoregion')
+m.add_layer(
     high_elev_area.clip(ecoregion), {'palette': 'yellow'}, 'High elevation area'
 )
 display(m)

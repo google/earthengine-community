@@ -43,11 +43,11 @@ cumulative_cost = cost.cumulativeCost(
 map_cost = geemap.Map(center=[4.2, 18.71], zoom=9)
 
 # Add the image layers to the map and display it.
-map_cost.add_ee_layer(cover, None, 'Globcover')
-map_cost.add_ee_layer(
+map_cost.add_layer(cover, None, 'Globcover')
+map_cost.add_layer(
     cumulative_cost, {'min': 0, 'max': 5e4}, 'accumulated cost'
 )
-map_cost.add_ee_layer(
+map_cost.add_layer(
     ee.Image().byte().paint(geometry), {'palette': 'FF0000'}, 'source geometry'
 )
 display(map_cost)

@@ -29,6 +29,6 @@ bare = ndvi.lt(0.2).And(ndwi.lt(0))
 map_bare = geemap.Map(center=[37.7726, -122.3578], zoom=12)
 
 # Add the masked image layer to the map and display it.
-map_bare.add_ee_layer(bare.selfMask(), None, 'bare')
+map_bare.add_layer(bare.selfMask(), None, 'bare')
 display(map_bare)
 # [END earthengine__images07__thresholding]

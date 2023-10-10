@@ -30,6 +30,6 @@ display('polygon.geometries(...) =', polygon_geometries)
 # Display relevant geometries on the map.
 m = geemap.Map()
 m.set_center(-122.085, 37.422, 15)
-m.add_ee_layer(polygon, {'color': 'black'}, 'Geometry [black]: polygon')
+m.add_layer(polygon, {'color': 'black'}, 'Geometry [black]: polygon')
 m
 # [END earthengine__apidocs__ee_geometry_polygon_geometries]

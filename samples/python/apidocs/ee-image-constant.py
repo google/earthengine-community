@@ -18,7 +18,7 @@ import math
 # Create a constant image, where every pixel has bands of the same value.
 image_1 = ee.Image.constant(1)
 m = geemap.Map()
-m.add_ee_layer(image_1, None, '1')
+m.add_layer(image_1, None, '1')
 # Image (1 band)
 # type: Image
 # 'bands': List (1 element)
@@ -26,7 +26,7 @@ m.add_ee_layer(image_1, None, '1')
 display(image_1)
 
 image_2 = ee.Image(2)
-m.add_ee_layer(image_2, None, '2')
+m.add_layer(image_2, None, '2')
 # Image (1 band)
 # type: Image
 # 'bands': List (1 element)
@@ -34,7 +34,7 @@ m.add_ee_layer(image_2, None, '2')
 display(image_2)
 
 π = ee.Image(math.pi)
-m.add_ee_layer(π, None, 'π')
+m.add_layer(π, None, 'π')
 # Image (1 band)
 # type: Image
 # 'bands': List (1 element)
@@ -47,7 +47,7 @@ display(π)
 
 # Create a multi-band image from a list of constant double integers.
 double_int_image = ee.Image.constant([-1.2, 4])
-m.add_ee_layer(double_int_image, None, 'double int')
+m.add_layer(double_int_image, None, 'double int')
 # Image (2 bands)
 # type: Image
 # 'bands': List (2 elements)
@@ -58,7 +58,7 @@ display(double_int_image)
 # Create a multi-band image from a list of constants, using hexadecimal
 # notation.
 multiband = ee.Image([0xFF, 0x88, 0x00])
-m.add_ee_layer(multiband, {'min': 0, 'max': 0xFF}, 'orange')
+m.add_layer(multiband, {'min': 0, 'max': 0xFF}, 'orange')
 m
 # Image (3 bands)
 # type: Image

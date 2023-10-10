@@ -25,8 +25,8 @@ display('multipoint.centroid(...) =', multipoint_centroid)
 # Display relevant geometries on the map.
 m = geemap.Map()
 m.set_center(-122.085, 37.422, 15)
-m.add_ee_layer(multipoint, {'color': 'black'}, 'Geometry [black]: multipoint')
-m.add_ee_layer(
+m.add_layer(multipoint, {'color': 'black'}, 'Geometry [black]: multipoint')
+m.add_layer(
     multipoint_centroid, {'color': 'red'}, 'Result [red]: multipoint.centroid'
 )
 m

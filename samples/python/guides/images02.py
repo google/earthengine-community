@@ -31,7 +31,7 @@ first = (
 m = geemap.Map(center=[43.7516, -70.8155], zoom=11)
 
 # Add the image layer to the map and display it.
-m.add_ee_layer(
+m.add_layer(
     first, {'bands': ['B4', 'B3', 'B2'], 'min': 0, 'max': 2000}, 'first'
 )
 display(m)

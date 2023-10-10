@@ -30,9 +30,9 @@ display('linearring.union(...) =', linearring_union)
 # Display relevant geometries on the map.
 m = geemap.Map()
 m.set_center(-122.085, 37.422, 15)
-m.add_ee_layer(linearring, {'color': 'black'}, 'Geometry [black]: linearring')
-m.add_ee_layer(input_geom, {'color': 'blue'}, 'Parameter [blue]: input_geom')
-m.add_ee_layer(
+m.add_layer(linearring, {'color': 'black'}, 'Geometry [black]: linearring')
+m.add_layer(input_geom, {'color': 'blue'}, 'Parameter [blue]: input_geom')
+m.add_layer(
     linearring_union, {'color': 'red'}, 'Result [red]: linearring.union'
 )
 m

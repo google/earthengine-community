@@ -47,8 +47,8 @@ import math
 map_registration = geemap.Map(center=[0.58, 37.46], zoom=15)
 
 # Add the image layers to the map.
-map_registration.add_ee_layer(offset, {'min': 0, 'max': 20}, 'offset')
-map_registration.add_ee_layer(angle, {'min': -math.pi, 'max': math.pi}, 'angle')
+map_registration.add_layer(offset, {'min': 0, 'max': 20}, 'offset')
+map_registration.add_layer(angle, {'min': -math.pi, 'max': math.pi}, 'angle')
 # [END earthengine__register__displacement]
 
 # [START earthengine__register__displace]
@@ -59,9 +59,9 @@ registered = image2_orig.displace(displacement)
 vis_params = {'bands': ['R', 'G', 'B'], 'max': 4000}
 
 # Add the image layers to the map.
-map_registration.add_ee_layer(image1_orig, vis_params, 'Reference')
-map_registration.add_ee_layer(image2_orig, vis_params, 'Before Registration')
-map_registration.add_ee_layer(registered, vis_params, 'After Registration')
+map_registration.add_layer(image1_orig, vis_params, 'Reference')
+map_registration.add_layer(image2_orig, vis_params, 'Before Registration')
+map_registration.add_layer(registered, vis_params, 'After Registration')
 # [END earthengine__register__displace]
 
 # [START earthengine__register__register]
@@ -70,6 +70,6 @@ also_registered = image2_orig.register(
 )
 
 # Add the image layer to the map and display it.
-map_registration.add_ee_layer(also_registered, vis_params, 'Also Registered')
+map_registration.add_layer(also_registered, vis_params, 'Also Registered')
 display(map_registration)
 # [END earthengine__register__register]

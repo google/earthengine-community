@@ -30,7 +30,7 @@ sharpened = ee.Image.cat(
 map_sharpened = geemap.Map(center=[37.76664, -122.44829], zoom=13)
 
 # Add the image layers to the map and display it.
-map_sharpened.add_ee_layer(
+map_sharpened.add_layer(
     image,
     {
         'bands': ['B4', 'B3', 'B2'],
@@ -40,7 +40,7 @@ map_sharpened.add_ee_layer(
     },
     'rgb',
 )
-map_sharpened.add_ee_layer(
+map_sharpened.add_layer(
     sharpened,
     {'min': 0, 'max': 0.25, 'gamma': [1.3, 1.3, 1.3]},
     'pan-sharpened',

@@ -27,6 +27,6 @@ oregon_power_plants = power_plants.filterBounds(oregon_counties.geometry())
 # Display Oregon power plants on the map.
 m = geemap.Map()
 m.set_center(-120.492, 44.109, 6)
-m.add_ee_layer(oregon_power_plants)
+m.add_layer(oregon_power_plants)
 m
 # [END earthengine__apidocs__ee_featurecollection_filterbounds]

@@ -30,7 +30,7 @@ image_viz_params = {
 map_l8 = geemap.Map(center=[37.5010, -122.1899], zoom=10)
 
 # Add the image layer to the map and display it.
-map_l8.add_ee_layer(image, image_viz_params, 'false color composite')
+map_l8.add_layer(image, image_viz_params, 'false color composite')
 display(map_l8)
 # [END earthengine__images03__viz_image]
 
@@ -46,7 +46,7 @@ ndwi_viz = {'min': 0.5, 'max': 1, 'palette': ['00FFFF', '0000FF']}
 map_ndwi = geemap.Map(center=[37.5010, -122.1899], zoom=10)
 
 # Add the image layer to the map and display it.
-map_ndwi.add_ee_layer(ndwi, ndwi_viz, 'NDWI')
+map_ndwi.add_layer(ndwi, ndwi_viz, 'NDWI')
 display(map_ndwi)
 # [END earthengine__images03__palette]
 
@@ -58,7 +58,7 @@ ndwi_masked = ndwi.updateMask(ndwi.gte(0.4))
 map_ndwi_masked = geemap.Map(center=[37.5010, -122.1899], zoom=10)
 
 # Add the image layer to the map and display it.
-map_ndwi_masked.add_ee_layer(ndwi_masked, ndwi_viz, 'NDWI masked')
+map_ndwi_masked.add_layer(ndwi_masked, ndwi_viz, 'NDWI masked')
 display(map_ndwi_masked)
 # [END earthengine__images03__mask]
 
@@ -75,7 +75,7 @@ mosaic = ee.ImageCollection([image_rgb, ndwi_rgb]).mosaic()
 map_mosaic = geemap.Map(center=[37.5010, -122.1899], zoom=10)
 
 # Add the image layer to the map and display it.
-map_mosaic.add_ee_layer(mosaic, None, 'mosaic')
+map_mosaic.add_layer(mosaic, None, 'mosaic')
 display(map_mosaic)
 # [END earthengine__images03__mosaic]
 
@@ -88,6 +88,6 @@ mosaic_clipped = mosaic.clip(roi)
 map_mosaic_clipped = geemap.Map(center=[37.7599, -122.4481], zoom=10)
 
 # Add the image layer to the map and display it.
-map_mosaic_clipped.add_ee_layer(mosaic_clipped, None, 'mosaic clipped')
+map_mosaic_clipped.add_layer(mosaic_clipped, None, 'mosaic clipped')
 display(map_mosaic_clipped)
 # [END earthengine__images03__clip]

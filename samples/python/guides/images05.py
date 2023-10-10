@@ -41,10 +41,10 @@ squared_difference = diff.pow(2)
 map_diff = geemap.Map(center=[-24.003, 133.565], zoom=5)
 
 # Add the image layers to the map and display it.
-map_diff.add_ee_layer(
+map_diff.add_layer(
     diff, {'bands': ['B4', 'B3', 'B2'], 'min': -32, 'max': 32}, 'diff.'
 )
-map_diff.add_ee_layer(
+map_diff.add_layer(
     squared_difference,
     {'bands': ['B4', 'B3', 'B2'], 'max': 1000},
     'squared diff.',

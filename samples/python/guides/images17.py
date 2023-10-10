@@ -31,8 +31,8 @@ entropy = nir.entropy(square)
 map_texture = geemap.Map(center=[37.769833, -122.466123], zoom=17)
 
 # Add the image layers to the map.
-map_texture.add_ee_layer(image, {'max': 255}, 'image')
-map_texture.add_ee_layer(
+map_texture.add_layer(image, {'max': 255}, 'image')
+map_texture.add_layer(
     entropy, {'min': 1, 'max': 5, 'palette': ['0000CC', 'CC0000']}, 'entropy'
 )
 # [END earthengine__images17__entropy]
@@ -43,7 +43,7 @@ glcm = nir.glcmTexture(size=4)
 contrast = glcm.select('N_contrast')
 
 # Add the contrast layer to the map.
-map_texture.add_ee_layer(
+map_texture.add_layer(
     contrast,
     {'min': 0, 'max': 1500, 'palette': ['0000CC', 'CC0000']},
     'contrast',
@@ -68,7 +68,7 @@ neighs = nir.neighborhoodToBands(kernel)
 gearys = nir.subtract(neighs).pow(2).reduce(ee.Reducer.sum()).divide(pow(9, 2))
 
 # Add the Geary's C layer to the map and display it.
-map_texture.add_ee_layer(
+map_texture.add_layer(
     gearys,
     {'min': 20, 'max': 2500, 'palette': ['0000CC', 'CC0000']},
     "Geary's C",

@@ -24,16 +24,16 @@ true_color_viz = {
 display('Sentinel-2 image', img)
 m = geemap.Map()
 m.set_center(-122.36, 37.47, 10)
-m.add_ee_layer(img, true_color_viz, 'Sentinel-2 image')
+m.add_layer(img, true_color_viz, 'Sentinel-2 image')
 
 # Create a Boolean land mask from the SWIR1 band water is value 0, land is 1.
 land_mask = img.select('B11').gt(100)
 display('Land mask', land_mask)
-m.add_ee_layer(land_mask, {'palette': ['blue', 'lightgreen']}, 'Land mask')
+m.add_layer(land_mask, {'palette': ['blue', 'lightgreen']}, 'Land mask')
 
 # Mask the land mask by itself pixel values equal to 0 (water) become invalid.
 land_mask_masked = land_mask.selfMask()
 display('Land mask, masked', land_mask_masked)
-m.add_ee_layer(land_mask_masked, {'palette': ['gold']}, 'Land mask, masked')
+m.add_layer(land_mask_masked, {'palette': ['gold']}, 'Land mask, masked')
 m
 # [END earthengine__apidocs__ee_image_selfmask]

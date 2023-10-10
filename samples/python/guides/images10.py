@@ -29,10 +29,10 @@ map_smooth = geemap.Map(center=[37.8694, -121.9785], zoom=11)
 
 # Add the image layers to the map and display it. Compare the smoothed result to
 # the original.
-map_smooth.add_ee_layer(
+map_smooth.add_layer(
     image, {'bands': ['B5', 'B4', 'B3'], 'max': 0.5}, 'input image'
 )
-map_smooth.add_ee_layer(
+map_smooth.add_layer(
     smooth, {'bands': ['B5', 'B4', 'B3'], 'max': 0.5}, 'smoothed'
 )
 display(map_smooth)
@@ -50,10 +50,10 @@ map_edgy = geemap.Map(center=[37.8694, -121.9785], zoom=11)
 
 # Add the image layers to the map and display it. Compare the edges result to
 # the original.
-map_edgy.add_ee_layer(
+map_edgy.add_layer(
     image, {'bands': ['B5', 'B4', 'B3'], 'max': 0.5}, 'input image'
 )
-map_edgy.add_ee_layer(
+map_edgy.add_layer(
     edgy, {'bands': ['B5', 'B4', 'B3'], 'max': 0.5, 'format': 'png'}, 'edges'
 )
 display(map_edgy)

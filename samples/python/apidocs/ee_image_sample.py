@@ -21,7 +21,7 @@ image = ee.Image('CGIAR/SRTM90_V4')
 vis_min = 1620
 vis_max = 1650
 m = geemap.Map()
-m.add_ee_layer(image, {'min': vis_min, 'max': vis_max}, 'SRTM')
+m.add_layer(image, {'min': vis_min, 'max': vis_max}, 'SRTM')
 
 # Region to sample.
 region = ee.Geometry.Polygon(
@@ -37,7 +37,7 @@ region = ee.Geometry.Polygon(
 # Show region on the map.
 m.set_center(-110, 40, 16)
 
-m.add_ee_layer(ee.FeatureCollection([region]).style(color='00FF0022'))
+m.add_layer(ee.FeatureCollection([region]).style(color='00FF0022'))
 
 # Perform sampling convert image pixels to features.
 samples = image.sample(
@@ -68,7 +68,7 @@ styled = samples.map(scale_point_size).style(
     styleProperty='style',
     neighborhood=6,  # increase to correctly draw large points
 )
-m.add_ee_layer(styled)
+m.add_layer(styled)
 display(m)
 
 # Each sample feature has a point geometry and a property named 'elevation'

@@ -27,7 +27,7 @@ map_zones = geemap.Map(center=[48.8683, 2.373], zoom=8)
 
 # Display the thresholded image as three distinct zones near Paris.
 palette = ['000000', '0000FF', '00FF00', 'FF0000']
-map_zones.add_ee_layer(
+map_zones.add_layer(
     zones, {'min': 0, 'max': 3, 'palette': palette}, 'development zones'
 )
 display(map_zones)
@@ -46,7 +46,7 @@ zones_exp = nl_2012.expression(
 map_zones_exp = geemap.Map(center=[48.8683, 2.373], zoom=8)
 
 # Add the image layer to the map and display it.
-map_zones_exp.add_ee_layer(
+map_zones_exp.add_layer(
     zones_exp, {'min': 0, 'max': 3, 'palette': palette}, 'zones exp'
 )
 display(map_zones_exp)

@@ -25,7 +25,7 @@ display('point.buffer(...) =', point_buffer)
 # Display relevant geometries on the map.
 m = geemap.Map()
 m.set_center(-122.085, 37.422, 15)
-m.add_ee_layer(point, {'color': 'black'}, 'Geometry [black]: point')
-m.add_ee_layer(point_buffer, {'color': 'red'}, 'Result [red]: point.buffer')
+m.add_layer(point, {'color': 'black'}, 'Geometry [black]: point')
+m.add_layer(point_buffer, {'color': 'red'}, 'Result [red]: point.buffer')
 m
 # [END earthengine__apidocs__ee_geometry_point_buffer]

@@ -22,7 +22,7 @@ col = (
 # Image visualization settings.
 vis_params = {'bands': ['B4', 'B3', 'B2'], 'min': 0.01, 'max': 0.25}
 m = geemap.Map()
-m.add_ee_layer(col.mean(), vis_params, 'RGB mean')
+m.add_layer(col.mean(), vis_params, 'RGB mean')
 
 # Reduce the geometry (footprint) of images in the collection to an image.
 # Image property values are applied to the pixels intersecting each
@@ -35,6 +35,6 @@ mean_cloud_cover = col.reduceToImage(
 )
 
 m.set_center(-119.87, 44.76, 6)
-m.add_ee_layer(mean_cloud_cover, {'min': 0, 'max': 50}, 'Cloud cover mean')
+m.add_layer(mean_cloud_cover, {'min': 0, 'max': 50}, 'Cloud cover mean')
 m
 # [END earthengine__apidocs__ee_imagecollection_reducetoimage]

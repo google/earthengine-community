@@ -24,6 +24,6 @@ ndvi = img.normalizedDifference([nir_band, red_band])
 # Display NDVI result on the map.
 m = geemap.Map()
 m.set_center(-122.148, 37.377, 11)
-m.add_ee_layer(ndvi, {'min': 0, 'max': 0.5}, 'NDVI')
+m.add_layer(ndvi, {'min': 0, 'max': 0.5}, 'NDVI')
 m
 # [END earthengine__apidocs__ee_image_normalizeddifference]

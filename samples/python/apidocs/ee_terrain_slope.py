@@ -25,14 +25,14 @@ aspect = ee.Terrain.aspect(dem)
 # Display slope and aspect layers on the map.
 m = geemap.Map()
 m.set_center(-123.457, 47.815, 11)
-m.add_ee_layer(slope, {'min': 0, 'max': 89.99}, 'Slope')
-m.add_ee_layer(aspect, {'min': 0, 'max': 359.99}, 'Aspect')
+m.add_layer(slope, {'min': 0, 'max': 89.99}, 'Slope')
+m.add_layer(aspect, {'min': 0, 'max': 359.99}, 'Aspect')
 
 # Use the ee.Terrain.products function to calculate slope, aspect, and
 # hillshade simultaneously. The output bands are appended to the input image.
 # Hillshade is calculated based on illumination azimuth=270, elevation=45.
 terrain = ee.Terrain.products(dem)
 display('ee.Terrain.products bands', terrain.bandNames())
-m.add_ee_layer(terrain.select('hillshade'), {'min': 0, 'max': 255}, 'Hillshade')
+m.add_layer(terrain.select('hillshade'), {'min': 0, 'max': 255}, 'Hillshade')
 m
 # [END earthengine__apidocs__ee_terrain_slope]

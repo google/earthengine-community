@@ -24,18 +24,18 @@ true_color_viz = {
 display('Sentinel-2 image', img)
 m = geemap.Map()
 m.set_center(-122.36, 37.47, 10)
-m.add_ee_layer(img, true_color_viz, 'Sentinel-2 image')
+m.add_layer(img, true_color_viz, 'Sentinel-2 image')
 
 # Create a Boolean land mask from the SWIR1 band water is value 0, land is 1.
 land_mask = img.select('B11').gt(100)
 display('Land mask', land_mask)
-m.add_ee_layer(land_mask, {'palette': ['blue', 'lightgreen']}, 'Land mask')
+m.add_layer(land_mask, {'palette': ['blue', 'lightgreen']}, 'Land mask')
 
 # Apply the single-band land mask to all image bands pixel values equal to 0
 # in the mask become invalid in the image.
 img_masked = img.updateMask(land_mask)
 display('Image, land only', img_masked)
-m.add_ee_layer(img_masked, true_color_viz, 'Image, land only')
+m.add_layer(img_masked, true_color_viz, 'Image, land only')
 
 # Masks are band-specific. Here, a multi-band mask image is used to update
 # corresponding input image band masks.
@@ -44,8 +44,8 @@ band_specific_masks = img_band_subset.gt(200)
 img_band_subset_masked = img_band_subset.updateMask(band_specific_masks)
 display('Multi-band mask image', band_specific_masks)
 display('Image, variable band masks', img_band_subset_masked)
-m.add_ee_layer(band_specific_masks, None, 'Multi-band mask image')
-m.add_ee_layer(
+m.add_layer(band_specific_masks, None, 'Multi-band mask image')
+m.add_layer(
     img_band_subset_masked, true_color_viz, 'Image, variable band masks'
 )
 # Note that there is only a single alpha channel for visualization, so when
@@ -57,6 +57,6 @@ m.add_ee_layer(
 land_mask_float = land_mask.add(0.65)
 img_masked_float = img.updateMask(land_mask_float)
 display('Image, partially transparent', img_masked_float)
-m.add_ee_layer(img_masked_float, true_color_viz, 'Image, partially transparent')
+m.add_layer(img_masked_float, true_color_viz, 'Image, partially transparent')
 m
 # [END earthengine__apidocs__ee_image_updatemask]

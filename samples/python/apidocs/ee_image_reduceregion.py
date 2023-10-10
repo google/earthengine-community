@@ -28,8 +28,8 @@ geom = (
 # Display layers on the map.
 m = geemap.Map()
 m.set_center(-122.08, 37.22, 9)
-m.add_ee_layer(img, {'min': 10000, 'max': 20000}, 'Landsat image')
-m.add_ee_layer(geom, {'color': 'white'}, 'Santa Cruz Mountains ecoregion')
+m.add_layer(img, {'min': 10000, 'max': 20000}, 'Landsat image')
+m.add_layer(geom, {'color': 'white'}, 'Santa Cruz Mountains ecoregion')
 display(m)
 
 # Calculate median band values within Santa Cruz Mountains ecoregion. It is

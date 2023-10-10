@@ -28,10 +28,10 @@ display('multilinestring.buffer(...) =', multilinestring_buffer)
 # Display relevant geometries on the map.
 m = geemap.Map()
 m.set_center(-122.085, 37.422, 15)
-m.add_ee_layer(
+m.add_layer(
     multilinestring, {'color': 'black'}, 'Geometry [black]: multilinestring'
 )
-m.add_ee_layer(
+m.add_layer(
     multilinestring_buffer,
     {'color': 'red'},
     'Result [red]: multilinestring.buffer',

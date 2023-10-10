@@ -45,7 +45,7 @@ map_palette = geemap.Map(center=[40.413, -99.229], zoom=5)
 
 # Add the image layer to the map and display it. Specify the min and max labels
 # and the color palette matching the labels.
-map_palette.add_ee_layer(
+map_palette.add_layer(
     cover, {'min': 0, 'max': 17, 'palette': igbp_palette}, 'IGBP classes'
 )
 display(map_palette)
@@ -86,6 +86,6 @@ cover_sld = cover.sldStyle(sld_intervals)
 map_sld_categorical = geemap.Map(center=[40.413, -99.229], zoom=5)
 
 # Add the image layer to the map and display it.
-map_sld_categorical.add_ee_layer(cover_sld, None, 'IGBP classes styled')
+map_sld_categorical.add_layer(cover_sld, None, 'IGBP classes styled')
 display(map_sld_categorical)
 # [END earthengine__images04__sld_style]

@@ -28,7 +28,7 @@ display('multilinestring.toGeoJSON(...) =', multilinestring_to_geojson)
 # Display relevant geometries on the map.
 m = geemap.Map()
 m.set_center(-122.085, 37.422, 15)
-m.add_ee_layer(
+m.add_layer(
     multilinestring, {'color': 'black'}, 'Geometry [black]: multilinestring'
 )
 m

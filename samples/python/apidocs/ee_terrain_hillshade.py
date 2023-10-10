@@ -17,6 +17,6 @@ elevation = ee.Image('NOAA/NGDC/ETOPO1').select('bedrock')
 exaggeration = 20
 hillshade = ee.Terrain.hillshade(elevation.multiply(exaggeration))
 m = geemap.Map()
-m.add_ee_layer(hillshade, None, 'ETOPO1 Hillshade')
+m.add_layer(hillshade, None, 'ETOPO1 Hillshade')
 m
 # [END earthengine__apidocs__ee_terrain_hillshade]

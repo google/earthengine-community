@@ -25,8 +25,8 @@ display('point.convexHull(...) =', point_convex_hull)
 # Display relevant geometries on the map.
 m = geemap.Map()
 m.set_center(-122.085, 37.422, 15)
-m.add_ee_layer(point, {'color': 'black'}, 'Geometry [black]: point')
-m.add_ee_layer(
+m.add_layer(point, {'color': 'black'}, 'Geometry [black]: point')
+m.add_layer(
     point_convex_hull, {'color': 'red'}, 'Result [red]: point.convexHull'
 )
 m

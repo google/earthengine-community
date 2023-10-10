@@ -18,7 +18,7 @@ image = ee.Image('JAXA/ALOS/AW3D30/V2_2')
 m = geemap.Map()
 m.zoom = 3
 display(m)
-m.add_ee_layer(image.select('AVE_DSM'), {'min': -1e3, 'max': 5e3}, 'AVE_DSM')
+m.add_layer(image.select('AVE_DSM'), {'min': -1e3, 'max': 5e3}, 'AVE_DSM')
 # Image JAXA/ALOS/AW3D30/V2_2 (3 bands)
 # type: Image
 # id: JAXA/ALOS/AW3D30/V2_2
@@ -28,7 +28,7 @@ m.add_ee_layer(image.select('AVE_DSM'), {'min': -1e3, 'max': 5e3}, 'AVE_DSM')
 display(image)
 
 transparent = ee.Image()
-m.add_ee_layer(transparent, None, 'transparent', False)
+m.add_layer(transparent, None, 'transparent', False)
 # Image (1 band)
 # type: Image
 # 'bands': List (1 element)
@@ -37,7 +37,7 @@ display(transparent)
 
 # Create a multi-band image from a list of constants.
 orange = ee.Image([0xFF, 0x88, 0x00])
-m.add_ee_layer(orange, {'min': 0, 'max': 0xFF}, 'orange', False)
+m.add_layer(orange, {'min': 0, 'max': 0xFF}, 'orange', False)
 # Image (3 bands)
 # type: Image
 # 'bands': List (3 elements)
@@ -48,7 +48,7 @@ display(orange)
 
 # Create a one band image where each pixel is an array of three values.
 image_of_array = ee.Image(ee.Array([0x00, 0x00, 0xFF]))
-m.add_ee_layer(image_of_array, None, 'image_of_array', False)
+m.add_layer(image_of_array, None, 'image_of_array', False)
 # Image (1 band)
 # type: Image
 # 'bands': List (1 element)

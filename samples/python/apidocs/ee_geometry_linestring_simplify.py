@@ -25,8 +25,8 @@ display('linestring.simplify(...) =', linestring_simplify)
 # Display relevant geometries on the map.
 m = geemap.Map()
 m.set_center(-122.085, 37.422, 15)
-m.add_ee_layer(linestring, {'color': 'black'}, 'Geometry [black]: linestring')
-m.add_ee_layer(
+m.add_layer(linestring, {'color': 'black'}, 'Geometry [black]: linestring')
+m.add_layer(
     linestring_simplify, {'color': 'red'}, 'Result [red]: linestring.simplify'
 )
 m

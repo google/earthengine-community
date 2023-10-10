@@ -35,7 +35,7 @@ display('polygon.withinDistance(...) =', polygon_within_distance)
 # Display relevant geometries on the map.
 m = geemap.Map()
 m.set_center(-122.085, 37.422, 15)
-m.add_ee_layer(polygon, {'color': 'black'}, 'Geometry [black]: polygon')
-m.add_ee_layer(input_geom, {'color': 'blue'}, 'Parameter [blue]: input_geom')
+m.add_layer(polygon, {'color': 'black'}, 'Geometry [black]: polygon')
+m.add_layer(input_geom, {'color': 'blue'}, 'Parameter [blue]: input_geom')
 m
 # [END earthengine__apidocs__ee_geometry_polygon_withindistance]

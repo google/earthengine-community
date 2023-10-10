@@ -28,8 +28,8 @@ region_col = ee.FeatureCollection('EPA/Ecoregions/2013/L4').filter(
 # Display layers on the map.
 m = geemap.Map()
 m.set_center(-122.08, 37.22, 9)
-m.add_ee_layer(img, {'min': 10000, 'max': 20000}, 'Landsat image')
-m.add_ee_layer(
+m.add_layer(img, {'min': 10000, 'max': 20000}, 'Landsat image')
+m.add_layer(
     region_col, {'color': 'white'}, 'Santa Cruz Mountains ecoregions'
 )
 display(m)

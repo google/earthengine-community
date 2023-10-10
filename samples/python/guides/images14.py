@@ -36,8 +36,8 @@ zero_xings = image.convolve(dog).zeroCrossing()
 map_zero_xings = geemap.Map(center=[37.7295, -122.054], zoom=10)
 
 # Add the image layers to the map and display it.
-map_zero_xings.add_ee_layer(image, {'max': 12000}, 'image')
-map_zero_xings.add_ee_layer(
+map_zero_xings.add_layer(image, {'max': 12000}, 'image')
+map_zero_xings.add_layer(
     zero_xings.selfMask(), {'palette': 'FF0000'}, 'zero crossings'
 )
 display(map_zero_xings)

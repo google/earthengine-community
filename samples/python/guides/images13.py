@@ -23,7 +23,7 @@ canny = ee.Algorithms.CannyEdgeDetector(image=image, threshold=10, sigma=1)
 
 # Define a map centered on San Francisco Bay and add the image layer to it.
 map_canny = geemap.Map(center=[37.7295, -122.054], zoom=10)
-map_canny.add_ee_layer(canny, None, 'canny')
+map_canny.add_layer(canny, None, 'canny')
 # [END earthengine__images13__canny]
 
 # [START earthengine__images13__hough]
@@ -31,6 +31,6 @@ map_canny.add_ee_layer(canny, None, 'canny')
 hough = ee.Algorithms.HoughTransform(canny, 256, 600, 100)
 
 # Add the image layer to the map and display it.
-map_canny.add_ee_layer(hough, None, 'hough')
+map_canny.add_layer(hough, None, 'hough')
 display(map_canny)
 # [END earthengine__images13__hough]

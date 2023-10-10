@@ -25,8 +25,8 @@ display('bbox.convexHull(...) =', bbox_convex_hull)
 # Display relevant geometries on the map.
 m = geemap.Map()
 m.set_center(-122.085, 37.422, 15)
-m.add_ee_layer(bbox, {'color': 'black'}, 'Geometry [black]: bbox')
-m.add_ee_layer(
+m.add_layer(bbox, {'color': 'black'}, 'Geometry [black]: bbox')
+m.add_layer(
     bbox_convex_hull, {'color': 'red'}, 'Result [red]: bbox.convexHull'
 )
 m

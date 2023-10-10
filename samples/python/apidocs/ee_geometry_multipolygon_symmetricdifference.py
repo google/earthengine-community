@@ -40,11 +40,11 @@ display(
 # Display relevant geometries on the map.
 m = geemap.Map()
 m.set_center(-122.085, 37.422, 15)
-m.add_ee_layer(
+m.add_layer(
     multipolygon, {'color': 'black'}, 'Geometry [black]: multipolygon'
 )
-m.add_ee_layer(input_geom, {'color': 'blue'}, 'Parameter [blue]: input_geom')
-m.add_ee_layer(
+m.add_layer(input_geom, {'color': 'blue'}, 'Parameter [blue]: input_geom')
+m.add_layer(
     multipolygon_symmetric_difference,
     {'color': 'red'},
     'Result [red]: multipolygon.symmetricDifference',

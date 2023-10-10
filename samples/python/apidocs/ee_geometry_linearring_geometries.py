@@ -27,6 +27,6 @@ display('linearring.geometries(...) =', linearring_geometries)
 # Display relevant geometries on the map.
 m = geemap.Map()
 m.set_center(-122.085, 37.422, 15)
-m.add_ee_layer(linearring, {'color': 'black'}, 'Geometry [black]: linearring')
+m.add_layer(linearring, {'color': 'black'}, 'Geometry [black]: linearring')
 m
 # [END earthengine__apidocs__ee_geometry_linearring_geometries]

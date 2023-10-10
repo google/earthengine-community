@@ -26,28 +26,28 @@ col = (
 vis_refl = {'bands': ['B11', 'B8', 'B3'], 'min': 0, 'max': 4000}
 m = geemap.Map()
 m.set_center(-122.373, 37.448, 9)
-m.add_ee_layer(col, vis_refl, 'Collection reference', False)
+m.add_layer(col, vis_refl, 'Collection reference', False)
 
 # Reduce the collection to a single image using a variety of methods.
 mean = col.mean()
-m.add_ee_layer(mean, vis_refl, 'Mean (B11, B8, B3)')
+m.add_layer(mean, vis_refl, 'Mean (B11, B8, B3)')
 
 median = col.median()
-m.add_ee_layer(median, vis_refl, 'Median (B11, B8, B3)')
+m.add_layer(median, vis_refl, 'Median (B11, B8, B3)')
 
 min = col.min()
-m.add_ee_layer(min, vis_refl, 'Min (B11, B8, B3)')
+m.add_layer(min, vis_refl, 'Min (B11, B8, B3)')
 
 max = col.max()
-m.add_ee_layer(max, vis_refl, 'Max (B11, B8, B3)')
+m.add_layer(max, vis_refl, 'Max (B11, B8, B3)')
 
 sum = col.sum()
-m.add_ee_layer(
+m.add_layer(
     sum, {'bands': ['MSK_CLDPRB'], 'min': 0, 'max': 500}, 'Sum (MSK_CLDPRB)'
 )
 
 product = col.product()
-m.add_ee_layer(
+m.add_layer(
     product,
     {'bands': ['MSK_CLDPRB'], 'min': 0, 'max': 1e10},
     'Product (MSK_CLDPRB)',
@@ -56,7 +56,7 @@ m.add_ee_layer(
 # ee.ImageCollection.mode returns the most common value. If multiple mode
 # values occur, the minimum mode value is returned.
 mode = col.mode()
-m.add_ee_layer(
+m.add_layer(
     mode, {'bands': ['SCL'], 'min': 1, 'max': 11}, 'Mode (pixel class)'
 )
 
@@ -68,13 +68,13 @@ not_cloud_col = col.map(
     lambda img: img.updateMask(img.select('MSK_CLDPRB').lte(10))
 )
 count = not_cloud_col.count()
-m.add_ee_layer(count, {'min': 1, 'max': 5}, 'Count (not cloud observations)')
+m.add_layer(count, {'min': 1, 'max': 5}, 'Count (not cloud observations)')
 
 # ee.ImageCollection.mosaic composites images according to their position in
 # the collection (priority is last to first) and pixel mask status, where
 # invalid (mask value 0) pixels are filled by preceding valid (mask value >0)
 # pixels.
 mosaic = not_cloud_col.mosaic()
-m.add_ee_layer(mosaic, vis_refl, 'Mosaic (B11, B8, B3)')
+m.add_layer(mosaic, vis_refl, 'Mosaic (B11, B8, B3)')
 m
 # [END earthengine__apidocs__ee_imagecollection_mean]

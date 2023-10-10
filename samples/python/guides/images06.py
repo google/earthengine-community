@@ -32,7 +32,7 @@ evi = image.expression(
 map_evi = geemap.Map(center=[37.4675, -122.1363], zoom=9)
 
 # Add the image layer to the map and display it.
-map_evi.add_ee_layer(
+map_evi.add_layer(
     evi, {'min': -1, 'max': 1, 'palette': ['a6611a', 'f5f5f5', '4dac26']}, 'evi'
 )
 display(map_evi)

@@ -32,7 +32,7 @@ opened = image.focalMin(kernel=kernel, iterations=2).focalMax(
 map_opened = geemap.Map(center=[37.5010, -122.1899], zoom=13)
 
 # Add the image layers to the map and display it.
-map_opened.add_ee_layer(image, None, 'NIR threshold')
-map_opened.add_ee_layer(opened, None, 'opened')
+map_opened.add_layer(image, None, 'NIR threshold')
+map_opened.add_layer(opened, None, 'opened')
 display(map_opened)
 # [END earthengine__images11__morphology]

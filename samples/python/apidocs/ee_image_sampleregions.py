@@ -17,7 +17,7 @@
 img = ee.Image('COPERNICUS/S2_SR/20210109T185751_20210109T185931_T10SEG')
 m = geemap.Map()
 m.set_center(-122.503881, 37.765588, 18)
-m.add_ee_layer(
+m.add_layer(
     img, {'bands': ['B11', 'B8', 'B3'], 'min': 100, 'max': 4500}, 'img'
 )
 display(m)
@@ -38,7 +38,7 @@ fc_polygon = ee.FeatureCollection([
         {'id': 1},
     ),
 ])
-m.add_ee_layer(fc_polygon, {'color': 'yellow'}, 'fc_polygon')
+m.add_layer(fc_polygon, {'color': 'yellow'}, 'fc_polygon')
 
 fc_polygon_samp = img.sampleRegions(
     collection=fc_polygon, scale=10, geometries=True
@@ -47,7 +47,7 @@ fc_polygon_samp = img.sampleRegions(
 # band value it will be excluded from the sample. In this case, the TCI_B band
 # is masked for each unsampled pixel.
 display('A feature per pixel (at given scale) in each region', fc_polygon_samp)
-m.add_ee_layer(fc_polygon_samp, {'color': 'purple'}, 'fc_polygon_samp')
+m.add_layer(fc_polygon_samp, {'color': 'purple'}, 'fc_polygon_samp')
 
 # A feature collection with two points intersecting two different pixels.
 # This example is included to show the behavior for point geometries. In
@@ -57,7 +57,7 @@ fc_point = ee.FeatureCollection([
     ee.Feature(ee.Geometry.Point([-122.50309256, 37.76605006]), {'id': 0}),
     ee.Feature(ee.Geometry.Point([-122.50344661, 37.76560903]), {'id': 1}),
 ])
-m.add_ee_layer(fc_point, {'color': 'cyan'}, 'fc_point')
+m.add_layer(fc_point, {'color': 'cyan'}, 'fc_point')
 
 fc_point_samp = img.sampleRegions(collection=fc_point, scale=10)
 display('A feature per point', fc_point_samp)

@@ -20,11 +20,6 @@ Map.centerObject(image, 8);
 var vis = {bands: ['B4', 'B3', 'B2'], min: 0, max: 5000};
 Map.addLayer(image, vis, 'first of S2_SR');
 
-// Image COPERNICUS/S2_SR/20170328T083601_20170328T084228_T35RNK (21 bands)
-// type: Image
-// id: COPERNICUS/S2_SR/20170328T083601_20170328T084228_T35RNK
-// version: 1559715954270152
-// bands: List (21 elements)
-// properties: Object (82 properties)
+// Display the image metadata.
 print(image);
 // [END earthengine__apidocs__ee_imagecollection_first]

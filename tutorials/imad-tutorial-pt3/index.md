@@ -327,7 +327,7 @@ def run_imad(aoi, image1, image2, assetFN, scale=10, maxiter=100):
         rhos = ee.String.encodeJSON(ee.List(result.get('allrhos')).get(-1))
         Z = ee.Image(result.get('Z'))
         niter = result.getNumber('niter')
-        # Export iMAD and Z as a singe image, including rhos and number of iterations in properties.
+        # Export iMAD and Z as a single image, including rhos and number of iterations in properties.
         iMAD_export = ee.Image.cat(iMAD, Z).rename(imadnames).set('rhos', rhos, 'niter', niter)
         assetId = EXPORT_PATH + assetFN
         assexport = ee.batch.Export.image.toAsset(iMAD_export,

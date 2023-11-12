@@ -3,10 +3,10 @@ title: Beginner's Cookbook
 description: This cookbook provides a fundamental overview of the data and tools commonly used in geospatial analysis using the Earth Engine JavaScript API.
 author: TC25
 tags: introductory, GIS, remote sensing
-date_published: 2019-11-11
+date_published: 2023-12-11
 ---
 <!--
-Copyright 2019 The Google Earth Engine Community Authors
+Copyright 2023 The Google Earth Engine Community Authors
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.

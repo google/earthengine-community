@@ -27,5 +27,5 @@ lst = [
     'B2', 219,
     'B3', 443
 ]
-print('ee.Dictionary from list input', ee.Dictionary(lst).getInfo());
+print('ee.Dictionary from list input', ee.Dictionary(lst).getInfo())
 # [END earthengine__apidocs__ee_dictionary]

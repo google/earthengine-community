@@ -42,7 +42,7 @@ print('Greater than int16 max cast to int16 becomes int16 max:',
       out_of_range_hi_to_int16.getInfo())
 
 # A number greater than int16 range min cast to int16 becomes int16 range min.
-INT16_MIN = -32768;
+INT16_MIN = -32768
 out_of_range_lo = ee.Number(INT16_MIN - 12345)
 print('Less than int16 min:', out_of_range_lo.getInfo())
 

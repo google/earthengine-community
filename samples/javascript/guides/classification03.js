@@ -169,3 +169,22 @@ var join = ee.Join.inverted();
 training = join.apply(training, validation, distFilter);
 print(training.size());
 // [END earthengine__classification03__spatial_autocorrelation]
+// [START earthengine__classification03__export_classifier]
+// Using the random forest classifier defined earlier, export the random 
+// forest classifier as an Earth Engine asset.
+ee.Export.classifier.toAsset(
+  classifier,
+  "Saved random forest, IGBP classification",
+  "upscaled_MCD12Q1_random_forest"
+);
+// [END earthengine__classification03__export_classifier]
+
+// [START earthengine__classification03__load_classifier]
+// Once the classifier export finishes, we can load our saved classifier.
+var classifierAssetId = "<asset_prefix>/upscaled_MCD12Q1_random_forest";
+var savedClassifier = ee.Classifier.load(classifierAssetId);
+// We can perform classification just as before with the saved classifier now.
+Map.addLayer(input.classify(savedClassifier).clip(roi),
+             {palette: igbpPalette, min: 0, max: 17},
+             'classification');
+// [END earthengine__classification03__load_classifier]

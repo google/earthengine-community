@@ -46,7 +46,7 @@ import ee
 # Trigger the authentication flow.
 ee.Authenticate()
 # Initialize the library.
-ee.Initialize()
+ee.Initialize(project='my-project')
 ```
 
 Enable the Widget manager.

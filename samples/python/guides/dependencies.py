@@ -17,7 +17,7 @@
 # [START earthengine__dependencies__ee_setup]
 import ee
 ee.Authenticate()
-ee.Initialize()
+ee.Initialize(project='my-project')
 # [END earthengine__dependencies__ee_setup]
 
 # [START earthengine__dependencies__pprint_import]

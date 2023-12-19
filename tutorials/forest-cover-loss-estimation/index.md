@@ -69,10 +69,16 @@ you were using (see step 6 below).
 
 ### Tree cover
 
-Currently, Google Earth Engine has several tree cover datasets in the catalogue,
-including the Global Forest Change (GFC) (year 2000) and GLCF: Landsat Tree
-Cover Continuous Fields (2000, 2005, and 2010). Here, we use the Global Forest
-Change dataset.
+We need a tree cover map to start this analysis. It is important to select a tree
+cover map that is appropriate for the purpose and scope of your research. In this
+tutorial, we select one from the Google Earth Engine catalogue, which currently
+has several tree cover datasets, including the Global Forest
+Change (GFC) (year 2000) and GLCF: Landsat Tree Cover Continuous Fields
+(2000, 2005, and 2010). Here, we use the Global Forest Change dataset. Note that
+the dataset is not intended for inter-year comparison because of variation in
+methods to produce the data; the dataset is used here to demonstrate analyses and
+introduce Earth Engine concepts and not rigorous or valid interpretation of
+results.
 
 ```js
 var gfc2018 = ee.Image('UMD/hansen/global_forest_change_2018_v1_6');

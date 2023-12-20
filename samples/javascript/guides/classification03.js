@@ -172,7 +172,7 @@ print(training.size());
 // [START earthengine__classification03__export_classifier]
 // Using the random forest classifier defined earlier, export the random 
 // forest classifier as an Earth Engine asset.
-ee.Export.classifier.toAsset(
+Export.classifier.toAsset(
   classifier,
   "Saved random forest, IGBP classification",
   "upscaled_MCD12Q1_random_forest"

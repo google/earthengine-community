@@ -28,9 +28,14 @@ test for the presence of an increasing or decreasing trend and Sen's slope to
 quantify the magnitude of the trend (if one exists).  The tutorial also shows
 estimating the variance of the Mann-Kendall test statistic, a Z-statistic for
 the test of presence of any trend, and a P-value of the statistic (assuming a
-normal distribution).  It is important to note that the methods presented here
-are suitable for assessing monotonic trends (i.e. data without seasonality)
-in discrete data (i.e. not floating point).
+normal distribution).
+
+**Important: the methods presented here
+are suitable for assessing _monotonic trends_ (i.e. data without seasonality)
+in _discrete data_ (i.e. not floating point). Additionally, if you apply the
+methods in this tutorial to new data (i.e. region, time frame, source) you may
+need to adjust the `min` and `max` visualization parameters to suit the
+particular results.**
 
 ## Time series data
 
@@ -47,7 +52,8 @@ the series chart presented in the console.  Adjust the filter as necessary.
 var mod13 = ee.ImageCollection('MODIS/006/MOD13A1');
 var coll = mod13.select('EVI')
     .filter(ee.Filter.calendarRange(8, 9, 'month'));
-Map.addLayer(coll, {}, 'coll');
+Map.setCenter(-121.6, 37.3, 10);
+Map.addLayer(coll, {min: -500, max: 5000, palette: ['white', 'green']}, 'coll');
 ```
 
 An example EVI time series (one pixel) from this collection is shown below.  Is
@@ -106,8 +112,8 @@ var kendall = ee.ImageCollection(joined.map(function(current) {
 }).flatten()).reduce('sum', 2);
 
 var palette = ['red', 'white', 'green'];
-// Stretch this as necessary.
-Map.addLayer(kendall, {palette: palette}, 'kendall');
+// Set min and max stretch visualization parameters as necessary.
+Map.addLayer(kendall, {palette: palette, min: -2800, max: 2800}, 'kendall');
 ```
 
 Zoom to your area of interest and define a roughly symmetric color stretch
@@ -149,7 +155,7 @@ var slopes = ee.ImageCollection(joined.map(function(current) {
 }).flatten());
 
 var sensSlope = slopes.reduce(ee.Reducer.median(), 2); // Set parallelScale.
-Map.addLayer(sensSlope, {palette: palette}, 'sensSlope');
+Map.addLayer(sensSlope, {palette: palette, min: -1, max: 1}, 'sensSlope');
 ```
 
 To get Sen's intercept (if you need it), compute all intercepts and take the
@@ -162,7 +168,7 @@ var sensIntercept = coll.map(function(image) {
   var epochDays = image.date().difference(epochDate, 'days').float();
   return image.subtract(sensSlope.multiply(epochDays)).float();
 }).reduce(ee.Reducer.median(), 2);
-Map.addLayer(sensIntercept, {}, 'sensIntercept');
+Map.addLayer(sensIntercept, {min: -6600, max: 20600}, 'sensIntercept');
 ```
 
 A map of Sen's slope is shown below.  Note that the pattern is similar to
@@ -234,7 +240,7 @@ var kendallVariance = factors(count)
     .subtract(groupFactorSum)
     .divide(18)
     .float();
-Map.addLayer(kendallVariance, {}, 'kendallVariance');
+Map.addLayer(kendallVariance, {min: 1700, max: 85000}, 'kendallVariance');
 ```
 
 ## Significance testing

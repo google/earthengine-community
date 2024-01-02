@@ -174,7 +174,7 @@ print(training.size());
 // forest classifier as an Earth Engine asset.
 Export.classifier.toAsset(
   classifier,
-  "Saved random forest, IGBP classification",
+  "Saved-random-forest-IGBP-classification",
   "upscaled_MCD12Q1_random_forest"
 );
 // [END earthengine__classification03__export_classifier]

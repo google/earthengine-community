@@ -172,9 +172,7 @@ print(training.size())
 # forest classifier as an Earth Engine asset.
 classifier_asset_id = '<asset_prefix>/upscaled_MCD12Q1_random_forest'
 task = ee.batch.Export.classifier.toAsset(
-    classifier,
-    'Saved random forest, IGBP classification',
-    classifier_asset_id
+    classifier, 'Saved-random-forest-IGBP-classification', classifier_asset_id
 )
 task.start()
 # [END earthengine__classification03__export_classifier]

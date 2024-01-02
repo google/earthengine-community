@@ -73,4 +73,25 @@ Export.image.toCloudStorage({
     cloudOptimized: true
   }
 });
+
+// Define a nodata value and replace masked pixels with it using "unmask".
+// Set the "sameFootprint" parameter as "false" to include pixels outside of the
+// image geometry in the unmasking operation.
+var noDataVal = -9999;
+var unmaskedImage = image.unmask({value: noDataVal, sameFootprint: false});
+// Use the "noData" key in the "formatOptions" parameter to set the nodata value
+// (GeoTIFF format only).
+Export.image.toDrive({
+  image: unmaskedImage,
+  description: 'image_export_nodata',
+  bucket: 'gcs-bucket-name',
+  fileNamePrefix: 'image_export_nodata',
+  region: image.geometry(),  // full image bounds
+  scale: 2000,  // large scale for minimal demo
+  crs: 'EPSG:5070',
+  fileFormat: 'GeoTIFF',
+  formatOptions: {
+    noData: noDataVal
+  }
+});
 // [END earthengine__apidocs__export_image_tocloudstorage]

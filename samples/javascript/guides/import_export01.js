@@ -61,6 +61,24 @@ Export.image.toDrive({
 });
 // [END earthengine__import_export01__export_cogeo]
 
+// [START earthengine__import_export01__export_nodata]
+// Set a nodata value and replace masked pixels around the image edge with it.
+var noDataVal = -9999;
+landsat = landsat.unmask(noDataVal);
+
+Export.image.toDrive({
+  image: landsat,
+  description: 'imageNoDataExample',
+  crs: projection.crs,
+  scale: 2000,  // large scale for minimal demo
+  region: landsat.geometry(),  // full image bounds
+  fileFormat: 'GeoTIFF',
+  formatOptions: {
+    noData: noDataVal,
+  }
+});
+// [END earthengine__import_export01__export_nodata]
+
 // [START earthengine__import_export01__image_to_cloud]
 // Export the image to Cloud Storage.
 Export.image.toCloudStorage({

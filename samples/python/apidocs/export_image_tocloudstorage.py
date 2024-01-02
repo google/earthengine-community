@@ -76,4 +76,26 @@ task = ee.batch.Export.image.toCloudStorage(
     }
 )
 task.start()
+
+# Define a nodata value and replace masked pixels with it using "unmask".
+# Set the "sameFootprint" parameter as "false" to include pixels outside of the
+# image geometry in the unmasking operation.
+nodata_val = -9999
+unmasked_image = image.unmask(value=nodata_val, sameFootprint=False)
+# Use the "noData" key in the "formatOptions" parameter to set the nodata value
+# (GeoTIFF format only).
+task = ee.batch.Export.image.toDrive(
+    image=unmasked_image,
+    description='image_export_nodata',
+    bucket='gcs-bucket-name',
+    fileNamePrefix='image_export_nodata',
+    region=image.geometry(),  # full image bounds
+    scale=2000,  # large scale for minimal demo
+    crs='EPSG:5070',
+    fileFormat='GeoTIFF',
+    formatOptions={
+       'noData': nodata_val
+    }
+)
+task.start()
 # [END earthengine__apidocs__export_image_tocloudstorage]

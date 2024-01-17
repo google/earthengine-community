@@ -47,56 +47,21 @@ EXPORT_PATH = 'projects/YOUR_GEE_PROJECT_NAME/assets/imad/'
 ```
 
 ```python
-# Authenticate
-COLAB_AUTH_FLOW_CLOUD_PROJECT_FOR_API_CALLS = None
-
 import ee
-import google
-import os
 
-if COLAB_AUTH_FLOW_CLOUD_PROJECT_FOR_API_CALLS is None:
-  print("Authenticating using Notebook auth...")
-  if os.path.exists(ee.oauth.get_credentials_path()) is False:
-    ee.Authenticate()
-  else:
-    print('\N{check mark} '
-          'Previously created authentication credentials were found.')
-  ee.Initialize()
-else:
-  print('Authenticating using Colab auth...')
-  # Authenticate to populate Application Default Credentials in the Colab VM.
-  google.colab.auth.authenticate_user()
-  # Create credentials needed for accessing Earth Engine.
-  credentials, auth_project_id = google.auth.default()
-  # Initialize Earth Engine.
-  ee.Initialize(credentials, project=COLAB_AUTH_FLOW_CLOUD_PROJECT_FOR_API_CALLS)
-print('\N{check mark} Successfully initialized!')
-```
-
-```python
-# Install the ee_jupyter package.
-import os
-try:
-  import ee_jupyter
-except ModuleNotFoundError:
-  print('ee_jupyter was not found. Installing now...')
-  result = os.system('pip -q install earthengine-jupyter')
-  import ee_jupyter
-print(f'ee_jupyter (version {ee_jupyter.__version__}) '
-        f'is installed.')
+ee.Authenticate(auth_mode='notebook')
+ee.Initialize()
 ```
 
 ```python
 # Import other packages used in the tutorial.
 %matplotlib inline
+import geemap
 import numpy as np
 import random, time
 import matplotlib.pyplot as plt
 from scipy.stats import norm, chi2
 
-from ee_jupyter.colab import set_colab_output_cell_height
-from ee_jupyter.ipyleaflet import Map
-from ee_jupyter.ipyleaflet import Inspector
 from pprint import pprint  # for pretty printing
 ```
 
@@ -322,9 +287,7 @@ the MAD variates that we have determined so far for the Landkreis Olpe scene.
 
 ```python
 # Landkreis Olpe.
-# (`aois` FeatureCollection is owned and managed by tutorial author)
-aois = ee.FeatureCollection('projects/ee-mortcanty/assets/dvg1krs_nw').geometry()
-aoi = ee.Geometry(aois.geometries().get(26))
+aoi = ee.FeatureCollection('projects/google/imad_tutorial_aoi').geometry()
 
 visirbands = ['B2', 'B3', 'B4', 'B8', 'B11', 'B12']
 visbands = ['B2', 'B3', 'B4']
@@ -549,8 +512,8 @@ Agreement is not perfect, but the plot is certainly closer to the ideal chi-squa
 after iteration than after the single MAD transformation. So let's display the *iMAD* image:
 
 ```python
-location = aoi.centroid().coordinates().getInfo()[::-1]
-M1 = Map(**{'center': location, 'zoom': 11})
+M1 = geemap.Map()
+M1.centerObject(aoi, 11)
 display_ls(im1.select(visbands), M1, 'im1')
 display_ls(im2.select(visbands), M1, 'im2')
 display_ls(im_imad.select('iMAD1', 'iMAD2', 'iMAD3'), M1, 'iMAD123', True)
@@ -603,7 +566,8 @@ result = im_imadstd.cluster(clusterer)
 Here we display the four clusters overlaid onto the two Sentinel 2 images:
 
 ```python
-M2 = Map(**{'center': location, 'zoom': 13})
+M2 = geemap.Map()
+M2.centerObject(aoi, 13)
 display_ls(im1.select(visbands), M2, 'im1')
 display_ls(im2.select(visbands), M2, 'im2')
 cluster0 = result.updateMask(result.eq(0))
@@ -655,7 +619,8 @@ dyn = ee.ImageCollection('GOOGLE/DYNAMICWORLD/V1') \
 # 'trees' class = class 1
 dw = dyn.clip(aoi).updateMask(dyn.eq(1))
 
-M3 = Map(**{'center': location, 'zoom': 13})
+M3 = geemap.Map()
+M3.centerObject(aoi, 13)
 display_ls(im1.select(visbands), M3, 'im1')
 display_ls(im2.select(visbands), M3, 'im2')
 M3.addLayer(dw, {'min': 0, 'max': 1, 'palette': ['black', 'green']}, 'dynamic world')
@@ -672,7 +637,8 @@ and is also only weakly correlated with the other 5 bands. However, close inspec
 that there are many more false positives, especially in agricultural fields, as well as in the reservoir.
 
 ```python
-M4 = Map(**{'center': location, 'zoom': 13})
+M4 = geemap.Map()
+M4.centerObject(aoi, 13)
 diff = im1.subtract(im2).select(visirbands)
 training = diff.sample(region=aoi, scale=20, numPixels=50000)
 clusterer = ee.Clusterer.wekaKMeans(4).train(training)
@@ -778,8 +744,8 @@ aois = filtered.geometry()
 # There are many Montgomery Counties in USA, we want the 12th in the list.
 aoi = ee.Geometry(aois.geometries().get(12))
 im1, im2 = collect(aoi, '2021-07-01', '2021-07-30', '2022-06-01', '2022-06-30')
-location = aoi.centroid().coordinates().getInfo()[::-1]
-M5 = Map(**{'center':location, 'zoom': 10})
+M5 = geemap.Map()
+M5.centerObject(aoi, 10)
 display_ls(im1.select(visbands), M5, 'Image 1')
 display_ls(im2.select(visbands), M5, 'Image 2')
 

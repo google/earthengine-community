@@ -47,57 +47,21 @@ EXPORT_PATH = 'projects/YOUR_GEE_PROJECT_NAME/assets/imad/'
 ```
 
 ```python
-# Authenticate.
-COLAB_AUTH_FLOW_CLOUD_PROJECT_FOR_API_CALLS = None
-
 import ee
-import google
-import os
 
-if COLAB_AUTH_FLOW_CLOUD_PROJECT_FOR_API_CALLS is None:
-  print("Authenticating using Notebook auth...")
-  if os.path.exists(ee.oauth.get_credentials_path()) is False:
-    ee.Authenticate()
-  else:
-    print('\N{check mark} '
-          'Previously created authentication credentials were found.')
-  #ee.Authenticate()
-  ee.Initialize()
-else:
-  print('Authenticating using Colab auth...')
-  # Authenticate to populate Application Default Credentials in the Colab VM.
-  google.colab.auth.authenticate_user()
-  # Create credentials needed for accessing Earth Engine.
-  credentials, auth_project_id = google.auth.default()
-  # Initialize Earth Engine.
-  ee.Initialize(credentials, project=COLAB_AUTH_FLOW_CLOUD_PROJECT_FOR_API_CALLS)
-print('\N{check mark} Successfully initialized!')
+ee.Authenticate(auth_mode='notebook')
+ee.Initialize()
 ```
 
 ```python
-# Install the ee_jupyter package.
-import os
-try:
-  import ee_jupyter
-except ModuleNotFoundError:
-  print('ee_jupyter was not found. Installing now...')
-  result = os.system('pip -q install earthengine-jupyter')
-  import ee_jupyter
-print(f'ee_jupyter (version {ee_jupyter.__version__}) '
-        f'is installed.')
-```
-
-```python
-# Import other packages used in the tutorial.
+# Import other packages used in the tutorial
 %matplotlib inline
+import geemap
 import numpy as np
 import random, time
 import matplotlib.pyplot as plt
 from scipy.stats import norm, chi2
 
-from ee_jupyter.colab import set_colab_output_cell_height
-from ee_jupyter.ipyleaflet import Map
-from ee_jupyter.ipyleaflet import Inspector
 from pprint import pprint  # for pretty printing
 ```
 
@@ -467,10 +431,7 @@ As a first illustration, we collect two minimally cloudy Sentinel-2 images over 
 
 ```python
 # Landkreis Olpe area of interest.
-# (`aois` FeatureCollection is owned and managed by tutorial author)
-aois = ee.FeatureCollection('projects/ee-mortcanty/assets/dvg1krs_nw').geometry()
-aoi = ee.Geometry(aois.geometries().get(26))
-location = aoi.centroid().coordinates().getInfo()[::-1]
+aoi = ee.FeatureCollection('projects/google/imad_tutorial_aoi').geometry()
 
 # Spectral band combinations
 #Sentinel-2
@@ -560,7 +521,8 @@ plot_orthoregress( coeffs, im_stack )
 The next cell compares the normalized and unnormalized TOA images with the reference SR image. The no-change pixels used in the regression are also displayed:
 
 ```python
-M1 = Map(**{'center': location, 'zoom': 13})
+M1 = geemap.Map()
+M1.centerObject(aoi, 13)
 M1.addLayer(im1_sr.select(visnirbands), visnirparams, 'Im1_sr')
 M1.addLayer(im2_toa.select(visnirbands), visnirparams, 'Im2_toa')
 M1.addLayer(im2_toa_norm.select(visnirbands), visnirparams, 'Im2_toa_norm')
@@ -579,7 +541,8 @@ def ndvi_s2(im):
 ```
 
 ```python
-M2 = Map(**{'center': location, 'zoom': 13})
+M2 = geemap.Map()
+M2.centerObject(aoi, 13)
 M2.addLayer(ndvi_s2(im1_sr), {'min': 0, 'max': 1.2, 'palette': ['black', 'yellow']}, 'Im1_ndvi')
 M2.addLayer(ndvi_s2(im2_toa_norm), {'min': 0, 'max': 1.2, 'palette': ['black', 'yellow']}, 'Im2_toa_norm_ndvi')
 M2.addLayer(ndvi_s2(im2_toa), {'min': 0, 'max': 1.2, 'palette': ['black', 'yellow']}, 'Im2_toa_ndvi')
@@ -620,7 +583,8 @@ The above plot for the NIR band B8 is interesting as it seems to indicate that t
 In any case, the regression plots look reasonable, so here again is the comparison of the normalized and unnormalized TOA images with the reference SR image:
 
 ```python
-M3 = Map(**{'center': location, 'zoom': 13})
+M3 = geemap.Map()
+M3.centerObject(aoi, 13)
 M3.addLayer(im1_sr.select(visnirbands), visnirparams, 'Im1_sr')
 M3.addLayer(im2_toa.select(visnirbands), visnirparams, 'Im1_toa')
 M3.addLayer(im2_toa_norm.select(visnirbands), visnirparams, 'Im2_toa_norm')
@@ -664,7 +628,8 @@ plot_orthoregress(coeffs, im_stack, bandNames=visirbands_ls)
 For most of the bands, the intercepts are small and the slopes fairly close to one. The NIR band 'SR_B5' is the exception. This is apparent in the direct comparison of the original and harmonized Landsat 8 images:
 
 ```python
-M4 = Map(**{'center': location, 'zoom': 11})
+M4 = geemap.Map()
+M4.centerObject(aoi, 11)
 M4.addLayer(im_ls9.select(visnirbands_ls), visnirparams, 'Im_ls9')
 M4.addLayer(im_ls8.select(visnirbands_ls), visnirparams, 'Im_ls8')
 M4.addLayer(im_ls8_norm.select(visnirbands_ls), visnirparams, 'Im_ls8_norm')

@@ -73,58 +73,22 @@ The cells below execute the necessary formalities for accessing Earth Engine fro
 
 
 ```python
-# Authenticate
-COLAB_AUTH_FLOW_CLOUD_PROJECT_FOR_API_CALLS = None
-
 import ee
-import google
-import os
 
-if COLAB_AUTH_FLOW_CLOUD_PROJECT_FOR_API_CALLS is None:
-  print("Authenticating using Notebook auth...")
-  if os.path.exists(ee.oauth.get_credentials_path()) is False:
-    ee.Authenticate()
-  else:
-    print('\N{check mark} '
-          'Previously created authentication credentials were found.')
-  ee.Initialize()
-else:
-  print('Authenticating using Colab auth...')
-  # Authenticate to populate Application Default Credentials in the Colab VM.
-  google.colab.auth.authenticate_user()
-  # Create credentials needed for accessing Earth Engine.
-  credentials, auth_project_id = google.auth.default()
-  # Initialize Earth Engine.
-  ee.Initialize(credentials, project=COLAB_AUTH_FLOW_CLOUD_PROJECT_FOR_API_CALLS)
-print('\N{check mark} Successfully initialized!')
-```
-
-
-```python
-# Install the ee_jupyter package
-import os
-try:
-  import ee_jupyter
-except ModuleNotFoundError:
-  print('ee_jupyter was not found. Installing now...')
-  result = os.system('pip -q install earthengine-jupyter')
-  import ee_jupyter
-print(f'ee_jupyter (version {ee_jupyter.__version__}) '
-        f'is installed.')
+ee.Authenticate(auth_mode='notebook')
+ee.Initialize()
 ```
 
 
 ```python
 # Import other packages used in the tutorial
 %matplotlib inline
+import geemap
 import numpy as np
 import random, time
 import matplotlib.pyplot as plt
 from scipy.stats import norm, chi2
 
-from ee_jupyter.colab import set_colab_output_cell_height
-from ee_jupyter.ipyleaflet import Map
-from ee_jupyter.ipyleaflet import Inspector
 from pprint import pprint  # for pretty printing
 ```
 
@@ -181,8 +145,7 @@ For example, here is an area of interest (aoi) covering a heavily forested admin
 
 
 ```python
-aois = ee.FeatureCollection('projects/ee-mortcanty/assets/dvg1krs_nw').geometry()
-aoi = ee.Geometry(aois.geometries().get(26))
+aoi = ee.FeatureCollection('projects/google/imad_tutorial_aoi').geometry()
 ```
 
 We first collect two Sentinel-2 scenes which bracket some of the recent clear cutting (June, 2021 and June, 2022) and print out their timestamps. For demonstration purposes we choose top of atmosphere reflectance since the MAD transformation does not require absolute surface reflectances.
@@ -221,8 +184,8 @@ In order to view the images, we instantiate an interactive map located at the ce
 
 ```python
 # Interactive map
-location = aoi.centroid().coordinates().getInfo()[::-1]
-M1 = Map(**{'center': location, 'zoom': 11})
+M1 = geemap.Map()
+M1.centerObject(aoi, 11)
 
 M1
 ```
@@ -520,7 +483,8 @@ we display an RGB composite of the first 3 MAD variates, together with the origi
 
 
 ```python
-M2 = Map(**{'center': location, 'zoom': 11})
+M2 = geemap.Map()
+M2.centerObject(aoi, 11)
 display_ls(im1.select(visbands), M2, 'Image 1')
 display_ls(im2.select(visbands), M2, 'Image 2')
 display_ls(diff, M2, 'Difference')

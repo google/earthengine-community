@@ -86,15 +86,17 @@ def write_csv(hdf_fh, csv_file):
 
     ds = hdf_fh[f'{k}/cover_z']
     cover_z = pd.DataFrame(ds, columns=cover_names)
-    cover_z.replace(ds.attrs.get('_FillValue'), np.nan, True)
+    # pytype: disable=wrong-arg-count  # pandas-drop-duplicates-overloads
+    cover_z.replace(ds.attrs.get('_FillValue'), np.nan, inplace=True)
 
     ds = hdf_fh[f'{k}/pai_z']
     pai_z = pd.DataFrame(ds, columns=pai_names)
-    pai_z.replace(ds.attrs.get('_FillValue'), np.nan, True)
+    pai_z.replace(ds.attrs.get('_FillValue'), np.nan, inplace=True)
 
     ds = hdf_fh[f'{k}/pavd_z']
     pavd_z = pd.DataFrame(ds, columns=pavd_names)
-    pavd_z.replace(ds.attrs.get('_FillValue'), np.nan, True)
+    pavd_z.replace(ds.attrs.get('_FillValue'), np.nan, inplace=True)
+    # pytype: enable=wrong-arg-count  # pandas-drop-duplicates-overloads
 
     df = pd.concat((df, cover_z), axis=1)
     df = pd.concat((df, pai_z), axis=1)
@@ -113,7 +115,8 @@ def write_csv(hdf_fh, csv_file):
         index=False,
         header=is_first,
         mode='a',
-        line_terminator='\n')
+        lineterminator='\n',
+    )
     is_first = False
 
 

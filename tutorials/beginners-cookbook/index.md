@@ -853,7 +853,7 @@ print(image);
 var coll = getRegions(image);
 ```
 
-**3.** Export the table created to your Google Drive
+**3.** Export the table created to your Google Drive.
 
 ```javascript
 Export.table.toDrive({

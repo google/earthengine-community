@@ -478,7 +478,7 @@ var pmTime = ee.ImageCollection('projects/gee-datastore/assets/PM25_v5GL03');
 
 // Population data.
 var Pop = ee.Image(
-  'CIESIN/GPWv411/GPW_Population_Count/gpw_v4_population_count_rev11_2020_30_sec');
+  'CIESIN/GPWv4/population-count/2020');
 
 // Exceedance factor of PM2.5 concentration.
 var exceedanceFactor = ee.Image('users/tirthankar25/PMtimes_2020');

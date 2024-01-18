@@ -15,6 +15,7 @@
  */
 
 // [START earthengine__apidocs__ee_filter_date]
+// collection.filterDate is preferred.
 // Constructed FeatureCollection representing a field site sampled at
 // four different dates.
 var geom = ee.Geometry.Point([-119.56, 37.67]);
@@ -30,8 +31,9 @@ print('Field site observations collection in July 2021',
       fc.filter(ee.Filter.date('2021-07-01', '2021-08-01')));
 
 // Alternative input formats.
+var dateRange = ee.DateRange('2021-07-01', '2021-08-01');
 print('ee.DateRange as an input',
-      fc.filter(ee.Filter.date(ee.DateRange('2021-07-01', '2021-08-01'))));
+      fc.filter(ee.Filter.date(dateRange)));
 
 print('Numbers (milliseconds since Unix epoch) as an input',
       fc.filter(ee.Filter.date(1625875200000, 1626739200001)));

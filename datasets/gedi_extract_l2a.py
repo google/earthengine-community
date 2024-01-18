@@ -64,6 +64,14 @@ numeric_variables = (
     'surface_flag'
 )
 
+# Integer-valued columns that contained fill values instead of NA prior to
+# Pandas updates past version 1.5.
+integer_fill_variables = {
+    'leaf_off_doy': 32767,
+    'leaf_on_cycle': 255,
+    'leaf_on_doy': 32767,
+}
+
 string_variables = ('shot_number',)
 
 rh_names = tuple([f'rh{d}' for d in range(101)])
@@ -117,13 +125,17 @@ def write_csv(l2a_hdf_fh, l2b_hdf_fh, csv_file):
     df = df[df.lat_lowestmode.notnull()]
     df = df[df.lon_lowestmode.notnull()]
 
+    # Correct fill replacements.
+    for df_key, fill_value in integer_fill_variables.items():
+      df[df_key] = df[df_key].fillna(fill_value)
+
     df.to_csv(
         csv_file,
         float_format='%3.6f',
         index=False,
         header=is_first,
         mode='a',
-        line_terminator='\n')
+        lineterminator='\n')
     is_first = False
 
 def main(argv):

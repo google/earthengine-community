@@ -73,8 +73,8 @@ print('1D array image minMax (pixel)', sampArrImg(minMax1D));
 // If your array image is 2D and you want min and max, add a third dimension.
 var arrayImg2Dto3D = arrayImg2D.toArray(2);
 print('2D array image to 3D', sampArrImg(arrayImg2Dto3D));
-// [[[0, 1, 2],
-//   [3, 4, 5]]]
+// [[[0], [1], [2]],
+//  [[3], [4], [5]]]
 
 // Calculate min and max along the 0-axis, store results in 2-axis.
 var minMax2D = arrayImg2Dto3D.arrayReduce(ee.Reducer.minMax(), [0], 2);

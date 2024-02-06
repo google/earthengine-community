@@ -23,16 +23,19 @@
 // Load SRTM Digital Elevation Model data.
 var image = ee.Image('CGIAR/SRTM90_V4');
 
-// Define an SLD style of discrete intervals to apply to the image.
+// Define an SLD style of discrete intervals to apply to the image. Use the
+// opacity keyword to set pixels less than 0 as completely transparent. Pixels
+// with values greater than or equal to the final entry quantity are set to
+// fully transparent by default.
 var sld_intervals =
   '<RasterSymbolizer>' +
     '<ColorMap type="intervals" extended="false" >' +
-      '<ColorMapEntry color="#0000ff" quantity="0" label="0"/>' +
-      '<ColorMapEntry color="#00ff00" quantity="100" label="1-100" />' +
-      '<ColorMapEntry color="#007f30" quantity="200" label="110-200" />' +
-      '<ColorMapEntry color="#30b855" quantity="300" label="210-300" />' +
-      '<ColorMapEntry color="#ff0000" quantity="400" label="310-400" />' +
-      '<ColorMapEntry color="#ffff00" quantity="1000" label="410-1000" />' +
+      '<ColorMapEntry color="#0000ff" quantity="0" label="0 ﹤ x" opacity="0" />' +
+      '<ColorMapEntry color="#00ff00" quantity="100" label="0 ≤ x ﹤ 100" />' +
+      '<ColorMapEntry color="#007f30" quantity="200" label="100 ≤ x ﹤ 200" />' +
+      '<ColorMapEntry color="#30b855" quantity="300" label="200 ≤ x ﹤ 300" />' +
+      '<ColorMapEntry color="#ff0000" quantity="400" label="300 ≤ x ﹤ 400" />' +
+      '<ColorMapEntry color="#ffff00" quantity="900" label="400 ≤ x ﹤ 900" />' +
     '</ColorMap>' +
   '</RasterSymbolizer>';
 

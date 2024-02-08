@@ -874,7 +874,7 @@ var geometry = ee.Geometry.Rectangle([55.1, 25, 55.4, 25.4]);
 // Add layer to map.
 Map.addLayer(geometry);
 // Load Landsat image collection.
-var allImages = ee.ImageCollection('LANDSAT/LT05/C01/T1_TOA')
+var allImages = ee.ImageCollection('LANDSAT/LT05/C02/T1_TOA')
  // Filter row and path such that they cover Dubai.
  .filter(ee.Filter.eq('WRS_PATH', 160))
  .filter(ee.Filter.eq('WRS_ROW', 43))

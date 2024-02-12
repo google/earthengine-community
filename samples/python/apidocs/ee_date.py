@@ -28,6 +28,9 @@ print(ee.Date('2017-06-24').format().getInfo())  # 2017-06-24T00:00:00
 print(ee.Date('2017-6-24T00:14:46').format().getInfo())  # 2017-06-24T00:14:46
 print(ee.Date('2017-06-24T23:59:59').format().getInfo())  # 2017-06-24T23:59:59
 
+# With an optional time zone.
+print(ee.Date('2020', 'US/Mountain').format().getInfo())  # 2020-01-01T07:00:00
+
 # Convert Python datetime.now() to Earth Engine Date
 print(ee.Date(datetime.now()).format().getInfo())
 # [END earthengine__apidocs__ee_date]

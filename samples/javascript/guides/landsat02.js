@@ -45,5 +45,5 @@ var mosaic = ee.ImageCollection('LANDSAT/LC08/C02/T1_TOA')
 // Cloud score the mosaic and display the result.
 var scored_mosaic = ee.Algorithms.Landsat.simpleCloudScore(mosaic);
 Map.addLayer(scored_mosaic, {bands: ['B4', 'B3', 'B2'], max: 0.4},
-    'TOA mosaic', false);
+    'TOA mosaic');
 // [END earthengine__landsat02__sensor_id]

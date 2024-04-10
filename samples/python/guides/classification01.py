@@ -59,11 +59,9 @@ points = ee.FeatureCollection('GOOGLE/EE/DEMOS/demo_landcover_labels')
 label = 'landcover'
 
 # Overlay the points on the imagery to get training.
-training = l8_image.select(bands).sampleRegions({
-    'collection': points,
-    'properties': [label],
-    'scale': 30
-})
+training = l8_image.select(bands).sampleRegions(
+    collection=points, properties=[label], scale=30
+)
 
 # Train a CART classifier with default parameters.
 trained = ee.Classifier.smileCart().train(training, label, bands)
@@ -72,12 +70,17 @@ trained = ee.Classifier.smileCart().train(training, label, bands)
 classified = l8_image.select(bands).classify(trained)
 
 # Display the inputs and the results.
-Map = geemap.core.Map()
-Map.setCenter(-122.0877, 37.7880, 11)
-Map.addLayer(l8_image,
-             {'bands': ['SR_B4', 'SR_B3', 'SR_B2'], 'min': 0, 'max': 0.25},
-             'image')
-Map.addLayer(classified,
-             {'min': 0, 'max': 2, 'palette': ['orange', 'green', 'blue']},
-             'classification')
+m = geemap.Map()
+m.set_center(-122.0877, 37.7880, 11)
+m.add_layer(
+    l8_image,
+    {'bands': ['SR_B4', 'SR_B3', 'SR_B2'], 'min': 0, 'max': 0.25},
+    'image',
+)
+m.add_layer(
+    classified,
+    {'min': 0, 'max': 2, 'palette': ['orange', 'green', 'blue']},
+    'classification',
+)
+m
 # [END earthengine__classification01__image_classify]

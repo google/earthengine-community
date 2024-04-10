@@ -52,33 +52,29 @@ bands = ['SR_B2', 'SR_B3', 'SR_B4', 'SR_B5', 'SR_B6', 'SR_B7']
 # Manually created polygons.
 forest1 = ee.Geometry.Rectangle(-63.0187, -9.3958, -62.9793, -9.3443)
 forest2 = ee.Geometry.Rectangle(-62.8145, -9.206, -62.7688, -9.1735)
-nonForest1 = ee.Geometry.Rectangle(-62.8161, -9.5001, -62.7921, -9.4486)
-nonForest2 = ee.Geometry.Rectangle(-62.6788, -9.044, -62.6459, -8.9986)
+non_forest1 = ee.Geometry.Rectangle(-62.8161, -9.5001, -62.7921, -9.4486)
+non_forest2 = ee.Geometry.Rectangle(-62.6788, -9.044, -62.6459, -8.9986)
 
 # Make a FeatureCollection from the hand-made geometries.
 polygons = ee.FeatureCollection([
-    ee.Feature(nonForest1, {'class': 0}),
-    ee.Feature(nonForest2, {'class': 0}),
+    ee.Feature(non_forest1, {'class': 0}),
+    ee.Feature(non_forest1, {'class': 0}),
     ee.Feature(forest1, {'class': 1}),
     ee.Feature(forest2, {'class': 1}),
 ])
 
 # Get the values for all pixels in each polygon in the training.
-training = l8_image.sampleRegions({
+training = l8_image.sampleRegions(
     # Get the sample from the polygons FeatureCollection.
-    'collection': polygons,
+    collection=polygons,
     # Keep this list of properties from the polygons.
-    'properties': ['class'],
+    properties=['class'],
     # Set the scale to get Landsat pixels in the polygons.
-    'scale': 30
-})
+    scale=30,
+)
 
 # Create an SVM classifier with custom parameters.
-classifier = ee.Classifier.libsvm({
-    'kernelType': 'RBF',
-    'gamma': 0.5,
-    'cost': 10
-})
+classifier = ee.Classifier.libsvm(kernelType='RBF', gamma=0.5, cost=10)
 
 # Train the classifier.
 trained = classifier.train(training, 'class', bands)
@@ -87,13 +83,18 @@ trained = classifier.train(training, 'class', bands)
 classified = l8_image.classify(trained)
 
 # Display the classification result and the input image.
-Map = geemap.core.Map()
-Map.setCenter(-62.836, -9.2399, 9)
-Map.addLayer(l8_image,
-             {'bands': ['SR_B4', 'SR_B3', 'SR_B2'], 'min': 0, 'max': 0.25},
-             'image')
-Map.addLayer(polygons, {'color': 'yellow'}, 'training polygons')
-Map.addLayer(classified,
-             {'min': 0, 'max': 1, 'palette': ['orange', 'green']},
-             'deforestation')
+m = geemap.Map()
+m.set_center(-62.836, -9.2399, 9)
+m.add_layer(
+    l8_image,
+    {'bands': ['SR_B4', 'SR_B3', 'SR_B2'], 'min': 0, 'max': 0.25},
+    'image',
+)
+m.add_layer(polygons, {'color': 'yellow'}, 'training polygons')
+m.add_layer(
+    classified,
+    {'min': 0, 'max': 1, 'palette': ['orange', 'green']},
+    'deforestation',
+)
+m
 # [END earthengine__classification02__polygon_training]

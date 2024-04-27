@@ -38,7 +38,7 @@ class TestLLMCode(absltest.TestCase):
   def test_get_tile_url_success(self, mock_exec):
     mock_exec.return_value = 'https://earthengine.googleapis.com/tile_url'
     mock_llm = mock.MagicMock()
-    mock_llm.ask.return_value = (
+    mock_llm.chat.return_value = (
         '```python\nprint("https://earthengine.googleapis.com/tile_url")\n```'
     )
     url, code = ee_agent.get_tile_url_and_code(
@@ -52,7 +52,7 @@ class TestLLMCode(absltest.TestCase):
   def test_get_tile_url_bad_url(self, mock_exec):
     mock_exec.side_effect = ee_agent.AgentError('BAD URL')
     mock_llm = mock.MagicMock()
-    mock_llm.ask.return_value = '```python\nprint("invalid_url")\n```'
+    mock_llm.chat.return_value = '```python\nprint("invalid_url")\n```'
 
     with self.assertRaisesRegex(ee_agent.AgentError, 'BAD URL'):
       ee_agent.get_tile_url_and_code(mock_llm, 'question', 'recommendation')
@@ -63,7 +63,7 @@ class TestLLMCode(absltest.TestCase):
   def test_get_tile_url_code_error(self, mock_exec):
     del mock_exec  # unused
     mock_llm = mock.MagicMock()
-    mock_llm.ask.side_effect = [
+    mock_llm.chat.side_effect = [
         '```python\nprint("url1")\n```',
         '```python\nprint("url2")\n```',
         '```python\nprint("https://earthengine.googleapis.com/tile_url")\n```',
@@ -77,7 +77,7 @@ class TestLLMCode(absltest.TestCase):
     question = 'What is the Earth Engine URL for a Landsat 8 image?'
     recommendation = None
 
-    mock_llm.ask.side_effect = [
+    mock_llm.chat.side_effect = [
         'Here is the code to get the URL:\n```python\nraise ValueError("Test error")\n```',
         'Here is the code to get the URL:\n```python\nraise ValueError("Test error")\n```',
         'Here is the revised code:\n```python\nprint("https://earthengine.googleapis.com/api/thumb?thumbid=abc123")\n```'
@@ -93,12 +93,12 @@ class TestLLMCode(absltest.TestCase):
     expected_prompts = [
         question,
         'Revise the code and output a new version. Think about the broader\n            context of the question and how well the code matches this\n            context.\'\nThis is error number 1. The higher the error count,\n          the more you should revise the code, possibly starting from\n          scratch.',
-        'You are an expert in reasoning about code errors and fixing them. I\n          asked the following question: ***What is the Earth Engine URL for a Landsat 8 image?***\n\nYou generated\n          this code again:\nraise ValueError("Test error")\n\nThis code produced an error:\n          Test error\n\nPlease try something different.'
+        'This is the same code you suggested before, which still\n          generates the same error. Please try something different.'
     ]
     expected_temps = [0, 0.5, 1]
 
     for call, expected_prompt, expected_temp in zip(
-        mock_llm.ask.call_args_list, expected_prompts, expected_temps):
+        mock_llm.chat.call_args_list, expected_prompts, expected_temps):
       self.assertEqual(expected_prompt, call[0][0])
       self.assertEqual(expected_temp, call[1]['temperature'])
 
@@ -107,7 +107,7 @@ class TestLLMCode(absltest.TestCase):
     question = 'What is the Earth Engine URL for a Landsat 8 image?'
     recommendation = None
 
-    mock_llm.ask.side_effect = [
+    mock_llm.chat.side_effect = [
         'Here is the code to get the URL:\n```python\nraise ValueError("Test error 1")\n```',
         'Here is the revised code:\n```python\nraise ValueError("Test error 2")\n```',
         'Here is the revised code:\n```python\nprint("https://earthengine.googleapis.com/api/thumb?thumbid=abc123")\n```'
@@ -128,7 +128,7 @@ class TestLLMCode(absltest.TestCase):
     expected_temps = [0, 0.5, 0.5]
 
     for call, expected_prompt, expected_temp in zip(
-        mock_llm.ask.call_args_list, expected_prompts, expected_temps):
+        mock_llm.chat.call_args_list, expected_prompts, expected_temps):
       self.assertEqual(expected_prompt, call[0][0])
       self.assertEqual(expected_temp, call[1]['temperature'])
 
@@ -145,7 +145,7 @@ class TestLLMCode(absltest.TestCase):
         'Image analysis result'
     )
     gemini = ee_agent.Gemini()
-    gemini.image_model = mock_image_model
+    gemini._image_model = mock_image_model
 
     analysis = gemini.analyze_image('https://example.com/image.jpg')
     self.assertEqual(analysis, 'Image analysis result')
@@ -163,20 +163,23 @@ class TestLLMCode(absltest.TestCase):
         'Image analysis result'
     )
     gemini = ee_agent.Gemini()
-    gemini.image_model = mock_image_model
+    gemini._image_model = mock_image_model
 
     analysis = gemini.analyze_image('https://example.com/image.jpg')
     self.assertEqual(
         analysis, 'The image tile has a single uniform color with value 0.')
 
   @mock.patch('google.generativeai.GenerativeModel')
-  def test_ask(self, mock_generative_model):
-    mock_text_model = mock.MagicMock()
-    mock_text_model.generate_content.return_value.text = 'Generated answer'
-    mock_generative_model.return_value = mock_text_model
+  def test_chat(self, mock_generative_model):
+    mock_chat_proxy = mock.MagicMock()
+    mock_chat_proxy.send_message.return_value.text = 'Generated answer'
+
+    mock_model = mock.MagicMock()
+    mock_generative_model.return_value = mock_model
+    mock_model.start_chat.return_value = mock_chat_proxy
 
     gemini = ee_agent.Gemini()
-    answer = gemini.ask('question')
+    answer = gemini.chat('question')
     self.assertEqual(answer, 'Generated answer')
 
   @mock.patch.object(ee_agent.Gemini, 'analyze_image')
@@ -184,12 +187,11 @@ class TestLLMCode(absltest.TestCase):
       'ee_agent.get_tile_url_and_code',
       return_value=('https://earthengine.googleapis.com/tile_url', 'code'),
   )
-  @mock.patch('ee_agent.Gemini.ask')
+  @mock.patch('ee_agent.Gemini.chat')
   def test_run_agent_success(
-      self, mock_ask, mock_get_tile_url, mock_analyze_image
-  ):
+      self, mock_chat, mock_get_tile_url, mock_analyze_image):
     mock_analyze_image.return_value = 'Image analysis result'
-    mock_ask.return_value = '0.95 Evaluation result'
+    mock_chat.return_value = '0.95 Evaluation result'
 
     ee_agent.run_agent(
         ee_agent.Gemini(), ee_agent.Gemini(), 'topic', 'question'
@@ -202,15 +204,15 @@ class TestLLMCode(absltest.TestCase):
       'ee_agent.get_tile_url_and_code',
       return_value=('code', 'https://earthengine.googleapis.com/tile_url'),
   )
-  @mock.patch('ee_agent.Gemini.ask')
+  @mock.patch('ee_agent.Gemini.chat')
   def test_run_agent_multiple_attempts(
-      self, mock_ask, mock_get_tile_url, mock_analyze_image
-  ):
+      self, mock_chat, mock_get_tile_url, mock_analyze_image):
     mock_analyze_image.return_value = 'Image analysis result'
-    mock_ask.side_effect = [
+
+    mock_chat.side_effect = [
         '0.5 Evaluation result',
         'recommendation',
-        '0.95 Evaluation result',
+        '0.95 Evaluation result'
     ]
 
     ee_agent.run_agent(

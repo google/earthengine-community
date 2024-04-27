@@ -131,8 +131,8 @@ embellishments, and platitides. Do not use long or fancy words."""
 class LLM:
   """Parent LLM class."""
 
-  def ask(self, question: str, temperature: Optional[float] = None) -> str:
-    raise NotImplementedError("Subclasses must implement the 'ask' method.")
+  def chat(self, question: str, temperature: Optional[float] = None) -> str:
+    raise NotImplementedError("Subclasses must implement the 'chat' method.")
 
   def analyze_image(self, url: str) -> str:
     raise NotImplementedError(
@@ -144,34 +144,43 @@ class Gemini(LLM):
   """Gemini LLM."""
 
   def __init__(self):
-    self.text_model = genai.GenerativeModel('gemini-1.5-pro-latest')
-    self.image_model = genai.GenerativeModel('gemini-pro-vision')
+    self._text_model = genai.GenerativeModel('gemini-1.5-pro-latest')
+    self._image_model = genai.GenerativeModel('gemini-pro-vision')
+    self._chat_proxy = self._text_model.start_chat(history=[])
 
-  def ask(self, question: str, temperature: Optional[float] = 0.1) -> str:
+  def chat(self, question: str, temperature: Optional[float] = None) -> str:
+    """Adds a question to the ongoing chat session."""
+    # Always delay a bit to reduce the chance for rate-limiting errors.
+    time.sleep(1)
     sleep_duration = 10
     while True:
+      response = ''
       try:
-        response = self.text_model.generate_content(
-            brief + question,
-            generation_config={
-                'temperature': temperature,
-                # Use a generous but limited output size to encourage in-depth
-                # replies.
-                'max_output_tokens': 5000,
-            },
+        response = self._chat_proxy.send_message(
+          brief + question,
+          generation_config={
+              'temperature': temperature,
+              # Use a generous but limited output size to encourage in-depth
+              # replies.
+              'max_output_tokens': 5000,
+          }
         )
         if not response.parts:
           raise ValueError(
               'Cannot get analysis with reason'
               f' {response.candidates[0].finish_reason.name}, terminating'
           )
-        return response.text
-      except google.api_core.exceptions.TooManyRequests:
+      except (
+          google.api_core.exceptions.TooManyRequests,
+          google.api_core.exceptions.DeadlineExceeded
+      ):
         print(
-            'Got a TooManyRequests error, sleeping for'
+            'Got a rate limit or timeout error, sleeping for'
             f' {sleep_duration} seconds'
         )
         time.sleep(sleep_duration)
+        continue
+      return response.text
 
   def analyze_image(self, url: str) -> str:
     image = PIL.Image.open(io.BytesIO(get_image(url)))
@@ -208,7 +217,7 @@ image content, colors, patterns, and features.
             {'inline_data': image},
         ]
     }
-    image_response = self.image_model.generate_content(req)
+    image_response = self._image_model.generate_content(req)
     try:
       return image_response.text
     except ValueError as e:
@@ -283,17 +292,15 @@ def run_llm_code(
   error_count = 0
 
   while True:
-    answer = llm.ask(prompt, temperature=old_context.temperature)
+    answer = llm.chat(prompt, temperature=old_context.temperature)
     print(f'\nANSWER:\n{answer}\n')
 
     new_context = CodeContext()
     new_context.code = extract_code(answer)
     if new_context.code == old_context.code:
       prompt = (
-          f"""You are an expert in reasoning about code errors and fixing them. I
-          asked the following question: ***{question}***\n\nYou generated
-          this code again:\n{new_context.code}\n\nThis code produced an error:
-          {old_context.error}\n\nPlease try something different."""
+          """This is the same code you suggested before, which still
+          generates the same error. Please try something different."""
       )
       new_context.temperature = 1
       old_context = new_context
@@ -315,9 +322,7 @@ def run_llm_code(
       new_context.error = str(e)
       print(f'ERROR:\n{new_context.error}')
       prompt = (
-          f"""You are an expert in reasoning about code errors and fixing them. I
-          asked the following question ***{prompt}*** and ran this code: {new_context.code}
-          which produced an error ***{new_context.error}***"""
+          f"""This code produced an error, please fix it. ***{new_context.error}***"""
       )
 
       if old_context.error == new_context.error:
@@ -344,8 +349,8 @@ def run_llm_code(
 
 
 def run_agent(
-    text_llm: LLM, image_llm: LLM, topic: str, question: str,
-    recommendation: str = '') -> None:
+    text_llm: LLM, image_llm: LLM, question: str, recommendation: str = ''
+) -> None:
   """Outer loop running the agent until a high score is reached."""
   codes: list[str] = []
   evals: list[str] = []
@@ -360,7 +365,7 @@ def run_agent(
     print(f'\nIMAGE ANALYSIS:\n{analysis}')
 
     eval_question = (
-        f"""As a response to a user question to show {topic} an Earth Engine map
+        f"""An Earth Engine map
         tile was produced containing the following: ***{analysis}***.  Start
         your answer with a number between 0 and 1 indicating how relevant
         the image is as an answer to the user question. Discuss whether it
@@ -387,7 +392,7 @@ def run_agent(
         shows Bay Area Cons: * The color palette does not indicate NDVI even
         though an NDVI image of the Bay Area was requested. """
     )
-    evaluation = text_llm.ask(eval_question)
+    evaluation = text_llm.chat(eval_question)
     print(f'\nEVALUATION:\n{evaluation}')
 
     score_match = re.search(
@@ -415,14 +420,13 @@ def run_agent(
           importance. Limit output to five suggestions.\n\nThis is tile
           fretrieval round {round_num}. The higher the round, the more you
           should consider trying a different approach or a different
-          geometry than earlier.\n\nThe history is below in the
-          format:\nCODE 1\n...\nEVAL 1\n...\nCODE 2\n...\nEVAL 2\n...\n\n"""
+          geometry than earlier."""
       )
       for i, (old_code, old_eval) in enumerate(zip(codes, evals)):
         recommendation_question += (
             f'CODE {i+1}\n{old_code}\n\nEVAL {i+1}\n{old_eval}\n\n'
         )
-      recommendation = text_llm.ask(recommendation_question)
+      recommendation = text_llm.chat(recommendation_question)
       print(f'\nRECOMMENDATIONS:\n{recommendation}')
     else:
       print(url)
@@ -463,7 +467,7 @@ def main(argv: list[str]) -> None:
       'region': geometry, 'dimensions': 512})."""
   )
 
-  run_agent(text_llm, image_llm, topic, question)
+  run_agent(text_llm, image_llm, question)
 
 
 if __name__ == '__main__':

@@ -78,7 +78,8 @@ Map.setOptions('HYBRID');
 ## (2) Zonal statistics of population density
 
 Zonal statistics summarize the properties of raster datasets within specified zones or regions. 
-In this application, we'll compute population density from the GPW data and summarize it for each province.
+In this application, we'll compute population density from the GPW gridded data and summarize it for each province.
+The corresponding value will be stored in a property called 'pop_per_km' for each polygon.
 We'll first create a function for computing zonal statistics to organize the workflow.
 
 ```javascript

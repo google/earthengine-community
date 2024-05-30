@@ -44,15 +44,24 @@ Map.addLayer(resampled, visParams, 'resampled');
 
 // Export this region, expressed as a polygon.
 var polygon = ee.Geometry.Polygon(
-        [[[-122.39233016967773, 37.631464821010745],
-          [-122.39245891571045, 37.60631018703994],
-          [-122.35263347625732, 37.606344185530936],
-          [-122.35246181488037, 37.63136285994676]]]);
-// Define a set of export parameters.
-var exportParams = {scale: 5, region: polygon};
-Export.image(landsat.visualize(visParams), 'resample_original', exportParams);
-Export.image(resampled.visualize(visParams), 'resample_bicubic', exportParams);
-
+  [[[-122.39233016967773, 37.631464821010745],
+    [-122.39245891571045, 37.60631018703994],
+    [-122.35263347625732, 37.606344185530936],
+    [-122.35246181488037, 37.63136285994676]]]);
+Export.image.toAsset({
+    image: landsat.visualize(visParams),
+    description: 'resample_original',
+    assetId: 'projects/MY-PROJECT/assets/resample_original',
+    scale: 5,
+    region: polygon,
+});
+Export.image.toAsset({
+    image: resampled.visualize(visParams),
+    description: 'resample_bicubic',
+    assetId: 'projects/MY-PROJECT/assets/resample_bicubic',
+    scale: 5,
+    region: polygon,
+});
 
 // [START earthengine__resample__reduce_resolution]
 // Load a MODIS EVI image.

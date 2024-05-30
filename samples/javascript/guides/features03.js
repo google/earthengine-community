@@ -39,9 +39,9 @@ print(fromGeom);
 // [END earthengine__features03__from_geom]
 
 // [START earthengine__features03__from_asset]
-var fc = ee.FeatureCollection('TIGER/2016/Roads');
-Map.setCenter(-73.9596, 40.7688, 12);
-Map.addLayer(fc, {}, 'Census roads');
+var fc = ee.FeatureCollection('RESOLVE/ECOREGIONS/2017');
+Map.setCenter(12.17, 20.96, 3);
+Map.addLayer(fc, {}, 'ecoregions');
 // [END earthengine__features03__from_asset]
 
 // [START earthengine__features03__random]

@@ -21,7 +21,7 @@
 
 // [START earthengine__reducers00_overview__ic_extrema]
 // Load and filter the Sentinel-2 image collection.
-var collection = ee.ImageCollection('COPERNICUS/S2')
+var collection = ee.ImageCollection('COPERNICUS/S2_HARMONIZED')
     .filterDate('2016-01-01', '2016-12-31')
     .filterBounds(ee.Geometry.Point([-81.31, 29.90]));
 

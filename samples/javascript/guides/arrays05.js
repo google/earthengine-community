@@ -107,7 +107,8 @@ var getPrincipalComponents = function(centered, scale, region) {
 var pcImage = getPrincipalComponents(centered, scale, region);
 
 // Plot each PC as a new layer
-for (var i = 0; i < bandNames.length().getInfo(); i++) {
-  var band = pcImage.bandNames().get(i).getInfo();
-  Map.addLayer(pcImage.select([band]), {min: -2, max: 2}, band);
-}
+pcImage.bandNames().evaluate(function(bandNames) {
+  for (var i = 0; i < bandNames.length; i++) {
+    Map.addLayer(pcImage.select(i), {min: -2, max: 2}, bandNames[i]);
+  }
+});

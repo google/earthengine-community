@@ -114,6 +114,5 @@ def get_principal_components(centered, scale, region):
 pc_image = get_principal_components(centered, scale, region)
 
 # Plot each PC as a new layer
-for i in range(len(band_names.getInfo())):
-  band = pc_image.bandNames().get(i).getInfo()
+for band in pc_image.bandNames().getInfo():
   m.add_layer(pc_image.select([band]), {'min': -2, 'max': 2}, band)

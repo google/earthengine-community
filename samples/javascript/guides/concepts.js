@@ -132,6 +132,12 @@ var mosaic = collection.filterDate('2018-01-01', '2019-01-01').mosaic();
 print(mosaic.projection());
 // [END earthengine__concepts__default_projection]
 
+// [START earthengine__concepts__reproject_mock]
+// Some projection that is suitable for your area of interest.
+var proj = ee.Projection(...);
+var output = collection.reduce(...).reproject(proj);
+// [END earthengine__concepts__reproject_mock]
+
 // [START earthengine__concepts__projections1]
 // The input image has a SR-ORG:6974 (sinusoidal) projection.
 var image = ee.Image('MODIS/061/MOD13A1/2014_05_09').select(0);

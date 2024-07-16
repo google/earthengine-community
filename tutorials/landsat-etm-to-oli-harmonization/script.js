@@ -15,6 +15,12 @@
  * limitations under the License.
  */
 
+// 2024-07-16: This script is no longer supported. Landsat Collection 1 has been
+// deprecated and this script no longer works. Collection 2 is available, but
+// the harmonization coefficients described here may not be applicable and the
+// improvements made during Collection reprocessing have made harmonization
+// generally unnecessary.
+
 // ################################################################
 // ### FUNCTIONS ###
 // ################################################################

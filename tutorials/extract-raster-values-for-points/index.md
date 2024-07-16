@@ -369,26 +369,18 @@ Enhanced Thematic Mapper Plus (ETM+) from Landsat 7, and Operational Land
 Imager (OLI) from Landsat 8.
 
 The following section prepares these collections so that band names are
-consistent and cloud masks are applied. Reflectance among corresponding
-bands are roughly congruent for the three sensors when using the surface
-reflectance product, therefore the processing steps that follow do not
-address inter-sensor harmonization. If you would like to apply a correction,
-please see the
-["Landsat ETM+ to OLI Harmonization" tutorial](https://developers.google.com/earth-engine/tutorials/community/landsat-etm-to-oli-harmonization)
-for more information on the subject.
+consistent and cloud masks are applied.
 
 #### Prepare the Landsat image collection
 
 First, define the function to mask cloud and shadow pixels.
 
 ```js
-function fmask(img) {
-  var cloudShadowBitMask = 1 << 3;
-  var cloudsBitMask = 1 << 5;
-  var qa = img.select('pixel_qa');
-  var mask = qa.bitwiseAnd(cloudShadowBitMask).eq(0)
-    .and(qa.bitwiseAnd(cloudsBitMask).eq(0));
-  return img.updateMask(mask);
+// Scales and masks Landsat 8 surface reflectance images.
+function scaleAndMask(image) {
+  var qaMask = image.select('QA_PIXEL').bitwiseAnd(parseInt('11111', 2)).eq(0);
+  var opticalBands = image.select('SR_B.').multiply(0.0000275).add(-0.2);
+  return image.select().addBands(opticalBands).updateMask(qaMask);
 }
 ```
 
@@ -400,35 +392,32 @@ between OLI and TM/ETM+, and it will make future index calculations easier.
 // Selects and renames bands of interest for Landsat OLI.
 function renameOli(img) {
   return img.select(
-    ['B2', 'B3', 'B4', 'B5', 'B6', 'B7'],
+    ['SR_B2', 'SR_B3', 'SR_B4', 'SR_B5', 'SR_B6', 'SR_B7'],
     ['Blue', 'Green', 'Red', 'NIR', 'SWIR1', 'SWIR2']);
 }
 
 // Selects and renames bands of interest for TM/ETM+.
 function renameEtm(img) {
   return img.select(
-    ['B1', 'B2', 'B3', 'B4', 'B5', 'B7'],
+    ['SR_B1', 'SR_B2', 'SR_B3', 'SR_B4', 'SR_B5', 'SR_B7'],
     ['Blue', 'Green', 'Red', 'NIR', 'SWIR1', 'SWIR2']);
 }
 ```
 
 Combine the cloud mask and band renaming functions into preparation functions
-for OLI and TM/ETM+. If you want to include band harmonization coefficients,
-you can combine the `prepOli` and `prepEtm` functions from the
-["Landsat ETM+ to OLI Harmonization" tutorial](https://developers.google.com/earth-engine/tutorials/community/landsat-etm-to-oli-harmonization)
-with the functions below.
+for OLI and TM/ETM+.
 
 ```js
 // Prepares (cloud masks and renames) OLI images.
 function prepOli(img) {
-  img = fmask(img);
+  img = scaleAndMask(img);
   img = renameOli(img);
   return img;
 }
 
 // Prepares (cloud masks and renames) TM/ETM+ images.
 function prepEtm(img) {
-  img = fmask(img);
+  img = scaleAndMask(img);
   img = renameEtm(img);
   return img;
 }
@@ -441,16 +430,21 @@ the relevant image preparation function.
 ```js
 var ptsLandsat = pts.map(bufferPoints(15, true));
 
-var oliCol = ee.ImageCollection('LANDSAT/LC08/C01/T1_SR')
+var dateRange = ee.DateRange('2005-01-01', '2015-01-01');
+
+var oliCol = ee.ImageCollection('LANDSAT/LC08/C02/T1_L2')
   .filterBounds(ptsLandsat)
+  .filterDate(dateRange)
   .map(prepOli);
 
-var etmCol = ee.ImageCollection('LANDSAT/LE07/C01/T1_SR')
+var etmCol = ee.ImageCollection('LANDSAT/LE07/C02/T1_L2')
   .filterBounds(ptsLandsat)
+  .filterDate(dateRange)
   .map(prepEtm);
 
-var tmCol = ee.ImageCollection('LANDSAT/LT05/C01/T1_SR')
+var tmCol = ee.ImageCollection('LANDSAT/LT05/C02/T1_L2')
   .filterBounds(ptsLandsat)
+  .filterDate(dateRange)
   .map(prepEtm);
 ```
 
@@ -475,7 +469,7 @@ var params = {
   crs: 'EPSG:5070',
   bands: ['Blue', 'Green', 'Red', 'NIR', 'SWIR1', 'SWIR2'],
   bandsRename: ['ls_blue', 'ls_green', 'ls_red', 'ls_nir', 'ls_swir1', 'ls_swir2'],
-  imgProps: ['LANDSAT_ID', 'SATELLITE'],
+  imgProps: ['LANDSAT_PRODUCT_ID', 'SPACECRAFT_ID'],
   imgPropsRename: ['img_id', 'satellite'],
   datetimeName: 'date',
   datetimeFormat: 'YYYY-MM-dd'
@@ -557,13 +551,13 @@ unscaling Landsat SR data:
 
 ```js
 // Define a Landsat image.
-var img = ee.ImageCollection('LANDSAT/LC08/C01/T1_SR').first();
+var img = ee.ImageCollection('LANDSAT/LC08/C02/T1_L2').first();
 
 // Print its properties.
 print(img.propertyNames());
 
 // Select the reflectance bands and unscale them.
-var computedImg = img.select('B.*').divide(1e4);
+var computedImg = img.select('SR_B.').multiply(0.0000275).add(-0.2);
 
 // Print the unscaled image's properties.
 print(computedImg.propertyNames());
@@ -575,7 +569,7 @@ function to add the source properties to the derived image.
 
 ```js
 // Select the reflectance bands and unscale them.
-var computedImg = img.select('B.*').divide(1e4)
+var computedImg = img.select('SR_B.').multiply(0.0000275).add(-0.2)
   .copyProperties(img, img.propertyNames());
 
 // Print the unscaled image's properties.

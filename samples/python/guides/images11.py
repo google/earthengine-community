@@ -15,9 +15,9 @@
 """Google Earth Engine Developer's Guide examples for 'Images - Morphological operations'."""
 
 # [START earthengine__images11__morphology]
-# Load a Landsat 8 image, select the NIR band, threshold, display.
+# Load a Landsat 8 TOA image, select the NIR band, threshold, display.
 image = (
-    ee.Image('LANDSAT/LC08/C01/T1_TOA/LC08_044034_20140318').select(4).gt(0.2)
+    ee.Image('LANDSAT/LC08/C02/T1_TOA/LC08_044034_20140318').select(4).gt(0.2)
 )
 
 # Define a kernel.
@@ -29,10 +29,10 @@ opened = image.focalMin(kernel=kernel, iterations=2).focalMax(
 )
 
 # Define a map centered on Redwood City, California.
-map_opened = geemap.Map(center=[37.5010, -122.1899], zoom=13)
+m = geemap.Map(center=[37.5010, -122.1899], zoom=13)
 
 # Add the image layers to the map and display it.
-map_opened.add_layer(image, None, 'NIR threshold')
-map_opened.add_layer(opened, None, 'opened')
-display(map_opened)
+m.add_layer(image, None, 'NIR threshold')
+m.add_layer(opened, None, 'opened')
+m
 # [END earthengine__images11__morphology]

@@ -30,7 +30,7 @@ var USgeometry =
     ee.Geometry.Rectangle({coords: [-127, 24, -64, 50], geodesic: false});
 Map.centerObject(USgeometry, 5);
 
-// Filter to show only pixels that signify a high liklihood of fire
+// Filter to show only pixels that signify a high likelihood of fire.
 var allFire = mask.remap(
     [10, 11, 12, 13, 14, 30, 31, 32, 33, 34],
     [1, 1, 1, 1, 1, 1, 1, 1, 1, 1]);
@@ -86,7 +86,7 @@ var maskVisParam = {
 // Create color palette to convey fire radiative power (intensity in megawatts).
 var powerVisParam = {min: 0, max: 1500, palette: ['yellow', 'orange', 'red']};
 
-// Add Layers to Map
+// Add Layers to Map.
 Map.addLayer(classifiedImage, maskVisParam, 'Fire Mask', true, 0.7);
 Map.addLayer(power, powerVisParam, 'FRP', true);
 Map.addLayer(fireBuffer, {color: 'FF00FF'}, 'Buffer', true);

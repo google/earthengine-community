@@ -50,7 +50,7 @@ Implementation:
    4. Uses Gemini image recognition to analyze the content and relevance
       of the retrieved map tile.
    5a. If the map tile is deemed relevant to the user's query, the agent
-      displays the map tile using matplotlib and exits successfuly.
+      displays the map tile using matplotlib and exits successfully.
    5b. If the map tile is not satisfactory, the agent tries again, using
       the LLM's feedback to refine the EE code.
 
@@ -256,7 +256,7 @@ def get_tile_url_and_code(
     llm: an LLM instance
     question: a text prompt containing the user question
     recommendation: an optional text string containing recommendations
-      from the previous interations
+      from the previous iterations
   Returns:
     a tuple of two strings, the URL extracted from running LLM-generated
       Earth Engine code and the code that produced the URL.
@@ -281,10 +281,10 @@ def run_llm_code(
     llm: an LLM instance
     question: a text prompt containing the user question
     recommendation: an optional text string containing recommendations
-      from the previous interations
+      from the previous iterations
     code_callback:
       a function accepting a string (code output) and returning the value
-      extracted from it (or rasing an exception)
+      extracted from it (or raising an exception)
 
   Returns:
     a tuple of two strings, the result of running code_callback on the output

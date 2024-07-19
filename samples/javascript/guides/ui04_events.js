@@ -97,7 +97,7 @@ ui.root.insert(0, panel);
 
 // [START earthengine__ui04_events__asynchronous]
 // Load and display an NDVI image.
-var ndvi = ee.ImageCollection('LANDSAT/LC8_L1T_8DAY_NDVI')
+var ndvi = ee.ImageCollection('LANDSAT/COMPOSITES/C02/T1_L2_8DAY_NDVI')
     .filterDate('2014-01-01', '2015-01-01');
 var vis = {min: 0, max: 1, palette: ['99c199', '006400']};
 Map.addLayer(ndvi.median(), vis, 'NDVI');

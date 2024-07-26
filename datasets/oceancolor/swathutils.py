@@ -203,13 +203,13 @@ def get_geo(file: str, key: str):
         attrs = dict(h5[f'Geometry_data/{key}'].attrs)
 
         if 'Error_DN' in attrs.keys():
-            data[data == attrs.pop('Error_DN')[0]] = np.NaN
+            data[data == attrs.pop('Error_DN')[0]] = np.nan
 
         if ('Minimum_valid_DN' in attrs.keys()) and \
                 ('Maximum_valid_DN' in attrs.keys()):
             valid_min = attrs.pop('Minimum_valid_DN')[0]
             valid_max = attrs.pop('Maximum_valid_DN')[0]
-            data[(data < valid_min) | (data > valid_max)] = np.NaN
+            data[(data < valid_min) | (data > valid_max)] = np.nan
 
         # Convert DN to PV
         if ('Slope' in attrs.keys()) and ('Offset' in attrs.keys()):
@@ -219,7 +219,7 @@ def get_geo(file: str, key: str):
                 ('Maximum_valid_value' in attrs.keys()):
             valid_min = attrs.pop('Minimum_valid_value')[0]
             valid_max = attrs.pop('Maximum_valid_value')[0]
-            data[(data < valid_min) | (data > valid_max)] = np.NaN
+            data[(data < valid_min) | (data > valid_max)] = np.nan
 
         # Longitude
         is_stride_180 = False

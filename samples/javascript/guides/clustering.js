@@ -20,11 +20,14 @@
  */
 
 // [START earthengine__clustering__clustering]
-// Load a pre-computed Landsat composite for input.
-var input = ee.Image('LANDSAT/LE7_TOA_1YEAR/2001');
-
-// Define a region in which to generate a sample of the input.
+// Define a region in which to generate a segmented map.
 var region = ee.Geometry.Rectangle(29.7, 30, 32.5, 31.7);
+
+// Load a Landsat composite for input.
+var input = ee.ImageCollection('LANDSAT/COMPOSITES/C02/T1_L2_32DAY')
+  .filterDate('2001-05', '2001-06')
+  .first()
+  .clip(region);
 
 // Display the sample region.
 Map.setCenter(31.5, 31.0, 8);

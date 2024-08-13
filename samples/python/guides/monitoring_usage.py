@@ -12,9 +12,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-"""Examples for /earth-engine/cloud/api_monitoring page."""
+"""Examples for /earth-engine/guides/monitoring_usage page."""
 
-# [START earthengine__cloud_api_monitoring__workload_tags]
+# [START earthengine__monitoring_usage__workload_tags]
 # Authenticate, then initialize with your Cloud Project.
 ee.Initialize(project='your-project')
 
@@ -29,9 +29,11 @@ composite = (
 # Set a workload tag for export.
 ee.data.setWorkloadTag('export-jobs')
 ee.batch.Export.image.toAsset(composite).start()
-ee.data.resetWorkloadTag()
+ee.data.resetWorkloadTag()  # Reset to landsat-compositing
 
-# Alternatively, use a workload tag with with.
+ee.data.resetWorkloadTag(True)  # Reset back to empty
+
+# Alternatively, use a workload tag with the `with` context manager.
 with ee.data.workloadTagContext('export-jobs'):
   ee.batch.Export.image.toAsset(composite).start()
-# [END earthengine__cloud_api_monitoring__workload_tags]
+# [END earthengine__monitoring_usage__workload_tags]

@@ -145,7 +145,7 @@ class Gemini(LLM):
 
   def __init__(self):
     self._text_model = genai.GenerativeModel('gemini-1.5-pro-latest')
-    self._image_model = genai.GenerativeModel('gemini-pro-vision')
+    self._image_model = genai.GenerativeModel('gemini-1.5-pro-latest')
     self._chat_proxy = self._text_model.start_chat(history=[])
 
   def chat(self, question: str, temperature: Optional[float] = None) -> str:

@@ -16,4 +16,7 @@
 print(ee.String('abc123').index('').getInfo())  # 0
 print(ee.String('abc123').index('c1').getInfo())  # 2
 print(ee.String('abc123').index('ZZ').getInfo())  # -1
+
+# index is case-sensitive.
+print(ee.String('abc123').index('BC').getInfo())  # -1
 # [END earthengine__apidocs__ee_string_index]

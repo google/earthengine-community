@@ -25,7 +25,7 @@ var grassland = ee.FeatureCollection('projects/google/charts_feature_example')
                     .filter(ee.Filter.eq('label', 'Grassland'));
 
 // Load MODIS vegetation indices data and subset a decade of images.
-var vegIndices = ee.ImageCollection('MODIS/006/MOD13A1')
+var vegIndices = ee.ImageCollection('MODIS/061/MOD13A1')
                      .filter(ee.Filter.date('2010-01-01', '2020-01-01'))
                      .select(['NDVI', 'EVI']);
 
@@ -64,7 +64,7 @@ var grassland = ee.FeatureCollection('projects/google/charts_feature_example')
                     .filter(ee.Filter.eq('label', 'Grassland'));
 
 // Load MODIS vegetation indices data and subset years 2012 and 2019.
-var vegIndices = ee.ImageCollection('MODIS/006/MOD13A1')
+var vegIndices = ee.ImageCollection('MODIS/061/MOD13A1')
                      .filter(ee.Filter.or(
                          ee.Filter.date('2012-01-01', '2013-01-01'),
                          ee.Filter.date('2019-01-01', '2020-01-01')))
@@ -103,7 +103,7 @@ print(chart);
 var ecoregions = ee.FeatureCollection('projects/google/charts_feature_example');
 
 // Load MODIS vegetation indices data and subset a decade of images.
-var vegIndices = ee.ImageCollection('MODIS/006/MOD13A1')
+var vegIndices = ee.ImageCollection('MODIS/061/MOD13A1')
                      .filter(ee.Filter.date('2010-01-01', '2020-01-01'))
                      .select(['NDVI', 'EVI']);
 
@@ -142,7 +142,7 @@ var forest = ee.FeatureCollection('projects/google/charts_feature_example')
                  .filter(ee.Filter.eq('label', 'Forest'));
 
 // Load MODIS vegetation indices data and subset a decade of images.
-var vegIndices = ee.ImageCollection('MODIS/006/MOD13A1')
+var vegIndices = ee.ImageCollection('MODIS/061/MOD13A1')
                      .filter(ee.Filter.date('2010-01-01', '2020-01-01'))
                      .select(['NDVI', 'EVI']);
 
@@ -176,7 +176,7 @@ print(chart);
 var ecoregions = ee.FeatureCollection('projects/google/charts_feature_example');
 
 // Load MODIS vegetation indices data and subset a decade of images.
-var vegIndices = ee.ImageCollection('MODIS/006/MOD13A1')
+var vegIndices = ee.ImageCollection('MODIS/061/MOD13A1')
                      .filter(ee.Filter.date('2010-01-01', '2020-01-01'))
                      .select(['NDVI', 'EVI']);
 

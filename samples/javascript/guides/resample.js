@@ -65,7 +65,7 @@ Export.image.toAsset({
 
 // [START earthengine__resample__reduce_resolution]
 // Load a MODIS EVI image.
-var modis = ee.Image(ee.ImageCollection('MODIS/006/MOD13A1').first())
+var modis = ee.Image(ee.ImageCollection('MODIS/061/MOD13A1').first())
     .select('EVI');
 
 // Display the EVI image near La Honda, California.
@@ -77,7 +77,7 @@ var modisProjection = modis.projection();
 print('MODIS projection:', modisProjection);
 
 // Load and display forest cover data at 30 meters resolution.
-var forest = ee.Image('UMD/hansen/global_forest_change_2015')
+var forest = ee.Image('UMD/hansen/global_forest_change_2023_v1_11')
     .select('treecover2000');
 Map.addLayer(forest, {max: 80}, 'forest cover 30 m');
 

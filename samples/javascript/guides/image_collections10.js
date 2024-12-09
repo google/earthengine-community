@@ -290,7 +290,7 @@ var s2col = ee.ImageCollection('COPERNICUS/S2_SR')
 var aoi = ee.Geometry.Point(-122.1, 37.2).buffer(1e4);
 
 // Filter MODIS NDVI image collection by a date range.
-var ndviCol = ee.ImageCollection('MODIS/006/MOD13A1')
+var ndviCol = ee.ImageCollection('MODIS/061/MOD13A1')
   .filterDate('2018-01-01', '2019-01-01')
   .select('NDVI')
   // Map over the image collection to calculate regional mean NDVI and add
@@ -348,7 +348,7 @@ print('Set vis max to:', ee.Number(percentClip.get(keys.get(1))).round());
 
 // [START earthengine__image_collections10__imageVis02]
 // Filter MODIS NDVI image collection by a date range.
-var ndviCol = ee.ImageCollection('MODIS/006/MOD13A1')
+var ndviCol = ee.ImageCollection('MODIS/061/MOD13A1')
   .filterDate('2018-01-01', '2019-01-01')
   .select('NDVI');
 

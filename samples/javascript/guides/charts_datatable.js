@@ -51,7 +51,7 @@ var forest = ee.FeatureCollection('projects/google/charts_feature_example')
                  .filter(ee.Filter.eq('label', 'Forest'));
 
 // Load MODIS vegetation indices data and subset a decade of images.
-var vegIndices = ee.ImageCollection('MODIS/006/MOD13A1')
+var vegIndices = ee.ImageCollection('MODIS/061/MOD13A1')
                      .filter(ee.Filter.date('2010-01-01', '2020-01-01'))
                      .select(['NDVI', 'EVI']);
 

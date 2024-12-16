@@ -20,26 +20,36 @@
  */
 
 // [START earthengine__images05__ndvi]
-// Load a 5-year Landsat 7 composite 1999-2003.
-var landsat1999 = ee.Image('LANDSAT/LE7_TOA_5YEAR/1999_2003');
+// Load a VIIRS 8-day surface reflectance composite for May 2024.
+var viirs202405 = ee.ImageCollection('NASA/VIIRS/002/VNP09H1').filter(
+  ee.Filter.date('2024-05-01', '2024-05-16')).first();
 
 // Compute NDVI.
-var ndvi1999 = landsat1999.select('B4').subtract(landsat1999.select('B3'))
-  .divide(landsat1999.select('B4').add(landsat1999.select('B3')));
+var ndvi202405 = viirs202405.select('SurfReflect_I2')
+  .subtract(viirs202405.select('SurfReflect_I1'))
+  .divide(viirs202405.select('SurfReflect_I2')
+    .add(viirs202405.select('SurfReflect_I1')));
 // [END earthengine__images05__ndvi]
 
 // [START earthengine__images05__per_band]
-// Load a 5-year Landsat 7 composite 2008-2012.
-var landsat2008 = ee.Image('LANDSAT/LE7_TOA_5YEAR/2008_2012');
+// Load a VIIRS 8-day surface reflectance composite for September 2024.
+var viirs202409 = ee.ImageCollection('NASA/VIIRS/002/VNP09H1').filter(
+  ee.Filter.date('2024-09-01', '2024-09-16')).first();
 
-// Compute multi-band difference between the 2008-2012 composite and the
-// previously loaded 1999-2003 composite.
-var diff = landsat2008.subtract(landsat1999);
-Map.addLayer(diff,
-             {bands: ['B4', 'B3', 'B2'], min: -32, max: 32}, 'difference');
+// Compute multi-band difference between the September composite and the
+// previously loaded May composite.
+var diff = viirs202409.subtract(ndvi202405);
+Map.addLayer(diff, {
+  bands: ['SurfReflect_I1', 'SurfReflect_I2', 'SurfReflect_I3'],
+  min: -1,
+  max: 1
+}, 'difference');
 
 // Compute the squared difference in each band.
 var squaredDifference = diff.pow(2);
-Map.addLayer(squaredDifference,
-             {bands: ['B4', 'B3', 'B2'], max: 1000}, 'squared diff.');
+Map.addLayer(squaredDifference, {
+  bands: ['SurfReflect_I1', 'SurfReflect_I2', 'SurfReflect_I3'],
+  min: 0,
+  max: 0.7
+}, 'squared diff.');
 // [END earthengine__images05__per_band]

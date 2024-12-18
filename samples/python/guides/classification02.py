@@ -98,3 +98,11 @@ m.add_layer(
 )
 m
 # [END earthengine__classification02__polygon_training]
+
+# [START earthengine__classification02__classification_modes]
+classifier = ee.Classifier.libsvm(
+    kernelType='RBF', gamma=0.5, cost=10
+).setOutputMode('PROBABILITY')
+
+trained = classifier.train(training, 'class', bands)
+# [END earthengine__classification02__classification_modes]

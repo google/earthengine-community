@@ -99,3 +99,13 @@ Map.addLayer(classified,
              {min: 0, max: 1, palette: ['orange', 'green']},
              'deforestation');
 // [END earthengine__classification02__polygon_training]
+
+// [START earthengine__classification02__classification_modes]
+var classifier = ee.Classifier.libsvm({
+  kernelType: 'RBF',
+  gamma: 0.5,
+  cost: 10
+}).setOutputMode('PROBABILITY');
+
+var trained = classifier.train(training, 'class', bands);
+// [END earthengine__classification02__classification_modes]

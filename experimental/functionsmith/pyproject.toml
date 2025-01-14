@@ -41,9 +41,14 @@ dependencies = [
 
 [build-system]
 requires = ['setuptools', 'wheel']
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools]
+package-dir = {"" = "src"}
+packages = ["functionsmith"]
 
 [project.entry-points."console_scripts"]
-functionsmith_cli = "agent:main"
+functionsmith_cli = "functionsmith.agent:main"
 
 [project.urls]
 Homepage = "https://github.com/google/earthengine-community/tree/master/experimental/functionsmith"

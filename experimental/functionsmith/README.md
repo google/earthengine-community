@@ -14,7 +14,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 -->
 
-# Earth Engine Dataset Explorer
+# Functionsmith
 
 ## Overview
 
@@ -24,8 +24,12 @@ function calling.
 USING THIS AGENT IS UNSAFE. It directly runs LLM-produced code, and thus
 should only be used for demonstration purposes.
 
-To run with the default task investigating a CSV file with airport data,
-install the package, then run:
+Until there is a PyPi package, install with:
+```
+pip install "git+https://github.com/google/earthengine-community.git#egg=functionsmith&subdirectory=experimental/functionsmith"
+```
+
+To run with the default task investigating a CSV file with airport data:
 ```
 export GOOGLE_API_KEY=my-api-key
 wget https://raw.githubusercontent.com/davidmegginson/ourairports-data/refs/heads/main/airports.csv

@@ -2,7 +2,7 @@ import ast
 from typing import Any
 import unittest
 
-import code_parser
+from functionsmith import code_parser
 
 
 class TestParser(unittest.TestCase):

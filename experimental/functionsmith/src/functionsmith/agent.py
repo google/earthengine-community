@@ -35,9 +35,9 @@ import logging
 import os
 import sys
 
-import code_parser
-import executor
-import llm
+from functionsmith import code_parser
+from functionsmith import executor
+from functionsmith import llm
 
 
 STARS = '*' * 20 + '\n'

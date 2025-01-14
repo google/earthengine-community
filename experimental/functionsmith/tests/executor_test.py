@@ -3,7 +3,7 @@ import sys
 import unittest
 from unittest import mock
 
-import executor
+from functionsmith import executor
 
 
 class TestOutputManager(unittest.TestCase):

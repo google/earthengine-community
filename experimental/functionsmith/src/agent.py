@@ -6,7 +6,10 @@ them to solve a user-specified problem.
 USING THIS AGENT IS UNSAFE. It directly runs LLM-produced code, and thus
 should only be used for demonstration purposes.
 
-To get started, get a data file:
+To get started, set one of these environment variables to your API key:
+GOOGLE_API_KEY, ANTHROPIC_API_KEY, or OPENAI_API_KEY.
+
+To execute the sample task analyzing airports, get the airports.csv file:
 ```
 wget https://raw.githubusercontent.com/davidmegginson/ourairports-data/refs/heads/main/airports.csv
 ```
@@ -16,9 +19,6 @@ python3 agent.py
 ```
 
 See README.md for more information.
-
-To execute the sample task analyzing airports, get the airtports.csv file from
-https://raw.githubusercontent.com/davidmegginson/ourairports-data/refs/heads/main/airports.csv
 
 The agent will ask the LLM to find "something interesting" about the data
 given its schema. Then the LLM will probably create one or two sets of
@@ -195,45 +195,51 @@ for f in [task_done]:
 
 tools = {}
 
-question = task
 
-while True:
-  print(STARS)
-  all_tools = copy.deepcopy(tools)
-  all_tools.update(syscalls)
-  question_with_tools = (
-      question
-      + 'The following functions are available:\n'
-      + '\n'.join([str(x) for x in all_tools.values()])
-  )
-  response = agent.chat(question_with_tools)
-  print(response)
+def main():
+  question = task
 
-  parsed_response = parser.extract_functions(response)
-  if not parsed_response.code and not parsed_response.functions:
-    if parsed_response.error:
-      question = parsed_response.error
-      continue
-    question = input('> ')
-    continue
-
-  tools.update(parsed_response.functions)
-
-  if parsed_response.code:
-    # Concatenate all known source code together.
-    # Functions that were defined in the most recent response will be repeated,
-    # which is okay
-    code_with_tools = (
-        '\n'.join([x.code for x in tools.values()])
-        + '\n'
-        + parsed_response.code
+  while True:
+    print(STARS)
+    all_tools = copy.deepcopy(tools)
+    all_tools.update(syscalls)
+    question_with_tools = (
+        question
+        + 'The following functions are available:\n'
+        + '\n'.join([str(x) for x in all_tools.values()])
     )
+    response = agent.chat(question_with_tools)
+    print(response)
 
-    print(STARS)
-    input('HIT ENTER TO RUN THIS CODE')
-    print(STARS)
-    question = code_executor.run_code(code_with_tools, {'task_done': task_done})
-  else:
-    # The response had functions but no code. The agent wanted to define them.
-    # We tell it to go on (that is, to keep writing code).
-    question = 'go on'
+    parsed_response = parser.extract_functions(response)
+    if not parsed_response.code and not parsed_response.functions:
+      if parsed_response.error:
+        question = parsed_response.error
+        continue
+      question = input('> ')
+      continue
+
+    tools.update(parsed_response.functions)
+
+    if parsed_response.code:
+      # Concatenate all known source code together.
+      # Functions that were defined in the most recent response will be repeated,
+      # which is okay
+      code_with_tools = (
+          '\n'.join([x.code for x in tools.values()])
+          + '\n'
+          + parsed_response.code
+      )
+
+      print(STARS)
+      input('HIT ENTER TO RUN THIS CODE')
+      print(STARS)
+      question = code_executor.run_code(code_with_tools, {'task_done': task_done})
+    else:
+      # The response had functions but no code. The agent wanted to define them.
+      # We tell it to go on (that is, to keep writing code).
+      question = 'go on'
+
+
+if __name__ == '__main__':
+  main()

@@ -18,12 +18,21 @@ limitations under the License.
 
 ## Overview
 
-Functionsmith is a general-purpose problem-solving agent.
+Functionsmith is a general-purpose problem-solving agent using dynamic
+function calling.
 
 USING THIS AGENT IS UNSAFE. It directly runs LLM-produced code, and thus
 should only be used for demonstration purposes.
 
-This agent uses free-form function calling, which means that instead of
+To run with the default task investigating a CSV file with airport data,
+install the package, then run:
+```
+export GOOGLE_API_KEY=my-api-key
+wget https://raw.githubusercontent.com/davidmegginson/ourairports-data/refs/heads/main/airports.csv
+functionsmith_cli
+```
+
+This agent uses dynamic function calling, which means that instead of
 relying on a fixed set of tools predefined in the agent
 [in normal LLM function calling](https://ai.google.dev/gemini-api/docs/function-calling),
 we let the agent itself write with all the functions it needs.
@@ -43,8 +52,8 @@ locally.
 
 The functions are not saved permanently, though this feature can be added.
 
-# TODO(simonf): add a notebook version of the general-purpose agent,
-# as well as an Earth Engine-specific notebook agent.
+TODO(simonf): add a notebook version of the general-purpose agent,
+as well as an Earth Engine-specific notebook agent.
 
 ## Attribution
 

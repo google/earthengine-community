@@ -206,7 +206,7 @@ def main():
     question_with_tools = (
         question
         + 'The following functions are available:\n'
-        + '\n'.join([str(x) for x in all_tools.values()])
+        + '\n'.join([x.signature() for x in all_tools.values()])
     )
     response = agent.chat(question_with_tools)
     print(response)

@@ -1,5 +1,6 @@
 """Parser for (probably LLM-generated) Python code."""
 import ast
+import copy
 import dataclasses
 import logging
 import re
@@ -16,6 +17,11 @@ class Function:
   docstring: str
   parameters: list[dict[str, str]]
   return_type: str
+
+  def signature(self):
+    sans_code = copy.deepcopy(self)
+    sans_code.code = ''
+    return str(sans_code)
 
 
 @dataclasses.dataclass
@@ -202,12 +208,13 @@ class Parser:
     return code
 
   def extract_python_code_blocks(self, text: str) -> MaybeCode:
+    if not text:
+      return MaybeCode('', code_block_found=False)
     pattern = re.compile(r'```(?:python|tool_code)\n*(.*?)\n*```', re.DOTALL)
     code_blocks = pattern.findall(text)
     if code_blocks:
       result = MaybeCode('\n'.join(code_blocks), code_block_found=True)
     else:
-      result = text
       result = MaybeCode(text, code_block_found=False)
     result.code = self._reduce_indentation(result.code)
     return result

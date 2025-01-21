@@ -22,6 +22,20 @@ class TestParser(unittest.TestCase):
     param_node = func_def.args.args[0]
     return self._parser._extract_type_hint(param_node)
 
+  def test_function_signature(self):
+    function = code_parser.Function(
+        code='my code',
+        name='my name',
+        docstring='my docstring',
+        parameters=[{'a': 'b'}],
+        return_type='str',
+    )
+    self.assertEqual(
+        "Function(code='', name='my name', docstring='my docstring',"
+        " parameters=[{'a': 'b'}], return_type='str')",
+        function.signature(),
+    )
+
   def test_extract_single_block(self):
     text = "```python\ndef foo():\n print('hello')\n```"
     expected = "def foo():\n print('hello')"
@@ -47,6 +61,9 @@ class TestParser(unittest.TestCase):
   def test_extract_empty_block(self):
     text = '```python\n```'
     self.assertEqual(self._parser.extract_python_code_blocks(text).code, '')
+
+  def test_extract_none(self):
+    self.assertEqual(self._parser.extract_python_code_blocks(None).code, '')
 
   def test_extract_with_leading_and_trailing_whitespace(self):
     text = '```python \n def foo():\n  print("hello")\n ```'

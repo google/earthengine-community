@@ -24,10 +24,17 @@ class Gemini(LLM):
   * gemini-2.0-flash-exp
   """
 
-  def __init__(self, system_instruction, model_name='gemini-2.0-flash-exp'):
-    if 'GOOGLE_API_KEY' not in os.environ:
-      raise ValueError('Please set the environent variable GOOGLE_API_KEY')
-    client = genai.Client(api_key=os.environ['GOOGLE_API_KEY'])
+  def __init__(
+      self, system_instruction, model_name='gemini-2.0-flash-exp', api_key=None
+  ):
+    if 'GOOGLE_API_KEY' in os.environ:
+      api_key = os.environ['GOOGLE_API_KEY']
+    if not api_key:
+      raise ValueError(
+          'Please set the environent variable GOOGLE_API_KEY '
+          'or pass the api_key parameter'
+      )
+    client = genai.Client(api_key=api_key)
     self._chat = client.chats.create(
         model=model_name,
         config=types.GenerateContentConfig(
@@ -38,7 +45,15 @@ class Gemini(LLM):
 
   def chat(self, question):
     """Sends a single message to the LLM and returns its response."""
-    return self._chat.send_message(question).text
+    while True:
+      try:
+        return self._chat.send_message(question).text
+      except Exception as e:  # pylint:disable=broad-exception-caught:
+        if '429' in str(e):
+          time.sleep(10)
+          continue
+        print('UNEXPECTED RESPONSE')
+        print(e)
 
 
 class Claude(LLM):
@@ -50,11 +65,18 @@ class Claude(LLM):
   * claude-3-opus-20240229
   """
 
-  def __init__(self, system_prompt, model_name='claude-3-5-sonnet-20241022'):
+  def __init__(
+      self, system_prompt, model_name='claude-3-5-sonnet-20241022', api_key=None
+  ):
 
-    if 'ANTHROPIC_API_KEY' not in os.environ:
-      raise ValueError('Please set the environent variable ANTHROPIC_API_KEY')
-    self._client = anthropic.Anthropic(api_key=os.environ['ANTHROPIC_API_KEY'])
+    if 'ANTHROPIC_API_KEY' in os.environ:
+      api_key = os.environ['ANTHROPIC_API_KEY']
+    if not api_key:
+      raise ValueError(
+          'Please set the environent variable ANTHROPIC_API_KEY '
+          'or pass the api_key parameter'
+      )
+    self._client = anthropic.Anthropic(api_key=api_key)
     self._system_prompt = system_prompt
     self._model_name = model_name
     self._messages = []
@@ -99,12 +121,17 @@ class ChatGPT(LLM):
   * o1-mini
   """
 
-  def __init__(self, system_prompt, model_name='o1-mini'):
-    if 'OPENAI_API_KEY' not in os.environ:
-      raise ValueError('Please set the environent variable OPENAI_API_KEY')
+  def __init__(self, system_prompt, model_name='o1-mini', api_key=None):
+    if 'OPENAI_API_KEY' in os.environ:
+      api_key = os.environ['OPENAI_API_KEY']
+    if not api_key:
+      raise ValueError(
+          'Please set the environent variable OPENAI_API_KEY '
+          'or pass the api_key parameter'
+      )
     self._model_name = model_name
     self._system_prompt = system_prompt
-    self._client = openai.OpenAI(api_key=os.environ['OPENAI_API_KEY'])
+    self._client = openai.OpenAI(api_key=api_key)
     self._messages = [{'role': 'user', 'content': system_prompt}]
 
   def _one_message(self, **kwargs):

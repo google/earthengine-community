@@ -24,6 +24,14 @@ function calling.
 USING THIS AGENT IS UNSAFE. It directly runs LLM-produced code, and thus
 should only be used for demonstration purposes.
 
+See [a sample session output](sample_session.txt).
+
+## Notebook usage
+
+Open the [demo notebook](functionsmith.ipynb).
+
+## Command-line usage
+
 Install with:
 ```
 pip install functionsmith
@@ -35,6 +43,8 @@ export GOOGLE_API_KEY=my-api-key
 wget https://raw.githubusercontent.com/davidmegginson/ourairports-data/refs/heads/main/airports.csv
 functionsmith_cli
 ```
+
+## Implementation
 
 This agent uses dynamic function calling, which means that instead of
 relying on a fixed set of tools predefined in the agent
@@ -56,8 +66,7 @@ locally.
 
 The functions are not saved permanently, though this feature can be added.
 
-TODO(simonf): add a notebook version of the general-purpose agent,
-as well as an Earth Engine-specific notebook agent.
+TODO(simonf): add an Earth Engine-specific notebook agent.
 
 ## Attribution
 

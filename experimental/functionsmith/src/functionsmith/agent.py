@@ -132,7 +132,8 @@ schema = """
 """
 
 task = f"""
-Please explore a local file airports.csv. First, make some hypotheses about the
+Please explore a file airports.csv that is present in the current directory.
+First, make some hypotheses about the
 data, and then write code to test them to learn something interesting about the
 data. By 'interesting', I mean something you wouldn't have guessed from first
 principles - eg, finding that the largest countries have the most airports is
@@ -151,10 +152,12 @@ The file has the following schema {schema}"""
 
 # This code works with several different LLMs. Uncomment the one you
 # have access to. Make sure to set the API key in the appropriate
-# environment variable (GOOGLE_API_KEY, ANTHROPIC_API_KEY, or OPENAI_API_KEY).
+# environment variable
+# (GOOGLE_API_KEY, ANTHROPIC_API_KEY, OPENAI_API_KEY, or DEEPSEEK_API_KEY).
 agent = llm.Gemini(system_prompt, model_name='gemini-2.0-flash-exp')
 # agent = llm.Claude(system_prompt, model_name='claude-3-5-sonnet-20241022')
 # agent = llm.ChatGPT(system_prompt, model_name='o1-mini')
+# agent = llm.DeepSeek(system_prompt, model_name='deepseek-chat')
 
 
 def task_done(agent_message: str) -> None:

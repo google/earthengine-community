@@ -27,7 +27,7 @@ class Gemini(LLM):
   def __init__(
       self, system_instruction, model_name='gemini-2.0-flash-exp', api_key=None
   ):
-    if 'GOOGLE_API_KEY' in os.environ:
+    if not api_key and os.environ.get('GOOGLE_API_KEY'):
       api_key = os.environ['GOOGLE_API_KEY']
     if not api_key:
       raise ValueError(
@@ -69,7 +69,7 @@ class Claude(LLM):
       self, system_prompt, model_name='claude-3-5-sonnet-20241022', api_key=None
   ):
 
-    if 'ANTHROPIC_API_KEY' in os.environ:
+    if not api_key and os.environ.get('ANTHROPIC_API_KEY'):
       api_key = os.environ['ANTHROPIC_API_KEY']
     if not api_key:
       raise ValueError(
@@ -121,8 +121,10 @@ class ChatGPT(LLM):
   * o1-mini
   """
 
-  def __init__(self, system_prompt, model_name='o1-mini', api_key=None):
-    if 'OPENAI_API_KEY' in os.environ:
+  def __init__(
+      self, system_prompt, model_name='o1-mini', api_key=None, base_url=None
+  ):
+    if not api_key and os.environ.get('OPENAI_API_KEY'):
       api_key = os.environ['OPENAI_API_KEY']
     if not api_key:
       raise ValueError(
@@ -131,8 +133,10 @@ class ChatGPT(LLM):
       )
     self._model_name = model_name
     self._system_prompt = system_prompt
-    self._client = openai.OpenAI(api_key=api_key)
-    self._messages = [{'role': 'user', 'content': system_prompt}]
+    self._client = openai.OpenAI(api_key=api_key, base_url=base_url)
+    # Some models cannot handle a separate message with the system prompt,
+    # so we will prepend the prompt to the first user message later.
+    self._messages = []
 
   def _one_message(self, **kwargs):
     """Sends a single message to the LLM with error handling."""
@@ -148,6 +152,8 @@ class ChatGPT(LLM):
 
   def chat(self, question, temperature=1):
     """Sends a single message to the LLM and returns its response."""
+    if not self._messages:
+      question = self._system_prompt + question
     self._messages.append({'role': 'user', 'content': question})
 
     kwargs = {
@@ -159,3 +165,25 @@ class ChatGPT(LLM):
     content = response.choices[0].message.content
     self._messages.append({'role': 'assistant', 'content': content})
     return content
+
+
+class DeepSeek(ChatGPT):
+  """DeepSeek client.
+
+  It uses the openai cilent, but the base_url is different.
+
+  Some model names:
+
+  * deepseek-chat
+  * deepseek-reasoner
+  """
+
+  def __init__(self, system_prompt, model_name='deepseek-chat', api_key=None):
+    if not api_key and os.environ.get('DEEPSEEK_API_KEY'):
+      api_key = os.environ['DEEPSEEK_API_KEY']
+    super().__init__(
+        system_prompt,
+        model_name=model_name,
+        api_key=api_key,
+        base_url='https://api.deepseek.com',
+    )

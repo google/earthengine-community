@@ -1,6 +1,6 @@
 [project]
 name = "functionsmith"
-version = "0.1.1"
+version = "0.1.2"
 description = "Functionsmith is a general-purpose problem-solving agent using dynamic function calling"
 readme = "README.md"
 requires-python = ">=3.9"

@@ -27,11 +27,11 @@ class Gemini(LLM):
   def __init__(
       self, system_instruction, model_name='gemini-2.0-flash-exp', api_key=None
   ):
-    if not api_key and os.environ.get('GOOGLE_API_KEY'):
-      api_key = os.environ['GOOGLE_API_KEY']
+    if not api_key and os.getenv('GOOGLE_API_KEY'):
+      api_key = os.getenv('GOOGLE_API_KEY')
     if not api_key:
       raise ValueError(
-          'Please set the environent variable GOOGLE_API_KEY '
+          'Please set the environment variable GOOGLE_API_KEY '
           'or pass the api_key parameter'
       )
     client = genai.Client(api_key=api_key)
@@ -69,11 +69,11 @@ class Claude(LLM):
       self, system_prompt, model_name='claude-3-5-sonnet-20241022', api_key=None
   ):
 
-    if not api_key and os.environ.get('ANTHROPIC_API_KEY'):
-      api_key = os.environ['ANTHROPIC_API_KEY']
+    if not api_key and os.getenv('ANTHROPIC_API_KEY'):
+      api_key = os.getenv('ANTHROPIC_API_KEY')
     if not api_key:
       raise ValueError(
-          'Please set the environent variable ANTHROPIC_API_KEY '
+          'Please set the environment variable ANTHROPIC_API_KEY '
           'or pass the api_key parameter'
       )
     self._client = anthropic.Anthropic(api_key=api_key)
@@ -124,11 +124,11 @@ class ChatGPT(LLM):
   def __init__(
       self, system_prompt, model_name='o1-mini', api_key=None, base_url=None
   ):
-    if not api_key and os.environ.get('OPENAI_API_KEY'):
-      api_key = os.environ['OPENAI_API_KEY']
+    if not api_key and os.getenv('OPENAI_API_KEY'):
+      api_key = os.getenv('OPENAI_API_KEY')
     if not api_key:
       raise ValueError(
-          'Please set the environent variable OPENAI_API_KEY '
+          'Please set the environment variable OPENAI_API_KEY '
           'or pass the api_key parameter'
       )
     self._model_name = model_name
@@ -170,7 +170,7 @@ class ChatGPT(LLM):
 class DeepSeek(ChatGPT):
   """DeepSeek client.
 
-  It uses the openai cilent, but the base_url is different.
+  It uses the openai client, but the base_url is different.
 
   Some model names:
 
@@ -179,8 +179,8 @@ class DeepSeek(ChatGPT):
   """
 
   def __init__(self, system_prompt, model_name='deepseek-chat', api_key=None):
-    if not api_key and os.environ.get('DEEPSEEK_API_KEY'):
-      api_key = os.environ['DEEPSEEK_API_KEY']
+    if not api_key and os.getenv('DEEPSEEK_API_KEY'):
+      api_key = os.getenv('DEEPSEEK_API_KEY')
     super().__init__(
         system_prompt,
         model_name=model_name,

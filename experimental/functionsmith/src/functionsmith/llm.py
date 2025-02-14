@@ -119,10 +119,11 @@ class ChatGPT(LLM):
   * gpt-4o
   * o1-preview
   * o1-mini
+  * o3-mini
   """
 
   def __init__(
-      self, system_prompt, model_name='o1-mini', api_key=None, base_url=None
+      self, system_prompt, model_name='o3-mini', api_key=None, base_url=None
   ):
     if not api_key and os.getenv('OPENAI_API_KEY'):
       api_key = os.getenv('OPENAI_API_KEY')

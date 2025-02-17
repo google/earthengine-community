@@ -8,7 +8,7 @@ should happen in a sandbox or in a docker image.
 import io
 import logging
 import sys
-from typing import Callable
+from typing import Any, Callable
 
 
 # Intercepting stderr leads to the error "lost sys.stderr",
@@ -47,8 +47,21 @@ class Executor:
     self._logger = logger or logging.getLogger()
 
   # pylint:disable=g-bare-generic
-  def run_code(self, python_code: str, syscalls: dict[str, Callable]) -> str:
+  def run_code(
+      self,
+      python_code: str,
+      syscalls: dict[str, Callable],
+      code_globals: dict[str, Any] | None = None,
+  ) -> str:
     """Runs the given code and captures is output except for syscalls."""
+    code_globals = code_globals or {}
+    conflicting_keys = set(syscalls.keys()) & set(code_globals.keys())
+    if conflicting_keys:
+      raise ValueError(
+          'There are conflicting keys in the syscalls and code_globals'
+          f' arguments: {conflicting_keys}'
+      )
+
     try:
       wrapped_syscalls = {}
       for name, func in syscalls.items():
@@ -67,16 +80,14 @@ class Executor:
 
         wrapped_syscalls[name] = wrap_syscall(func)
 
+      combined_globals = {**wrapped_syscalls, **code_globals}
       output_manager = OutputManager()
       with output_manager:
-        exec(python_code, {**wrapped_syscalls})  # pylint:disable=exec-used
+        exec(python_code, combined_globals)  # pylint:disable=exec-used
         output = output_manager.get_value()
 
-      if output:
-        self._logger.warning(f'OUTPUT: {output}\n')
-      else:
-        self._logger.warning('NO OUTPUT\n')
-      if output:
+      if output and output.strip() != 'None':
+        self._logger.warning(f'OUTPUT: {output.strip()}\n')
         return output
       else:
         return (

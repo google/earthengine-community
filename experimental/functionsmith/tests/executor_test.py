@@ -48,7 +48,7 @@ class TestExecutor(unittest.TestCase):
     code = "print('Hello from code')"
     result = self.executor.run_code(code, {})
     self.assertEqual(result, "Hello from code\n")
-    self.logger.warning.assert_called_with("OUTPUT: Hello from code\n\n")
+    self.logger.warning.assert_called_with("OUTPUT: Hello from code\n")
 
   def test_code_with_no_output(self):
     code = "x = 5"
@@ -58,13 +58,13 @@ class TestExecutor(unittest.TestCase):
         "CODE DID NOT PRINT ANYTHING TO STDOUT. IF YOU ARE EXPECTING "
         "A VALUE, USE print(), NOT return",
     )
-    self.logger.warning.assert_called_with("NO OUTPUT\n")
+    self.logger.warning.assert_not_called()
 
   def test_code_with_exception(self):
     code = "1 / 0"
     result = self.executor.run_code(code, {})
     self.assertIn("Exception occurred: division by zero", result)
-    self.logger.error.assert_called()
+    self.logger.error.assert_called_with("ERROR: division by zero")
 
   def test_syscall_wrapping(self):
     def mock_syscall(a, b):
@@ -73,7 +73,7 @@ class TestExecutor(unittest.TestCase):
     code = "print(add(2, 3))"
     result = self.executor.run_code(code, {"add": mock_syscall})
     self.assertEqual(result, "5\n5\n")
-    self.logger.warning.assert_called_with("OUTPUT: 5\n5\n\n")
+    self.logger.warning.assert_called_with("OUTPUT: 5\n5\n")
 
   def test_syscall_that_prints_and_returns(self):
     def mock_syscall():
@@ -83,7 +83,7 @@ class TestExecutor(unittest.TestCase):
     code = "my_syscall()"
     result = self.executor.run_code(code, {"my_syscall": mock_syscall})
     self.assertEqual(result, "42\n")
-    self.logger.warning.assert_called_with("OUTPUT: 42\n\n")
+    self.logger.warning.assert_called_with("OUTPUT: 42\n")
 
   def test_syscall_with_bypass_and_restore(self):
     def mock_syscall():
@@ -103,8 +103,35 @@ print('After syscall')"""
     sys.stdout = sys.__stdout__
     self.assertEqual(captured_output.getvalue(), "Hello from syscall")
     self.logger.warning.assert_called_with(
-        "OUTPUT: Before syscall\n42\n42\nAfter syscall\n\n"
+        "OUTPUT: Before syscall\n42\n42\nAfter syscall\n"
     )
+
+  def test_code_globals(self):
+    def mock_syscall(x):
+      return x * 2
+
+    code_globals = {"global_var": 10, "another_global": "hello"}
+    code = """
+print(global_var)
+print(another_global)
+double(global_var)
+    """
+    result = self.executor.run_code(
+        code, {"double": mock_syscall}, code_globals=code_globals
+    )
+    self.assertEqual(result, "10\nhello\n20\n")
+    self.logger.warning.assert_called_with("OUTPUT: 10\nhello\n20\n")
+
+  def test_code_globals_and_syscall_name_conflict(self):
+    def mock_syscall(x):
+      return x * 2
+
+    # 'double' is defined in BOTH syscalls and code_globals.
+    code_globals = {"global_var": 10, "double": "Conflicting value"}
+    code = "print(double(global_var))"
+
+    with self.assertRaisesRegex(ValueError, "conflicting keys"):
+      self.executor.run_code(code, {"double": mock_syscall}, code_globals)
 
 
 if __name__ == "__main__":

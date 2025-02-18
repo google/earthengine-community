@@ -11,6 +11,11 @@ import openai
 
 class LLM:
   """Parent class for LLM clients."""
+  _model_name: str
+
+  @property
+  def model_name(self):
+    return self._model_name
 
 
 class Gemini(LLM):
@@ -34,6 +39,7 @@ class Gemini(LLM):
           'Please set the environment variable GOOGLE_API_KEY '
           'or pass the api_key parameter'
       )
+    self._model_name = model_name
     client = genai.Client(api_key=api_key)
     self._chat = client.chats.create(
         model=model_name,

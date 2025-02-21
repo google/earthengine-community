@@ -243,7 +243,7 @@ var lsCol = ee.ImageCollection('LANDSAT/LC08/C02/T1_L2')
   .filterDate('2017-01-01', '2019-01-01')
   .filter('WRS_PATH == 38 && (WRS_ROW == 28 || WRS_ROW == 29)')
   .map(function(img) {
-    var date = img.date().format('YYYY-MM-dd');
+    var date = img.date().format('yyyy-MM-dd');
     return img.set('date', date);
   });
 

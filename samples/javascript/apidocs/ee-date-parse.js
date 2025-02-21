@@ -15,10 +15,10 @@
  */
 
 // [START earthengine__apidocs__ee_date_parse]
-print(ee.Date.parse('YYYY MM dd', '2021 4 30'));
-print(ee.Date.parse('YYYY-MM-dd', '2021-4-30'));
-print(ee.Date.parse('YYYY/MM/dd', '2021/4/30'));
-print(ee.Date.parse('MM/dd/YY', '4/30/21'));
-print(ee.Date.parse('MMM. dd, YYYY', 'Apr. 30, 2021'));
-print(ee.Date.parse('YYYY-MM-dd HH:mm:ss', '2021-4-30 00:00:00'));
+print(ee.Date.parse('yyyy MM dd', '2021 4 30'));
+print(ee.Date.parse('yyyy-MM-dd', '2021-4-30'));
+print(ee.Date.parse('yyyy/MM/dd', '2021/4/30'));
+print(ee.Date.parse('MM/dd/yy', '4/30/21'));
+print(ee.Date.parse('MMM. dd, yyyy', 'Apr. 30, 2021'));
+print(ee.Date.parse('yyyy-MM-dd HH:mm:ss', '2021-4-30 00:00:00'));
 // [END earthengine__apidocs__ee_date_parse]

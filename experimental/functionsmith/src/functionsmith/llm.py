@@ -59,7 +59,7 @@ class Gemini(LLM):
           time.sleep(10)
           continue
         print('UNEXPECTED RESPONSE')
-        print(e)
+        raise Exception(e) from e  # pylint:disable=broad-exception-raised
 
 
 class Claude(LLM):
@@ -103,8 +103,7 @@ class Claude(LLM):
         continue
       except Exception as e:  # pylint:disable=broad-exception-caught:
         print(f'UNEXPECTED RESPONSE: {e}')
-        if '500' in str(e):
-          continue
+        raise Exception(e) from e  # pylint:disable=broad-exception-raised
 
   def chat(self, question, temperature=0.1):
     """Sends a single message to the LLM and returns its response."""
@@ -154,8 +153,8 @@ class ChatGPT(LLM):
         if '429' in str(e):
           time.sleep(10)
           continue
-        print('UNEXPECTED RESPONSE')
-        print(e)
+        print(f'UNEXPECTED RESPONSE: {e}')
+        raise Exception(e) from e  # pylint:disable=broad-exception-raised
 
   def chat(self, question, temperature=1):
     """Sends a single message to the LLM and returns its response."""

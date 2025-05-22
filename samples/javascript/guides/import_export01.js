@@ -222,3 +222,13 @@ Export.map.toCloudStorage({
   region: exportRegion
 });
 // [END earthengine__import_export01__export_map]
+
+// [START earthengine__import_export01__export_table_to_bq]
+Export.table.toBigQuery({
+  collection: myFeatureCollection,
+  table: 'myproject.mydataset.mytable',
+  description: 'put_my_data_in_bigquery',
+  append: true,
+  overwrite: false
+});
+// [END earthengine__import_export01__export_table_to_bq]

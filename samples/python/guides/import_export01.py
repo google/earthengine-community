@@ -247,3 +247,14 @@ task = ee.batch.Export.map.toCloudStorage(
 )
 task.start()
 # [END earthengine__import_export01__export_map]
+
+# [START earthengine__import_export01__export_table_to_bq]
+task = ee.batch.Export.table.toBigQuery(
+    collection=my_feature_collection,
+    table='myproject.mydataset.mytable',
+    description='put_my_data_in_bigquery',
+    append=True,
+    overwrite=False,
+)
+task.start()
+# [END earthengine__import_export01__export_table_to_bq]

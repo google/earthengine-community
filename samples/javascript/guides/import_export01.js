@@ -116,7 +116,7 @@ Export.image.toAsset({
 
 Map.addLayer(landsat, {bands: ['B4', 'B3', 'B2'], max: 0.4, gamma: 1.2});
 
-// [START earthengine__import_export01__export_vectors]
+// [START earthengine__import_export01__vectors_to_cloud]
 // Make a collection of points.
 var features = ee.FeatureCollection([
   ee.Feature(ee.Geometry.Point(30.41, 59.933), {name: 'Voronoi'}),
@@ -124,15 +124,6 @@ var features = ee.FeatureCollection([
   ee.Feature(ee.Geometry.Point(6.4806, 50.8012), {name: 'Dirichlet'})
 ]);
 
-// Export the FeatureCollection to a KML file.
-Export.table.toDrive({
-  collection: features,
-  description:'vectorsToDriveExample',
-  fileFormat: 'KML'
-});
-// [END earthengine__import_export01__export_vectors]
-
-// [START earthengine__import_export01__vectors_to_cloud]
 // Export a KML file to Cloud Storage.
 Export.table.toCloudStorage({
   collection: features,
@@ -143,6 +134,15 @@ Export.table.toCloudStorage({
 });
 // [END earthengine__import_export01__vectors_to_cloud]
 
+// [START earthengine__import_export01__export_vectors]
+// Export the FeatureCollection to a KML file.
+Export.table.toDrive({
+  collection: features,
+  description:'vectorsToDriveExample',
+  fileFormat: 'KML'
+});
+// [END earthengine__import_export01__export_vectors]
+
 // [START earthengine__import_export01__export_table_asset]
 // Export an ee.FeatureCollection as an Earth Engine asset.
 Export.table.toAsset({
@@ -152,6 +152,15 @@ Export.table.toAsset({
 });
 // [END earthengine__import_export01__export_table_asset]
 
+// [START earthengine__import_export01__export_table_to_bq]
+Export.table.toBigQuery({
+  collection: features,
+  table: 'myproject.mydataset.mytable',
+  description: 'put_my_data_in_bigquery',
+  append: true,
+  overwrite: false
+});
+// [END earthengine__import_export01__export_table_to_bq]
 
 // [START earthengine__import_export01__export_table]
 // Load a Landsat image.
@@ -222,13 +231,3 @@ Export.map.toCloudStorage({
   region: exportRegion
 });
 // [END earthengine__import_export01__export_map]
-
-// [START earthengine__import_export01__export_table_to_bq]
-Export.table.toBigQuery({
-  collection: myFeatureCollection,
-  table: 'myproject.mydataset.mytable',
-  description: 'put_my_data_in_bigquery',
-  append: true,
-  overwrite: false
-});
-// [END earthengine__import_export01__export_table_to_bq]

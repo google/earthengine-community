@@ -41,6 +41,16 @@ var cloudImage = ee.Image.loadGeoTIFF(uri);
 print(cloudImage);
 // [END earthengine__images02__cloud_image]
 
+// [START earthengine__images02__zarr_v2_array_image]
+var cloudImage = ee.Image.loadZarrV2Array(
+    'gs://gcp-public-data-arco-era5/ar/full_37-1h-0p25deg-chunk-1.zarr-v3/evaporation/.zarray',
+    /* proj=   */ 'epsg:4326',
+    /* starts= */[1000000],
+    /* ends=   */[1000010])
+print(cloudImage)
+Map.addLayer(cloudImage, {min: -0.0001, max: 0.00005})
+// [END earthengine__images02__zarr_v2_array_image]
+
 // [START earthengine__images02__create_image]
 // Create a constant image.
 var image1 = ee.Image(1);

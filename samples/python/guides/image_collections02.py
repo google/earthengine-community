@@ -76,3 +76,16 @@ m.center_object(rgb)
 m.add_layer(rgb, {'bands': ['B4', 'B3', 'B2'], 'min': 0, 'max': 20000}, 'rgb')
 m
 # [END earthengine__image_collections02__cloud_collections]
+
+# [START earthengine__image_collections02__zarr_v2_array]
+images = ee.ImageCollection.loadZarrV2Array(
+  'gs://gcp-public-data-arco-era5/ar/full_37-1h-0p25deg-chunk-1.zarr-v3/evaporation/.zarray',
+  'epsg:4326',  # The CRS.
+  0,            # The axis along which to take "image" slices.
+  [1000000],    # The indices at which to start taking slices along the non-spatial dimensions.
+  [1000048])    # The indices at which to stop taking slices along the non-spatial dimensions.
+
+m = geemap.Map()
+m.add_layer(images.first(), {'min': -0.0001, 'max': 0.00005})
+m
+# [END earthengine__image_collections02__zarr_v2_array]

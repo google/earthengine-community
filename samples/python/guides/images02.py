@@ -47,6 +47,16 @@ cloud_image = ee.Image.loadGeoTIFF(uri)
 display(cloud_image)
 # [END earthengine__images02__cloud_image]
 
+# [START earthengine__images02__zarr_v2_array_image]
+cloud_image = ee.Image.loadZarrV2Array(
+    'gs://gcp-public-data-arco-era5/ar/full_37-1h-0p25deg-chunk-1.zarr-v3/evaporation/.zarray',
+    'epsg:4326',
+    [1000000],
+    [1000010])
+print(cloud_image)
+display(cloud_image.visualize(min=-0.0001, max=0.00005)
+# [END earthengine__images02__zarr_v2_array_image]
+
 # [START earthengine__images02__create_image]
 # Create a constant image.
 image_1 = ee.Image(1)

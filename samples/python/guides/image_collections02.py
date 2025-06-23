@@ -76,3 +76,23 @@ m.center_object(rgb)
 m.add_layer(rgb, {'bands': ['B4', 'B3', 'B2'], 'min': 0, 'max': 20000}, 'rgb')
 m
 # [END earthengine__image_collections02__cloud_collections]
+
+# [START earthengine__image_collections02__zarr_v2_array]
+time_start = 1000000
+time_end = 1000048
+zarr_v2_array_images = ee.ImageCollection.loadZarrV2Array(
+    uri='gs://gcp-public-data-arco-era5/ar/full_37-1h-0p25deg-chunk-1.zarr-v3/evaporation/.zarray',
+    proj='EPSG:4326',
+    axis=0,
+    starts=[time_start],
+    ends=[time_end],
+)
+
+display(zarr_v2_array_images)
+
+m = geemap.Map()
+m.add_layer(
+    zarr_v2_array_images, {'min': -0.0001, 'max': 0.00005}, 'Evaporation'
+)
+m
+# [END earthengine__image_collections02__zarr_v2_array]

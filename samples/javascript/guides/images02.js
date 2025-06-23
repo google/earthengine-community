@@ -41,6 +41,20 @@ var cloudImage = ee.Image.loadGeoTIFF(uri);
 print(cloudImage);
 // [END earthengine__images02__cloud_image]
 
+// [START earthengine__images02__zarr_v2_array_image]
+var timeStart = 1000000;
+var timeEnd = 1000010;
+var zarrV2ArrayImage = ee.Image.loadZarrV2Array({
+  uri:
+      'gs://gcp-public-data-arco-era5/ar/full_37-1h-0p25deg-chunk-1.zarr-v3/evaporation/.zarray',
+  proj: 'EPSG:4326',
+  starts: [timeStart],
+  ends: [timeEnd]
+});
+print(zarrV2ArrayImage);
+Map.addLayer(zarrV2ArrayImage, {min: -0.0001, max: 0.00005}, 'Evaporation');
+// [END earthengine__images02__zarr_v2_array_image]
+
 // [START earthengine__images02__create_image]
 // Create a constant image.
 var image1 = ee.Image(1);

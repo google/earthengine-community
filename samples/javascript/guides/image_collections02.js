@@ -77,3 +77,20 @@ var rgb = collection.toBands().rename(['B2', 'B3', 'B4', 'B5']);
 Map.centerObject(rgb);
 Map.addLayer(rgb, {bands: ['B4', 'B3', 'B2'], min: 0, max: 20000}, 'rgb');
 // [END earthengine__image_collections02__cloud_collections]
+
+// [START earthengine__image_collections02__zarr_v2_array]
+var timeStart = 1000000;
+var timeEnd = 1000048;
+var zarrV2ArrayImages = ee.ImageCollection.loadZarrV2Array({
+  uri:
+      'gs://gcp-public-data-arco-era5/ar/full_37-1h-0p25deg-chunk-1.zarr-v3/evaporation/.zarray',
+  proj: 'EPSG:4326',
+  axis: 0,
+  starts: [timeStart],
+  ends: [timeEnd]
+});
+
+print(zarrV2ArrayImages);
+
+Map.addLayer(zarrV2ArrayImages, {min: -0.0001, max: 0.00005}, 'Evaporation');
+// [END earthengine__image_collections02__zarr_v2_array]

@@ -210,7 +210,9 @@ class Parser:
   def extract_python_code_blocks(self, text: str) -> MaybeCode:
     if not text:
       return MaybeCode('', code_block_found=False)
-    pattern = re.compile(r'```(?:python|tool_code)\n*(.*?)\n*```', re.DOTALL)
+    pattern = re.compile(
+        r'```(?:python|tool_code)\n*(.*?)\n*```', re.DOTALL | re.IGNORECASE
+    )
     code_blocks = pattern.findall(text)
     if code_blocks:
       result = MaybeCode('\n'.join(code_blocks), code_block_found=True)

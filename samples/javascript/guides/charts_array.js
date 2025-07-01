@@ -95,7 +95,7 @@ var latLonImg = ee.Image.pixelLonLat();
 
 // Import a digital surface model and add latitude and longitude bands.
 var elevImg =
-    ee.Image('JAXA/ALOS/AW3D30/V2_2').select('AVE_DSM').addBands(latLonImg);
+    ee.Image('NASA/NASADEM_HGT/001').select('elevation').addBands(latLonImg);
 
 // Reduce elevation and coordinate bands by transect line; get a dictionary with
 // band names as keys, pixel values as lists.
@@ -107,7 +107,7 @@ var elevTransect = elevImg.reduceRegion({
 
 // Get longitude and elevation value lists from the reduction dictionary.
 var lon = ee.List(elevTransect.get('longitude'));
-var elev = ee.List(elevTransect.get('AVE_DSM'));
+var elev = ee.List(elevTransect.get('elevation'));
 
 // Sort the longitude and elevation values by ascending longitude.
 var lonSort = lon.sort(lon);

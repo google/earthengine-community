@@ -20,7 +20,7 @@
  */
 
 // [START earthengine__images02__load_image]
-var loadedImage = ee.Image('JAXA/ALOS/AW3D30/V2_2');
+var loadedImage = ee.Image('NASA/NASADEM_HGT/001');
 // [END earthengine__images02__load_image]
 
 // [START earthengine__images02__find_image]

@@ -15,16 +15,16 @@
  */
 
 // [START earthengine__apidocs__ee_image]
-var image = ee.Image('JAXA/ALOS/AW3D30/V2_2');
+var image = ee.Image('NASA/NASADEM_HGT/001');
 
 Map.setZoom(3);
-Map.addLayer(image.select('AVE_DSM'), {min: -1e3, max: 5e3}, 'AVE_DSM');
-// Image JAXA/ALOS/AW3D30/V2_2 (3 bands)
+Map.addLayer(image.select('elevation'), {min: -1e3, max: 5e3}, 'Elevation');
+// Image NASA/NASADEM_HGT/001 (3 bands)
 // type: Image
-// id: JAXA/ALOS/AW3D30/V2_2
-// version: 1595337806697615
+// id: NASA/NASADEM_HGT/001
+// version: 1641990521971299
 // bands: List (3 elements)
-// properties: Object (21 properties)
+// properties: Object (22 properties)
 print(image);
 
 var transparent = ee.Image();

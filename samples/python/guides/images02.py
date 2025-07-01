@@ -15,7 +15,7 @@
 """Google Earth Engine Developer's Guide examples for 'Images - Creating images'."""
 
 # [START earthengine__images02__load_image]
-loaded_image = ee.Image('JAXA/ALOS/AW3D30/V2_2')
+loaded_image = ee.Image('NASA/NASADEM_HGT/001')
 # [END earthengine__images02__load_image]
 
 # [START earthengine__images02__find_image]

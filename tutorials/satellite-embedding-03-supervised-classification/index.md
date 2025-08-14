@@ -174,7 +174,7 @@ var classified = embeddingsImage.classify(classifier);
 
 Tip: This example is designed to work interactively, but may not scale to larger regions and/or numbers of samples. In this case, you can use an export to overcome scaling issues.
 
-If you are trying to classify a large region, Earth Engine needs more time than what is permitted in the interactive computing environment. It is a good practice to [export intermediate results](https://developers.google.com/earth-engine/guides/best_practices#export_intermediate_results) as Assets to leverage the batch computing environment which has longer limits for task execution and has more resources. This also helps overcome *computation timed out* or *user memory exceeded* errors when working with large regions. Let’s export the classified image.
+If you are trying to classify a large region, Earth Engine needs more time than what is permitted in the interactive computing environment. It is a good practice to [export intermediate results](https://developers.google.com/earth-engine/guides/best_practices#export_intermediate_results) as Assets to leverage the batch computing environment which has longer limits for task execution and has more resources. This also helps overcome *computation timed out* or *user memory exceeded* errors when working with large regions. Let’s export the classified image. For images containing discrete pixel values (such as our classified image), it is recommended to use `MODE` as the argument to the [`PyramidingPolicy`](https://developers.google.com/earth-engine/reference/rest/Shared.Types/PyramidingPolicy) parameter.
 
 ```js
 // Replace this with your asset folder
@@ -190,6 +190,7 @@ Export.image.toAsset({
   assetId: classifiedExportImagePath,
   region: geometry,
   scale: 10,
+  pyramidingPolicy: 'MODE',
   maxPixels: 1e10
 });
 ```
@@ -259,4 +260,4 @@ _Figure: (left) Mangrove map from satellite embeddings (right) Mangrove map from
 
 Notice that there is a close match between the global mangrove watch results and the output of the low-shot classification of the Satellite Embedding dataset. If you switch the basemap to Satellite, you will see that the Satellite Embedding classification has also captured the finer details of the landscape missing from the global mangrove watch classification.
 
-[Try the full script for this tutorial in the Earth Engine Code Editor](https://code.earthengine.google.com/3be75b53881234e6c4e888ac95416f2b).
+[Try the full script for this tutorial in the Earth Engine Code Editor](https://code.earthengine.google.com/5e20b3bf7135603fdd2a951017c4778b).

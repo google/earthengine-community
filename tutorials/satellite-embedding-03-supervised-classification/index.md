@@ -190,6 +190,7 @@ Export.image.toAsset({
   assetId: classifiedExportImagePath,
   region: geometry,
   scale: 10,
+  pyramidingPolicy: 'MODE',
   maxPixels: 1e10
 });
 ```

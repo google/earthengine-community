@@ -292,6 +292,8 @@ legend.add(title);
 legend.add(addItem('#ffd400', 'Corn'));
 legend.add(addItem('#267300', 'Soybean'));
 legend.add(addItem('#bdbdbd', 'Other Crops'));
+
+Map.add(legend);
 ```
 
 ![](5.jpg)<br>

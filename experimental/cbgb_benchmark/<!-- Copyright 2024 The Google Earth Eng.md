@@ -24,88 +24,102 @@ Earth Engine. The Cloud-Based Geospatial Benchmark (CBGB) was presented at the
 
 ## Example Problems with (human generated) solutions
 
-<style>
-  .gallery-container {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-    gap: 20px;
-    padding: 20px;
-    text-align: center;
-  }
-  .gallery-item img {
-    max-width: 100%;
-    height: auto;
-    border-radius: 8px;
-    margin-bottom: 10px;
-  }
-  .gallery-item .title {
-    font-weight: bold;
-    margin-bottom: 5px;
-  }
-</style>
-
-<div class="gallery-container">
-  <div class="gallery-item">
-    <img src="images/example_01.jpg" alt="Land Cover Classification Using Random Forest">
-    <div class="title">Land Cover Classification Using Random Forest</div>
-    <div><a href="https://code.earthengine.google.com/?accept_repo=projects%2Fgee-edu%2Fbook&scriptPath=users%2Falemlakes%2Fr-8000-PADMA%3A8.ReadyForEval%2FApplications%2FA1%2FA1.2%2FEBA_A1.2_A1a%2FEBA_A1.2_A1a_NC">Script 1</a> | <a href="https://code.earthengine.google.com/?accept_repo=projects%2Fgee-edu%2Fbook&scriptPath=users%2Falemlakes%2Fr-8000-PADMA%3A8.ReadyForEval%2FApplications%2FA1%2FA1.2%2FEBA_A1.2_A1a%2FEBA_A1.2_A1a_S1">Script 2</a></div>
-  </div>
-  <div class="gallery-item">
-    <img src="images/example_02.jpg" alt="Calculating Road Length in Lesotho">
-    <div class="title">Calculating Road Length in Lesotho</div>
-    <div><a href="https://code.earthengine.google.com/?accept_repo=projects%2Fgee-edu%2Fbook&scriptPath=users%2Falemlakes%2Fr-8000-PADMA%3A8.ReadyForEval%2FApplications%2FA1%2FA1.3%2FEBA_A1.3_A1_NC">Script 1</a> | <a href="https://code.earthengine.google.com/?accept_repo=projects%2Fgee-edu%2Fbook&scriptPath=users%2Falemlakes%2Fr-8000-PADMA%3A8.ReadyForEval%2FApplications%2FA1%2FA1.3%2FEBA_A1.3_A1_S1">Script 2</a></div>
-  </div>
-  <div class="gallery-item">
-    <img src="images/example_03.jpg" alt="Calculating Iron Oxide Ratio (IOR) for Hydrothermal Rock Detection">
-    <div class="title">Calculating Iron Oxide Ratio (IOR) for Hydrothermal Rock Detection</div>
-    <div><a href="https://code.earthengine.google.com/?accept_repo=projects%2Fgee-edu%2Fbook&scriptPath=users%2Falemlakes%2Fr-8000-PADMA%3A8.ReadyForEval%2FFundamentals%2FF2%2FF2.0%2FEBA_F2.0_A2%2FEBA_F2.0_A2_NC">Script 1</a> | <a href="https://code.earthengine.google.com/?accept_repo=projects%2Fgee-edu%2Fbook&scriptPath=users%2Falemlakes%2Fr-8000-PADMA%3A8.ReadyForEval%2FFundamentals%2FF2%2FF2.0%2FEBA_F2.0_A2%2FEBA_F2.0_A2_S1">Script 2</a></div>
-  </div>
-  <div class="gallery-item">
-    <img src="images/example_04.jpg" alt="Normalized Burn Ratio Thermal (NBRT) Calculation for Rim Fire">
-    <div class="title">Normalized Burn Ratio Thermal (NBRT) Calculation for Rim Fire</div>
-    <div><a href="https://code.earthengine.google.com/?accept_repo=projects%2Fgee-edu%2Fbook&scriptPath=users%2Falemlakes%2Fr-8000-PADMA%3A8.ReadyForEval%2FFundamentals%2FF3%2FF3.1%2FEBA_F3.1_A1%2FEBA_F3.1_A1_NC">Script 1</a> | <a href="https://code.earthengine.google.com/?accept_repo=projects%2Fgee-edu%2Fbook&scriptPath=users%2Falemlakes%2Fr-8000-PADMA%3A8.ReadyForEval%2FFundamentals%2FF3%2FF3.1%2FEBA_F3.1_A1%2FEBA_F3.1_A1_S1">Script 2</a></div>
-  </div>
-  <div class="gallery-item">
-    <img src="images/example_11.jpg" alt="Measuring Area of Largest Lake within a Specified Area">
-    <div class="title">Measuring Area of Largest Lake within a Specified Area</div>
-    <div><a href="https://code.earthengine.google.com/?accept_repo=projects%2Fgee-edu%2Fbook&scriptPath=users%2Falemlakes%2Fr-8000-PADMA%3A8.ReadyForEval%2FFRC%2FFRC_9%2FFRC_9_S1">Script 1</a></div>
-  </div>
-  <div class="gallery-item">
-    <img src="images/example_12.jpg" alt="Analyzing Long-Term Land Surface Temperature Trends in an Urban Area">
-    <div class="title">Analyzing Long-Term Land Surface Temperature Trends in an Urban Area</div>
-    <div><a href="https://code.earthengine.google.com/?accept_repo=projects%2Fgee-edu%2Fbook&scriptPath=users%2Falemlakes%2Fr-8000-PADMA%3A7.AwaitingRelease%2FFree-Range%2FFRC_67%2FFRC_67_S1">Script 1</a> | <a href="https://code.earthengine.google.com/?accept_repo=projects%2Fgee-edu%2Fbook&scriptPath=users%2Falemlakes%2Fr-8000-PADMA%3A7.AwaitingRelease%2FFree-Range%2FFRC_67%2FFRC_67_S2">Script 2</a></div>
-  </div>
-  <div class="gallery-item">
-    <img src="images/example_05.jpg" alt="Deforestation Analysis Around a National Park">
-    <div class="title">Deforestation Analysis Around a National Park</div>
-    <div><a href="https://code.earthengine.google.com/?accept_repo=projects%2Fgee-edu%2Fbook&scriptPath=users%2Falemlakes%2Fr-8000-PADMA%3A8.ReadyForEval%2FFundamentals%2FF5%2FF5.1%2FF5.1_A3%2FEBA_F5.1_A3_NC">Script 1</a> | <a href="https://code.earthengine.google.com/?accept_repo=projects%2Fgee-edu%2Fbook&scriptPath=users%2Falemlakes%2Fr-8000-PADMA%3A8.ReadyForEval%2FFundamentals%2FF5%2FF5.1%2FF5.1_A3%2FEBA_F5.1_A3_S1">Script 2</a></div>
-  </div>
-  <div class="gallery-item">
-    <img src="images/example_06.jpg" alt="Landsat 8 TOA Reflectance Percentile Analysis for Lisbon, Portugal">
-    <div class="title">Landsat 8 TOA Reflectance Percentile Analysis for Lisbon, Portugal</div>
-    <div><a href="https://code.earthengine.google.com/?accept_repo=projects%2Fgee-edu%2Fbook&scriptPath=users%2Falemlakes%2Fr-8000-PADMA%3A8.ReadyForEval%2FFundamentals%2FF4%2FF4.1%2FEBD_F4.1_C2%2FEBD_F4.1_C2_S1">Script 1</a></div>
-  </div>
-  <div class="gallery-item">
-    <img src="images/example_07.jpg" alt="Burn Severity Change Detection in the Amazon Rainforest">
-    <div class="title">Burn Severity Change Detection in the Amazon Rainforest</div>
-    <div><a href="https://code.earthengine.google.com/?accept_repo=projects%2Fgee-edu%2Fbook&scriptPath=users%2Falemlakes%2Fr-8000-PADMA%3A8.ReadyForEval%2FFundamentals%2FF4%2FF4.4%2FEBD_F4.4_C2%2FEBD_F4.4_C2_S1">Script 1</a> | <a href="https://code.earthengine.google.com/?accept_repo=projects%2Fgee-edu%2Fbook&scriptPath=users%2Falemlakes%2Fr-8000-PADMA%3A8.ReadyForEval%2FFundamentals%2FF4%2FF4.4%2FEBD_F4.4_C2%2FEBD_F4.4_C2_S2">Script 2</a></div>
-  </div>
-  <div class="gallery-item">
-    <img src="images/example_08.jpg" alt="Agricultural Land Use Analysis in California's Central Valley">
-    <div class="title">Agricultural Land Use Analysis in California's Central Valley</div>
-    <div><a href="https://code.earthengine.google.com/?accept_repo=projects%2Fgee-edu%2Fbook&scriptPath=users%2Falemlakes%2Fr-8000-PADMA%3A8.ReadyForEval%2FFundamentals%2FF5%2FF5.0%2FEBD_F5.0_C1%2FEBD_F5.0_C1_S1">Script 1</a> | <a href="https://code.earthengine.google.com/?accept_repo=projects%2Fgee-edu%2Fbook&scriptPath=users%2Falemlakes%2Fr-8000-PADMA%3A8.ReadyForEval%2FFundamentals%2FF5%2FF5.0%2FEBD_F5.0_C1%2FEBD_F5.0_C1_S2">Script 2</a></div>
-  </div>
-  <div class="gallery-item">
-    <img src="images/example_09.jpg" alt="Deforestation Rate Comparison in Colombian Amazon Protected Areas">
-    <div class="title">Deforestation Rate Comparison in Colombian Amazon Protected Areas</div>
-    <div><a href="https://code.earthengine.google.com/?accept_repo=projects%2Fgee-edu%2Fbook&scriptPath=users%2Falemlakes%2Fr-8000-PADMA%3A8.ReadyForEval%2FFundamentals%2FF5%2FF5.1%2FEBD_F5.1_C1%2FEBD_F5.1_C1_S1">Script 1</a> | <a href="https://code.earthengine.google.com/?accept_repo=projects%2Fgee-edu%2Fbook&scriptPath=users%2Falemlakes%2Fr-8000-PADMA%3A8.ReadyForEval%2FFundamentals%2FF5%2FF5.1%2FEBD_F5.1_C1%2FEBD_F5.1_C1_S2">Script 2</a></div>
-  </div>
-  <div class="gallery-item">
-    <img src="images/example_10.jpg" alt="Count of States Intersecting HUC4 Watershed 0707">
-    <div class="title">Count of States Intersecting HUC4 Watershed 0707</div>
-    <div><a href="https://code.earthengine.google.com/?accept_repo=projects%2Fgee-edu%2Fbook&scriptPath=users%2Falemlakes%2Fr-8000-PADMA%3A8.ReadyForEval%2FFRC%2FFRC_5%2FFRC_5_S1">Script 1</a></div>
-  </div>
-</div>
+<table align="center">
+  <tbody>
+    <tr>
+      <td align="center">
+        <img src="images/example_01.jpg" alt="Land Cover Classification Using Random Forest" width="300">
+        <br>
+        <b>Land Cover Classification Using Random Forest</b>
+        <br>
+        <a href="https://code.earthengine.google.com/?accept_repo=projects%2Fgee-edu%2Fbook&scriptPath=users%2Falemlakes%2Fr-8000-PADMA%3A8.ReadyForEval%2FApplications%2FA1%2FA1.2%2FEBA_A1.2_A1a%2FEBA_A1.2_A1a_NC">Script 1</a> | <a href="https://code.earthengine.google.com/?accept_repo=projects%2Fgee-edu%2Fbook&scriptPath=users%2Falemlakes%2Fr-8000-PADMA%3A8.ReadyForEval%2FApplications%2FA1%2FA1.2%2FEBA_A1.2_A1a%2FEBA_A1.2_A1a_S1">Script 2</a>
+      </td>
+      <td align="center">
+        <img src="images/example_02.jpg" alt="Calculating Road Length in Lesotho" width="300">
+        <br>
+        <b>Calculating Road Length in Lesotho</b>
+        <br>
+        <a href="https://code.earthengine.google.com/?accept_repo=projects%2Fgee-edu%2Fbook&scriptPath=users%2Falemlakes%2Fr-8000-PADMA%3A8.ReadyForEval%2FApplications%2FA1%2FA1.3%2FEBA_A1.3_A1_NC">Script 1</a> | <a href="https://code.earthengine.google.com/?accept_repo=projects%2Fgee-edu%2Fbook&scriptPath=users%2Falemlakes%2Fr-8000-PADMA%3A8.ReadyForEval%2FApplications%2FA1%2FA1.3%2FEBA_A1.3_A1_S1">Script 2</a>
+      </td>
+      <td align="center">
+        <img src="images/example_03.jpg" alt="Calculating Iron Oxide Ratio (IOR) for Hydrothermal Rock Detection" width="300">
+        <br>
+        <b>Calculating Iron Oxide Ratio (IOR) for Hydrothermal Rock Detection</b>
+        <br>
+        <a href="https://code.earthengine.google.com/?accept_repo=projects%2Fgee-edu%2Fbook&scriptPath=users%2Falemlakes%2Fr-8000-PADMA%3A8.ReadyForEval%2FFundamentals%2FF2%2FF2.0%2FEBA_F2.0_A2%2FEBA_F2.0_A2_NC">Script 1</a> | <a href="https://code.earthengine.google.com/?accept_repo=projects%2Fgee-edu%2Fbook&scriptPath=users%2Falemlakes%2Fr-8000-PADMA%3A8.ReadyForEval%2FFundamentals%2FF2%2FF2.0%2FEBA_F2.0_A2%2FEBA_F2.0_A2_S1">Script 2</a>
+      </td>
+    </tr>
+    <tr>
+      <td align="center">
+        <img src="images/example_04.jpg" alt="Normalized Burn Ratio Thermal (NBRT) Calculation for Rim Fire" width="300">
+        <br>
+        <b>Normalized Burn Ratio Thermal (NBRT) Calculation for Rim Fire</b>
+        <br>
+        <a href="https://code.earthengine.google.com/?accept_repo=projects%2Fgee-edu%2Fbook&scriptPath=users%2Falemlakes%2Fr-8000-PADMA%3A8.ReadyForEval%2FFundamentals%2FF3%2FF3.1%2FEBA_F3.1_A1%2FEBA_F3.1_A1_NC">Script 1</a> | <a href="https://code.earthengine.google.com/?accept_repo=projects%2Fgee-edu%2Fbook&scriptPath=users%2Falemlakes%2Fr-8000-PADMA%3A8.ReadyForEval%2FFundamentals%2FF3%2FF3.1%2FEBA_F3.1_A1%2FEBA_F3.1_A1_S1">Script 2</a>
+      </td>
+      <td align="center">
+        <img src="images/example_11.jpg" alt="Measuring Area of Largest Lake within a Specified Area" width="300">
+        <br>
+        <b>Measuring Area of Largest Lake within a Specified Area</b>
+        <br>
+        <a href="https://code.earthengine.google.com/?accept_repo=projects%2Fgee-edu%2Fbook&scriptPath=users%2Falemlakes%2Fr-8000-PADMA%3A8.ReadyForEval%2FFRC%2FFRC_9%2FFRC_9_S1">Script 1</a>
+      </td>
+      <td align="center">
+        <img src="images/example_12.jpg" alt="Analyzing Long-Term Land Surface Temperature Trends in an Urban Area" width="300">
+        <br>
+        <b>Analyzing Long-Term Land Surface Temperature Trends in an Urban Area</b>
+        <br>
+        <a href="https://code.earthengine.google.com/?accept_repo=projects%2Fgee-edu%2Fbook&scriptPath=users%2Falemlakes%2Fr-8000-PADMA%3A7.AwaitingRelease%2FFree-Range%2FFRC_67%2FFRC_67_S1">Script 1</a> | <a href="https://code.earthengine.google.com/?accept_repo=projects%2Fgee-edu%2Fbook&scriptPath=users%2Falemlakes%2Fr-8000-PADMA%3A7.AwaitingRelease%2FFree-Range%2FFRC_67%2FFRC_67_S2">Script 2</a>
+      </td>
+    </tr>
+    <tr>
+      <td align="center">
+        <img src="images/example_05.jpg" alt="Deforestation Analysis Around a National Park" width="300">
+        <br>
+        <b>Deforestation Analysis Around a National Park</b>
+        <br>
+        <a href="https://code.earthengine.google.com/?accept_repo=projects%2Fgee-edu%2Fbook&scriptPath=users%2Falemlakes%2Fr-8000-PADMA%3A8.ReadyForEval%2FFundamentals%2FF5%2FF5.1%2FF5.1_A3%2FEBA_F5.1_A3_NC">Script 1</a> | <a href="https://code.earthengine.google.com/?accept_repo=projects%2Fgee-edu%2Fbook&scriptPath=users%2Falemlakes%2Fr-8000-PADMA%3A8.ReadyForEval%2FFundamentals%2FF5%2FF5.1%2FF5.1_A3%2FEBA_F5.1_A3_S1">Script 2</a>
+      </td>
+      <td align="center">
+        <img src="images/example_06.jpg" alt="Landsat 8 TOA Reflectance Percentile Analysis for Lisbon, Portugal" width="300">
+        <br>
+        <b>Landsat 8 TOA Reflectance Percentile Analysis for Lisbon, Portugal</b>
+        <br>
+        <a href="https://code.earthengine.google.com/?accept_repo=projects%2Fgee-edu%2Fbook&scriptPath=users%2Falemlakes%2Fr-8000-PADMA%3A8.ReadyForEval%2FFundamentals%2FF4%2FF4.1%2FEBD_F4.1_C2%2FEBD_F4.1_C2_S1">Script 1</a>
+      </td>
+      <td align="center">
+        <img src="images/example_07.jpg" alt="Burn Severity Change Detection in the Amazon Rainforest" width="300">
+        <br>
+        <b>Burn Severity Change Detection in the Amazon Rainforest</b>
+        <br>
+        <a href="https://code.earthengine.google.com/?accept_repo=projects%2Fgee-edu%2Fbook&scriptPath=users%2Falemlakes%2Fr-8000-PADMA%3A8.ReadyForEval%2FFundamentals%2FF4%2FF4.4%2FEBD_F4.4_C2%2FEBD_F4.4_C2_S1">Script 1</a> | <a href="https://code.earthengine.google.com/?accept_repo=projects%2Fgee-edu%2Fbook&scriptPath=users%2Falemlakes%2Fr-8000-PADMA%3A8.ReadyForEval%2FFundamentals%2FF4%2FF4.4%2FEBD_F4.4_C2%2FEBD_F4.4_C2_S2">Script 2</a>
+      </td>
+    </tr>
+    <tr>
+      <td align="center">
+        <img src="images/example_08.jpg" alt="Agricultural Land Use Analysis in California's Central Valley" width="300">
+        <br>
+        <b>Agricultural Land Use Analysis in California's Central Valley</b>
+        <br>
+        <a href="https://code.earthengine.google.com/?accept_repo=projects%2Fgee-edu%2Fbook&scriptPath=users%2Falemlakes%2Fr-8000-PADMA%3A8.ReadyForEval%2FFundamentals%2FF5%2FF5.0%2FEBD_F5.0_C1%2FEBD_F5.0_C1_S1">Script 1</a> | <a href="https://code.earthengine.google.com/?accept_repo=projects%2Fgee-edu%2Fbook&scriptPath=users%2Falemlakes%2Fr-8000-PADMA%3A8.ReadyForEval%2FFundamentals%2FF5%2FF5.0%2FEBD_F5.0_C1%2FEBD_F5.0_C1_S2">Script 2</a>
+      </td>
+      <td align="center">
+        <img src="images/example_09.jpg" alt="Deforestation Rate Comparison in Colombian Amazon Protected Areas" width="300">
+        <br>
+        <b>Deforestation Rate Comparison in Colombian Amazon Protected Areas</b>
+        <br>
+        <a href="https://code.earthengine.google.com/?accept_repo=projects%2Fgee-edu%2Fbook&scriptPath=users%2Falemlakes%2Fr-8000-PADMA%3A8.ReadyForEval%2FFundamentals%2FF5%2FF5.1%2FEBD_F5.1_C1%2FEBD_F5.1_C1_S1">Script 1</a> | <a href="https://code.earthengine.google.com/?accept_repo=projects%2Fgee-edu%2Fbook&scriptPath=users%2Falemlakes%2Fr-8000-PADMA%3A8.ReadyForEval%2FFundamentals%2FF5%2FF5.1%2FEBD_F5.1_C1%2FEBD_F5.1_C1_S2">Script 2</a>
+      </td>
+      <td align="center">
+        <img src="images/example_10.jpg" alt="Count of States Intersecting HUC4 Watershed 0707" width="300">
+        <br>
+        <b>Count of States Intersecting HUC4 Watershed 0707</b>
+        <br>
+        <a href="https://code.earthengine.google.com/?accept_repo=projects%2Fgee-edu%2Fbook&scriptPath=users%2Falemlakes%2Fr-8000-PADMA%3A8.ReadyForEval%2FFRC%2FFRC_5%2FFRC_5_S1">Script 1</a>
+      </td>
+    </tr>
+  </tbody>
+</table>
 
 ## Paper Abstract
 
@@ -122,11 +136,11 @@ Jeffrey A. Cardille<sup>1,2</sup>, Renee Johnston<sup>1</sup>, Simon Ilyushchenk
 All Benchmark questions are available under CC-BY-4.0 license in a public
 Google Cloud Storage bucket:
 
--   `gs://cbgb-1/eval_set_2025_05_08.csv`
--   Direct download at:
-    https://storage.googleapis.com/cbgb-1/eval_set_2025_05_08.csv
+- `gs://cbgb-1/eval_set_2025_05_08.csv`
+- Direct download at:
+ https://storage.googleapis.com/cbgb-1/eval_set_2025_05_08.csv
 
-This repository contains a lightweight evaluation pipeline assessing
+This repository contains a [lightweight evaluation pipeline](https://github.com/google/earthengine-community/blob/master/experimental/cbgb_benchmark/cbgb_eval_pipeline.ipynb) assessing
 the capabilities of various LLMs to generate Earth Engine Python code. The
 pipeline imports the full set of benchmark challenges and expected answers. It
 then utilizes code generation agents powered by different LLMs (models from

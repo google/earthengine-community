@@ -21,9 +21,9 @@ dic = ee.Dictionary({
 })
 
 selected_keys_img = dic.toImage(['B1', 'B2'])
-print('Selected keys image band names:',
-      selected_keys_img.bandNames().getInfo())
+display('Selected keys image band names:',
+        selected_keys_img.bandNames())
 
 all_keys_img = dic.toImage()
-print('All keys image band names:', all_keys_img.bandNames().getInfo())
+display('All keys image band names:', all_keys_img.bandNames())
 # [END earthengine__apidocs__ee_dictionary_toimage]

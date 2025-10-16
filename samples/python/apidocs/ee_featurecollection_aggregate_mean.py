@@ -17,6 +17,6 @@
 fc = ee.FeatureCollection('WRI/GPPD/power_plants').filter(
     'country_lg == "Belgium"')
 
-print('Mean of power plant capacities (MW):',
-      fc.aggregate_mean('capacitymw').getInfo())  # 201.342424242
+display('Mean of power plant capacities (MW):',
+        fc.aggregate_mean('capacitymw'))  # 201.342424242
 # [END earthengine__apidocs__ee_featurecollection_aggregate_mean]

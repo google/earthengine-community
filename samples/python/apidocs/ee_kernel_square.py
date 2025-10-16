@@ -13,10 +13,7 @@
 # limitations under the License.
 
 # [START earthengine__apidocs__ee_kernel_square]
-from pprint import pprint
-
-print('A square kernel:')
-pprint(ee.Kernel.square(**{'radius': 3}).getInfo())
+display('A square kernel:', ee.Kernel.square(**{'radius': 3}))
 
 #  Output weights matrix (up to 1/100 precision for brevity)
 

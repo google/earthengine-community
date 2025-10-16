@@ -20,42 +20,42 @@ def samp_arr_img(arr_img):
 
 # Create a 1D array image with length 6.
 array_img_1d = ee.Image([0, 1, 2, 3, 4, 5]).toArray()
-print('1D array image (pixel):', samp_arr_img(array_img_1d).getInfo())
+display('1D array image (pixel):', samp_arr_img(array_img_1d))
 # [0, 1, 2, 3, 4, 5]
 
 # Sum the elements in the 1D array image.
 array_img_1d_sum = array_img_1d.arrayReduce(ee.Reducer.sum(), [0])
-print('1D array image sum (pixel):', samp_arr_img(array_img_1d_sum).getInfo())
+display('1D array image sum (pixel):', samp_arr_img(array_img_1d_sum))
 # [15]
 
 # Create a 2D array image with 2 rows and 3 columns.
 array_img_2d = array_img_1d.arrayReshape(ee.Image([2, 3]).toArray(), 2)
-print('2D array image (pixel):', samp_arr_img(array_img_2d).getInfo())
+display('2D array image (pixel):', samp_arr_img(array_img_2d))
 # [[0, 1, 2],
 #  [3, 4, 5]]
 
 # Sum 2D array image along 0-axis.
 array_img_2d_sum_row = array_img_2d.arrayReduce(ee.Reducer.sum(), [0])
-print(
+display(
     '2D array image sum rows (pixel):',
-    samp_arr_img(array_img_2d_sum_row).getInfo()
+    samp_arr_img(array_img_2d_sum_row)
 )
 # [[3, 5, 7]]
 
 # Sum 2D array image along 1-axis.
 array_img_2d_sum_col = array_img_2d.arrayReduce(ee.Reducer.sum(), [1])
-print(
+display(
     '2D array image sum columns (pixel):',
-    samp_arr_img(array_img_2d_sum_col).getInfo()
+    samp_arr_img(array_img_2d_sum_col)
 )
 # [[3],
 #  [12]]
 
 # Sum 2D array image 0-axis and 1-axis.
 array_img_2d_sum_row_col = array_img_2d.arrayReduce(ee.Reducer.sum(), [0, 1])
-print(
+display(
     '2D array image sum columns (pixel):',
-    samp_arr_img(array_img_2d_sum_row_col).getInfo()
+    samp_arr_img(array_img_2d_sum_row_col)
 )
 # [[15]]
 
@@ -63,7 +63,7 @@ print(
 # you need to ensure you have a dimension to hold the results. For instance,
 # if you want minMax for a 1D array, add a second dimension.
 array_img_1d_to_2d = array_img_1d.toArray(1)
-print('1D array image to 2D:', samp_arr_img(array_img_1d_to_2d).getInfo())
+display('1D array image to 2D:', samp_arr_img(array_img_1d_to_2d))
 # [[0],
 #  [1],
 #  [2],
@@ -73,18 +73,18 @@ print('1D array image to 2D:', samp_arr_img(array_img_1d_to_2d).getInfo())
 
 # Calculate min and max for 2D array, use the fieldAxis parameter.
 min_max_1d = array_img_1d_to_2d.arrayReduce(ee.Reducer.minMax(), [0], 1)
-print('1D array image minMax (pixel):', samp_arr_img(min_max_1d).getInfo())
+display('1D array image minMax (pixel):', samp_arr_img(min_max_1d))
 # [[0, 5]]
 
 # If your array image is 2D and you want min and max, add a third dimension.
 array_img_2d_to_3d = array_img_2d.toArray(2)
-print('2D array image to 3D:', samp_arr_img(array_img_2d_to_3d).getInfo())
+display('2D array image to 3D:', samp_arr_img(array_img_2d_to_3d))
 # [[[0], [1], [2]],
 #  [[3], [4], [5]]]
 
 # Calculate min and max along the 0-axis, store results in 2-axis.
 min_max_2d = array_img_2d_to_3d.arrayReduce(ee.Reducer.minMax(), [0], 2)
-print('2D array image minMax (pixel):', samp_arr_img(min_max_2d).getInfo())
+display('2D array image minMax (pixel):', samp_arr_img(min_max_2d))
 # [[[0, 3],
 #   [1, 4],
 #   [2, 5]]]

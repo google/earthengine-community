@@ -23,14 +23,14 @@ array_img_2d = ee.Image([0, 1, 2, 3, 4, 5]).toArray().arrayReshape(
     ee.Image([2, 3]).toArray(),
     2
 )
-print('2D 2x3 array image (pixel):', samp_arr_img(array_img_2d).getInfo())
+display('2D 2x3 array image (pixel):', samp_arr_img(array_img_2d))
 # [[0, 1, 2],
 #  [3, 4, 5]]
 
 # Swap 0-axis and 1-axis. Input is a 2x3 array, output will be 3x2.
 transposed = array_img_2d.arrayTranspose()
-print('Transposed (3x2) array image (pixel):',
-      samp_arr_img(transposed).getInfo())
+display('Transposed (3x2) array image (pixel):',
+        samp_arr_img(transposed))
 # [[0, 3],
 #  [1, 4],
 #  [2, 5]]

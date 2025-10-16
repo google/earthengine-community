@@ -29,9 +29,9 @@ date_server = ee.Date('2021-4-30')
 # a dictionary with keys "type" and "value" where "value" is milliseconds since
 # Unix epoch.
 date_client = date_server.getInfo()
-print('Client-side date is a dictionary:', type(date_client))
-print('Dictionary keys include "type" and "value":', date_client.keys())
-print('"value" is milliseconds since Unix epoch:', date_client['value'])
-print('Client-side date in Python:',
-      datetime.fromtimestamp(date_client['value'] / 1000))
+display('Client-side date is a dictionary:', type(date_client))
+display('Dictionary keys include "type" and "value":', date_client.keys())
+display('"value" is milliseconds since Unix epoch:', date_client['value'])
+display('Client-side date in Python:',
+        datetime.fromtimestamp(date_client['value'] / 1000))
 # [END earthengine__apidocs__ee_date_getinfo]

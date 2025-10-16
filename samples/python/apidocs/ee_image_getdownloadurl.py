@@ -35,8 +35,8 @@ url = img.getDownloadUrl({
 })
 response = requests.get(url)
 data = numpy.load(io.BytesIO(response.content))
-print(data)
-print(data.dtype)
+display(data)
+display(data.dtype)
 
 # Single-band GeoTIFF files wrapped in a zip file.
 url = img.getDownloadUrl({

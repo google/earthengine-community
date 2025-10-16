@@ -20,7 +20,7 @@ dic = ee.Dictionary({
     'B3': 443
 })
 
-print('Values for selected keys converted to ee.List:',
-      dic.values(['B1', 'B2']).getInfo())
-print('Values for all keys converted to ee.List:', dic.values().getInfo())
+display('Values for selected keys converted to ee.List:',
+        dic.values(['B1', 'B2']))
+display('Values for all keys converted to ee.List:', dic.values())
 # [END earthengine__apidocs__ee_dictionary_values]

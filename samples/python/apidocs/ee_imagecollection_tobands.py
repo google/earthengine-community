@@ -20,15 +20,15 @@ col = (
     .filterDate('2020-07-01', '2020-09-01')
     .select('B[4-5]')
 )  # Get NIR and SWIR1 bands only.
-print('Collection:', col.getInfo())
+display('Collection:', col)
 
 # Convert the image collection to a single multi-band image. Note that image ID
 # ('system:index') is prepended to band names to delineate the source images.
 img = col.toBands()
-print('Collection to bands:', img.getInfo())
+display('Collection to bands:', img)
 
 # Band order is determined by collection order. Here, the collection is
 # sorted in descending order of the date of observation (reverse of previous).
 band_order = col.sort('DATE_ACQUIRED', False).toBands()
-print('Customized band order:', band_order.getInfo())
+display('Customized band order:', band_order)
 # [END earthengine__apidocs__ee_imagecollection_tobands]

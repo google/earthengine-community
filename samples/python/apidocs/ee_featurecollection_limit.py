@@ -16,12 +16,12 @@
 # FeatureCollection of global power plants.
 fc = ee.FeatureCollection('WRI/GPPD/power_plants')
 
-print('First 5 features (power plants):', fc.limit(5).getInfo())
+display('First 5 features (power plants):', fc.limit(5))
 
-print('Smallest 5 power plants by capacity in ascending order:',
-      fc.limit(**{'maximum': 5, 'opt_property': 'capacitymw'}).getInfo())
+display('Smallest 5 power plants by capacity in ascending order:',
+        fc.limit(**{'maximum': 5, 'opt_property': 'capacitymw'}))
 
-print('Largest 5 power plants by capacity in descending order:',
-      fc.limit(**{'maximum': 5, 'opt_property': 'capacitymw',
-                  'opt_ascending': False}).getInfo())
+display('Largest 5 power plants by capacity in descending order:',
+        fc.limit(**{'maximum': 5, 'opt_property': 'capacitymw',
+                    'opt_ascending': False}))
 # [END earthengine__apidocs__ee_featurecollection_limit]

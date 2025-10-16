@@ -13,10 +13,7 @@
 # limitations under the License.
 
 # [START earthengine__apidocs__ee_kernel_chebyshev]
-from pprint import pprint
-
-print('A Chebyshev distance kernel:')
-pprint(ee.Kernel.chebyshev(**{'radius': 3}).getInfo())
+display('A Chebyshev distance kernel:', ee.Kernel.chebyshev(**{'radius': 3}))
 
 #  Output weights matrix
 #  [3, 3, 3, 3, 3, 3, 3]

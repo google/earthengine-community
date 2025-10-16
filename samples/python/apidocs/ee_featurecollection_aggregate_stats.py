@@ -13,14 +13,12 @@
 # limitations under the License.
 
 # [START earthengine__apidocs__ee_featurecollection_aggregate_stats]
-from pprint import pprint
-
 # FeatureCollection of power plants in Belgium.
 fc = ee.FeatureCollection('WRI/GPPD/power_plants').filter(
     'country_lg == "Belgium"')
 
-print('Power plant capacities (MW) summary stats:')
-pprint(fc.aggregate_stats('capacitymw').getInfo())
+display('Power plant capacities (MW) summary stats:',
+        fc.aggregate_stats('capacitymw'))
 
 # Expected ee.Dictionary output
 

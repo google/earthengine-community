@@ -13,10 +13,7 @@
 # limitations under the License.
 
 # [START earthengine__apidocs__ee_kernel_kirsch]
-from pprint import pprint
-
-print('A Kirsch compass kernel:')
-pprint(ee.Kernel.kirsch().getInfo())
+display('A Kirsch compass kernel:', ee.Kernel.kirsch())
 
 #  Output weights matrix
 

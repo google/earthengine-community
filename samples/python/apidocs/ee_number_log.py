@@ -15,7 +15,7 @@
 # [START earthengine__apidocs__ee_number_log]
 import math
 
-print(ee.Number(pow(math.e, -1)).log().getInfo())  # -1
-print(ee.Number(1).log().getInfo())  # 0
-print(ee.Number(math.e).log().getInfo())  # 1
+display(ee.Number(pow(math.e, -1)).log())  # -1
+display(ee.Number(1).log())  # 0
+display(ee.Number(math.e).log())  # 1
 # [END earthengine__apidocs__ee_number_log]

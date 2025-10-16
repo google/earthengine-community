@@ -14,12 +14,12 @@
 
 # [START earthengine__apidocs__ee_number_ceil]
 # Positive numbers.
-print('Ceiling for 2.1:', ee.Number(2.1).ceil().getInfo())  # 3
-print('Ceiling for 2.5:', ee.Number(2.5).ceil().getInfo())  # 3
-print('Ceiling for 2.9:', ee.Number(2.9).ceil().getInfo())  # 3
+display('Ceiling for 2.1:', ee.Number(2.1).ceil())  # 3
+display('Ceiling for 2.5:', ee.Number(2.5).ceil())  # 3
+display('Ceiling for 2.9:', ee.Number(2.9).ceil())  # 3
 
 # Negative numbers.
-print('Ceiling for 2.1:', ee.Number(-2.1).ceil().getInfo())  # -2
-print('Ceiling for 2.5:', ee.Number(-2.5).ceil().getInfo())  # -2
-print('Ceiling for 2.9:', ee.Number(-2.9).ceil().getInfo())  # -2
+display('Ceiling for 2.1:', ee.Number(-2.1).ceil())  # -2
+display('Ceiling for 2.5:', ee.Number(-2.5).ceil())  # -2
+display('Ceiling for 2.9:', ee.Number(-2.9).ceil())  # -2
 # [END earthengine__apidocs__ee_number_ceil]

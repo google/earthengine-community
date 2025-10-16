@@ -13,9 +13,9 @@
 # limitations under the License.
 
 # [START earthengine__apidocs__ee_number_pow]
-print('5 ** 2', ee.Number(5).pow(ee.Number(2)).getInfo())  # 25
-print('-5 ** 2', ee.Number(-5).pow(ee.Number(2)).getInfo())  # 25
-print('5 ** -2', ee.Number(5).pow(ee.Number(-2)).getInfo())  # 0.04
-print('5 ** 2.2', ee.Number(5).pow(ee.Number(2.2)).getInfo())  # 34.493241536
-print('5.2 ** 2', ee.Number(5.2).pow(ee.Number(2)).getInfo())  # 27.040000000
+display('5 ** 2', ee.Number(5).pow(ee.Number(2)))  # 25
+display('-5 ** 2', ee.Number(-5).pow(ee.Number(2)))  # 25
+display('5 ** -2', ee.Number(5).pow(ee.Number(-2)))  # 0.04
+display('5 ** 2.2', ee.Number(5).pow(ee.Number(2.2)))  # 34.493241536
+display('5.2 ** 2', ee.Number(5.2).pow(ee.Number(2)))  # 27.040000000
 # [END earthengine__apidocs__ee_number_pow]

@@ -13,13 +13,11 @@
 # limitations under the License.
 
 # [START earthengine__apidocs__ee_number_divide]
-print('5 / 10:', ee.Number(5).divide(ee.Number(10)).getInfo())  # 0.5
-print('5 / 10.2:',
-      ee.Number(5).divide(ee.Number(10.2)).getInfo())  # 0.490196078
-print('5 / -10.2:',
-      ee.Number(5).divide(ee.Number(-10.2)).getInfo())  # -0.490196078
-print('-10.2 / 5:', ee.Number(-10.2).divide(ee.Number(5)).getInfo())  # -2.04
-print('-10.2 / -5:', ee.Number(-10.2).divide(ee.Number(-5)).getInfo())  # 2.04
-print('0 / 10:', ee.Number(0).divide(ee.Number(10)).getInfo())  # 0
-print('10 / 0:', ee.Number(10).divide(ee.Number(0)).getInfo())  # 0
+display('5 / 10:', ee.Number(5).divide(ee.Number(10)))  # 0.5
+display('5 / 10.2:', ee.Number(5).divide(ee.Number(10.2)))  # 0.490196078
+display('5 / -10.2:', ee.Number(5).divide(ee.Number(-10.2)))  # -0.490196078
+display('-10.2 / 5:', ee.Number(-10.2).divide(ee.Number(5)))  # -2.04
+display('-10.2 / -5:', ee.Number(-10.2).divide(ee.Number(-5)))  # 2.04
+display('0 / 10:', ee.Number(0).divide(ee.Number(10)))  # 0
+display('10 / 0:', ee.Number(10).divide(ee.Number(0)))  # 0
 # [END earthengine__apidocs__ee_number_divide]

@@ -20,58 +20,53 @@ def samp_arr_img(arr_img):
 
 # Create a 1D array image with length 6.
 array_img_1d = ee.Image([0, 1, 2, 4, 0, 5]).toArray()
-print('1D array image (pixel):', samp_arr_img(array_img_1d).getInfo())
+display('1D array image (pixel):', samp_arr_img(array_img_1d))
 # [0, 1, 2, 4, 0, 5]
 
 # Create a mask using a relational operator to mask values greater than 2.
 mask_1d = array_img_1d.lte(2)
-print(
-    '1D mask for greater than value 2 (pixel):',
-    samp_arr_img(mask_1d).getInfo()
+display('1D mask for greater than value 2 (pixel):', samp_arr_img(mask_1d)
 )
 # [1, 1, 1, 0, 1, 0]
 
 array_img1d_mask = array_img_1d.arrayMask(mask_1d)
-print('1D array image mask (pixel):', samp_arr_img(array_img1d_mask).getInfo())
+display('1D array image mask (pixel):', samp_arr_img(array_img1d_mask))
 # [0, 1, 2, 0]
 
 # Self mask the 1D array image. Value zero will be masked out.
 array_img_1d_self_mask = array_img_1d.arrayMask(array_img_1d)
-print(
-    '1D array image self mask (pixel):',
-    samp_arr_img(array_img_1d_self_mask).getInfo()
+display(
+    '1D array image self mask (pixel):', samp_arr_img(array_img_1d_self_mask)
 )
 # [1, 2, 4, 5]
 
 # Create a 2D array image.
 array_img_2d = array_img_1d.arrayReshape(ee.Image([2, 3]).toArray(), 2)
-print('2D 2x3 array image (pixel):', samp_arr_img(array_img_2d).getInfo())
+display('2D 2x3 array image (pixel):', samp_arr_img(array_img_2d))
 # [[0, 1, 2],
 #  [4, 0, 5]]
 
 # Slice out a row to use as a column mask.
 row_as_mask_for_cols = array_img_2d.arraySlice(0, 1, 2)
-print('2D mask for cols (pixel):', samp_arr_img(row_as_mask_for_cols).getInfo())
+display('2D mask for cols (pixel):', samp_arr_img(row_as_mask_for_cols))
 # [[4, 0, 5]]
 
 array_img_2d_mask_cols = array_img_2d.arrayMask(row_as_mask_for_cols)
-print(
-    '2D array image cols masked (pixel):',
-    samp_arr_img(array_img_2d_mask_cols).getInfo()
+display(
+    '2D array image cols masked (pixel):', samp_arr_img(array_img_2d_mask_cols)
 )
 # [[0, 2],
 #  [4, 5]]
 
 # Slice out a column to use as a row mask.
 col_as_mask_for_rows = array_img_2d.arraySlice(1, 1, 2)
-print('2D mask for rows (pixel):', samp_arr_img(col_as_mask_for_rows).getInfo())
+display('2D mask for rows (pixel):', samp_arr_img(col_as_mask_for_rows))
 # [[1],
 #  [0]]
 
 array_img_2d_mask_rows = array_img_2d.arrayMask(col_as_mask_for_rows)
-print(
-    '2D array image rows masked (pixel):',
-    samp_arr_img(array_img_2d_mask_rows).getInfo()
+display(
+    '2D array image rows masked (pixel):', samp_arr_img(array_img_2d_mask_rows)
 )
 # [[0, 1, 2]]
 # [END earthengine__apidocs__ee_image_arraymask]

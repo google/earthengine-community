@@ -13,27 +13,27 @@
 # limitations under the License.
 
 # [START earthengine__apidocs__ee_pixeltype]
-print(ee.PixelType('int', 0, 1).getInfo())  # int ∈ [0, 1]
-print(ee.PixelType('int', -20, -10).getInfo())  # int ∈ [-20, -10]
-print(ee.PixelType('float').getInfo())  # float
-print(ee.PixelType('double').getInfo())  # double
-print(ee.PixelType('double', None).getInfo())  # double
-print(ee.PixelType('double', None, None).getInfo())  # double
-print(ee.PixelType('double', None, None, 0).getInfo())  # double
-print(ee.PixelType('double', None, None, 1).getInfo())  # double, 1 dimensions
-print(ee.PixelType('double', None, None, 2).getInfo())  # double, 2 dimensions
-print(ee.PixelType('double', None, None, 3).getInfo())  # double, 3 dimensions
-print(ee.PixelType('double', None, None, 10).getInfo())  # double, 10 dimensions
+display(ee.PixelType('int', 0, 1))  # int ∈ [0, 1]
+display(ee.PixelType('int', -20, -10))  # int ∈ [-20, -10]
+display(ee.PixelType('float'))  # float
+display(ee.PixelType('double'))  # double
+display(ee.PixelType('double', None))  # double
+display(ee.PixelType('double', None, None))  # double
+display(ee.PixelType('double', None, None, 0))  # double
+display(ee.PixelType('double', None, None, 1))  # double, 1 dimensions
+display(ee.PixelType('double', None, None, 2))  # double, 2 dimensions
+display(ee.PixelType('double', None, None, 3))  # double, 3 dimensions
+display(ee.PixelType('double', None, None, 10))  # double, 10 dimensions
 
 # double, 100000000 dimensions
-print(ee.PixelType('double', None, None, 1e8).getInfo())
+display(ee.PixelType('double', None, None, 1e8))
 
-print(ee.PixelType('double', 1, 2, 0).getInfo())  # double ∈ [1, 2]
+display(ee.PixelType('double', 1, 2, 0))  # double ∈ [1, 2]
 
 # double ∈ [1, 3], 2 dimensions
-print(ee.PixelType('double', 1, 3, 2).getInfo())
-print(ee.PixelType('double', -4, -3, 0).getInfo())  # double ∈ [-4, -3]
+display(ee.PixelType('double', 1, 3, 2))
+display(ee.PixelType('double', -4, -3, 0))  # double ∈ [-4, -3]
 
-print(ee.PixelType('double', None, 2.3, 0).getInfo())  # double
-print(ee.PixelType('double', 3.4, None, 0).getInfo())  # double
+display(ee.PixelType('double', None, 2.3, 0))  # double
+display(ee.PixelType('double', 3.4, None, 0))  # double
 # [END earthengine__apidocs__ee_pixeltype]

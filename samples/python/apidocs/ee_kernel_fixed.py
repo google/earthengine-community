@@ -13,14 +13,11 @@
 # limitations under the License.
 
 # [START earthengine__apidocs__ee_kernel_fixed]
-from pprint import pprint
-
 weights = [[4, 3, 2, 1, 2, 3, 4],
            [4, 3, 2, 1, 2, 3, 4],
            [4, 3, 2, 1, 2, 3, 4]]
 
-print('A fixed kernel:')
-pprint(ee.Kernel.fixed(**{'weights': weights}).getInfo())
+display('A fixed kernel:', ee.Kernel.fixed(**{'weights': weights}))
 
 #  Output weights matrix
 

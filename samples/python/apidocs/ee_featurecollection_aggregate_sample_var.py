@@ -17,6 +17,6 @@
 fc = ee.FeatureCollection('WRI/GPPD/power_plants').filter(
     'country_lg == "Belgium"')
 
-print('Sample variance of power plant capacities (MW):',
-      fc.aggregate_sample_var('capacitymw').getInfo())  # 217604.420018647
+display('Sample variance of power plant capacities (MW):',
+        fc.aggregate_sample_var('capacitymw'))  # 217604.420018647
 # [END earthengine__apidocs__ee_featurecollection_aggregate_sample_var]

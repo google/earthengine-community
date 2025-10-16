@@ -13,9 +13,9 @@
 # limitations under the License.
 
 # [START earthengine__apidocs__ee_string_compareto]
-print(ee.String('a').compareTo('b').getInfo())  # -1
-print(ee.String('a').compareTo('a').getInfo())  # 0
-print(ee.String('b').compareTo('a').getInfo())  # 1
+display(ee.String('a').compareTo('b'))  # -1
+display(ee.String('a').compareTo('a'))  # 0
+display(ee.String('b').compareTo('a'))  # 1
 
-print(ee.String('a').compareTo(ee.String('b')).getInfo())  # -1
+display(ee.String('a').compareTo(ee.String('b')))  # -1
 # [END earthengine__apidocs__ee_string_compareto]

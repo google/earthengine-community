@@ -13,10 +13,7 @@
 # limitations under the License.
 
 # [START earthengine__apidocs__ee_kernel_compass]
-from pprint import pprint
-
-print('A Prewitt compass kernel:')
-pprint(ee.Kernel.compass().getInfo())
+display('A Prewitt compass kernel:', ee.Kernel.compass())
 
 # Output weights matrix
 

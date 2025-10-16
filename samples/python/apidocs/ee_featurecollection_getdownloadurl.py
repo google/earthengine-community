@@ -23,5 +23,5 @@ download_url = fc.getDownloadURL(**{
   'selectors': ['capacitymw', 'fuel1'],
   'filename': 'belgian_power_plants',
 })
-print('URL for downloading FeatureCollection as CSV:', download_url)
+display('URL for downloading FeatureCollection as CSV:', download_url)
 # [END earthengine__apidocs__ee_featurecollection_getdownloadurl]

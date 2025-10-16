@@ -13,18 +13,18 @@
 # limitations under the License.
 
 # [START earthengine__apidocs__ee_number_erfc]
-print('Complementary error function of -10:',
+display('Complementary error function of -10:',
       ee.Number(-10).erfc().getInfo())  # 2
 
-print('Complementary error function of -0.001:',
+display('Complementary error function of -0.001:',
       ee.Number(-0.001).erfc().getInfo())  # 1.001128378
 
-print('Complementary error function of 0:',
+display('Complementary error function of 0:',
       ee.Number(0).erfc().getInfo())  # 1
 
-print('Complementary error function of 0.001:',
+display('Complementary error function of 0.001:',
       ee.Number(0.001).erfc().getInfo())  # 0.998871621
 
-print('Complementary error function of 10:',
+display('Complementary error function of 10:',
       ee.Number(10).erfc().getInfo())  # 2.088487583e-45
 # [END earthengine__apidocs__ee_number_erfc]

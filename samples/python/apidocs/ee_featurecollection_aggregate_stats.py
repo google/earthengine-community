@@ -19,7 +19,7 @@ from pprint import pprint
 fc = ee.FeatureCollection('WRI/GPPD/power_plants').filter(
     'country_lg == "Belgium"')
 
-print('Power plant capacities (MW) summary stats:')
+display('Power plant capacities (MW) summary stats:')
 pprint(fc.aggregate_stats('capacitymw').getInfo())
 
 # Expected ee.Dictionary output

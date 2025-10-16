@@ -30,11 +30,11 @@ fc = fc.set({
   'key_6': ee.Image(0),
   'key_7': ee.Feature(None)
 })
-print('New FeatureCollection properties added:')
+display('New FeatureCollection properties added:')
 pprint(fc.getInfo())
 
 # Overwrite an existing property.
 fc = fc.set('key_1', 'overwritten')
-print('FeatureCollection property overwritten:')
+display('FeatureCollection property overwritten:')
 pprint(fc.getInfo())
 # [END earthengine__apidocs__ee_featurecollection_set]

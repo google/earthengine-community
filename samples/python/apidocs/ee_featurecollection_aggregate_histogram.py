@@ -19,6 +19,6 @@ from pprint import pprint
 fc = ee.FeatureCollection('WRI/GPPD/power_plants').filter(
     'country_lg == "Belgium"')
 
-print('Histogram of power plant capacities (MW):')
+display('Histogram of power plant capacities (MW):')
 pprint(fc.aggregate_histogram('capacitymw').getInfo())  # Dictionary
 # [END earthengine__apidocs__ee_featurecollection_aggregate_histogram]

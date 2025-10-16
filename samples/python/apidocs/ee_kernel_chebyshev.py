@@ -15,7 +15,7 @@
 # [START earthengine__apidocs__ee_kernel_chebyshev]
 from pprint import pprint
 
-print('A Chebyshev distance kernel:')
+display('A Chebyshev distance kernel:')
 pprint(ee.Kernel.chebyshev(**{'radius': 3}).getInfo())
 
 #  Output weights matrix

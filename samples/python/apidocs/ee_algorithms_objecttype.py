@@ -13,11 +13,11 @@
 # limitations under the License.
 
 # [START earthengine__apidocs__ee_algorithms_objecttype]
-print(ee.Algorithms.ObjectType(ee.Number(1)).getInfo())  # The string "Integer"
-print(
+display(ee.Algorithms.ObjectType(ee.Number(1)).getInfo())  # The string "Integer"
+display(
     ee.Algorithms.ObjectType(ee.String('a string')).getInfo()
 )  # The string "String"
-print(
+display(
     ee.Algorithms.ObjectType(ee.List([1, 'a string'])).getInfo()
 )  # The string "List"
 
@@ -32,7 +32,7 @@ feature = ee.Feature(
 )
 
 # The string "Integer"
-print('int:', ee.Algorithms.ObjectType(feature.get('int')).getInfo())
+display('int:', ee.Algorithms.ObjectType(feature.get('int')).getInfo())
 # The string "Long"
-print('int8:', ee.Algorithms.ObjectType(feature.get('int8')).getInfo())
+display('int8:', ee.Algorithms.ObjectType(feature.get('int8')).getInfo())
 # [END earthengine__apidocs__ee_algorithms_objecttype]

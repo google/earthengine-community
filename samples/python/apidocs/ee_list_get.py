@@ -17,18 +17,18 @@
 ee_list = ee.List([5, 10, 15, 20, 25, 30])
 
 # Fetch elements at specified 0-based positions in the list.
-print('The second element:', ee_list.get(1).getInfo())
-print('The fourth element:', ee_list.get(3).getInfo())
-print('The last element:', ee_list.get(-1).getInfo())
-print('The second to last element:', ee_list.get(-2).getInfo())
+display('The second element:', ee_list.get(1).getInfo())
+display('The fourth element:', ee_list.get(3).getInfo())
+display('The last element:', ee_list.get(-1).getInfo())
+display('The second to last element:', ee_list.get(-2).getInfo())
 
 # ee.Number and integer computed objects are valid inputs.
-print('Computed object index input:', ee_list.get(list.get(0)).getInfo())
+display('Computed object index input:', ee_list.get(list.get(0)).getInfo())
 
 # The result of ee.List.get is an ambiguous object type. You need to cast the
 # result to the expected type to use it in subsequent instance methods. For
 # example, if you are fetching a number and wish to add it to another number,
 # you must cast the .get() result as an ee.Number.
-print('Add fetched number to another number:',
-      ee.Number(list.get(1)).add(2).getInfo())
+display('Add fetched number to another number:',
+        ee.Number(list.get(1)).add(2).getInfo())
 # [END earthengine__apidocs__ee_list_get]

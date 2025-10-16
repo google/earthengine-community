@@ -15,7 +15,7 @@
 # [START earthengine__apidocs__ee_kernel_compass]
 from pprint import pprint
 
-print('A Prewitt compass kernel:')
+display('A Prewitt compass kernel:')
 pprint(ee.Kernel.compass().getInfo())
 
 # Output weights matrix

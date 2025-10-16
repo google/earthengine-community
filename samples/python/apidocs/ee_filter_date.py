@@ -27,17 +27,17 @@ fc = ee.FeatureCollection([
 ])
 
 # Filter the observations in July 2021.
-print('Field site observations collection in July 2021:')
+display('Field site observations collection in July 2021:')
 pprint(fc.filter(ee.Filter.date('2021-07-01', '2021-08-01')).getInfo())
 
 # Alternative input formats.
 date_range = ee.DateRange('2021-07-01', '2021-08-01')
 pprint(fc.filter(ee.Filter.date(date_range)).getInfo())
 
-print('Numbers (milliseconds since Unix epoch) as an input:')
+display('Numbers (milliseconds since Unix epoch) as an input:')
 pprint(fc.filter(ee.Filter.date(1625875200000, 1626739200001)).getInfo())
 
-print('ee.Date objects as an input:')
+display('ee.Date objects as an input:')
 pprint(
     fc.filter(
         ee.Filter.date(ee.Date('2021-07-01'), ee.Date('2021-08-01'))

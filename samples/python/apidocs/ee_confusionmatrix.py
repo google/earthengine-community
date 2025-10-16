@@ -23,19 +23,19 @@ array = ee.Array([[32, 0, 0,  0,  1, 0],
                   [ 0, 1, 4, 26,  8, 0],
                   [ 0, 0, 0,  7, 15, 0],
                   [ 0, 0, 0,  1,  0, 5]])
-print('Constructed confusion matrix:')
+display('Constructed confusion matrix:')
 pprint(ee.ConfusionMatrix(array).getInfo())
 
 # The "order" parameter refers to row and column class labels. When
 # unspecified, the class labels are assumed to be a 0-based sequence
 # incrementing by 1 with a length equal to row/column size.
-print('Default row/column labels (unspecified "order" parameter):',
-      ee.ConfusionMatrix(array, None).order().getInfo())
+display('Default row/column labels (unspecified "order" parameter):',
+        ee.ConfusionMatrix(array, None).order().getInfo())
 
 # Set the "order" parameter when custom class label integers are required. The
 # list of integer value labels should correspond to the matrix axes left to
 # right / top to bottom.
 order = [11, 22, 42, 52, 71, 81]
-print('Specified row/column labels (specified "order" parameter):',
-      ee.ConfusionMatrix(array, order).order().getInfo())
+display('Specified row/column labels (specified "order" parameter):',
+        ee.ConfusionMatrix(array, order).order().getInfo())
 # [END earthengine__apidocs__ee_confusionmatrix]

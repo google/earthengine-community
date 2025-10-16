@@ -15,7 +15,7 @@
 # [START earthengine__apidocs__ee_kernel_square]
 from pprint import pprint
 
-print('A square kernel:')
+display('A square kernel:')
 pprint(ee.Kernel.square(**{'radius': 3}).getInfo())
 
 #  Output weights matrix (up to 1/100 precision for brevity)

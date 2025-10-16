@@ -29,9 +29,9 @@ dic_2 = ee.Dictionary({
     'B1': -9999  # Note that the B1 key is present in both dictionaries.
 })
 
-print('Combined dictionaries (overwrite false)')
+display('Combined dictionaries (overwrite false)')
 pprint.pprint(dic_1.combine(dic_2, False).getInfo())
 
-print('\nCombined dictionaries (overwrite true)')
+display('\nCombined dictionaries (overwrite true)')
 pprint.pprint(dic_1.combine(dic_2, True).getInfo())
 # [END earthengine__apidocs__ee_dictionary_combine]

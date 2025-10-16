@@ -15,7 +15,7 @@
 # [START earthengine__apidocs__ee_kernel_plus]
 from pprint import pprint
 
-print('A plus kernel:')
+display('A plus kernel:')
 pprint(ee.Kernel.plus(**{'radius': 3}).getInfo())
 
 #  Output weights matrix (1/1000 precision shown for brevity)

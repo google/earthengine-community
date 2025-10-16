@@ -13,10 +13,10 @@
 # limitations under the License.
 
 # [START earthengine__apidocs__ee_string_rindex]
-print(ee.String('aBc-Abc').rindex('A').getInfo())  # 4
-print(ee.String('aBc-Abc').rindex('a').getInfo())  # 0
-print(ee.String('aBc-Abc').rindex('Bc').getInfo())  # 1
-print(ee.String('aBc-Abc').rindex('Z').getInfo())  # -1
-print(ee.String('aBc-Abc').rindex('-').getInfo())  # 3
-print(ee.String('aBc-Abc').rindex('').getInfo())  # 7
+display(ee.String('aBc-Abc').rindex('A').getInfo())  # 4
+display(ee.String('aBc-Abc').rindex('a').getInfo())  # 0
+display(ee.String('aBc-Abc').rindex('Bc').getInfo())  # 1
+display(ee.String('aBc-Abc').rindex('Z').getInfo())  # -1
+display(ee.String('aBc-Abc').rindex('-').getInfo())  # 3
+display(ee.String('aBc-Abc').rindex('').getInfo())  # 7
 # [END earthengine__apidocs__ee_string_rindex]

@@ -20,7 +20,7 @@ img3 = ee.Image(2)
 
 # Convert the list of images into an image collection.
 col = ee.ImageCollection.fromImages([img1, img2, img3])
-print('Collection from list of images:', col.getInfo())
+display('Collection from list of images:', col.getInfo())
 
 # The ee.ImageCollection.fromImages function is intended to coerce the image
 # list to a collection when the list is an ambiguous, computed object fetched
@@ -31,11 +31,11 @@ print('Collection from list of images:', col.getInfo())
 # the image list to a collection, but ee.ImageCollection.fromImages does.
 feature = ee.Feature(None).set('img_list', [img1, img2, img3])
 ambiguous_img_list = feature.get('img_list')
-print(
+display(
     'Coerced to collection:',
     ee.ImageCollection.fromImages(ambiguous_img_list).getInfo(),
 )
-print(
+display(
     'NOT coerced to collection:',
     ee.ImageCollection(ambiguous_img_list).getInfo(),
 )
@@ -63,5 +63,5 @@ annual_ndvi_mean = joined_col.map(
     .mean()
     .copyProperties(img, ['year'])
 )
-print('Mean annual NDVI collection:', annual_ndvi_mean.getInfo())
+display('Mean annual NDVI collection:', annual_ndvi_mean.getInfo())
 # [END earthengine__apidocs__ee_imagecollection_fromimages]

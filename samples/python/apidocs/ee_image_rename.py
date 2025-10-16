@@ -17,11 +17,11 @@
 img = ee.Image(
     'COPERNICUS/S2_SR/20210109T185751_20210109T185931_T10SEG'
 ).select(['B11', 'B8', 'B3'])
-print('Original selected S2 image band names:', img.bandNames().getInfo())
+display('Original selected S2 image band names:', img.bandNames().getInfo())
 
-print('Rename bands using a list (Python list or ee.List):',
+display('Rename bands using a list (Python list or ee.List):',
       img.rename(['SWIR1', 'NIR', 'GREEN']).bandNames().getInfo())
 
-print('Rename bands using a series of string arguments:',
+display('Rename bands using a series of string arguments:',
       img.rename('swir1', 'nir', 'green').bandNames().getInfo())
 # [END earthengine__apidocs__ee_image_rename]

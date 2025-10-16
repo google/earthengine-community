@@ -15,7 +15,7 @@
 # [START earthengine__apidocs__ee_kernel_rectangle]
 from pprint import pprint
 
-print('A rectangle kernel:')
+display('A rectangle kernel:')
 pprint(ee.Kernel.rectangle(**{'xRadius': 2, 'yRadius': 1}).getInfo());
 
 #  Output weights matrix (up to 1/1000 precision for brevity)

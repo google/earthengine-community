@@ -19,6 +19,6 @@ from pprint import pprint
 fc = ee.FeatureCollection('WRI/GPPD/power_plants').filter(
     'country_lg == "Belgium"')
 
-print("Point FeatureCollection's geometry:")
+display("Point FeatureCollection's geometry:")
 pprint(fc.geometry().getInfo())
 # [END earthengine__apidocs__ee_featurecollection_geometry]

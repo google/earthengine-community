@@ -24,6 +24,6 @@ t2 = DATE_2.format('YYYY-MM-DD').getInfo()
 diff_1 = DATE_2.difference(DATE_1, 'days').getInfo()
 diff_2 = DATE_1.difference(DATE_2, 'weeks').getInfo()
 
-print(f'The difference between {t2} relative to {t1} is {diff_1} days.')
-print(f'The difference between {t1} relative to {t2} is {diff_2} weeks.')
+display(f'The difference between {t2} relative to {t1} is {diff_1} days.')
+display(f'The difference between {t1} relative to {t2} is {diff_2} weeks.')
 # [END earthengine__apidocs__ee_date_difference]

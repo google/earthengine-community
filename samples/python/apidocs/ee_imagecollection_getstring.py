@@ -17,7 +17,7 @@ from pprint import pprint
 
 # A contrived, empty image collection for simple demonstration.
 col = ee.ImageCollection([])
-print('Collection without properties:')
+display('Collection without properties:')
 pprint(col.getInfo())
 
 # Set collection properties using a dictionary.
@@ -31,24 +31,24 @@ col = col.set({
 col = col.set('project_year', 2018,
               'rgb_vis', 'false_color')
 
-print('Collection with properties:')
+display('Collection with properties:')
 pprint(col.getInfo())
 
 # Get a dictionary of collection property keys and values.
-print('Property keys and values (ee.Dictionary):')
+display('Property keys and values (ee.Dictionary):')
 pprint(col.toDictionary().getInfo())
 
 # Get the value of a collection property. To use the result of
 # ee.ImageCollection.get in further computation, you need to cast it to the
 # appropriate class, for example, ee.Number(result) or ee.String(result).
-print('Project ID (ambiguous object):', col.get('project_id').getInfo())
+display('Project ID (ambiguous object):', col.get('project_id').getInfo())
 
 # Get the value of a string collection property as an ee.String object.
-print('Project name (ee.String):', col.getString('project_name').getInfo())
+display('Project name (ee.String):', col.getString('project_name').getInfo())
 
 # Get the value of a numeric collection property as an ee.Number object.
-print('Project year (ee.Number):', col.getNumber('project_year').getInfo())
+display('Project year (ee.Number):', col.getNumber('project_year').getInfo())
 
 # Get the value of an ee.Array collection property as an ee.Array object.
-print('Plot IDs (ee.Array):', col.getArray('plot_ids').getInfo())
+display('Plot IDs (ee.Array):', col.getArray('plot_ids').getInfo())
 # [END earthengine__apidocs__ee_imagecollection_getstring]

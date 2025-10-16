@@ -15,7 +15,7 @@
 # [START earthengine__apidocs__ee_kernel_roberts]
 from pprint import pprint
 
-print('A Roberts kernel:')
+display('A Roberts kernel:')
 pprint(ee.Kernel.roberts().getInfo())
 
 #  Output weights matrix; center is position [1,1]

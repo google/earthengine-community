@@ -15,7 +15,7 @@
 # [START earthengine__apidocs__ee_kernel_manhattan]
 from pprint import pprint
 
-print('A Manhattan kernel:')
+display('A Manhattan kernel:')
 pprint(ee.Kernel.manhattan(**{'radius': 3}).getInfo())
 
 #  Output weights matrix

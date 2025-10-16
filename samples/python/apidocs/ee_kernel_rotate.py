@@ -25,14 +25,14 @@ pprint(sobel_kernel.getInfo())
 #  [-2, 0, 2]
 #  [-1, 0, 1]
 
-print('One 90 degree clockwise rotation:')
+display('One 90 degree clockwise rotation:')
 pprint(sobel_kernel.rotate(1).getInfo())
 
 #  [-1, -2, -1]
 #  [ 0,  0,  0]
 #  [ 1,  2,  1]
 
-print('Two 90 degree counterclockwise rotations:')
+display('Two 90 degree counterclockwise rotations:')
 pprint(sobel_kernel.rotate(-2).getInfo())
 
 #  [1, 0, -1]

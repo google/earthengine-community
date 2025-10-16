@@ -24,7 +24,7 @@ pprint(sobel_kernel.getInfo())
 #  [-2, 0, 2]
 #  [-1, 0, 1]
 
-print('Inverse of Sobel kernel weights:')
+display('Inverse of Sobel kernel weights:')
 pprint(sobel_kernel.inverse().getInfo())
 
 #  [-1.0, 0.0, 1.0]

@@ -26,9 +26,9 @@ array = ee.Array([[32, 0, 0,  0,  1, 0],
                   [ 0, 0, 0,  7, 15, 0],
                   [ 0, 0, 0,  1,  0, 5]])
 confusion_matrix = ee.ConfusionMatrix(array)
-print("ee.ConfusionMatrix:")
+display("ee.ConfusionMatrix:")
 pprint(confusion_matrix.getInfo())
 
-print("ee.ConfusionMatrix as ee.Array:")
+display("ee.ConfusionMatrix as ee.Array:")
 pprint(confusion_matrix.array().getInfo())
 # [END earthengine__apidocs__ee_confusionmatrix_array]

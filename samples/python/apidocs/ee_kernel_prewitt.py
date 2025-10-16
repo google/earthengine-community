@@ -15,7 +15,7 @@
 # [START earthengine__apidocs__ee_kernel_prewitt]
 from pprint import pprint
 
-print('A Prewitt kernel:')
+display('A Prewitt kernel:')
 pprint(ee.Kernel.prewitt().getInfo())
 
 # Output weights matrix

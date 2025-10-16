@@ -18,22 +18,22 @@ col = ee.ImageCollection('LANDSAT/LC08/C02/T1_TOA').filterBounds(
     ee.Geometry.Point(-90.70, 34.71))
 
 # Filter the collection by date using date strings.
-print('2020 images:', col.filterDate('2020', '2021').getInfo())
-print('July images, 2020:', col.filterDate('2020-07', '2020-08').getInfo())
-print('Early July images, 2020:',
-      col.filterDate('2020-07-01', '2020-07-10').getInfo())
-print('Include time (13 hours, July 7, 2020):',
-      col.filterDate('2020-07-05T06:34:46', '2020-07-05T19:34:46').getInfo())
+display('2020 images:', col.filterDate('2020', '2021').getInfo())
+display('July images, 2020:', col.filterDate('2020-07', '2020-08').getInfo())
+display('Early July images, 2020:',
+        col.filterDate('2020-07-01', '2020-07-10').getInfo())
+display('Include time (13 hours, July 7, 2020):',
+        col.filterDate('2020-07-05T06:34:46', '2020-07-05T19:34:46').getInfo())
 
 # Use milliseconds since Unix epoch.
-print('Milliseconds inputs:',
-      col.filterDate(1593967014062, 1595349419611).getInfo())
+display('Milliseconds inputs:',
+        col.filterDate(1593967014062, 1595349419611).getInfo())
 
 # Use ee.Date objects.
-print('ee.Date inputs',
-      col.filterDate(ee.Date('2020'), ee.Date('2021')).getInfo())
+display('ee.Date inputs',
+        col.filterDate(ee.Date('2020'), ee.Date('2021')).getInfo())
 
 # Use an ee.DateRange object.
 date_range = ee.DateRange('2020-07-01', '2020-07-10')
-print('ee.DateRange input', col.filterDate(date_range).getInfo())
+display('ee.DateRange input', col.filterDate(date_range).getInfo())
 # [END earthengine__apidocs__ee_imagecollection_filterdate]

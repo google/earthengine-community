@@ -18,6 +18,6 @@ from pprint import pprint
 # A global power plant FeatureCollection.
 fc = ee.FeatureCollection('WRI/GPPD/power_plants')
 
-print('The first feature (power plant) in the collection:')
+display('The first feature (power plant) in the collection:')
 pprint(fc.first().getInfo())
 # [END earthengine__apidocs__ee_featurecollection_first]

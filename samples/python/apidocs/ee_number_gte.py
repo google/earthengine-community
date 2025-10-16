@@ -14,12 +14,12 @@
 
 # [START earthengine__apidocs__ee_number_gte]
 # 0
-print('5 greater than or equal to 10?',
-      ee.Number(5).gte(ee.Number(10)).getInfo())
+display('5 greater than or equal to 10?',
+        ee.Number(5).gte(ee.Number(10)).getInfo())
 # 1
-print('10 greater than or equal to 5?',
-      ee.Number(10).gte(ee.Number(5)).getInfo())
+display('10 greater than or equal to 5?',
+        ee.Number(10).gte(ee.Number(5)).getInfo())
 # 1
-print('5 greater than or equal to 5?',
-      ee.Number(5).gte(ee.Number(5)).getInfo())
+display('5 greater than or equal to 5?',
+        ee.Number(5).gte(ee.Number(5)).getInfo())
 # [END earthengine__apidocs__ee_number_gte]

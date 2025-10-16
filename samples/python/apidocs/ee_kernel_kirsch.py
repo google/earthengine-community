@@ -15,7 +15,7 @@
 # [START earthengine__apidocs__ee_kernel_kirsch]
 from pprint import pprint
 
-print('A Kirsch compass kernel:')
+display('A Kirsch compass kernel:')
 pprint(ee.Kernel.kirsch().getInfo())
 
 #  Output weights matrix

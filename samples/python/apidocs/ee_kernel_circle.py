@@ -15,7 +15,7 @@
 # [START earthengine__apidocs__ee_kernel_circle]
 from pprint import pprint
 
-print('A circle kernel:')
+display('A circle kernel:')
 pprint(ee.Kernel.circle(**{'radius': 3}).getInfo())
 
 #  Output weights matrix (up to 1/1000 precision for brevity)

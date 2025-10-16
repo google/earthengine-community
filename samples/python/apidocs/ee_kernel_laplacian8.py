@@ -15,7 +15,7 @@
 # [START earthengine__apidocs__ee_kernel_laplacian8]
 from pprint import pprint
 
-print('A Laplacian-8 kernel:')
+display('A Laplacian-8 kernel:')
 pprint(ee.Kernel.laplacian8().getInfo())
 
 #  Output weights matrix

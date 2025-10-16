@@ -15,7 +15,7 @@
 # [START earthengine__apidocs__ee_kernel_sobel]
 from pprint import pprint
 
-print('A Sobel kernel:')
+display('A Sobel kernel:')
 pprint(ee.Kernel.sobel().getInfo())
 
 #  Output weights matrix

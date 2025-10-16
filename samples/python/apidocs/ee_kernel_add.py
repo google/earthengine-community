@@ -35,7 +35,7 @@ pprint(kernel_b.getInfo())
 #   [3, 2, 2, 2, 2, 2, 3]
 #   [3, 3, 3, 3, 3, 3, 3]
 
-print('Pointwise addition of two kernels:')
+display('Pointwise addition of two kernels:')
 pprint(kernel_a.add(kernel_b).getInfo())
 
 #  [3, 3,   3,   3,   3, 3, 3]

@@ -15,41 +15,41 @@
 # [START earthengine__apidocs__ee_image_select]
 # A Sentinel-2 surface reflectance image.
 img = ee.Image('COPERNICUS/S2_SR/20210109T185751_20210109T185931_T10SEG')
-print('All band names:', img.bandNames().getInfo())
+display('All band names:', img.bandNames().getInfo())
 
-print('Select a band by name:', img.select('B11').bandNames().getInfo())
+display('Select a band by name:', img.select('B11').bandNames().getInfo())
 
-print('Select a band by index:', img.select(10).bandNames().getInfo())
+display('Select a band by index:', img.select(10).bandNames().getInfo())
 
-print('Select bands using a list:',
+display('Select bands using a list:',
       img.select(['B11', 'B8', 'B3']).bandNames().getInfo())
 
-print('Select bands by an argument series:',
+display('Select bands by an argument series:',
       img.select('B11', 'B8', 'B3').bandNames().getInfo())
 
-print('Mixing string and integer selectors is valid:',
+display('Mixing string and integer selectors is valid:',
       img.select(10, 'B8', 2).bandNames().getInfo())
 
-print('Rename selected bands using two corresponding lists:',
+display('Rename selected bands using two corresponding lists:',
       img.select(['B11', 'B8', 'B3'], ['SWIR1', 'NIR', 'Green'])
       .bandNames().getInfo())
 
 # Use regular expressions to select bands.
-print('Match "QA" followed by any two characters:',
+display('Match "QA" followed by any two characters:',
       img.select('QA..').bandNames().getInfo())
 
-print('Match "B" followed by any character, any number of times:',
+display('Match "B" followed by any character, any number of times:',
       img.select('B.*').bandNames().getInfo())
 
-print('Match "B" followed by any character, and any optional third character',
+display('Match "B" followed by any character, and any optional third character',
       img.select('B..?').bandNames().getInfo())
 
-print('Match "B" followed by a character in the range 6-8',
+display('Match "B" followed by a character in the range 6-8',
       img.select('B[6-8]').bandNames().getInfo())
 
-print('Match "B" followed by a character in the range 1-9 and then 1-2',
+display('Match "B" followed by a character in the range 1-9 and then 1-2',
       img.select('B[1-9][1-2]').bandNames().getInfo())
 
-print('Match "B" or "QA" each followed by any character, any number of times.',
+display('Match "B" or "QA" each followed by any character, any number of times.',
       img.select('B.*|QA.*').bandNames().getInfo())
 # [END earthengine__apidocs__ee_image_select]

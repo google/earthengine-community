@@ -26,8 +26,8 @@ properties = ['gwh_2013', 'gwh_2014', 'gwh_2015', 'gwh_2016']
 # Add array of power-generation-by-year property to features.
 fc = fc.makeArray(properties, 'gwh_by_year')
 
-print('FeatureCollection with array of selected properties added:',
-      fc.getInfo())
-print('See example of new "gwh_by_year" property:')
+display('FeatureCollection with array of selected properties added:',
+        fc.getInfo())
+display('See example of new "gwh_by_year" property:')
 pprint(fc.first().toDictionary().getInfo())
 # [END earthengine__apidocs__ee_featurecollection_makearray]

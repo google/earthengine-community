@@ -35,11 +35,11 @@ sample = sample_source.sample(**{
 # Add a random value column with uniform distribution for hold-out
 # training/validation splitting.
 sample = sample.randomColumn(**{'distribution': 'uniform'})
-print('Sample for classifier development:', sample.getInfo())
+display('Sample for classifier development:', sample.getInfo())
 
 # Split out ~80% of the sample for training the classifier.
 training = sample.filter('random < 0.8')
-print('Training set:', training.getInfo())
+display('Training set:', training.getInfo())
 
 # Train a random forest classifier.
 classifier = ee.Classifier.smileRandomForest(10).train(**{
@@ -51,15 +51,15 @@ classifier = ee.Classifier.smileRandomForest(10).train(**{
 # Classify the sample.
 predictions = sample.classify(
     **{'classifier': classifier, 'outputName': 'predicted_landcover'})
-print('Predictions:', predictions.getInfo())
+display('Predictions:', predictions.getInfo())
 
 # Split out the validation feature set.
 validation = predictions.filter('random >= 0.8')
-print('Validation set:', validation.getInfo())
+display('Validation set:', validation.getInfo())
 
 # Get a list of possible class values to use for error matrix axis labels.
 order = sample.aggregate_array('landcover').distinct().sort()
-print('Error matrix axis labels:')
+display('Error matrix axis labels:')
 pprint(order.getInfo())
 
 # Compute an error matrix that compares predicted vs. expected values.
@@ -68,14 +68,14 @@ error_matrix = validation.errorMatrix(**{
     'predicted': 'predicted_landcover',
     'order': order
     })
-print('Error matrix:')
+display('Error matrix:')
 pprint(error_matrix.getInfo())
 
 # Compute accuracy metrics from the error matrix.
-print('Overall accuracy:', error_matrix.accuracy().getInfo())
-print('Consumer\'s accuracy:')
+display('Overall accuracy:', error_matrix.accuracy().getInfo())
+display('Consumer\'s accuracy:')
 pprint(error_matrix.consumersAccuracy().getInfo())
-print('Producer\'s accuracy:')
+display('Producer\'s accuracy:')
 pprint(error_matrix.producersAccuracy().getInfo())
-print('Kappa:', error_matrix.kappa().getInfo())
+display('Kappa:', error_matrix.kappa().getInfo())
 # [END earthengine__apidocs__ee_featurecollection_errormatrix]

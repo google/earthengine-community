@@ -26,22 +26,22 @@ array = ee.Array([[32, 0, 0,  0,  1, 0],
                   [ 0, 0, 0,  7, 15, 0],
                   [ 0, 0, 0,  1,  0, 5]])
 confusion_matrix = ee.ConfusionMatrix(array)
-print("Constructed confusion matrix:")
+display("Constructed confusion matrix:")
 pprint(confusion_matrix.getInfo())
 
 # Calculate overall accuracy.
-print("Overall accuracy:", confusion_matrix.accuracy().getInfo())
+display("Overall accuracy:", confusion_matrix.accuracy().getInfo())
 
 # Calculate consumer's accuracy, also known as user's accuracy or
 # specificity and the complement of commission error (1 − commission error).
-print("Consumer's accuracy:")
+display("Consumer's accuracy:")
 pprint(confusion_matrix.consumersAccuracy().getInfo())
 
 # Calculate producer's accuracy, also known as sensitivity and the
 # compliment of omission error (1 − omission error).
-print("Producer's accuracy:")
+display("Producer's accuracy:")
 pprint(confusion_matrix.producersAccuracy().getInfo())
 
 # Calculate kappa statistic.
-print("Kappa statistic:", confusion_matrix.kappa().getInfo())
+display("Kappa statistic:", confusion_matrix.kappa().getInfo())
 # [END earthengine__apidocs__ee_confusionmatrix_accuracy]

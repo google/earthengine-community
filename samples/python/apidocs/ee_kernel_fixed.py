@@ -19,7 +19,7 @@ weights = [[4, 3, 2, 1, 2, 3, 4],
            [4, 3, 2, 1, 2, 3, 4],
            [4, 3, 2, 1, 2, 3, 4]]
 
-print('A fixed kernel:')
+display('A fixed kernel:')
 pprint(ee.Kernel.fixed(**{'weights': weights}).getInfo())
 
 #  Output weights matrix

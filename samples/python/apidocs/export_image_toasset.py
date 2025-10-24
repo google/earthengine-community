@@ -35,7 +35,7 @@ task.start()
 # Use the "crsTransform" export parameter instead of "scale" for more control
 # over the output grid. Here, "crsTransform" is set to align the output grid
 # with the grid of another dataset. To view an image's CRS transform:
-# print(image.projection().getInfo())
+# display(image.projection())
 task = ee.batch.Export.image.toAsset(
     image=image,
     description='image_export_crstransform',

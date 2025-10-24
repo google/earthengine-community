@@ -16,12 +16,9 @@
 """Demonstrates the ee.data.makeDownloadUrl method."""
 
 import io
+
+import numpy
 import requests
-import ee
-
-
-ee.Authenticate()
-ee.Initialize()
 
 # A Sentinel-2 surface reflectance image.
 img = ee.Image('COPERNICUS/S2_SR/20210109T185751_20210109T185931_T10SEG')
@@ -30,7 +27,6 @@ img = ee.Image('COPERNICUS/S2_SR/20210109T185751_20210109T185931_T10SEG')
 region = ee.Geometry.BBox(-122.0859, 37.0436, -122.0626, 37.0586)
 
 # Image chunk as a NumPy structured array.
-import numpy
 download_id = ee.data.getDownloadId({
     'image': img,
     'bands': ['B3', 'B8', 'B11'],

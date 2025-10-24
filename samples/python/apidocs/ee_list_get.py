@@ -23,7 +23,7 @@ print('The last element:', ee_list.get(-1).getInfo())
 print('The second to last element:', ee_list.get(-2).getInfo())
 
 # ee.Number and integer computed objects are valid inputs.
-print('Computed object index input:', ee_list.get(list.get(0)).getInfo())
+display('Computed object index input:', ee_list.get(ee_list.get(0)))
 
 # The result of ee.List.get is an ambiguous object type. You need to cast the
 # result to the expected type to use it in subsequent instance methods. For

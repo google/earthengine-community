@@ -21,6 +21,7 @@ pt = ee.Geometry.Point([-122.0679107870136, 36.983302098145906])
 images = (ee.ImageCollection('LANDSAT/LC08/C02/T1_L2')
           .filterBounds(pt).filterDate('2021-01-01', '2021-12-31'))
 
+
 def point_overlay(image):
   """Extracts image band values for pixel-point intersection."""
   return ee.Feature(pt, image.reduceRegion('first', pt, 30))

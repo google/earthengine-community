@@ -18,12 +18,6 @@
 This example uses positive integers; non-integer and negative
 values are allowed.
 """
-
-import pprint
-import ee
-ee.Authenticate()
-ee.Initialize()
-
 not_zeros = ee.Image(3)  # Define an image where all pixels are not zero.
 zeros = not_zeros.Not()  # Pixels are not zeros, return zeros.
 ones = zeros.Not()  # Pixels are zeros, return ones.

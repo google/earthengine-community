@@ -81,7 +81,7 @@ var noDataVal = -9999;
 var unmaskedImage = image.unmask({value: noDataVal, sameFootprint: false});
 // Use the "noData" key in the "formatOptions" parameter to set the nodata value
 // (GeoTIFF format only).
-Export.image.toDrive({
+Export.image.toCloudStorage({
   image: unmaskedImage,
   description: 'image_export_nodata',
   bucket: 'gcs-bucket-name',

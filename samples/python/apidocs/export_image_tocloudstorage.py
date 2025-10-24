@@ -84,7 +84,7 @@ nodata_val = -9999
 unmasked_image = image.unmask(value=nodata_val, sameFootprint=False)
 # Use the "noData" key in the "formatOptions" parameter to set the nodata value
 # (GeoTIFF format only).
-task = ee.batch.Export.image.toDrive(
+task = ee.batch.Export.image.toCloudStorage(
     image=unmasked_image,
     description='image_export_nodata',
     bucket='gcs-bucket-name',

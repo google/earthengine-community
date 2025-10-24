@@ -16,34 +16,34 @@
 
 // [START earthengine__apidocs__ee_string_split]
 var s = ee.String('aBAbcD');
-print(s.split('Ab')); // ["aB","cD"]
+print(s.split('Ab'));  // ["aB","cD"]
 // 'i' tells split to ignore case.
-print(s.split('ab', 'i')); // ["","","cD"]
+print(s.split('ab', 'i'));  // ["","","cD"]
 // Split on 'b' or 'c'
-print(s.split('[bc]', 'i')); // ["a","A","","D"]
+print(s.split('[bc]', 'i'));  // ["a","A","","D"]
 // Split on 'BA' or 'c'
-print(s.split('(BA|c)')); // ["a","b","D"]
+print(s.split('(BA|c)'));  // ["a","b","D"]
 
 var s = ee.String('a,b,cdee f,g');
 // ["a",",","b",",","c","d","e","e"," ","f",",","g"]
 print(s.split(''));
 
-print(s.split(' ')); // ["a,b,cdee","f,g"]
-print(s.split('[[:space:]]')); // ["a,b,cdee","f,g"]
+print(s.split(' '));  // ["a,b,cdee","f,g"]
+print(s.split('[[:space:]]'));  // ["a,b,cdee","f,g"]
 
-print(s.split(',')); // ["a","b","cdee f","g"]
+print(s.split(','));  // ["a","b","cdee f","g"]
 
-print(s.split('ee')); // ["a,b,cd"," f,g"]
+print(s.split('ee'));  // ["a,b,cd"," f,g"]
 
 // Split on any lower case letter.
-print(s.split('[a-z]')); // ["",",",",","","",""," ",","]
+print(s.split('[a-z]'));  // ["",",",",","","",""," ",","]
 
 // ^ as the first character in [] excludes.
-print(s.split('[^a-z]')); // ["a","b","cdee","f","g"]
+print(s.split('[^a-z]'));  // ["a","b","cdee","f","g"]
 
 // Splitting on characters that are special to split.
 var s = ee.String('a.b*c?d');
-print(s.split('\\.')); // ["a","b*c?d"]
-print(s.split('[*]')); // ["a.b","c?d"]
-print(s.split('[?]')); // ["a.b*c","d"]
+print(s.split('\\.'));  // ["a","b*c?d"]
+print(s.split('[*]'));  // ["a.b","c?d"]
+print(s.split('[?]'));  // ["a.b*c","d"]
 // [END earthengine__apidocs__ee_string_split]

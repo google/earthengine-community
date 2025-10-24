@@ -24,5 +24,5 @@ print(s.slice(24));  // yz
 print(s.slice(-3));  // xyz
 print(s.slice(3, 3));  // ''
 print(s.slice(2, 3));  // c
-print(s.slice(-4, 25)); // wxy
+print(s.slice(-4, 25));  // wxy
 // [END earthengine__apidocs__ee_string_slice]

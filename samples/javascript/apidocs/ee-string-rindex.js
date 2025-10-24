@@ -18,7 +18,7 @@
 print(ee.String('aBc-Abc').rindex('A'));  // 4
 print(ee.String('aBc-Abc').rindex('a'));  // 0
 print(ee.String('aBc-Abc').rindex('Bc'));  // 1
-print(ee.String('aBc-Abc').rindex('Z')); // -1
+print(ee.String('aBc-Abc').rindex('Z'));  // -1
 print(ee.String('aBc-Abc').rindex('-'));  // 3
 print(ee.String('aBc-Abc').rindex(''));  // 7
 // [END earthengine__apidocs__ee_string_rindex]

@@ -17,7 +17,7 @@ print('5 / 10:', ee.Number(5).divide(ee.Number(10)).getInfo())  # 0.5
 print('5 / 10.2:',
       ee.Number(5).divide(ee.Number(10.2)).getInfo())  # 0.490196078
 print('5 / -10.2:',
-      ee.Number(5).divide(ee.Number(-10.2)).getInfo()) # -0.490196078
+      ee.Number(5).divide(ee.Number(-10.2)).getInfo())  # -0.490196078
 print('-10.2 / 5:', ee.Number(-10.2).divide(ee.Number(5)).getInfo())  # -2.04
 print('-10.2 / -5:', ee.Number(-10.2).divide(ee.Number(-5)).getInfo())  # 2.04
 print('0 / 10:', ee.Number(0).divide(ee.Number(10)).getInfo())  # 0

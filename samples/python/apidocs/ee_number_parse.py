@@ -26,5 +26,5 @@ print('Ambiguous string object converted to ee.Number:',
 print('Leading zeros are removed:',
       ee.Number.parse('0001').getInfo())  # 1
 
-print('Radix 16:', ee.Number.parse('3E8', 16).getInfo()) # 1000
+print('Radix 16:', ee.Number.parse('3E8', 16).getInfo())  # 1000
 # [END earthengine__apidocs__ee_number_parse]

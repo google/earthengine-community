@@ -19,7 +19,7 @@ var s = ee.String('ABCabc123');
 print(s.match(''));  // ""
 print(s.match('ab', 'g'));  // ab
 print(s.match('ab', 'i'));  // AB
-print(s.match('AB', 'ig')); // ["AB","ab"]
+print(s.match('AB', 'ig'));  // ["AB","ab"]
 print(s.match('[a-z]+[0-9]+'));  // "abc123"
 print(s.match('\\d{2}'));  // "12"
 

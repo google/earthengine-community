@@ -20,11 +20,11 @@ dic = ee.Dictionary({
     'B3': 443
 })
 
-print('Dictionary with selected keys removed:',
-      dic.remove(['B2', 'B3']).getInfo())
+display('Dictionary with selected keys removed:',
+        dic.remove(['B2', 'B3']))
 
 dic_subset = dic.remove(**{'selectors': ['B2', 'B3', 'Region'],
                           'ignoreMissing': True})
-print('Set ignoreMissing as true to avoid an unmatched key error:',
-      dic_subset.getInfo())
+display('Set ignoreMissing as true to avoid an unmatched key error:',
+        dic_subset)
 # [END earthengine__apidocs__ee_dictionary_remove]

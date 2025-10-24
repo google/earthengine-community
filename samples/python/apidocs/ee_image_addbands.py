@@ -15,7 +15,7 @@
 # [START earthengine__apidocs__ee_image_addbands]
 # A Sentinel-2 surface reflectance image.
 img = ee.Image('COPERNICUS/S2_SR/20210109T185751_20210109T185931_T10SEG')
-print('Original image:', img.getInfo())
+display('Original image:', img)
 
 # Scale reflectance bands and overwrite the original bands.
 refl_bands = img.select('B.*').divide(10000)
@@ -31,5 +31,5 @@ nbr = img.normalizedDifference(['B8', 'B12']).rename('NBR')
 new_bands = ee.Image([ndwi, nbr])
 img = img.addBands(new_bands)
 
-print('Image with added/modified bands:', img.getInfo())
+display('Image with added/modified bands:', img)
 # [END earthengine__apidocs__ee_image_addbands]

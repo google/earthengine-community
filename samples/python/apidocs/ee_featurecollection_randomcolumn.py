@@ -16,15 +16,15 @@
 # FeatureCollection of power plants in Belgium.
 fc = ee.FeatureCollection('WRI/GPPD/power_plants').filter(
     'country_lg == "Belgium"')
-print('N features in collection:', fc.size().getInfo())
+display('N features in collection:', fc.size())
 
 # Add a uniform distribution random value column to the FeatureCollection.
 fc = fc.randomColumn()
 
 # Randomly split the collection into two sets, 30% and 70% of the total.
 random_sample_30 = fc.filter('random < 0.3')
-print('N features in 30% sample:', random_sample_30.size().getInfo())
+display('N features in 30% sample:', random_sample_30.size())
 
 random_sample_70 = fc.filter('random >= 0.3')
-print('N features in 70% sample:', random_sample_70.size().getInfo())
+display('N features in 70% sample:', random_sample_70.size())
 # [END earthengine__apidocs__ee_featurecollection_randomcolumn]

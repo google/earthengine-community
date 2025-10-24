@@ -18,6 +18,6 @@
 url = 'gs://ee-docs-demos/vector/geojson/point.json'
 blob = ee.Blob(url)
 entry = ee.Dictionary(blob.string().decodeJSON())
-print(entry.getInfo())  # Point (1.00, 2.00)...
-print(entry.get('a_field').getInfo())  # "a demo field"
+display(entry)  # Point (1.00, 2.00)...
+display(entry.get('a_field'))  # "a demo field"
 # [END earthengine__apidocs__ee_blob_string]

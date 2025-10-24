@@ -22,7 +22,7 @@ goes17_mcmipm_2019 = goes17_mcmipm.filterDate(
 
 d1 = goes17_mcmipm_2019.filter(ee.Filter.eq('domain', 1))
 d2 = goes17_mcmipm_2019.filter(ee.Filter.eq('domain', 2))
-print(goes17_mcmipm_2019.size().getInfo())
-print(d1.size().getInfo())
-print(d2.size().getInfo())
+display(goes17_mcmipm_2019.size())
+display(d1.size())
+display(d2.size())
 # [END earthengine__apidocs__ee_filter_eq]

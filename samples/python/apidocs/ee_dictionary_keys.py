@@ -20,5 +20,5 @@ dic = ee.Dictionary({
     'B3': 443
 })
 
-print('The list of dictionary keys:', dic.keys().getInfo())
+display('The list of dictionary keys:', dic.keys())
 # [END earthengine__apidocs__ee_dictionary_keys]

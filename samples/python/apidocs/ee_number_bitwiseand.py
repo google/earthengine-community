@@ -22,5 +22,5 @@ Both digits 1?: 00010001
 00010001 is unsigned 8-bit binary for 17.
 """
 
-print(ee.Number(25).bitwiseAnd(21).getInfo())
+display(ee.Number(25).bitwiseAnd(21))
 # [END earthengine__apidocs__ee_number_bitwiseand]

@@ -17,5 +17,5 @@
 fc = ee.FeatureCollection('WRI/GPPD/power_plants')
 
 # View a list of FeatureCollection property names.
-print(fc.propertyNames().getInfo())
+display(fc.propertyNames())
 # [END earthengine__apidocs__ee_featurecollection_propertynames]

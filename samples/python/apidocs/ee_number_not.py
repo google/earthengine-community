@@ -13,6 +13,6 @@
 # limitations under the License.
 
 # [START earthengine__apidocs__ee_number_not]
-print('Value is not 0:', ee.Number(5).Not().getInfo())  # 0
-print('Value is 0:', ee.Number(0).Not().getInfo())  # 1
+display('Value is not 0:', ee.Number(5).Not())  # 0
+display('Value is 0:', ee.Number(0).Not())  # 1
 # [END earthengine__apidocs__ee_number_not]

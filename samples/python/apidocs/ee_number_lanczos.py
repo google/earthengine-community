@@ -13,12 +13,12 @@
 # limitations under the License.
 
 # [START earthengine__apidocs__ee_number_lanczos]
-print('Lanczos approx. of -1:', ee.Number(-1).lanczos().getInfo())  # Infinity
-print('Lanczos approx. of -0.9:',
-      ee.Number(-0.9).lanczos().getInfo())  # 524.955196990
-print('Lanczos approx. of 0:', ee.Number(0).lanczos().getInfo())  # 32.946318679
-print('Lanczos approx. of 10:',
-      ee.Number(10).lanczos().getInfo())  # 2.281783181
-print('Lanczos approx. of 1e10:',
-      ee.Number(1e10).lanczos().getInfo())  # 1.000000001
+display('Lanczos approx. of -1:', ee.Number(-1).lanczos())  # Infinity
+display('Lanczos approx. of -0.9:',
+        ee.Number(-0.9).lanczos())  # 524.955196990
+display('Lanczos approx. of 0:', ee.Number(0).lanczos())  # 32.946318679
+display('Lanczos approx. of 10:',
+        ee.Number(10).lanczos())  # 2.281783181
+display('Lanczos approx. of 1e10:',
+        ee.Number(1e10).lanczos())  # 1.000000001
 # [END earthengine__apidocs__ee_number_lanczos]

@@ -13,6 +13,6 @@
 # limitations under the License.
 
 # [START earthengine__apidocs__ee_number_or]
-print('Either 0 or 5 non-zero?', ee.Number(0).Or(ee.Number(5)).getInfo())  # 1
-print('Either 0 or 0 non-zero?', ee.Number(0).Or(ee.Number(0)).getInfo())  # 0
+display('Either 0 or 5 non-zero?', ee.Number(0).Or(ee.Number(5)))  # 1
+display('Either 0 or 0 non-zero?', ee.Number(0).Or(ee.Number(0)))  # 0
 # [END earthengine__apidocs__ee_number_or]

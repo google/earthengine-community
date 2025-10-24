@@ -17,6 +17,6 @@
 fc = ee.FeatureCollection([]).set('number_property', 1.5)
 
 # Fetch the number property value as an ee.Number object.
-print('Number property value as ee.Number:',
-      fc.getNumber('number_property').getInfo())
+display('Number property value as ee.Number:',
+        fc.getNumber('number_property'))
 # [END earthengine__apidocs__ee_featurecollection_getnumber]

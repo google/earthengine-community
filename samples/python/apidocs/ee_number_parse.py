@@ -13,18 +13,17 @@
 # limitations under the License.
 
 # [START earthengine__apidocs__ee_number_parse]
-print('Client-side string converted to ee.Number:',
-      ee.Number.parse('10').getInfo())  # 10
+display('Client-side string converted to ee.Number:',
+        ee.Number.parse('10'))  # 10
 
-print('ee.String converted to ee.Number:',
-      ee.Number.parse(ee.String('100')).getInfo())  # 100
+display('ee.String converted to ee.Number:',
+        ee.Number.parse(ee.String('100')))  # 100
 
 # 1000
-print('Ambiguous string object converted to ee.Number:',
-      ee.Number.parse(ee.Feature(None, {'id': '1000'}).get('id')).getInfo())
+display('Ambiguous string object converted to ee.Number:',
+        ee.Number.parse(ee.Feature(None, {'id': '1000'}).get('id')))
 
-print('Leading zeros are removed:',
-      ee.Number.parse('0001').getInfo())  # 1
+display('Leading zeros are removed:', ee.Number.parse('0001'))  # 1
 
-print('Radix 16:', ee.Number.parse('3E8', 16).getInfo())  # 1000
+display('Radix 16:', ee.Number.parse('3E8', 16))  # 1000
 # [END earthengine__apidocs__ee_number_parse]

@@ -13,8 +13,6 @@
 # limitations under the License.
 
 # [START earthengine__apidocs__ee_featurecollection_errormatrix]
-from pprint import pprint
-
 # Classifies features in a FeatureCollection and computes an error matrix.
 
 # Combine Landsat and NLCD images using only the bands representing
@@ -35,11 +33,11 @@ sample = sample_source.sample(**{
 # Add a random value column with uniform distribution for hold-out
 # training/validation splitting.
 sample = sample.randomColumn(**{'distribution': 'uniform'})
-print('Sample for classifier development:', sample.getInfo())
+display('Sample for classifier development:', sample)
 
 # Split out ~80% of the sample for training the classifier.
 training = sample.filter('random < 0.8')
-print('Training set:', training.getInfo())
+display('Training set:', training)
 
 # Train a random forest classifier.
 classifier = ee.Classifier.smileRandomForest(10).train(**{
@@ -51,16 +49,15 @@ classifier = ee.Classifier.smileRandomForest(10).train(**{
 # Classify the sample.
 predictions = sample.classify(
     **{'classifier': classifier, 'outputName': 'predicted_landcover'})
-print('Predictions:', predictions.getInfo())
+display('Predictions:', predictions)
 
 # Split out the validation feature set.
 validation = predictions.filter('random >= 0.8')
-print('Validation set:', validation.getInfo())
+display('Validation set:', validation)
 
 # Get a list of possible class values to use for error matrix axis labels.
 order = sample.aggregate_array('landcover').distinct().sort()
-print('Error matrix axis labels:')
-pprint(order.getInfo())
+display('Error matrix axis labels:', order)
 
 # Compute an error matrix that compares predicted vs. expected values.
 error_matrix = validation.errorMatrix(**{
@@ -68,14 +65,11 @@ error_matrix = validation.errorMatrix(**{
     'predicted': 'predicted_landcover',
     'order': order
     })
-print('Error matrix:')
-pprint(error_matrix.getInfo())
+display('Error matrix:', error_matrix)
 
 # Compute accuracy metrics from the error matrix.
-print('Overall accuracy:', error_matrix.accuracy().getInfo())
-print('Consumer\'s accuracy:')
-pprint(error_matrix.consumersAccuracy().getInfo())
-print('Producer\'s accuracy:')
-pprint(error_matrix.producersAccuracy().getInfo())
-print('Kappa:', error_matrix.kappa().getInfo())
+display('Overall accuracy:', error_matrix.accuracy())
+display('Consumer\'s accuracy:', error_matrix.consumersAccuracy())
+display('Producer\'s accuracy:', error_matrix.producersAccuracy())
+display('Kappa:', error_matrix.kappa())
 # [END earthengine__apidocs__ee_featurecollection_errormatrix]

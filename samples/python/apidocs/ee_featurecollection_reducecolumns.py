@@ -22,14 +22,14 @@ prop_mean = fc.reduceColumns(**{
     'reducer': ee.Reducer.mean(),
     'selectors': ['gwh_estimt']
     })
-print('Mean of a single property:', prop_mean.getInfo())
+display('Mean of a single property:', prop_mean)
 
 # Calculate mean of multiple FeatureCollection properties.
 props_mean = fc.reduceColumns(**{
     'reducer': ee.Reducer.mean().repeat(2),
     'selectors': ['gwh_estimt', 'capacitymw']
     })
-print('Mean of multiple properties:', props_mean.getInfo())
+display('Mean of multiple properties:', props_mean)
 
 
 # Calculate weighted mean of a single FeatureCollection property. Add a fuel
@@ -54,5 +54,5 @@ weighted_mean = fc.reduceColumns(**{
     'selectors': ['gwh_estimt'],
     'weightSelectors': ['weight']
     })
-print('Weighted mean of a single property:', weighted_mean.getInfo())
+display('Weighted mean of a single property:', weighted_mean)
 # [END earthengine__apidocs__ee_featurecollection_reducecolumns]

@@ -14,17 +14,17 @@
 
 # [START earthengine__apidocs__ee_errormargin]
 # Construct a variety of error margins.
-print(ee.ErrorMargin(0).getInfo())  # unit: meters value: 0
-print(ee.ErrorMargin(1).getInfo())  # unit: meters value: 1
+display(ee.ErrorMargin(0))  # unit: meters value: 0
+display(ee.ErrorMargin(1))  # unit: meters value: 1
 # Negative margin yields a positive value.
-print(ee.ErrorMargin(-1).getInfo())  # unit: meters value: 1
+display(ee.ErrorMargin(-1))  # unit: meters value: 1
 # Large values are turned into an 'infinite'
-print(ee.ErrorMargin(1e8).getInfo())  # unit: infinite
+display(ee.ErrorMargin(1e8))  # unit: infinite
 # A very large error margin does not quite trigger infinite, which is 2.0e7.
-print(ee.ErrorMargin(1e7).getInfo())  # unit: meters value: 10000000
+display(ee.ErrorMargin(1e7))  # unit: meters value: 10000000
 
 # Being explicit about the units of the error margin.
-print(ee.ErrorMargin(1, 'meters').getInfo())  # unit: meters value: 1
-print(ee.ErrorMargin(1, 'projected').getInfo())  # unit: projected value: 1
-print(ee.ErrorMargin(1, 'infinite').getInfo())  # unit: infinite
+display(ee.ErrorMargin(1, 'meters'))  # unit: meters value: 1
+display(ee.ErrorMargin(1, 'projected'))  # unit: projected value: 1
+display(ee.ErrorMargin(1, 'infinite'))  # unit: infinite
 # [END earthengine__apidocs__ee_errormargin]

@@ -25,16 +25,16 @@ fc = ee.FeatureCollection([
 ])
 
 # Filter the observations in July 2021.
-print('Field site observations collection in July 2021:',
-      fc.filterDate('2021-07-01', '2021-08-01').getInfo())
+display('Field site observations collection in July 2021:',
+        fc.filterDate('2021-07-01', '2021-08-01'))
 
 # Alternative input formats.
-print('ee.DateRange as an input:',
-      fc.filterDate(ee.DateRange('2021-07-01', '2021-08-01')).getInfo())
+display('ee.DateRange as an input:',
+        fc.filterDate(ee.DateRange('2021-07-01', '2021-08-01')))
 
-print('Numbers (milliseconds since Unix epoch) as an input:',
-      fc.filterDate(1625875200000, 1626739200001).getInfo())
+display('Numbers (milliseconds since Unix epoch) as an input:',
+        fc.filterDate(1625875200000, 1626739200001))
 
-print('ee.Date objects as an input:',
-      fc.filterDate(ee.Date('2021-07-01'), ee.Date('2021-08-01')).getInfo())
+display('ee.Date objects as an input:',
+        fc.filterDate(ee.Date('2021-07-01'), ee.Date('2021-08-01')))
 # [END earthengine__apidocs__ee_featurecollection_filterdate]

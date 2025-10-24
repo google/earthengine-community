@@ -20,5 +20,5 @@ dic = ee.Dictionary({
     'B3': 443
 })
 
-print('Serialized representation of ee.Dictionary:', dic.serialize(), sep='\n')
+display('Serialized representation of ee.Dictionary:', dic.serialize())
 # [END earthengine__apidocs__ee_dictionary_serialize]

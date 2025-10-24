@@ -22,5 +22,5 @@ Only one digit is 1?: 00001100
 00001100 is unsigned 8-bit binary for 12.
 """
 
-print(ee.Number(25).bitwiseXor(21).getInfo())
+display(ee.Number(25).bitwiseXor(21))
 # [END earthengine__apidocs__ee_number_bitwisexor]

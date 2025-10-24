@@ -13,8 +13,8 @@
 # limitations under the License.
 
 # [START earthengine__apidocs__ee_number_firstnonzero]
-print('First non-zero in [0, 5]:',
-      ee.Number(0).firstNonZero(ee.Number(5)).getInfo())  # 5
-print('First non-zero in [5, 0]:',
-      ee.Number(5).firstNonZero(ee.Number(0)).getInfo())  # 5
+display('First non-zero in [0, 5]:',
+        ee.Number(0).firstNonZero(ee.Number(5)))  # 5
+display('First non-zero in [5, 0]:',
+        ee.Number(5).firstNonZero(ee.Number(0)))  # 5
 # [END earthengine__apidocs__ee_number_firstnonzero]

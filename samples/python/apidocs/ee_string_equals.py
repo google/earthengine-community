@@ -15,10 +15,10 @@
 # [START earthengine__apidocs__ee_string_equals]
 sp = ee.String('Abies grandis')
 
-print('"Abies grandis" equals "Abies grandis"?',
-      sp.equals('Abies grandis').getInfo())
-print('"Abies grandis" equals "abies grandis"?',
-      sp.equals('abies grandis').getInfo())
-print('"Abies grandis" equals "Thuja plicata"?',
-      sp.equals('Thuja plicata').getInfo())
+display('"Abies grandis" equals "Abies grandis"?',
+        sp.equals('Abies grandis'))
+display('"Abies grandis" equals "abies grandis"?',
+        sp.equals('abies grandis'))
+display('"Abies grandis" equals "Thuja plicata"?',
+        sp.equals('Thuja plicata'))
 # [END earthengine__apidocs__ee_string_equals]

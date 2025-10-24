@@ -13,10 +13,7 @@
 # limitations under the License.
 
 # [START earthengine__apidocs__ee_kernel_manhattan]
-from pprint import pprint
-
-print('A Manhattan kernel:')
-pprint(ee.Kernel.manhattan(**{'radius': 3}).getInfo())
+display('A Manhattan kernel:',ee.Kernel.manhattan(**{'radius': 3}))
 
 #  Output weights matrix
 

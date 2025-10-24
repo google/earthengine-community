@@ -23,8 +23,8 @@ d2 = goes17_mcmipm_day.filter('domain == 2')
 # domain 3 does not exist.
 d3 = goes17_mcmipm_day.filter('domain == 3')
 
-print(goes17_mcmipm_day.size().getInfo())
-print(d1.size().getInfo())
-print(d2.size().getInfo())
-print(d3.size().getInfo())
+display(goes17_mcmipm_day.size())
+display(d1.size())
+display(d2.size())
+display(d3.size())
 # [END earthengine__apidocs__ee_imagecollection_filter]

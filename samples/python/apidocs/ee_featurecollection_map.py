@@ -27,5 +27,5 @@ def mw_to_gw(feature):
 # Apply the function to each feature in the collection.
 fc = fc.map(mw_to_gw)
 
-print('Note the new "capacitygw" property in each feature:', fc.getInfo())
+display('Note the new "capacitygw" property in each feature:', fc)
 # [END earthengine__apidocs__ee_featurecollection_map]

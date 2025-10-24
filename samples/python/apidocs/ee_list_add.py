@@ -13,29 +13,29 @@
 # limitations under the License.
 
 # [START earthengine__apidocs__ee_list_add]
-print(ee.List([]).add('b').getInfo())                # ['b']
-print(ee.List(['a']).add('b').getInfo())             # ['a', 'b']
-print(ee.List(['a']).add(ee.String('b')).getInfo())  # ['a', 'b']
+display(ee.List([]).add('b'))                # ['b']
+display(ee.List(['a']).add('b'))             # ['a', 'b']
+display(ee.List(['a']).add(ee.String('b')))  # ['a', 'b']
 
-print(ee.List(['a']).add(1).getInfo())             # ['a', 1]
-print(ee.List(['a']).add(ee.Number(1)).getInfo())  # ['a', 1]
+display(ee.List(['a']).add(1))             # ['a', 1]
+display(ee.List(['a']).add(ee.Number(1)))  # ['a', 1]
 
-print(ee.List(['a']).add(True).getInfo())  # ['a', True]
+display(ee.List(['a']).add(True))  # ['a', True]
 
-print(ee.List(['a']).add([]).getInfo())              # ['a', []]
-print(ee.List(['a']).add(ee.List([])).getInfo())     # ['a', []]
-print(ee.List(['a']).add(['b']).getInfo())           # ['a', ['b']]
-print(ee.List(['a']).add(ee.List(['b'])).getInfo())  # ['a', ['b']]
+display(ee.List(['a']).add([]))              # ['a', []]
+display(ee.List(['a']).add(ee.List([])))     # ['a', []]
+display(ee.List(['a']).add(['b']))           # ['a', ['b']]
+display(ee.List(['a']).add(ee.List(['b'])))  # ['a', ['b']]
 
-print(ee.List(['a']).add(ee.Dictionary()).getInfo())  # ['a', {}]
+display(ee.List(['a']).add(ee.Dictionary()))  # ['a', {}]
 
 # ['a', {'b': 'c'}]
-print(ee.List(['a']).add(ee.Dictionary({'b': 'c'})).getInfo())
+display(ee.List(['a']).add(ee.Dictionary({'b': 'c'})))
 
 # 0: a
 # 1: Image (1 band)
-print(ee.List(['a']).add(ee.Image.constant(1)).getInfo())
+display(ee.List(['a']).add(ee.Image.constant(1)))
 
 # ["a", {"type":"ImageCollection", "bands":[]}]
-print(ee.List(['a']).add(ee.ImageCollection([])).getInfo())
+display(ee.List(['a']).add(ee.ImageCollection([])))
 # [END earthengine__apidocs__ee_list_add]

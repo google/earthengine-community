@@ -13,6 +13,6 @@
 # limitations under the License.
 
 # [START earthengine__apidocs__ee_number_lt]
-print('5 less than 10?', ee.Number(5).lt(ee.Number(10)).getInfo())  # 1
-print('10 less than 5?', ee.Number(10).lt(ee.Number(5)).getInfo())  # 0
+display('5 less than 10?', ee.Number(5).lt(ee.Number(10)))  # 1
+display('10 less than 5?', ee.Number(10).lt(ee.Number(5)))  # 0
 # [END earthengine__apidocs__ee_number_lt]

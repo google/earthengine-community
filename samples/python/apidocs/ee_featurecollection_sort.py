@@ -17,9 +17,9 @@
 fc = ee.FeatureCollection('WRI/GPPD/power_plants').filter(
     'country_lg == "Belgium"')
 
-print('Belgium power plants in ascending order by capacity:',
-      fc.sort('capacitymw').getInfo())
+display('Belgium power plants in ascending order by capacity:',
+        fc.sort('capacitymw'))
 
-print('Belgium power plants in descending order by capacity:',
-      fc.sort('capacitymw', False).getInfo())
+display('Belgium power plants in descending order by capacity:',
+        fc.sort('capacitymw', False))
 # [END earthengine__apidocs__ee_featurecollection_sort]

@@ -20,10 +20,10 @@ dataset = ee.ImageCollection('COPERNICUS/S2_SR').filterDate(
 )
 filtered = dataset.filterMetadata('CLOUDY_PIXEL_PERCENTAGE', 'less_than', 0.2)
 
-print(dataset.size().getInfo())  # 7156
-print(filtered.size().getInfo())  # 391
+display(dataset.size())  # 7156
+display(filtered.size())  # 391
 
 # ee.ImageCollection.filter is equiavalent.
 filtered2 = dataset.filter('CLOUDY_PIXEL_PERCENTAGE < 0.2')
-print(filtered2.size().getInfo())  # 391
+display(filtered2.size())  # 391
 # [END earthengine__apidocs__ee_imagecollection_filtermetadata]

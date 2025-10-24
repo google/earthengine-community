@@ -20,11 +20,11 @@ dic = ee.Dictionary({
     'B3': 443
 })
 
-print('Select keys by name:', dic.select(['B1', 'B2']).getInfo())
-print('Select keys by regex:', dic.select(['B[1-2]']).getInfo())
+display('Select keys by name:', dic.select(['B1', 'B2']))
+display('Select keys by regex:', dic.select(['B[1-2]']))
 
 dic_select = dic.select(**{'selectors': ['B1', 'B2', 'Region'],
                            'ignoreMissing': True})
-print('Set ignoreMissing as true to avoid an unmatched key error:',
-      dic_select.getInfo())
+display('Set ignoreMissing as true to avoid an unmatched key error:',
+        dic_select)
 # [END earthengine__apidocs__ee_dictionary_select]

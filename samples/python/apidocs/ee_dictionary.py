@@ -19,7 +19,7 @@ dic = {
     'B2': 219,
     'B3': 443
 }
-print('ee.Dictionary from dictionary input:', ee.Dictionary(dic).getInfo())
+display('ee.Dictionary from dictionary input:', ee.Dictionary(dic))
 
 # A list of key/value pairs (from previous dictionary).
 lst = [
@@ -27,5 +27,5 @@ lst = [
     'B2', 219,
     'B3', 443
 ]
-print('ee.Dictionary from list input', ee.Dictionary(lst).getInfo())
+display('ee.Dictionary from list input', ee.Dictionary(lst))
 # [END earthengine__apidocs__ee_dictionary]

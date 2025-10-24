@@ -18,16 +18,16 @@
 ic = ee.ImageCollection('COPERNICUS/S2_SR').filterBounds(
     ee.Geometry.Point(-122.196, 41.411))
 
-print('Images for a month range (June-August):',
-      ic.filter(ee.Filter.calendarRange(6, 8, 'month')).getInfo())
+display('Images for a month range (June-August):',
+        ic.filter(ee.Filter.calendarRange(6, 8, 'month')))
 
-print('A start value greater than end value is valid (Dec-Feb):',
-      ic.filter(ee.Filter.calendarRange(12, 2, 'month')).size().getInfo())
+display('A start value greater than end value is valid (Dec-Feb):',
+        ic.filter(ee.Filter.calendarRange(12, 2, 'month')).size())
 
 # This example uses the 'year' field value. Note that ee.Filter.date is the
 # preferred method when filtering by whole years, as it is much faster.
-print('Images for a year range (2020-2021):',
-      ic.filter(ee.Filter.calendarRange(2020, 2021, 'year')).size().getInfo())
+display('Images for a year range (2020-2021):',
+        ic.filter(ee.Filter.calendarRange(2020, 2021, 'year')).size())
 
 # This example uses the 'day_of_year' field value. Note that
 # ee.Filter.dayOfYear is the preferred method for filtering by DOY.
@@ -36,10 +36,9 @@ print('Images for a year range (2020-2021):',
 # by DOY.
 start_doy = ee.Date('2000-06-01').getRelative('day', 'year')
 end_doy = ee.Date('2000-06-15').getRelative('day', 'year')
-print('start DOY =', start_doy.getInfo(), 'end DOY =', end_doy.getInfo())
-print(
+display('start DOY =', start_doy, 'end DOY =', end_doy)
+display(
     'Images for a day-of-year range:',
     ic.filter(ee.Filter.calendarRange(start_doy, end_doy, 'day_of_year'))
-    .getInfo()
 )
 # [END earthengine__apidocs__ee_filter_calendarrange]

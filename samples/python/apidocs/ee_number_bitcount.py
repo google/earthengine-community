@@ -13,14 +13,14 @@
 # limitations under the License.
 
 # [START earthengine__apidocs__ee_number_bitcount]
-print(ee.Number(0).bitCount().getInfo())       # [0]
-print(ee.Number(1).bitCount().getInfo())       # [1]
-print(ee.Number(2).bitCount().getInfo())       # [1]
-print(ee.Number(3).bitCount().getInfo())       # [2]
-print(ee.Number(0xFFFF).bitCount().getInfo())  # [16]
+display(ee.Number(0).bitCount())       # [0]
+display(ee.Number(1).bitCount())       # [1]
+display(ee.Number(2).bitCount())       # [1]
+display(ee.Number(3).bitCount())       # [2]
+display(ee.Number(0xFFFF).bitCount())  # [16]
 
 # https://en.wikipedia.org/wiki/Two's_complement signed values.
-print(ee.Number(-1).bitCount().getInfo())                       # [64]
-print(ee.Number(-1).toInt8().bitCount().getInfo())              # [64]
-print(ee.Number(-2).bitCount().getInfo())                       # [63]
+display(ee.Number(-1).bitCount())                       # [64]
+display(ee.Number(-1).toInt8().bitCount())              # [64]
+display(ee.Number(-2).bitCount())                       # [63]
 # [END earthengine__apidocs__ee_number_bitcount]

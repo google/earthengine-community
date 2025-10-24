@@ -26,10 +26,10 @@ modify the resulting value, note the behavior of the following scenarios.
 """
 
 # A floating point number cast to uint32 loses decimal precision.
-float_number = ee.Number(1.7);
+float_number = ee.Number(1.7)
 print('Floating point value:', float_number.getInfo())
 
-float_to_uint32 = float_number.toUint32();
+float_to_uint32 = float_number.toUint32()
 print('Floating point value cast to uint32:', float_to_uint32.getInfo())
 
 # A number greater than uint32 range max cast to uint32

@@ -54,7 +54,7 @@ row_as_mask_for_cols = array_img_2d.arraySlice(0, 1, 2)
 print('2D mask for cols (pixel):', samp_arr_img(row_as_mask_for_cols).getInfo())
 # [[4, 0, 5]]
 
-array_img_2d_mask_cols = array_img_2d.arrayMask(row_as_mask_for_cols);
+array_img_2d_mask_cols = array_img_2d.arrayMask(row_as_mask_for_cols)
 print(
     '2D array image cols masked (pixel):',
     samp_arr_img(array_img_2d_mask_cols).getInfo()

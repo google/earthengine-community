@@ -13,10 +13,10 @@
 # limitations under the License.
 
 # [START earthengine__apidocs__ee_array_divide]
-print('2 / 0:', ee.Array(2).divide(0).getInfo())  # 0
-print('2 / 1:', ee.Array(2).divide(1).getInfo())  # 2
-print('2 / [1]:', ee.Array(2).divide([1]).getInfo())  # [2]
-print('[3,4] / 2:', ee.Array([3, 4]).divide(2).getInfo())  # [1.5,2]
-print('[3,4] / [2,4]:', ee.Array([3, 4]).divide([2,4]).getInfo())  # [1.5,1]
-print('[3,4] / ee.Array([2,4]):', ee.Array([3, 4]).divide(ee.Array([2,4])).getInfo())  # [1.5,1]
+display('2 / 0:', ee.Array(2).divide(0))  # 0
+display('2 / 1:', ee.Array(2).divide(1))  # 2
+display('2 / [1]:', ee.Array(2).divide([1]))  # [2]
+display('[3,4] / 2:', ee.Array([3, 4]).divide(2))  # [1.5,2]
+display('[3,4] / [2,4]:', ee.Array([3, 4]).divide([2,4]))  # [1.5,1]
+display('[3,4] / ee.Array([2,4]):', ee.Array([3, 4]).divide(ee.Array([2,4])))  # [1.5,1]
 # [END earthengine__apidocs__ee_array_divide]

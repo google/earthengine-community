@@ -13,8 +13,6 @@
 # limitations under the License.
 
 # [START earthengine__apidocs__ee_featurecollection_set]
-from pprint import pprint
-
 # An empty FeatureCollection for simple demonstration.
 fc = ee.FeatureCollection([])
 
@@ -30,11 +28,9 @@ fc = fc.set({
   'key_6': ee.Image(0),
   'key_7': ee.Feature(None)
 })
-print('New FeatureCollection properties added:')
-pprint(fc.getInfo())
+display('New FeatureCollection properties added:', fc)
 
 # Overwrite an existing property.
 fc = fc.set('key_1', 'overwritten')
-print('FeatureCollection property overwritten:')
-pprint(fc.getInfo())
+display('FeatureCollection property overwritten:', fc)
 # [END earthengine__apidocs__ee_featurecollection_set]

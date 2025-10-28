@@ -17,62 +17,62 @@
 variables = {'x': 5, 'y': 10}
 
 # Arithmetic operators.
-print('x + y:',
-      ee.Number.expression('x + y', variables).getInfo())
-print('x - y:',
-      ee.Number.expression('x - y', variables).getInfo())
-print('x * y:',
-      ee.Number.expression('x * y', variables).getInfo())
-print('x / y:',
-      ee.Number.expression('x / y', variables).getInfo())
-print('x ** y:',
-      ee.Number.expression('x ** y', variables).getInfo())
-print('x % y:',
-      ee.Number.expression('x % y', variables).getInfo())
+display('x + y:',
+        ee.Number.expression('x + y', variables))
+display('x - y:',
+        ee.Number.expression('x - y', variables))
+display('x * y:',
+        ee.Number.expression('x * y', variables))
+display('x / y:',
+        ee.Number.expression('x / y', variables))
+display('x ** y:',
+        ee.Number.expression('x ** y', variables))
+display('x % y:',
+        ee.Number.expression('x % y', variables))
 
 # Logical operators.
-print('x || y:',
-      ee.Number.expression('x || y', variables).getInfo())
-print('x && y:',
-      ee.Number.expression('x && y', variables).getInfo())
-print('!(x):',
-      ee.Number.expression('!(x)', variables).getInfo())
+display('x || y:',
+        ee.Number.expression('x || y', variables))
+display('x && y:',
+        ee.Number.expression('x && y', variables))
+display('!(x):',
+        ee.Number.expression('!(x)', variables))
 
 # Relational operators.
-print('x > y:',
-      ee.Number.expression('x > y', variables).getInfo())
-print('x >= y:',
-      ee.Number.expression('x >= y', variables).getInfo())
-print('x < y:',
-      ee.Number.expression('x < y', variables).getInfo())
-print('x <= y:',
-      ee.Number.expression('x <= y', variables).getInfo())
-print('x == y:',
-      ee.Number.expression('x == y', variables).getInfo())
-print('x != y:',
-      ee.Number.expression('x != y', variables).getInfo())
+display('x > y:',
+        ee.Number.expression('x > y', variables))
+display('x >= y:',
+        ee.Number.expression('x >= y', variables))
+display('x < y:',
+        ee.Number.expression('x < y', variables))
+display('x <= y:',
+        ee.Number.expression('x <= y', variables))
+display('x == y:',
+        ee.Number.expression('x == y', variables))
+display('x != y:',
+        ee.Number.expression('x != y', variables))
 
 # Conditional JavaScript (ternary) operator.
-print('(x < y) ? 100 : 1000):',
-      ee.Number.expression('(x < y) ? 100 : 1000', variables).getInfo())
+display('(x < y) ? 100 : 1000):',
+        ee.Number.expression('(x < y) ? 100 : 1000', variables))
 
 # Constants in the expression.
-print('100 * (x + y):',
-      ee.Number.expression('100 * (x + y)', variables).getInfo())
+display('100 * (x + y):',
+        ee.Number.expression('100 * (x + y)', variables))
 
 # JavaScript Math constants.
-print('Math.PI:',
-      ee.Number.expression('Math.PI', None).getInfo())
-print('Math.E:',
-      ee.Number.expression('Math.E', None).getInfo())
+display('Math.PI:',
+        ee.Number.expression('Math.PI', None))
+display('Math.E:',
+        ee.Number.expression('Math.E', None))
 
 # Dot notation to call on child elements.
-print('Use dot notation to call on child elements:',
-      ee.Number.expression('vals.x * vals.y', {'vals': variables}).getInfo())
+display('Use dot notation to call on child elements:',
+        ee.Number.expression('vals.x * vals.y', {'vals': variables}))
 
 # ee.Number functions.
-print('Use ee.Number add. add(x, y):',
-      ee.Number.expression('add(x, y)', variables).getInfo())
-print('Use ee.Number add and subtract. subtract(add(x, y), 5):',
-      ee.Number.expression('subtract(add(x, y), 5)', variables).getInfo())
+display('Use ee.Number add. add(x, y):',
+        ee.Number.expression('add(x, y)', variables))
+display('Use ee.Number add and subtract. subtract(add(x, y), 5):',
+        ee.Number.expression('subtract(add(x, y), 5)', variables))
 # [END earthengine__apidocs__ee_number_expression]

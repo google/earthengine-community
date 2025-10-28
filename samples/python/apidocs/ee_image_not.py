@@ -22,14 +22,12 @@ not_zeros = ee.Image(3)  # Define an image where all pixels are not zero.
 zeros = not_zeros.Not()  # Pixels are not zeros, return zeros.
 ones = zeros.Not()  # Pixels are zeros, return ones.
 
-print('zeros:')
-pprint.pprint(zeros.getInfo())
-print('\nones:')
-pprint.pprint(ones.getInfo())
+display('zeros:', zeros)
+display('ones:', ones)
 
 # Sample images at a location and print the results.
 loc = ee.Geometry.Point(0, 0)  # Location to sample image values.
-print('not_zeros:', not_zeros.sample(loc, 1).first().get('constant').getInfo())
-print('zeros:', zeros.sample(loc, 1).first().get('constant').getInfo())
-print('ones:', ones.sample(loc, 1).first().get('constant').getInfo())
+display('not_zeros:', not_zeros.sample(loc, 1).first().get('constant'))
+display('zeros:', zeros.sample(loc, 1).first().get('constant'))
+display('ones:', ones.sample(loc, 1).first().get('constant'))
 # [END earthengine__apidocs__ee_image_not]

@@ -16,14 +16,14 @@
 import math
 
 # Input angle in radians.
-print('Tangent of 0:', ee.Number(0).tan().getInfo())  # 0
-print('Tangent of π/2:',
-      ee.Number(math.pi/2).tan().getInfo())  # 16331239353195370
-print('Tangent of π:', ee.Number(math.pi).tan().getInfo())  # 0 (nearly)
+display('Tangent of 0:', ee.Number(0).tan())  # 0
+display('Tangent of π/2:',
+        ee.Number(math.pi/2).tan())  # 16331239353195370
+display('Tangent of π:', ee.Number(math.pi).tan())  # 0 (nearly)
 
 # Convert degrees to radians.
 degrees = 45
 radians = degrees * (math.pi/180)
-print('Tangent of 45 degrees:',
-      ee.Number(radians).tan().getInfo())  # 1 (nearly)
+display('Tangent of 45 degrees:',
+        ee.Number(radians).tan())  # 1 (nearly)
 # [END earthengine__apidocs__ee_number_tan]

@@ -14,10 +14,10 @@
 
 # [START earthengine__apidocs__ee_number_atan]
 # -1.570796326 (-π/2)
-print('Arctangent of -1e13:', ee.Number(-1e13).atan().getInfo())
-print('Arctangent of -1:', ee.Number(-1).atan().getInfo())  # -0.785398163
-print('Arctangent of 0:', ee.Number(0).atan().getInfo())  # 0
-print('Arctangent of 1:', ee.Number(1).atan().getInfo())  # 0.785398163
+display('Arctangent of -1e13:', ee.Number(-1e13).atan())
+display('Arctangent of -1:', ee.Number(-1).atan())  # -0.785398163
+display('Arctangent of 0:', ee.Number(0).atan())  # 0
+display('Arctangent of 1:', ee.Number(1).atan())  # 0.785398163
 # 1.570796326 (π/2)
-print('Arctangent of 1e13:', ee.Number(1e13).atan().getInfo())
+display('Arctangent of 1e13:', ee.Number(1e13).atan())
 # [END earthengine__apidocs__ee_number_atan]

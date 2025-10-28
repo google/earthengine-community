@@ -13,7 +13,7 @@
 # limitations under the License.
 
 # [START earthengine__apidocs__ee_number_signum]
-print('Sign of -5:', ee.Number(-5).signum().getInfo())  # -1
-print('Sign of 0:', ee.Number(0).signum().getInfo())  # 0
-print('Sign of 5:', ee.Number(5).signum().getInfo())  # 1
+display('Sign of -5:', ee.Number(-5).signum())  # -1
+display('Sign of 0:', ee.Number(0).signum())  # 0
+display('Sign of 5:', ee.Number(5).signum())  # 1
 # [END earthengine__apidocs__ee_number_signum]

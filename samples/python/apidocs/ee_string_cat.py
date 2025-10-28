@@ -13,5 +13,5 @@
 # limitations under the License.
 
 # [START earthengine__apidocs__ee_string_cat]
-print(ee.String('cat').cat(' bird').getInfo())  # 'cat bird'
+display(ee.String('cat').cat(' bird'))  # 'cat bird'
 # [END earthengine__apidocs__ee_string_cat]

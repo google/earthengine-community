@@ -15,10 +15,10 @@
 # [START earthengine__apidocs__ee_number_tobyte]
 # Cast a number to unsigned 8-bit integer: [0, 255].
 number = ee.Number(100)
-print('Number:', number.getInfo())
+display('Number:', number)
 
 byte_number = number.toByte()
-print('Number cast to byte:', byte_number.getInfo())
+display('Number cast to byte:', byte_number)
 
 
 """Casting numbers to byte that are outside of its range and precision can
@@ -27,26 +27,26 @@ modify the resulting value, note the behavior of the following scenarios.
 
 # A floating point number cast to byte loses decimal precision.
 float_number = ee.Number(1.7)
-print('Floating point value:', float_number.getInfo())
+display('Floating point value:', float_number)
 
 float_to_byte = float_number.toByte()
-print('Floating point value cast to byte:', float_to_byte.getInfo())
+display('Floating point value cast to byte:', float_to_byte)
 
 # A number greater than byte range max cast to byte becomes byte range max.
 BYTE_MAX = 255
 out_of_range_hi = ee.Number(BYTE_MAX + 12345)
-print('Greater than byte max:', out_of_range_hi.getInfo())
+display('Greater than byte max:', out_of_range_hi)
 
 out_of_range_hi_to_byte = out_of_range_hi.toByte()
-print('Greater than byte max cast to byte becomes byte max:',
-      out_of_range_hi_to_byte.getInfo())
+display('Greater than byte max cast to byte becomes byte max:',
+        out_of_range_hi_to_byte)
 
 # A number greater than byte range min cast to byte becomes byte range min.
 BYTE_MIN = 0
 out_of_range_lo = ee.Number(BYTE_MIN - 12345)
-print('Less than byte min:', out_of_range_lo.getInfo())
+display('Less than byte min:', out_of_range_lo)
 
 out_of_range_lo_to_byte = out_of_range_lo.toByte()
-print('Less than byte min cast to byte becomes byte min:',
-      out_of_range_lo_to_byte.getInfo())
+display('Less than byte min cast to byte becomes byte min:',
+        out_of_range_lo_to_byte)
 # [END earthengine__apidocs__ee_number_tobyte]

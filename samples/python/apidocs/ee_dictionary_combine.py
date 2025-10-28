@@ -13,8 +13,6 @@
 # limitations under the License.
 
 # [START earthengine__apidocs__ee_dictionary_combine]
-import pprint
-
 # A dictionary (e.g. results of ee.Image.reduceRegion of an S2 image).
 dic_1 = ee.Dictionary({
     'B1': 182,
@@ -29,9 +27,7 @@ dic_2 = ee.Dictionary({
     'B1': -9999  # Note that the B1 key is present in both dictionaries.
 })
 
-print('Combined dictionaries (overwrite false)')
-pprint.pprint(dic_1.combine(dic_2, False).getInfo())
+display('Combined dictionaries (overwrite false)', dic_1.combine(dic_2, False))
 
-print('\nCombined dictionaries (overwrite true)')
-pprint.pprint(dic_1.combine(dic_2, True).getInfo())
+display('Combined dictionaries (overwrite true)', dic_1.combine(dic_2, True))
 # [END earthengine__apidocs__ee_dictionary_combine]

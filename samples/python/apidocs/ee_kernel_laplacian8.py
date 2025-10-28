@@ -13,10 +13,7 @@
 # limitations under the License.
 
 # [START earthengine__apidocs__ee_kernel_laplacian8]
-from pprint import pprint
-
-print('A Laplacian-8 kernel:')
-pprint(ee.Kernel.laplacian8().getInfo())
+display('A Laplacian-8 kernel:', ee.Kernel.laplacian8())
 
 #  Output weights matrix
 

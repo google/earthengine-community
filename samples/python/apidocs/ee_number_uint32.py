@@ -15,10 +15,10 @@
 # [START earthengine__apidocs__ee_number_uint32]
 # Cast a number to unsigned 32-bit integer: [0, 4294967295].
 number = ee.Number(100)
-print('Number:', number.getInfo())
+display('Number:', number)
 
 uint32_number = number.uint32()
-print('Number cast to uint32:', uint32_number.getInfo())
+display('Number cast to uint32:', uint32_number)
 
 
 """Casting numbers to uint32 that are outside of its range and precision can
@@ -27,28 +27,28 @@ modify the resulting value, note the behavior of the following scenarios.
 
 # A floating point number cast to uint32 loses decimal precision.
 float_number = ee.Number(1.7)
-print('Floating point value:', float_number.getInfo())
+display('Floating point value:', float_number)
 
 float_to_uint32 = float_number.uint32()
-print('Floating point value cast to uint32:', float_to_uint32.getInfo())
+display('Floating point value cast to uint32:', float_to_uint32)
 
 # A number greater than uint32 range max cast to uint32
 # becomes uint32 range max.
 UINT32_MAX = 4294967295
 out_of_range_hi = ee.Number(UINT32_MAX + 12345)
-print('Greater than uint32 max:', out_of_range_hi.getInfo())
+display('Greater than uint32 max:', out_of_range_hi)
 
 out_of_range_hi_to_uint32 = out_of_range_hi.uint32()
-print('Greater than uint32 max cast to uint32 becomes uint32 max:',
-      out_of_range_hi_to_uint32.getInfo())
+display('Greater than uint32 max cast to uint32 becomes uint32 max:',
+        out_of_range_hi_to_uint32)
 
 # A number greater than uint32 range min cast to uint32
 # becomes uint32 range min.
 UINT32_MIN = 0
 out_of_range_lo = ee.Number(UINT32_MIN - 12345)
-print('Less than uint32 min:', out_of_range_lo.getInfo())
+display('Less than uint32 min:', out_of_range_lo)
 
 out_of_range_lo_to_uint32 = out_of_range_lo.uint32()
-print('Less than uint32 min cast to uint32 becomes uint32 min:',
-      out_of_range_lo_to_uint32.getInfo())
+display('Less than uint32 min cast to uint32 becomes uint32 min:',
+        out_of_range_lo_to_uint32)
 # [END earthengine__apidocs__ee_number_uint32]

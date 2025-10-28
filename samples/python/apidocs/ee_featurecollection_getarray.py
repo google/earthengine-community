@@ -17,6 +17,6 @@
 fc = ee.FeatureCollection([]).set('array_property', ee.Array([1, 2, 3, 4]))
 
 # Fetch the array property value as an ee.Array object.
-print('Array property value as ee.Array:',
-      fc.getArray('array_property').getInfo())
+display('Array property value as ee.Array:',
+      fc.getArray('array_property'))
 # [END earthengine__apidocs__ee_featurecollection_getarray]

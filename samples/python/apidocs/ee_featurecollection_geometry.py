@@ -13,12 +13,9 @@
 # limitations under the License.
 
 # [START earthengine__apidocs__ee_featurecollection_geometry]
-from pprint import pprint
-
 # FeatureCollection of power plants in Belgium.
 fc = ee.FeatureCollection('WRI/GPPD/power_plants').filter(
     'country_lg == "Belgium"')
 
-print("Point FeatureCollection's geometry:")
-pprint(fc.geometry().getInfo())
+display("Point FeatureCollection's geometry:", fc.geometry())
 # [END earthengine__apidocs__ee_featurecollection_geometry]

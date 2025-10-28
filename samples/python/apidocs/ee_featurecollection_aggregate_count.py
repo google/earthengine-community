@@ -17,6 +17,6 @@
 fc = ee.FeatureCollection('WRI/GPPD/power_plants').filter(
     'country_lg == "Belgium"')
 
-print('Number of non-null values for the fuel1 property:',
-      fc.aggregate_count('fuel1').getInfo())  # 66
+display('Number of non-null values for the fuel1 property:',
+        fc.aggregate_count('fuel1'))  # 66
 # [END earthengine__apidocs__ee_featurecollection_aggregate_count]

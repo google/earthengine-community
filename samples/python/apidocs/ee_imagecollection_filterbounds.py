@@ -20,7 +20,7 @@ ic = ee.ImageCollection('COPERNICUS/S2_SR').filterDate(
 
 # A point geometry for the peak of Mount Shasta, California, USA.
 geom = ee.Geometry.Point(-122.196, 41.411)
-print('Images intersecting point geometry:', ic.filterBounds(geom).getInfo())
+display('Images intersecting point geometry:', ic.filterBounds(geom))
 
 # A feature collection of point geometries for mountain peaks.
 fc = ee.FeatureCollection([
@@ -29,5 +29,5 @@ fc = ee.FeatureCollection([
     ee.Feature(ee.Geometry.Point(-121.697, 45.374),
                {'mountain': 'Mount Hood'})
 ])
-print('Images intersecting feature collection:', ic.filterBounds(fc).getInfo())
+display('Images intersecting feature collection:', ic.filterBounds(fc))
 # [END earthengine__apidocs__ee_imagecollection_filterbounds]

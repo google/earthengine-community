@@ -24,7 +24,7 @@ https://developers.google.com/earth-engine/guides/client_server
 number_server = ee.Number(10.3)
 
 number_client = number_server.getInfo()
-print('Client-side primitive data type:', type(number_client))  # float
-print('Client-side number:', number_client)  # 10.3
-print('Client-side number used in expression:', number_client + 10)  # 20.3
+display('Client-side primitive data type:', type(number_client))  # float
+display('Client-side number:', number_client)  # 10.3
+display('Client-side number used in expression:', number_client + 10)  # 20.3
 # [END earthengine__apidocs__ee_number_getinfo]

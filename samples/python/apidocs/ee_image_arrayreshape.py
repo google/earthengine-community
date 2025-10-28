@@ -20,26 +20,26 @@ def samp_arr_img(arr_img):
 
 # Create a 1D array image with length 6.
 array_img_1d = ee.Image([0, 1, 2, 3, 4, 5]).toArray()
-print('1D array image (pixel):', samp_arr_img(array_img_1d).getInfo())
+display('1D array image (pixel):', samp_arr_img(array_img_1d))
 # [0, 1, 2, 3, 4, 5]
 
 # Reshape the 1D 6-element array to a 2D 2 (row) x 3 (column) array. Notice
 # that elements are filled row by row in the reshaped result.
 reshape2x3 = array_img_1d.arrayReshape(ee.Image([2, 3]).toArray(), 2)
-print('2D 2x3 array image (pixel):', samp_arr_img(reshape2x3).getInfo())
+display('2D 2x3 array image (pixel):', samp_arr_img(reshape2x3))
 # [[0, 1, 2],
 #  [3, 4, 5]]
 
 # Use -1 to auto-determine a dimension length. For example, here we set
 # 3 rows and let Earth Engine determine the number of columns needed.
 reshape3x_ = array_img_1d.arrayReshape(ee.Image([3, -1]).toArray(), 2)
-print('2D 3x? array image (pixel):', samp_arr_img(reshape3x_).getInfo())
+display('2D 3x? array image (pixel):', samp_arr_img(reshape3x_))
 # [[0, 1],
 #  [2, 3],
 #  [4, 5]]
 
 # Flatten a 2D 2x3 array to 1D 6-element array.
 flattened = reshape2x3.arrayReshape(ee.Image([-1]).toArray(), 1)
-print('2D array flattened to 1D:', samp_arr_img(flattened).getInfo())
+display('2D array flattened to 1D:', samp_arr_img(flattened))
 # [0, 1, 2, 3, 4, 5]
 # [END earthengine__apidocs__ee_image_arrayreshape]

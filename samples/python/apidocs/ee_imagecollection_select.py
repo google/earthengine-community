@@ -17,43 +17,43 @@
 col = ee.ImageCollection('COPERNICUS/S2_SR').filterBounds(
     ee.Geometry.Point(-122.152, 37.336)
     ).filterDate('2021-01-01', '2021-02-01')
-print('All band names', col.first().bandNames().getInfo())
+display('All band names', col.first().bandNames())
 
-print('Select a band by name:',
-      col.select('B11').first().bandNames().getInfo())
+display('Select a band by name:',
+        col.select('B11').first().bandNames())
 
-print('Select a band by index:',
-      col.select(10).first().bandNames().getInfo())
+display('Select a band by index:',
+        col.select(10).first().bandNames())
 
-print('Select bands using a list:',
-      col.select(['B11', 'B8', 'B3']).first().bandNames().getInfo())
+display('Select bands using a list:',
+        col.select(['B11', 'B8', 'B3']).first().bandNames())
 
-print('Select bands by an argument series:',
-      col.select('B11', 'B8', 'B3').first().bandNames().getInfo())
+display('Select bands by an argument series:',
+        col.select('B11', 'B8', 'B3').first().bandNames())
 
-print('Mixing string and integer selectors is valid:',
-      col.select(10, 'B8', 2).first().bandNames().getInfo())
+display('Mixing string and integer selectors is valid:',
+        col.select(10, 'B8', 2).first().bandNames())
 
-print('Rename selected bands using two corresponding lists:',
-      col.select(['B11', 'B8', 'B3'], ['SWIR1', 'NIR', 'Green'])
-      .first().bandNames().getInfo())
+display('Rename selected bands using two corresponding lists:',
+        col.select(['B11', 'B8', 'B3'], ['SWIR1', 'NIR', 'Green'])
+        .first().bandNames())
 
 # Use regular expressions to select bands.
-print('Match "QA" followed by any two characters:',
-      col.select('QA..').first().bandNames().getInfo())
+display('Match "QA" followed by any two characters:',
+        col.select('QA..').first().bandNames())
 
-print('Match "B" followed by any character, any number of times:',
-      col.select('B.*').first().bandNames().getInfo())
+display('Match "B" followed by any character, any number of times:',
+        col.select('B.*').first().bandNames())
 
-print('Match "B" followed by any character, and any optional third character:',
-      col.select('B..?').first().bandNames().getInfo())
+display('Match "B" followed by any character, and any optional third character:',
+        col.select('B..?').first().bandNames())
 
-print('Match "B" followed by a character in the range 6-8:',
-      col.select('B[6-8]').first().bandNames().getInfo())
+display('Match "B" followed by a character in the range 6-8:',
+        col.select('B[6-8]').first().bandNames())
 
-print('Match "B" followed by a character in the range 1-9 and then 1-2:',
-      col.select('B[1-9][1-2]').first().bandNames().getInfo())
+display('Match "B" followed by a character in the range 1-9 and then 1-2:',
+        col.select('B[1-9][1-2]').first().bandNames())
 
-print('Match "B" or "QA" each followed by any character, any number of times:',
-      col.select('B.*|QA.*').first().bandNames().getInfo())
+display('Match "B" or "QA" each followed by any character, any number of times:',
+        col.select('B.*|QA.*').first().bandNames())
 # [END earthengine__apidocs__ee_imagecollection_select]

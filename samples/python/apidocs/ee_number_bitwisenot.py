@@ -22,5 +22,5 @@ Flip each digit: 11100110
 (binary interpreted using smallest signed integer type containing the input).
 """
 
-print(ee.Number(25).bitwiseNot().getInfo())
+display(ee.Number(25).bitwiseNot())
 # [END earthengine__apidocs__ee_number_bitwisenot]

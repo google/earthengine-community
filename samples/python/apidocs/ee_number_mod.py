@@ -14,14 +14,14 @@
 
 # [START earthengine__apidocs__ee_number_mod]
 # Remainder with positive dividend.
-print('Remainder of 12/5:', ee.Number(12).mod(ee.Number(5)).getInfo())  # 2
-print('Remainder of 1/-2:', ee.Number(1).mod(ee.Number(-2)).getInfo())  # 1
-print('Remainder of 1/2:', ee.Number(1).mod(ee.Number(2)).getInfo())  # 1
-print('Remainder of 2/3:', ee.Number(2).mod(ee.Number(3)).getInfo())  # 2
-print('Remainder of 5.5/2:', ee.Number(5.5).mod(ee.Number(2)).getInfo())  # 1.5
+display('Remainder of 12/5:', ee.Number(12).mod(ee.Number(5)))  # 2
+display('Remainder of 1/-2:', ee.Number(1).mod(ee.Number(-2)))  # 1
+display('Remainder of 1/2:', ee.Number(1).mod(ee.Number(2)))  # 1
+display('Remainder of 2/3:', ee.Number(2).mod(ee.Number(3)))  # 2
+display('Remainder of 5.5/2:', ee.Number(5.5).mod(ee.Number(2)))  # 1.5
 
 # Remainder with negative dividend.
-print('Remainder of -12/5:', ee.Number(-12).mod(ee.Number(5)).getInfo())  # -2
-print('Remainder of -1/2:', ee.Number(-1).mod(ee.Number(2)).getInfo())  # -1
-print('Remainder of -4/2:', ee.Number(-4).mod(ee.Number(2)).getInfo())  # 0
+display('Remainder of -12/5:', ee.Number(-12).mod(ee.Number(5)))  # -2
+display('Remainder of -1/2:', ee.Number(-1).mod(ee.Number(2)))  # -1
+display('Remainder of -4/2:', ee.Number(-4).mod(ee.Number(2)))  # 0
 # [END earthengine__apidocs__ee_number_mod]

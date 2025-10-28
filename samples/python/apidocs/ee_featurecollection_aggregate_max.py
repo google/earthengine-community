@@ -17,6 +17,6 @@
 fc = ee.FeatureCollection('WRI/GPPD/power_plants').filter(
     'country_lg == "Belgium"')
 
-print('Max of power plant capacities (MW):',
-      fc.aggregate_max('capacitymw').getInfo())  # 2910
+display('Max of power plant capacities (MW):',
+        fc.aggregate_max('capacitymw'))  # 2910
 # [END earthengine__apidocs__ee_featurecollection_aggregate_max]

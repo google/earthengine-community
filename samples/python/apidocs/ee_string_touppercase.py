@@ -14,5 +14,5 @@
 
 # [START earthengine__apidocs__ee_string_touppercase]
 s = ee.String('AaBbCc123')
-print(s.toUpperCase().getInfo())  # AABBCC123
+display(s.toUpperCase())  # AABBCC123
 # [END earthengine__apidocs__ee_string_touppercase]

@@ -13,14 +13,14 @@
 # limitations under the License.
 
 # [START earthengine__apidocs__ee_string_slice]
-print(ee.String('').slice(0).getInfo())  # ''
-print(ee.String('').slice(-1).getInfo())  # ''
+display(ee.String('').slice(0))  # ''
+display(ee.String('').slice(-1))  # ''
 
 s = ee.String('abcdefghijklmnopqrstuvwxyz')
-print(s.slice(0).getInfo())  # abcdefghijklmnopqrstuvwxyz
-print(s.slice(24).getInfo())  # yz
-print(s.slice(-3).getInfo())  # xyz
-print(s.slice(3, 3).getInfo())  # ''
-print(s.slice(2, 3).getInfo())  # c
-print(s.slice(-4, 25).getInfo())  # wxy
+display(s.slice(0))  # abcdefghijklmnopqrstuvwxyz
+display(s.slice(24))  # yz
+display(s.slice(-3))  # xyz
+display(s.slice(3, 3))  # ''
+display(s.slice(2, 3))  # c
+display(s.slice(-4, 25))  # wxy
 # [END earthengine__apidocs__ee_string_slice]

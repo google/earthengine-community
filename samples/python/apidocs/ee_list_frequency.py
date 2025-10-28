@@ -15,11 +15,11 @@
 # [START earthengine__apidocs__ee_list_frequency]
 # An ee.Image list object.
 ee_list = ee.List([0, 1, 2, 2, 3, 4])
-print('List of integer:', ee_list.getInfo())
+display('List of integer:', ee_list)
 
 # The ee.List.frequency function is used to determine how many times a value is
 # present in a list, e.g. what is the frequency of 0, 2, and 9 in the list.
-print('Frequency of value 0:', ee_list.frequency(0).getInfo())
-print('Frequency of value 2:', ee_list.frequency(2).getInfo())
-print('Frequency of value 9:', ee_list.frequency(9).getInfo())
+display('Frequency of value 0:', ee_list.frequency(0))
+display('Frequency of value 2:', ee_list.frequency(2))
+display('Frequency of value 9:', ee_list.frequency(9))
 # [END earthengine__apidocs__ee_list_frequency]

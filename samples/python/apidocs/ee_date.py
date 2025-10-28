@@ -16,21 +16,21 @@
 from datetime import datetime
 
 # Numeric inputs are interpreted as milliseconds from Unix epoch.
-print(ee.Date(0).format().getInfo())  # 1970-01-01T00:00:00
+display(ee.Date(0).format())  # 1970-01-01T00:00:00
 
 # Scale factors can make numerical inputs more readable (e.g. 60 seconds).
-print(ee.Date(60 * 1000).format().getInfo())  # 1970-01-01T00:01:00
+display(ee.Date(60 * 1000).format())  # 1970-01-01T00:01:00
 
 # ISO 8601 date string input examples.
-print(ee.Date('2020').format().getInfo())  # 2020-01-01T00:00:00
-print(ee.Date('2017-6-24').format().getInfo())  # 2017-06-24T00:00:00
-print(ee.Date('2017-06-24').format().getInfo())  # 2017-06-24T00:00:00
-print(ee.Date('2017-6-24T00:14:46').format().getInfo())  # 2017-06-24T00:14:46
-print(ee.Date('2017-06-24T23:59:59').format().getInfo())  # 2017-06-24T23:59:59
+display(ee.Date('2020').format())  # 2020-01-01T00:00:00
+display(ee.Date('2017-6-24').format())  # 2017-06-24T00:00:00
+display(ee.Date('2017-06-24').format())  # 2017-06-24T00:00:00
+display(ee.Date('2017-6-24T00:14:46').format())  # 2017-06-24T00:14:46
+display(ee.Date('2017-06-24T23:59:59').format())  # 2017-06-24T23:59:59
 
 # With an optional time zone.
-print(ee.Date('2020', 'US/Mountain').format().getInfo())  # 2020-01-01T07:00:00
+display(ee.Date('2020', 'US/Mountain').format())  # 2020-01-01T07:00:00
 
 # Convert Python datetime.now() to Earth Engine Date
-print(ee.Date(datetime.now()).format().getInfo())
+display(ee.Date(datetime.now()).format())
 # [END earthengine__apidocs__ee_date]

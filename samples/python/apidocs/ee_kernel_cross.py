@@ -13,10 +13,7 @@
 # limitations under the License.
 
 # [START earthengine__apidocs__ee_kernel_cross]
-from pprint import pprint
-
-print('A cross kernel:')
-pprint(ee.Kernel.cross(**{'radius': 3}).getInfo())
+display('A cross kernel:', ee.Kernel.cross(**{'radius': 3}))
 
 #  Output weights matrix (up to 1/1000 precision for brevity)
 

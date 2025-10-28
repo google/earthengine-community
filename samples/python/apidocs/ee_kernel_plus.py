@@ -13,10 +13,7 @@
 # limitations under the License.
 
 # [START earthengine__apidocs__ee_kernel_plus]
-from pprint import pprint
-
-print('A plus kernel:')
-pprint(ee.Kernel.plus(**{'radius': 3}).getInfo())
+display('A plus kernel:', ee.Kernel.plus(**{'radius': 3}))
 
 #  Output weights matrix (1/1000 precision shown for brevity)
 

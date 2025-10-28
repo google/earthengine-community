@@ -13,10 +13,10 @@
 # limitations under the License.
 
 # [START earthengine__apidocs__ee_string_index]
-print(ee.String('abc123').index('').getInfo())  # 0
-print(ee.String('abc123').index('c1').getInfo())  # 2
-print(ee.String('abc123').index('ZZ').getInfo())  # -1
+display(ee.String('abc123').index(''))  # 0
+display(ee.String('abc123').index('c1'))  # 2
+display(ee.String('abc123').index('ZZ'))  # -1
 
 # index is case-sensitive.
-print(ee.String('abc123').index('BC').getInfo())  # -1
+display(ee.String('abc123').index('BC'))  # -1
 # [END earthengine__apidocs__ee_string_index]

@@ -21,5 +21,5 @@ Left shift 2:  01010000
 01010000 is binary for 80.
 """
 
-print(ee.Number(20).leftShift(2).getInfo())  # 80
+display(ee.Number(20).leftShift(2))  # 80
 # [END earthengine__apidocs__ee_number_leftshift]

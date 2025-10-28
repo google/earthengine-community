@@ -17,6 +17,6 @@
 fc = ee.FeatureCollection('WRI/GPPD/power_plants').filter(
     'country_lg == "Belgium"')
 
-print('Min of power plant capacities (MW):',
-      fc.aggregate_min('capacitymw').getInfo())  # 1.8
+display('Min of power plant capacities (MW):',
+        fc.aggregate_min('capacitymw'))  # 1.8
 # [END earthengine__apidocs__ee_featurecollection_aggregate_min]

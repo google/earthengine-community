@@ -13,7 +13,7 @@
 # limitations under the License.
 
 # [START earthengine__apidocs__ee_array_digamma]
-print('Digamma for 0:', ee.Array(0).digamma().getInfo())  # -Infinity
-print('Digamma for 1:', ee.Array(1).digamma().getInfo())  # -0.577
-print('Digamma for [1, 2]:', ee.Array([1, 2]).digamma().getInfo())  # -0.577, 0.423
+display('Digamma for 0:', ee.Array(0).digamma())  # -Infinity
+display('Digamma for 1:', ee.Array(1).digamma())  # -0.577
+display('Digamma for [1, 2]:', ee.Array([1, 2]).digamma())  # -0.577, 0.423
 # [END earthengine__apidocs__ee_array_digamma]

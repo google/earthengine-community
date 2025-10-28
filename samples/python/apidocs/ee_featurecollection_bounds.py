@@ -17,5 +17,5 @@
 fc = ee.FeatureCollection('WRI/GPPD/power_plants').filter(
     'country_lg == "Belgium"')
 
-print('Bounds of Belgium power plants:', fc.bounds().getInfo())  # ee.Geometry
+display('Bounds of Belgium power plants:', fc.bounds())  # ee.Geometry
 # [END earthengine__apidocs__ee_featurecollection_bounds]

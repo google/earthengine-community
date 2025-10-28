@@ -13,8 +13,8 @@
 # limitations under the License.
 
 # [START earthengine__apidocs__ee_number_unitscale]
-print('-10 scaled between [0, 100]:',
-      ee.Number(-10).unitScale(0, 100).getInfo())  # -0.1
-print('10 scaled between [0, 100]:',
-      ee.Number(10).unitScale(0, 100).getInfo())  # 0.1
+display('-10 scaled between [0, 100]:',
+        ee.Number(-10).unitScale(0, 100))  # -0.1
+display('10 scaled between [0, 100]:',
+        ee.Number(10).unitScale(0, 100))  # 0.1
 # [END earthengine__apidocs__ee_number_unitscale]

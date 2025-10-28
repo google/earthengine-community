@@ -13,9 +13,9 @@
 # limitations under the License.
 
 # [START earthengine__apidocs__ee_string_replace]
-print(ee.String('abc-abc').replace('abc', 'X').getInfo())  # X-abc
-print(ee.String('abc-abc').replace('abc', 'X', 'g').getInfo())  # X-X
-print(ee.String('abc-abc').replace('abc', '', 'g').getInfo())  # -
-print(ee.String('aBc-Abc').replace('abc', 'Z', 'i').getInfo())  # Z-Abc
-print(ee.String('aBc-Abc').replace('abc', 'Z', 'ig').getInfo())  # Z-Z
+display(ee.String('abc-abc').replace('abc', 'X'))  # X-abc
+display(ee.String('abc-abc').replace('abc', 'X', 'g'))  # X-X
+display(ee.String('abc-abc').replace('abc', '', 'g'))  # -
+display(ee.String('aBc-Abc').replace('abc', 'Z', 'i'))  # Z-Abc
+display(ee.String('aBc-Abc').replace('abc', 'Z', 'ig'))  # Z-Z
 # [END earthengine__apidocs__ee_string_replace]

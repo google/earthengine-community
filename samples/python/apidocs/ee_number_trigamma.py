@@ -13,12 +13,12 @@
 # limitations under the License.
 
 # [START earthengine__apidocs__ee_number_trigamma]
-print('Trigamma for -100:', ee.Number(-100).trigamma().getInfo())  # Infinity
+display('Trigamma for -100:', ee.Number(-100).trigamma())  # Infinity
 
 # 1000001.642533195
-print('Trigamma for 0.001:', ee.Number(0.001).trigamma().getInfo())
-print('Trigamma for 0.5:', ee.Number(0.5).trigamma().getInfo())  # 4.934802200
-print('Trigamma for 1:', ee.Number(1).trigamma().getInfo())  # 1.644934066
-print('Trigamma for 100:', ee.Number(100).trigamma().getInfo())  # 0.010050166
-print('Trigamma for 200:', ee.Number(200).trigamma().getInfo())  # 0.005012520
+display('Trigamma for 0.001:', ee.Number(0.001).trigamma())
+display('Trigamma for 0.5:', ee.Number(0.5).trigamma())  # 4.934802200
+display('Trigamma for 1:', ee.Number(1).trigamma())  # 1.644934066
+display('Trigamma for 100:', ee.Number(100).trigamma())  # 0.010050166
+display('Trigamma for 200:', ee.Number(200).trigamma())  # 0.005012520
 # [END earthengine__apidocs__ee_number_trigamma]

@@ -24,5 +24,5 @@ col = ee.ImageCollection('LANDSAT/LC08/C02/T1_TOA').filterBounds(
     ).filterDate('2020-01-01', '2021-01-01')
 
 # Get the number of images in the collection.
-print('Number of images', col.size().getInfo())
+display('Number of images', col.size())
 # [END earthengine__apidocs__ee_imagecollection_size]

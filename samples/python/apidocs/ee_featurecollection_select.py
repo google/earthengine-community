@@ -19,25 +19,25 @@ fc = ee.FeatureCollection('WRI/GPPD/power_plants').filter(
 
 # Select a single property.
 single_prop = fc.select('fuel1')
-print('Single property selected:', single_prop.first().getInfo())
+display('Single property selected:', single_prop.first())
 
 # Select multiple properties.
 multi_prop = fc.select(['fuel1', 'capacitymw'])
-print('Multiple properties selected:', multi_prop.first().getInfo())
+display('Multiple properties selected:', multi_prop.first())
 
 # Select multiple properties and rename them.
 multi_prop_rename = fc.select(**{
     'propertySelectors': ['fuel1', 'capacitymw'],
     'newProperties': ['Fuel_1', 'Capacity_MW']
     })
-print('Multiple properties selected, renamed:',
-      multi_prop_rename.first().getInfo())
+display('Multiple properties selected, renamed:',
+        multi_prop_rename.first())
 
 # Select multiple properties, remove geometry.
 multi_prop_no_geom = fc.select(**{
     'propertySelectors': ['fuel1', 'capacitymw'],
     'retainGeometry': False
     })
-print('Multiple properties selected, geometry removed:',
-      multi_prop_no_geom.first().getInfo())
+display('Multiple properties selected, geometry removed:',
+        multi_prop_no_geom.first())
 # [END earthengine__apidocs__ee_featurecollection_select]

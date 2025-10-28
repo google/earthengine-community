@@ -15,13 +15,13 @@
 # [START earthengine__apidocs__ee_number_clamp]
 # Numbers within range are unaffected.
 # 100
-print('100 clamped to range [0,255]:', ee.Number(100).clamp(0, 255).getInfo())
+display('100 clamped to range [0,255]:', ee.Number(100).clamp(0, 255))
 
 # Numbers greater than max in range are set to max.
 # 255
-print('259 clamped to range [0,255]:', ee.Number(259).clamp(0, 255).getInfo())
+display('259 clamped to range [0,255]:', ee.Number(259).clamp(0, 255))
 
 # Numbers less than min in range are set to min.
 # 0
-print('-259 clamped to range [0,255]:', ee.Number(-259).clamp(0, 255).getInfo())
+display('-259 clamped to range [0,255]:', ee.Number(-259).clamp(0, 255))
 # [END earthengine__apidocs__ee_number_clamp]

@@ -14,7 +14,7 @@
 
 # [START earthengine__apidocs__ee_number_and]
 # 1
-print('Both 5 and 10 are not 0?', ee.Number(5).And(ee.Number(10)).getInfo())
+display('Both 5 and 10 are not 0?', ee.Number(5).And(ee.Number(10)))
 # 0
-print('Both 5 and 0 are not 0?', ee.Number(5).And(ee.Number(0)).getInfo())
+display('Both 5 and 0 are not 0?', ee.Number(5).And(ee.Number(0)))
 # [END earthengine__apidocs__ee_number_and]

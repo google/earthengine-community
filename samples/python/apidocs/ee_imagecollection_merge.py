@@ -20,11 +20,11 @@ ic = ee.ImageCollection('COPERNICUS/S2_SR')
 # in 2019 and 2021 (two image collections).
 geom = ee.Geometry.Point(-122.196, 41.411)
 ic2018 = ic.filterBounds(geom).filterDate('2019-07-01', '2019-10-01')
-print('2018 image collection:', ic2018.getInfo())
+display('2018 image collection:', ic2018)
 ic2021 = ic.filterBounds(geom).filterDate('2021-07-01', '2021-10-01')
-print('2021 image collection:', ic2021.getInfo())
+display('2021 image collection:', ic2021)
 
 # Merge the two image collections.
 ic_merged = ic2018.merge(ic2021)
-print('Merged image collection:', ic_merged.getInfo())
+display('Merged image collection:', ic_merged)
 # [END earthengine__apidocs__ee_imagecollection_merge]

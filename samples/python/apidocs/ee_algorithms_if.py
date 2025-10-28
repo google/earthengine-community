@@ -14,12 +14,12 @@
 
 # [START earthengine__apidocs__ee_algorithms_if]
 # The string "*false*"
-print(ee.Algorithms.If(False, '*true*', '*false*').getInfo())
+display(ee.Algorithms.If(False, '*true*', '*false*'))
 
 # The string "*true*"
-print(ee.Algorithms.If(True, '*true*', '*false*').getInfo())
+display(ee.Algorithms.If(True, '*true*', '*false*'))
 
 # Consider using remap rather than If for tasks like numbers for classes.
-print(ee.Algorithms.If(ee.String('Tree').compareTo('Tree'), 0, 1).getInfo())
-print(ee.Algorithms.If(ee.String('NotTree').compareTo('Tree'), 0, 1).getInfo())
+display(ee.Algorithms.If(ee.String('Tree').compareTo('Tree'), 0, 1))
+display(ee.Algorithms.If(ee.String('NotTree').compareTo('Tree'), 0, 1))
 # [END earthengine__apidocs__ee_algorithms_if]

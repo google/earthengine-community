@@ -13,19 +13,14 @@
 # limitations under the License.
 
 # [START earthengine__apidocs__ee_kernel_inverse]
-from pprint import pprint
-
 sobel_kernel = ee.Kernel.sobel()
-pprint(sobel_kernel.getInfo())
-
-# Output weights matrix
+display('Sobel kernel weights:', sobel_kernel)
 
 #  [-1, 0, 1]
 #  [-2, 0, 2]
 #  [-1, 0, 1]
 
-print('Inverse of Sobel kernel weights:')
-pprint(sobel_kernel.inverse().getInfo())
+display('Inverse of Sobel kernel weights:', sobel_kernel.inverse())
 
 #  [-1.0, 0.0, 1.0]
 #  [-0.5, 0.0, 0.5]

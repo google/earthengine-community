@@ -17,5 +17,5 @@
 fc = ee.FeatureCollection('WRI/GPPD/power_plants').filter(
     'country_lg == "Belgium"')
 
-print('Number of power plants in Belgium:', fc.size().getInfo())
+display('Number of power plants in Belgium:', fc.size())
 # [END earthengine__apidocs__ee_featurecollection_size]

@@ -17,6 +17,6 @@
 fc = ee.FeatureCollection([]).set('string_property', 'Abies magnifica')
 
 # Fetch the string property value as an ee.String object.
-print('String property value as ee.String:',
-      fc.getString('string_property').getInfo())
+display('String property value as ee.String:',
+        fc.getString('string_property'))
 # [END earthengine__apidocs__ee_featurecollection_getstring]

@@ -13,9 +13,9 @@
 # limitations under the License.
 
 # [START earthengine__apidocs__ee_number_multiply]
-print('5 * 10:', ee.Number(5).multiply(ee.Number(10)).getInfo())  # 50
-print('-5 * -10:', ee.Number(-5).multiply(ee.Number(-10)).getInfo())  # 50
-print('5 * 10.5:', ee.Number(5).multiply(ee.Number(10.5)).getInfo())  # 52.5
-print('5 * -10.5:', ee.Number(5).multiply(ee.Number(-10.5)).getInfo())  # -52.5
-print('0 * 10:', ee.Number(0).multiply(ee.Number(10)).getInfo())  # 0
+display('5 * 10:', ee.Number(5).multiply(ee.Number(10)))  # 50
+display('-5 * -10:', ee.Number(-5).multiply(ee.Number(-10)))  # 50
+display('5 * 10.5:', ee.Number(5).multiply(ee.Number(10.5)))  # 52.5
+display('5 * -10.5:', ee.Number(5).multiply(ee.Number(-10.5)))  # -52.5
+display('0 * 10:', ee.Number(0).multiply(ee.Number(10)))  # 0
 # [END earthengine__apidocs__ee_number_multiply]

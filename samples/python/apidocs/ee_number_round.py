@@ -13,7 +13,7 @@
 # limitations under the License.
 
 # [START earthengine__apidocs__ee_number_round]
-print('10.4 rounds down:', ee.Number(10.4).round().getInfo())  # 10
-print('10.5 rounds up:', ee.Number(10.5).round().getInfo())  # 11
-print('10.9 rounds up:', ee.Number(10.9).round().getInfo())  # 11
+display('10.4 rounds down:', ee.Number(10.4).round())  # 10
+display('10.5 rounds up:', ee.Number(10.5).round())  # 11
+display('10.9 rounds up:', ee.Number(10.9).round())  # 11
 # [END earthengine__apidocs__ee_number_round]

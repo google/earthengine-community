@@ -13,9 +13,9 @@
 # limitations under the License.
 
 # [START earthengine__apidocs__ee_array_dotproduct]
-display(ee.Array([1]).dotProduct(ee.Array([2])).getInfo())  # 2
-display(ee.Array([1, 2]).dotProduct(ee.Array([3, 4])).getInfo())  # 1*3 + 2*4 = 11
-display(ee.Array([0, 1, 2]).dotProduct(ee.Array([3, 4, 5])).getInfo())  # 0*3 + 1*4 + 2*5 = 14
-display(ee.Array([-1, -2]).dotProduct(ee.Array([3, 4])).getInfo())  # -1*3 + -2*4 = -11
-display(ee.Array([1.5, 2.5]).dotProduct(ee.Array([3, 4])).getInfo())  # 1.5*3 + 2.5*4 = 14.5
+display(ee.Array([1]).dotProduct(ee.Array([2])))  # 2
+display(ee.Array([1, 2]).dotProduct(ee.Array([3, 4])))  # 1*3 + 2*4 = 11
+display(ee.Array([0, 1, 2]).dotProduct(ee.Array([3, 4, 5])))  # 0*3 + 1*4 + 2*5 = 14
+display(ee.Array([-1, -2]).dotProduct(ee.Array([3, 4])))  # -1*3 + -2*4 = -11
+display(ee.Array([1.5, 2.5]).dotProduct(ee.Array([3, 4])))  # 1.5*3 + 2.5*4 = 14.5
 # [END earthengine__apidocs__ee_array_dotproduct]

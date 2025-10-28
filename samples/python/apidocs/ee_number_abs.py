@@ -13,7 +13,7 @@
 # limitations under the License.
 
 # [START earthengine__apidocs__ee_number_abs]
-print('Absolute value of -1:', ee.Number(-1).abs().getInfo())  # 1
-print('Absolute value of 0:', ee.Number(0).abs().getInfo())  # 0
-print('Absolute value of 2.3:', ee.Number(2.3).abs().getInfo())  # 2.3
+display('Absolute value of -1:', ee.Number(-1).abs())  # 1
+display('Absolute value of 0:', ee.Number(0).abs())  # 0
+display('Absolute value of 2.3:', ee.Number(2.3).abs())  # 2.3
 # [END earthengine__apidocs__ee_number_abs]

@@ -13,8 +13,6 @@
 # limitations under the License.
 
 # [START earthengine__apidocs__ee_confusionmatrix_producersaccuracy]
-from pprint import pprint
-
 # Construct a confusion matrix from an array (rows are actual values,
 # columns are predicted values). We construct a confusion matrix here for
 # brevity and clear visualization, in most applications the confusion matrix
@@ -26,22 +24,19 @@ array = ee.Array([[32, 0, 0,  0,  1, 0],
                   [ 0, 0, 0,  7, 15, 0],
                   [ 0, 0, 0,  1,  0, 5]])
 confusion_matrix = ee.ConfusionMatrix(array)
-print("Constructed confusion matrix:")
-pprint(confusion_matrix.getInfo())
+display("Constructed confusion matrix:", confusion_matrix)
 
 # Calculate overall accuracy.
-print("Overall accuracy:", confusion_matrix.accuracy().getInfo())
+display("Overall accuracy:", confusion_matrix.accuracy())
 
 # Calculate consumer's accuracy, also known as user's accuracy or
 # specificity and the complement of commission error (1 − commission error).
-print("Consumer's accuracy:")
-pprint(confusion_matrix.consumersAccuracy().getInfo())
+display("Consumer's accuracy:", confusion_matrix.consumersAccuracy())
 
 # Calculate producer's accuracy, also known as sensitivity and the
 # compliment of omission error (1 − omission error).
-print("Producer's accuracy:")
-pprint(confusion_matrix.producersAccuracy().getInfo())
+display("Producer's accuracy:", confusion_matrix.producersAccuracy())
 
 # Calculate kappa statistic.
-print("Kappa statistic:", confusion_matrix.kappa().getInfo())
+display("Kappa statistic:", confusion_matrix.kappa())
 # [END earthengine__apidocs__ee_confusionmatrix_producersaccuracy]

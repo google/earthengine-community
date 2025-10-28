@@ -15,11 +15,11 @@
 # [START earthengine__apidocs__ee_number_tolong]
 # Declare an ee.Number.
 number = ee.Number(100)
-print('ee.Number:', number.getInfo())
+display('ee.Number:', number)
 
 # Cast a number to signed 64-bit integer.
 long_number = number.toLong()
-print('ee.Number cast to long:', long_number.getInfo())
+display('ee.Number cast to long:', long_number)
 
 
 """Casting numbers to long that are outside of its range and precision can
@@ -28,8 +28,8 @@ modify the resulting value, note the behavior of the following scenarios.
 
 # A floating point number cast to long loses decimal precision.
 float_number = ee.Number(1.7)
-print('Floating point value:', float_number.getInfo())
+display('Floating point value:', float_number)
 
 float_to_long = float_number.toLong()
-print('Floating point value cast to long:', float_to_long.getInfo())
+display('Floating point value cast to long:', float_to_long)
 # [END earthengine__apidocs__ee_number_tolong]

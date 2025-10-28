@@ -13,5 +13,5 @@
 # limitations under the License.
 
 # [START earthengine__apidocs__ee_string_serialize]
-print('Serialized representation of ee.String:', ee.String('earth').serialize())
+display('Serialized representation of ee.String:', ee.String('earth').serialize())
 # [END earthengine__apidocs__ee_string_serialize]

@@ -20,6 +20,6 @@ dic = ee.Dictionary({
     'B3': 443
 })
 
-print('Dictionary contains key "B1"?:', dic.contains('B1').getInfo())
-print('Dictionary contains key "Band_1"?:', dic.contains('Band_1').getInfo())
+display('Dictionary contains key "B1"?:', dic.contains('B1'))
+display('Dictionary contains key "Band_1"?:', dic.contains('Band_1'))
 # [END earthengine__apidocs__ee_dictionary_contains]

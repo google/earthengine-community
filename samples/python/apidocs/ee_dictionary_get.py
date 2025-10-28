@@ -20,9 +20,9 @@ dic = ee.Dictionary({
     'B3': 443
 })
 
-print('Value for "B1" key:', dic.get('B1').getInfo())
+display('Value for "B1" key:', dic.get('B1'))
 
 # Set a default value for the case where the key does not exist.
-print('Value for nonexistent "Band_1" key:',
-      dic.get(**{'key': 'Band_1', 'defaultValue': -9999}).getInfo())
+display('Value for nonexistent "Band_1" key:',
+        dic.get(**{'key': 'Band_1', 'defaultValue': -9999}))
 # [END earthengine__apidocs__ee_dictionary_get]

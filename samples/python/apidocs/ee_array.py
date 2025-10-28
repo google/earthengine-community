@@ -14,25 +14,25 @@
 
 # [START earthengine__apidocs__ee_array]
 # Requires an explicit PixelType if no data.
-print(ee.Array([], ee.PixelType.int8()).getInfo())  # Empty []
-print(ee.Array([[]], ee.PixelType.uint8()).getInfo())  # Empty [[]]
-print(ee.Array([[], []], ee.PixelType.float()).getInfo())  # Empty [[], []]
+display(ee.Array([], ee.PixelType.int8()))  # Empty []
+display(ee.Array([[]], ee.PixelType.uint8()))  # Empty [[]]
+display(ee.Array([[], []], ee.PixelType.float()))  # Empty [[], []]
 
 # 1-D Arrays
-print(ee.Array([0]).getInfo())  # [0]
-print(ee.Array([0, 1]).getInfo())  # [0, 1]
+display(ee.Array([0]))  # [0]
+display(ee.Array([0, 1]))  # [0, 1]
 # 2-D Arrays
-print(ee.Array([[1]]).getInfo())  # [[1]]
-print(ee.Array([[0, 1], [2, 3]]).getInfo())  # [[0,1],[2,3]]
+display(ee.Array([[1]]))  # [[1]]
+display(ee.Array([[0, 1], [2, 3]]))  # [[0,1],[2,3]]
 
 # Arrays from ee.Number.
-print(ee.Array([ee.Number(123).toUint8()]).getInfo())  # [123]
+display(ee.Array([ee.Number(123).toUint8()]))  # [123]
 
 # Lists are useful ways to construct larger Arrays.
-print(ee.Array(ee.List.sequence(0, 10, 2)).getInfo())  # [0, 2, 4, 6, 8, 10]
+display(ee.Array(ee.List.sequence(0, 10, 2)))  # [0, 2, 4, 6, 8, 10]
 
 # Arrays can be used to make Arrays.
 array_one = ee.Array([1, 2, 3])
 # This is a cast.
-print(ee.Array(array_one).getInfo())  # [1, 2, 3]
+display(ee.Array(array_one))  # [1, 2, 3]
 # [END earthengine__apidocs__ee_array]

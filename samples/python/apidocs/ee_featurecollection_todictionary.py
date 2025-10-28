@@ -16,8 +16,8 @@
 # FeatureCollection of power plants.
 fc = ee.FeatureCollection('WRI/GPPD/power_plants')
 
-print('All non-system FeatureCollection properties as an ee.Dictionary:',
-      fc.toDictionary().getInfo())
-print('Selected properties as an ee.Dictionary:',
-      fc.toDictionary(['description', 'provider']).getInfo())
+display('All non-system FeatureCollection properties as an ee.Dictionary:',
+        fc.toDictionary())
+display('Selected properties as an ee.Dictionary:',
+        fc.toDictionary(['description', 'provider']))
 # [END earthengine__apidocs__ee_featurecollection_todictionary]

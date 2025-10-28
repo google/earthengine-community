@@ -16,15 +16,15 @@
 import math
 
 # Input angle in radians.
-print('Hyperbolic sine of -5:', ee.Number(-5).sinh().getInfo())  # -74.203210577
-print('Hyperbolic sine of -1:', ee.Number(-1).sinh().getInfo())  # -1.175201193
-print('Hyperbolic sine of 0:', ee.Number(0).sinh().getInfo())  # 0
-print('Hyperbolic sine of 1:', ee.Number(1).sinh().getInfo())  # 1.175201193
-print('Hyperbolic sine of 5:', ee.Number(5).sinh().getInfo())  # 74.203210577
+display('Hyperbolic sine of -5:', ee.Number(-5).sinh())  # -74.203210577
+display('Hyperbolic sine of -1:', ee.Number(-1).sinh())  # -1.175201193
+display('Hyperbolic sine of 0:', ee.Number(0).sinh())  # 0
+display('Hyperbolic sine of 1:', ee.Number(1).sinh())  # 1.175201193
+display('Hyperbolic sine of 5:', ee.Number(5).sinh())  # 74.203210577
 
 # Convert degrees to radians.
 degrees = 45
 radians = degrees * (math.pi/180)
-print('Hyperbolic sine of 45 degrees:',
-      ee.Number(radians).sinh().getInfo())  # 0.868670961
+display('Hyperbolic sine of 45 degrees:',
+        ee.Number(radians).sinh())  # 0.868670961
 # [END earthengine__apidocs__ee_number_sinh]

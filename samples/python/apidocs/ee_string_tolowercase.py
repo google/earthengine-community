@@ -14,5 +14,5 @@
 
 # [START earthengine__apidocs__ee_string_tolowercase]
 s = ee.String('AaBbCc123')
-print(s.toLowerCase().getInfo())  # aabbcc123
+display(s.toLowerCase())  # aabbcc123
 # [END earthengine__apidocs__ee_string_tolowercase]

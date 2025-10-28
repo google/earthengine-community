@@ -13,18 +13,18 @@
 # limitations under the License.
 
 # [START earthengine__apidocs__ee_number_format]
-print('Zero-fill to length of 3:',
-      ee.Number(1).format('%03d').getInfo())  # 001
+display('Zero-fill to length of 3:',
+        ee.Number(1).format('%03d'))  # 001
 
-print('Include 1 decimal place in 1.2347:',
-      ee.Number(1.23476).format('%.1f').getInfo())  # 1.2
+display('Include 1 decimal place in 1.2347:',
+        ee.Number(1.23476).format('%.1f'))  # 1.2
 
-print('Include 3 decimal places in 1.2347:',
-      ee.Number(1.23476).format('%.3f').getInfo())  # 1.235 (rounds up)
+display('Include 3 decimal places in 1.2347:',
+        ee.Number(1.23476).format('%.3f'))  # 1.235 (rounds up)
 
-print('Scientific notation with 3 decimal places shown:',
-      ee.Number(123476).format('%.3e').getInfo())  # 1.235e+05 (rounds up)
+display('Scientific notation with 3 decimal places shown:',
+        ee.Number(123476).format('%.3e'))  # 1.235e+05 (rounds up)
 
-print('Integer with 2 decimal places of precision:',
-      ee.Number(123476).format('%.2f').getInfo())  # 123476.00
+display('Integer with 2 decimal places of precision:',
+        ee.Number(123476).format('%.2f'))  # 123476.00
 # [END earthengine__apidocs__ee_number_format]

@@ -18,16 +18,16 @@ ee_list = ee.List([1, 2, 3, None, 6, 7])
 
 # Filter the list by a variety of conditions. Note that the property name
 # 'item' is used to refer to list elements in ee.Filter functions.
-print('List items equal to 3:',
-      ee_list.filter(ee.Filter.eq('item', 3)).getInfo())
-print('List items greater than 4:',
-      ee_list.filter(ee.Filter.gt('item', 4)).getInfo())
-print('List items not None:',
-      ee_list.filter(ee.Filter.notNull(['item'])).getInfo())
-print('List items in another list:',
-      ee_list.filter(ee.Filter.inList('item', [1, 98, 99])).getInfo())
-print('List items 3 ≤ 𝑥 ≤ 6:',
-      ee_list.filter(ee.Filter.And(
-          ee.Filter.gte('item', 3),
-          ee.Filter.lte('item', 6))).getInfo())
+display('List items equal to 3:',
+        ee_list.filter(ee.Filter.eq('item', 3)))
+display('List items greater than 4:',
+        ee_list.filter(ee.Filter.gt('item', 4)))
+display('List items not None:',
+        ee_list.filter(ee.Filter.notNull(['item'])))
+display('List items in another list:',
+        ee_list.filter(ee.Filter.inList('item', [1, 98, 99])))
+display('List items 3 ≤ 𝑥 ≤ 6:',
+        ee_list.filter(ee.Filter.And(
+            ee.Filter.gte('item', 3),
+            ee.Filter.lte('item', 6))))
 # [END earthengine__apidocs__ee_list_filter]

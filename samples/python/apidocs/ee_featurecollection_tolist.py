@@ -17,7 +17,7 @@
 fc = ee.FeatureCollection('WRI/GPPD/power_plants').filter(
     'country_lg == "Belgium"')
 
-print('First 5 features to an ee.List:', fc.toList(5).getInfo())
+display('First 5 features to an ee.List:', fc.toList(5))
 
-print('Second 5 features to an ee.List:', fc.toList(5, 5).getInfo())
+display('Second 5 features to an ee.List:', fc.toList(5, 5))
 # [END earthengine__apidocs__ee_featurecollection_tolist]

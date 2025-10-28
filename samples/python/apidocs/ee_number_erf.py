@@ -13,11 +13,11 @@
 # limitations under the License.
 
 # [START earthengine__apidocs__ee_number_erf]
-print('Error function of -10:', ee.Number(-10).erf().getInfo())  # -1
+display('Error function of -10:', ee.Number(-10).erf())  # -1
 # -0.001128378
-print('Error function of -0.001:', ee.Number(-0.001).erf().getInfo())
-print('Error function of 0:', ee.Number(0).erf().getInfo())  # 0
+display('Error function of -0.001:', ee.Number(-0.001).erf())
+display('Error function of 0:', ee.Number(0).erf())  # 0
 # 0.001128378
-print('Error function of 0.001:', ee.Number(0.001).erf().getInfo())
-print('Error function of 10:', ee.Number(10).erf().getInfo())  # 1
+display('Error function of 0.001:', ee.Number(0.001).erf())
+display('Error function of 10:', ee.Number(10).erf())  # 1
 # [END earthengine__apidocs__ee_number_erf]

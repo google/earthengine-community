@@ -20,5 +20,5 @@ dic = ee.Dictionary({
     'B3': 443
 })
 
-print('Set value for B3 key as -9999:', dic.set('B3', -9999).getInfo())
+display('Set value for B3 key as -9999:', dic.set('B3', -9999))
 # [END earthengine__apidocs__ee_dictionary_set]

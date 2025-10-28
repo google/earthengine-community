@@ -17,17 +17,17 @@
 # with client-side strings, it won't accept computed, server-side strings.
 collection_name = 'WRI/GPPD/power_plants'
 collection_name_fc = ee.FeatureCollection(collection_name)
-print('FeatureCollection from a string:', collection_name_fc.limit(5).getInfo())
+display('FeatureCollection from a string:', collection_name_fc.limit(5))
 
 # FeatureCollection from a single geometry.
 single_geometry = ee.Geometry.Point(-62.54, -27.32)
 single_geometry_fc = ee.FeatureCollection(single_geometry)
-print('FeatureCollection from a single geometry:', single_geometry_fc.getInfo())
+display('FeatureCollection from a single geometry:', single_geometry_fc)
 
 # FeatureCollection from a single feature.
 single_feature = ee.Feature(ee.Geometry.Point(-62.54, -27.32), {'key': 'val'})
 single_feature_fc = ee.FeatureCollection(single_feature)
-print('FeatureCollection from a single feature:', single_feature_fc.getInfo())
+display('FeatureCollection from a single feature:', single_feature_fc)
 
 # FeatureCollection from a list of features.
 list_of_features = [
@@ -36,8 +36,8 @@ list_of_features = [
     ee.Feature(ee.Geometry.Point(-45.98, -18.09), {'key': 'val3'})
 ]
 list_of_features_fc = ee.FeatureCollection(list_of_features)
-print('FeatureCollection from a list of features:',
-      list_of_features_fc.getInfo())
+display('FeatureCollection from a list of features:',
+        list_of_features_fc)
 
 # FeatureCollection from GeoJSON.
 geojson = {
@@ -64,5 +64,5 @@ geojson = {
         ]
     }
 geojson_fc = ee.FeatureCollection(geojson)
-print('FeatureCollection from GeoJSON:', geojson_fc.getInfo())
+display('FeatureCollection from GeoJSON:', geojson_fc)
 # [END earthengine__apidocs__ee_featurecollection]

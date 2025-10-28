@@ -20,34 +20,34 @@ def samp_arr_img(arr_img):
 
 # Create a 1D array image.
 array_img_1d = ee.Image([1, 2, 3]).toArray()
-print('1D array image (pixel):', samp_arr_img(array_img_1d).getInfo())
+display('1D array image (pixel):', samp_arr_img(array_img_1d))
 # [1, 2, 3]
 
 # Perform accumulation procedures along axes using ee.Reducer functions.
 # Here we calculate the cumulative sum along the 0-axis for a 1D array.
 accum_sum_1d_ax0 = array_img_1d.arrayAccum(0, ee.Reducer.sum())
-print('Cumulative sum along 0-axis:', samp_arr_img(accum_sum_1d_ax0).getInfo())
+display('Cumulative sum along 0-axis:', samp_arr_img(accum_sum_1d_ax0))
 # [1, 3, 6]
 
 # Create a 2D 3x3 array image.
 array_img_2d = ee.Image([1, 2, 3, 4, 5, 6, 7, 8, 9]).toArray().arrayReshape(
     ee.Image([3, 3]).toArray(),
     2)
-print('2D 3x3 array image (pixel):', samp_arr_img(array_img_2d).getInfo())
+display('2D 3x3 array image (pixel):', samp_arr_img(array_img_2d))
 # [[1, 2, 3],
 #  [4, 5, 6],
 #  [7, 8, 9]]
 
 # Calculate the cumulative sum along the 0-axis for a 2D array.
 accum_sum_2d_ax0 = array_img_2d.arrayAccum(0, ee.Reducer.sum())
-print('Cumulative sum along 0-axis:', samp_arr_img(accum_sum_2d_ax0).getInfo())
+display('Cumulative sum along 0-axis:', samp_arr_img(accum_sum_2d_ax0))
 # [[ 1,  2,  3],
 #  [ 5,  7,  9],
 #  [12, 15, 18]]
 
 # Calculate the cumulative sum along the 1-axis for a 2D array.
 accum_sum_2d_ax1 = array_img_2d.arrayAccum(1, ee.Reducer.sum())
-print('Cumulative sum along 1-axis:', samp_arr_img(accum_sum_2d_ax1).getInfo())
+display('Cumulative sum along 1-axis:', samp_arr_img(accum_sum_2d_ax1))
 # [[1,  3,  6],
 #  [4,  9, 15],
 #  [7, 15, 24]]

@@ -14,8 +14,8 @@
 
 # [START earthengine__apidocs__ee_string_trim]
 s = ee.String('\t\n\r abc\t\n\r ')
-print(s.trim().getInfo())  # "abc"
+display(s.trim())  # "abc"
 
 s = ee.String(' a\t\n\r b ')
-print(s.trim().getInfo())  # "a\t\n\r b"
+display(s.trim())  # "a\t\n\r b"
 # [END earthengine__apidocs__ee_string_trim]

@@ -13,10 +13,7 @@
 # limitations under the License.
 
 # [START earthengine__apidocs__ee_kernel_sobel]
-from pprint import pprint
-
-print('A Sobel kernel:')
-pprint(ee.Kernel.sobel().getInfo())
+display('A Sobel kernel:', ee.Kernel.sobel())
 
 #  Output weights matrix
 

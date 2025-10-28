@@ -17,6 +17,6 @@
 fc = ee.FeatureCollection('WRI/GPPD/power_plants').filter(
     'country_lg == "Belgium"')
 
-print('Sum of power plant capacities (MW):',
-      fc.aggregate_sum('capacitymw').getInfo())  # 13288.600000000002
+display('Sum of power plant capacities (MW):',
+      fc.aggregate_sum('capacitymw'))  # 13288.600000000002
 # [END earthengine__apidocs__ee_featurecollection_aggregate_sum]

@@ -36,8 +36,8 @@ download_id = ee.data.getDownloadId({
 })
 response = requests.get(ee.data.makeDownloadUrl(download_id))
 data = numpy.load(io.BytesIO(response.content))
-print(data)
-print(data.dtype)
+display(data)
+display(data.dtype)
 
 # Single-band GeoTIFF files wrapped in a zip file.
 download_id = ee.data.getDownloadId({

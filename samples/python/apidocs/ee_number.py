@@ -15,12 +15,12 @@
 # [START earthengine__apidocs__ee_number]
 import math
 
-print(ee.Number(0).getInfo())  # 0
-print(ee.Number(1).getInfo())  # 1
-print(ee.Number(0.0).getInfo())  # 0
-print(ee.Number(1.0).getInfo())  # 1
-print(ee.Number(-1.0).getInfo())  # -1
-print(ee.Number(math.pi).getInfo())  # 3.141592653589793
-print(ee.Number(1.2e-35).getInfo())  # 1.2e-35
-print(ee.Number(3.4e10).getInfo())  # 34000000000
+display(ee.Number(0))  # 0
+display(ee.Number(1))  # 1
+display(ee.Number(0.0))  # 0
+display(ee.Number(1.0))  # 1
+display(ee.Number(-1.0))  # -1
+display(ee.Number(math.pi))  # 3.141592653589793
+display(ee.Number(1.2e-35))  # 1.2e-35
+display(ee.Number(3.4e10))  # 34000000000
 # [END earthengine__apidocs__ee_number]

@@ -20,7 +20,6 @@ import io
 import numpy
 import requests
 
-
 # A Sentinel-2 surface reflectance image.
 img = ee.Image('COPERNICUS/S2_SR/20210109T185751_20210109T185931_T10SEG')
 
@@ -37,8 +36,8 @@ download_id = ee.data.getDownloadId({
 })
 response = requests.get(ee.data.makeDownloadUrl(download_id))
 data = numpy.load(io.BytesIO(response.content))
-print(data)
-print(data.dtype)
+display(data)
+display(data.dtype)
 
 # Single-band GeoTIFF files wrapped in a zip file.
 download_id = ee.data.getDownloadId({

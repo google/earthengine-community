@@ -13,15 +13,15 @@
 # limitations under the License.
 
 # [START earthengine__apidocs__ee_imagecollection]
-print('Image collection from a string:',
-      ee.ImageCollection('COPERNICUS/S2_SR').limit(3).getInfo())
+display('Image collection from a string:',
+        ee.ImageCollection('COPERNICUS/S2_SR').limit(3))
 
 img1 = ee.Image('COPERNICUS/S2_SR/20170328T083601_20170328T084228_T35RNK')
 img2 = ee.Image('COPERNICUS/S2_SR/20170328T083601_20170328T084228_T35RNL')
 img3 = ee.Image('COPERNICUS/S2_SR/20170328T083601_20170328T084228_T35RNM')
-print('Image collection from a list of images:',
-      ee.ImageCollection([img1, img2, img3]).getInfo())
+display('Image collection from a list of images:',
+        ee.ImageCollection([img1, img2, img3]))
 
-print('Image collection from a single image:',
-      ee.ImageCollection(img1).getInfo())
+display('Image collection from a single image:',
+        ee.ImageCollection(img1))
 # [END earthengine__apidocs__ee_imagecollection]

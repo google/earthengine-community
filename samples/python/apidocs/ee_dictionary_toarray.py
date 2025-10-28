@@ -20,8 +20,8 @@ dic = ee.Dictionary({
     'B3': 443
 })
 
-print('Values for selected keys converted to ee.Array:',
-      dic.toArray(['B1', 'B2']).getInfo())
-print('Values for all keys converted to ee.Array:',
-      dic.toArray().getInfo())
+display('Values for selected keys converted to ee.Array:',
+        dic.toArray(['B1', 'B2']))
+display('Values for all keys converted to ee.Array:',
+        dic.toArray())
 # [END earthengine__apidocs__ee_dictionary_toarray]

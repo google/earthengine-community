@@ -13,11 +13,11 @@
 # limitations under the License.
 
 # [START earthengine__apidocs__ee_number_digamma]
-print('Digamma for -1.5:', ee.Number(-1.5).digamma().getInfo())  # 0.703156637
-print('Digamma for -1:', ee.Number(-1).digamma().getInfo())  # -Infinity
-print('Digamma for 0:', ee.Number(0).digamma().getInfo())  # -Infinity
-print('Digamma for 0.5:', ee.Number(0.5).digamma().getInfo())  # -1.963510028
-print('Digamma for 1:', ee.Number(1).digamma().getInfo())  # -0.577215667
-print('Digamma for 100:', ee.Number(100).digamma().getInfo())  # 4.600161852
-print('Digamma for 1e13:', ee.Number(1e13).digamma().getInfo())  # 29.933606208
+display('Digamma for -1.5:', ee.Number(-1.5).digamma())  # 0.703156637
+display('Digamma for -1:', ee.Number(-1).digamma())  # -Infinity
+display('Digamma for 0:', ee.Number(0).digamma())  # -Infinity
+display('Digamma for 0.5:', ee.Number(0.5).digamma())  # -1.963510028
+display('Digamma for 1:', ee.Number(1).digamma())  # -0.577215667
+display('Digamma for 100:', ee.Number(100).digamma())  # 4.600161852
+display('Digamma for 1e13:', ee.Number(1e13).digamma())  # 29.933606208
 # [END earthengine__apidocs__ee_number_digamma]

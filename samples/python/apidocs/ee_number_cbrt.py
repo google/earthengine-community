@@ -13,5 +13,5 @@
 # limitations under the License.
 
 # [START earthengine__apidocs__ee_number_cbrt]
-print('Cubic root of 27:', ee.Number(27).cbrt().getInfo())  # 3
+display('Cubic root of 27:', ee.Number(27).cbrt())  # 3
 # [END earthengine__apidocs__ee_number_cbrt]

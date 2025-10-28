@@ -20,25 +20,25 @@ def samp_arr_img(arr_img):
 
 # Create two 1D array images.
 array_img_1d_a = ee.Image([0, 1, 2]).toArray()
-print('1D array image (A) (pixel):', samp_arr_img(array_img_1d_a).getInfo())
+display('1D array image (A) (pixel):', samp_arr_img(array_img_1d_a))
 # [0, 1, 2]
 array_img_1d_b = ee.Image([3, 4, 5]).toArray()
-print('1D array image (B) (pixel):', samp_arr_img(array_img_1d_b).getInfo())
+display('1D array image (B) (pixel):', samp_arr_img(array_img_1d_b))
 # [3, 4, 5]
 
 # Concatenate 1D array image B to 1D array image A on 0-axis (rows).
 array_img_1d_cat_ax0 = array_img_1d_a.arrayCat(array_img_1d_b, 0)
-print(
+display(
     'Concatenate 1D array images on 0-axis:',
-    samp_arr_img(array_img_1d_cat_ax0).getInfo()
+    samp_arr_img(array_img_1d_cat_ax0)
 )
 # [0, 1, 2, 3, 4, 5]
 
 # Concatenate 1D array image B to 1D array image A on 1-axis (columns).
 array_img_1d_cat_ax1 = array_img_1d_a.arrayCat(array_img_1d_b, 1)
-print(
+display(
     'Concatenate 1D array images on 1-axis:',
-    samp_arr_img(array_img_1d_cat_ax1).getInfo()
+    samp_arr_img(array_img_1d_cat_ax1)
 )
 # [[0, 3],
 #  [1, 4]
@@ -46,21 +46,21 @@ print(
 
 # Create two 2D array images (expand the dimensions of 1D arrays).
 array_img_2d_a = array_img_1d_a.toArray(1)
-print('2D array image (A) (pixel):', samp_arr_img(array_img_2d_a).getInfo())
+display('2D array image (A) (pixel):', samp_arr_img(array_img_2d_a))
 # [[0],
 #  [1],
 #  [2]]
 array_img_2d_b = array_img_1d_b.toArray(1)
-print('2D array image (B) (pixel):', samp_arr_img(array_img_2d_b).getInfo())
+display('2D array image (B) (pixel):', samp_arr_img(array_img_2d_b))
 # [[3],
 #  [4],
 #  [5]]
 
 # Concatenate 2D array image B to 2D array image A on 0-axis (rows).
 array_img_2d_cat_ax0 = array_img_2d_a.arrayCat(array_img_2d_b, 0)
-print(
+display(
     'Concatenate 2D array images on 0-axis:',
-    samp_arr_img(array_img_2d_cat_ax0).getInfo()
+    samp_arr_img(array_img_2d_cat_ax0)
 )
 # [[0],
 #  [1],
@@ -71,9 +71,9 @@ print(
 
 # Concatenate 2D array image B to 2D array image A on 1-axis (columns).
 array_img_2d_cat_ax1 = array_img_2d_a.arrayCat(array_img_2d_b, 1)
-print(
+display(
     'Concatenate 2D array images on 1-axis:',
-    samp_arr_img(array_img_2d_cat_ax1).getInfo()
+    samp_arr_img(array_img_2d_cat_ax1)
 )
 # [[0, 3],
 #  [1, 4],

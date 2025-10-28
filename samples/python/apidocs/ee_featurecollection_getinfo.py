@@ -27,8 +27,8 @@ fc_server = ee.FeatureCollection('WRI/GPPD/power_plants').filter(
 # Use getInfo to transfer server-side feature collection to the client. The
 # result is an object.
 fc_client = fc_server.getInfo()
-print('Client-side feature collection is a dictionary:', type(fc_client))
-print('Feature collection dictionary keys:', fc_client.keys())
-print('Array of features:', fc_client['features'])
-print('Properties of first feature:', fc_client['features'][0]['properties'])
+display('Client-side feature collection is a dictionary:', type(fc_client))
+display('Feature collection dictionary keys:', fc_client.keys())
+display('Array of features:', fc_client['features'])
+display('Properties of first feature:', fc_client['features'][0]['properties'])
 # [END earthengine__apidocs__ee_featurecollection_getinfo]

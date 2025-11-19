@@ -40,8 +40,8 @@ class Gemini(LLM):
           'or pass the api_key parameter'
       )
     self._model_name = model_name
-    client = genai.Client(api_key=api_key)
-    self._chat = client.chats.create(
+    self._client = genai.Client(api_key=api_key)
+    self._chat = self._client.chats.create(
         model=model_name,
         config=types.GenerateContentConfig(
             system_instruction=system_instruction,

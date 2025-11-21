@@ -44,7 +44,7 @@ display(
 # image collection, like in this example of building a collection of mean
 # annual NDVI images from a MODIS collection.
 modis_col = (
-    ee.ImageCollection('MODIS/006/MOD13A2')
+    ee.ImageCollection('MODIS/061/MOD13A2')
     .filterDate('2017', '2021')
     .select('NDVI')
     .map(lambda img: img.set('year', img.date().get('year')))

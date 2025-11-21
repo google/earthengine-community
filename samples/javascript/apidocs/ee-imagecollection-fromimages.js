@@ -39,7 +39,7 @@ print('NOT coerced to collection', ee.ImageCollection(ambiguousImgList));
 // A common use case is coercing an image list from a saveAll join to a
 // image collection, like in this example of building a collection of mean
 // annual NDVI images from a MODIS collection.
-var modisCol = ee.ImageCollection('MODIS/006/MOD13A2')
+var modisCol = ee.ImageCollection('MODIS/061/MOD13A2')
   .filterDate('2017', '2021')
   .select('NDVI')
   .map(function(img) {return img.set('year', img.date().get('year'))});

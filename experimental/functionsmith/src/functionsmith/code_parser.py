@@ -4,6 +4,7 @@ import copy
 import dataclasses
 import logging
 import re
+import textwrap
 from typing import Optional
 import docstring_parser
 
@@ -182,31 +183,6 @@ class Parser:
   def _parse_docstring(self, docstring: str):
     return docstring_parser.parse(docstring)
 
-  def _reduce_indentation(self, code: str) -> str:
-    """Reduces indentation of the whole code block if it makes sense."""
-    if not code:
-      return code
-
-    lines = code.split('\n')
-
-    # Filter out empty lines first.
-    non_empty_lines = [line for line in lines if line.strip()]
-    if not non_empty_lines:
-      return code
-
-    # Find the minimum indentation level
-    min_indent = min(len(line) - len(line.lstrip()) for line in non_empty_lines)
-
-    # Only remove indentation if ALL non-empty lines have at least
-    # this indentation
-    if all(line.startswith(' ' * min_indent) for line in non_empty_lines):
-      result = '\n'.join(
-          line[min_indent:] if line.strip() else '' for line in lines
-      )
-      return result
-
-    return code
-
   def extract_python_code_blocks(self, text: str) -> MaybeCode:
     if not text:
       return MaybeCode('', code_block_found=False)
@@ -218,7 +194,7 @@ class Parser:
       result = MaybeCode('\n'.join(code_blocks), code_block_found=True)
     else:
       result = MaybeCode(text, code_block_found=False)
-    result.code = self._reduce_indentation(result.code)
+    result.code = textwrap.dedent(result.code)
     return result
 
   def extract_functions(self, response: str) -> ParsedResponse:

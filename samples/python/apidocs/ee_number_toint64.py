@@ -37,19 +37,19 @@ display('Floating point value cast to int64:', float_to_int64)
 # Python int is too large to be mapped to int64, use float instead.
 INT64_MAX = 9223372036854775808.0
 out_of_range_hi = ee.Number(INT64_MAX + 12345)
-display('Greater than int64 max:', '{:.0f}'.format(out_of_range_hi.getInfo()))
+display('Greater than int64 max:', f'{out_of_range_hi.getInfo():.0f}')
 
 out_of_range_hi_to_int64 = out_of_range_hi.toInt64()
 display('Greater than int64 max cast to int64 becomes int64 max:',
-        '{:.0f}'.format(out_of_range_hi_to_int64.getInfo()))
+        f'{out_of_range_hi_to_int64.getInfo():.0f}')
 
 # A number greater than int64 range min becomes int64 range min.
 # Python int is too large to be mapped to int64, use float instead.
 INT64_MIN = -9223372036854775808.0
 out_of_range_lo = ee.Number(INT64_MIN - 12345)
-display('Less than int64 min:', '{:.0f}'.format(out_of_range_lo.getInfo()))
+display('Less than int64 min:', f'{out_of_range_lo.getInfo():.0f}')
 
 out_of_range_lo_to_int64 = out_of_range_lo.toInt64()
 display('Less than int64 min cast to int64 becomes int64 min:',
-        '{:.0f}'.format(out_of_range_lo_to_int64.getInfo()))
+        f'{out_of_range_lo_to_int64.getInfo():.0f}')
 # [END earthengine__apidocs__ee_number_toint64]

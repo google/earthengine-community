@@ -176,7 +176,7 @@ further coding required! Here's an example of that in action:
 
 ### Example: Build a Client-Side Grid
 
-**[Here's a link to the full script. Press run to see the generated grid!](https://code.earthengine.google.com/49c8987336a3009e7fdc1a5be6b42910?noload=true)**
+**[Here's a link to the full script. Press run to see the generated grid!](https://code.earthengine.google.com/49c8987336a3009e7fdc1a5be6b42910)**
 
 **Note: this example doesn't work with all projections and doesn't work well
 with large geometries, so keep that in mind.**

@@ -18,7 +18,7 @@ In 2019, Kulp and Strauss published [CoastalDEM](https://www.nature.com/articles
 
 *   **Current high tide exposure:** SRTM estimated 28 million people lived below the high tide line. CoastalDEM corrected this to 110 million — a nearly fourfold increase.
 *   **Current annual flood exposure:** CoastalDEM estimates 250 million people currently live on land that floods annually.
-*   **2100 projections:** Under a high-emissions scenario (RCP 8.5) with ice sheet instability, CoastalDEM indicates up to 630 million people could live on land below projected annual flood levels.
+*   **2100 projections:** Under a high-emissions scenario (RCP 8.5) with ice sheet instability, CoastalDEM indicates up to 630 million people could live on land below projected annual flood levels, compared to 170 million estimated using uncorrected SRTM under the same scenario.
 
 The correction did not change sea level projections; it changed the understanding of the land's elevation.
 

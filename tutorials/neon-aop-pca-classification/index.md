@@ -21,15 +21,15 @@ See the License for the specific language governing permissions and
 limitations under the License.
 -->
 
-[Open In Code Editor](https://code.earthengine.google.com/?accept_repo=users/bhass/gee-community-tutorial)
+[Open Lesson Repository In Code Editor](https://code.earthengine.google.com/?accept_repo=users/bhass/gee-community-tutorial)
 
-The principal components transform is a spectral rotation that takes spectrally correlated image data and outputs uncorrelated bands. In this tutorial, you will apply Principal Component Analysis (PCA) to reduce the National Ecological Observatory Network's (NEON's) 426-band airborne reflectance data to a compact set of uncorrelated components. You will then use those components alongside a lidar-derived Canopy Height Model (CHM) to classify land cover with both k-Means unsupervised clustering and a Random Forest supervised classifier, and compare the pros and cons of each approach.
+## Background
 
-## Context
+The National Ecological Observatory Network (NEON), funded by the U.S. National Science Foundation, provides 1 meter resolution [airborne datasets](https://developers.google.com/earth-engine/datasets/publisher/neon-prod-earthengine) across the United States, including 426 band [hyperspectral data](https://developers.google.com/earth-engine/datasets/catalog/projects_neon-prod-earthengine_assets_HSI_REFL_002) and lidar-derived [Canopy Height Model](https://developers.google.com/earth-engine/datasets/catalog/projects_neon-prod-earthengine_assets_CHM_001) data. Click to learn more about [NEON](https://www.neonscience.org/) and NEON's [Airborne Remote Sensing](https://www.neonscience.org/data-collection/airborne-remote-sensing) program, which provide high-resolution open datasets ideal for pairing with satellite data.
 
-The National Ecological Observatory Network (NEON), solely funded by the National Science Foundation, provides 1 meter resolution [airborne datasets](https://developers.google.com/earth-engine/datasets/publisher/neon-prod-earthengine), across the United States, including 426 band [hyperspectral data](https://developers.google.com/earth-engine/datasets/catalog/projects_neon-prod-earthengine_assets_HSI_REFL_002) and lidar-derived data, including a [Canopy Height Model](https://developers.google.com/earth-engine/datasets/catalog/projects_neon-prod-earthengine_assets_CHM_001). Click on the links to learn more about [NEON](https://www.neonscience.org/) and NEON's [Airborne Remote Sensing](https://www.neonscience.org/data-collection/airborne-remote-sensing) program, which provide high-resolution open datasets ideal for pairing with satellite data.
+## Overview
 
-## Outline
+The principal components transform is a spectral rotation that takes spectrally correlated image data and outputs uncorrelated bands. In this tutorial, you will apply Principal Component Analysis (PCA) to reduce the National Ecological Observatory Network's (NEON's) 426-band airborne reflectance data to a compact set of uncorrelated components. You will then use those components alongside a lidar-derived Canopy Height Model (CHM) to classify land cover with both k-Means unsupervised clustering and a Random Forest supervised classifier, and compare the classifications provided by each approach.
 
 This tutorial will cover:
 
@@ -37,13 +37,13 @@ This tutorial will cover:
 2. Computing Principal Component Analysis on reflectance data using representative sampling
 3. Running k-Means unsupervised classification with z-scored feature stack
 4. Running a random forest supervised classification with the same feature stack
-5. Comparing the classification methods and discussion
+5. Discussion - comparing the classification methods
 
 ## 1. Read in the NEON Hyperspectral Image Collection and select the Area of Interest
 
 [Part 1 - Open In Code Editor](https://code.earthengine.google.com/6ced0612c8b83c07563aeaf838758d5b)
 
-Retrieve the [NEON Surface Bidirectional Reflectance](https://developers.google.com/earth-engine/datasets/catalog/projects_neon-prod-earthengine_assets_HSI_REFL_002) as an `ee.ImageCollection` and select the site and date. This tutorial will focus on the [Smithsonian Environmental Research Center NEON / SERC](https://www.neonscience.org/field-sites/serc) site as an example. NEON airborne data are typically collected at 1000 m Above Ground Level (AGL), and flights are targeted during cloud-free conditions, if possible. Unlike satellite data, the aircraft is collecting below the clouds, which means cloud filtering is not an option. Instead, NEON reflectance data include a Weather Quality Indicator (WQI) band, which indicates percent cloud cover, as recorded by flight operators collecting the data. NEON recommends using < 10% cloud cover data, when possible. In first script, we'll map the cloud cover conditions for the SERC 2022 collection and select an area that was collected in the best weather conditions that encompasses a variety of land cover types. This AOI will be used in the rest of the lesson.
+Retrieve the [NEON Surface Bidirectional Reflectance](https://developers.google.com/earth-engine/datasets/catalog/projects_neon-prod-earthengine_assets_HSI_REFL_002) as an `ee.ImageCollection` and select the site and date. This tutorial will focus on the [Smithsonian Environmental Research Center NEON / SERC](https://www.neonscience.org/field-sites/serc) site as an example. NEON airborne data are typically collected at 1000 m Above Ground Level (AGL), and flights are targeted during cloud-free conditions, if possible. Unlike satellite data, the aircraft is collecting below the clouds, which means cloud filtering is not an option. Instead, NEON reflectance data include a Weather Quality Indicator (WQI) band, which indicates percent cloud cover, as recorded by flight operators collecting the data. NEON recommends using < 10% cloud cover data, when possible. In the first script, we'll map the cloud cover conditions for the SERC 2022 collection and select an area that was collected in the best weather conditions that encompasses a variety of land cover types. This AOI will be used in the rest of the lesson.
 
 ```js
 // ------------------------------------------------------------
@@ -109,10 +109,10 @@ print('Data Citation:', reflCitation)
 ```
 
 ![SERC 2022 WQI](serc-wqi-map.png)
-Weather Quality Indicator Map of the SERC site, where green represents <10% cloud cover and yellow represents 10-50% cloud cover.
+**Figure 1:** Weather Quality Indicator Map of the 2022 collection over NEON's [SERC](https://www.neonscience.org/field-sites/serc) site, where green represents <10% cloud cover and yellow represents 10-50% cloud cover.
 
 ![SERC reflectance data with AOI](serc-refl-aoi.png)
-True color image from the reflectance data, showing the Area of Interest (aoi) that will be used throughout the rest of the tutorial.
+**Figure 2:** True color image from the reflectance data, showing the Area of Interest (`aoi`) that will be used throughout the rest of the tutorial.
 
 ## 2. Compute Principal Component Analysis on reflectance data using representative sampling
 
@@ -191,6 +191,7 @@ print('Sample points', samplePoints.limit(10));
 ```
 
 ![PCA Representative Samples](pca-samples.png)
+**Figure 3:** Representative sample points
 
 The white points show where spectral statistics will be drawn from. A well-distributed sample like this, spread across forest, open water and man-made surfaces, helps the covariance matrix capture the full range of spectral variability in the scene, which in turn produces more representative eigenvectors. Next we'll define some functions to compute the PCA.
 
@@ -426,7 +427,10 @@ print('Z-scored feature stack', zStack);
 // ------------------------------------------------------------
 // Export the z-scored feature stack as an asset so it can be
 // loaded directly in subsequent scripts without recomputing.
-// Update the assetId to match your own Earth Engine user folder.
+// NOTE: 'neon-sandbox-dataflow-ee' is a NEON-internal project and
+// will not be accessible to other users. Replace it with your own
+// Google Cloud project ID (e.g. 'projects/my-project/assets/...')
+// wherever it appears throughout this tutorial.
 // ------------------------------------------------------------
 Export.image.toAsset({
   image: zStack,
@@ -610,6 +614,7 @@ Map.addLayer(
 ```
 
 ![k-Means Classes](kmeans-classes.png)
+**Figure 4:** Classes from k-means clustering.
 
 The clusters in the layer manager (Cluster 0 through Cluster 7) can be compared against the RGB and CHM layers to determine the appropratie class for each. The cluster summary table printed to the console shows the mean RGB reflectance and mean CHM height per cluster, and is a useful tool for deciding which semantic label to assign to each cluster. Clusters with near-zero CHM and low red/green reflectance are typically water or deep shadow. High CHM values reliably identify tall forest canopy. Low CHM with high visible reflectance points to impervious surfaces or exposed soil. The ambiguous cases, such as stressed vegetation, agricultural fields, and paved surfaces, often share similar spectral signatures and may be lumped into the same cluster. This is a known limitation of unsupervised classification without additional information.
 
@@ -687,6 +692,7 @@ Map.addLayer(
 ```
 
 ![k-Means Cluster Confidence](kmeans-confidence.png)
+**Figure 5:** Confidence map of k-Means clusters.
 
 Comparing against the RGB reflectance image, the lowest-confidence areas fall predominantly on the man-made surfaces in the northeast of the AOI, roads, and boats, as well as the agricultural fields (which we labeled as stressed vegetation). This is consistent with what the cluster summaries showed: those two cover types share similar spectral signatures. Both tend to have moderate reflectance and low CHM values, so they were grouped together rather than separated into distinct clusters. 
 
@@ -700,7 +706,7 @@ The `confidenceThreshold` variable controls how aggressively ambiguous pixels ar
 
 While k-Means discovers structure without any prior knowledge, Random Forest is a supervised classifier that learns from labeled examples you provide. This makes it more precise for distinguishing classes that are spectrally similar but ecologically distinct (such as roads and stressed vegetation) because the training polygons directly show the classifier what each class looks like in feature space.
 
-### 4a. Build a standardized feature stack using the top principal components + CHM
+### 4a. Read in the feature stack using the top principal components + CHM, along with reference layers for drawing training polygons
 
 This script reuses the `zStack` (z-scored PC1–PC5 + CHM) already built in section 3. Z-scoring is not required for Random Forest. Unlike k-Means, RF makes no assumptions about feature scale or distance, but since we already have it, we can re-use it. The classification results will be equivalent to training on an un-scaled feature stack; Random Forest's internal decision tree splits are invariant to rescaling the input features.
 
@@ -731,9 +737,9 @@ print('Feature stack band names', zStack.bandNames());
 Map.centerObject(aoi, 14);
 
 Map.addLayer(
-  zStack.select('CHM_z').clip(aoi),
-  {min: -2, max: 2},
-  'Z-scored CHM'
+  zStack,
+  {bands: ['CHM_z','PC1_z','PC2_z'], min: -1, max: 1},
+  'Z-scored Feature Stack'
 );
 
 Map.addLayer(
@@ -744,6 +750,7 @@ Map.addLayer(
 ```
 
 ![Feature Stack](feature-stack.png)
+**Figure 6:** Feature stack layer for drawing training and test polygons. The reflectance RGB layers and individual bands from the feature stack can be used as well.
 
 ### 4b. Select polygons representing different land cover types
 
@@ -855,6 +862,7 @@ Map.addLayer(testPolygons, {color: 'yellow', opacity: 0.25}, 'Test polygons');
 ```
 
 ![Training and Validation Polygons](training-validation-polygons.png)
+**Figure 7:** Training and validation polygons used for classificaiton and assessment.
 
 ### 4c. Classification
 
@@ -893,7 +901,7 @@ classIds.forEach(function(c, i) {
 // 4=lowVeg, 5=forest). Update the asset path below.
 // ------------------------------------------------------------
 var validationPolygons = ee.FeatureCollection(
-  'projects/<your-project>/assets/validationPolygons_SERC_2022'
+  'projects/neon-sandbox-dataflow-ee/assets/zStack_SERC_2022'
 );
 
 var testSet = zStack.sampleRegions({
@@ -937,6 +945,7 @@ Map.addLayer(
 ```
 
 ![Classification](supervised-classes.png)
+**Figure 8:** Random forest classification.
 
 ### 4d. Assess the classification results
 
@@ -996,7 +1005,7 @@ For both classifiers, PCA provides two concrete benefits with NEON hyperspectral
 
 **1. Memory and compute efficiency.** Running k-Means or `sampleRegions` directly on 426 raw bands would be very slow and may hit Earth Engine's memory limits. With 5 PCs, the same information is encoded in a fraction of the data volume.
 
-**2. Noise reduction.** Hyperspectral sensors produce bands that capture mostly noise beyond the first few dozen principal components. PCA concentrates signal in the leading components and effectively discards those noise-dominated dimensions. Both classifiers benefit from not having to partition on noisy features.
+**2. Noise reduction.** Hyperspectral sensors record across a broad range of the electromagnetic spectrum, including atmospheric water vapor absorption bands (~1340-1445 nm and 1790-1955 nm) where the signal-to-noise ratio drops sharply and bands carry little surface information. These bands are set to -100 in the GEE datasets. Some of the bands and the beginning and end of the spectrum are also noisy. PCA concentrates signal from the valid bands into the leading components and downweights the noisy bands, so the classifiers are working on a cleaner representation of the data.
 
 Additionally, for k-Means, there is another benefit:
 

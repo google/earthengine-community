@@ -807,7 +807,7 @@ Map.addLayer(trainingPolygons, {color: 'white', opacity: 0.25}, 'Training polygo
 
 ### 4c. Classification
 
-With training polygons defined, this script samples `zStack` at each polygon location, splits the samples 70/30 into training and validation sets, and trains a Random Forest classifier with 100 trees. Random Forest is a good default choice here because it is robust to the class imbalance typical of land cover datasets — where forest pixels far outnumber man-made pixels — and because its tree-based splits are unaffected by feature scaling, so the z-scored inputs produce identical classification results to the raw PCA + CHM stack.
+With training polygons defined, this script samples `zStack` at each polygon location, splits the samples 70/30 into training and validation sets, and trains a Random Forest classifier with 100 trees. Random Forest is a good default choice here because it is robust to the class imbalance typical of land cover datasets, where forest pixels far outnumber man-made pixels. ALso the tree-based splits are unaffected by feature scaling, so the z-scored inputs produce identical classification results to the raw PCA + CHM stack.
 
 ```js
 // ------------------------------------------------------------
@@ -877,7 +877,7 @@ Map.addLayer(
 
 ### 4c. Assess the classification results
 
-The 30% validation set held back during training is used here to evaluate how well the classifier generalizes to new pixels that weren't used in the training. Running those pixels through the trained model and comparing predicted labels against known labels produces a confusion matrix — a table where rows represent true classes and columns represent predicted classes. Diagonal cells are correct predictions; off-diagonal cells are errors.
+The 30% validation set held back during training is used here to evaluate how well the classifier generalizes to new pixels that weren't used in the training. Running those pixels through the trained model and comparing predicted labels against known labels produces a confusion matrix, a table where rows represent true classes and columns represent predicted classes. Diagonal cells are correct predictions; off-diagonal cells are errors.
 
 Three summary metrics are printed:
 
@@ -898,7 +898,7 @@ print("Producer's accuracy (recall per class)", confusion.producersAccuracy());
 print("Consumer's accuracy (precision per class)", confusion.consumersAccuracy());
 ```
 
-If your accuracy metrics are very high (e.g., overall accuracy > 0.99), this is most likely a consequence of **spatial autocorrelation** rather than a sign the classifier is genuinely that accurate. At 1 m resolution, adjacent pixels within the same small polygon are nearly identical spectrally. A random 70/30 split doesn't account for spatial proximity — neighboring pixels end up on both sides of the split, so the validation set is not truly independent of the training set. The classifier is effectively tested on pixels it has seen spatially close neighbors of, which inflates all accuracy metrics.
+If your accuracy metrics are very high (e.g., overall accuracy > 0.99), this is most likely a consequence of **spatial autocorrelation** rather than a sign the classifier is genuinely that accurate. At 1 m resolution, adjacent pixels within the same small polygon are nearly identical spectrally. A random 70/30 split doesn't account for spatial proximity. Neighboring pixels end up on both sides of the split, so the validation set is not truly independent of the training set. The classifier is effectively tested on pixels it has seen spatially close neighbors of, which inflates all accuracy metrics.
 
 A more honest assessment requires spatially independent validation data: either hold out entire polygons for validation (rather than random pixel splits within polygons), or collect separate validation polygons in different locations from the training polygons. With genuinely independent validation, you should expect overall accuracy in the 85–95% range for this scene, with water and forest scoring highest and man-made surfaces and stressed vegetation being the most likely sources of confusion due to spectral overlap in the PC bands.
 
@@ -910,15 +910,15 @@ The two classifiers reflect a fundamental trade-off between effort and precision
 
 | | k-Means | Random Forest |
 |---|---|---|
-| Labels required | None — fully unsupervised | Yes — training polygons per class |
+| Labels required? | None (fully unsupervised) | Yes - training polygons per class |
 | Output classes | Arbitrary clusters needing manual interpretation | Named, semantically defined classes |
 | Class boundaries | Set by spectral distance in feature space | Set by labeled examples |
-| Accuracy assessment | Not directly possible without ground truth | Standard (confusion matrix, accuracy metrics) |
+| Accuracy assessment | Not directly possible without ground truth, can make a confidence map | Standard (confusion matrix, accuracy metrics) |
 | Best use case | Exploratory analysis, unknown classes | Production mapping, when classes are defined |
 
-For this AOI, k-Means with 8 clusters does a reasonable job separating water, tall forest, and low vegetation, but tends to lump spectrally similar surfaces — stressed crops, bare soil, and paved areas — into the same cluster. Random Forest, given explicit examples of each class, can more reliably distinguish those ambiguous types, particularly when the CHM provides a structural cue that spectral bands alone cannot resolve (e.g., tall-canopy forest vs. tall herbaceous vegetation).
+For this AOI, k-Means with 8 clusters does a reasonable job separating water, tall forest, and low vegetation, but tends to lump spectrally similar surfaces (e.g. stressed crops, bare soil, and paved surfaces) into the same cluster. Random Forest, given explicit examples of each class, can more reliably distinguish those ambiguous types, particularly when the CHM provides a structural cue that spectral bands alone cannot resolve (e.g., tall-canopy forest vs. tall herbaceous vegetation).
 
-A practical workflow is to run k-Means first as an exploratory step to understand the spectral diversity in the scene, then use it to guide where to place training polygons for the supervised classifier.
+A practical workflow is to run k-Means first as an exploratory step to understand the spectral diversity in the scene, then use it to guide where to place training polygons for the supervised classifier. In addition to remote sensing data, NEON also provides observational and instrumented data, including vegetation structure information. For an example of how to carry out species classification using NEON vegetation structure data paired with the remote sensing data, please see the tutorial [https://www.neonscience.org/resources/learning-hub/tutorials/aop-gee-random-forest-classification](https://www.neonscience.org/resources/learning-hub/tutorials/aop-gee-random-forest-classification).
 
 ### When does running PCA help?
 
@@ -930,9 +930,21 @@ For both classifiers, PCA provides two concrete benefits with NEON hyperspectral
 
 Additionally, for k-Means, there is another benefit:
 
-**Decorrelation for k-Means.** Adjacent hyperspectral bands are highly correlated — the same information is repeated dozens of times across the spectrum. k-Means treats each band as an independent dimension, so feeding it 426 correlated bands means the clustering is dominated by whichever spectral regions happen to have the most redundant coverage. PCA-transformed bands are by construction uncorrelated, so each PC contributes genuinely new information to the distance calculation.
+**3. De-correlation for k-Means.** Adjacent hyperspectral bands are highly correlated; the same information is repeated dozens of times across the spectrum. k-Means treats each band as an independent dimension, so feeding it 426 correlated bands means the clustering is dominated by whichever spectral regions happen to have the most redundant coverage. PCA-transformed bands are by construction uncorrelated, so each PC contributes genuinely new information to the distance calculation.
 
-For Random Forest, the benefit of decorrelation is less critical — the algorithm is designed to select informative features and is relatively robust to redundant inputs — but the compute and memory savings alone justify the PCA step for 426-band data in Earth Engine.
+For Random Forest, the benefit of decorrelation is less critical. The algorithm is designed to select informative features and is relatively robust to redundant inputs, but the compute and memory savings alone justify the PCA step for 426-band data in Earth Engine.
 
 **When you might skip PCA:** if you are working with a small number of bands (e.g., a 10-band multispectral image), PCA is usually not worth the added complexity. It becomes increasingly valuable as band count grows above ~20–30, and can be helpful for full hyperspectral stacks like NEON's.
+
+## Recap
+
+In this tutorial, you applied PCA to NEON's 426-band hyperspectral reflectance data to produce a compact, memory-efficient feature set, then combined it with a lidar-derived Canopy Height Model to classify land cover using both k-Means unsupervised clustering and a Random Forest supervised classifier. You used a representative pixel sample to compute PCA statistics without exceeding Earth Engine's memory limits, and generated a per-pixel confidence map to identify ambiguous cluster assignments. The discussion compared the trade-offs between the two classifiers and explained why PCA is particularly valuable for NEON's hyperspectral data, which contains hundreds of bands.
+
+## Additional Resources
+
+If you are interested in learning more about working with NEON data in GEE, or in other programming languages (e.g. R, Python) please see the following tutorials and tutorial series, hosted by NEON, or check out NEON's [Learning Hub](https://www.neonscience.org/resources/learning-hub).
+
+1. [Intro to AOP Data in Google Earth Engine (GEE) Tutorial Series](https://www.neonscience.org/resources/learning-hub/tutorials/intro-aop-data-google-earth-engine-gee-tutorial-series)
+2. [Intro to AOP Datasets in Google Earth Engine (GEE) Python](https://www.neonscience.org/resources/learning-hub/tutorials/aop-gee-py-intro)
+3. [Get Started with NEON Data: A Series of Data Tutorials](https://www.neonscience.org/resources/learning-hub/tutorials/get-started-neon-data-series-data-tutorials)
 

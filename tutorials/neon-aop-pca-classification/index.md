@@ -43,12 +43,11 @@ This tutorial will cover:
 
 [Part 1 - Open In Code Editor](https://code.earthengine.google.com/6ced0612c8b83c07563aeaf838758d5b)
 
-Retrieve the [NEON Surface Bidirectional Reflectance](https://developers.google.com/earth-engine/datasets/catalog/projects_neon-prod-earthengine_assets_HSI_REFL_002) as an `ee.ImageCollection` and select the site and date. This tutorial will focus on the [Smithsonian Environmental Research Center NEON / SERC](https://www.neonscience.org/field-sites/serc) site as an example. NEON airborne data are typically collected at 1000 m Above Ground Level (AGL), and flights are targeted during cloud-free conditions, if possible. Unlike satellite data, the aircraft is collecting below the clouds, which means cloud filtering is not an option. Instead, NEON reflectance data include a Weather Quality Indicator (WQI) band, which indicates percent cloud cover, as recorded by flight operators collecting the data. NEON recommends using < 10% cloud cover data, when possible. In this example, we'll map the cloud cover conditions for the SERC 2022 collection and select an area that was collected in the best weather conditions that encompasses a variety of land cover types. This AOI will be used in the rest of the lesson.
+Retrieve the [NEON Surface Bidirectional Reflectance](https://developers.google.com/earth-engine/datasets/catalog/projects_neon-prod-earthengine_assets_HSI_REFL_002) as an `ee.ImageCollection` and select the site and date. This tutorial will focus on the [Smithsonian Environmental Research Center NEON / SERC](https://www.neonscience.org/field-sites/serc) site as an example. NEON airborne data are typically collected at 1000 m Above Ground Level (AGL), and flights are targeted during cloud-free conditions, if possible. Unlike satellite data, the aircraft is collecting below the clouds, which means cloud filtering is not an option. Instead, NEON reflectance data include a Weather Quality Indicator (WQI) band, which indicates percent cloud cover, as recorded by flight operators collecting the data. NEON recommends using < 10% cloud cover data, when possible. In first script, we'll map the cloud cover conditions for the SERC 2022 collection and select an area that was collected in the best weather conditions that encompasses a variety of land cover types. This AOI will be used in the rest of the lesson.
 
 ```js
 // ------------------------------------------------------------
-// Script 1. Load NEON bidirectional reflectance, inspect weather QA,
-// and define the area of interest.
+// Load NEON bidirectional reflectance, inspect weather QA, and define the area of interest.
 // ------------------------------------------------------------
 
 // Display all available images for the NEON bidirectional reflectance image collection
@@ -701,11 +700,9 @@ The `confidenceThreshold` variable controls how aggressively ambiguous pixels ar
 
 While k-Means discovers structure without any prior knowledge, Random Forest is a supervised classifier that learns from labeled examples you provide. This makes it more precise for distinguishing classes that are spectrally similar but ecologically distinct (such as roads and stressed vegetation) because the training polygons directly show the classifier what each class looks like in feature space.
 
-The feature stack here is the same PCA + CHM combination used for k-Means, but the CHM plays an especially important role in supervised classification: it lets the classifier separate tall-canopy forest from other green surfaces using structure rather than spectral response alone, something that is difficult to achieve with reflectance data exclusively.
-
 ### 4a. Build a standardized feature stack using the top principal components + CHM
 
-This script reuses the `zStack` (z-scored PC1–PC5 + CHM) already built in section 3. Z-scoring is not required for Random Forest. Unlike k-Means, RF makes no assumptions about feature scale or distance, but since we already have it, reusing it avoids rebuilding the same feature stack. The classification results will be equivalent to training on the un-scaled `featureStack`; Random Forest's internal decision tree splits are invariant to monotonic rescaling of input features.
+This script reuses the `zStack` (z-scored PC1–PC5 + CHM) already built in section 3. Z-scoring is not required for Random Forest. Unlike k-Means, RF makes no assumptions about feature scale or distance, but since we already have it, we can re-use it. The classification results will be equivalent to training on an un-scaled feature stack; Random Forest's internal decision tree splits are invariant to rescaling the input features.
 
 ```js
 // ------------------------------------------------------------
@@ -751,6 +748,8 @@ Map.addLayer(
 ### 4b. Select polygons representing different land cover types
 
 To train the classifier, you need labeled examples of each land cover type. Here, five classes are defined: water, man-made surfaces, stressed vegetation, low vegetation, and forest. Each class is represented by two small polygons drawn over areas that are clearly identifiable in the RGB reflectance image and the CHM. The polygons are given a numeric `class` property and merged into a single `FeatureCollection` that will be passed to `sampleRegions` in the next step. If you want to experiment with your own training areas, you can draw new polygons directly in the Code Editor's geometry tools and assign them the same `class` values.
+
+For accuracy assessment, prepare a second separate `FeatureCollection` of validation polygons drawn in **different locations** from the training polygons, with the same numeric `class` property (1–5). Upload it as a GEE asset and load it below. Keeping training and validation polygons spatially separate avoids the inflated accuracy that results from splitting pixels within the same polygons.
 
 ```js
 // ------------------------------------------------------------
@@ -803,11 +802,63 @@ var trainingPolygons = water
 Map.addLayer(trainingPolygons, {color: 'white', opacity: 0.25}, 'Training polygons');
 ```
 
-![Training Polygons](training-polygons.png)
+Next we can also create separate validation polygons, which will be used to test on to assess the accuracy of the classification.
+
+```js
+// ------------------------------------------------------------
+// Define test polygons
+// These should be in separate areas than the training polygons
+// Each polygon needs a numeric class property (1-5).
+// ------------------------------------------------------------
+
+var water_test = ee.FeatureCollection([
+  ee.Feature(
+    ee.Geometry.Polygon(
+      [[[-76.5240, 38.8769],[-76.5213, 38.8769],[-76.5213, 38.8791],[-76.5240, 38.8790]]]),
+      {class: 1})]);
+      
+var manMade_test = ee.FeatureCollection([
+  ee.Feature(
+    ee.Geometry.MultiPolygon(
+      [[[[-76.5258, 38.8922],[-76.5258, 38.8919],[-76.5254, 38.8919],[-76.5254, 38.8922]]],
+      [[[-76.5196, 38.8873],[-76.5196, 38.8872],[-76.5195, 38.8872],[-76.5195, 38.8873]]]]),
+      {class: 2})]);      
+
+var stressedVeg_test = ee.FeatureCollection([
+  ee.Feature(
+    ee.Geometry.MultiPolygon(
+      [[[[-76.5370, 38.8723],[-76.5370, 38.8714],[-76.5359, 38.8714],[-76.5359, 38.8723]]],
+      [[[-76.5311, 38.8719],[-76.5311, 38.8711],[-76.5302, 38.8711],[-76.5302, 38.8719]]]]),
+      {class: 3})]);
+
+var lowVeg_test = ee.FeatureCollection([
+  ee.Feature(
+    ee.Geometry.MultiPolygon(
+      [[[[-76.5276, 38.8893],[-76.5276, 38.8887],[-76.5269, 38.8887],[-76.5269, 38.8893]]],
+      [[[-76.5325, 38.8750],[-76.5325, 38.8744],[-76.5317, 38.8744],[-76.5317, 38.8750]]]]),
+      {class: 4})]);
+
+var forest_test = ee.FeatureCollection([
+  ee.Feature(
+    ee.Geometry.MultiPolygon(
+      [[[[-76.5373, 38.8765],[-76.5373, 38.8754],[-76.5359, 38.8754],[-76.5359, 38.8765]]],
+      [[[-76.5334, 38.8724],[-76.5334, 38.8712],[-76.5320, 38.8712],[-76.5320, 38.8724]]]]),
+      {class: 5})]);
+
+var validationPolygons = water_test
+  .merge(manMade_test)
+  .merge(stressedVeg_test)
+  .merge(lowVeg_test)
+  .merge(forest_test);
+
+Map.addLayer(testPolygons, {color: 'yellow', opacity: 0.25}, 'Test polygons');
+```
+
+![Training and Validation Polygons](training-validation-polygons.png)
 
 ### 4c. Classification
 
-With training polygons defined, this script samples `zStack` at each polygon location, splits the samples 70/30 into training and validation sets, and trains a Random Forest classifier with 100 trees. Random Forest is a good default choice here because it is robust to the class imbalance typical of land cover datasets, where forest pixels far outnumber man-made pixels. ALso the tree-based splits are unaffected by feature scaling, so the z-scored inputs produce identical classification results to the raw PCA + CHM stack.
+With training polygons defined, this script samples `zStack` at each polygon location and trains a Random Forest classifier with 100 trees. Accuracy is evaluated using a separate set of validation polygons drawn in different locations from the training polygons. This produces a spatially independent test set, avoiding the inflated accuracy that results from randomly splitting pixels within the same polygons used for training. Random Forest is a good default choice here because it is robust to the class imbalance typical of land cover datasets and its tree-based splits are unaffected by feature scaling.
 
 ```js
 // ------------------------------------------------------------
@@ -816,33 +867,45 @@ With training polygons defined, this script samples `zStack` at each polygon loc
 
 // 1. Sample zStack at training polygon locations.
 // sampleRegions copies the class property into each sampled pixel.
-var trainingSample = zStack.sampleRegions({
+var trainSet = zStack.sampleRegions({
   collection: trainingPolygons,
   properties: ['class'],
   scale: 1,
   geometries: true
 });
 
-// ------------------------------------------------------------
-// 2. Add a random column for train/validation split
-// ------------------------------------------------------------
-var sampled = trainingSample.randomColumn('random', 42);
-
-var trainSet = sampled.filter(ee.Filter.lt('random', 0.7));
-var testSet  = sampled.filter(ee.Filter.gte('random', 0.7));
-
-// Print total and per-class sample counts to check balance.
-print('Total training samples', trainSet.size());
-print('Total validation samples', testSet.size());
-
+// Print per-class training sample counts to check for imbalance.
 var classIds = [1, 2, 3, 4, 5];
 var classNames = ['water', 'manMade', 'stressedVeg', 'lowVeg', 'forest'];
+print('Total training samples', trainSet.size());
 classIds.forEach(function(c, i) {
   print(
     'Train count — ' + classNames[i],
     trainSet.filter(ee.Filter.eq('class', c)).size()
   );
 });
+
+// ------------------------------------------------------------
+// 2. Load spatially independent validation polygons from a
+// separate uploaded asset. These must be drawn in different
+// locations from the training polygons, with the same numeric
+// 'class' property (1=water, 2=manMade, 3=stressedVeg,
+// 4=lowVeg, 5=forest). Update the asset path below.
+// ------------------------------------------------------------
+var validationPolygons = ee.FeatureCollection(
+  'projects/<your-project>/assets/validationPolygons_SERC_2022'
+);
+
+var testSet = zStack.sampleRegions({
+  collection: testPolygons,
+  properties: ['class'],
+  scale: 1,
+  geometries: true
+});
+
+print('Total validation samples', testSet.size());
+
+Map.addLayer(validationPolygons, {color: 'yellow', opacity: 0.4}, 'Validation polygons', false);
 
 // ------------------------------------------------------------
 // 3. Train a Random Forest classifier
@@ -875,15 +938,15 @@ Map.addLayer(
 
 ![Classification](supervised-classes.png)
 
-### 4c. Assess the classification results
+### 4d. Assess the classification results
 
-The 30% validation set held back during training is used here to evaluate how well the classifier generalizes to new pixels that weren't used in the training. Running those pixels through the trained model and comparing predicted labels against known labels produces a confusion matrix, a table where rows represent true classes and columns represent predicted classes. Diagonal cells are correct predictions; off-diagonal cells are errors.
+The spatially independent validation polygons are used here to evaluate how well the classifier generalizes to new locations. Running those pixels through the trained model and comparing predicted labels against known labels produces a confusion matrix, a table where rows represent true classes and columns represent predicted classes. Diagonal cells are correct predictions; off-diagonal cells are errors.
 
 Three summary metrics are printed:
 
 - **Overall accuracy:** the fraction of all validation pixels that were correctly classified. Straightforward but can be misleading if classes are imbalanced (e.g., if forest covers 80% of the AOI, a classifier that predicts "forest" everywhere would score 80% overall accuracy while being useless for other classes).
-- **Producer's accuracy:** for each class, the fraction of true pixels of that class that were correctly identified. Low producer's accuracy for a class means the classifier is frequently missing it (errors of omission). This is the most useful per-class diagnostic for this dataset.
-- **Consumer's accuracy (user's accuracy):** for each class, the fraction of pixels predicted as that class that are actually that class. Low consumer's accuracy means the classifier is mislabeling other classes as this one (errors of commission).
+- **Producer's accuracy (recall):** for each class, the fraction of true pixels of that class that were correctly identified. Low producer's accuracy for a class means the classifier is frequently missing it (errors of omission). This is the most useful per-class diagnostic for this dataset.
+- **Consumer's accuracy (precision):** for each class, the fraction of pixels predicted as that class that are actually that class. Low consumer's accuracy means the classifier is mislabeling other classes as this one (errors of commission).
 
 ```js
 // ------------------------------------------------------------
@@ -894,13 +957,20 @@ var validated = testSet.classify(classifier);
 var confusion = validated.errorMatrix('class', 'classification');
 print('Confusion matrix', confusion);
 print('Overall accuracy', confusion.accuracy());
-print("Producer's accuracy (recall per class)", confusion.producersAccuracy());
-print("Consumer's accuracy (precision per class)", confusion.consumersAccuracy());
+print("Recall:", confusion.producersAccuracy());
+print("Precision:", confusion.consumersAccuracy());
 ```
 
-If your accuracy metrics are very high (e.g., overall accuracy > 0.99), this is most likely a consequence of **spatial autocorrelation** rather than a sign the classifier is genuinely that accurate. At 1 m resolution, adjacent pixels within the same small polygon are nearly identical spectrally. A random 70/30 split doesn't account for spatial proximity. Neighboring pixels end up on both sides of the split, so the validation set is not truly independent of the training set. The classifier is effectively tested on pixels it has seen spatially close neighbors of, which inflates all accuracy metrics.
+```
+Overall accuracy: 0.9972...
+Recall:       [0.9996, 0.8973, 0.9823, 0.9990, 0.9968]
+Precision:    [0.9999, 0.6823, 0.9940, 0.9501, 0.9999]
+```
 
-A more honest assessment requires spatially independent validation data: either hold out entire polygons for validation (rather than random pixel splits within polygons), or collect separate validation polygons in different locations from the training polygons. With genuinely independent validation, you should expect overall accuracy in the 85–95% range for this scene, with water and forest scoring highest and man-made surfaces and stressed vegetation being the most likely sources of confusion due to spectral overlap in the PC bands.
+The overall accuracy is very high (99.7%), but the recall and precision show a class-wise breakdown. The 2nd class (man-made) has the lowest recall (89.7%) and precision (68.2%). This makes sense with what we saw in the k-means classificaiton as well. Looking at the number of training data points for this class, we can see that it's much lower than the other classes, since there is relatively less built environment pixels in the scene than the other classes. More training points may be required to improve the accuracy for this class.
+
+
+Because the validation polygons are drawn in different locations from the training polygons, the accuracy metrics here reflect how well the classifier generalizes spatially, not just how well it memorizes pixels within the same patches. Expect overall accuracy in the 85–95% range, with water and forest scoring highest. Man-made surfaces and stressed vegetation are the most likely sources of confusion because their spectral signatures overlap in the PC bands. If accuracy for those classes is low, add more training polygons in areas where the RGB image clearly distinguishes them.
 
 ## 5. Discussion
 

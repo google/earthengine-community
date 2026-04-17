@@ -27,7 +27,7 @@ The principal components transform is a spectral rotation that takes spectrally 
 
 ## Context
 
-The National Ecological Observatory Network (NEON), solely funded by the National Science Foundation, provides 1 meter resolution [airborne datasets](https://developers.google.com/earth-engine/datasets/publisher/neon-prod-earthengine), across the United States, including 426 band [hyperspectral data](https://developers.google.com/earth-engine/datasets/catalog/projects_neon-prod-earthengine_assets_HSI_REFL_002) and lidar-derived data, including [Canopy Height Model](https://developers.google.com/earth-engine/datasets/catalog/projects_neon-prod-earthengine_assets_CHM_001). Click on the links to learn more about [NEON](https://www.neonscience.org/) and NEON's [Airborne Remote Sensing](https://www.neonscience.org/data-collection/airborne-remote-sensing) program, which provide open datasets ideal for pairing with satellite data.
+The National Ecological Observatory Network (NEON), solely funded by the National Science Foundation, provides 1 meter resolution [airborne datasets](https://developers.google.com/earth-engine/datasets/publisher/neon-prod-earthengine), across the United States, including 426 band [hyperspectral data](https://developers.google.com/earth-engine/datasets/catalog/projects_neon-prod-earthengine_assets_HSI_REFL_002) and lidar-derived data, including a [Canopy Height Model](https://developers.google.com/earth-engine/datasets/catalog/projects_neon-prod-earthengine_assets_CHM_001). Click on the links to learn more about [NEON](https://www.neonscience.org/) and NEON's [Airborne Remote Sensing](https://www.neonscience.org/data-collection/airborne-remote-sensing) program, which provide high-resolution open datasets ideal for pairing with satellite data.
 
 ## Outline
 
@@ -110,14 +110,16 @@ print('Data Citation:', reflCitation)
 ```
 
 ![SERC 2022 WQI](serc-wqi-map.png)
+Weather Quality Indicator Map of the SERC site, where green represents <10% cloud cover and yellow represents 10-50% cloud cover.
 
 ![SERC reflectance data with AOI](serc-refl-aoi.png)
+True color image from the reflectance data, showing the Area of Interest (aoi) that will be used throughout the rest of the tutorial.
 
 ## 2. Compute Principal Component Analysis on reflectance data using representative sampling
 
 [Part 2 - Open In Code Editor](https://code.earthengine.google.com/36903e32696fc18c4bdb157f3e3c88ae)
 
-With 426 spectral bands, computing PCA statistics across every pixel in the AOI would be prohibitively expensive in Earth Engine. Instead, this script draws a small representative sample of pixels — here 5,000 points at 1 m resolution — and uses that sample to estimate the band means and covariance matrix. The sample geometry (a convex hull of the sampled points) is passed to `reduceRegion` to limit computation to just those locations. The resulting covariance matrix is the same 426 × 426 array you would get from a full-scene computation, but derived from a fraction of the pixels, which keeps memory and compute time manageable.
+With 426 spectral bands, computing PCA statistics across every pixel in the AOI would be memory-intensive in Earth Engine. Instead, this script draws a small representative sample of pixels (5,000 points at 1 m resolution) and uses that sample to estimate the band means and covariance matrix. The `geometry()` of the sampled `FeatureCollection` is a MultiPoint — so when passed to `reduceRegion`, statistics are computed only at those 5,000 pixel locations. The resulting 426 × 426 covariance matrix is estimated from that sample, which keeps memory and compute time manageable.
 
 The `calcImagePca` function carries out four steps:
 1. Convert the multi-band image to an array image for matrix algebra.
@@ -125,11 +127,11 @@ The `calcImagePca` function carries out four steps:
 3. Compute the covariance matrix of the centered array over the sample geometry.
 4. Compute eigenvalues and eigenvectors, then project the full image onto the eigenvectors to produce the PC bands.
 
-Note that the statistics (steps 2–3) are estimated from the sample, but the projection (step 4) is applied to every pixel in the clipped AOI image — so the output PCA image covers the full AOI at full 1 m resolution.
+Note that the statistics (steps 2–3) are estimated from the sample, but the projection (step 4) is applied to every pixel in the clipped AOI image, so the output PCA image covers the full AOI at full 1 m resolution.
 
 ```js
 // ------------------------------------------------------------
-// Script 2. Compute principal components from NEON hyperspectral
+// Compute principal components from NEON hyperspectral
 // imagery over the AOI, and display a representative sample of
 // pixels used to guide the PCA calculation.
 // ------------------------------------------------------------
@@ -191,7 +193,7 @@ print('Sample points', samplePoints.limit(10));
 
 ![PCA Representative Samples](pca-samples.png)
 
-The white points show where spectral statistics will be drawn from. A well-distributed sample like this — spread across forest, open water and man-made surfaces, helps the covariance matrix capture the full range of spectral variability in the scene, which in turn produces more representative eigenvectors. Next define some functions that will compute the PCA.
+The white points show where spectral statistics will be drawn from. A well-distributed sample like this, spread across forest, open water and man-made surfaces, helps the covariance matrix capture the full range of spectral variability in the scene, which in turn produces more representative eigenvectors. Next we'll define some functions to compute the PCA.
 
 ```javascript
 // ------------------------------------------------------------
@@ -315,7 +317,7 @@ pctEach:       [87.1, 9.2, 1.5, 0.6, 0.5]
 pctCumulative: [87.1, 96.4, 97.9, 98.5, 99.0]
 ```
 
-PC1 alone captures roughly 87% of the total variance — reflecting the dominant brightness gradient across vegetation, soil, and man-made surfaces in the scene. PC2 adds another ~9%, and by PC5, the cumulative variance is already around 99%, which means five principal components preserve nearly all the spectral structure of the original 426 bands. The remaining bands contribute mostly sensor noise and correlated atmospheric effects. This steep drop-off is typical of hyperspectral data, where adjacent bands are highly correlated, and is exactly why PCA is an effective dimensionality-reduction step before classification.
+PC1 alone captures roughly 87% of the total variance, reflecting the dominant spectral variation across vegetation, soil, and man-made surfaces in the scene. PC2 adds another ~9%, and by PC5, the cumulative variance is already around 99%, which means five principal components preserve nearly all the spectral structure of the original 426 bands. The remaining bands contribute mostly sensor noise and correlated atmospheric effects. This steep drop-off is typical of hyperspectral data, where adjacent bands are highly correlated, and is exactly why PCA is an effective dimensionality-reduction step before classification.
 
 ## 3. k-Means Unsupervised Classification
 
@@ -610,9 +612,9 @@ Map.addLayer(
 
 ![k-Means Classes](kmeans-classes.png)
 
-The cluster summary table printed to the console — showing mean RGB reflectance and mean CHM height per cluster — is a useful tool for deciding which semantic label to assign to each cluster. Clusters with near-zero CHM and low red/green reflectance are typically water or deep shadow. High CHM values reliably identify tall forest canopy. Low CHM with high visible reflectance points to impervious surfaces or exposed soil. The ambiguous cases — stressed vegetation, agricultural fields, and paved surfaces — often share similar spectral signatures and may be lumped into the same cluster, which is a known limitation of unsupervised classification without additional information.
+The clusters in the layer manager (Cluster 0 through Cluster 7) can be compared against the RGB and CHM layers to determine the appropratie class for each. The cluster summary table printed to the console shows the mean RGB reflectance and mean CHM height per cluster, and is a useful tool for deciding which semantic label to assign to each cluster. Clusters with near-zero CHM and low red/green reflectance are typically water or deep shadow. High CHM values reliably identify tall forest canopy. Low CHM with high visible reflectance points to impervious surfaces or exposed soil. The ambiguous cases, such as stressed vegetation, agricultural fields, and paved surfaces, often share similar spectral signatures and may be lumped into the same cluster. This is a known limitation of unsupervised classification without additional information.
 
-Note that k-Means cluster IDs are arbitrary and will change between runs and with different random seeds, so the `remap` values in the labeling step will need to be updated any time `num_clusters` or the sample changes. The cluster summary printout is what guides that mapping each time, along with visually inspecting each cluster (1-7) along with the RGB and CHM layers.
+Note that k-Means cluster IDs are arbitrary and will change between runs and with different random seeds, so the `remap` values in the labeling step will need to be updated any time `num_clusters` or the sample changes. The cluster summary printout and cluster layers are what guides that mapping each time.
 
 ### 3b. Make a confidence map of the clusters
 
@@ -687,23 +689,23 @@ Map.addLayer(
 
 ![k-Means Cluster Confidence](kmeans-confidence.png)
 
-Comparing against the RGB reflectance image, the lowest-confidence areas fall predominantly on the man-made surfaces in the northeast of the AOI, roads, and boats, as well as the agricultural fields (which we labeled as stressed vegetation). This is consistent with what the cluster summaries showed: those two cover types share similar spectral signatures — both tend to have moderate reflectance and low CHM values — so they were grouped together rather than separated into distinct clusters. 
+Comparing against the RGB reflectance image, the lowest-confidence areas fall predominantly on the man-made surfaces in the northeast of the AOI, roads, and boats, as well as the agricultural fields (which we labeled as stressed vegetation). This is consistent with what the cluster summaries showed: those two cover types share similar spectral signatures. Both tend to have moderate reflectance and low CHM values, so they were grouped together rather than separated into distinct clusters. 
 
-Two things are worth noting when interpreting this map. First, confidence is relative: it is normalised to the maximum intra-cluster distance observed in the AOI, so a confidence of 0.9 means "close to its centroid relative to the hardest case in the scene," not an absolute probability. Second, low confidence does not mean the labeling is wrong — it means the pixel is spectrally intermediate. Those pixels are the most informative targets for follow-up: adding training polygons in those locations for the supervised classifier in Section 4 is likely to have the greatest impact on accuracy.
+Two things are worth noting when interpreting this map. First, confidence is relative: it is normalised to the maximum intra-cluster distance observed in the AOI, so a confidence of 0.9 means "close to its centroid relative to the hardest case in the scene," not an absolute probability. Second, low confidence does not mean the labeling is wrong, it means the pixel is spectrally intermediate. Those pixels are the most informative targets for follow-up: adding training polygons in those locations for the supervised classifier in Section 4 is likely to have the greatest impact on accuracy.
 
 The `confidenceThreshold` variable controls how aggressively ambiguous pixels are masked. At 0.8 (the default), most class-boundary artifacts are removed while retaining the majority of the scene. Raising it to 0.9 or higher isolates only the core, most homogeneous areas of each class; lowering it toward 0.5 recovers more pixels but reintroduces the mixed-cover areas.
 
 ## 4. Random Forest Supervised Classification
 
-[Part 4 - Open In Code Editor](https://code.earthengine.google.com/63116985fb032aba03adf6f3da967fa1)
+[Part 4 - Open In Code Editor](https://code.earthengine.google.com/5bfe80d1930eecfd76d68f6c87c3980d)
 
-While k-Means discovers structure without any prior knowledge, Random Forest is a supervised classifier that learns from labeled examples you provide. This makes it more precise for distinguishing classes that are spectrally similar but ecologically distinct — such as stressed vegetation vs. low healthy vegetation — because the training polygons directly show the classifier what each class looks like in feature space.
+While k-Means discovers structure without any prior knowledge, Random Forest is a supervised classifier that learns from labeled examples you provide. This makes it more precise for distinguishing classes that are spectrally similar but ecologically distinct (such as roads and stressed vegetation) because the training polygons directly show the classifier what each class looks like in feature space.
 
 The feature stack here is the same PCA + CHM combination used for k-Means, but the CHM plays an especially important role in supervised classification: it lets the classifier separate tall-canopy forest from other green surfaces using structure rather than spectral response alone, something that is difficult to achieve with reflectance data exclusively.
 
 ### 4a. Build a standardized feature stack using the top principal components + CHM
 
-This script reuses the `zStack` (z-scored PC1–PC5 + CHM) already built in section 3. Z-scoring is not required for Random Forest — unlike k-Means, RF makes no assumptions about feature scale or distance — but since we already have it, reusing it avoids rebuilding the same image. The classification results will be equivalent to training on the un-scaled `featureStack`; Random Forest's internal decision tree splits are invariant to monotonic rescaling of input features.
+This script reuses the `zStack` (z-scored PC1–PC5 + CHM) already built in section 3. Z-scoring is not required for Random Forest. Unlike k-Means, RF makes no assumptions about feature scale or distance, but since we already have it, reusing it avoids rebuilding the same feature stack. The classification results will be equivalent to training on the un-scaled `featureStack`; Random Forest's internal decision tree splits are invariant to monotonic rescaling of input features.
 
 ```js
 // ------------------------------------------------------------
@@ -829,6 +831,19 @@ var sampled = trainingSample.randomColumn('random', 42);
 var trainSet = sampled.filter(ee.Filter.lt('random', 0.7));
 var testSet  = sampled.filter(ee.Filter.gte('random', 0.7));
 
+// Print total and per-class sample counts to check balance.
+print('Total training samples', trainSet.size());
+print('Total validation samples', testSet.size());
+
+var classIds = [1, 2, 3, 4, 5];
+var classNames = ['water', 'manMade', 'stressedVeg', 'lowVeg', 'forest'];
+classIds.forEach(function(c, i) {
+  print(
+    'Train count — ' + classNames[i],
+    trainSet.filter(ee.Filter.eq('class', c)).size()
+  );
+});
+
 // ------------------------------------------------------------
 // 3. Train a Random Forest classifier
 // ------------------------------------------------------------
@@ -866,9 +881,9 @@ The 30% validation set held back during training is used here to evaluate how we
 
 Three summary metrics are printed:
 
-- **Overall accuracy** — the fraction of all validation pixels that were correctly classified. Straightforward but can be misleading if classes are imbalanced (e.g., if forest covers 80% of the AOI, a classifier that predicts "forest" everywhere would score 80% overall accuracy while being useless for other classes).
-- **Producer's accuracy** — for each class, the fraction of true pixels of that class that were correctly identified. Low producer's accuracy for a class means the classifier is frequently missing it (errors of omission). This is the most useful per-class diagnostic for this dataset.
-- **Consumer's accuracy (user's accuracy)** — for each class, the fraction of pixels predicted as that class that are actually that class. Low consumer's accuracy means the classifier is mislabeling other classes as this one (errors of commission).
+- **Overall accuracy:** the fraction of all validation pixels that were correctly classified. Straightforward but can be misleading if classes are imbalanced (e.g., if forest covers 80% of the AOI, a classifier that predicts "forest" everywhere would score 80% overall accuracy while being useless for other classes).
+- **Producer's accuracy:** for each class, the fraction of true pixels of that class that were correctly identified. Low producer's accuracy for a class means the classifier is frequently missing it (errors of omission). This is the most useful per-class diagnostic for this dataset.
+- **Consumer's accuracy (user's accuracy):** for each class, the fraction of pixels predicted as that class that are actually that class. Low consumer's accuracy means the classifier is mislabeling other classes as this one (errors of commission).
 
 ```js
 // ------------------------------------------------------------
@@ -883,7 +898,9 @@ print("Producer's accuracy (recall per class)", confusion.producersAccuracy());
 print("Consumer's accuracy (precision per class)", confusion.consumersAccuracy());
 ```
 
-For a well-trained classifier on this AOI you should expect overall accuracy above 90%, with water and forest — the spectrally and structurally most distinct classes — achieving the highest per-class accuracies. Man-made surfaces and stressed vegetation are the most likely sources of confusion because their spectral signatures can overlap, particularly in the PC bands. If accuracy for those classes is low, consider adding more training polygons in areas where the RGB image clearly distinguishes them.
+If your accuracy metrics are very high (e.g., overall accuracy > 0.99), this is most likely a consequence of **spatial autocorrelation** rather than a sign the classifier is genuinely that accurate. At 1 m resolution, adjacent pixels within the same small polygon are nearly identical spectrally. A random 70/30 split doesn't account for spatial proximity — neighboring pixels end up on both sides of the split, so the validation set is not truly independent of the training set. The classifier is effectively tested on pixels it has seen spatially close neighbors of, which inflates all accuracy metrics.
+
+A more honest assessment requires spatially independent validation data: either hold out entire polygons for validation (rather than random pixel splits within polygons), or collect separate validation polygons in different locations from the training polygons. With genuinely independent validation, you should expect overall accuracy in the 85–95% range for this scene, with water and forest scoring highest and man-made surfaces and stressed vegetation being the most likely sources of confusion due to spectral overlap in the PC bands.
 
 ## 5. Discussion
 

@@ -35,7 +35,9 @@ Outline of what this tutorial will cover:
 
 1. Read in the NEON Hyperspectral dataset, assess weather quality and select the AOI
 2. Compute Principal Component Analysis on reflectance data using representative sampling
-3. Build a feature stack including the principal copmonents and CHM, classify land cover with random forest, and assess results
+3. k-Means unsupervised classification
+4. Build a feature stack including the principal copmonents and CHM, classify land cover with random forest, and assess results
+5. Discussion 
 
 ### 1. Read in the NEON Hyperspectral Image Collection and select the Area of Interest
 
@@ -314,11 +316,283 @@ pctCumulative: [87.1, 96.4, 97.9, 98.5, 99.0]
 
 PC1 alone captures roughly 87% of the total variance — reflecting the dominant brightness gradient across vegetation, soil, and man-made surfaces in the scene. PC2 adds another ~9%, and by PC5, the cumulative variance is already around 99%, which means five principal components preserve nearly all the spectral structure of the original 426 bands. The remaining bands contribute mostly sensor noise and correlated atmospheric effects. This steep drop-off is typical of hyperspectral data, where adjacent bands are highly correlated, and is exactly why PCA is an effective dimensionality-reduction step before classification.
 
-### 3. Random Forest Classification 
+### 3. k-Means Unsupervised Classification
 
-#### 3a. Build a standardized feature stack using the top principal components + CHM
+k-Means is an unsupervised clustering algorithm that groups pixels purely by spectral and structural similarity, with no human-provided class labels. This makes it a useful first-pass classification tool: you can run it immediately after PCA without any training data, and the resulting clusters often correspond to land cover types that can then be interpreted visually.
 
-[Part 3 - Open In Code Editor](https://code.earthengine.google.com/63116985fb032aba03adf6f3da967fa1)
+The workflow here uses a z-scored PCA + CHM feature stack. Z-scoring is important for k-Means because the algorithm measures distance in feature space — without it, a band with a large numeric range (like raw reflectance values in the thousands) would dominate the clustering and suppress the contribution of narrower-range bands like the CHM. After clustering into 8 groups, each cluster's mean reflectance (from the RGB bands) and mean CHM height are computed to help you assign semantic land cover labels by visually comparing with the RGB reflectance image and CHM layers.
+
+```js
+// ------------------------------------------------------------
+// Bandwise z-scoring of PC bands + CHM
+// ------------------------------------------------------------
+
+// Define area of interest.
+var aoi = ee.Geometry.Rectangle([-76.5413, 38.8624, -76.5183, 38.8968]);
+
+// Working scale in meters
+var scale = 1;
+
+// ------------------------------------------------------------
+// Input data
+// ------------------------------------------------------------
+
+// Hyperspectral reflectance image for visual interpretation.
+var reflImage = ee.Image(
+  'projects/neon-prod-earthengine/assets/HSI_REFL/002/2022_SERC_6'
+);
+
+// CHM image from the same airborne campaign.
+var chmImage = ee.Image(
+  'projects/neon-prod-earthengine/assets/CHM/001/2022_SERC_6'
+).rename('CHM');
+
+// Principal components image from hyperspectral data.
+var pcImage = ee.Image(
+  'projects/neon-sandbox-dataflow-ee/assets/2022_SERC_6_PCA'
+);
+
+// Inspect available PC band names if needed.
+print('PC image band names', pcImage.bandNames());
+print('CHM band names', chmImage.bandNames());
+
+// ------------------------------------------------------------
+// Select PC bands to include in the feature stack
+// ------------------------------------------------------------
+
+// Update these if your asset uses different band names.
+var pcBands = ['PC1', 'PC2', 'PC3', 'PC4', 'PC5'];
+
+// Build the feature stack: PCs + CHM
+var featureStack = pcImage.select(pcBands).addBands(chmImage);
+
+print('Feature stack', featureStack);
+
+// ------------------------------------------------------------
+// Function for per-band z-scoring
+// ------------------------------------------------------------
+
+function zScoreByBand(image, region, scale) {
+  var stats = image.reduceRegion({
+    reducer: ee.Reducer.mean().combine({
+      reducer2: ee.Reducer.stdDev(),
+      sharedInputs: true
+    }),
+    geometry: region,
+    scale: scale,
+    maxPixels: 1e13,
+    bestEffort: true
+  });
+
+  var bandNames = image.bandNames();
+
+  var meanImage = ee.Image.constant(
+    bandNames.map(function(b) {
+      return ee.Number(stats.get(ee.String(b).cat('_mean')));
+    })
+  ).rename(bandNames);
+
+  var stdDevImage = ee.Image.constant(
+    bandNames.map(function(b) {
+      return ee.Number(stats.get(ee.String(b).cat('_stdDev')));
+    })
+  ).rename(bandNames);
+
+  // Prevent divide-by-zero for bands with no variation.
+  stdDevImage = stdDevImage.where(stdDevImage.eq(0), 1);
+
+  return image.subtract(meanImage).divide(stdDevImage);
+}
+
+// Apply z-scoring bandwise across the stack.
+var zStack = zScoreByBand(featureStack, aoi, scale);
+
+// Optional: rename output bands to make the result explicit.
+var zBandNames = featureStack.bandNames().map(function(b) {
+  return ee.String(b).cat('_z');
+});
+zStack = zStack.rename(zBandNames);
+
+print('Z-scored feature stack', zStack);
+
+// ------------------------------------------------------------
+// Quick visualization examples
+// ------------------------------------------------------------
+
+// Center map on AOI.
+Map.centerObject(aoi, 13);
+
+// Raw CHM
+Map.addLayer(
+  chmImage.clip(aoi),
+  {min: 0, max: 30},
+  'Raw CHM'
+);
+
+// Reflectance RGB
+Map.addLayer(
+  reflImage.clip(aoi),
+  {bands: ['B053', 'B035', 'B019'], min: 0, max: 1000},
+  'Reflectance RGB'
+);
+
+// Z-scored CHM
+Map.addLayer(
+  zStack.select('CHM_z').clip(aoi),
+  {min: -2, max: 2},
+  'Z-scored CHM'
+);
+
+// Example z-scored PCs
+Map.addLayer(
+  zStack.select(['PC1_z', 'PC2_z', 'PC3_z']).clip(aoi),
+  {min: -2, max: 2},
+  'Z-scored PCs'
+);
+
+// ------------------------------------------------------------
+// Optional: sample the z-scored stack for k-means clustering
+// ------------------------------------------------------------
+
+var training = zStack.sample({
+  region: aoi,
+  scale: scale,
+  numPixels: 5000,
+  geometries: false
+});
+
+var num_clusters = 8
+
+var clusterer = ee.Clusterer.wekaKMeans(num_clusters).train(training);
+
+var clustered = zStack.cluster(clusterer);
+
+Map.addLayer(
+  clustered.clip(aoi).randomVisualizer(),
+  {},
+  'K-means clusters'
+);
+
+// ------------------------------------------------------------
+// Optional helper: add each cluster as a toggleable layer
+// ------------------------------------------------------------
+function showClusterMask(clusterId) {
+  var mask = clustered.eq(clusterId).selfMask();
+
+  Map.addLayer(
+    mask.clip(aoi),
+    {palette: ['yellow']},
+    'Cluster ' + clusterId,
+    false
+  );
+}
+
+// Add one toggleable layer per cluster.
+// Update the number if you used a different k in k-means.
+for (var i = 0; i < num_clusters; i++) {
+  showClusterMask(i);
+}
+
+// RGB bands.
+var rgbBands = ['B053', 'B035', 'B019'];
+
+// ------------------------------------------------------------
+// Compute simple per-cluster summaries
+// These can help support visual interpretation.
+// ------------------------------------------------------------
+var interpretationStack = reflImage
+  .select(rgbBands)
+  .addBands(chmImage.rename('CHM'))
+  .addBands(clustered.rename('cluster'));
+
+var sample = interpretationStack.sample({
+  region: aoi,
+  scale: scale,
+  numPixels: 10000,
+  geometries: false,
+  seed: 42
+});
+
+var clusterIds = ee.List(sample.aggregate_array('cluster')).distinct().sort();
+print('Cluster IDs', clusterIds);
+
+var clusterSummaries = ee.FeatureCollection(
+  clusterIds.map(function(id) {
+    id = ee.Number(id);
+
+    var subset = sample.filter(ee.Filter.eq('cluster', id));
+
+    var stats = ee.Dictionary({
+      cluster: id,
+      count: subset.size(),
+      mean_CHM: subset.aggregate_mean('CHM')
+    });
+
+    var bandStats = ee.Dictionary(
+      ee.List(rgbBands).iterate(function(b, acc) {
+        b = ee.String(b);
+        acc = ee.Dictionary(acc);
+        return acc.set(
+          ee.String('mean_').cat(b),
+          subset.aggregate_mean(b)
+        );
+      }, ee.Dictionary({}))
+    );
+
+    return ee.Feature(null, stats.combine(bandStats, true));
+  })
+);
+
+print('Cluster summaries', clusterSummaries);
+
+// ------------------------------------------------------------
+// Manual semantic label assignment
+// After reviewing the RGB image, CHM, cluster map, and
+// cluster summaries, assign a class to each cluster.
+// ------------------------------------------------------------
+
+// Assign a semantic class to each cluster ID.
+// The lists are matched by position:
+// cluster 0 -> class 4 (tall veg)
+// cluster 1 -> class 1 (shadows / water)
+// cluster 2 -> class 4 (tall veg)
+// cluster 3 -> class 1 (shadows / water)
+// cluster 4 -> class 4 (tall veg)
+// cluster 5 -> class 2 (low veg dead / pavement / piers)
+// cluster 6 -> class 2 (low veg dead / pavement / piers)
+// cluster 7 -> class 3 (low veg, healthy)
+
+// these clusters don't do a great job of differentiating beween what look to be dead agricultural fields and pavement/piers, etc.
+// we will just note that for now and not try to fix it
+
+// make two lists to link the clusters and classes
+var fromClusters = [0, 1, 2, 3, 4, 5, 6, 7];
+var toClasses    = [4, 1, 4, 1, 4, 2, 2, 3];
+
+var labeledClusters = clustered
+  .remap(fromClusters, toClasses)
+  .rename('class');
+
+Map.addLayer(
+  labeledClusters.clip(aoi),
+  {
+    min: 1,
+    max: 4,
+    palette: ['darkblue', 'brown', 'lightgreen', 'green']
+  },
+  'Labeled classes'
+);
+```
+
+The cluster summary table printed to the console — showing mean RGB reflectance and mean CHM height per cluster — is a useful tool for deciding which semantic label to assign to each cluster. Clusters with near-zero CHM and low red/green reflectance are typically water or deep shadow. High CHM values reliably identify tall forest canopy. Low CHM with high visible reflectance points to impervious surfaces or exposed soil. The ambiguous cases — stressed vegetation, agricultural fields, and paved surfaces — often share similar spectral signatures and may be lumped into the same cluster, which is a known limitation of unsupervised classification without additional information.
+
+Note that k-Means cluster IDs are arbitrary and will change between runs and with different random seeds, so the `remap` values in the labeling step will need to be updated any time `num_clusters` or the sample changes. The cluster summary printout is what guides that mapping each time.
+
+### 4. Random Forest Supervised Classification 
+
+#### 4a. Build a standardized feature stack using the top principal components + CHM
+
+[Part 4 - Open In Code Editor](https://code.earthengine.google.com/63116985fb032aba03adf6f3da967fa1)
 
 ```js
 // ------------------------------------------------------------
@@ -371,7 +645,7 @@ Map.addLayer(
 
 ![Feature Stack](feature-stack.png)
 
-#### 3b. Select polygons representing different land cover types
+#### 4b. Select polygons representing different land cover types
 
 To train the classifier, you need labeled examples of each land cover type. Here, five classes are defined: water, man-made surfaces, stressed vegetation, low vegetation, and forest. Each class is represented by two small polygons drawn over areas that are clearly identifiable in the RGB reflectance image and the CHM. The polygons are given a numeric `class` property and merged into a single `FeatureCollection` that will be passed to `sampleRegions` in the next step. If you want to experiment with your own training areas, you can draw new polygons directly in the Code Editor's geometry tools and assign them the same `class` values.
 
@@ -428,7 +702,7 @@ Map.addLayer(trainingPolygons, {color: 'white', opacity: 0.25}, 'Training polygo
 
 ![Training Polygons](training-polygons.png)
 
-#### 3c. Classification
+#### 4c. Classification
 
 With training polygons defined, this script samples the feature stack (PC1–PC5 + CHM) at each polygon location, splits the samples 70/30 into training and validation sets, and trains a Random Forest classifier with 100 trees. Random Forest is a good default choice here because it handles the mix of PCA-derived bands and the structurally different CHM band without requiring feature scaling, and it is robust to the class imbalance typical of land cover datasets where for example water and forest pixels far outnumber man-made pixels. The trained classifier is then applied to the full AOI to produce a wall-to-wall land cover map.
 
@@ -485,7 +759,7 @@ Map.addLayer(
 
 ![Classification](supervised-classes.png)
 
-#### 3d. Assess the classification results
+#### 4d. Assess the classification results
 
 The 30% validation set held back during training is used here to evaluate how well the classifier generalizes to new pixels that weren't used in the training. Running those pixels through the trained model and comparing predicted labels against known labels produces a confusion matrix — a table where rows represent true classes and columns represent predicted classes. Diagonal cells are correct predictions; off-diagonal cells are errors.
 
@@ -494,8 +768,6 @@ Three summary metrics are printed:
 - **Overall accuracy** — the fraction of all validation pixels that were correctly classified. Straightforward but can be misleading if classes are imbalanced (e.g., if forest covers 80% of the AOI, a classifier that predicts "forest" everywhere would score 80% overall accuracy while being useless for other classes).
 - **Producer's accuracy** — for each class, the fraction of true pixels of that class that were correctly identified. Low producer's accuracy for a class means the classifier is frequently missing it (errors of omission). This is the most useful per-class diagnostic for this dataset.
 - **Consumer's accuracy (user's accuracy)** — for each class, the fraction of pixels predicted as that class that are actually that class. Low consumer's accuracy means the classifier is mislabeling other classes as this one (errors of commission).
-
-Kappa is omitted here — it adjusts for chance agreement, but for a straightforward multi-class accuracy assessment with a held-out split, overall accuracy and per-class producer's/consumer's accuracies are more interpretable and actionable.
 
 ```js
 // ------------------------------------------------------------
@@ -511,4 +783,38 @@ print("Consumer's accuracy (precision per class)", confusion.consumersAccuracy()
 ```
 
 For a well-trained classifier on this AOI you should expect overall accuracy above 90%, with water and forest — the spectrally and structurally most distinct classes — achieving the highest per-class accuracies. Man-made surfaces and stressed vegetation are the most likely sources of confusion because their spectral signatures can overlap, particularly in the PC bands. If accuracy for those classes is low, consider adding more training polygons in areas where the RGB image clearly distinguishes them.
+
+## 5. Discussion
+
+### Comparing k-Means and Random Forest
+
+The two classifiers reflect a fundamental trade-off between effort and precision:
+
+| | k-Means | Random Forest |
+|---|---|---|
+| Labels required | None — fully unsupervised | Yes — training polygons per class |
+| Output classes | Arbitrary clusters needing manual interpretation | Named, semantically defined classes |
+| Class boundaries | Set by spectral distance in feature space | Set by labeled examples |
+| Accuracy assessment | Not directly possible without ground truth | Standard (confusion matrix, accuracy metrics) |
+| Best use case | Exploratory analysis, unknown classes | Production mapping, when classes are defined |
+
+For this AOI, k-Means with 8 clusters does a reasonable job separating water, tall forest, and low vegetation, but tends to lump spectrally similar surfaces — stressed crops, bare soil, and paved areas — into the same cluster. Random Forest, given explicit examples of each class, can more reliably distinguish those ambiguous types, particularly when the CHM provides a structural cue that spectral bands alone cannot resolve (e.g., tall-canopy forest vs. tall herbaceous vegetation).
+
+A practical workflow is to run k-Means first as an exploratory step to understand the spectral diversity in the scene, then use it to guide where to place training polygons for the supervised classifier.
+
+### Does PCA actually help?
+
+For both classifiers, PCA provides two concrete benefits with NEON hyperspectral data:
+
+**1. Memory and compute efficiency.** Running k-Means or `sampleRegions` directly on 426 raw bands would be very slow and may hit Earth Engine's memory limits. With 5 PCs, the same information is encoded in a fraction of the data volume.
+
+**2. Noise reduction.** Hyperspectral sensors produce bands that capture mostly noise beyond the first few dozen principal components. PCA concentrates signal in the leading components and effectively discards those noise-dominated dimensions. Both classifiers benefit from not having to partition on noisy features.
+
+Additionally, for k-Means, there is another benefit:
+
+**Decorrelation for k-Means.** Adjacent hyperspectral bands are highly correlated — the same information is repeated dozens of times across the spectrum. k-Means treats each band as an independent dimension, so feeding it 426 correlated bands means the clustering is dominated by whichever spectral regions happen to have the most redundant coverage. PCA-transformed bands are by construction uncorrelated, so each PC contributes genuinely new information to the distance calculation.
+
+For Random Forest, the benefit of decorrelation is less critical — the algorithm is designed to select informative features and is relatively robust to redundant inputs — but the compute and memory savings alone justify the PCA step for 426-band data in Earth Engine.
+
+**When you might skip PCA:** if you are working with a small number of bands (e.g., a 10-band multispectral image), PCA is usually not worth the added complexity. It becomes increasingly valuable as band count grows above ~20–30, and can be helpful for full hyperspectral stacks like NEON's.
 

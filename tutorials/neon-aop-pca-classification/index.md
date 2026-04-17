@@ -1,8 +1,8 @@
 ---
-title: Using Airborne Hyperspectral Data for Satellite Image Classification with Principal Components and k‑Means
-description: 
+title: Dimensionality Reduction and Land Cover Classification with NEON Hyperspectral and Canopy Height Model Data
+description: Learn how to reduce NEON's 426-band airborne hyperspectral reflectance data to a compact set of principal components using memory-efficient representative sampling, then combine those components with a lidar-derived Canopy Height Model to classify land cover with a Random Forest classifier.
 author: NEONScience
-tags: hyperspectral, neon, pca, 
+tags: hyperspectral, neon, pca, classification
 date_published: 2026-04-17
 ---
 <!--
@@ -21,7 +21,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 -->
 
-[Open In Code Editor]()
+[Open In Code Editor](https://code.earthengine.google.com/?accept_repo=users/bhass/gee-community-tutorial)
 
 The principal components transform is a spectral rotation that takes spectrally correlated image data and outputs uncorrelated bands. In this tutorial, you will learn how to apply Principal Component Analysis (PCA) to reduce the National Ecological Observatory Network's (NEON's) airborne reflectance data from hundreds of bands to a compact set of uncorrelated components. You will learn to build a reproducible, memory‑efficient PCA workflow using representative sampling and then run a random forest classification on the PCA‑transformed data along with NEON's lidar-derived Canopy Height Model (CHM).
 
@@ -38,6 +38,8 @@ Outline of what this tutorial will cover:
 3. Build a feature stack including the principal copmonents and CHM, classify land cover with random forest, and assess results
 
 ### 1. Read in the NEON Hyperspectral Image Collection and select the Area of Interest
+
+[Part 1 - Open In Code Editor](https://code.earthengine.google.com/6ced0612c8b83c07563aeaf838758d5b)
 
 Retrieve the [NEON Surface Bidirectional Reflectance](https://developers.google.com/earth-engine/datasets/catalog/projects_neon-prod-earthengine_assets_HSI_REFL_002) as an `ee.ImageCollection` and select the site and date. This tutorial will use the [Smithsonian Environmental Research Center NEON / SERC](https://www.neonscience.org/field-sites/serc) site as an example. NEON airborne data are typically collected at 1000 m Above Ground Level (AGL), and flights are targetted during cloud-free conditions, if possible. Unlike satellite data, the aircraft is collecting below the clouds, which means cloud filtering is not an option. Instead, NEON reflectance data include a Weather Quality Indicator (WQI) band, which indicates percent cloud cover, as recorded by flight operators collecting the data. NEON recommends using < 10% cloud cover data, when possible. In this example, we'll map the cloud cover conditions for the SERC 2022 collection and select an area that was collected in the best weather conditions that encompasses a variety of land cover types. This AOI will be used in the rest of the lesson.
 
@@ -110,6 +112,8 @@ print('Data Citation:', reflCitation)
 ![SERC reflectance data with AOI](serc-refl-aoi.png)
 
 ### 2. Compute Principal Component Analysis on reflectance data using representative sampling
+
+[Part 2 - Open In Code Editor](https://code.earthengine.google.com/36903e32696fc18c4bdb157f3e3c88ae)
 
 With 426 spectral bands, computing PCA statistics across every pixel in the AOI would be prohibitively expensive in Earth Engine. Instead, this script draws a small representative sample of pixels — here 5,000 points at 1 m resolution — and uses that sample to estimate the band means and covariance matrix. The sample geometry (a convex hull of the sampled points) is passed to `reduceRegion` to limit computation to just those locations. The resulting covariance matrix is the same 426 × 426 array you would get from a full-scene computation, but derived from a fraction of the pixels, which keeps memory and compute time manageable.
 
@@ -314,7 +318,7 @@ PC1 alone captures roughly 87% of the total variance — reflecting the dominant
 
 #### 3a. Build a standardized feature stack using the top principal components + CHM
 
-
+[Part 3 - Open In Code Editor](https://code.earthengine.google.com/63116985fb032aba03adf6f3da967fa1)
 
 ```js
 // ------------------------------------------------------------
@@ -483,7 +487,7 @@ Map.addLayer(
 
 #### 3d. Assess the classification results
 
-The 30% validation set held back during training is used here to evaluate how well the classifier generalizes to unseen pixels. Running those pixels through the trained model and comparing predicted labels against known labels produces a confusion matrix — a table where rows represent true classes and columns represent predicted classes. Diagonal cells are correct predictions; off-diagonal cells are errors.
+The 30% validation set held back during training is used here to evaluate how well the classifier generalizes to new pixels that weren't used in the training. Running those pixels through the trained model and comparing predicted labels against known labels produces a confusion matrix — a table where rows represent true classes and columns represent predicted classes. Diagonal cells are correct predictions; off-diagonal cells are errors.
 
 Three summary metrics are printed:
 

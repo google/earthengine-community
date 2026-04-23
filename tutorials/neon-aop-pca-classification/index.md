@@ -21,7 +21,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 -->
 
-[Open Lesson Repository In Code Editor](https://code.earthengine.google.com/?accept_repo=users/bhass/gee-community-tutorial)
+[Open Lesson Repository In Code Editor](https://code.earthengine.google.com/?accept_repo=users/neon-aop-gee/aop-pca)
 
 ## Background
 
@@ -43,15 +43,16 @@ This tutorial will cover:
 
 [Part 1 - Open In Code Editor](https://code.earthengine.google.com/6ced0612c8b83c07563aeaf838758d5b)
 
-Retrieve the [NEON Surface Bidirectional Reflectance](https://developers.google.com/earth-engine/datasets/catalog/projects_neon-prod-earthengine_assets_HSI_REFL_002) as an `ee.ImageCollection` and select the site and date. This tutorial will focus on the [Smithsonian Environmental Research Center NEON / SERC](https://www.neonscience.org/field-sites/serc) site as an example. NEON airborne data are typically collected at 1000 m Above Ground Level (AGL), and flights are targeted during cloud-free conditions, if possible. Unlike satellite data, the aircraft is collecting below the clouds, which means cloud filtering is not an option. Instead, NEON reflectance data include a Weather Quality Indicator (WQI) band, which indicates percent cloud cover, as recorded by flight operators collecting the data. NEON recommends using < 10% cloud cover data, when possible. In the first script, we'll map the cloud cover conditions for the SERC 2022 collection and select an area that was collected in the best weather conditions that encompasses a variety of land cover types. This AOI will be used in the rest of the lesson.
+Retrieve the [NEON Surface Bidirectional Reflectance](https://developers.google.com/earth-engine/datasets/catalog/projects_neon-prod-earthengine_assets_HSI_REFL_002) as an `ee.ImageCollection` and select the site and date. This tutorial will focus on the [Smithsonian Environmental Research Center NEON / SERC](https://www.neonscience.org/field-sites/serc) site in Maryland as an example. NEON airborne data are typically collected at 1000 m Above Ground Level (AGL), and flights are targeted during cloud-free conditions, if possible. Unlike satellite data, the aircraft is collecting below the clouds, which means cloud filtering is not an option. Instead, NEON reflectance data include a Weather Quality Indicator (WQI) band, which indicates percent cloud cover, as recorded by flight operators collecting the data. NEON recommends using < 10% cloud cover data, when possible. In the first script, we'll map the cloud cover conditions for the SERC 2022 collection and select an area that was collected in the best weather conditions that encompasses a variety of land cover types. This AOI will be used in the rest of the lesson.
 
 ```js
 // ------------------------------------------------------------
-// Load NEON bidirectional reflectance, inspect weather QA, and define the area of interest.
+// Load NEON bidirectional reflectance, inspect weather QA, 
+// and define the area of interest in a cloud-free area.
 // ------------------------------------------------------------
 
 // Display all available images for the NEON bidirectional reflectance image collection
-// at the Smithsonian Environmental Research Center (SERC) site
+// at the Smithsonian Environmental Research Center (SERC) site (https://www.neonscience.org/field-sites/serc)
 // Find info about all of NEON's sites here: https://www.neonscience.org/field-sites
 var reflCol = ee.ImageCollection('projects/neon-prod-earthengine/assets/HSI_REFL/002')
                 .filterMetadata('NEON_SITE', 'equals', 'SERC')
@@ -116,7 +117,7 @@ print('Data Citation:', reflCitation)
 
 ## 2. Compute Principal Component Analysis on reflectance data using representative sampling
 
-[Part 2 - Open In Code Editor](https://code.earthengine.google.com/36903e32696fc18c4bdb157f3e3c88ae)
+[Part 2 - Open In Code Editor](https://code.earthengine.google.com/43e5384471f9fbdec5b1b76d96f27080)
 
 With 426 spectral bands, computing PCA statistics across every pixel in the AOI would be memory-intensive in Earth Engine. Instead, this script draws a small representative sample of pixels (5,000 points at 1 m resolution) and uses that sample to estimate the band means and covariance matrix. The `geometry()` of the sampled `FeatureCollection` is a MultiPoint — so when passed to `reduceRegion`, statistics are computed only at those 5,000 pixel locations. The resulting 426 × 426 covariance matrix is estimated from that sample, which keeps memory and compute time manageable.
 
@@ -141,12 +142,8 @@ var aoi = ee.Geometry.Rectangle([-76.5413, 38.8624, -76.5183, 38.8968]);
 // Analysis settings.
 var analysisScale = 1;
 var statsScale = 1;
-var numberOfSamples = 5000; // sample count should be at least several times larger than band count (426)
+var numberOfSamples = 2000; // sample count should be at least several times larger than band count (426)
 var numComponents = 5;
-
-// ------------------------------------------------------------
-// Load and prepare hyperspectral imagery
-// ------------------------------------------------------------
 
 // Load NEON reflectance for SERC in 2022 and clip to the AOI.
 var reflImage = ee.ImageCollection('projects/neon-prod-earthengine/assets/HSI_REFL/002')
@@ -308,6 +305,20 @@ print('Variance explained by top PCs', ee.Dictionary({
   pctEach: pctEach,
   pctCumulative: pctCumulative
 }));
+
+// ------------------------------------------------------------
+// Export (uncomment to export, after changing the cloud project)
+// NOTE: You will need to replace <your-cloud-project> with your own
+// Google Cloud project ID wherever it appears throughout this tutorial.
+// ------------------------------------------------------------
+// Export.image.toAsset({
+//   image: pcaImage,
+//   description: '2022_SERC_6_PCA',
+//   assetId: 'projects/<your-cloud-project>/assets/2022_SERC_6_PC5',
+//   region: aoi,
+//   scale: 1,
+//   maxPixels: 1e13
+// });
 ```
 
 The variance output lets you confirm how much spectral information the top PCs retain. For this AOI, you should see something close to the following:
@@ -321,7 +332,7 @@ PC1 alone captures roughly 87% of the total variance, reflecting the dominant sp
 
 ## 3. k-Means Unsupervised Classification
 
-[Part 3 - Open In Code Editor](https://code.earthengine.google.com/75262ac6eaaa141da0e496c493eb18c9)
+[Part 3 - Open In Code Editor](https://code.earthengine.google.com/8899371c84fa576e1992d7cd32326337)
 
 k-Means is an unsupervised clustering algorithm that groups pixels purely by spectral and structural similarity, with no human-provided class labels. This makes it a useful first-pass classification tool: you can run it immediately after PCA without any training data, and the resulting clusters often correspond to land cover types that can then be interpreted visually.
 
@@ -357,8 +368,9 @@ var chmImage = ee.Image(
 ).rename('CHM');
 
 // Principal components image from hyperspectral data.
+// Update this for the cloud project where you saved your PCA
 var pcImage = ee.Image(
-  'projects/neon-sandbox-dataflow-ee/assets/2022_SERC_6_PCA'
+  'projects/<your-cloud-project>/assets/2022_SERC_6_PC5'
 );
 
 // Inspect available PC band names if needed.
@@ -425,21 +437,17 @@ zStack = zStack.rename(zBandNames);
 print('Z-scored feature stack', zStack);
 
 // ------------------------------------------------------------
-// Export the z-scored feature stack as an asset so it can be
-// loaded directly in subsequent scripts without recomputing.
-// NOTE: 'neon-sandbox-dataflow-ee' is a NEON-internal project and
-// will not be accessible to other users. Replace it with your own
-// Google Cloud project ID (e.g. 'projects/my-project/assets/...')
-// wherever it appears throughout this tutorial.
+// Uncomment to export the z-scored feature stack as an asset so it 
+// can be loaded directly in subsequent scripts without recomputing.
 // ------------------------------------------------------------
-Export.image.toAsset({
-  image: zStack,
-  description: 'zStack_SERC_2022',
-  assetId: 'projects/neon-sandbox-dataflow-ee/assets/zStack_SERC_2022',
-  region: aoi,
-  scale: 1,
-  maxPixels: 1e13
-});
+// Export.image.toAsset({
+//   image: zStack,
+//   description: 'zStack_SERC_2022',
+//   assetId: 'projects/<your-cloud-project>/assets/zStack_SERC_2022',
+//   region: aoi,
+//   scale: 1,
+//   maxPixels: 1e13
+// });
 
 // ------------------------------------------------------------
 // Quick visualization examples
@@ -622,7 +630,7 @@ Note that k-Means cluster IDs are arbitrary and will change between runs and wit
 
 ### 3b. Make a confidence map of the clusters
 
-For each pixel, the script computes the Euclidean distance to the centroid of its assigned cluster in z-scored feature space, then inverts and normalises the result so that 1 = closest to the centroid (most confidently assigned) and 0 = farthest away (least confidently assigned). The result is displayed with a red–yellow–green palette from 0.8 to 1.0; values below 0.8 typically fall at class boundaries or on spectrally mixed surfaces.
+For each pixel, the script computes the Euclidean distance to the centroid of its assigned cluster in z-scored feature space, then inverts and normalizes the result so that 1 = closest to the centroid (most confidently assigned) and 0 = farthest away (least confidently assigned). The result is displayed with a red–yellow–green palette from 0.8 to 1.0; values below 0.8 typically fall at class boundaries or on spectrally mixed surfaces.
 
 ```js
 // ------------------------------------------------------------
@@ -666,7 +674,7 @@ var distanceToCentroid = ee.ImageCollection(
   })
 ).mosaic();
 
-// Normalise by the maximum distance in the AOI so confidence runs
+// Normalize by the maximum distance in the AOI so confidence runs
 // from 0 (farthest from centroid, least confident) to
 // 1 (closest to centroid, most confident).
 var maxDist = ee.Number(
@@ -696,13 +704,13 @@ Map.addLayer(
 
 Comparing against the RGB reflectance image, the lowest-confidence areas fall predominantly on the man-made surfaces in the northeast of the AOI, roads, and boats, as well as the agricultural fields (which we labeled as stressed vegetation). This is consistent with what the cluster summaries showed: those two cover types share similar spectral signatures. Both tend to have moderate reflectance and low CHM values, so they were grouped together rather than separated into distinct clusters. 
 
-Two things are worth noting when interpreting this map. First, confidence is relative: it is normalised to the maximum intra-cluster distance observed in the AOI, so a confidence of 0.9 means "close to its centroid relative to the hardest case in the scene," not an absolute probability. Second, low confidence does not mean the labeling is wrong, it means the pixel is spectrally intermediate. Those pixels are the most informative targets for follow-up: adding training polygons in those locations for the supervised classifier in Section 4 is likely to have the greatest impact on accuracy.
+Two things are worth noting when interpreting this map. First, confidence is relative: it is normalized to the maximum intra-cluster distance observed in the AOI, so a confidence of 0.9 means "close to its centroid relative to the hardest case in the scene," not an absolute probability. Second, low confidence does not mean the labeling is wrong, it means the pixel is spectrally intermediate. Those pixels are the most informative targets for follow-up: adding training polygons in those locations for the supervised classifier in Section 4 is likely to have the greatest impact on accuracy.
 
 The `confidenceThreshold` variable controls how aggressively ambiguous pixels are masked. At 0.8 (the default), most class-boundary artifacts are removed while retaining the majority of the scene. Raising it to 0.9 or higher isolates only the core, most homogeneous areas of each class; lowering it toward 0.5 recovers more pixels but reintroduces the mixed-cover areas.
 
 ## 4. Random Forest Supervised Classification
 
-[Part 4 - Open In Code Editor](https://code.earthengine.google.com/5bfe80d1930eecfd76d68f6c87c3980d)
+[Part 4 - Open In Code Editor](https://code.earthengine.google.com/5ef90495bc9919c87770f7080315265c)
 
 While k-Means discovers structure without any prior knowledge, Random Forest is a supervised classifier that learns from labeled examples you provide. This makes it more precise for distinguishing classes that are spectrally similar but ecologically distinct (such as roads and stressed vegetation) because the training polygons directly show the classifier what each class looks like in feature space.
 
@@ -723,7 +731,7 @@ var aoi = ee.Geometry.Rectangle([-76.5413, 38.8624, -76.5183, 38.8968]);
 
 // Load the z-scored feature stack exported at the end of section 3.
 // Update the asset path to match wherever you saved it.
-var zStack = ee.Image('projects/<your-project>/assets/zStack_SERC_2022');
+var zStack = ee.Image('projects/<your-cloud-project>/assets/zStack_SERC_2022');
 
 // Hyperspectral reflectance image for visual interpretation.
 var reflImage = ee.Image(
@@ -756,7 +764,7 @@ Map.addLayer(
 
 To train the classifier, you need labeled examples of each land cover type. Here, five classes are defined: water, man-made surfaces, stressed vegetation, low vegetation, and forest. Each class is represented by two small polygons drawn over areas that are clearly identifiable in the RGB reflectance image and the CHM. The polygons are given a numeric `class` property and merged into a single `FeatureCollection` that will be passed to `sampleRegions` in the next step. If you want to experiment with your own training areas, you can draw new polygons directly in the Code Editor's geometry tools and assign them the same `class` values.
 
-For accuracy assessment, prepare a second separate `FeatureCollection` of validation polygons drawn in **different locations** from the training polygons, with the same numeric `class` property (1–5). Upload it as a GEE asset and load it below. Keeping training and validation polygons spatially separate avoids the inflated accuracy that results from splitting pixels within the same polygons.
+For accuracy assessment, prepare a second separate `FeatureCollection` of validation polygons drawn in different locations than the training polygons, with the same numeric `class` properties (1–5). Keeping training and validation polygons spatially separate will provide a more reliable accuracy assessment.
 
 ```js
 // ------------------------------------------------------------
@@ -809,7 +817,7 @@ var trainingPolygons = water
 Map.addLayer(trainingPolygons, {color: 'white', opacity: 0.25}, 'Training polygons');
 ```
 
-Next we can also create separate validation polygons, which will be used to test on to assess the accuracy of the classification.
+Next, create separate validation polygons, which will be used to test on to assess the accuracy of the classification.
 
 ```js
 // ------------------------------------------------------------
@@ -873,7 +881,7 @@ With training polygons defined, this script samples `zStack` at each polygon loc
 // Random Forest Classification using the z-scored feature stack.
 // ------------------------------------------------------------
 
-// 1. Sample zStack at training polygon locations.
+// Sample zStack at training polygon locations.
 // sampleRegions copies the class property into each sampled pixel.
 var trainSet = zStack.sampleRegions({
   collection: trainingPolygons,
@@ -894,15 +902,11 @@ classIds.forEach(function(c, i) {
 });
 
 // ------------------------------------------------------------
-// 2. Load spatially independent validation polygons from a
-// separate uploaded asset. These must be drawn in different
-// locations from the training polygons, with the same numeric
-// 'class' property (1=water, 2=manMade, 3=stressedVeg,
-// 4=lowVeg, 5=forest). Update the asset path below.
+// Create the testSet from spatially independent validation polygons
+// These must be drawn in different locations from the training polygons, 
+// with the same numeric 'class' property (1=water, 2=manMade, 3=stressedVeg,
+// 4=lowVeg, 5=forest). 
 // ------------------------------------------------------------
-var validationPolygons = ee.FeatureCollection(
-  'projects/neon-sandbox-dataflow-ee/assets/zStack_SERC_2022'
-);
 
 var testSet = zStack.sampleRegions({
   collection: testPolygons,
@@ -916,7 +920,7 @@ print('Total validation samples', testSet.size());
 Map.addLayer(validationPolygons, {color: 'yellow', opacity: 0.4}, 'Validation polygons', false);
 
 // ------------------------------------------------------------
-// 3. Train a Random Forest classifier
+// Train the Random Forest classifier
 // ------------------------------------------------------------
 var classifier = ee.Classifier.smileRandomForest({
   numberOfTrees: 100,
@@ -928,7 +932,7 @@ var classifier = ee.Classifier.smileRandomForest({
 });
 
 // ------------------------------------------------------------
-// 4. Classify the full image
+// Classify the full image
 // classes are 1. water, 2. man made, 3. stressed veg, 4. low veg, 5. forest
 // ------------------------------------------------------------
 var classified = zStack.classify(classifier).rename('class');
@@ -995,9 +999,9 @@ The two classifiers reflect a fundamental trade-off between effort and precision
 | Accuracy assessment | Not directly possible without ground truth, can make a confidence map | Standard (confusion matrix, accuracy metrics) |
 | Best use case | Exploratory analysis, unknown classes | Production mapping, when classes are defined |
 
-For this AOI, k-Means with 8 clusters does a reasonable job separating water, tall forest, and low vegetation, but tends to lump spectrally similar surfaces (e.g. stressed crops, bare soil, and paved surfaces) into the same cluster. Random Forest, given explicit examples of each class, can more reliably distinguish those ambiguous types, particularly when the CHM provides a structural cue that spectral bands alone cannot resolve (e.g., tall-canopy forest vs. tall herbaceous vegetation).
+For this AOI, k-Means with 8 clusters does a reasonable job separating water, tall forest, and low vegetation, but tends to lump spectrally similar surfaces (such as the stressed crops, bare soil, and paved surfaces) into the same cluster. Random Forest, given explicit examples of each class, can more reliably distinguish those ambiguous types, particularly when the CHM provides structural information that spectral bands alone cannot resolve (e.g., tall-canopy forest vs. shorter herbaceous vegetation).
 
-A practical workflow is to run k-Means first as an exploratory step to understand the spectral diversity in the scene, then use it to guide where to place training polygons for the supervised classifier. In addition to remote sensing data, NEON also provides observational and instrumented data, including vegetation structure information. For an example of how to carry out species classification using NEON vegetation structure data paired with the remote sensing data, please see the tutorial [https://www.neonscience.org/resources/learning-hub/tutorials/aop-gee-random-forest-classification](https://www.neonscience.org/resources/learning-hub/tutorials/aop-gee-random-forest-classification).
+A practical workflow is to run k-Means first as an exploratory step to understand the spectral diversity in the scene, then use it to guide where to place training polygons for the supervised classifier. In addition to remote sensing data, NEON also provides observational and instrumented data, including vegetation structure information. For an example of how to carry out species classification using NEON vegetation structure data paired with the remote sensing data, please see the following tutorial: [Random Forest Species Classification using AOP and TOS data in GEE](https://www.neonscience.org/resources/learning-hub/tutorials/aop-gee-random-forest-classification).
 
 ### When does running PCA help?
 

@@ -15,24 +15,67 @@
  */
 
 // [START earthengine__apidocs__ee_terrain_products]
-// A digital elevation model.
-var dem = ee.Image('NASA/NASADEM_HGT/001').select('elevation');
+// Demonstrate ee.Terrain functions with single-image and collection DEMs.
 
-// Calculate slope. Units are degrees, range is [0,90).
-var slope = ee.Terrain.slope(dem);
+// DEMs in Earth Engine are often distributed as single images per asset
+// (e.g., NASA/NASADEM_HGT/001) or as collections of tiled images that need
+// to be mosaicked (e.g., COPERNICUS/DEM/GLO30). Terrain analysis functions
+// compute values based on neighboring pixels, so care must be taken to
+// select and prepare DEM inputs appropriately.
 
-// Calculate aspect. Units are degrees where 0=N, 90=E, 180=S, 270=W.
-var aspect = ee.Terrain.aspect(dem);
+// 1. Single DEM image asset.
+// Assets like NASADEM are presented as single images covering large areas.
+// They generally have a single projection and can be used in terrain analysis
+// with no preprocessing.
+var nasadem = ee.Image('NASA/NASADEM_HGT/001').select('elevation');
 
-// Display slope and aspect layers on the map.
-Map.setCenter(-123.457, 47.815, 11);
-Map.addLayer(slope, {min: 0, max: 89.99}, 'Slope');
-Map.addLayer(aspect, {min: 0, max: 359.99}, 'Aspect');
+// Calculate slope, aspect, and hillshade simultaneously using products().
+var nasademProducts = ee.Terrain.products(nasadem);
 
-// Use the ee.Terrain.products function to calculate slope, aspect, and
-// hillshade simultaneously. The output bands are appended to the input image.
-// Hillshade is calculated based on illumination azimuth=270, elevation=45.
-var terrain = ee.Terrain.products(dem);
-print('ee.Terrain.products bands', terrain.bandNames());
-Map.addLayer(terrain.select('hillshade'), {min: 0, max: 255}, 'Hillshade');
+// Visualization parameters.
+var elevationVis = {
+  min: 0.0,
+  max: 3000.0,
+  palette:
+      ['333399', '00a2e5', '55dd77', 'ffff99', 'aa926b', 'aa928d', 'ffffff']
+};
+var slopeVis = {min: 0.0, max: 60.0};
+var aspectVis = {min: 0.0, max: 359.99};
+var hillshadeVis = {min: 150.0, max: 255.0};
+
+// Display layers.
+Map.setCenter(-121.603, 47.702, 9);
+Map.addLayer(nasadem, elevationVis, 'NASADEM Elevation', false);
+Map.addLayer(nasademProducts.select('slope'), slopeVis, 'NASADEM Slope');
+Map.addLayer(nasademProducts.select('aspect'), aspectVis, 'NASADEM Aspect');
+Map.addLayer(
+    nasademProducts.select('hillshade'), hillshadeVis, 'NASADEM Hillshade');
+
+// 2. Mosaicked DEM ImageCollection asset.
+// In contrast to single-image assets like NASADEM, some DEMs like GLO30 are
+// provided as a collection of images that need to be mosaicked before use.
+// We use this mosaicked DEM for the terrain calculations below.
+var glo30collection = ee.ImageCollection('COPERNICUS/DEM/GLO30');
+
+// When mosaicking a DEM collection that will be used for terrain analysis,
+// it is best practice to set the mosaic's default projection to the native
+// projection of the DEM tiles. If you don't, Earth Engine's default
+// projection for mosaics (EPSG:4326 at 1-degree scale) is used, which is
+// often too coarse for analysis and can lead to resampling artifacts if
+// the result is reprojected to a different CRS during computation.
+// See:
+// https://developers.google.com/earth-engine/guides/projections#reprojecting
+var glo30Proj = glo30collection.first().projection();
+var glo30Image =
+    glo30collection.select('DEM').mosaic().setDefaultProjection(glo30Proj);
+
+// Calculate slope, aspect, and hillshade simultaneously using products().
+var glo30Products = ee.Terrain.products(glo30Image);
+
+// Display layers.
+Map.addLayer(glo30Image, elevationVis, 'GLO30 Elevation', false);
+Map.addLayer(glo30Products.select('slope'), slopeVis, 'GLO30 Slope');
+Map.addLayer(glo30Products.select('aspect'), aspectVis, 'GLO30 Aspect');
+Map.addLayer(
+    glo30Products.select('hillshade'), hillshadeVis, 'GLO30 Hillshade');
 // [END earthengine__apidocs__ee_terrain_products]

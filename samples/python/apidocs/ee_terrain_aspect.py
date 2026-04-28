@@ -13,26 +13,69 @@
 # limitations under the License.
 
 # [START earthengine__apidocs__ee_terrain_aspect]
-# A digital elevation model.
-dem = ee.Image('NASA/NASADEM_HGT/001').select('elevation')
+# Demonstrate ee.Terrain functions with single-image and collection DEMs.
 
-# Calculate slope. Units are degrees, range is [0,90).
-slope = ee.Terrain.slope(dem)
+# DEMs in Earth Engine are often distributed as single images per asset
+# (e.g., NASA/NASADEM_HGT/001) or as collections of tiled images that need
+# to be mosaicked (e.g., COPERNICUS/DEM/GLO30). Terrain analysis functions
+# compute values based on neighboring pixels, so care must be taken to
+# select and prepare DEM inputs appropriately.
 
-# Calculate aspect. Units are degrees where 0=N, 90=E, 180=S, 270=W.
-aspect = ee.Terrain.aspect(dem)
+# 1. Single DEM image asset.
+# Assets like NASADEM are presented as single images covering large areas.
+# They generally have a single projection and can be used in terrain analysis
+# with no preprocessing.
+nasadem = ee.Image('NASA/NASADEM_HGT/001').select('elevation')
 
-# Display slope and aspect layers on the map.
+# Calculate aspect: degrees, 0=N, 90=E, 180=S, 270=W.
+nasadem_aspect = ee.Terrain.aspect(nasadem)
+
+# Visualization parameters.
+elevation_vis = {
+    'min': 0.0,
+    'max': 3000.0,
+    'palette': [
+        '333399',
+        '00a2e5',
+        '55dd77',
+        'ffff99',
+        'aa926b',
+        'aa928d',
+        'ffffff',
+    ],
+}
+aspect_vis = {'min': 0.0, 'max': 359.99}
+
+# Display layers.
 m = geemap.Map()
-m.set_center(-123.457, 47.815, 11)
-m.add_layer(slope, {'min': 0, 'max': 89.99}, 'Slope')
-m.add_layer(aspect, {'min': 0, 'max': 359.99}, 'Aspect')
+m.set_center(-121.603, 47.702, 9)
+m.add_layer(nasadem, elevation_vis, 'NASADEM Elevation', False)
+m.add_layer(nasadem_aspect, aspect_vis, 'NASADEM Aspect')
 
-# Use the ee.Terrain.products function to calculate slope, aspect, and
-# hillshade simultaneously. The output bands are appended to the input image.
-# Hillshade is calculated based on illumination azimuth=270, elevation=45.
-terrain = ee.Terrain.products(dem)
-display('ee.Terrain.products bands', terrain.bandNames())
-m.add_layer(terrain.select('hillshade'), {'min': 0, 'max': 255}, 'Hillshade')
+# 2. Mosaicked DEM ImageCollection asset.
+# In contrast to single-image assets like NASADEM, some DEMs like GLO30 are
+# provided as a collection of images that need to be mosaicked before use.
+# We use this mosaicked DEM for the terrain calculations below.
+glo30_collection = ee.ImageCollection('COPERNICUS/DEM/GLO30')
+
+# When mosaicking a DEM collection that will be used for terrain analysis,
+# it is best practice to set the mosaic's default projection to the native
+# projection of the DEM tiles. If you don't, Earth Engine's default
+# projection for mosaics (EPSG:4326 at 1-degree scale) is used, which is
+# often too coarse for analysis and can lead to resampling artifacts if
+# the result is reprojected to a different CRS during computation.
+# See:
+# https://developers.google.com/earth-engine/guides/projections#reprojecting
+glo30_proj = glo30_collection.first().projection()
+glo30_image = (
+    glo30_collection.select('DEM').mosaic().setDefaultProjection(glo30_proj)
+)
+
+# Calculate aspect.
+glo30_aspect = ee.Terrain.aspect(glo30_image)
+
+# Display layers.
+m.add_layer(glo30_image, elevation_vis, 'GLO30 Elevation', False)
+m.add_layer(glo30_aspect, aspect_vis, 'GLO30 Aspect')
 m
 # [END earthengine__apidocs__ee_terrain_aspect]

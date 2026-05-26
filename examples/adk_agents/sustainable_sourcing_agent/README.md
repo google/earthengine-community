@@ -21,8 +21,8 @@ as GeoJSON through the chat interface. An example interaction is shown below.
 2.  **Installation example**
 
     *   Copy the files `.env`, `agent.py`, `tools.py`, `datasets.py`,
-    `prompts.py`, and `__init__.py` to a local directory called `suso_agent`
-    and navigate to its parent directory.
+    `prompts.py`, and `__init__.py` to a local directory called 
+    `sustainable_sourcing_agent` and navigate to its parent directory.
 
     *   Setup a virtual environment:
     
@@ -59,7 +59,7 @@ ADK provides convenient ways to bring up agents locally and interact with them.
 You may talk to the agent using the CLI:
 
 ```bash
-adk run suso_agent
+adk run sustainable_sourcing_agent
 ```
 
 Or on a web interface:
@@ -68,7 +68,7 @@ Or on a web interface:
 adk web
 ```
 
-Select `suso_agent` from the dropdown.
+Select `sustainable_sourcing_agent` from the dropdown.
 
 ## Example Interaction
 

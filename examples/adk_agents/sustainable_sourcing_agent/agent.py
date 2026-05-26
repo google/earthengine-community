@@ -65,7 +65,7 @@ def root_agent() -> llm_agent.Agent:
   _initialize_vertex_ai()
 
   return llm_agent.Agent(
-      name='suso_ai_agent',
+      name='sustainable_sourcing_agent',
       model='gemini-2.5-pro',
       description='Agent to answer questions about sustainable sourcing.',
       tools=[

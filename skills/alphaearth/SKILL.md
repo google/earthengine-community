@@ -14,7 +14,7 @@ Use this skill to write Earth Engine scripts for change detection and area summa
 
 ---
 
-## 🔑 Core Dataset Specifications
+## Core Dataset Specifications
 
 The dataset is an ImageCollection with the id `GOOGLE/SATELLITE_EMBEDDING/V1/ANNUAL`.
 The embeddings are 64-dimensional, with bands named `A00` through `A63`.
@@ -23,7 +23,7 @@ See the catalog page for more information:
 [Satellite Embedding V1 (Annual)](https://developers.google.com/earth-engine/datasets/catalog/GOOGLE_SATELLITE_EMBEDDING_V1_ANNUAL)
 ---
 
-## 💡 Change Detection
+## Change Detection
 
 ### 1. Basic Dot Product (Cosine Similarity) & Visualization
 Because the bands in `GOOGLE/SATELLITE_EMBEDDING/V1/ANNUAL` are already unit vectors, their cosine similarity (dot product) is calculated simply by element-wise multiplication followed by a band sum.
@@ -89,7 +89,7 @@ smoothed_vectors = filtered_vectors.map(
 
 ---
 
-## 🔑 Spatial Reduction over Geometry (Re-normalization)
+## Spatial Reduction over Geometry (Re-normalization)
 
 When performing spatial reductions of Satellite Embeddings over specific geometries (such as computing the average embedding of an agricultural field, forest parcel, or administrative boundary using `reduceRegion` or `reduceRegions` with `ee.Reducer.mean()`):
 

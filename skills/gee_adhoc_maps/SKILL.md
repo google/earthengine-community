@@ -1,6 +1,7 @@
 ---
 name: gee-adhoc-maps
-description: 'Build quick interactive HTML maps to inspect Earth Engine results. Use layered overlays on a satellite basemap with per-layer opacity, clear/show-all, and a click-to-get-coordinates tool. Use when you need to eyeball "where / what" (coverage gaps, disagreement, masks) when interacting with Earth Engine outside of the Code Editor or Colab.
+description: >-
+  Build quick interactive HTML maps to inspect Earth Engine results. Use layered overlays on a satellite basemap with per-layer opacity, clear/show-all, and a click-to-get-coordinates tool. Use when you need to eyeball "where / what" (coverage gaps, disagreement, masks) when interacting with Earth Engine outside of the Code Editor or Colab.
 ---
 
 ## What this is for

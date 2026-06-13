@@ -1,5 +1,5 @@
 ---
-name: alphaearth_core
+name: alphaearth_foundations_core
 description: >-
   Core information for AlphaEarth Foundations Satellite Embeddings in Google Earth Engine (GEE).
 ---

@@ -1,11 +1,11 @@
 ---
-name: alphaearth_change_detection
+name: alphaearth_foundations_change_detection
 description: >-
   Use AlphaEarth Foundations Satellite Embeddings in Google Earth Engine (GEE)
   for change detection.
 ---
 
-See introduction in `alphaearth_core`.
+See introduction in `alphaearth_foundations_core`.
 
 ---
 

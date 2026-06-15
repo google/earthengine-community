@@ -13,17 +13,17 @@
 # limitations under the License.
 
 # [START earthengine__apidocs__ee_featurecollection_filter]
-# Get Denver county polygon.
-denver = (
-    ee.FeatureCollection('FAO/GAUL_SIMPLIFIED_500m/2015/level2')
-    .filter("ADM2_NAME == 'Denver'")
-    .filter(ee.Filter.eq('ADM2_NAME', 'Denver'))  # Exactly the same as above.
-    .first()
-    .geometry()
-)
+# Load a collection of counties.
+counties = ee.FeatureCollection('FAO/GAUL_SIMPLIFIED_500m/2015/level2')
+
+# Filter the collection to get Denver county.
+denver_collection = counties.filter(ee.Filter.eq('ADM2_NAME', 'Denver'))
+
+# Or you can use a string filter (equivalent to the above):
+# denver_collection = counties.filter("ADM2_NAME == 'Denver'")
 
 m = geemap.Map()
-m.center_object(denver, 9)
-m.add_layer(denver, None, 'Denver')
+m.center_object(denver_collection, 9)
+m.add_layer(denver_collection, None, 'Denver')
 m
 # [END earthengine__apidocs__ee_featurecollection_filter]

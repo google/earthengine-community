@@ -15,13 +15,15 @@
  */
 
 // [START earthengine__apidocs__ee_featurecollection_filter]
-// Get Denver county polygon.
-var denver = ee.FeatureCollection('FAO/GAUL_SIMPLIFIED_500m/2015/level2')
-    .filter("ADM2_NAME == 'Denver'")
-    .filter(ee.Filter.eq('ADM2_NAME', 'Denver'))  // Exactly the same as above.
-    .first()
-    .geometry();
+// Load a collection of counties.
+var counties = ee.FeatureCollection('FAO/GAUL_SIMPLIFIED_500m/2015/level2');
 
-Map.centerObject(denver, 9);
-Map.addLayer(denver, null, 'Denver');
+// Filter the collection to get Denver county.
+var denverCollection = counties.filter(ee.Filter.eq('ADM2_NAME', 'Denver'));
+
+// Or you can use a string filter (equivalent to the above):
+// var denverCollection = counties.filter("ADM2_NAME == 'Denver'");
+
+Map.centerObject(denverCollection, 9);
+Map.addLayer(denverCollection, null, 'Denver');
 // [END earthengine__apidocs__ee_featurecollection_filter]

@@ -1,5 +1,5 @@
 ---
-name: alphaearth_spatial_reduction
+name: alphaearth_foundations_spatial_reduction
 description: >-
   Recipes for spatially reducing AlphaEarth Satellite Embeddings in Google Earth Engine. Covers single-pass reduction for mean and count, calculation of Mean Resultant Length (R̄), and specialized medoid pixel extraction for heterogeneous areas.
 ---
@@ -10,7 +10,7 @@ not 64 independent averages. Note that the mean of unit vectors is shorter than
 unit length. The resulting length carries information you should keep in most
 cases.
 
-See introduction in `alphaearth_core`.
+See introduction in `alphaearth_foundations_core`.
 
 --------------------------------------------------------------------------------
 

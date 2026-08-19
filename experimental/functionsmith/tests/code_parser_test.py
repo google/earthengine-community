@@ -334,10 +334,10 @@ def my_function():
         'ERROR PARSING CODE: invalid syntax (<unknown>, line 1)', result.error
     )
 
-  def test_reduce_indentation_empty_lines(self):
+  def test_extract_dedent_empty_lines(self):
     code = 'def foo():\n\n  \n    print("hello")\n  \n    print("world")\n'
     expected = 'def foo():\n\n\n    print("hello")\n\n    print("world")\n'
-    self.assertEqual(self._parser._reduce_indentation(code), expected)
+    self.assertEqual(self._parser.extract_python_code_blocks(code).code, expected)
 
 
 if __name__ == '__main__':

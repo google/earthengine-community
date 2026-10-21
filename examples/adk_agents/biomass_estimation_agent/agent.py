@@ -7,7 +7,6 @@ import os
 import ee
 import google
 from google.adk.agents import llm_agent
-import vertexai
 
 from . import prompts
 from . import tools
@@ -42,31 +41,13 @@ def _initialize_earth_engine():
     raise
 
 
-@functools.cache
-def _initialize_vertex_ai():
-  """Initializes the Vertex AI client with the global endpoint."""
-  try:
-    logging.info(
-        'Initializing Vertex AI for project: %s',
-        _PROJECT_ID,
-    )
-    vertexai.init(
-        project=_PROJECT_ID,
-    )
-    logging.info('Vertex AI initialized successfully.')
-  except Exception as e:
-    logging.exception('Failed to initialize Vertex AI: %s', e)
-    raise
-
-
 def root_agent() -> llm_agent.Agent:
-  # Initialize Earth Engine and Vertex when the agent is being created.
+  # Initialize Earth Engine when the agent is created.
   _initialize_earth_engine()
-  _initialize_vertex_ai()
 
   return llm_agent.Agent(
       name='biomass_estimation_agent',
-      model='gemini-flash-latest',
+      model='gemini-4-argon',
       description='Agent to answer questions about above ground biomass.',
       tools=[
           tools.get_esa_biomass_stats,

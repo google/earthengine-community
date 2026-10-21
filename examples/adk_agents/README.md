@@ -1,13 +1,19 @@
 # Earth Engine enabled ADK agents - Experimental
 
 The agents in this directory are EXPERIMENTAL and may not have been peer
-reviewed or rigorously tested. AI models make mistakes. Use with extreme 
+reviewed or rigorously tested. AI models make mistakes. Use with extreme
 caution!
 
-These examples are based on Google's Agent Development Kit (ADK). It is 
-[open source](https://github.com/google/adk-python), has 
+These examples are based on Google's Agent Development Kit (ADK). It is
+[open source](https://github.com/google/adk-python), has
 [excellent documentation](https://adk.dev/),
 and lots of [code samples](https://github.com/google/adk-samples).
+
+The biomass estimation agent uses a
+[Gemini API key](https://aistudio.google.com/app/api-keys).
+The sustainable sourcing agent uses
+[Gemini Enterprise Agent Platform](https://docs.cloud.google.com/gemini-enterprise-agent-platform/overview). Both agents use the
+[Google Earth Engine API](https://earthengine.google.com/).
 
 ## Disclaimer
 

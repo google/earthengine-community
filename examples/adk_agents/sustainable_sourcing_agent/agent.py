@@ -6,7 +6,7 @@ import os
 
 import ee
 import google
-from google.adk.agents import llm_agent
+from google.adk.agents import LlmAgent
 import vertexai
 
 from . import prompts
@@ -48,25 +48,23 @@ def _initialize_vertex_ai():
   """Initializes the Vertex AI client exactly once."""
   try:
     logging.info(
-        'Initializing Vertex AI for project: %s in location: %s',
+        'Initializing Vertex AI for project: %s',
         _PROJECT_ID,
-        _REGION,
     )
-    vertexai.init(project=_PROJECT_ID, location=_REGION)
+    vertexai.init(project=_PROJECT_ID)
     logging.info('Vertex AI initialized successfully.')
   except Exception as e:
     logging.exception('Failed to initialize Vertex AI: %s', e)
     raise
 
 
-def root_agent() -> llm_agent.Agent:
-  # Initialize Earth Engine and Vertex when the agent is being created.
+def root_agent() -> LlmAgent:
   _initialize_earth_engine()
   _initialize_vertex_ai()
 
-  return llm_agent.Agent(
+  return LlmAgent(
       name='sustainable_sourcing_agent',
-      model='gemini-2.5-pro',
+      model='gemini-4-argon',
       description='Agent to answer questions about sustainable sourcing.',
       tools=[
           tools.get_annual_change_stats_2018_2025,
@@ -76,5 +74,6 @@ def root_agent() -> llm_agent.Agent:
       ],
       instruction=prompts.root_agent_prompt,
   )
+
 
 root_agent = root_agent()

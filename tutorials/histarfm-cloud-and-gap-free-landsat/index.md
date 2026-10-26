@@ -408,7 +408,7 @@ Note two essential points:
   Therefore selecting the last element (i.e., get -1 element of the list) always
   is the after reflectance image, and selecting the previous to the last element
   (i.e., get -2 element of the list) always is the before reflectance image.
-* If the number of Landsat images in the 'LS' property is lower than 2
+* If the number of Landsat images in the 'LS' property is fewer than two
   (extrapolation case), the image is either the first or the last in the
   `fiveDaysRes` ImageCollection. Therefore, the first or last images in
   `fiveDaysRes` are not interpolated. We only consider the values of Gap-filled

@@ -115,7 +115,7 @@ Map.addLayer(embeddingsImage.clip(geometry), visParams, 'Embeddings Image');
 ```
 
 ![](3.jpg){: width=512px}<br>
-_Figure: RGB Visualization of 3 axes of the embedding space_
+_Figure: RGB visualization of three axes of the embedding space_
 
 An alternative way to visualize this information is by using it to group pixels with similar embeddings and use these groupings to understand how the model has learnt the spatial and temporal variability of a landscape.
 
@@ -158,7 +158,7 @@ Below is a visualization of our area of interest as captured by cloud-masked Sen
 ![](5.gif){: width=512px}<br>
 _Figure: Sentinel-2 annual time-series for our region_
 
-Let’s visualize the Satellite Embedding images by segmenting the landscape into 3 clusters,
+Let’s visualize the Satellite Embedding images by segmenting the landscape into three clusters:
 
 ```js
 var cluster3 = getClusters(3);
@@ -170,7 +170,7 @@ _Figure: Satellite Embedding image with 3 clusters_
 
 You will notice that the resulting clusters have very clean boundaries. This is because the embeddings inherently include spatial context - pixels within the same object would be expected to have relatively similar embedding vectors. Also, one of the clusters includes areas with seasonal water around the main reservoir. This is due to the temporal context that is captured in the embedding vector that allows us to detect such pixels with similar temporal patterns.
 
-Let’s see if we can further refine the clusters by grouping the pixels into 5 clusters.
+Let’s see if we can further refine the clusters by grouping the pixels into five clusters.
 
 ```js
 var cluster5 = getClusters(5);

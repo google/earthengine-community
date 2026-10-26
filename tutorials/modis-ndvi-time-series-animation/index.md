@@ -180,7 +180,7 @@ var comp = joinCol.map(function(img) {
 
 Set visualization properties to control the appearance of the data in the
 animation frames. The `visualize` method can convert single-band images
-(like NDVI) into 3-band RGB pseudo-color images. Define visualization properties
+(like NDVI) into three-band RGB pseudo-color images. Define visualization properties
 including a color palette and min and max values to stretch the palette between.
 Map the `visualize` method over each image using the defined visualization
 properties and clip the data to the mask defined in

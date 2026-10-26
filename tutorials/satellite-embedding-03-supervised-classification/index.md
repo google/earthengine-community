@@ -47,7 +47,7 @@ _Figure: Selecting the area of interest for mangrove classification_
 
 ## Collect training samples
 
-Classification workflows with the Satellite Embedding only requires a handful of labeled samples to achieve relatively accurate results. For our landcover classification, it is easiest to drop points and label them in Earth Engine to create the training samples. We will create a 3-class classification that will classify each pixel from the Satellite Embedding into one of the following three classes:
+Classification workflows with the Satellite Embedding only requires a handful of labeled samples to achieve relatively accurate results. For our landcover classification, it is easiest to drop points and label them in Earth Engine to create the training samples. We will create a three-class classification that will classify each pixel from the Satellite Embedding into one of the following three classes:
 
 | Landcover Class | Description | Class Value |
 | :-------------- | :---------- | :---------- |
@@ -108,7 +108,7 @@ Click the Edit Layer Properties (Gear Icon) next to the new layer and configure 
 ![](4.jpg){: width="400"}<br>
 _Figure: Configuring the layer properties for mangroves layer_
 
-Similarly, add 2 new layers for the other classes. Use the `landcover` value `2` for water and `3` for other.
+Similarly, add two new layers for the other classes. Use the `landcover` value `2` for water and `3` for other.
 
 ![](5_6.jpg)<br>
 _Figure: Configuring the layer properties for (left) water and (right) other layers_
@@ -223,7 +223,7 @@ _Figure: Classified satellite embeddings image_
 
 ## Create a mangrove map
 
-We created a classified image with 3 classes. We can extract the pixels classified as Mangroves (class 1) to create a mangrove map.
+We created a classified image with three classes. We can extract the pixels classified as Mangroves (class 1) to create a mangrove map.
 
 ```js
 // Extract mangroves class

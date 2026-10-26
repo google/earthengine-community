@@ -133,7 +133,7 @@ coincide with the period of data collection). Clouds are masked from each image
 using their corresponding [cloud probability](https://developers.google.com/earth-engine/datasets/catalog/COPERNICUS_S2_CLOUD_PROBABILITY)
 layer. Two functions are provided to achieve cloud masking: a function to join
 the cloud probability layer to the relevant image and one to apply the mask
-where cloud probability is greater than 50 percent. Finally, a medoid composite
+where cloud probability is greater than 50%. Finally, a medoid composite
 is generated from the set of overlapping pixels by selecting the pixel nearest
 to the multi-dimensional median of overlapping pixels ([Flood, 2013](https://www.mdpi.com/2072-4292/5/12/6481/htm)).
 The result minimizes contamination from residual clouds and cloud shadows.

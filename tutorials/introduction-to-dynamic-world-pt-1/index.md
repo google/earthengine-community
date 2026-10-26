@@ -21,7 +21,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 -->
 
-_This is part 1 of a 3-part tutorial, see also
+_This is part 1 of a three-part tutorial, see also
 [part 2](/earth-engine/tutorials/community/introduction-to-dynamic-world-pt-2) and
 [part 3](/earth-engine/tutorials/community/introduction-to-dynamic-world-pt-3)._
 
@@ -80,7 +80,7 @@ get started on the tutorial!
 The Dynamic World (DW) dataset is a continuously updating Image Collection of
 globally consistent, <nobr>10m-resolution</nobr>, near real-time (NRT) land use
 land cover (LULC) predictions created from Sentinel-2 imagery. Images in this
-dataset include ten bands: nine bands with estimated probabilities for each of
+dataset include 10 bands: nine bands with estimated probabilities for each of
 the nine DW LULC classes as well as a class "label" band indicating the class
 with the largest estimated probability. These unique properties enable users to
 do multi-temporal analysis as well as create custom products suited to their
@@ -212,7 +212,7 @@ _Visualization of the label classification_
 
 The label band of a Dynamic World image contains the class value with the
 highest probability among the different LULC classes. Each image also
-contains 9 other bands—each containing the pixel-wise probability for the
+contains nine other bands—each containing the pixel-wise probability for the
 corresponding LULC class. We can use this information to create a better and
 more information-rich visualization.
 
@@ -363,7 +363,7 @@ _Annual Composite for Dane County, WI_
 ### Create a probability hillshade composite
 
 As we saw in the previous section, you can use the pixel-wise probability
-information contained in the 9 LULC bands to create a richer visualization by
+information contained in the nine LULC bands to create a richer visualization by
 calculating the Top-1 Probability Hillshade. We can use the same technique on
 composites, but with a few adjustments.
 
@@ -386,7 +386,7 @@ var probabilityCol = dw.select(probabilityBands);
 var meanProbability = probabilityCol.reduce(ee.Reducer.mean());
 ```
 
-The `meanProbability` image is a composite image with 9 bands having the
+The `meanProbability` image is a composite image with nine bands having the
 average pixel-wise probability calculated from all the source image bands. In
 Earth Engine, a composite of input images will have the
 [default projection](/earth-engine/guides/projections#the-default-projection),

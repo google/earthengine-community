@@ -75,7 +75,7 @@ Back in the main Code Editor window, add points at few more representative locat
 ![](4.jpg)<br>
 _Figure: Adding more reference locations_
 
-For this tutorial, we have selected 3 reference locations. These will be used to extract the embedding vectors from Satellite Embedding images.
+For this tutorial, we have selected three reference locations. These will be used to extract the embedding vectors from Satellite Embedding images.
 
 ## Select a time period
 
@@ -121,7 +121,7 @@ var sampleEmbeddings = mosaic.sampleRegions({
 
 Calculating the [dot product](https://en.wikipedia.org/wiki/Dot_product) between two embedding vectors allows us to calculate their similarity. The dot product reduces the magnitude of two vectors and the angle between them to a single number – and in our case, embedding vectors are unit-length, the result is just the angle between the vectors.
 
-We can just multiply two 64D, unit-length embedding vectors and sum the products to get the cosine of the angle between the vectors (aka the "dot product"). We compute 1 image per reference location and take the mean of the result to get an image with pixel values of the dot product.
+We can just multiply two 64D, unit-length embedding vectors and sum the products to get the cosine of the angle between the vectors (aka the "dot product"). We compute one image per reference location and take the mean of the result to get an image with pixel values of the dot product.
 
 ```js
 // We compute the dot product between two embedding vectors

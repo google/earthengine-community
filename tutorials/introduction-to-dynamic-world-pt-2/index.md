@@ -21,7 +21,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 -->
 
-_This is part 2 of a 3-part tutorial, see also
+_This is part 2 of a three-part tutorial, see also
 [part 1](/earth-engine/tutorials/community/introduction-to-dynamic-world-pt-1) and
 [part 3](/earth-engine/tutorials/community/introduction-to-dynamic-world-pt-3)._
 
@@ -138,7 +138,7 @@ print(builtAreaPixels);
 ```
 
 The last step is to calculate the built area fraction by dividing the total
-built area pixels by total image pixels. We round off the number to 2 decimal
+built area pixels by total image pixels. We round off the number to two decimal
 places using the `format()` function and print the result.
 
 ```js

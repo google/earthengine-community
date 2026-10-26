@@ -48,7 +48,7 @@ and quantify change across decades.
 
 To explain the concepts of time series modeling, let's begin with a dataset
 that illustrates what we are trying to do. The line chart below references
-electricity production over thirty years, with one distinct data point per
+electricity production over 30 years, with one distinct data point per
 month. What can we observe?
 
 1. Production tends to increase each year. In this case, it appears to level
@@ -57,7 +57,7 @@ out after 2010, but there is a general trend upwards.
 July, and a trough in October and December. An annual, 12-month cycle is
 specifically referred to as 'seasonality', although there can be other
 cyclical time periods (e.g., a housing market in a specific area may see a
-recurring pattern in house prices that occurs roughly every 7 years).
+recurring pattern in house prices that occurs roughly every seven years).
 3. Finally, the magnitude of the difference between each yearly peak and
 trough increases over time as well.
 

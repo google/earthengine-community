@@ -213,7 +213,7 @@ var clusterAreaFc = ee.FeatureCollection(clusterAreas);
 print('Cluster Areas', clusterAreaFc);
 ```
 
-We pick the 2 clusters with the highest area.
+We pick the two clusters with the highest area.
 
 ```js
 var selectedFc = clusterAreaFc.sort('area', false).limit(2);
@@ -222,7 +222,7 @@ print('Top 2 Clusters by Area', selectedFc);
 
 But we still do not know which cluster is what crop. If you had a few field samples of corn or soybeans, you could overlay them on the clusters to figure out their respective labels. In the absence of field samples, we can leverage aggregate crop statistics. In many parts of the world, aggregate crop statistics are collected and published regularly. For the US, the National Agricultural Statistics Service (NASS) has detailed crop statistics for each county and each major crop. For the year 2022, Cerro Gordo County, Iowa had a [Corn Planted Area](https://www.nass.usda.gov/Statistics_by_State/Iowa/Publications/County_Estimates/2023/IA-CtyEst-Corn-02-23.pdf) of 161,500 acres and [Soybean Planted Area](https://www.nass.usda.gov/Statistics_by_State/Iowa/Publications/County_Estimates/2023/IA-CtyEst-Soybeans-02-23.pdf) of 110,500 acres.
 
-Using this information, we now know that among the top 2 clusters, the one with the largest area will more than likely be corn and the other one soybean. Let’s assign these labels and compare the computed areas with the published statistics.
+Using this information, we now know that among the top two clusters, the one with the largest area will more than likely be corn and the other one soybean. Let’s assign these labels and compare the computed areas with the published statistics.
 
 ```js
 var cornFeature = selectedFc.sort('area', false).first();

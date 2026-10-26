@@ -124,7 +124,7 @@ that it is retained in the final mosaics. The function encodes:
 - Calendar DOY (`calDoy`): enumerated DOY from January 1st
 - Relative DOY (`relDoy`): enumerated DOY from user-defined `startDoy`
 - Milliseconds from Unix epoch (`millis`)
-- Year (`year`) - Note that the year is tied to the `startDoy` e.g., if
+- Year (`year`) - Note that the year is tied to the `startDoy`. For example, if
 `startDoy` is set at 183, the analysis will cross the new year, the year
 given to all pixels will be the first year, even if a particular image was
 collected on January 1 of the subsequent year.

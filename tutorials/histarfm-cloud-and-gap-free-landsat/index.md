@@ -181,7 +181,7 @@ considering their visualization parameters.
 Map.setOptions('HYBRID');
 Map.setCenter(14.76, 49.28, 4);
 
-// Subset a single month for display (e.g. July, the 7th month).
+// Subset a single month for display (e.g., July, the 7th month).
 var julyImg = GF_Landsat.filter(ee.Filter.eq('month', 7));
 
 // Display the RGB gap-filled Landsat reflectance mosaic to the map.
@@ -399,7 +399,7 @@ $$ y = y_0 + \frac{y_1-y_0}{x_1-x_0} \cdot (x-x_0),$$
 
 where $y_0$ and $y_1$ are the Gap-filled Landsat reflectances before and after
 respectively from `GF_Landsat`, $x_0$ and $x_1$ are their respective acquisition
-times (i.e. 'system:time_start'), $x$ is the time step for prediction, and $y$
+times (i.e., `'system:time_start'`), $x$ is the time step for prediction, and $y$
 is the predicted reflectance (of the new point) in the instant $x$.
 
 Note two essential points:

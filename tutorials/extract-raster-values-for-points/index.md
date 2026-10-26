@@ -308,8 +308,8 @@ according to the given reducer. It is essentially a table that looks like this:
 
 A time series of [MODIS 8-day surface reflectance](https://developers.google.com/earth-engine/datasets/catalog/MODIS_006_MOD09A1)
 composites demonstrates how to calculate zonal statistics for a
-multi-band image collection that requires no preprocessing i.e., cloud
-masking, computation.
+multi-band image collection that requires no preprocessing (that is, no cloud
+masking or other computation).
 
 #### Buffer the points
 

@@ -362,7 +362,7 @@ you can listen for:
 -   `onLayerAdd(`*`callback`*`)` - a layer is added.
 -   `onLayerRemove(`*`callback`*`)` - a layer is removed.
 -   `onLayerSelect(`*`callback`*`)` - a layer is selected.
--   `onLayerConfig(`*`callback`*`)` - a layer attribute (e.g. name, color) is
+-   `onLayerConfig(`*`callback`*`)` - a layer attribute (e.g., name, color) is
     changed.
 
 We can use these to listen for user interactions with the drawing tools for a
@@ -381,7 +381,7 @@ rerun the classification automatically when we edit the points?**
 We can refactor the classification to rely on the points in the drawing
 tools, which are always kept up to date. To make this easier, we can use the
 `getEeObject()` method on the `GeometryLayer` to get the Earth Engine object
-associated with a `GeometryLayer` (e.g. the underlying
+associated with a `GeometryLayer` (e.g., the underlying
 `FeatureCollection`).
 
 First, import the feature collections at the top of the file so we have

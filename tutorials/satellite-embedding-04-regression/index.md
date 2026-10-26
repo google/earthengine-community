@@ -396,7 +396,7 @@ var worldcover = ee.ImageCollection('ESA/WorldCover/v200').first();
 
 // Aggregate pixels to the same grid as other dataset
 // with 'mode' value.
-// i.e. The landcover with highest occurrence within the grid
+// That is, the land cover with the highest occurrence within the grid.
 var worldcoverResampled = worldcover
   .reduceResolution({
     reducer: ee.Reducer.mode(),

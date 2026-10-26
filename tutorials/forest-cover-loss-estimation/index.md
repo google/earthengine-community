@@ -49,11 +49,11 @@ This tutorial selected Bolivia as an example, with the minimum canopy cover of
 (the national definition may be different).
 
 ```js
-// Selected country (e.g. Bolivia).
+// Selected country (e.g., Bolivia).
 var country = 'Bolivia';
-// Canopy cover percentage (e.g. 10%).
+// Canopy cover percentage (e.g., 10%).
 var cc = ee.Number(10);
-// Minimum forest area in pixels (e.g. 6 pixels, ~ 0.5 ha in this example).
+// Minimum forest area in pixels (e.g., 6 pixels, ~0.5 ha in this example).
 var pixels = ee.Number(6);
 // Minimum mapping area for tree loss (usually same as the minimum forest area).
 var lossPixels = ee.Number(6);
@@ -91,7 +91,7 @@ var canopyCover = gfc2018.select(['treecover2000']);
 ```
 
 2\. Apply the minimum canopy cover percentage
-(e.g. greater than or equal to 10%). Use `selfMask()` to set other other areas
+(e.g., greater than or equal to 10%). Use `selfMask()` to set other other areas
 transparent by assigning value zero.
 
 ```js
@@ -99,7 +99,7 @@ var canopyCover10 = canopyCover.gte(cc).selfMask();
 ```
 
 3\. Apply the minimum area requirement using `connectedPixelCount`
-(e.g. greater than or equal to 6 pixels). Note that if no kernel is passed to
+(e.g., greater than or equal to 6 pixels). Note that if no kernel is passed to
 `connectedPixelCount`, 8 neighbor adjacency is used to determine connectivity.
 
 ```js
@@ -139,8 +139,8 @@ print(
 ```
 
 6\. Calculate the actual average minimum forest area used (ha). This is to make
-sure if the selected number of pixels for minimum area (e.g. 6) matches or comes
-close to the minimum area intended in hectare (e.g. 0.5 ha).
+sure if the selected number of pixels for minimum area (e.g., 6) matches or comes
+close to the minimum area intended in hectares (e.g., 0.5 ha).
 
 ```js
 var pixelCount = minArea.reduceRegion({
@@ -260,8 +260,8 @@ Tree cover 2000 (light green) |  Tree loss 2001 (red) |  Tree cover 2001 (dark g
 ## Land use categories
 
 You can also exclude certain tree areas such as tree plantations or agricultural
-plantations with tree crops if you have spatial data for these areas (e.g.
-masking, assigning values, etc. - not included in this tutorial).
+plantations with tree crops if you have spatial data for these areas (for example,
+masking or assigning values—not included in this tutorial).
 
 ## References
 

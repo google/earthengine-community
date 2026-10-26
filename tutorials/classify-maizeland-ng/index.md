@@ -51,8 +51,8 @@ maize-based farming systems. Therefore, the ground truth data in this
 analytical workflow is rich in maize farm locations, and contains much fewer
 data points for other crop types within the focal geography. Considering this
 limitation, the scope of this classification tool and this tutorial is
-limited to binary classification of maizelands (i.e. maize vs. non-maize
-cultivated) within the period of data collection (i.e. 2017).
+limited to binary classification of maizelands (i.e., maize vs. non-maize
+cultivated) within the period of data collection (i.e., 2017).
 
 ## Acknowledgement
 
@@ -69,7 +69,7 @@ import a FeatureCollection object, and filter by "Country" to select
 attributes). `Filter` is the method to extract a specific set of features from
 a feature collection. Assign the output to a variable called `nigeriaBorder`.
 The analyses will be limited to the maize target region in Nigeria,
-i.e. the region that accounts for ~70% of Nigeria's maize production.
+that is, the region that accounts for about 70% of Nigeria's maize production.
 Therefore, you will import a predefined shapefile layer (already converted to
 GEE asset) and assign it as the variable `aoi`. Display both layers to the map
 using `Map.addLayer()` with customized display parameters.
@@ -258,7 +258,7 @@ both suitable for categorical classification and have been used in various
 contexts for classification. By comparing outputs from both CART and RF,
 users can make objective inference on the most accurate classifier. Default
 parameters will be accepted (adjustments such as optimizing the number of
-trees in RF, e.g., are outside the scope of this tutorial). The output images
+trees in RF are outside the scope of this tutorial). The output images
 will include values 0 (maize, shown as orange in the map) and 1
 (non-maize, shown as grey in the map). Metrics regarding model accuracies are
 printed to the console.
@@ -389,7 +389,7 @@ print(areas);
 Although this tutorial offers a template for users, further adjustments can
 possibly improve the results. The results show that RF outperformed CART in the
 validation mode (RF accuracy = 74.9%; CART accuracy = 67.4%). Also, the maize
-area estimated was 165,338 square km (i.e. ~16.5 million ha). It is probable that
+area estimated was 165,338 square km (i.e., ~16.5 million ha). It is probable that
 this is over/under estimated, so further area-based validation may be necessary
 to validate the estimate. In any case, this analytical tool (and tutorial) can
 support rapid generation of national cropland area estimate that is scalable

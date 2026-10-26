@@ -34,7 +34,7 @@ Google Earth Engine.
 
 Link to Google Earth Engine code: https://code.earthengine.google.com/13c8776e7d2370cbe8a5ff953c89fe75
 
-## 1. Importing Mosul river basin boundary
+## Import the Mosul River basin boundary
 
 The Mosul Dam is a large water reservoir located on the Tigris River, which
 originates in eastern Turkey and flows through Iraq. The water flow to the dam
@@ -53,7 +53,7 @@ Map.addLayer(basin_boundary, {}, 'Area of interest');
 Map.centerObject(basin_boundary, 7);
 ```
 
-## 2. Importing soil moisture and precipitation datasets
+## Import soil moisture and precipitation datasets
 
 The [NASA-USDA Enhanced SMAP dataset](https://developers.google.com/earth-engine/datasets/catalog/NASA_USDA_HSL_SMAP10KM_soil_moisture)
 integrates SMAP Level 2 soil moisture
@@ -77,7 +77,7 @@ var nasa_usda_smap = ee.ImageCollection('NASA_USDA/HSL/SMAP10KM_soil_moisture');
 var gpm_imerg = ee.ImageCollection('NASA/GPM_L3/IMERG_MONTHLY_V06');
 ```
 
-## 3. Define study period and functions
+## Define study period and functions
 
 ```js
 // Define study period.
@@ -118,7 +118,7 @@ var computeAnomalyPrecipitation = function(image) {
 };
 ```
 
-## 4. Processing soil moisture datasets
+## Process soil moisture datasets
 
 We directly use anomalies soil moisture products from NASA-USDA Enhanced SMAP
 soil moisture. 
@@ -144,7 +144,7 @@ var monthlySsSusMa =  ee.ImageCollection.fromImages(
 );
 ```
 
-## 5. Processing precipitation datasets
+## Process precipitation datasets
 
 GPM IMERG does not have anomalies product. To calculate anomalies monthly
 precipitation time series from a monthly precipitation time series, subtract the
@@ -190,7 +190,7 @@ var monthlyPrecipitationAnomalies = monthlyPrecipitation.map(
     computeAnomalyPrecipitation);
 ```
 
-## 6. Plot anomalies time series for both soil moisture and precipitation
+## Plot anomalies time series for both soil moisture and precipitation
 
 Use the `ui.Chart.image.series` function to extract the time series of
 soil moisture or precipitation pixel values from the soil moisture or
@@ -255,7 +255,7 @@ var chart =
 print(chart);
 ```
 
-## 7. Plot spatial distribution of soil moisture and precipitation anomalies
+## Plot spatial distribution of soil moisture and precipitation anomalies
 
 Based on the time series anomalies chart, we detected the most negative
 anomalies in soil moisture and precipitation in May 2021. The following code
@@ -292,7 +292,7 @@ Map.addLayer(thisSsSusMa.select('susma'), smVis, 'Subsurface Soil Moisture');
 Map.addLayer(thisPre, preVis, 'Precipitation');
 ```
 
-## 8. Remarks
+## Remarks
 
 In 2022, a 3,400-year-old city was discovered in Iraq after the water level
 in the Mosul reservoir dropped due to a severe drought. Using Earth
@@ -309,7 +309,7 @@ limited timeframes for NASA-USDA Enhanced SMAP and monthly GPM IMERG Final
 products. In lieu of real-time products, you can use NASA SMAP L3, SMAP L4, and
 GPM IMERG Late products instead.
 
-## 9. References
+## References
 
 A 3,400-year-old city in Iraq emerges from underwater after an extreme drought.
 https://www.cnn.com/2022/06/20/world/iraq-city-unearthed-drought-scn/index.html.

@@ -581,7 +581,7 @@ Now all of the properties are included.
 Use this technique when returning computed, derived images in a mapped
 function, and in single image operations.
 
-### Understanding which pixels are included in polygon statistics
+### Pixels included in polygon statistics
 
 If you want to visualize what pixels are included in a polygon for a region
 reducer, you can adapt the following code to use your own region(s) by replacing

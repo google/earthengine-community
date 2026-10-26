@@ -115,7 +115,7 @@ expanded in time and spatial coverage.
 
 ## Examples of use of the HISTARFM database
 
-### 1. Importing and visualizing the database
+### 1. Import and visualize the database
 
 #### a. Import the ImageCollection
 
@@ -170,7 +170,7 @@ function scaleError(img) {
 GF_Landsat = GF_Landsat.map(scaleError);
 ```
 
-#### b. Visualization of HISTARFM data
+#### b. Visualize the HISTARFM data
 
 Once the HISTARFM dataset is prepared, the RGB gap-filled Landsat reflectance
 mosaic filtered to a specific month and its first band error are displayed
@@ -261,7 +261,7 @@ GF_Landsat = GF_Landsat.map(ndvicompGF);
 ![](ndvi-error.png)<br>
 _An example of the computed NDVI and its corresponding propagated error_
 
-#### b. Extracting growing season maximum NDVI value and timing
+#### b. Extract growing season maximum NDVI value and timing
 
 A function called `maxMonth` is defined to obtain the maximum NDVI value and the
 month when it is reached. Within this function, the GF_Landsat ImageCollection
@@ -283,7 +283,7 @@ function maxMonth(col) {
 var maxMonthNdvi = maxMonth(GF_Landsat);
 ```
 
-#### c. Visualization of maximum NDVI value and the month
+#### c. Visualize the maximum NDVI value and the month
 
 Once the variables are calculated, the NDVI maximum is displayed in whitenish
 (lower), greenish (medium) and blackish tones (higher values). The month is also
@@ -325,9 +325,9 @@ Map.addLayer(maxMonthNdvi, imageVisParam, 'max month');
 ![](ndvi-max.png)<br>
 _Timing of the maximum value of the NDVI for Europe (2019)_
 
-### 3. Temporal interpolation of the HISTARFM database
+### 3. Interpolate the HISTARFM database over time
 
-#### a. Creating a dummy ImageCollection with the desired temporal resolution
+#### a. Create a dummy ImageCollection with the desired temporal resolution
 
 The first step to interpolating the HISTARFM database is the creation of a dummy
 (empty) ImageCollection with a regular time step sampling defined by
@@ -362,13 +362,13 @@ function RegTimeColl(date) {
 var fiveDaysRes = ee.ImageCollection(timeRange.map(RegTimeColl));
 ```
 
-#### b. HISTARFM linear interpolation
+#### b. Interpolate the HISTARFM data linearly
 
 This section comprises two sub-steps: 1) Joining the ImageCollection created in
 the previous section called fiveDaysRes with the `GF_Landsat` ImageCollection
 from section 2.a, and 2) the interpolation step using the join from step 1.
 
-##### b.1 Joining step
+##### b.1 Join the collections
 
 This step joins the `fiveDaysRes` ImageCollection with `GF_Landsat`
 ImageCollection. Each image in `fiveDaysRes` includes a property called `LS`
@@ -386,7 +386,7 @@ var fiveDaysRes =
     ee.ImageCollection(join.apply(fiveDaysRes, GF_Landsat, filter));
 ```
 
-##### b.2 Defining the interpolation function step
+##### b.2 Define the interpolation function
 
 Once the `fiveDaysRes` ImageCollection contains the selected GF_Landsat images
 in the 'LS' property, an interpolation function (named `CompositeInterpolate`)
@@ -454,7 +454,7 @@ function CompositeInterpolate(img) {
 GF_Landsat = fiveDaysRes.map(CompositeInterpolate);
 ```
 
-#### c. Visualization of the interpolated time series
+#### c. Visualize the interpolated time series
 
 In this case, a NDVI temporal series at one specific point is shown using a
 chart. Note that another band (i.e., reflectance or uncertainties) could also be
@@ -498,7 +498,7 @@ Map.add(chart);
 ![](ndvi-series.png)<br>
 _NDVI interpolated time series from monthly to 5 days temporal resolution_
 
-### 4. High resolution biophysical variable retrieval
+### 4. Retrieve high resolution biophysical variables
 
 Estimating biophysical variables is at the core of remote sensing science,
 allowing close monitoring of crops and forests. Deriving temporally resolved and
@@ -520,7 +520,7 @@ quantify the terrestrial biosphere at 30 m Landsat spatial resolution:
 The following section has three subsections: Biophysical parameter retrieval,
 map and chart visualization, and GIF generation.
 
-#### a. Biophysical parameter retrieval
+#### a. Retrieve biophysical parameters
 
 We are going to calculate the LAI from `GF_Landsat` obtained in section 3.b.
 Other parameters like the fraction of absorbed photosynthetically active
@@ -546,7 +546,7 @@ J., Muñoz-Marí, J., Running, S. W., Kimball J., Clinton, N. & Camps-Valls, G.
 (2022). Quantifying uncertainty in high resolution biophysical variable
 retrieval with machine learning. Remote Sensing of Environment, 280, 113199.
 
-#### b. Visualization
+#### b. Visualize the LAI map and time series
 
 To visualize the LAI map, the palette and the visualization parameters are
 defined for the LAI and its uncertainty. Additionally to the visualization map,
@@ -604,7 +604,7 @@ Map.add(chart);
 ![](lai.png)<br>
 _Computed LAI over Europe and temporal profile for a region in Spain_
 
-#### c. Yearly LAI animation (GIF format)
+#### c. Generate a yearly LAI animation (GIF format)
 
 The text added over the GIF is done using the Gennadii Donchyts packages
 **text** and **style** from the available

@@ -147,7 +147,7 @@ var fraction = (ee.Number(builtAreaPixels).divide(totalPixels))
 print('Percentage Built Area', fraction.format('%.2f'));
 ```
 
-## Summarizing Pixel Counts for All Classes
+## Summarize pixel counts for all classes
 
 The method described in the previous section is useful for many applications,
 but it can be limiting if you want to summarize the pixel counts for all the

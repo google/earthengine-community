@@ -86,7 +86,7 @@ with the largest estimated probability. These unique properties enable users to
 do multi-temporal analysis as well as create custom products suited to their
 needs.
 
-### Using the NRT Image Collection
+### Use the NRT image collection
 
 The Dynamic World Near Real-time (NRT) Image Collection includes LULC
 predictions for Sentinel-2 L1C acquisitions from 2015-06-23 to the present
@@ -113,7 +113,7 @@ var endDate = '2021-10-25';
 var geometry = ee.Geometry.Point([-72.28525, 42.36103]);
 ```
 
-### Load a Sentinel-2 Image
+### Load a Sentinel-2 image
 
 We can find a Sentinel-2 image by applying filters on the Sentinel-2 L1C
 harmonized collection for the date range and location of interest. Since the
@@ -143,7 +143,7 @@ Map.centerObject(geometry, 13);
 ![](dw01.png)
 _A Sentinel-2 L1C Image of Quabbin Reservoir, Massachusetts, US_
 
-### Find the Matching Dynamic World Image
+### Find the matching Dynamic World image
 
 To find the matching classified image in the Dynamic World collection, we
 need to extract the product id using the `system:index` property.
@@ -171,7 +171,7 @@ Expanding the bands section, you will notice that the image contains 10 bands.
 ![](dw02.png)
 _Dynamic World Image Information_
 
-### Visualize the Classified Image
+### Visualize the classified image
 
 The `label` band of Dynamic World images contains a discrete label for each
 pixel assigned based on the class with the highest probability. The nine-class
@@ -208,7 +208,7 @@ Map.addLayer(classification, dwVisParams, 'Classified Image');
 ![](dw03.png)
 _Visualization of the label classification_
 
-### Create a Probability Hillshade Visualization
+### Create a probability hillshade visualization
 
 The label band of a Dynamic World image contains the class value with the
 highest probability among the different LULC classes. Each image also
@@ -288,7 +288,7 @@ The full script for this section can be accessed from the link below
 
 _A Sentinel-1C image along with matching Dynamic World products_
 
-## Creating Multi-Temporal Composites
+## Create multitemporal composites
 
 Being a continuous product, Dynamic World allows users to aggregate the NRT
 collection over a longer, custom time period. For example, one can create a
@@ -296,7 +296,7 @@ monthly, seasonal or annual product from the NRT scenes collected during this
 duration. In this section, you will learn how to create an annual land cover
 product for a US County and export the results as a GeoTiff.
 
-### Select a Region
+### Select a region
 
 For this tutorial, we will use the
 [TIGER: US Census Counties 2018](/earth-engine/datasets/catalog/TIGER_2018_Counties)
@@ -309,7 +309,7 @@ var geometry = filtered.geometry();
 Map.centerObject(geometry, 10);
 ```
 
-### Filter the Dynamic World NRT Collection
+### Filter the Dynamic World NRT collection
 
 Now we apply a date and bounds filter to select all images in the NRT
 collection for the year 2020 over the selected region.
@@ -323,7 +323,7 @@ var dw = ee.ImageCollection('GOOGLE/DYNAMICWORLD/V1')
              .filterBounds(geometry);
 ```
 
-### Create a Mode Composite
+### Create a mode composite
 
 We can aggregate the estimated distribution of the LULC classes over the time
 period by creating a mode composite using the highest probability label for
@@ -337,7 +337,7 @@ var classification = dw.select('label');
 var dwComposite = classification.reduce(ee.Reducer.mode());
 ```
 
-### Visualize the Annual Composite
+### Visualize the annual composite
 
 As shown in the previous section, you may visualize the LULC image using the
 class labels or the Top-1 hillshade. Here we add the result to the map using
@@ -360,7 +360,7 @@ Map.addLayer(dwComposite.clip(geometry), dwVisParams, 'Classified Composite');
 ![](composite1.png)
 _Annual Composite for Dane County, WI_
 
-### Create a Probability Hillshade Composite
+### Create a probability hillshade composite
 
 As we saw in the previous section, you can use the pixel-wise probability
 information contained in the 9 LULC bands to create a richer visualization by
@@ -426,7 +426,7 @@ Map.addLayer(
 ![](composite2.png)
 _Top-1 Probability Hillshade Visualization of the Annual Composite_
 
-### Export the Composite
+### Export the composite
 
 We can export the resulting composite annual LULC product to download it as a
 GeoTIFF. If you want to further analyze this dataset with GIS software, you

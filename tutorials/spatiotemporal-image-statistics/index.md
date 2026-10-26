@@ -61,7 +61,7 @@ or upload your own ShapeFile by following the instructions in the
 [Importing Table Data](https://developers.google.com/earth-engine/guides/table_upload)
 section of the Earth Engine Developer's Guide.
 
-## Defining spatiotemporal reduction parameters
+## Define spatiotemporal reduction parameters
 
 The statistics we're after include spatial and temporal components. Above,
 we've defined the bounds of the spatial component, now we define the temporal
@@ -93,7 +93,7 @@ var spatialReducers = ee.Reducer.mean().combine({
       });
 ```
 
-## Calculating spatiotemporal statistics
+## Calculate spatiotemporal statistics
 
 Now, we'll calculate spatiotemporal vegetation index statistics. Two ways to
 arrange the statistics table are provided: a long table and a wide table.

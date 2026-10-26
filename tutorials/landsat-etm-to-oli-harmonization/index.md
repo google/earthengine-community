@@ -463,7 +463,7 @@ or the [GitHub source script](script.js).
 ### The Dollar Lake fire
 
 The fire mentioned in this tutorial is the Dollar Lake fire, which occurred
-mid-September, 2011 on the northern slopes of Mt Hood, OR, USA. Visit this
+in mid-September 2011 on the northern slopes of Mt Hood, OR, USA. Visit this
 [blog post](https://wyeastblog.org/2016/10/22/dollar-lake-fire-five-years-after/)
 and see [Varner et al. (2015)](#references)
 for more information about it.

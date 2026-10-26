@@ -47,7 +47,7 @@ predictions, agriculture, and more.
 
 ### Instrument description
 
-- SMAP was launched in January, 2015 and started operation in April, 2015 with
+- SMAP was launched in January 2015 and started operation in April 2015 with
   two instruments onboard to measure soil moisture: an active radar and a
   passive radiometer. The radar instrument ceased operation in early 2015 due to
   failure of radar power supply, but collected close to 3 months of science data

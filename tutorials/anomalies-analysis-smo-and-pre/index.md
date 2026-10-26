@@ -60,14 +60,14 @@ integrates SMAP Level 2 soil moisture
 observations into a modified Palmer model using a 1-D Ensemble Kalman Filter,
 improving model-based soil moisture estimation, especially in areas with a lack
 of quality precipitation instruments. In this demonstration, we used surface and
-subsurface soil moisture, which are available from April, 2015 to August, 2022.
+subsurface soil moisture, which are available from April 2015 to August 2022.
 
 Global Precipitation Mission (GPM) is a satellite mission that observes rain and
 snow every three hours. The Integrated Multi-satellitE Retrievals for
 GPM (IMERG) is the algorithm that provides rainfall estimates using data from
 all GPM instruments. In this demonstration, we used
 [monthly GPM IMERG Final product](https://developers.google.com/earth-engine/datasets/catalog/NASA_GPM_L3_IMERG_MONTHLY_V06),
-which is available from June, 2001 to September, 2021.
+which is available from June 2001 to September 2021.
 
 ```js
 // Enhanced soil moisture datasets.
@@ -201,7 +201,7 @@ soil moisture and precipitation, with soil moisture values on the primary y-axis
 and precipitation values on the secondary y-axis.
 
 This anomalies time series analysis presents the overlap period between these
-two datasets, which could span from April, 2015 to September, 2021.
+two datasets, which could span from April 2015 to September 2021.
 
 ```js
 // Combine two image collections into one collection.

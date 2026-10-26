@@ -358,7 +358,7 @@ period to discriminate early and late harvesting, see Figure 5.
 ![](juelicherlands2.png){:.attempt-right}
 
 _Fig. 5 Left: A change map (the cmap band) showing the most recent significant
-changes for the time interval January to November, 2018, generated from a
+changes for the time interval January to November 2018, generated from a
 series of 51 images over an agricultural region near Jülich, Germany. Right:
 RGB composite of a Sentinel-2 image acquired over the same area on July 2,
 2018._{:.clear}
@@ -416,7 +416,7 @@ series analysis complements visual/infrared remote sensing data.
 _Fig. 7 Top left: Sentinel-2 image from October 22, 2019 over the western end
 of Kangaroo Island. Top right: Sentinel-2 image from February 9, 2020. Bottom
 left: Change map showing first significant changes (smap) for a sequence of 15
-Sentinel-1 images from October, 2019 through March, 2020. The "blue changes"
+Sentinel-1 images from October 2019 through March 2020. The "blue changes"
 precede those due to the bush fire (green/yellow) and correspond to vegetation
 changes in unforested areas. Bottom right: Proportion of changed pixels in the
 full scene, Figure 8. The first peak precedes the fire._{:.clear}
@@ -428,9 +428,9 @@ full scene, Figure 8. The first peak precedes the fire._{:.clear}
 ![](kangarooisland20_21.png){:.attempt-right}
 
 _Fig. 8 Map of the first significant changes for the entire scene (110 km from
-east to west), for the periods July, 2017 to July, 2018 (top left), July, 2018
-to July, 2019 (top right), July, 2019 to July, 2020 (bottom left), July, 2020
-to July, 2021 (bottom right). Some regeneration is apparent in the
+east to west), for the periods July 2017 to July 2018 (top left), July 2018
+to July 2019 (top right), July 2019 to July 2020 (bottom left), July 2020
+to July 2021 (bottom right). Some regeneration is apparent in the
 last scene._{:.clear}
 
 Clear cut logging is not considered to be deforestation, rather harvesting
@@ -439,7 +439,7 @@ North America. Clear cuts, by their nature, stand out "clearly" in optical
 imagery, as can be seen from the example on the left in Figure 9. Unless a
 cloud-free visual/infrared time series is available, the time at which logging
 took place may be difficult to determine. The SAR change image (right side of
-Figure 9) places it in this case at November/December, 2017, see also Figure
+Figure 9) places it in this case at November/December 2017, see also Figure
 10. Care has to be taken to determine the _first_ changes at the location,
 since snowfall/snowmelt or spring/summer vegetation can generate change
 signals in existing clear cuts. This is apparent in Figure 10.
@@ -449,7 +449,7 @@ signals in existing clear cuts. This is apparent in Figure 10.
 
 _Fig. 9 A clear cut north of Lake Superior in Ontario, Canada. Left:
 Ersri.WorldImagery background image acquired after the clear cut. Right: The
-first significant changes (smap) for a time series of 19 images from June,
+first significant changes (smap) for a time series of 19 images from June
 2017 to March 2018. The cut measures approximately 2.5 km north
 to south._{:.clear}
 
@@ -457,7 +457,7 @@ to south._{:.clear}
 
 _Fig. 10 Proportion of changed pixels for a 51 image time series over a small
 aoi centered on the clear cut for the years 2017 and 2018. Logging took place
-in November and December, 2017. The large positive definite change in April,
+in November and December 2017. The large positive definite change in April
 2018 is most probably snow melt._
 
 ## The end

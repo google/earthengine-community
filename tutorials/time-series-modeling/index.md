@@ -25,7 +25,7 @@ limitations under the License.
 
 The purpose of this tutorial is to establish a foundation for time series
 analysis on remotely sensed data. You will be introduced to the fundamentals
-of time series modeling, including decomposition, autocorrelation and
+of time series modeling, including decomposition, autocorrelation, and
 modeling historical changes. At the completion of this tutorial, you will be
 able to build an explanatory model for temporal data which can be used in
 many different avenues of research.
@@ -39,7 +39,7 @@ economics.
 
 One of the paradigm-changing features of Earth Engine is the ability to
 access decades of imagery without the previous limitation of needing to
-download, organize, store and process this information. For instance, within
+download, organize, store, and process this information. For instance, within
 the Landsat image collection we can access imagery back to 1972, allowing us
 to look at an area to visualize and quantify how much it's changed over time.
 With Earth Engine, Google maintains the data and offers it's computing power
@@ -116,7 +116,7 @@ you can end up building a time series model with erroneous results. Many time
 series modeling tools, such as
 [ARIMA modeling](https://otexts.com/fpp2/arima.html), are not directly
 applicable in certain settings due to missing data, non-standard collection
-periods and varying intensity due to atmospheric conditions. In this tutorial,
+periods, and varying intensity due to atmospheric conditions. In this tutorial,
 we will focus on understanding linear trends and harmonic modeling.
 
 ### Multi-temporal data in Earth Engine
@@ -180,7 +180,7 @@ We'll use the Normalized Difference Vegetation Index (NDVI) as our time series
 signal. It is a well-known metric for measuring vegetation productivity—for this
 region of interest, we expect there to be strong seasonality, and perhaps a
 gradual linear trend over time. In the code block below, we create a function
-called `addVariables` that extracts the date of each image, calculates NDVI and
+called `addVariables` that extracts the date of each image, calculates NDVI, and
 adds it to an array. We can then use `.map()` to apply the two functions we
 defined to build a time series model of our data.
 
@@ -199,7 +199,7 @@ var addVariables = function(image) {
   // Add a constant band.
   .addBands(ee.Image.constant(1));
 };
-// Remove clouds, add variables and filter to the area of interest.
+// Remove clouds, add variables, and filter to the area of interest.
 var filteredLandsat = landsat8Sr
   .filterBounds(roi)
   .filterDate('2013', '2022')
@@ -461,7 +461,7 @@ missing data, irregular atmospheric conditions, and natural variability.
 ### Exporting data
 
 Many of you might be more familiar with building statistical models in other
-languages or tools, such as Python, R or JMP. In that case, you might
+languages or tools, such as Python, R, or JMP. In that case, you might
 want to export the data for your own analysis. There are several ways to do
 it, but the simplest method is to click the 'expand into new tab' button next
 to the chart that contains the data you want to work with (likely the raw

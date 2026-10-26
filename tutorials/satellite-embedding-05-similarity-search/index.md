@@ -23,7 +23,7 @@ limitations under the License.
 
 _This tutorial is part of a series of tutorials on the Satellite Embedding dataset, see also
 [Introduction](/earth-engine/tutorials/community/satellite-embedding-01-introduction),
-[Unsupervised Classification](/earth-engine/tutorials/community/satellite-embedding-02-unsupervised-classification), [Supervised Classification](/earth-engine/tutorials/community/satellite-embedding-03-supervised-classification) and [Regression](/earth-engine/tutorials/community/satellite-embedding-04-regression)._
+[Unsupervised Classification](/earth-engine/tutorials/community/satellite-embedding-02-unsupervised-classification), [Supervised Classification](/earth-engine/tutorials/community/satellite-embedding-03-supervised-classification), and [Regression](/earth-engine/tutorials/community/satellite-embedding-04-regression)._
 
 Embeddings present a unique opportunity to find similar locations and features using Earth observation data. By comparing the embedding vector of a reference location with the embedding vectors for all other pixels of an embedding image, we can find locations that exhibit similar properties as the reference location. In practice, this allows us to easily find objects or particular types of sites in our region of interest.
 
@@ -91,7 +91,7 @@ Note: The Satellite Embedding images are derived from public domain earth observ
 
 ## Filter and mosaic the Satellite Embedding dataset
 
-We load the Satellite Embedding dataset, filter for images for the chosen year and create a mosaic.
+We load the Satellite Embedding dataset, filter for images for the chosen year, and create a mosaic.
 
 ```js
 var embeddings = ee.ImageCollection('GOOGLE/SATELLITE_EMBEDDING/V1/ANNUAL');

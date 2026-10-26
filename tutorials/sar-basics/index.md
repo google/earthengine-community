@@ -64,7 +64,7 @@ The S1_GRD_FLOAT collection, and its log-scaled COPERNICUS/S1_GRD computed equiv
 
 ### Sentinel-1 coverage
 
-Sentinel-1 consists of two identical sensors ("A" and "B") which have a 12-day revisit orbit each, but a 6-day revisit when combined. However, there are certain limitations to how much data can be acquired and downloaded from the two sensors, which depend on sensor uptime per orbit, ground station visibility for data downlinking and some other factors. The maps in [the observation scenario plan](https://sentinel.esa.int/web/sentinel/missions/sentinel-1/observation-scenario) show actual and planned operations, which provide an initial idea on how certain areas are revisited. 
+Sentinel-1 consists of two identical sensors ("A" and "B") which have a 12-day revisit orbit each, but a 6-day revisit when combined. However, there are certain limitations to how much data can be acquired and downloaded from the two sensors, which depend on sensor uptime per orbit, ground station visibility for data downlinking, and some other factors. The maps in [the observation scenario plan](https://sentinel.esa.int/web/sentinel/missions/sentinel-1/observation-scenario) show actual and planned operations, which provide an initial idea on how certain areas are revisited. 
 
 For a more precise estimate, you can use Earth Engine as follows:
 
@@ -118,7 +118,7 @@ You will notice that coverages get denser towards the poles, as orbits which are
 Coverage is most complete over Europe (hey, we pay for this stuff!), where every descending and ascending acquisition
 is acquired for both the A and B sensors. For most of India, however, only a single 12-day repeat cycle is possible. The Himalayas, however, are included in the seismic zoning, for which a best effort higher density revisit is programmed.
 
-### Sentinel-1 orbits, modes, swaths and scenes
+### Sentinel-1 orbits, modes, swaths, and scenes
 
 Sentinel-1 is a **polar orbiting** platform, i.e., after crossing the North Pole, it descends to the South Pole, crosses it and then ascends back to the North Pole. This explains the *orbitProperties_pass* metadata ASCENDING ("ASC") and DESCENDING ("DESC") property that is set on each scene in the S1_GRD_FLOAT collection. The total time needed to go from North to South Pole and back is about 98 minutes (175 orbits in 12 days). In that time, the Earth is turning about 23 degrees to the East, which is why DESC orbits are slightly rotated towards the south-west, and ASC orbits towards the north-west. The *orbitNumber_start* image property contains the absolute orbit sequence number (counted from start of acquisitions). The *relativeOrbitNumber_start* property is often more useful, as it provides the sequence number of the orbit in the 12 day revisit cycle. Scenes with the same *relativeOrbitNumber_start* are exactly 12 days apart (6 days if you combine A and B) and have (almost) the same SAR view configuration.
 

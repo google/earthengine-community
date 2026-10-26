@@ -54,8 +54,8 @@ et al., 2016) and is essential in recharging groundwater.
 
 This seasonal water resource is one of the fastest changing hydrologic
 systems under Earth’s
-warming climate, and will broadly impact regional economies, ecosystem
-function and increase the potential for flood hazards (Musselman et al.,
+warming climate, and will broadly impact regional economies and ecosystem
+function, and increase the potential for flood hazards (Musselman et al.,
 2017; IPCC, 2007; Beniston, 2012; Allan and Casillo, 2007; Barnett and
 Lettenmaier, 2005).
 
@@ -349,7 +349,7 @@ Wang and Derksen, 2007).
 
 Additionally, the protected estuaries of the Northwest Passages have earlier
 dates of no snow compared to the landscapes exposed to the currents and winds
-of the Northern Atlantic. Latitude, elevation and proximity to ocean currents
+of the Northern Atlantic. Latitude, elevation, and proximity to ocean currents
 are the strongest determinants in this region.
 
 **Note**: pixels representing glaciers that did not get removed by the analysis
@@ -497,7 +497,7 @@ _Figure 5. Regional annual mean first DOY with no snow time series._
 Amanda Armstrong devised and directed tutorial development. Justin Braaten
 assisted in method implementation. Morgan Shelby asked the initial question that
 led to the development of the dataset and subsequent tutorial. All contributors
-provided text, code and analysis examples.
+provided text, code, and analysis examples.
 
 ## References
 

@@ -26,7 +26,7 @@ _This is part 2 of a 3-part tutorial, see also
 [part 3](/earth-engine/tutorials/community/introduction-to-dynamic-world-pt-3)._
 
 A high resolution Land Use Land Cover (LULC) dataset like Dynamic World allows
-us to estimate the footprint of human activity on carbon cycles, biodiversity
+us to estimate the footprint of human activity on carbon cycles, biodiversity,
 and other anthropogenic natural processes. Using the Dynamic World taxonomy, we
 can calculate and summarize statistics over any region. In this section, we
 will learn how to calculate the number of pixels for a single land cover class

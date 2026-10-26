@@ -37,7 +37,7 @@ thresholds in situ. It does not include land that is predominantly under
 agricultural or urban land use" (FAO 2015).
 
 In various reporting of forest and/or land-use related data, countries may have
-different forest definitions, including these parameters, forest types or land
+different forest definitions, including these parameters, forest types, or land
 use categories.
 
 ## Instructions

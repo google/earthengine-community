@@ -23,7 +23,7 @@ limitations under the License.
 
 _This tutorial is part of a series of tutorials on the Satellite Embedding dataset, see also
 [Unsupervised Classification](/earth-engine/tutorials/community/satellite-embedding-02-unsupervised-classification),
-[Supervised Classification](/earth-engine/tutorials/community/satellite-embedding-03-supervised-classification), [Regression](/earth-engine/tutorials/community/satellite-embedding-04-regression) and [Similarity Search](/earth-engine/tutorials/community/satellite-embedding-05-similarity-search)._
+[Supervised Classification](/earth-engine/tutorials/community/satellite-embedding-03-supervised-classification), [Regression](/earth-engine/tutorials/community/satellite-embedding-04-regression), and [Similarity Search](/earth-engine/tutorials/community/satellite-embedding-05-similarity-search)._
 
 Google’s AlphaEarth Foundations is a geospatial embedding model trained on a variety of Earth observation (EO) datasets. The model has been run on annual time-series of images and the resulting embeddings are available as an analysis-ready dataset in Earth Engine. This dataset enables users to build any number of fine-tuning applications or other tasks without running computationally expensive deep learning models. The result is a general-purpose dataset that can be used for a number of different downstream tasks, such as
 
@@ -153,7 +153,7 @@ var getClusters = function(nClusters) {
 
 We can now cluster the larger embedding image to see groups of pixels having similar embeddings. Before we do that, it is important to understand that the model has captured the full temporal trajectory of each pixel for the year - that means if two pixels have similar spectral values in all images but at different times - they can be separated.
 
-Below is a visualization of our area of interest as captured by cloud-masked Sentinel-2 images for the year 2024. Remember that all the images (along with images from Sentinel-2, Landsat 8/9 and many more sensors) have been used to learn the final embeddings.
+Below is a visualization of our area of interest as captured by cloud-masked Sentinel-2 images for the year 2024. Remember that all the images (along with images from Sentinel-2, Landsat 8/9, and many more sensors) have been used to learn the final embeddings.
 
 ![](5.gif){: width=512px}<br>
 _Figure: Sentinel-2 annual time-series for our region_

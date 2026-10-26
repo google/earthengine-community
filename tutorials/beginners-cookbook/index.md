@@ -766,7 +766,7 @@ print(bandSel1);
 ```
 
 **3.** We calculate the mean of all the images in the collection, clip it to the
-geometry of interest and scale it to convert it from digital number to degree
+geometry of interest, and scale it to convert it from digital number to degrees
 Celsius.
 
 ```javascript

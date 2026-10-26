@@ -23,7 +23,7 @@ limitations under the License.
 
 _This tutorial is part of a series of tutorials on the Satellite Embedding dataset, see also
 [Introduction](/earth-engine/tutorials/community/satellite-embedding-01-introduction),
-[Unsupervised Classification](/earth-engine/tutorials/community/satellite-embedding-02-unsupervised-classification), [Regression](/earth-engine/tutorials/community/satellite-embedding-04-regression) and [Similarity Search](/earth-engine/tutorials/community/satellite-embedding-05-similarity-search)._
+[Unsupervised Classification](/earth-engine/tutorials/community/satellite-embedding-02-unsupervised-classification), [Regression](/earth-engine/tutorials/community/satellite-embedding-04-regression), and [Similarity Search](/earth-engine/tutorials/community/satellite-embedding-05-similarity-search)._
 
 Satellite Embeddings can be used for standard remote sensing classification workflows. The embeddings were specifically designed to excel  at low-shot learning, meaning that a relatively small number of labeled data (think 10s to 100s of samples) is required to achieve high-quality classification results. Since the embeddings include spectral, spatial, and temporal context, simple classifiers such as [k-Nearest Neighbors (kNN)](https://developers.google.com/earth-engine/apidocs/ee-classifier-smileknn)  or [Random Forest](https://developers.google.com/earth-engine/apidocs/ee-classifier-smilerandomforest) can use the embedding vectors to classify complex landscapes into target classes.
 

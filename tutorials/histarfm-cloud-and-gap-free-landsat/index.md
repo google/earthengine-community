@@ -85,7 +85,7 @@ present, there are two versions available:
 Version 2 datasets will be updated to Version 5 in the future, but it will take
 time.
 
-To access the databases, ask any questions and stay updated on the latest
+To access the databases, ask any questions, and stay updated on the latest
 information and upcoming data, please join the following google group:
 [histarfm-collection@googlegroups.com](mailto:histarfm-collection@googlegroups.com).
 
@@ -286,7 +286,7 @@ var maxMonthNdvi = maxMonth(GF_Landsat);
 #### c. Visualize the maximum NDVI value and the month
 
 Once the variables are calculated, the NDVI maximum is displayed in whitenish
-(lower), greenish (medium) and blackish tones (higher values). The month is also
+(lower), greenish (medium), and blackish tones (higher values). The month is also
 displayed with a specific palette: bluenish tones for autumn and winter periods
 and greenish and reddish tones for spring and summer periods.
 
@@ -610,7 +610,7 @@ The text added over the GIF is done using the Gennadii Donchyts packages
 **text** and **style** from the available
 [repository](https://code.earthengine.google.com/?accept_repo=users/gena/packages)
 for all GEE users. With this repository, the DOY and the year is added to the
-images. They require a position in the image, a scale and size and color of the
+images. They require a position in the image, a scale, size, and color of the
 text. Additionally, the visualization parameters of the LAI are defined. All
 variables are used in the function called `gifImages` to obtain the
 ImageCollection to visualize in the GIF. After that, the GIF parameters are
@@ -679,7 +679,7 @@ cloud. Remote Sensing of Environment, 247, 111901.
 
 Emma Izquierdo-Verdiguier and Alvaro Moreno-Martinez devised and directed
 tutorial development. Jordi Muñoz-Marí assisted in the method implementation.
-All authors contributed text, code and analysis examples.
+All authors contributed text, code, and analysis examples.
 
 The tutorial authors would like to thank all the bioNet and HISTARFM creators
 and Gennadii Donchyts from [Deltares](https://www.deltares.nl/en/) for his

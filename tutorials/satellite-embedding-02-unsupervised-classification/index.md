@@ -23,7 +23,7 @@ limitations under the License.
 
 _This tutorial is part of a series of tutorials on the Satellite Embedding dataset, see also
 [Introduction](/earth-engine/tutorials/community/satellite-embedding-01-introduction),
-[Supervised Classification](/earth-engine/tutorials/community/satellite-embedding-03-supervised-classification), [Regression](/earth-engine/tutorials/community/satellite-embedding-04-regression) and [Similarity Search](/earth-engine/tutorials/community/satellite-embedding-05-similarity-search)._
+[Supervised Classification](/earth-engine/tutorials/community/satellite-embedding-03-supervised-classification), [Regression](/earth-engine/tutorials/community/satellite-embedding-04-regression), and [Similarity Search](/earth-engine/tutorials/community/satellite-embedding-05-similarity-search)._
 
 In the [previous tutorial](/earth-engine/tutorials/community/satellite-embedding-01-introduction) (Introduction), we saw how Satellite Embeddings capture annual trajectories of satellite observations and climate variables. This makes the dataset readily usable for mapping crops without the need to model crop phenology. Crop type mapping is a challenging task that typically requires modeling crop phenology and collecting field samples for all crops grown in the region.
 
@@ -52,7 +52,7 @@ _Figure: Selected region_
 
 ## Prepare the Satellite Embedding dataset
 
-Next, we load the Satellite Embedding dataset, filter for images for the chosen year and create a mosaic.
+Next, we load the Satellite Embedding dataset, filter for images for the chosen year, and create a mosaic.
 
 ```js
 var embeddings = ee.ImageCollection('GOOGLE/SATELLITE_EMBEDDING/V1/ANNUAL');

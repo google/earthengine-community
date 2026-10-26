@@ -23,7 +23,7 @@ limitations under the License.
 
 _This tutorial is part of a series of tutorials on the Satellite Embedding dataset, see also
 [Introduction](/earth-engine/tutorials/community/satellite-embedding-01-introduction),
-[Unsupervised Classification](/earth-engine/tutorials/community/satellite-embedding-02-unsupervised-classification), [Supervised Classification](/earth-engine/tutorials/community/satellite-embedding-03-supervised-classification) and [Similarity Search](/earth-engine/tutorials/community/satellite-embedding-05-similarity-search)._
+[Unsupervised Classification](/earth-engine/tutorials/community/satellite-embedding-02-unsupervised-classification), [Supervised Classification](/earth-engine/tutorials/community/satellite-embedding-03-supervised-classification), and [Similarity Search](/earth-engine/tutorials/community/satellite-embedding-05-similarity-search)._
 
 Embedding fields can be used as feature inputs/predictors for regression in the same way they’re used for classification.
 

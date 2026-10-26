@@ -176,7 +176,7 @@ change, 3 = indefinite change.
 GeoTIFF format.
 
 **Preview:** Run the change detection algorithm and preview results according
-to the chosen settings (often slow, depending upon series length, zoom level
+to the chosen settings (often slow, depending upon series length, zoom level,
 and size of the aoi).
 
 **ReviewAsset:** Display a currently selected change map asset according to
@@ -321,8 +321,8 @@ covering the period Jan 1, 2019, through June 7, 2019. Each image has an area
 of approximately 3000 km². The gray scale background is the temporal average
 of the VV band of all 16 images. The maps, read top to bottom, left to right,
 are for the intervals April 18-March 2, March 2-14, March 14-20, March 20- 26,
-March 26-April 1 and April 1-7. Positive definite changes are red, negative
-definite green and indefinite yellow._
+March 26–April 1, and April 1–7. Positive definite changes are red, negative
+definite green, and indefinite yellow._
 
 You can easily reproduce the above sequence with the interactive interface,
 remembering that negative definite changes are now shown as cyan.

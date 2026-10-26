@@ -72,7 +72,7 @@ about the Code Editor [here](/earth-engine/guides/playground).
 * If you are unfamiliar with the Earth Engine API, check out the
 [Introduction to the Earth Engine API](/earth-engine/tutorials/tutorial_api_01) tutorial.
 
-Once you're familiar with JavaScript, the Earth Engine API and the Code Editor,
+Once you're familiar with JavaScript, the Earth Engine API, and the Code Editor,
 get started on the tutorial!
 
 ## Hello [Dynamic] World
@@ -292,7 +292,7 @@ _A Sentinel-1C image along with matching Dynamic World products_
 
 Being a continuous product, Dynamic World allows users to aggregate the NRT
 collection over a longer, custom time period. For example, one can create a
-monthly, seasonal or annual product from the NRT scenes collected during this
+monthly, seasonal, or annual product from the NRT scenes collected during this
 duration. In this section, you will learn how to create an annual land cover
 product for a US County and export the results as a GeoTiff.
 

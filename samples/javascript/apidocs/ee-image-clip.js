@@ -34,7 +34,7 @@ Map.addLayer(dem.clip(geomLine), demVis, 'Line clip');
 Map.addLayer(geomLine, {color: 'orange'}, 'Line geometry', false);
 
 // Images have geometry; clip the dem image by the geometry of an S2 image.
-var s2Img = ee.Image('COPERNICUS/S2_SR/20210109T185751_20210109T185931_T10SEG');
+var s2Img = ee.Image('COPERNICUS/S2_SR_HARMONIZED/20210109T185751_20210109T185931_T10SEG');
 var geomS2Img = s2Img.geometry();
 Map.addLayer(dem.clip(geomS2Img), demVis, 'Image geometry clip');
 Map.addLayer(geomS2Img, {color: 'blue'}, 'Image geometry', false);

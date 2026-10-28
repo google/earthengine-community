@@ -16,7 +16,7 @@
 
 // [START earthengine__apidocs__ee_image_getdownloadurl]
 // A Sentinel-2 surface reflectance image.
-var img = ee.Image('COPERNICUS/S2_SR/20210109T185751_20210109T185931_T10SEG');
+var img = ee.Image('COPERNICUS/S2_SR_HARMONIZED/20210109T185751_20210109T185931_T10SEG');
 
 // A small region within the image.
 var region = ee.Geometry.BBox(-122.0859, 37.0436, -122.0626, 37.0586);

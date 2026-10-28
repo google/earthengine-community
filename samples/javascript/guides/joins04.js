@@ -28,7 +28,7 @@ var mcd43a4 = ee.ImageCollection('MODIS/MCD43A4_006_EVI')
     .filter(dateFilter);
 
 // Load a MODIS collection with quality data.
-var mcd43a2 = ee.ImageCollection('MODIS/006/MCD43A2')
+var mcd43a2 = ee.ImageCollection('MODIS/061/MCD43A2')
     .filter(dateFilter);
 
 // Define an inner join.

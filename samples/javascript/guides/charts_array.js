@@ -25,7 +25,7 @@ var forest = ee.FeatureCollection('projects/google/charts_feature_example')
                  .filter(ee.Filter.eq('label', 'Forest'));
 
 // Define a MODIS surface reflectance composite.
-var modisSr = ee.ImageCollection('MODIS/006/MOD09A1')
+var modisSr = ee.ImageCollection('MODIS/061/MOD09A1')
                   .filter(ee.Filter.date('2018-06-01', '2018-09-01'))
                   .select('sur_refl_b0[0-7]')
                   .mean();

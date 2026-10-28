@@ -30,7 +30,7 @@ var addTime = function(image) {
 
 // Load a MODIS collection, filter to several years of 16 day mosaics,
 // and map the time band function over it.
-var collection = ee.ImageCollection('MODIS/006/MYD13A1')
+var collection = ee.ImageCollection('MODIS/061/MYD13A1')
   .filterDate('2004-01-01', '2010-10-31')
   .map(addTime);
 

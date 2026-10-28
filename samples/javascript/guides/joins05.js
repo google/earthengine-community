@@ -26,7 +26,7 @@ var primary = ee.ImageCollection('LANDSAT/LC08/C02/T1_TOA')
     .filterBounds(ee.Geometry.Point(-122.092, 37.42));
 
 // Load a secondary collection: MODIS imagery.
-var modSecondary = ee.ImageCollection('MODIS/006/MOD09GA')
+var modSecondary = ee.ImageCollection('MODIS/061/MOD09GA')
     .filterDate('2014-03-01', '2014-07-01');
 
 // Define an allowable time difference: two days in milliseconds.

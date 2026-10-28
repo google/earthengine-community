@@ -21,9 +21,9 @@ region = ee.FeatureCollection('USDOS/LSIB_SIMPLE/2017').filter(
 )
 
 # Load MODIS land cover categories in 2001.
-landcover = ee.Image('MODIS/051/MCD12Q1/2001_01_01').select(
+landcover = ee.Image('MODIS/061/MCD12Q1/2001_01_01').select(
     # Select the IGBP classification band.
-    'Land_Cover_Type_1'
+    'LC_Type1'
 )
 
 # Load nightlights image inputs.

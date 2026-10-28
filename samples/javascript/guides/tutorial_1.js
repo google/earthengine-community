@@ -151,7 +151,7 @@ Map.addLayer(median, visParams, 'median');
 
 // [START earthengine__tutorial_1__masking]
 // Load or import the Hansen et al. forest change dataset.
-var hansenImage = ee.Image('UMD/hansen/global_forest_change_2015');
+var hansenImage = ee.Image('UMD/hansen/global_forest_change_2025_v1_13');
 
 // Select the land/water mask.
 var datamask = hansenImage.select('datamask');

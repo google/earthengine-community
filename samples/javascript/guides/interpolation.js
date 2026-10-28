@@ -83,7 +83,7 @@ Map.addLayer(interpolated, band_viz, 'CH4 Interpolated');
 
 // [START earthengine__interpolation__kriging]
 // Load an image of sea surface temperature (SST).
-var sst = ee.Image('NOAA/AVHRR_Pathfinder_V52_L3/20120802025048')
+var sst = ee.Image('NOAA/CDR/SST_PATHFINDER/V53/20120802023356')
   .select('sea_surface_temperature')
   .rename('sst')
   .divide(100);

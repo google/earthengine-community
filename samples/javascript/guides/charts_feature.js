@@ -37,7 +37,7 @@ var grassland = ee.Feature(
 var ecoregions = ee.FeatureCollection([desert, forest, grassland]);
 
 // Load PRISM climate normals image collection; convert images to bands.
-var normClim = ee.ImageCollection('OREGONSTATE/PRISM/Norm81m').toBands();
+var normClim = ee.ImageCollection('OREGONSTATE/PRISM/Norm91m').toBands();
 
 // Summarize climate normals for each ecoregion feature as a set or properties.
 ecoregions = normClim.reduceRegions(
@@ -512,7 +512,7 @@ print(chart);
 
 // [START earthengine__charts_feature__histogram_chart]
 // Load PRISM climate normals image collection; convert images to bands.
-var normClim = ee.ImageCollection('OREGONSTATE/PRISM/Norm81m').toBands();
+var normClim = ee.ImageCollection('OREGONSTATE/PRISM/Norm91m').toBands();
 
 // Make a point sample of climate variables for a region in western USA.
 var region = ee.Geometry.Rectangle(-123.41, 40.43, -116.38, 45.14);

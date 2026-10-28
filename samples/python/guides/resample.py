@@ -66,7 +66,7 @@ task2.start()
 
 # [START earthengine__resample__reduce_resolution]
 # Load a MODIS EVI image.
-modis = ee.Image(ee.ImageCollection('MODIS/006/MOD13A1').first()).select('EVI')
+modis = ee.Image(ee.ImageCollection('MODIS/061/MOD13A1').first()).select('EVI')
 
 # Display the EVI image near La Honda, California.
 m.set_center(-122.3616, 37.5331, 12)
@@ -77,7 +77,7 @@ modis_projection = modis.projection()
 display('MODIS projection:', modis_projection)
 
 # Load and display forest cover data at 30 meters resolution.
-forest = ee.Image('UMD/hansen/global_forest_change_2015').select(
+forest = ee.Image('UMD/hansen/global_forest_change_2025_v1_13').select(
     'treecover2000'
 )
 m.add_layer(forest, {'max': 80}, 'forest cover 30 m')

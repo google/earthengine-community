@@ -16,7 +16,8 @@
 //This example uses Tanzania
 var iso_code ='TZA'
 var country = ee.FeatureCollection("USDOS/LSIB/2013").filter(ee.Filter.eq('iso_alpha3', iso_code));
-var SMAPL3 = ee.ImageCollection("NASA/SMAP/SPL3SMP_E/005_RAW")
+var SMAPL3 = ee.ImageCollection("NASA/SMAP/SPL3SMP_E/005")
+    .merge(ee.ImageCollection("NASA/SMAP/SPL3SMP_E/006"));
 
 //getting today's date minus three days (3 days ago for processing lag)
 var anomalydate = ee.Date(Date.now('UTC')).advance(-3,"day").format('YYYY-MM-DD');

@@ -15,7 +15,7 @@
 """Earth Engine Developer's Guide examples from 'Creating Image Collections' page."""
 
 # [START earthengine__image_collections02__load_collection]
-sentinel_collection = ee.ImageCollection('COPERNICUS/S2_SR')
+sentinel_collection = ee.ImageCollection('COPERNICUS/S2_SR_HARMONIZED')
 # [END earthengine__image_collections02__load_collection]
 
 # [START earthengine__image_collections02__creating_collections]

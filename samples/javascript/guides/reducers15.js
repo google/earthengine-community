@@ -177,7 +177,7 @@ print('Residuals:', residuals);
 
 // [START earthengine__reducers15__fc_linear_regression]
 // Import a Sentinel-2 TOA image.
-var s2ImgSwir1 = ee.Image('COPERNICUS/S2/20191022T185429_20191022T185427_T10SEH');
+var s2ImgSwir1 = ee.Image('COPERNICUS/S2_HARMONIZED/20191022T185429_20191022T185427_T10SEH');
 
 // Import a Landsat 8 TOA image from 12 days earlier than the S2 image.
 var l8ImgSwir1 = ee.Image('LANDSAT/LC08/C02/T1_TOA/LC08_044033_20191010');

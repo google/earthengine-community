@@ -21,7 +21,7 @@ coords = [
 region = ee.Geometry.Point(coords)
 
 # Sentinel-2 median composite.
-image = (ee.ImageCollection('COPERNICUS/S2')
+image = (ee.ImageCollection('COPERNICUS/S2_HARMONIZED')
               .filterBounds(region)
               .filterDate('2020-04-01', '2020-09-01')
               .median())

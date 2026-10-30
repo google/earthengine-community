@@ -16,7 +16,7 @@
 
 // [START earthengine__apidocs__ee_image_sampleregions]
 // A Sentinel-2 surface reflectance image.
-var img = ee.Image('COPERNICUS/S2_SR/20210109T185751_20210109T185931_T10SEG');
+var img = ee.Image('COPERNICUS/S2_SR_HARMONIZED/20210109T185751_20210109T185931_T10SEG');
 Map.setCenter(-122.503881, 37.765588, 18);
 Map.addLayer(img, {bands: ['B11', 'B8', 'B3'], min: 100, max: 4500}, 'img');
 

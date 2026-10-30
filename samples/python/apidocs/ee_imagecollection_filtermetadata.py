@@ -15,7 +15,7 @@
 # [START earthengine__apidocs__ee_imagecollection_filtermetadata]
 # Filtering an ImageCollection by metadata.
 
-dataset = ee.ImageCollection('COPERNICUS/S2_SR').filterDate(
+dataset = ee.ImageCollection('COPERNICUS/S2_SR_HARMONIZED').filterDate(
     '2020-01-01', '2020-01-02'
 )
 filtered = dataset.filterMetadata('CLOUDY_PIXEL_PERCENTAGE', 'less_than', 0.2)

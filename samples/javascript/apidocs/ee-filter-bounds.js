@@ -17,7 +17,7 @@
 // [START earthengine__apidocs__ee_filter_bounds]
 // collection.filterBounds() is preferred.
 // A Sentinel-2 surface reflectance image collection for 3 months in 2021.
-var ic = ee.ImageCollection('COPERNICUS/S2_SR')
+var ic = ee.ImageCollection('COPERNICUS/S2_SR_HARMONIZED')
              .filterDate('2021-07-01', '2021-10-01');
 
 // A point geometry for the peak of Mount Shasta, California, USA.

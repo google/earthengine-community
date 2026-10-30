@@ -14,7 +14,7 @@
 
 # [START earthengine__apidocs__ee_imagecollection_select]
 # A Sentinel-2 surface reflectance image collection.
-col = ee.ImageCollection('COPERNICUS/S2_SR').filterBounds(
+col = ee.ImageCollection('COPERNICUS/S2_SR_HARMONIZED').filterBounds(
     ee.Geometry.Point(-122.152, 37.336)
     ).filterDate('2021-01-01', '2021-02-01')
 display('All band names', col.first().bandNames())

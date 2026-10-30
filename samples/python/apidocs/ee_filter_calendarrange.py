@@ -15,7 +15,7 @@
 # [START earthengine__apidocs__ee_filter_calendarrange]
 # A Sentinel-2 surface reflectance image collection intersecting the peak of
 # Mount Shasta, California, USA.
-ic = ee.ImageCollection('COPERNICUS/S2_SR').filterBounds(
+ic = ee.ImageCollection('COPERNICUS/S2_SR_HARMONIZED').filterBounds(
     ee.Geometry.Point(-122.196, 41.411))
 
 display('Images for a month range (June-August):',

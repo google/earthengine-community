@@ -21,7 +21,7 @@ import numpy
 import requests
 
 # A Sentinel-2 surface reflectance image.
-img = ee.Image('COPERNICUS/S2_SR/20210109T185751_20210109T185931_T10SEG')
+img = ee.Image('COPERNICUS/S2_SR_HARMONIZED/20210109T185751_20210109T185931_T10SEG')
 
 # A small region within the image.
 region = ee.Geometry.BBox(-122.0859, 37.0436, -122.0626, 37.0586)

@@ -14,7 +14,7 @@
 
 # [START earthengine__apidocs__ee_image_updatemask]
 # A Sentinel-2 surface reflectance image.
-img = ee.Image('COPERNICUS/S2_SR/20210109T185751_20210109T185931_T10SEG')
+img = ee.Image('COPERNICUS/S2_SR_HARMONIZED/20210109T185751_20210109T185931_T10SEG')
 true_color_viz = {
     'bands': ['B4', 'B3', 'B2'],
     'min': 0,

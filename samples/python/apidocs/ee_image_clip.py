@@ -34,7 +34,7 @@ m.add_layer(dem.clip(geom_line), dem_vis, 'Line clip')
 m.add_layer(geom_line, {'color': 'orange'}, 'Line geometry', False)
 
 # Images have geometry clip the dem image by the geometry of an S2 image.
-s_2_img = ee.Image('COPERNICUS/S2_SR/20210109T185751_20210109T185931_T10SEG')
+s_2_img = ee.Image('COPERNICUS/S2_SR_HARMONIZED/20210109T185751_20210109T185931_T10SEG')
 geom_s_2_img = s_2_img.geometry()
 m.add_layer(dem.clip(geom_s_2_img), dem_vis, 'Image geometry clip')
 m.add_layer(geom_s_2_img, {'color': 'blue'}, 'Image geometry', False)

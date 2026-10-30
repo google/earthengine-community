@@ -14,7 +14,7 @@
 
 # [START earthengine__apidocs__export_table_todrive]
 # A Sentinel-2 surface reflectance image.
-img = ee.Image('COPERNICUS/S2_SR/20210109T185751_20210109T185931_T10SEG')
+img = ee.Image('COPERNICUS/S2_SR_HARMONIZED/20210109T185751_20210109T185931_T10SEG')
 m = geemap.Map()
 m.set_center(-122.359, 37.428, 9)
 m.add_layer(

@@ -55,7 +55,7 @@ input_image = (
 )
 
 # Use MODIS land cover, IGBP classification, for training.
-modis = ee.Image('MODIS/006/MCD12Q1/2020_01_01').select('LC_Type1')
+modis = ee.Image('MODIS/061/MCD12Q1/2020_01_01').select('LC_Type1')
 
 # Sample the input imagery to get a FeatureCollection of training data.
 training = input_image.addBands(modis).sample(
@@ -99,7 +99,6 @@ display('Validation overall accuracy:', test_accuracy.accuracy())
 
 # Define a palette for the IGBP classification.
 igbp_palette = [
-    'aec3d4',  # water
     '152106', '225129', '369b47', '30eb5b', '387242',  # forest
     '6a2325', 'c3aa69', 'b76031', 'd9903d', '91af40',  # shrub, grass
     '111149',  # wetlands
@@ -108,7 +107,7 @@ igbp_palette = [
     '33280d',  # crop mosaic
     'd7cdcc',  # snow and ice
     'f7e084',  # barren
-    '6f6f6f'   # tundra
+    'aec3d4'   # water
 ]
 
 # Display the input and the classification with geemap in a notebook.
@@ -121,7 +120,7 @@ m.add_layer(
 )
 m.add_layer(
     classified.clip(roi),
-    {'palette': igbp_palette, 'min': 0, 'max': 17},
+    {'palette': igbp_palette, 'min': 1, 'max': 17},
     'classification',
 )
 m
@@ -188,7 +187,7 @@ m = geemap.Map()
 m.center_object(roi, 10)
 m.add_layer(
     classified.clip(roi),
-    {'palette': igbp_palette, 'min': 0, 'max': 17},
+    {'palette': igbp_palette, 'min': 1, 'max': 17},
     'classification',
 )
 m

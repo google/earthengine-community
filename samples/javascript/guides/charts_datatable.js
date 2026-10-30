@@ -123,7 +123,7 @@ var geometry = ee.Geometry.Point([-121.679, 36.479]);
 // Define a band of interest (NDVI), import the MODIS vegetation index dataset,
 // and select the band.
 var band = 'NDVI';
-var ndviCol = ee.ImageCollection('MODIS/006/MOD13Q1').select(band);
+var ndviCol = ee.ImageCollection('MODIS/061/MOD13Q1').select(band);
 
 // Map over the collection to add a day of year (doy) property to each image.
 ndviCol = ndviCol.map(function(img) {

@@ -25,9 +25,9 @@ var region = ee.FeatureCollection('USDOS/LSIB_SIMPLE/2017')
   .filter(ee.Filter.eq('country_na', 'United States'));
 
 // Load MODIS land cover categories in 2001.
-var landcover = ee.Image('MODIS/051/MCD12Q1/2001_01_01')
+var landcover = ee.Image('MODIS/061/MCD12Q1/2001_01_01')
   // Select the IGBP classification band.
-  .select('Land_Cover_Type_1');
+  .select('LC_Type1');
 
 // Load nightlights image inputs.
 var nl2001 = ee.Image('NOAA/DMSP-OLS/NIGHTTIME_LIGHTS/F152001')

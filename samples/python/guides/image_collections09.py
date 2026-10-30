@@ -17,7 +17,7 @@
 # [START earthengine__image_collections09__iterate]
 import altair as alt
 # Load MODIS EVI imagery.
-collection = ee.ImageCollection('MODIS/006/MYD13A1').select('EVI')
+collection = ee.ImageCollection('MODIS/061/MYD13A1').select('EVI')
 
 # Define reference conditions from the first 10 years of data.
 reference = collection.filterDate('2001-01-01', '2010-12-31').sort(

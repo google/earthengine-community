@@ -24,7 +24,7 @@ var loadedImage = ee.Image('NASA/NASADEM_HGT/001');
 // [END earthengine__images02__load_image]
 
 // [START earthengine__images02__find_image]
-var first = ee.ImageCollection('COPERNICUS/S2_SR')
+var first = ee.ImageCollection('COPERNICUS/S2_SR_HARMONIZED')
                 .filterBounds(ee.Geometry.Point(-70.48, 43.3631))
                 .filterDate('2019-01-01', '2019-12-31')
                 .sort('CLOUDY_PIXEL_PERCENTAGE')

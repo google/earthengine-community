@@ -20,7 +20,7 @@
  */
 
 // [START earthengine__image_collections02__load_collection]
-var sentinelCollection = ee.ImageCollection('COPERNICUS/S2_SR');
+var sentinelCollection = ee.ImageCollection('COPERNICUS/S2_SR_HARMONIZED');
 // [END earthengine__image_collections02__load_collection]
 
 // [START earthengine__image_collections02__creating_collections]

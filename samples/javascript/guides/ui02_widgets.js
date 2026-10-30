@@ -117,7 +117,7 @@ var consoleMap = ui.Map({
 });
 
 // Create a Layer from this Sentinel-2 image
-var image = ee.Image('COPERNICUS/S2/20150821T111616_20160314T094808_T30UWU');
+var image = ee.Image('COPERNICUS/S2_HARMONIZED/20150821T111616_20160314T094808_T30UWU');
 var visParams = {bands: ['B4', 'B3', 'B2'], max: 2048, gamma: 1};
 var layer = ui.Map.Layer(image, visParams);
 
@@ -306,7 +306,7 @@ Map.drawingTools().layers().add(layer);
 
 // [START earthengine__ui02_widgets__geometry_events]
 // Load elevation data.
-var srtm = ee.Image('USGS/SRTMGL1_003');
+var srtm = ee.Image('NASA/NASADEM_HGT/001').select('elevation');
 Map.addLayer(srtm, {min: 0, max: 5000}, 'SRTM');
 
 // Make a label to display mean elevation at drawn points.

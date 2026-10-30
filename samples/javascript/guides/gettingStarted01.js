@@ -20,7 +20,7 @@
  */
 
 // placeholded imports
-var dem = ee.Image('USGS/SRTMGL1_003');
+var dem = ee.Image('NASA/NASADEM_HGT/001');
 var collection1 = ee.ImageCollection('NOAA/DMSP-OLS/NIGHTTIME_LIGHTS');
 
 // dummy variables

@@ -22,7 +22,7 @@
 // [START earthengine__ui04_events__events]
 // Load some images.
 var dem = ee.Image('NASA/NASADEM_HGT/001');
-var veg = ee.Image('NOAA/VIIRS/001/VNP13A1/2022_06_02')
+var veg = ee.Image('NASA/VIIRS/002/VNP13A1/2022_06_02')
   .select(['EVI', 'EVI2', 'NDVI']);
 
 // Make a drop-down menu of bands.

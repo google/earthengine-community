@@ -17,7 +17,7 @@
 
 # DEMs in Earth Engine are often distributed as single images per asset
 # (e.g., NASA/NASADEM_HGT/001) or as collections of tiled images that need
-# to be mosaicked (e.g., COPERNICUS/DEM/GLO30). Terrain analysis functions
+# to be mosaicked (e.g., COPERNICUS/DEM/GLO30_2024_1). Terrain analysis functions
 # compute values based on neighboring pixels, so care must be taken to
 # select and prepare DEM inputs appropriately.
 
@@ -56,7 +56,7 @@ m.add_layer(nasadem_aspect, aspect_vis, 'NASADEM Aspect')
 # In contrast to single-image assets like NASADEM, some DEMs like GLO30 are
 # provided as a collection of images that need to be mosaicked before use.
 # We use this mosaicked DEM for the terrain calculations below.
-glo30_collection = ee.ImageCollection('COPERNICUS/DEM/GLO30')
+glo30_collection = ee.ImageCollection('COPERNICUS/DEM/GLO30_2024_1')
 
 # When mosaicking a DEM collection that will be used for terrain analysis,
 # it is best practice to set the mosaic's default projection to the native

@@ -20,7 +20,7 @@ loaded_image = ee.Image('NASA/NASADEM_HGT/001')
 
 # [START earthengine__images02__find_image]
 first = (
-    ee.ImageCollection('COPERNICUS/S2_SR')
+    ee.ImageCollection('COPERNICUS/S2_SR_HARMONIZED')
     .filterBounds(ee.Geometry.Point(-70.48, 43.3631))
     .filterDate('2019-01-01', '2019-12-31')
     .sort('CLOUDY_PIXEL_PERCENTAGE')

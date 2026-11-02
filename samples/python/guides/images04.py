@@ -16,11 +16,10 @@
 
 # [START earthengine__images04__palettized]
 # Load 2012 MODIS land cover and select the IGBP classification.
-cover = ee.Image('MODIS/051/MCD12Q1/2012_01_01').select('Land_Cover_Type_1')
+cover = ee.Image('MODIS/061/MCD12Q1/2012_01_01').select('LC_Type1')
 
-# Define a palette for the 18 distinct land cover classes.
+# Define a palette for the 17 distinct land cover classes.
 igbp_palette = [
-    'aec3d4',  # water
     '152106',
     '225129',
     '369b47',
@@ -37,7 +36,7 @@ igbp_palette = [
     '33280d',  # crop mosaic
     'd7cdcc',  # snow and ice
     'f7e084',  # barren
-    '6f6f6f',  # tundra
+    'aec3d4',  # water
 ]
 
 # Define a map centered on the United States.
@@ -46,19 +45,18 @@ map_palette = geemap.Map(center=[40.413, -99.229], zoom=5)
 # Add the image layer to the map and display it. Specify the min and max labels
 # and the color palette matching the labels.
 map_palette.add_layer(
-    cover, {'min': 0, 'max': 17, 'palette': igbp_palette}, 'IGBP classes'
+    cover, {'min': 1, 'max': 17, 'palette': igbp_palette}, 'IGBP classes'
 )
 display(map_palette)
 # [END earthengine__images04__palettized]
 
 # [START earthengine__images04__sld_style]
-cover = ee.Image('MODIS/051/MCD12Q1/2012_01_01').select('Land_Cover_Type_1')
+cover = ee.Image('MODIS/061/MCD12Q1/2012_01_01').select('LC_Type1')
 
 # Define an SLD style of discrete intervals to apply to the image.
 sld_intervals = """
 <RasterSymbolizer>
   <ColorMap  type="intervals" extended="false" >
-    <ColorMapEntry color="#aec3d4" quantity="0" label="Water"/>
     <ColorMapEntry color="#152106" quantity="1" label="Evergreen Needleleaf Forest"/>
     <ColorMapEntry color="#225129" quantity="2" label="Evergreen Broadleaf Forest"/>
     <ColorMapEntry color="#369b47" quantity="3" label="Deciduous Needleleaf Forest"/>
@@ -75,7 +73,7 @@ sld_intervals = """
     <ColorMapEntry color="#33280d" quantity="14" label="Crop, Natural Veg. Mosaic"/>
     <ColorMapEntry color="#d7cdcc" quantity="15" label="Permanent Snow, Ice"/>
     <ColorMapEntry color="#f7e084" quantity="16" label="Barren, Desert"/>
-    <ColorMapEntry color="#6f6f6f" quantity="17" label="Tundra"/>
+    <ColorMapEntry color="#aec3d4" quantity="17" label="Water"/>
   </ColorMap>
 </RasterSymbolizer>"""
 

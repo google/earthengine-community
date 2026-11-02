@@ -22,7 +22,7 @@ date_filter = ee.Filter.date('2014-01-01', '2014-02-01')
 mcd43a4 = ee.ImageCollection('MODIS/MCD43A4_006_EVI').filter(date_filter)
 
 # Load a MODIS collection with quality data.
-mcd43a2 = ee.ImageCollection('MODIS/006/MCD43A2').filter(date_filter)
+mcd43a2 = ee.ImageCollection('MODIS/061/MCD43A2').filter(date_filter)
 
 # Define an inner join.
 inner_join = ee.Join.inner()

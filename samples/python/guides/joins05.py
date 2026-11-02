@@ -23,7 +23,7 @@ primary = (
 )
 
 # Load a secondary collection: MODIS imagery.
-mod_secondary = ee.ImageCollection('MODIS/006/MOD09GA').filterDate(
+mod_secondary = ee.ImageCollection('MODIS/061/MOD09GA').filterDate(
     '2014-03-01', '2014-07-01'
 )
 

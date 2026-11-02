@@ -155,7 +155,7 @@ display('RMSE=', rmse)
 
 # [START earthengine__features04__reduce_regions]
 # Load an image of daily precipitation in mm/day.
-precip = ee.Image(ee.ImageCollection('NASA/ORNL/DAYMET_V3').first())
+precip = ee.Image(ee.ImageCollection('NASA/ORNL/DAYMET_V4').first())
 
 # Load watersheds from a data table and filter to the continental US.
 sheds = ee.FeatureCollection('USGS/WBD/2017/HUC06').filterBounds(

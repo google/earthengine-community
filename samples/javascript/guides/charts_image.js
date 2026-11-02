@@ -24,7 +24,7 @@
 var ecoregions = ee.FeatureCollection('projects/google/charts_feature_example');
 
 // Load PRISM climate normals image collection; convert images to bands.
-var normClim = ee.ImageCollection('OREGONSTATE/PRISM/Norm81m').toBands();
+var normClim = ee.ImageCollection('OREGONSTATE/PRISM/Norm91m').toBands();
 
 // Define the chart and print it to the console.
 var chart =
@@ -92,7 +92,7 @@ var chart =
 var ecoregions = ee.FeatureCollection('projects/google/charts_feature_example');
 
 // Load PRISM climate normals image collection; convert images to bands.
-var normClim = ee.ImageCollection('OREGONSTATE/PRISM/Norm81m').toBands();
+var normClim = ee.ImageCollection('OREGONSTATE/PRISM/Norm91m').toBands();
 
 // Define the chart and print it to the console.
 var chart =
@@ -170,7 +170,7 @@ var samp = elev.sample(
     {region: colorado, scale: 30, numPixels: 500, geometries: true});
 
 // Load PRISM climate normals image collection; convert images to bands.
-var normClim = ee.ImageCollection('OREGONSTATE/PRISM/Norm81m').toBands();
+var normClim = ee.ImageCollection('OREGONSTATE/PRISM/Norm91m').toBands();
 
 // Define the chart and print it to the console.
 var chart = ui.Chart.image
@@ -205,7 +205,7 @@ print(chart);
 var ecoregions = ee.FeatureCollection('projects/google/charts_feature_example');
 
 // Load PRISM climate normals image collection; convert images to bands.
-var normClim = ee.ImageCollection('OREGONSTATE/PRISM/Norm81m').toBands();
+var normClim = ee.ImageCollection('OREGONSTATE/PRISM/Norm91m').toBands();
 
 // Define the chart and print it to the console.
 var chart =
@@ -255,7 +255,7 @@ var ecoregions = ee.FeatureCollection('projects/google/charts_feature_example');
 
 // Load PRISM climate normals image collection, convert images to bands, and
 // subset precipitation bands.
-var precip = ee.ImageCollection('OREGONSTATE/PRISM/Norm81m')
+var precip = ee.ImageCollection('OREGONSTATE/PRISM/Norm91m')
                  .toBands()
                  .select('[0-9][0-9]_ppt');
 
@@ -373,7 +373,7 @@ var forest = ee.FeatureCollection('projects/google/charts_feature_example')
                  .filter(ee.Filter.eq('label', 'Forest'));
 
 // Load PRISM climate normals image collection, convert images to bands.
-var normClim = ee.ImageCollection('OREGONSTATE/PRISM/Norm81m').toBands();
+var normClim = ee.ImageCollection('OREGONSTATE/PRISM/Norm91m').toBands();
 
 // Define x-axis labels to replace default band names.
 var monthNames = [
@@ -434,7 +434,7 @@ var regionsBand =
         .rename('class');
 
 // Define a MODIS surface reflectance composite.
-var modisSr = ee.ImageCollection('MODIS/006/MOD09A1')
+var modisSr = ee.ImageCollection('MODIS/061/MOD09A1')
                   .filter(ee.Filter.date('2018-06-01', '2018-09-01'))
                   .select('sur_refl_b0[0-7]')
                   .mean();
@@ -479,7 +479,7 @@ print(chart);
 
 // [START earthengine__charts_image__histogram_chart]
 // Define a MODIS surface reflectance composite.
-var modisSr = ee.ImageCollection('MODIS/006/MOD09A1')
+var modisSr = ee.ImageCollection('MODIS/061/MOD09A1')
                   .filter(ee.Filter.date('2018-06-01', '2018-09-01'))
                   .select(['sur_refl_b01', 'sur_refl_b02', 'sur_refl_b06'])
                   .mean();

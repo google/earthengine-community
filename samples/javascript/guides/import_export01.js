@@ -194,7 +194,8 @@ Export.table.toDrive({
 
 // [START earthengine__import_export01__export_map]
 // Load the global Accessibility to Cities image.
-var accessibility = ee.Image('Oxford/MAP/accessibility_to_cities_2015_v1_0');
+var accessibility = ee.Image(
+    'projects/malariaatlasproject/assets/accessibility/accessibility_to_cities/2015_v1_0');
 
 // Color palette for visualizing accessibility data.
 var accessibilityPalette = ['f2fef8', 'defce1', 'c9f3bc', 'cbeca7', 'd6e793',

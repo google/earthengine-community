@@ -199,7 +199,9 @@ task.start()
 
 # [START earthengine__import_export01__export_map]
 # Load the global Accessibility to Cities image.
-accessibility = ee.Image('Oxford/MAP/accessibility_to_cities_2015_v1_0')
+accessibility = ee.Image(
+    'projects/malariaatlasproject/assets/accessibility/accessibility_to_cities/2015_v1_0'
+)
 
 # Color palette for visualizing accessibility data.
 accessibility_palette = [

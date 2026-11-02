@@ -17,7 +17,7 @@
 #   from 'Debugging' page.
 # [START earthengine__debugging__client_logic]
 # Load a Sentinel-2 image.
-image = ee.Image('USGS/SRTMGL1_003')
+image = ee.Image('NASA/NASADEM_HGT/001')
 
 # NameError: name 'band_names' is not defined.
 display = image.visualize(bands=band_names, min=0, max=9000)
@@ -39,7 +39,7 @@ area = ee.Feature(collection.first()).area()
 
 # [START earthengine__debugging__tricky]
 # Don't mix EE objects and Python objects.
-image = ee.Image('USGS/SRTMGL1_003')
+image = ee.Image('NASA/NASADEM_HGT/001')
 nonsense = image + 2
 
 # TypeError: unsupported operand type(s) for +: 'Image' and 'int'.
@@ -83,21 +83,21 @@ display(s2image.get('my_property'))  # OK
 # [END earthengine__debugging__result_capture_corrected]
 
 # [START earthengine__debugging__mapped_function1]
-collection = ee.ImageCollection('MODIS/006/MOD44B')
+collection = ee.ImageCollection('MODIS/061/MOD44B')
 
 # Error: A mapped function's arguments cannot be used in client-side operations.
 bad_map_3 = collection.map(lambda image: print(image.getInfo()))
 # [END earthengine__debugging__mapped_function1]
 
 # [START earthengine__debugging__mapped_function2]
-collection = ee.ImageCollection('MODIS/006/MOD44B')
+collection = ee.ImageCollection('MODIS/061/MOD44B')
 
 # Error: User-defined methods must return a value.
 bad_map_1 = collection.map(lambda image: None)
 # [END earthengine__debugging__mapped_function2]
 
 # [START earthengine__debugging__mapped_function3]
-collection = ee.ImageCollection('MODIS/006/MOD44B')
+collection = ee.ImageCollection('MODIS/061/MOD44B')
 
 bad_map_2 = collection.map(lambda image: image.date())
 
@@ -107,7 +107,7 @@ print(bad_map_2.getInfo())
 # [END earthengine__debugging__mapped_function3]
 
 # [START earthengine__debugging__mapped_function4]
-collection = ee.ImageCollection('MODIS/006/MOD44B')
+collection = ee.ImageCollection('MODIS/061/MOD44B')
 
 ok_map_2 = collection.map(lambda image: image.set('date', image.date()))
 print(ok_map_2.getInfo())

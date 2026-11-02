@@ -77,7 +77,7 @@ var modisProjection = modis.projection();
 print('MODIS projection:', modisProjection);
 
 // Load and display forest cover data at 30 meters resolution.
-var forest = ee.Image('UMD/hansen/global_forest_change_2023_v1_11')
+var forest = ee.Image('UMD/hansen/global_forest_change_2025_v1_13')
     .select('treecover2000');
 Map.addLayer(forest, {max: 80}, 'forest cover 30 m');
 

@@ -24,7 +24,7 @@
 var spectral =
     ee.Image('LANDSAT/LC08/C02/T1_L2/LC08_038032_20160820').select('SR_B[1-7]');
 var landcover =
-    ee.Image('USGS/NLCD_RELEASES/2016_REL/2016').select('landcover');
+    ee.Image('USGS/NLCD_RELEASES/2019_REL/NLCD/2016').select('landcover');
 var sampleSource = spectral.addBands(landcover);
 
 // Sample the combined images to generate a FeatureCollection.

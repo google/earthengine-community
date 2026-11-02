@@ -19,7 +19,9 @@
 # predictor variables (spectral reflectance) and target labels (land cover).
 spectral = ee.Image('LANDSAT/LC08/C02/T1_L2/LC08_038032_20160820').select(
     'SR_B[1-7]')
-landcover = ee.Image('USGS/NLCD_RELEASES/2016_REL/2016').select('landcover')
+landcover = ee.Image('USGS/NLCD_RELEASES/2019_REL/NLCD/2016').select(
+    'landcover'
+)
 sample_source = spectral.addBands(landcover)
 
 # Sample the combined images to generate a FeatureCollection.

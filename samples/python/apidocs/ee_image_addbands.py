@@ -14,7 +14,7 @@
 
 # [START earthengine__apidocs__ee_image_addbands]
 # A Sentinel-2 surface reflectance image.
-img = ee.Image('COPERNICUS/S2_SR/20210109T185751_20210109T185931_T10SEG')
+img = ee.Image('COPERNICUS/S2_SR_HARMONIZED/20210109T185751_20210109T185931_T10SEG')
 display('Original image:', img)
 
 # Scale reflectance bands and overwrite the original bands.

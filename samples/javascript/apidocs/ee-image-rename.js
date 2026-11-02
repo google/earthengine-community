@@ -16,7 +16,7 @@
 
 // [START earthengine__apidocs__ee_image_rename]
 // A Sentinel-2 surface reflectance image.
-var img = ee.Image('COPERNICUS/S2_SR/20210109T185751_20210109T185931_T10SEG')
+var img = ee.Image('COPERNICUS/S2_SR_HARMONIZED/20210109T185751_20210109T185931_T10SEG')
               .select(['B11', 'B8', 'B3']);
 print('Original selected S2 image band names', img.bandNames());
 

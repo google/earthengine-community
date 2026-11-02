@@ -16,7 +16,7 @@
 
 // [START earthengine__apidocs__ee_imagecollection_merge]
 // Sentinel-2 surface reflectance image collection.
-var ic = ee.ImageCollection('COPERNICUS/S2_SR');
+var ic = ee.ImageCollection('COPERNICUS/S2_SR_HARMONIZED');
 
 // Filter the images to those that intersect Mount Shasta for 3 months
 // in 2019 and 2021 (two image collections).

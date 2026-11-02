@@ -16,7 +16,7 @@
 # Sentinel-2 image collection for July 2021 intersecting a point of interest.
 # Reflectance, cloud probability, and scene classification bands are selected.
 col = (
-    ee.ImageCollection('COPERNICUS/S2_SR')
+    ee.ImageCollection('COPERNICUS/S2_SR_HARMONIZED')
     .filterDate('2021-07-01', '2021-08-01')
     .filterBounds(ee.Geometry.Point(-122.373, 37.448))
     .select('B.*|MSK_CLDPRB|SCL')

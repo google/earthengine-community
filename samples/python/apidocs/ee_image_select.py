@@ -14,7 +14,7 @@
 
 # [START earthengine__apidocs__ee_image_select]
 # A Sentinel-2 surface reflectance image.
-img = ee.Image('COPERNICUS/S2_SR/20210109T185751_20210109T185931_T10SEG')
+img = ee.Image('COPERNICUS/S2_SR_HARMONIZED/20210109T185751_20210109T185931_T10SEG')
 display('All band names:', img.bandNames())
 
 display('Select a band by name:', img.select('B11').bandNames())

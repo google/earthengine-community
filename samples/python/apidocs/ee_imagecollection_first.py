@@ -13,7 +13,7 @@
 # limitations under the License.
 
 # [START earthengine__apidocs__ee_imagecollection_first]
-image = ee.ImageCollection('COPERNICUS/S2_SR').first()
+image = ee.ImageCollection('COPERNICUS/S2_SR_HARMONIZED').first()
 m = geemap.Map()
 m.center_object(image, 8)
 vis = {'bands': ['B4', 'B3', 'B2'], 'min': 0, 'max': 5000}

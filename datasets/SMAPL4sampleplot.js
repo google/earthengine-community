@@ -14,9 +14,9 @@
  * limitations under the License.
  */
  
-// plots SMAP L4 version 7, 3-hourly soil moisture over user-determined time period
+// plots SMAP L4 version 8, 3-hourly soil moisture over user-determined time period
 //Last edited by Karyn Tabor 01/10/2023
-var SMAPL4 = ee.ImageCollection("NASA/SMAP/SPL4SMGP/007_RAW")
+var SMAPL4 = ee.ImageCollection("NASA/SMAP/SPL4SMGP/008")
 var point = ee.Geometry.Point([ -97.808804,34.975981,]);
 Map.setCenter(-97.808804,34.975981,  7);
 Map.addLayer(point,
@@ -50,7 +50,7 @@ var chart =
         })
         .setSeriesNames(['root zone soil moisture', 'surface soil moisture'])
         .setOptions({
-          title: 'SMAP L4 version 7, 3-hourly surface and root zone soil moisture (34.975981 N, 97.808804 W)',
+          title: 'SMAP L4 version 8, 3-hourly surface and root zone soil moisture (34.975981 N, 97.808804 W)',
           hAxis: {title: 'Date', titleTextStyle: {italic: false, bold: true}},
           vAxis: {
             title: 'Soil Moisture cm3/cm3',

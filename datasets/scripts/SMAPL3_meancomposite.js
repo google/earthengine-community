@@ -9,8 +9,8 @@
 //This example uses Tanzania
 var iso_code ='TZA'
 var country = ee.FeatureCollection("USDOS/LSIB/2013").filter(ee.Filter.eq('iso_alpha3', iso_code));
-var SMAPL4 = ee.ImageCollection("NASA/SMAP/SPL4SMGP/007_RAW")
-var SMAPL3 = ee.ImageCollection("NASA/SMAP/SPL3SMP_E/005_RAW")
+var SMAPL4 = ee.ImageCollection("NASA/SMAP/SPL4SMGP/008")
+var SMAPL3 = ee.ImageCollection("NASA/SMAP/SPL3SMP_E/005")
 print(SMAPL3)
 //select 1 month of SMAP images to create mean composite
 var dataset = SMAPL3.filter(ee.Filter.date('2022-07-01','2022-07-31'));

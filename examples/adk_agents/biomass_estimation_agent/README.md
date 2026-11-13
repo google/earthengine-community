@@ -13,14 +13,15 @@ An example interaction is shown below.
 
 1.  **Prerequisites**
 
-    *   A Google Cloud project with the Earth Engine API and Vertex AI API
-        enabled
-    *   [Google Cloud CLI](https://cloud.google.com/sdk/docs/install)
+    *   A Google Cloud project with the Earth Engine API enabled.
+    *   A Gemini API key. If you need to, create a key in Google AI Studio on
+        the [API Keys page](https://aistudio.google.com/app/api-keys).
+    *   [Google Cloud CLI](https://cloud.google.com/sdk/docs/install).
     *   A python environment with `earthengine-api` and `google-adk` installed.
 
 2.  **Installation example**
 
-    *   Copy the files `.env`, `agent.py`, `tools.py`, `prompts.py`, and 
+    *   Copy the files `.env`, `agent.py`, `tools.py`, `prompts.py`, and
     `__init__.py` to a local directory called `biomass_estimation_agent`
     and navigate to its parent directory.
 
@@ -40,7 +41,7 @@ An example interaction is shown below.
 
 3.  **Configuration**
 
-    *   Modify `.env` to use your project ID.
+    *   Modify `.env` to use your project ID and API key.
 
 4.  **Authentication**
 

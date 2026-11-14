@@ -61,11 +61,11 @@ or upload your own ShapeFile by following the instructions in the
 [Importing Table Data](https://developers.google.com/earth-engine/guides/table_upload)
 section of the Earth Engine Developer's Guide.
 
-## Defining spatiotemporal reduction parameters
+## Define spatiotemporal reduction parameters
 
 The statistics we're after include spatial and temporal components. Above,
 we've defined the bounds of the spatial component, now we define the temporal
-component, i.e. the series of time windows to generate representative composite
+component, i.e., the series of time windows to generate representative composite
 vegetation index images for. The following variables set the length a time
 window and the duration of the series.
 
@@ -79,7 +79,7 @@ be generating annual mean vegetation index zonal statistics for years 2018,
 ```js
 var startDate = '2018-01-01';  // time period of interest beginning date
 var interval = 1;  // time window length
-var intervalUnit = 'year';  // unit of time e.g. 'year', 'month', 'day'
+var intervalUnit = 'year';  // unit of time, e.g., 'year', 'month', 'day'.
 var intervalCount = 3;  // number of time windows in the series
 var temporalReducer = ee.Reducer.mean();  // how to reduce images in time window
 
@@ -93,7 +93,7 @@ var spatialReducers = ee.Reducer.mean().combine({
       });
 ```
 
-## Calculating spatiotemporal statistics
+## Calculate spatiotemporal statistics
 
 Now, we'll calculate spatiotemporal vegetation index statistics. Two ways to
 arrange the statistics table are provided: a long table and a wide table.

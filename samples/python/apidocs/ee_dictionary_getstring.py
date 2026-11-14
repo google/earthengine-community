@@ -21,6 +21,6 @@ dic = ee.Dictionary({
     'Region': 'The Forest of Nisene Marks State Park'
 })
 
-print('The "Region" value as an ee.String object:',
-      dic.getString('Region').getInfo(), sep='\n')
+display('The "Region" value as an ee.String object:',
+        dic.getString('Region'))
 # [END earthengine__apidocs__ee_dictionary_getstring]

@@ -39,15 +39,15 @@ geojson_object = {
             ]
         ]
 }
-print(
+display(
     'ee.Geometry accepts a GeoJSON object:',
-    ee.Geometry(geojson_object).getInfo()
+    ee.Geometry(geojson_object)
 )
 
 # GeoJSON strings need to be converted to an object.
 geojson_string = json.dumps(geojson_object)
-print('A GeoJSON string needs to be converted to an object:',
-      ee.Geometry(json.loads(geojson_string)).getInfo())
+display('A GeoJSON string needs to be converted to an object:',
+        ee.Geometry(json.loads(geojson_string)))
 
 # Use ee.Geometry to cast computed geometry objects into the ee.Geometry
 # class to access their methods. In the following example an ee.Geometry
@@ -55,6 +55,6 @@ print('A GeoJSON string needs to be converted to an object:',
 # .get() function, a computed geometry object is returned. Cast the computed
 # object as a ee.Geometry to get the geometry's bounds, for instance.
 feature = ee.Feature(None, {'geom': ee.Geometry(geojson_object)})
-print('Cast computed geometry objects to ee.Geometry class:',
-      ee.Geometry(feature.get('geom')).bounds().getInfo())
+display('Cast computed geometry objects to ee.Geometry class:',
+        ee.Geometry(feature.get('geom')).bounds())
 # [END earthengine__apidocs__ee_geometry]

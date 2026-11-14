@@ -16,8 +16,8 @@
 empty = ee.Array([], ee.PixelType.int8())
 display(empty.neq(empty))  # []
 
-display(ee.Array([0]).neq(ee.Array([1])));  # 1
-display(ee.Array([1]).neq(ee.Array([1])));  # 0
+display(ee.Array([0]).neq(ee.Array([1])))  # 1
+display(ee.Array([1]).neq(ee.Array([1])))  # 0
 
 display(ee.Array([1.1]).neq(ee.Array([1.1])))  # 0
 display(ee.Array([1.1]).float().neq(ee.Array([1.1])))  # 1

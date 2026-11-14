@@ -21,6 +21,6 @@ dic = ee.Dictionary({
     'Array': ee.Array([182, 219, 443])
 })
 
-print('The "Array" value as an ee.Array object:',
-      dic.getArray('Array').getInfo())
+display('The "Array" value as an ee.Array object:',
+        dic.getArray('Array'))
 # [END earthengine__apidocs__ee_dictionary_getarray]

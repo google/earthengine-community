@@ -13,10 +13,10 @@
 # limitations under the License.
 
 # [START earthengine__apidocs__ee_number_lte]
-print('5 less than or equal to 10?',
-      ee.Number(5).lte(ee.Number(10)).getInfo())  # 1
-print('10 less than or equal to 5?',
-      ee.Number(10).lte(ee.Number(5)).getInfo())  # 0
-print('5 less than or equal to 5?',
-      ee.Number(5).lte(ee.Number(5)).getInfo())  # 1
+display('5 less than or equal to 10?',
+        ee.Number(5).lte(ee.Number(10)))  # 1
+display('10 less than or equal to 5?',
+        ee.Number(10).lte(ee.Number(5)))  # 0
+display('5 less than or equal to 5?',
+        ee.Number(5).lte(ee.Number(5)))  # 1
 # [END earthengine__apidocs__ee_number_lte]

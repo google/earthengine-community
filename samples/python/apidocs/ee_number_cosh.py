@@ -16,16 +16,16 @@
 import math
 
 # Input angle in radians.
-print('Hyperbolic cosine of -5:',
-      ee.Number(-5).cosh().getInfo())  # 74.209948524
-print('Hyperbolic cosine of -1:', ee.Number(-1).cosh().getInfo())  # 1.543080634
-print('Hyperbolic cosine of 0:', ee.Number(0).cosh().getInfo())  # 1
-print('Hyperbolic cosine of 1:', ee.Number(1).cosh().getInfo())  # 1.543080634
-print('Hyperbolic cosine of 5:', ee.Number(5).cosh().getInfo())  # 74.209948524
+display('Hyperbolic cosine of -5:',
+        ee.Number(-5).cosh())  # 74.209948524
+display('Hyperbolic cosine of -1:', ee.Number(-1).cosh())  # 1.543080634
+display('Hyperbolic cosine of 0:', ee.Number(0).cosh())  # 1
+display('Hyperbolic cosine of 1:', ee.Number(1).cosh())  # 1.543080634
+display('Hyperbolic cosine of 5:', ee.Number(5).cosh())  # 74.209948524
 
 # Convert degrees to radians.
 degrees = 45
 radians = degrees * (math.pi/180)
-print('Hyperbolic cosine of 45 degrees:',
-      ee.Number(radians).cosh().getInfo())  # 1.324609089
+display('Hyperbolic cosine of 45 degrees:',
+        ee.Number(radians).cosh())  # 1.324609089
 # [END earthengine__apidocs__ee_number_cosh]

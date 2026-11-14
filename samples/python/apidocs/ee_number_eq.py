@@ -13,6 +13,6 @@
 # limitations under the License.
 
 # [START earthengine__apidocs__ee_number_eq]
-print('1 equal to 1?', ee.Number(1).eq(ee.Number(1)).getInfo())  # 1
-print('1.001 equal to 1?', ee.Number(1.001).eq(ee.Number(1)).getInfo())  # 0
+display('1 equal to 1?', ee.Number(1).eq(ee.Number(1)))  # 1
+display('1.001 equal to 1?', ee.Number(1.001).eq(ee.Number(1)))  # 0
 # [END earthengine__apidocs__ee_number_eq]

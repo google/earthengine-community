@@ -31,7 +31,7 @@ print(ee.Array([[0, 1], [2, 3]]));  // [[0,1],[2,3]]
 print(ee.Array([ee.Number(123).toUint8()]));  // [123]
 
 // Lists are useful ways to construct larger Arrays.
-print(ee.Array(ee.List.sequence(0, 10, 2)));  // // [0,2,4,6,8,10]
+print(ee.Array(ee.List.sequence(0, 10, 2)));  // [0,2,4,6,8,10]
 
 // Arrays can be used to make Arrays.
 var array1D = ee.Array([1, 2, 3]);

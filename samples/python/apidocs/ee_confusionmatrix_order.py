@@ -25,11 +25,11 @@ array = ee.Array([[32, 0, 0,  0,  1, 0],
                   [ 0, 0, 0,  1,  0, 5]])
 
 cm_default_order = ee.ConfusionMatrix(array)
-print('Default name and order of the rows and columns:',
-      cm_default_order.order().getInfo())
+display('Default name and order of the rows and columns:',
+        cm_default_order.order())
 
 order = [11, 22, 42, 52, 71, 81]
 cm_specified_order = ee.ConfusionMatrix(array, order)
-print('Specified name and order of the rows and columns:',
-      cm_specified_order.order().getInfo())
+display('Specified name and order of the rows and columns:',
+        cm_specified_order.order())
 # [END earthengine__apidocs__ee_confusionmatrix_order]

@@ -37,7 +37,7 @@ investigate forest vegetation condition over time.
 ## Rationale
 
 Remotely sensed indices such as enhanced vegetation index (EVI), normalized
-difference vegetation index (NDVI) and normalized difference water index (NDWI)
+difference vegetation index (NDVI), and normalized difference water index (NDWI)
 are widely used to estimate vegetation status from satellite imagery. EVI and
 NDVI estimate vegetation chlorophyll content while NDWI estimates vegetation
 moisture content. All these indices can be derived from free public imagery of

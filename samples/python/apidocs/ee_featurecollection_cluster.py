@@ -14,7 +14,7 @@
 
 # [START earthengine__apidocs__ee_featurecollection_cluster]
 # Import a Sentinel-2 surface reflectance image.
-image = ee.Image('COPERNICUS/S2_SR/20210109T185751_20210109T185931_T10SEG')
+image = ee.Image('COPERNICUS/S2_SR_HARMONIZED/20210109T185751_20210109T185931_T10SEG')
 
 # Get the image geometry to define the geographical bounds of a point sample.
 image_bounds = image.geometry()

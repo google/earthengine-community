@@ -13,5 +13,5 @@
 # limitations under the License.
 
 # [START earthengine__apidocs__ee_number_first]
-print(ee.Number(1).first(ee.Number(2)).getInfo())  # 1
+display(ee.Number(1).first(ee.Number(2)))  # 1
 # [END earthengine__apidocs__ee_number_first]

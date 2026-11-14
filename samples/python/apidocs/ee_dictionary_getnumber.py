@@ -20,5 +20,5 @@ dic = ee.Dictionary({
     'B3': 443
 })
 
-print('The "B1" value as an ee.Number object:', dic.getNumber('B1').getInfo())
+display('The "B1" value as an ee.Number object:', dic.getNumber('B1'))
 # [END earthengine__apidocs__ee_dictionary_getnumber]

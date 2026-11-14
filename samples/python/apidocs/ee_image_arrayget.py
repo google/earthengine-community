@@ -20,30 +20,30 @@ def samp_arr_img(arr_img):
 
 # Create a 1D array image.
 array_img_1d = ee.Image([0, 1, 2, 3, 4, 5]).toArray()
-print('1D array image (pixel):', samp_arr_img(array_img_1d).getInfo())
+display('1D array image (pixel):', samp_arr_img(array_img_1d))
 # [0, 1, 2, 3, 4, 5]
 
 # Get the array value at a given position. Here we target the 4th element.
 position_1d = ee.Image([3])
 selected_element_1d = array_img_1d.arrayGet(position_1d)
-print(
+display(
     'Element at position [3] (4th element):',
-    samp_arr_img(selected_element_1d).getInfo()
+    samp_arr_img(selected_element_1d)
 )
 # [3]
 
 # Create a 2D 2x3 array image (reshape the 1D array image).
 array_img_2d = array_img_1d.arrayReshape(ee.Image([2, 3]).toArray(), 2)
-print('2D 2x3 array image (pixel):', samp_arr_img(array_img_2d).getInfo())
+display('2D 2x3 array image (pixel):', samp_arr_img(array_img_2d))
 # [[0, 1, 2],
 #  [3, 4, 5]]
 
 # Get the array element value at axis-0, position 0 and axis-1, position 2.
 position_2d = ee.Image([0, 2])
 selected_element_2d = array_img_2d.arrayGet(position_2d)
-print(
+display(
     'Element at position [0, 2]:',
-    samp_arr_img(selected_element_2d).getInfo()
+    samp_arr_img(selected_element_2d)
 )
 # 2
 # [END earthengine__apidocs__ee_image_arrayget]

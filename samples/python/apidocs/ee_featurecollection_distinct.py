@@ -16,11 +16,11 @@
 # FeatureCollection of power plants in Belgium.
 fc = ee.FeatureCollection('WRI/GPPD/power_plants').filter(
     'country_lg == "Belgium"')
-print('FeatureCollection of power plants in Belgium:', fc.getInfo())
+display('FeatureCollection of power plants in Belgium:', fc)
 
 # Remove duplicate features according to property values.
-print('Distinct based on a single property:', fc.distinct('fuel1').getInfo())
-print('Distinct based on two properties:',
-      fc.distinct(['fuel1', 'source']).getInfo())
-print('Distinct based on geometry', fc.distinct('.geo').getInfo())
+display('Distinct based on a single property:', fc.distinct('fuel1'))
+display('Distinct based on two properties:',
+        fc.distinct(['fuel1', 'source']))
+display('Distinct based on geometry', fc.distinct('.geo'))
 # [END earthengine__apidocs__ee_featurecollection_distinct]

@@ -17,6 +17,6 @@
 fc = ee.FeatureCollection('WRI/GPPD/power_plants').filter(
     'country_lg == "Belgium"')
 
-print('Sample std. deviation of power plant capacities (MW):',
-      fc.aggregate_sample_sd('capacitymw').getInfo())  # 466.480889231
+display('Sample std. deviation of power plant capacities (MW):',
+        fc.aggregate_sample_sd('capacitymw'))  # 466.480889231
 # [END earthengine__apidocs__ee_featurecollection_aggregate_sample_sd]

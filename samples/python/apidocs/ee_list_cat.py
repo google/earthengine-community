@@ -13,15 +13,15 @@
 # limitations under the License.
 
 # [START earthengine__apidocs__ee_list_cat]
-print(ee.List(['dog']).cat(['squirrel']).getInfo())  # ['dog', 'squirrel']
+display(ee.List(['dog']).cat(['squirrel']))  # ['dog', 'squirrel']
 
 # ['moose', '&', 'squirrel']
-print(ee.List(['moose']).cat(['&', 'squirrel']).getInfo())
+display(ee.List(['moose']).cat(['&', 'squirrel']))
 
 # [['a', 'b'], ['1', 1]]
-print(ee.List([['a', 'b']]).cat(ee.List([['1', 1]])).getInfo())
+display(ee.List([['a', 'b']]).cat(ee.List([['1', 1]])))
 
-print(ee.List([]).cat(ee.List([])).getInfo())  # []
-print(ee.List([1]).cat(ee.List([])).getInfo())  # [1]
-print(ee.List([]).cat(ee.List([2])).getInfo())  # [2]
+display(ee.List([]).cat(ee.List([])))  # []
+display(ee.List([1]).cat(ee.List([])))  # [1]
+display(ee.List([]).cat(ee.List([2])))  # [2]
 # [END earthengine__apidocs__ee_list_cat]

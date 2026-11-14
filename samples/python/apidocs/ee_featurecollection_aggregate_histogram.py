@@ -13,12 +13,10 @@
 # limitations under the License.
 
 # [START earthengine__apidocs__ee_featurecollection_aggregate_histogram]
-from pprint import pprint
-
 # FeatureCollection of power plants in Belgium.
 fc = ee.FeatureCollection('WRI/GPPD/power_plants').filter(
     'country_lg == "Belgium"')
 
-print('Histogram of power plant capacities (MW):')
-pprint(fc.aggregate_histogram('capacitymw').getInfo())  # Dictionary
+display('Histogram of power plant capacities (MW):',
+        fc.aggregate_histogram('capacitymw'))  # Dictionary
 # [END earthengine__apidocs__ee_featurecollection_aggregate_histogram]

@@ -16,7 +16,7 @@
 
 // [START earthengine__apidocs__ee_image_mask]
 // A Sentinel-2 surface reflectance image.
-var img = ee.Image('COPERNICUS/S2_SR/20210109T185751_20210109T185931_T10SEG');
+var img = ee.Image('COPERNICUS/S2_SR_HARMONIZED/20210109T185751_20210109T185931_T10SEG');
 var trueColorViz = {
   bands: ['B4', 'B3', 'B2'],
   min: 0,

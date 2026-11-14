@@ -35,8 +35,8 @@ counties_climate = climate.map(reduce_mean)
 # recursively expanded, you cannot view metadata of the features within the
 # nested collections until you isolate a single collection or flatten the
 # collections.
-print('FeatureCollection of FeatureCollections:', counties_climate.getInfo())
+display('FeatureCollection of FeatureCollections:', counties_climate)
 
-print('Flattened FeatureCollection of FeatureCollections:',
-      counties_climate.flatten().getInfo())
+display('Flattened FeatureCollection of FeatureCollections:',
+        counties_climate.flatten())
 # [END earthengine__apidocs__ee_featurecollection_flatten]

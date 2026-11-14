@@ -20,12 +20,12 @@ def samp_arr_img(arr_img):
 
 # Create a 1D array image.
 array_img_1d = ee.Image([0, 1, 2]).toArray()
-print('1D array image (pixel):', samp_arr_img(array_img_1d).getInfo())
+display('1D array image (pixel):', samp_arr_img(array_img_1d))
 # [0, 1, 2]
 
 # Pad 1D array to length of 5 with value 9.
 array_img_1d_pad = array_img_1d.arrayPad([5], 9)
-print('1D array image padded:', samp_arr_img(array_img_1d_pad).getInfo())
+display('1D array image padded:', samp_arr_img(array_img_1d_pad))
 # [0, 1, 2, 9, 9]
 
 # Create a 2D array image.
@@ -33,13 +33,13 @@ array_img_2d = ee.Image([0, 1, 2, 3, 4, 5]).toArray().arrayReshape(
     ee.Image([2, 3]).toArray(),
     2
 )
-print('2D 2x3 array image (pixel):', samp_arr_img(array_img_2d).getInfo())
+display('2D 2x3 array image (pixel):', samp_arr_img(array_img_2d))
 # [[0, 1, 2],
 #  [3, 4, 5]]
 
 # Pad 2D array to 0-axis length 3 and 1-axis length 5 with value 9.
 array_img_2d_pad = array_img_2d.arrayPad([3, 5], 9)
-print('2D array image padded:', samp_arr_img(array_img_2d_pad).getInfo())
+display('2D array image padded:', samp_arr_img(array_img_2d_pad))
 # [[0, 1, 2, 9, 9],
 #  [3, 4, 5, 9, 9],
 #  [9, 9, 9, 9, 9]]

@@ -16,13 +16,13 @@
 import math
 
 # Input angle in radians.
-print('Cosine of 0:', ee.Number(0).cos().getInfo())  # 1
-print('Cosine of π/2:', ee.Number(math.pi/2).cos().getInfo())  # 0 (nearly)
-print('Cosine of π:', ee.Number(math.pi).cos().getInfo())  # -1
+display('Cosine of 0:', ee.Number(0).cos())  # 1
+display('Cosine of π/2:', ee.Number(math.pi/2).cos())  # 0 (nearly)
+display('Cosine of π:', ee.Number(math.pi).cos())  # -1
 
 # Convert degrees to radians.
 degrees = 45
 radians = degrees * (math.pi/180)
 # 0.707106781
-print('Cosine of 45 degrees:', ee.Number(radians).cos().getInfo())
+display('Cosine of 45 degrees:', ee.Number(radians).cos())
 # [END earthengine__apidocs__ee_number_cos]

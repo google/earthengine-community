@@ -15,10 +15,10 @@
 # [START earthengine__apidocs__ee_number_toint8]
 # Cast a number to signed 8-bit integer: [-128, 127].
 number = ee.Number(100)
-print('Number:', number.getInfo())
+display('Number:', number)
 
 int8_number = number.toInt8()
-print('Number cast to int8:', int8_number.getInfo())
+display('Number cast to int8:', int8_number)
 
 
 """Casting numbers to int8 that are outside of its range and precision can
@@ -27,26 +27,26 @@ modify the resulting value, note the behavior of the following scenarios.
 
 # A floating point number cast to int8 loses decimal precision.
 float_number = ee.Number(1.7)
-print('Floating point value:', float_number.getInfo())
+display('Floating point value:', float_number)
 
 float_to_int8 = float_number.toInt8()
-print('Floating point value cast to int8:', float_to_int8.getInfo())
+display('Floating point value cast to int8:', float_to_int8)
 
 # A number greater than int8 range max cast to int8 becomes int8 range max.
 INT8_MAX = 127
 out_of_range_hi = ee.Number(INT8_MAX + 12345)
-print('Greater than int8 max:', out_of_range_hi.getInfo())
+display('Greater than int8 max:', out_of_range_hi)
 
 out_of_range_hi_to_int8 = out_of_range_hi.toInt8()
-print('Greater than int8 max cast to int8 becomes int8 max:',
-      out_of_range_hi_to_int8.getInfo())
+display('Greater than int8 max cast to int8 becomes int8 max:',
+        out_of_range_hi_to_int8)
 
 # A number greater than int8 range min cast to int8 becomes int8 range min.
 INT8_MIN = -128
 out_of_range_lo = ee.Number(INT8_MIN - 12345)
-print('Less than int8 min:', out_of_range_lo.getInfo())
+display('Less than int8 min:', out_of_range_lo)
 
 out_of_range_lo_to_int8 = out_of_range_lo.toInt8()
-print('Less than int8 min cast to int8 becomes int8 min:',
-      out_of_range_lo_to_int8.getInfo())
+display('Less than int8 min cast to int8 becomes int8 min:',
+        out_of_range_lo_to_int8)
 # [END earthengine__apidocs__ee_number_toint8]

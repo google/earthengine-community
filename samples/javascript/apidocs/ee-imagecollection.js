@@ -16,11 +16,11 @@
 
 // [START earthengine__apidocs__ee_imagecollection]
 print('Image collection from a string',
-      ee.ImageCollection('COPERNICUS/S2_SR').limit(3));
+      ee.ImageCollection('COPERNICUS/S2_SR_HARMONIZED').limit(3));
 
-var img1 = ee.Image('COPERNICUS/S2_SR/20170328T083601_20170328T084228_T35RNK');
-var img2 = ee.Image('COPERNICUS/S2_SR/20170328T083601_20170328T084228_T35RNL');
-var img3 = ee.Image('COPERNICUS/S2_SR/20170328T083601_20170328T084228_T35RNM');
+var img1 = ee.Image('COPERNICUS/S2_SR_HARMONIZED/20170328T083601_20170328T084228_T35RNK');
+var img2 = ee.Image('COPERNICUS/S2_SR_HARMONIZED/20170328T083601_20170328T084228_T35RNL');
+var img3 = ee.Image('COPERNICUS/S2_SR_HARMONIZED/20170328T083601_20170328T084228_T35RNM');
 print('Image collection from a list of images',
       ee.ImageCollection([img1, img2, img3]));
 

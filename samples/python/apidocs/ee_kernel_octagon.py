@@ -13,10 +13,7 @@
 # limitations under the License.
 
 # [START earthengine__apidocs__ee_kernel_octagon]
-from pprint import pprint
-
-print('An octagon kernel:')
-pprint(ee.Kernel.octagon(**{'radius': 3}).getInfo())
+display('An octagon kernel:', ee.Kernel.octagon(**{'radius': 3}))
 
 #  Output weights matrix (up to 1/1000 precision for brevity)
 

@@ -16,7 +16,7 @@
 
 // [START earthengine__apidocs__ee_image_unmask]
 // A Sentinel-2 surface reflectance image.
-var img = ee.Image('COPERNICUS/S2_SR/20210109T185751_20210109T185931_T10SEG');
+var img = ee.Image('COPERNICUS/S2_SR_HARMONIZED/20210109T185751_20210109T185931_T10SEG');
 var trueColorViz = {
   bands: ['B4', 'B3', 'B2'],
   min: 0,
@@ -55,7 +55,7 @@ print('Image mask reset, everywhere', maskResetEverywhere);
 Map.addLayer(maskResetEverywhere, trueColorViz, 'Image mask reset, everywhere');
 
 // Fill masked pixels with pixels from a different image.
-var fill = ee.Image('COPERNICUS/S2_SR/20200618T184919_20200618T190341_T10SEG');
+var fill = ee.Image('COPERNICUS/S2_SR_HARMONIZED/20200618T184919_20200618T190341_T10SEG');
 var imgFilled = imgMasked.unmask(fill);
 print('Image, filled', imgFilled);
 Map.addLayer(imgFilled, trueColorViz, 'Image, filled');

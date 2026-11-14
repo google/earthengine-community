@@ -20,22 +20,22 @@ def samp_arr_img(arr_img):
 
 # Create a 1D array image.
 array_img_1d = ee.Image([0, 1, 2]).toArray()
-print('1D array image (pixel):', samp_arr_img(array_img_1d).getInfo())
+display('1D array image (pixel):', samp_arr_img(array_img_1d))
 # [0, 1, 2]
 
 # Repeat a 1D array along the 0-axis 3 times.
 repeat_1d_ax0 = array_img_1d.arrayRepeat(0, 3)
-print(
+display(
     '1D array repeated 3 times on 0-axis:',
-    samp_arr_img(repeat_1d_ax0).getInfo()
+    samp_arr_img(repeat_1d_ax0)
 )
 # [0, 1, 2, 0, 1, 2, 0, 1, 2]
 
 # Repeat a 1D array along the 1-axis 3 times (expands the dimensions).
 repeat_1d_ax1 = array_img_1d.arrayRepeat(1, 3)
-print(
+display(
     '1D array repeated 3 times on 1-axis:',
-    samp_arr_img(repeat_1d_ax1).getInfo()
+    samp_arr_img(repeat_1d_ax1)
 )
 # [[0, 0, 0],
 #  [1, 1, 1],
@@ -43,9 +43,9 @@ print(
 
 # Repeat a 2D array along the 0-axis 2 times.
 repeat_2d_ax0 = repeat_1d_ax1.arrayRepeat(0, 2)
-print(
+display(
     '2D array repeated 2 times on 0-axis:',
-    samp_arr_img(repeat_2d_ax0).getInfo()
+    samp_arr_img(repeat_2d_ax0)
 )
 # [[0, 0, 0],
 #  [1, 1, 1],
@@ -56,9 +56,9 @@ print(
 
 # Repeat a 2D array along the 1-axis 2 times.
 repeat_2d_ax1 = repeat_1d_ax1.arrayRepeat(1, 2)
-print(
+display(
     '2D array repeated 2 times on 1-axis:',
-    samp_arr_img(repeat_2d_ax1).getInfo()
+    samp_arr_img(repeat_2d_ax1)
 )
 # [[0, 0, 0, 0, 0, 0],
 #  [1, 1, 1, 1, 1, 1],

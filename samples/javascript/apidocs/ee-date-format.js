@@ -41,7 +41,7 @@ print(date.format(null, 'Etc/GMT-10'));  // 2020-08-18T10:00:00
 // https://joda-time.sourceforge.net/apidocs/org/joda/time/format/DateTimeFormat.html
 
 var datetime = ee.Date('1975-07-23T21:13:59');  // Defaults to UTC
-print(datetime); // Date (1972-07-25 21:13:59)
+print(datetime);  // Date (1972-07-25 21:13:59)
 
 // year of era and era
 print(datetime.format('YYYY GG'));  // 1975 AD

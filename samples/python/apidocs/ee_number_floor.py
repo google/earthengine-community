@@ -14,12 +14,12 @@
 
 # [START earthengine__apidocs__ee_number_floor]
 # Positive numbers.
-print('Floor for 2.1:', ee.Number(2.1).floor().getInfo())  # 2
-print('Floor for 2.5:', ee.Number(2.5).floor().getInfo())  # 2
-print('Floor for 2.9:', ee.Number(2.9).floor().getInfo())  # 2
+display('Floor for 2.1:', ee.Number(2.1).floor())  # 2
+display('Floor for 2.5:', ee.Number(2.5).floor())  # 2
+display('Floor for 2.9:', ee.Number(2.9).floor())  # 2
 
 # Negative numbers.
-print('Floor for -2.1:', ee.Number(-2.1).floor().getInfo())  # -3
-print('Floor for -2.5:', ee.Number(-2.5).floor().getInfo())  # -3
-print('Floor for -2.9:', ee.Number(-2.9).floor().getInfo())  # -3
+display('Floor for -2.1:', ee.Number(-2.1).floor())  # -3
+display('Floor for -2.5:', ee.Number(-2.5).floor())  # -3
+display('Floor for -2.9:', ee.Number(-2.9).floor())  # -3
 # [END earthengine__apidocs__ee_number_floor]

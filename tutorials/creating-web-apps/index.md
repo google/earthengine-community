@@ -537,7 +537,7 @@ var dataInfo = {
 };
 ```
 
-## Function to interact with layers
+## Interacting with layers
 
 We will write a callback function that is invoked whenever the map is
 clicked. The location of the clicked point and other relevant information for
@@ -732,7 +732,7 @@ var legend = ui.Panel({
 });
 ```
 
-## Function to update visualization based on selected layer
+## Updating the visualization for the selected layer
 
 First, we define a selector object that is added to the legend panel and can be
 used to update the layer being displayed. A callback function we define in the

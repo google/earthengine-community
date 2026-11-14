@@ -31,9 +31,9 @@ the test of presence of any trend, and a P-value of the statistic (assuming a
 normal distribution).
 
 **Important: the methods presented here
-are suitable for assessing _monotonic trends_ (i.e. data without seasonality)
-in _discrete data_ (i.e. not floating point). Additionally, if you apply the
-methods in this tutorial to new data (i.e. region, time frame, source) you may
+are suitable for assessing _monotonic trends_ (i.e., data without seasonality)
+in _discrete data_ (i.e., not floating point). Additionally, if you apply the
+methods in this tutorial to new data (i.e., region, time frame, source) you may
 need to adjust the `min` and `max` visualization parameters to suit the
 particular results.**
 
@@ -117,7 +117,7 @@ Map.addLayer(kendall, {palette: palette, min: -2800, max: 2800}, 'kendall');
 ```
 
 Zoom to your area of interest and define a roughly symmetric color stretch
-using the map layers styling dialog (i.e. the mean of `min` and `max` should
+using the map layers styling dialog (i.e., the mean of `min` and `max` should
 be approximately zero).  The red pixels are decreasing trend and the green
 pixels are increasing trend.  This is illustrated in the following image of
 the Mann-Kendall statistic for an area of California, USA.  The map pin is
@@ -187,7 +187,7 @@ intercept as the y-value of the line that passes through the medians.
 ## Variance of the Mann-Kendall statistic
 
 Computing the variance of the Mann-Kendall statistic is complicated by the
-possible presence of ties in the data (i.e. `sign(i, j)` equals zero).
+possible presence of ties in the data (i.e., `sign(i, j)` equals zero).
 Counting those ties can get a little dicey, requiring an array-based
 forward differencing.  Note that you can comment `.subtract(groupFactorSum)`
 in the computation of `kendallVariance` if you don't care about ties and

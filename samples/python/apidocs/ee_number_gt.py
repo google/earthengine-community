@@ -13,6 +13,6 @@
 # limitations under the License.
 
 # [START earthengine__apidocs__ee_number_gt]
-print('5 greater than 10?', ee.Number(5).gt(ee.Number(10)).getInfo())  # 0
-print('10 greater than 5?', ee.Number(10).gt(ee.Number(5)).getInfo())  # 1
+display('5 greater than 10?', ee.Number(5).gt(ee.Number(10)))  # 0
+display('10 greater than 5?', ee.Number(10).gt(ee.Number(5)))  # 1
 # [END earthengine__apidocs__ee_number_gt]

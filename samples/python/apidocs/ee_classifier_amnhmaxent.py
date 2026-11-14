@@ -15,15 +15,6 @@
 # [START earthengine__apidocs__ee_classifier_amnhmaxent]
 """Demonstrates the ee.Classifier.amnhMaxent method."""
 
-import ee
-
-
-# Authenticates to the Earth Engine servers.
-ee.Authenticate()
-# Initializes the client library.
-ee.Initialize()
-
-
 # Create some sample species presence/absence training data.
 training_data = ee.FeatureCollection([
     # Species present points.

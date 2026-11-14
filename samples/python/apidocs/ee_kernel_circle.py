@@ -13,10 +13,7 @@
 # limitations under the License.
 
 # [START earthengine__apidocs__ee_kernel_circle]
-from pprint import pprint
-
-print('A circle kernel:')
-pprint(ee.Kernel.circle(**{'radius': 3}).getInfo())
+display('A circle kernel:', ee.Kernel.circle(**{'radius': 3}))
 
 #  Output weights matrix (up to 1/1000 precision for brevity)
 

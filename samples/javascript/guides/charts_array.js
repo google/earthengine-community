@@ -25,7 +25,7 @@ var forest = ee.FeatureCollection('projects/google/charts_feature_example')
                  .filter(ee.Filter.eq('label', 'Forest'));
 
 // Define a MODIS surface reflectance composite.
-var modisSr = ee.ImageCollection('MODIS/006/MOD09A1')
+var modisSr = ee.ImageCollection('MODIS/061/MOD09A1')
                   .filter(ee.Filter.date('2018-06-01', '2018-09-01'))
                   .select('sur_refl_b0[0-7]')
                   .mean();
@@ -95,7 +95,7 @@ var latLonImg = ee.Image.pixelLonLat();
 
 // Import a digital surface model and add latitude and longitude bands.
 var elevImg =
-    ee.Image('JAXA/ALOS/AW3D30/V2_2').select('AVE_DSM').addBands(latLonImg);
+    ee.Image('NASA/NASADEM_HGT/001').select('elevation').addBands(latLonImg);
 
 // Reduce elevation and coordinate bands by transect line; get a dictionary with
 // band names as keys, pixel values as lists.
@@ -107,7 +107,7 @@ var elevTransect = elevImg.reduceRegion({
 
 // Get longitude and elevation value lists from the reduction dictionary.
 var lon = ee.List(elevTransect.get('longitude'));
-var elev = ee.List(elevTransect.get('AVE_DSM'));
+var elev = ee.List(elevTransect.get('elevation'));
 
 // Sort the longitude and elevation values by ascending longitude.
 var lonSort = lon.sort(lon);

@@ -17,6 +17,6 @@
 fc = ee.FeatureCollection('WRI/GPPD/power_plants').filter(
     'country_lg == "Belgium"')
 
-print('Serialized representation of ee.FeatureCollection:',
-      fc.serialize())
+display('Serialized representation of ee.FeatureCollection:',
+        fc.serialize())
 # [END earthengine__apidocs__ee_featurecollection_serialize]

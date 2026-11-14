@@ -22,5 +22,5 @@ Either digit 1?: 00011101
 00011101 is unsigned 8-bit binary for 29.
 """
 
-print(ee.Number(25).bitwiseOr(21).getInfo())
+display(ee.Number(25).bitwiseOr(21))
 # [END earthengine__apidocs__ee_number_bitwiseor]

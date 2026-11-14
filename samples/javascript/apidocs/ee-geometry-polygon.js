@@ -18,14 +18,14 @@
 // Construct a polygon from a list of GeoJSON 'Polygon' formatted coordinates.
 var polygonGeoJSON = ee.Geometry.Polygon(
   [
-    [ // exterior ring
+    [  // exterior ring
       [100.0, 0.0],
       [103.0, 0.0],
       [103.0, 3.0],
       [100.0, 3.0],
       [100.0, 0.0]  // matching the first vertex is optional
     ],
-    [ // interior ring
+    [  // interior ring
       [101.0, 1.0],
       [102.0, 2.0],
       [102.0, 1.0]

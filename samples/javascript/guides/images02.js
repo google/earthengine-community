@@ -20,11 +20,11 @@
  */
 
 // [START earthengine__images02__load_image]
-var loadedImage = ee.Image('JAXA/ALOS/AW3D30/V2_2');
+var loadedImage = ee.Image('NASA/NASADEM_HGT/001');
 // [END earthengine__images02__load_image]
 
 // [START earthengine__images02__find_image]
-var first = ee.ImageCollection('COPERNICUS/S2_SR')
+var first = ee.ImageCollection('COPERNICUS/S2_SR_HARMONIZED')
                 .filterBounds(ee.Geometry.Point(-70.48, 43.3631))
                 .filterDate('2019-01-01', '2019-12-31')
                 .sort('CLOUDY_PIXEL_PERCENTAGE')
@@ -40,6 +40,20 @@ var uri = 'gs://gcp-public-data-landsat/LC08/01/001/002/' +
 var cloudImage = ee.Image.loadGeoTIFF(uri);
 print(cloudImage);
 // [END earthengine__images02__cloud_image]
+
+// [START earthengine__images02__zarr_v2_array_image]
+var timeStart = 1000000;
+var timeEnd = 1000010;
+var zarrV2ArrayImage = ee.Image.loadZarrV2Array({
+  uri:
+      'gs://gcp-public-data-arco-era5/ar/full_37-1h-0p25deg-chunk-1.zarr-v3/evaporation/.zarray',
+  proj: 'EPSG:4326',
+  starts: [timeStart],
+  ends: [timeEnd]
+});
+print(zarrV2ArrayImage);
+Map.addLayer(zarrV2ArrayImage, {min: -0.0001, max: 0.00005}, 'Evaporation');
+// [END earthengine__images02__zarr_v2_array_image]
 
 // [START earthengine__images02__create_image]
 // Create a constant image.

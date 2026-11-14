@@ -20,56 +20,56 @@ def samp_arr_img(arr_img):
 
 # Create a 1D array image with length 12.
 array_img_1d = ee.Image([0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11]).toArray()
-print('1D array image (pixel):', samp_arr_img(array_img_1d).getInfo())
+display('1D array image (pixel):', samp_arr_img(array_img_1d))
 # [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11]
 
 # Get the first 3 elements.
-print('1D array image first 3 elements (pixel):',
-      samp_arr_img(array_img_1d.arraySlice(0, 0, 3)).getInfo())
+display('1D array image first 3 elements (pixel):',
+        samp_arr_img(array_img_1d.arraySlice(0, 0, 3)))
 # [0, 1, 2]
 
 # Get the last 3 elements.
-print('1D array image last 3 elements (pixel):',
-      samp_arr_img(array_img_1d.arraySlice(0, -3)).getInfo())
+display('1D array image last 3 elements (pixel):',
+        samp_arr_img(array_img_1d.arraySlice(0, -3)))
 # [9, 10, 11]
 
 # Get elements at index positions 3 through 5 (0-based).
-print('1D array image elements at index positions 3 through 5 (pixel):',
-      samp_arr_img(array_img_1d.arraySlice(0, 3, 6)).getInfo())
+display('1D array image elements at index positions 3 through 5 (pixel):',
+        samp_arr_img(array_img_1d.arraySlice(0, 3, 6)))
 # [3, 4, 5]
 
 # Get elements at index positions 4 through end (0-based).
-print('1D array image elements at index positions 4 through end (pixel)',
-      samp_arr_img(array_img_1d.arraySlice(0, 4)).getInfo())
+display('1D array image elements at index positions 4 through end (pixel)',
+        samp_arr_img(array_img_1d.arraySlice(0, 4)))
 # [4, 5, 6, 7, 8, 9, 10, 11]
 
 # Get elements using a step of 3.
-print('1D array image elements at a step of 3 (pixel)',
-      samp_arr_img(array_img_1d.arraySlice(0, 0, None, 3)).getInfo())
+display('1D array image elements at a step of 3 (pixel)',
+        samp_arr_img(array_img_1d.arraySlice(0, 0, None, 3)))
 # [0, 3, 6, 9]
 
 # Create a 2D array image with 3 rows and 4 columns.
 array_img_2d = array_img_1d.arrayReshape(ee.Image([3, 4]).toArray(), 2)
-print('2D array image (pixel)', samp_arr_img(array_img_2d).getInfo())
+display('2D array image (pixel)', samp_arr_img(array_img_2d))
 # [[0, 1,  2,  3],
 #  [4, 5,  6,  7],
 #  [8, 9, 10, 11]]
 
 # Get the second row.
-print('2D array image second row (pixel):',
-      samp_arr_img(array_img_2d.arraySlice(0, 1, 2)).getInfo())
+display('2D array image second row (pixel):',
+        samp_arr_img(array_img_2d.arraySlice(0, 1, 2)))
 # [[4, 5, 6, 7]
 
 # Get the second column.
-print('2D array image second column (pixel):',
-      samp_arr_img(array_img_2d.arraySlice(1, 1, 2)).getInfo())
+display('2D array image second column (pixel):',
+        samp_arr_img(array_img_2d.arraySlice(1, 1, 2)))
 # [[1],
 #  [5],
 #  [9]]
 
 # Get all columns except the last.
-print('2D array image all columns except last (pixel):',
-      samp_arr_img(array_img_2d.arraySlice(1, 0, -1)).getInfo())
+display('2D array image all columns except last (pixel):',
+        samp_arr_img(array_img_2d.arraySlice(1, 0, -1)))
 # [[0, 1,  2],
 #  [4, 5,  6],
 #  [8, 9, 10]]

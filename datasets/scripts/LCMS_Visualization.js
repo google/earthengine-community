@@ -136,7 +136,7 @@ function getMostRecentChange(c, code){
 // ### Bring in LCMS annual outputs ###
 // #############################################################################
 
-var lcms = ee.ImageCollection('USFS/GTAC/LCMS/v2020-5');
+var lcms = ee.ImageCollection('projects/gtac-data-publish/assets/LCMS/Product_Version/2025-11');
 print('Available study areas:', lcms.aggregate_histogram('study_area').keys());
 print('Available LCMS products', lcms.first().bandNames());
 print(ui.Label('Learn more about visualization of LCMS products here',

@@ -13,10 +13,7 @@
 # limitations under the License.
 
 # [START earthengine__apidocs__ee_kernel_euclidean]
-from pprint import pprint
-
-print('A Euclidean distance kernel:')
-pprint(ee.Kernel.euclidean(**{'radius': 3}).getInfo())
+display('A Euclidean distance kernel:', ee.Kernel.euclidean(**{'radius': 3}))
 
 #  Output weights matrix (up to 1/1000 precision for brevity)
 

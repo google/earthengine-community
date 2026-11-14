@@ -13,8 +13,6 @@
 # limitations under the License.
 
 # [START earthengine__apidocs__ee_filter_date]
-from pprint import pprint
-
 # collection.filterDate is preferred.
 # Constructed FeatureCollection representing a field site sampled at
 # four different dates.
@@ -27,20 +25,19 @@ fc = ee.FeatureCollection([
 ])
 
 # Filter the observations in July 2021.
-print('Field site observations collection in July 2021:')
-pprint(fc.filter(ee.Filter.date('2021-07-01', '2021-08-01')).getInfo())
+display('Field site observations collection in July 2021:',
+        fc.filter(ee.Filter.date('2021-07-01', '2021-08-01')))
 
 # Alternative input formats.
 date_range = ee.DateRange('2021-07-01', '2021-08-01')
-pprint(fc.filter(ee.Filter.date(date_range)).getInfo())
+display(fc.filter(ee.Filter.date(date_range)))
 
-print('Numbers (milliseconds since Unix epoch) as an input:')
-pprint(fc.filter(ee.Filter.date(1625875200000, 1626739200001)).getInfo())
+display('Numbers (milliseconds since Unix epoch) as an input:',
+        fc.filter(ee.Filter.date(1625875200000, 1626739200001)))
 
-print('ee.Date objects as an input:')
-pprint(
+display('ee.Date objects as an input:',
     fc.filter(
         ee.Filter.date(ee.Date('2021-07-01'), ee.Date('2021-08-01'))
-    ).getInfo()
+    )
 )
 # [END earthengine__apidocs__ee_filter_date]

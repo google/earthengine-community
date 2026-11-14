@@ -13,18 +13,18 @@
 # limitations under the License.
 
 # [START earthengine__apidocs__ee_number_erfinv]
-print('Inverse error function of -1:',
-      ee.Number(-1).erfInv().getInfo())  # -Infinity
+display('Inverse error function of -1:',
+        ee.Number(-1).erfInv())  # -Infinity
 
-print('Inverse error function of -0.001:',
-      ee.Number(-0.001).erfInv().getInfo())  # -0.000886227
+display('Inverse error function of -0.001:',
+        ee.Number(-0.001).erfInv())  # -0.000886227
 
-print('Inverse error function of 0:',
-      ee.Number(0).erfInv().getInfo())  # 0
+display('Inverse error function of 0:',
+        ee.Number(0).erfInv())  # 0
 
-print('Inverse error function of 0.001:',
-      ee.Number(0.001).erfInv().getInfo())  # 0.000886227
+display('Inverse error function of 0.001:',
+        ee.Number(0.001).erfInv())  # 0.000886227
 
-print('Inverse error function of 1:',
-      ee.Number(1).erfInv().getInfo())  # Infinity
+display('Inverse error function of 1:',
+        ee.Number(1).erfInv())  # Infinity
 # [END earthengine__apidocs__ee_number_erfinv]

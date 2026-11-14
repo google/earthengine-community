@@ -17,9 +17,9 @@
 fc = ee.FeatureCollection('WRI/GPPD/power_plants').filter(
     'country_lg == "Belgium"')
 
-print('Original FeatureCollection:', fc.getInfo())
+display('Original FeatureCollection:', fc)
 
 # Merge all geometries into one. A FeatureCollection with a single feature
 # with no properties is returned.
-print('All geometries merged into one:', fc.union(1).getInfo())
+display('All geometries merged into one:', fc.union(1))
 # [END earthengine__apidocs__ee_featurecollection_union]

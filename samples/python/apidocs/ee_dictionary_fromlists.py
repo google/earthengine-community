@@ -16,6 +16,6 @@
 # Corresponding lists of keys and values.
 keys = ['B1', 'B2', 'B3']
 values = [182, 219, 443]
-print('Dictionary from lists of keys and values:',
-      ee.Dictionary.fromLists(keys, values).getInfo())
+display('Dictionary from lists of keys and values:',
+        ee.Dictionary.fromLists(keys, values))
 # [END earthengine__apidocs__ee_dictionary_fromlists]

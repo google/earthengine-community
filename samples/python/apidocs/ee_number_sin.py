@@ -16,12 +16,12 @@
 import math
 
 # Input angle in radians.
-print('Sine of 0:', ee.Number(0).sin().getInfo())  # 0
-print('Sine of π/2:', ee.Number(math.pi/2).sin().getInfo())  # 1
-print('Sine of 3π/2:', ee.Number(3*math.pi/2).sin().getInfo())  # -1
+display('Sine of 0:', ee.Number(0).sin())  # 0
+display('Sine of π/2:', ee.Number(math.pi/2).sin())  # 1
+display('Sine of 3π/2:', ee.Number(3*math.pi/2).sin())  # -1
 
 # Convert degrees to radians.
 degrees = 45
 radians = degrees * (math.pi/180)
-print('Sine of 45 degrees:', ee.Number(radians).sin().getInfo())  # 0.707106781
+display('Sine of 45 degrees:', ee.Number(radians).sin())  # 0.707106781
 # [END earthengine__apidocs__ee_number_sin]

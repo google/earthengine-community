@@ -14,7 +14,7 @@
 
 # [START earthengine__apidocs__ee_image_unmask]
 # A Sentinel-2 surface reflectance image.
-img = ee.Image('COPERNICUS/S2_SR/20210109T185751_20210109T185931_T10SEG')
+img = ee.Image('COPERNICUS/S2_SR_HARMONIZED/20210109T185751_20210109T185931_T10SEG')
 true_color_viz = {
     'bands': ['B4', 'B3', 'B2'],
     'min': 0,
@@ -56,7 +56,7 @@ m.add_layer(
 )
 
 # Fill masked pixels with pixels from a different image.
-fill = ee.Image('COPERNICUS/S2_SR/20200618T184919_20200618T190341_T10SEG')
+fill = ee.Image('COPERNICUS/S2_SR_HARMONIZED/20200618T184919_20200618T190341_T10SEG')
 img_filled = img_masked.unmask(fill)
 display('Image, filled', img_filled)
 m.add_layer(img_filled, true_color_viz, 'Image, filled')

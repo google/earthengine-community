@@ -36,7 +36,7 @@ task.start()
 # Use the "crsTransform" export parameter instead of "scale" for more control
 # over the output grid. Here, "crsTransform" is set to align the output grid
 # with the grid of another dataset. To view an image's CRS transform:
-# print(image.projection().getInfo())
+# display(image.projection())
 task = ee.batch.Export.image.toCloudStorage(
     image=image,
     description='image_export_crstransform',
@@ -84,7 +84,7 @@ nodata_val = -9999
 unmasked_image = image.unmask(value=nodata_val, sameFootprint=False)
 # Use the "noData" key in the "formatOptions" parameter to set the nodata value
 # (GeoTIFF format only).
-task = ee.batch.Export.image.toDrive(
+task = ee.batch.Export.image.toCloudStorage(
     image=unmasked_image,
     description='image_export_nodata',
     bucket='gcs-bucket-name',

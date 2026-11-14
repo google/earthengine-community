@@ -13,13 +13,13 @@
 # limitations under the License.
 
 # [START earthengine__apidocs__ee_string]
-print(ee.String('I am a string').getInfo())  # I am a string
+display(ee.String('I am a string'))  # I am a string
 
 # Strings can use emoji.
-print(ee.String('🧲⚡️👀').getInfo())  # 🧲⚡️👀
+display(ee.String('🧲⚡️👀'))  # 🧲⚡️👀
 
 # Empty string.
 empty = ee.String('')
-print(empty.getInfo())  # ''
-print(empty.length().getInfo())  # 0
+display(empty)  # ''
+display(empty.length())  # 0
 # [END earthengine__apidocs__ee_string]

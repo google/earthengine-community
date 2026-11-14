@@ -22,7 +22,7 @@ ui.root.add(map);
 map.setCenter(-121.87, 37.44, 9);
 
 // A Sentinel-2 surface reflectance image.
-var image = ee.Image('COPERNICUS/S2_SR/20210109T185751_20210109T185931_T10SEG');
+var image = ee.Image('COPERNICUS/S2_SR_HARMONIZED/20210109T185751_20210109T185931_T10SEG');
 
 // Set multi-band RGB image visualization parameters. If the "bands" parameter
 // is not defined, the first three bands are used.
@@ -61,7 +61,7 @@ map.addLayer(image.select('B8'), singleBandVis, 'Single-band palette');
 // Images within ImageCollections are automatically mosaicked according to mask
 // status and image order. The last image in the collection takes priority,
 // invalid pixels are filled by valid pixels in preceding images.
-var imageCol = ee.ImageCollection('COPERNICUS/S2_SR')
+var imageCol = ee.ImageCollection('COPERNICUS/S2_SR_HARMONIZED')
                    .filterDate('2021-03-01', '2021-04-01');
 map.addLayer(imageCol, rgbVis, 'ImageCollection mosaic');
 

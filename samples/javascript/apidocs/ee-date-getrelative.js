@@ -17,7 +17,7 @@
 // [START earthengine__apidocs__ee_date_getrelative]
 var date = ee.Date('2021-4-30T07:15:31.24');
 
-print('0-based month of year', date.getRelative('year', 'year'));
+print('0-based month of year', date.getRelative('month', 'year'));
 print('0-based week of year', date.getRelative('week', 'year'));
 print('0-based day of year', date.getRelative('day', 'year'));
 print('0-based day of month', date.getRelative('day', 'month'));

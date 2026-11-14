@@ -13,8 +13,8 @@
 # limitations under the License.
 
 # [START earthengine__apidocs__ee_number_exp]
-print('e^-1:', ee.Number(-1).exp().getInfo())  # 0.367879441
-print('e^0:', ee.Number(0).exp().getInfo())  # 1
-print('e^1:', ee.Number(1).exp().getInfo())  # 2.718281828
-print('e^2:', ee.Number(2).exp().getInfo())  # 7.389056098
+display('e^-1:', ee.Number(-1).exp())  # 0.367879441
+display('e^0:', ee.Number(0).exp())  # 1
+display('e^1:', ee.Number(1).exp())  # 2.718281828
+display('e^2:', ee.Number(2).exp())  # 7.389056098
 # [END earthengine__apidocs__ee_number_exp]

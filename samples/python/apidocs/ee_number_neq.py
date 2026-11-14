@@ -13,6 +13,6 @@
 # limitations under the License.
 
 # [START earthengine__apidocs__ee_number_neq]
-print('5 is not equal to 10:', ee.Number(5).neq(ee.Number(10)).getInfo())  # 1
-print('5 is not equal to 5:', ee.Number(5).neq(ee.Number(5)).getInfo())  # 0
+display('5 is not equal to 10:', ee.Number(5).neq(ee.Number(10)))  # 1
+display('5 is not equal to 5:', ee.Number(5).neq(ee.Number(5)))  # 0
 # [END earthengine__apidocs__ee_number_neq]

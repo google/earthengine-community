@@ -13,13 +13,12 @@
 # limitations under the License.
 
 # [START earthengine__apidocs__ee_data_computefeatures]
-from pprint import pprint
-
 # Region of interest.
 pt = ee.Geometry.Point([-122.0679107870136, 36.983302098145906])
 # Imagery of interest.
 images = (ee.ImageCollection('LANDSAT/LC08/C02/T1_L2')
           .filterBounds(pt).filterDate('2021-01-01', '2021-12-31'))
+
 
 def point_overlay(image):
   """Extracts image band values for pixel-point intersection."""
@@ -30,6 +29,6 @@ features = images.map(point_overlay)
 
 features_dict = ee.data.computeFeatures({'expression': features})
 
-pprint(features_dict)
+display(features_dict)
 # Do something with the features...
 # [END earthengine__apidocs__ee_data_computefeatures]

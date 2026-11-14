@@ -15,7 +15,7 @@
  */
 
 // [START earthengine__apidocs__ee_imagecollection_first]
-var image = ee.ImageCollection('COPERNICUS/S2_SR').first();
+var image = ee.ImageCollection('COPERNICUS/S2_SR_HARMONIZED').first();
 Map.centerObject(image, 8);
 var vis = {bands: ['B4', 'B3', 'B2'], min: 0, max: 5000};
 Map.addLayer(image, vis, 'first of S2_SR');

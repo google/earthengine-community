@@ -16,7 +16,7 @@
 
 // [START earthengine__apidocs__ui_chart_image_histogram]
 // Define a MODIS surface reflectance composite.
-var modisSr = ee.ImageCollection('MODIS/006/MOD09A1')
+var modisSr = ee.ImageCollection('MODIS/061/MOD09A1')
                   .filter(ee.Filter.date('2018-06-01', '2018-09-01'))
                   .select(['sur_refl_b01', 'sur_refl_b02', 'sur_refl_b06'])
                   .mean();

@@ -13,8 +13,6 @@
 # limitations under the License.
 
 # [START earthengine__apidocs__ee_confusionmatrix_array]
-from pprint import pprint
-
 # Construct a confusion matrix from an array (rows are actual values,
 # columns are predicted values). We construct a confusion matrix here for
 # brevity and clear visualization, in most applications the confusion matrix
@@ -26,9 +24,7 @@ array = ee.Array([[32, 0, 0,  0,  1, 0],
                   [ 0, 0, 0,  7, 15, 0],
                   [ 0, 0, 0,  1,  0, 5]])
 confusion_matrix = ee.ConfusionMatrix(array)
-print("ee.ConfusionMatrix:")
-pprint(confusion_matrix.getInfo())
+display("ee.ConfusionMatrix:", confusion_matrix)
 
-print("ee.ConfusionMatrix as ee.Array:")
-pprint(confusion_matrix.array().getInfo())
+display("ee.ConfusionMatrix as ee.Array:", confusion_matrix.array())
 # [END earthengine__apidocs__ee_confusionmatrix_array]

@@ -17,6 +17,6 @@
 fc = ee.FeatureCollection('WRI/GPPD/power_plants').filter(
     'country_lg == "Belgium"')
 
-print('Number of distinct power plant fuel sources:',
-      fc.aggregate_count_distinct('fuel1').getInfo())  # 7
+display('Number of distinct power plant fuel sources:',
+        fc.aggregate_count_distinct('fuel1'))  # 7
 # [END earthengine__apidocs__ee_featurecollection_aggregate_count_distinct]

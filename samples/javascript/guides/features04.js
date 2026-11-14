@@ -158,7 +158,7 @@ print('RMSE=', rmse);
 
 // [START earthengine__features04__reduce_regions]
 // Load an image of daily precipitation in mm/day.
-var precip = ee.Image(ee.ImageCollection('NASA/ORNL/DAYMET_V3').first());
+var precip = ee.Image(ee.ImageCollection('NASA/ORNL/DAYMET_V4').first());
 
 // Load watersheds from a data table and filter to the continental US.
 var sheds = ee.FeatureCollection('USGS/WBD/2017/HUC06')

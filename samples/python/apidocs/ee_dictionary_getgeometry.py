@@ -21,6 +21,6 @@ dic = ee.Dictionary({
     'Geometry': ee.Geometry.Point([-122.01, 36.97])
 })
 
-print('The "Geometry" value as an ee.Geometry object',
-      dic.getGeometry('Geometry').getInfo(), sep='\n')
+display('The "Geometry" value as an ee.Geometry object:',
+        dic.getGeometry('Geometry'))
 # [END earthengine__apidocs__ee_dictionary_getgeometry]

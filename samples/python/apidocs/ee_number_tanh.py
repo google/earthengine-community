@@ -16,17 +16,17 @@
 import math
 
 # Input angle in radians.
-print('Hyperbolic tangent of -5:',
-      ee.Number(-5).tanh().getInfo())  # -0.999909204
-print('Hyperbolic tangent of -1:',
-      ee.Number(-1).tanh().getInfo())  # -0.761594155
-print('Hyperbolic tangent of 0:', ee.Number(0).tanh().getInfo())  # 0
-print('Hyperbolic tangent of 1:', ee.Number(1).tanh().getInfo())  # 0.761594155
-print('Hyperbolic tangent of 5:', ee.Number(5).tanh().getInfo())  # 0.999909204
+display('Hyperbolic tangent of -5:',
+        ee.Number(-5).tanh())  # -0.999909204
+display('Hyperbolic tangent of -1:',
+        ee.Number(-1).tanh())  # -0.761594155
+display('Hyperbolic tangent of 0:', ee.Number(0).tanh())  # 0
+display('Hyperbolic tangent of 1:', ee.Number(1).tanh())  # 0.761594155
+display('Hyperbolic tangent of 5:', ee.Number(5).tanh())  # 0.999909204
 
 # Convert degrees to radians.
 degrees = 45
 radians = degrees * (math.pi/180)
-print('Hyperbolic tangent of 45 degrees:',
-      ee.Number(radians).tanh().getInfo())  # 0.655794202
+display('Hyperbolic tangent of 45 degrees:',
+        ee.Number(radians).tanh())  # 0.655794202
 # [END earthengine__apidocs__ee_number_tanh]

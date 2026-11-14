@@ -17,14 +17,14 @@
 fc = ee.FeatureCollection('WRI/GPPD/power_plants')
 
 # View a list of FeatureCollection property names.
-print(fc.propertyNames().getInfo())
+display(fc.propertyNames())
 
 # Get the value of a listed property.
-print('Global power plant data provider as ee.ComputedObject:',
-      fc.get('provider').getInfo())
+display('Global power plant data provider as ee.ComputedObject:',
+        fc.get('provider'))
 
 # The returned value is an ee.ComputedObject which has no methods available for
 # further processing; cast to the relevant Earth Engine object class for use.
-print('Global power plant data provider as ee.String:',
-      ee.String(fc.get('provider')).getInfo())
+display('Global power plant data provider as ee.String:',
+        ee.String(fc.get('provider')))
 # [END earthengine__apidocs__ee_featurecollection_get]

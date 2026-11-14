@@ -13,12 +13,12 @@
 # limitations under the License.
 
 # [START earthengine__apidocs__ee_number_erfcinv]
-print('Inverse complementary error function of 0:',
-      ee.Number(0).erfcInv().getInfo())  # Infinity
+display('Inverse complementary error function of 0:',
+        ee.Number(0).erfcInv())  # Infinity
 
-print('Inverse complementary error function of 0.001:',
-      ee.Number(0.001).erfcInv().getInfo())  # 2.326753765
+display('Inverse complementary error function of 0.001:',
+        ee.Number(0.001).erfcInv())  # 2.326753765
 
-print('Inverse complementary error function of 1:',
-      ee.Number(1).erfcInv().getInfo())  # 0
+display('Inverse complementary error function of 1:',
+        ee.Number(1).erfcInv())  # 0
 # [END earthengine__apidocs__ee_number_erfcinv]

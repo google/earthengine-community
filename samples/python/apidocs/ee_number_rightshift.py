@@ -21,5 +21,5 @@ Right shift 2:  00000101
 00000101 is binary for 5.
 """
 
-print(ee.Number(20).rightShift(2).getInfo())  # 5
+display(ee.Number(20).rightShift(2))  # 5
 # [END earthengine__apidocs__ee_number_rightshift]

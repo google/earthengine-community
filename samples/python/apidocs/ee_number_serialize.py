@@ -13,5 +13,5 @@
 # limitations under the License.
 
 # [START earthengine__apidocs__ee_number_serialize]
-print('Serialized representation of ee.Number:', ee.Number(10).serialize())
+display('Serialized representation of ee.Number:', ee.Number(10).serialize())
 # [END earthengine__apidocs__ee_number_serialize]

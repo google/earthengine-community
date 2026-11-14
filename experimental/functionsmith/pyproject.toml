@@ -1,0 +1,54 @@
+[project]
+name = "functionsmith"
+version = "0.1.4"
+description = "Functionsmith is a general-purpose problem-solving agent using dynamic function calling"
+readme = "README.md"
+requires-python = ">=3.9"
+keywords = [
+  "ai",
+  "agent",
+  "llm"
+]
+license = {text = "Apache-2.0"}
+authors = [
+  {name = "Simon Ilyushchenko", email = "simonf@google.com"},
+]
+classifiers = [
+  # Get strings from
+  # http://pypi.python.org/pypi?%3Aaction=list_classifiers
+  "Development Status :: 3 - Alpha",
+  "Intended Audience :: Developers",
+  "Intended Audience :: Science/Research",
+  "License :: OSI Approved :: Apache Software License",
+  "Operating System :: OS Independent",
+  "Programming Language :: Python :: 3 :: Only",
+  "Programming Language :: Python :: 3",
+  "Programming Language :: Python :: 3.9",
+  "Programming Language :: Python :: 3.10",
+  "Programming Language :: Python :: 3.11",
+  "Programming Language :: Python :: 3.12",
+  "Programming Language :: Python :: 3.13",
+  "Programming Language :: Python",
+  "Topic :: Scientific/Engineering :: Artificial Intelligence",
+  "Typing :: Typed",
+]
+dependencies = [
+  "anthropic",
+  "docstring_parser",
+  "google-genai",
+  "openai",
+]
+
+[build-system]
+requires = ['setuptools', 'wheel']
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools]
+package-dir = {"" = "src"}
+packages = ["functionsmith"]
+
+[project.entry-points."console_scripts"]
+functionsmith_cli = "functionsmith.agent:main"
+
+[project.urls]
+Homepage = "https://github.com/google/earthengine-community/tree/master/experimental/functionsmith"

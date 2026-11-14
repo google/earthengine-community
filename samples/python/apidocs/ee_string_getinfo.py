@@ -19,9 +19,9 @@
 # Note: getInfo() fetches results from Earth Engine synchronously;
 # later expressions will not be evaluated until it completes.
 
-print(ee.String('abc').getInfo()[-2])  # b
-print(ee.String('abc').getInfo()[2])  # c
+display(ee.String('abc').getInfo()[-2])  # b
+display(ee.String('abc').getInfo()[2])  # c
 
 # Fetch string using getInfo
-print(ee.String('abc').getInfo() + 'def')  # abcdef
+display(ee.String('abc').getInfo() + 'def')  # abcdef
 # [END earthengine__apidocs__ee_string_getinfo]

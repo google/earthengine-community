@@ -13,10 +13,7 @@
 # limitations under the License.
 
 # [START earthengine__apidocs__ee_kernel_prewitt]
-from pprint import pprint
-
-print('A Prewitt kernel:')
-pprint(ee.Kernel.prewitt().getInfo())
+display('A Prewitt kernel:', ee.Kernel.prewitt())
 
 # Output weights matrix
 

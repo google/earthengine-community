@@ -13,6 +13,6 @@
 # limitations under the License.
 
 # [START earthengine__apidocs__ee_string_length]
-print(ee.String('').length().getInfo())  # 0
-print(ee.String('abc123').length().getInfo())  # 6
+display(ee.String('').length())  # 0
+display(ee.String('abc123').length())  # 6
 # [END earthengine__apidocs__ee_string_length]

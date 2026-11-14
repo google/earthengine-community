@@ -20,5 +20,5 @@ dic = ee.Dictionary({
     'B3': 443
 })
 
-print('The number of dictionary entries:', dic.size().getInfo())
+display('The number of dictionary entries:', dic.size())
 # [END earthengine__apidocs__ee_dictionary_size]

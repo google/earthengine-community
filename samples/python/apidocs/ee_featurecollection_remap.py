@@ -22,5 +22,5 @@ fc = ee.FeatureCollection([
     ])
 
 trees = fc.remap(['NotTree', 'Tree'], [0, 1], 'isTree')
-print('Remapped trees:', trees.getInfo())
+display('Remapped trees:', trees)
 # [END earthengine__apidocs__ee_featurecollection_remap]

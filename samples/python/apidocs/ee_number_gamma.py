@@ -14,9 +14,9 @@
 
 # [START earthengine__apidocs__ee_number_gamma]
 # Values less than or equal to 0 are invalid.
-print('Gamma for 0.001:', ee.Number(0.001).gamma().getInfo())  # 999.423772484
-print('Gamma for 0.5:', ee.Number(0.5).gamma().getInfo())  # 1.772453850
-print('Gamma for 1:', ee.Number(1).gamma().getInfo())  # 1
-print('Gamma for 100:', ee.Number(100).gamma().getInfo())  # 9.332621544e+155
-print('Gamma for 200:', ee.Number(200).gamma().getInfo())  # Infinity
+display('Gamma for 0.001:', ee.Number(0.001).gamma())  # 999.423772484
+display('Gamma for 0.5:', ee.Number(0.5).gamma())  # 1.772453850
+display('Gamma for 1:', ee.Number(1).gamma())  # 1
+display('Gamma for 100:', ee.Number(100).gamma())  # 9.332621544e+155
+display('Gamma for 200:', ee.Number(200).gamma())  # Infinity
 # [END earthengine__apidocs__ee_number_gamma]

@@ -26,18 +26,18 @@ point_sample_fc = image.sample(
     **{'region': image_bounds, 'scale': 30, 'numPixels': 5, 'geometries': True})
 
 # Copy image properties to the FeatureCollection; three options follow.
-print('All non-system image properties copied to the FeatureCollection:',
-      point_sample_fc.copyProperties(image).getInfo())
+display('All non-system image properties copied to the FeatureCollection:',
+        point_sample_fc.copyProperties(image))
 
-print('Selected image properties copied to the FeatureCollection:',
-      point_sample_fc.copyProperties(**{
-          'source': image,
-          'properties': ['system:time_start', 'SPACECRAFT_ID']
-          }).getInfo())
+display('Selected image properties copied to the FeatureCollection:',
+        point_sample_fc.copyProperties(**{
+            'source': image,
+            'properties': ['system:time_start', 'SPACECRAFT_ID']
+            }))
 
-print('All but selected image properties copied to the FeatureCollection:',
-      point_sample_fc.copyProperties(**{
-          'source': image,
-          'exclude': ['TIRS_SSM_MODEL', 'TIRS_SSM_POSITION_STATUS']
-      }).getInfo())
+display('All but selected image properties copied to the FeatureCollection:',
+        point_sample_fc.copyProperties(**{
+            'source': image,
+            'exclude': ['TIRS_SSM_MODEL', 'TIRS_SSM_POSITION_STATUS']
+        }))
 # [END earthengine__apidocs__ee_featurecollection_copyproperties]

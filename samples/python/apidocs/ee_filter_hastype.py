@@ -21,23 +21,23 @@ fc = ee.FeatureCollection([
 
 # The third feature has a Point geometry.
 display(
-    fc.filter(ee.Filter.hasType(leftField='.geo', rightValue='Point')).getInfo()
+    fc.filter(ee.Filter.hasType(leftField='.geo', rightValue='Point'))
 )
 
 # The first two features have a Polygon geometry.
 display(
     fc.filter(
         ee.Filter.hasType(leftField='.geo', rightValue='Polygon')
-    ).getInfo()
+    )
 )
 
 # The first feature has property x with type Number.
 display(
-    fc.filter(ee.Filter.hasType(leftField='x', rightValue='Number')).getInfo()
+    fc.filter(ee.Filter.hasType(leftField='x', rightValue='Number'))
 )
 
 # The second feature has property x with type String.
 display(
-    fc.filter(ee.Filter.hasType(leftField='x', rightValue='String')).getInfo()
+    fc.filter(ee.Filter.hasType(leftField='x', rightValue='String'))
 )
 # [END earthengine__apidocs__ee_filter_hastype]

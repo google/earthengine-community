@@ -15,12 +15,12 @@
 """Google Earth Engine Developer's Guide examples for 'Images - Creating images'."""
 
 # [START earthengine__images02__load_image]
-loaded_image = ee.Image('JAXA/ALOS/AW3D30/V2_2')
+loaded_image = ee.Image('NASA/NASADEM_HGT/001')
 # [END earthengine__images02__load_image]
 
 # [START earthengine__images02__find_image]
 first = (
-    ee.ImageCollection('COPERNICUS/S2_SR')
+    ee.ImageCollection('COPERNICUS/S2_SR_HARMONIZED')
     .filterBounds(ee.Geometry.Point(-70.48, 43.3631))
     .filterDate('2019-01-01', '2019-12-31')
     .sort('CLOUDY_PIXEL_PERCENTAGE')
@@ -46,6 +46,24 @@ uri = (
 cloud_image = ee.Image.loadGeoTIFF(uri)
 display(cloud_image)
 # [END earthengine__images02__cloud_image]
+
+# [START earthengine__images02__zarr_v2_array_image]
+time_start = 1000000
+time_end = 1000010
+zarr_v2_array_image = ee.Image.loadZarrV2Array(
+    uri='gs://gcp-public-data-arco-era5/ar/full_37-1h-0p25deg-chunk-1.zarr-v3/evaporation/.zarray',
+    proj='EPSG:4326',
+    starts=[time_start],
+    ends=[time_end],
+)
+
+display(zarr_v2_array_image)
+
+m.add_layer(
+    zarr_v2_array_image, {'min': -0.0001, 'max': 0.00005}, 'Evaporation'
+)
+m
+# [END earthengine__images02__zarr_v2_array_image]
 
 # [START earthengine__images02__create_image]
 # Create a constant image.

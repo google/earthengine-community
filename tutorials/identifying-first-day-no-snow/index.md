@@ -22,14 +22,14 @@ limitations under the License.
 -->
 
 This tutorial demonstrates how to produce annual maps depicting the first day
-within a year where a given pixel reaches zero percent snow cover and provides
+within a year where a given pixel reaches 0% snow cover and provides
 suggestions for summarizing and visualizing the results over time and space.
 
 ![arctic-first-doy-no-snow-polar-proj.jpg](arctic-first-doy-no-snow-polar-proj.jpg)<br>
 _Patterns of snowmelt timing are represented here by the first day in 2018 where
 each pixel no longer contained snow, as detected by the MODIS daily snow cover
 product. The color grades from purple (earlier) to yellow (later) as the first
-day of the year with zero percent snow per pixel increases
+day of the year with 0% snow per pixel increases
 (Arctic Polar Stereographic projection)._
 
 ## Context
@@ -54,8 +54,8 @@ et al., 2016) and is essential in recharging groundwater.
 
 This seasonal water resource is one of the fastest changing hydrologic
 systems under Earth’s
-warming climate, and will broadly impact regional economies, ecosystem
-function and increase the potential for flood hazards (Musselman et al.,
+warming climate, and will broadly impact regional economies and ecosystem
+function, and increase the potential for flood hazards (Musselman et al.,
 2017; IPCC, 2007; Beniston, 2012; Allan and Casillo, 2007; Barnett and
 Lettenmaier, 2005).
 
@@ -72,10 +72,10 @@ variability in the timing of snowmelt toward a better understanding of how
 the hydrological cycles of higher latitude and mountainous regions are
 responding to climate change.
 
-## Identify first day of zero percent snow cover
+## Identify first day of 0% snow cover
 
 This section covers building an image collection where each image is a mosaic
-of pixels that describe the first day in a given year that zero percent snow
+of pixels that describe the first day in a given year that 0% snow
 cover is recorded. Snow cover is defined by the [MODIS NDSI Snow Cover
 product](https://developers.google.com/earth-engine/datasets/catalog/MODIS_006_MOD10A1).
 The general workflow is as follows:
@@ -93,7 +93,7 @@ The general workflow is as follows:
 ### 1\. Define date range
 
 Define the day-of-year (DOY) to start the search for the first
-day with zero percent snow cover. For applications in the northern
+day with 0% snow cover. For applications in the northern
 hemisphere, you will likely want to start with January 1st (DOY `1`).
 However, if you are studying snowmelt timing in the southern hemisphere (e.g.,
 the Andes), where snowmelt can occur on dates either side of the new year,
@@ -124,7 +124,7 @@ that it is retained in the final mosaics. The function encodes:
 - Calendar DOY (`calDoy`): enumerated DOY from January 1st
 - Relative DOY (`relDoy`): enumerated DOY from user-defined `startDoy`
 - Milliseconds from Unix epoch (`millis`)
-- Year (`year`) - Note that the year is tied to the `startDoy` e.g., if
+- Year (`year`) - Note that the year is tied to the `startDoy`. For example, if
 `startDoy` is set at 183, the analysis will cross the new year, the year
 given to all pixels will be the first year, even if a particular image was
 collected on January 1 of the subsequent year.
@@ -221,7 +221,7 @@ var years = ee.List.sequence(startYear, endYear);
 ```
 
 Map the following function over the list of years. For each year, identify
-the first day with zero percent snow cover.
+the first day with 0% snow cover.
 
 1. Define the start and end dates to filter the dataset for the given year.
 2. Filter the image collection by the date range.
@@ -307,7 +307,7 @@ resolution of the dataset (500m).
 
 - MODIS cloud masking can influence results. If there are a number
 of sequentially masked image pixel observations (clouds, poor quality), the
-actual date of the first observation with zero percent snow cover may be earlier
+actual date of the first observation with 0% snow cover may be earlier
 than identified in the image time series. Regional patterns may be less
 influenced by this bias than local results. For local results, please inspect
 image masks to understand their influence on the dates near snowmelt timing.
@@ -341,7 +341,7 @@ Map.addLayer(firstDayNoSnowYear, visArgs, 'First day of no snow, 2018');
 ```
 
 Running this code produces something similar to Figure 2. Color represents
-day-of-year when zero percent snow cover was first experienced (blue is
+day-of-year when 0% snow cover was first experienced (blue is
 early, yellow is late).  One can notice a number of interesting patterns.
 Frozen lakes have been shown to decrease air temperatures in adjacent pixels,
 resulting in delayed snow melt (Rouse et al., 1997; Salomonson and Appel, 2004;
@@ -349,7 +349,7 @@ Wang and Derksen, 2007).
 
 Additionally, the protected estuaries of the Northwest Passages have earlier
 dates of no snow compared to the landscapes exposed to the currents and winds
-of the Northern Atlantic. Latitude, elevation and proximity to ocean currents
+of the Northern Atlantic. Latitude, elevation, and proximity to ocean currents
 are the strongest determinants in this region.
 
 **Note**: pixels representing glaciers that did not get removed by the analysis
@@ -393,7 +393,7 @@ Map.addLayer(dif, visArgs, '2015-2005 first day no snow dif');
 ```
 
 Running this code produces something similar to Figure 3. Color represents
-the difference between the 2015 and 2005 day-of-year when zero percent snow
+the difference between the 2015 and 2005 day-of-year when 0% snow
 cover was first experienced (red is a negative change/an earlier no snow date
 in 2015, blue is a positive change/a later no snow date in 2015, white is no
 change/negligible change in no snow date in 2015).
@@ -497,7 +497,7 @@ _Figure 5. Regional annual mean first DOY with no snow time series._
 Amanda Armstrong devised and directed tutorial development. Justin Braaten
 assisted in method implementation. Morgan Shelby asked the initial question that
 led to the development of the dataset and subsequent tutorial. All contributors
-provided text, code and analysis examples.
+provided text, code, and analysis examples.
 
 ## References
 

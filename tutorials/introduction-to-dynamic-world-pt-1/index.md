@@ -21,7 +21,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 -->
 
-_This is part 1 of a 3-part tutorial, see also
+_This is part 1 of a three-part tutorial, see also
 [part 2](/earth-engine/tutorials/community/introduction-to-dynamic-world-pt-2) and
 [part 3](/earth-engine/tutorials/community/introduction-to-dynamic-world-pt-3)._
 
@@ -72,7 +72,7 @@ about the Code Editor [here](/earth-engine/guides/playground).
 * If you are unfamiliar with the Earth Engine API, check out the
 [Introduction to the Earth Engine API](/earth-engine/tutorials/tutorial_api_01) tutorial.
 
-Once you're familiar with JavaScript, the Earth Engine API and the Code Editor,
+Once you're familiar with JavaScript, the Earth Engine API, and the Code Editor,
 get started on the tutorial!
 
 ## Hello [Dynamic] World
@@ -80,13 +80,13 @@ get started on the tutorial!
 The Dynamic World (DW) dataset is a continuously updating Image Collection of
 globally consistent, <nobr>10m-resolution</nobr>, near real-time (NRT) land use
 land cover (LULC) predictions created from Sentinel-2 imagery. Images in this
-dataset include ten bands: nine bands with estimated probabilities for each of
+dataset include 10 bands: nine bands with estimated probabilities for each of
 the nine DW LULC classes as well as a class "label" band indicating the class
 with the largest estimated probability. These unique properties enable users to
 do multi-temporal analysis as well as create custom products suited to their
 needs.
 
-### Using the NRT Image Collection
+### Use the NRT image collection
 
 The Dynamic World Near Real-time (NRT) Image Collection includes LULC
 predictions for Sentinel-2 L1C acquisitions from 2015-06-23 to the present
@@ -113,7 +113,7 @@ var endDate = '2021-10-25';
 var geometry = ee.Geometry.Point([-72.28525, 42.36103]);
 ```
 
-### Load a Sentinel-2 Image
+### Load a Sentinel-2 image
 
 We can find a Sentinel-2 image by applying filters on the Sentinel-2 L1C
 harmonized collection for the date range and location of interest. Since the
@@ -143,7 +143,7 @@ Map.centerObject(geometry, 13);
 ![](dw01.png)
 _A Sentinel-2 L1C Image of Quabbin Reservoir, Massachusetts, US_
 
-### Find the Matching Dynamic World Image
+### Find the matching Dynamic World image
 
 To find the matching classified image in the Dynamic World collection, we
 need to extract the product id using the `system:index` property.
@@ -171,7 +171,7 @@ Expanding the bands section, you will notice that the image contains 10 bands.
 ![](dw02.png)
 _Dynamic World Image Information_
 
-### Visualize the Classified Image
+### Visualize the classified image
 
 The `label` band of Dynamic World images contains a discrete label for each
 pixel assigned based on the class with the highest probability. The nine-class
@@ -208,11 +208,11 @@ Map.addLayer(classification, dwVisParams, 'Classified Image');
 ![](dw03.png)
 _Visualization of the label classification_
 
-### Create a Probability Hillshade Visualization
+### Create a probability hillshade visualization
 
 The label band of a Dynamic World image contains the class value with the
 highest probability among the different LULC classes. Each image also
-contains 9 other bands—each containing the pixel-wise probability for the
+contains nine other bands—each containing the pixel-wise probability for the
 corresponding LULC class. We can use this information to create a better and
 more information-rich visualization.
 
@@ -288,15 +288,15 @@ The full script for this section can be accessed from the link below
 
 _A Sentinel-1C image along with matching Dynamic World products_
 
-## Creating Multi-Temporal Composites
+## Create multitemporal composites
 
 Being a continuous product, Dynamic World allows users to aggregate the NRT
 collection over a longer, custom time period. For example, one can create a
-monthly, seasonal or annual product from the NRT scenes collected during this
+monthly, seasonal, or annual product from the NRT scenes collected during this
 duration. In this section, you will learn how to create an annual land cover
 product for a US County and export the results as a GeoTiff.
 
-### Select a Region
+### Select a region
 
 For this tutorial, we will use the
 [TIGER: US Census Counties 2018](/earth-engine/datasets/catalog/TIGER_2018_Counties)
@@ -309,7 +309,7 @@ var geometry = filtered.geometry();
 Map.centerObject(geometry, 10);
 ```
 
-### Filter the Dynamic World NRT Collection
+### Filter the Dynamic World NRT collection
 
 Now we apply a date and bounds filter to select all images in the NRT
 collection for the year 2020 over the selected region.
@@ -323,7 +323,7 @@ var dw = ee.ImageCollection('GOOGLE/DYNAMICWORLD/V1')
              .filterBounds(geometry);
 ```
 
-### Create a Mode Composite
+### Create a mode composite
 
 We can aggregate the estimated distribution of the LULC classes over the time
 period by creating a mode composite using the highest probability label for
@@ -337,7 +337,7 @@ var classification = dw.select('label');
 var dwComposite = classification.reduce(ee.Reducer.mode());
 ```
 
-### Visualize the Annual Composite
+### Visualize the annual composite
 
 As shown in the previous section, you may visualize the LULC image using the
 class labels or the Top-1 hillshade. Here we add the result to the map using
@@ -360,10 +360,10 @@ Map.addLayer(dwComposite.clip(geometry), dwVisParams, 'Classified Composite');
 ![](composite1.png)
 _Annual Composite for Dane County, WI_
 
-### Create a Probability Hillshade Composite
+### Create a probability hillshade composite
 
 As we saw in the previous section, you can use the pixel-wise probability
-information contained in the 9 LULC bands to create a richer visualization by
+information contained in the nine LULC bands to create a richer visualization by
 calculating the Top-1 Probability Hillshade. We can use the same technique on
 composites, but with a few adjustments.
 
@@ -386,7 +386,7 @@ var probabilityCol = dw.select(probabilityBands);
 var meanProbability = probabilityCol.reduce(ee.Reducer.mean());
 ```
 
-The `meanProbability` image is a composite image with 9 bands having the
+The `meanProbability` image is a composite image with nine bands having the
 average pixel-wise probability calculated from all the source image bands. In
 Earth Engine, a composite of input images will have the
 [default projection](/earth-engine/guides/projections#the-default-projection),
@@ -426,7 +426,7 @@ Map.addLayer(
 ![](composite2.png)
 _Top-1 Probability Hillshade Visualization of the Annual Composite_
 
-### Export the Composite
+### Export the composite
 
 We can export the resulting composite annual LULC product to download it as a
 GeoTIFF. If you want to further analyze this dataset with GIS software, you

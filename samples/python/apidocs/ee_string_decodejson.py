@@ -14,6 +14,6 @@
 
 # [START earthengine__apidocs__ee_string_decodejson]
 data = ee.Dictionary(ee.String('{"a": "abc", "b": 1}').decodeJSON())
-print(data.getInfo())
-print(data.get('a').getInfo())
+display(data)
+display(data.get('a'))
 # [END earthengine__apidocs__ee_string_decodejson]

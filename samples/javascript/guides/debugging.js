@@ -20,7 +20,7 @@
  */
 // [START earthengine__debugging__client_logic]
 // Load a Sentinel-2 image.
-var image = ee.Image('USGS/SRTMGL1_003');
+var image = ee.Image('NASA/NASADEM_HGT/001');
 
 // Error: "bandNames" is not defined in this scope.
 var display = image.visualize({bands: bandNames, min: 0, max: 9000});
@@ -42,7 +42,7 @@ var area = ee.Feature(collection.first()).area();
 
 // [START earthengine__debugging__tricky]
 // Don't mix EE objects and JavaScript objects.
-var image = ee.Image('USGS/SRTMGL1_003');
+var image = ee.Image('NASA/NASADEM_HGT/001');
 var nonsense = image + 2;
 
 // You can print this, but it's not what you were hoping for.
@@ -80,7 +80,7 @@ print(s2image.get('myProperty')); // OK
 // [END earthengine__debugging__result_capture_corrected]
 
 // [START earthengine__debugging__mapped_function1]
-var collection = ee.ImageCollection('MODIS/006/MOD44B');
+var collection = ee.ImageCollection('MODIS/061/MOD44B');
 
 // Error: A mapped function's arguments cannot be used in client-side operations
 var badMap3 = collection.map(function(image) {
@@ -90,7 +90,7 @@ var badMap3 = collection.map(function(image) {
 // [END earthengine__debugging__mapped_function1]
 
 // [START earthengine__debugging__mapped_function2]
-var collection = ee.ImageCollection('MODIS/006/MOD44B');
+var collection = ee.ImageCollection('MODIS/061/MOD44B');
 
 // Error: User-defined methods must return a value.
 var badMap1 = collection.map(function(image) {
@@ -99,7 +99,7 @@ var badMap1 = collection.map(function(image) {
 // [END earthengine__debugging__mapped_function2]
 
 // [START earthengine__debugging__mapped_function3]
-var collection = ee.ImageCollection('MODIS/006/MOD44B');
+var collection = ee.ImageCollection('MODIS/061/MOD44B');
 
 var badMap2 = collection.map(function(image) {
   return image.date();
@@ -110,7 +110,7 @@ print(badMap2);
 // [END earthengine__debugging__mapped_function3]
 
 // [START earthengine__debugging__mapped_function4]
-var collection = ee.ImageCollection('MODIS/006/MOD44B');
+var collection = ee.ImageCollection('MODIS/061/MOD44B');
 
 var okMap2 = collection.map(function(image) {
   return image.set('date', image.date());
@@ -232,7 +232,7 @@ print(okMemory);
 // [END earthengine__debugging__memory_hog_solution2]
 
 // [START earthengine__debugging__aside]
-var image = ee.Image(ee.ImageCollection('COPERNICUS/S2')
+var image = ee.Image(ee.ImageCollection('COPERNICUS/S2_HARMONIZED')
     .filterBounds(ee.Geometry.Point([-12.29, 168.83]))
     .aside(print)
     .filterDate('2011-01-01', '2016-12-31')

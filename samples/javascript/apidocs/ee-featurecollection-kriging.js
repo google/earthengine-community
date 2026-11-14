@@ -34,7 +34,7 @@ var roi = ee.Geometry.Polygon(
 
 // Sample the mean June 2020 temperature surface at random points in the ROI.
 var tmeanFc = img.sample(
-  {region: roi, scale: 25000, numPixels: 50, geometries: true}); //250
+  {region: roi, scale: 25000, numPixels: 50, geometries: true});  // 250
 
 // Generate an interpolated surface from the points using kriging; parameters
 // are set according to interpretation of an unshown semivariogram. See section

@@ -21,7 +21,7 @@ def samp_arr_img(arr_img):
 # Create a 2D array image with the 0-axis having length 6 and the 1-axis
 # having length 1.
 array_img_2d = ee.Image([0, 1, 2, 3, 4, 5]).toArray().toArray(1)
-print('2D array image (pixel):', samp_arr_img(array_img_2d).getInfo())
+display('2D array image (pixel):', samp_arr_img(array_img_2d))
 # [[0],
 #  [1],
 #  [2],
@@ -32,6 +32,6 @@ print('2D array image (pixel):', samp_arr_img(array_img_2d).getInfo())
 # Project the 2D array to a 1D array, retain the 0-axis (concatenate elements
 # from the 1-axis into the 0-axis).
 array_img_2d_to_1d = array_img_2d.arrayProject([0])
-print('2D array image (pixel):', samp_arr_img(array_img_2d_to_1d).getInfo())
+display('2D array image (pixel):', samp_arr_img(array_img_2d_to_1d))
 # [0, 1, 2, 3, 4, 5]
 # [END earthengine__apidocs__ee_image_arrayproject]

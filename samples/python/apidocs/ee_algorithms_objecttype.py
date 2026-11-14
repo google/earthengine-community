@@ -13,13 +13,9 @@
 # limitations under the License.
 
 # [START earthengine__apidocs__ee_algorithms_objecttype]
-print(ee.Algorithms.ObjectType(ee.Number(1)).getInfo())  # The string "Integer"
-print(
-    ee.Algorithms.ObjectType(ee.String('a string')).getInfo()
-)  # The string "String"
-print(
-    ee.Algorithms.ObjectType(ee.List([1, 'a string'])).getInfo()
-)  # The string "List"
+display(ee.Algorithms.ObjectType(ee.Number(1)))  # The string "Integer"
+display(ee.Algorithms.ObjectType(ee.String('a string')))  # The string "String"
+display(ee.Algorithms.ObjectType(ee.List([1, 'a string'])))  # The string "List"
 
 # ee.Algorithms.ObjectType can be used to get the type of properties
 # of ee.Image or ee.Feature objects.
@@ -32,7 +28,7 @@ feature = ee.Feature(
 )
 
 # The string "Integer"
-print('int:', ee.Algorithms.ObjectType(feature.get('int')).getInfo())
+display('int:', ee.Algorithms.ObjectType(feature.get('int')))
 # The string "Long"
-print('int8:', ee.Algorithms.ObjectType(feature.get('int8')).getInfo())
+display('int8:', ee.Algorithms.ObjectType(feature.get('int8')))
 # [END earthengine__apidocs__ee_algorithms_objecttype]

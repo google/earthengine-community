@@ -21,12 +21,12 @@ See the License for the specific language governing permissions and
 limitations under the License.
 -->
 
-_This is part 2 of a 3-part tutorial, see also
+_This is part 2 of a three-part tutorial, see also
 [part 1](/earth-engine/tutorials/community/introduction-to-dynamic-world-pt-1) and
 [part 3](/earth-engine/tutorials/community/introduction-to-dynamic-world-pt-3)._
 
 A high resolution Land Use Land Cover (LULC) dataset like Dynamic World allows
-us to estimate the footprint of human activity on carbon cycles, biodiversity
+us to estimate the footprint of human activity on carbon cycles, biodiversity,
 and other anthropogenic natural processes. Using the Dynamic World taxonomy, we
 can calculate and summarize statistics over any region. In this section, we
 will learn how to calculate the number of pixels for a single land cover class
@@ -138,7 +138,7 @@ print(builtAreaPixels);
 ```
 
 The last step is to calculate the built area fraction by dividing the total
-built area pixels by total image pixels. We round off the number to 2 decimal
+built area pixels by total image pixels. We round off the number to two decimal
 places using the `format()` function and print the result.
 
 ```js
@@ -147,7 +147,7 @@ var fraction = (ee.Number(builtAreaPixels).divide(totalPixels))
 print('Percentage Built Area', fraction.format('%.2f'));
 ```
 
-## Summarizing Pixel Counts for All Classes
+## Summarize pixel counts for all classes
 
 The method described in the previous section is useful for many applications,
 but it can be limiting if you want to summarize the pixel counts for all the

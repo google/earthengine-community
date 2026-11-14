@@ -16,7 +16,7 @@
 # A Sentinel-2 surface reflectance image, reflectance bands selected,
 # serves as the source for training and prediction in this contrived example.
 img = ee.Image(
-    'COPERNICUS/S2_SR/20210109T185751_20210109T185931_T10SEG'
+    'COPERNICUS/S2_SR_HARMONIZED/20210109T185751_20210109T185931_T10SEG'
 ).select('B.*')
 
 # ESA WorldCover land cover map, used as label source in classifier training.

@@ -21,13 +21,13 @@
 # A Landsat 8 TOA image collection (1 year of images at a specific point).
 col = ee.ImageCollection('LANDSAT/LC08/C02/T1_TOA').filterBounds(
     ee.Geometry.Point(-90.70, 34.71)).filterDate('2020-01-01', '2021-01-01')
-print('Image collection:', col.getInfo())
+display('Image collection:', col)
 
 # Get the first 3 images as a list of images.
 img_list_first3 = col.toList(3)
-print('First 3 images:', img_list_first3.getInfo())
+display('First 3 images:', img_list_first3)
 
 # Get the second 3 images as a list of images (use the offset parameter).
 img_list_second3 = col.toList(3, 3)
-print('Second 3 images:', img_list_second3.getInfo())
+display('Second 3 images:', img_list_second3)
 # [END earthengine__apidocs__ee_imagecollection_tolist]

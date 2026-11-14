@@ -14,13 +14,13 @@
 
 # [START earthengine__apidocs__ee_string_match]
 s = ee.String('ABCabc123')
-print(s.match('').getInfo())  # ""
-print(s.match('ab', 'g').getInfo())  # ab
-print(s.match('ab', 'i').getInfo())  # AB
-print(s.match('AB', 'ig').getInfo())  # ['AB','ab']
-print(s.match('[a-z]+[0-9]+').getInfo())  # 'abc123'
-print(s.match('\\d{2}').getInfo())  # '12'
+display(s.match(''))  # ""
+display(s.match('ab', 'g'))  # ab
+display(s.match('ab', 'i'))  # AB
+display(s.match('AB', 'ig'))  # ['AB','ab']
+display(s.match('[a-z]+[0-9]+'))  # 'abc123'
+display(s.match('\\d{2}'))  # '12'
 
 # Use [^] to match any character except a digit.
-print(s.match('abc[^0-9]', 'i').getInfo())  # ['ABCa']
+display(s.match('abc[^0-9]', 'i'))  # ['ABCa']
 # [END earthengine__apidocs__ee_string_match]

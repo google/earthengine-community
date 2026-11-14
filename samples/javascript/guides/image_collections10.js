@@ -27,7 +27,7 @@
 
 
 // [START earthengine__image_collections10__filtering01]
-var s2col = ee.ImageCollection('COPERNICUS/S2_SR')
+var s2col = ee.ImageCollection('COPERNICUS/S2_SR_HARMONIZED')
   .filterDate('2018-01-01', '2019-01-01');
 // [END earthengine__image_collections10__filtering01]
 
@@ -36,7 +36,7 @@ var s2col = ee.ImageCollection('COPERNICUS/S2_SR')
 
 
 // [START earthengine__image_collections10__filtering02]
-var s2col = ee.ImageCollection('COPERNICUS/S2_SR')
+var s2col = ee.ImageCollection('COPERNICUS/S2_SR_HARMONIZED')
   .filter(ee.Filter.calendarRange(171, 242, 'day_of_year'));
 // [END earthengine__image_collections10__filtering02]
 
@@ -45,7 +45,7 @@ var s2col = ee.ImageCollection('COPERNICUS/S2_SR')
 
 
 // [START earthengine__image_collections10__filtering03]
-var s2col = ee.ImageCollection('COPERNICUS/S2_SR')
+var s2col = ee.ImageCollection('COPERNICUS/S2_SR_HARMONIZED')
   .filterBounds(ee.Geometry.Point(-122.1, 37.2));
 // [END earthengine__image_collections10__filtering03]
 
@@ -54,7 +54,7 @@ var s2col = ee.ImageCollection('COPERNICUS/S2_SR')
 
 
 // [START earthengine__image_collections10__filtering04]
-var s2col = ee.ImageCollection('COPERNICUS/S2_SR')
+var s2col = ee.ImageCollection('COPERNICUS/S2_SR_HARMONIZED')
   .filter(ee.Filter.lt('CLOUDY_PIXEL_PERCENTAGE', 50));
 // [END earthengine__image_collections10__filtering04]
 
@@ -63,7 +63,7 @@ var s2col = ee.ImageCollection('COPERNICUS/S2_SR')
 
 
 // [START earthengine__image_collections10__filtering05]
-var s2col = ee.ImageCollection('COPERNICUS/S2_SR')
+var s2col = ee.ImageCollection('COPERNICUS/S2_SR_HARMONIZED')
   .filterDate('2018-01-01', '2019-01-01')
   .filterBounds(ee.Geometry.Point(-122.1, 37.2))
   .filter('CLOUDY_PIXEL_PERCENTAGE < 50');
@@ -78,7 +78,7 @@ var s2col = ee.ImageCollection('COPERNICUS/S2_SR')
 
 
 // [START earthengine__image_collections10__compositing01]
-var ndviCol = ee.ImageCollection('MODIS/006/MOD13A2')
+var ndviCol = ee.ImageCollection('MODIS/061/MOD13A2')
   .filterDate('2018-01-01', '2019-01-01')
   .select('NDVI');
 // [END earthengine__image_collections10__compositing01]
@@ -92,7 +92,7 @@ var ndviCol = ee.ImageCollection('MODIS/006/MOD13A2')
 var doyList = ee.List.sequence(1, 365, 16);
 
 // Import a MODIS NDVI collection.
-var ndviCol = ee.ImageCollection('MODIS/006/MOD13A2').select('NDVI');
+var ndviCol = ee.ImageCollection('MODIS/061/MOD13A2').select('NDVI');
 
 // Map over the list of days to build a list of image composites.
 var ndviCompList = doyList.map(function(startDoy) {
@@ -243,7 +243,7 @@ var lsCol = ee.ImageCollection('LANDSAT/LC08/C02/T1_L2')
   .filterDate('2017-01-01', '2019-01-01')
   .filter('WRS_PATH == 38 && (WRS_ROW == 28 || WRS_ROW == 29)')
   .map(function(img) {
-    var date = img.date().format('YYYY-MM-dd');
+    var date = img.date().format('yyyy-MM-dd');
     return img.set('date', date);
   });
 
@@ -266,7 +266,7 @@ var lsColMos = ee.ImageCollection(joinCol.map(function(col) {
 
 
 // [START earthengine__image_collections10__sorting01]
-var s2col = ee.ImageCollection('COPERNICUS/S2_SR')
+var s2col = ee.ImageCollection('COPERNICUS/S2_SR_HARMONIZED')
   .filterBounds(ee.Geometry.Point(-122.1, 37.2))
   .sort('system:time_start');
 // [END earthengine__image_collections10__sorting01]
@@ -276,7 +276,7 @@ var s2col = ee.ImageCollection('COPERNICUS/S2_SR')
 
 
 // [START earthengine__image_collections10__sorting02]
-var s2col = ee.ImageCollection('COPERNICUS/S2_SR')
+var s2col = ee.ImageCollection('COPERNICUS/S2_SR_HARMONIZED')
   .filterBounds(ee.Geometry.Point(-122.1, 37.2))
   .sort('CLOUDY_PIXEL_PERCENTAGE');
 // [END earthengine__image_collections10__sorting02]
@@ -290,7 +290,7 @@ var s2col = ee.ImageCollection('COPERNICUS/S2_SR')
 var aoi = ee.Geometry.Point(-122.1, 37.2).buffer(1e4);
 
 // Filter MODIS NDVI image collection by a date range.
-var ndviCol = ee.ImageCollection('MODIS/006/MOD13A1')
+var ndviCol = ee.ImageCollection('MODIS/061/MOD13A1')
   .filterDate('2018-01-01', '2019-01-01')
   .select('NDVI')
   // Map over the image collection to calculate regional mean NDVI and add
@@ -313,8 +313,8 @@ var ndviCol = ee.ImageCollection('MODIS/006/MOD13A1')
 
 
 // [START earthengine__image_collections10__imageVis01]
-// Import SRTM global elevation model.
-var demImg = ee.Image('USGS/SRTMGL1_003');
+// Import NASADEM global elevation model.
+var demImg = ee.Image('NASA/NASADEM_HGT/001').select('elevation');
 
 // Define a rectangular area of interest.
 var aoi = ee.Geometry.Polygon(
@@ -348,7 +348,7 @@ print('Set vis max to:', ee.Number(percentClip.get(keys.get(1))).round());
 
 // [START earthengine__image_collections10__imageVis02]
 // Filter MODIS NDVI image collection by a date range.
-var ndviCol = ee.ImageCollection('MODIS/006/MOD13A1')
+var ndviCol = ee.ImageCollection('MODIS/061/MOD13A1')
   .filterDate('2018-01-01', '2019-01-01')
   .select('NDVI');
 
@@ -381,7 +381,7 @@ var ndviColVis = ndviCol.map(visFun);
 // [START earthengine__image_collections10__imageVis03]
 // Assemble a collection of Sentinel-2 surface reflectance images for a given
 // region and date range.
-var s2col = ee.ImageCollection('COPERNICUS/S2_SR')
+var s2col = ee.ImageCollection('COPERNICUS/S2_SR_HARMONIZED')
   .filterBounds(ee.Geometry.Point(-96.9037, 48.0395))
   .filterDate('2019-06-01', '2019-10-01');
 
@@ -602,8 +602,8 @@ print(ui.Thumbnail(finalVisCol, videoArgs));
 
 
 // [START earthengine__image_collections10__overlays03]
-// Define a hillshade layer from SRTM digital elevation model.
-var hillshade = ee.Terrain.hillshade(ee.Image('USGS/SRTMGL1_003')
+// Define a hillshade layer from NASADEM digital elevation model.
+var hillshade = ee.Terrain.hillshade(ee.Image('NASA/NASADEM_HGT/001')
   // Exaggerate the elevation to increase contrast in hillshade.
   .multiply(100))
   // Clip the DEM by South American boundary to clean boundary between

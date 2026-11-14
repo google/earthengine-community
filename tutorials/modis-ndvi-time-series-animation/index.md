@@ -124,7 +124,7 @@ just added. The join operation  expects two collections, in this case: a
 distinct DOY collection and the complete collection modified to include the
 'doy' property. The complete collection (`col`) exists, the distinct collection
 needs to be defined. Do so by filtering the complete collection to a single year
-of data e.g. 2013. 
+of data, e.g., 2013.
 
 ```js
 var distinctDOY = col.filterDate('2013-01-01', '2014-01-01');
@@ -164,7 +164,7 @@ collection, with one image per distinct DOY composite that represents its
 20-year median NDVI per pixel. It took some work to get to this point, but using
 a central tendency statistic based on a population of data produces an annual
 time series animation that is free of missing data and outliers
-(i.e. the animation is less noisy).
+(i.e., the animation is less noisy).
 
 ```js
 // Apply median reduction among matching DOY collections.
@@ -180,7 +180,7 @@ var comp = joinCol.map(function(img) {
 
 Set visualization properties to control the appearance of the data in the
 animation frames. The `visualize` method can convert single-band images
-(like NDVI) into 3-band RGB pseudo-color images. Define visualization properties
+(like NDVI) into three-band RGB pseudo-color images. Define visualization properties
 including a color palette and min and max values to stretch the palette between.
 Map the `visualize` method over each image using the defined visualization
 properties and clip the data to the mask defined in

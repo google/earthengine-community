@@ -14,5 +14,5 @@
 
 # [START earthengine__apidocs__ee_number_sqrt]
 # Values less than 0 are invalid.
-print('Square root of 100:', ee.Number(100).sqrt().getInfo())  # 10
+display('Square root of 100:', ee.Number(100).sqrt())  # 10
 # [END earthengine__apidocs__ee_number_sqrt]

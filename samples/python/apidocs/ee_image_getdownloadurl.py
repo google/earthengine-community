@@ -16,21 +16,17 @@
 """Demonstrates the ee.Image.getDownloadURL method."""
 
 import io
+
+import numpy
 import requests
-import ee
-
-
-ee.Authenticate()
-ee.Initialize()
 
 # A Sentinel-2 surface reflectance image.
-img = ee.Image('COPERNICUS/S2_SR/20210109T185751_20210109T185931_T10SEG')
+img = ee.Image('COPERNICUS/S2_SR_HARMONIZED/20210109T185751_20210109T185931_T10SEG')
 
 # A small region within the image.
 region = ee.Geometry.BBox(-122.0859, 37.0436, -122.0626, 37.0586)
 
 # Image chunk as a NumPy structured array.
-import numpy
 url = img.getDownloadUrl({
     'bands': ['B3', 'B8', 'B11'],
     'region': region,
@@ -39,8 +35,8 @@ url = img.getDownloadUrl({
 })
 response = requests.get(url)
 data = numpy.load(io.BytesIO(response.content))
-print(data)
-print(data.dtype)
+display(data)
+display(data.dtype)
 
 # Single-band GeoTIFF files wrapped in a zip file.
 url = img.getDownloadUrl({

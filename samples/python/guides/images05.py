@@ -15,39 +15,59 @@
 """Google Earth Engine Developer's Guide examples for 'Images - Mathematical operations'."""
 
 # [START earthengine__images05__ndvi]
-# Load a 5-year Landsat 7 composite 1999-2003.
-landsat_1999 = ee.Image('LANDSAT/LE7_TOA_5YEAR/1999_2003')
+# Load a VIIRS 8-day surface reflectance composite for May 2024.
+viirs202405 = (
+    ee.ImageCollection('NASA/VIIRS/002/VNP09H1')
+    .filter(ee.Filter.date('2024-05-01', '2024-05-16'))
+    .first()
+)
 
 # Compute NDVI.
-ndvi_1999 = (
-    landsat_1999.select('B4')
-    .subtract(landsat_1999.select('B3'))
-    .divide(landsat_1999.select('B4').add(landsat_1999.select('B3')))
+ndvi202405 = (
+    viirs202405.select('SurfReflect_I2')
+    .subtract(viirs202405.select('SurfReflect_I1'))
+    .divide(
+        viirs202405.select('SurfReflect_I2').add(
+            viirs202405.select('SurfReflect_I1')
+        )
+    )
 )
 # [END earthengine__images05__ndvi]
 
 # [START earthengine__images05__per_band]
-# Load a 5-year Landsat 7 composite 2008-2012.
-landsat_2008 = ee.Image('LANDSAT/LE7_TOA_5YEAR/2008_2012')
+# Load a VIIRS 8-day surface reflectance composite for September 2024.
+viirs202409 = (
+    ee.ImageCollection('NASA/VIIRS/002/VNP09H1')
+    .filter(ee.Filter.date('2024-09-01', '2024-09-16'))
+    .first()
+)
 
-# Compute multi-band difference between the 2008-2012 composite and the
-# previously loaded 1999-2003 composite.
-diff = landsat_2008.subtract(landsat_1999)
+# Compute multi-band difference between the September composite and the
+# previously loaded May composite.
+diff = viirs202409.subtract(ndvi202405)
+
+m = geemap.Map()
+m.add_layer(
+    diff,
+    {
+        'bands': ['SurfReflect_I1', 'SurfReflect_I2', 'SurfReflect_I3'],
+        'min': -1,
+        'max': 1,
+    },
+    'difference',
+)
 
 # Compute the squared difference in each band.
 squared_difference = diff.pow(2)
 
-# Define a map centered on Australia.
-map_diff = geemap.Map(center=[-24.003, 133.565], zoom=5)
-
-# Add the image layers to the map and display it.
-map_diff.add_layer(
-    diff, {'bands': ['B4', 'B3', 'B2'], 'min': -32, 'max': 32}, 'diff.'
-)
-map_diff.add_layer(
+m.add_layer(
     squared_difference,
-    {'bands': ['B4', 'B3', 'B2'], 'max': 1000},
+    {
+        'bands': ['SurfReflect_I1', 'SurfReflect_I2', 'SurfReflect_I3'],
+        'min': 0,
+        'max': 0.7,
+    },
     'squared diff.',
 )
-display(map_diff)
+display(m)
 # [END earthengine__images05__per_band]

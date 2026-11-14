@@ -23,9 +23,9 @@ dic = ee.Dictionary({
 # Define from-to key name lists for selected keys.
 frm = ['B2', 'B3']
 to = ['Band_2', 'Band_3']
-print('Renamed keys:', dic.rename(frm, to).getInfo())
+display('Renamed keys:', dic.rename(frm, to))
 
 dic_overwrite = dic.rename(**{'from': ['B3'], 'to': ['B1'], 'overwrite': True})
-print('Overwrite existing key names, e.g. B3 becomes B1:',
-      dic_overwrite.getInfo())
+display('Overwrite existing key names, e.g. B3 becomes B1:',
+      dic_overwrite)
 # [END earthengine__apidocs__ee_dictionary_rename]

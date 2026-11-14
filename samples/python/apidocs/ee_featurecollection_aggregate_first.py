@@ -17,6 +17,6 @@
 fc = ee.FeatureCollection('WRI/GPPD/power_plants').filter(
     'country_lg == "Belgium"')
 
-print('Fuel source for first power plant in the collection:',
-      fc.aggregate_first('fuel1').getInfo())  # Wind
+display('Fuel source for first power plant in the collection:',
+        fc.aggregate_first('fuel1'))  # Wind
 # [END earthengine__apidocs__ee_featurecollection_aggregate_first]

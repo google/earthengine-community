@@ -118,7 +118,7 @@ m = geemap.Map()
 m.add_layer(landsat, {'bands': ['B4', 'B3', 'B2'], 'max': 0.4, 'gamma': 1.2})
 display(m)
 
-# [START earthengine__import_export01__export_vectors]
+# [START earthengine__import_export01__vectors_to_cloud]
 # Make a collection of points.
 features = ee.FeatureCollection([
     ee.Feature(ee.Geometry.Point(30.41, 59.933), {'name': 'Voronoi'}),
@@ -126,14 +126,6 @@ features = ee.FeatureCollection([
     ee.Feature(ee.Geometry.Point(6.4806, 50.8012), {'name': 'Dirichlet'}),
 ])
 
-# Export the FeatureCollection to a KML file.
-task = ee.batch.Export.table.toDrive(
-    collection=features, description='vectorsToDriveExample', fileFormat='KML'
-)
-task.start()
-# [END earthengine__import_export01__export_vectors]
-
-# [START earthengine__import_export01__vectors_to_cloud]
 # Export a KML file to Cloud Storage.
 task = ee.batch.Export.table.toCloudStorage(
     collection=features,
@@ -145,6 +137,14 @@ task = ee.batch.Export.table.toCloudStorage(
 task.start()
 # [END earthengine__import_export01__vectors_to_cloud]
 
+# [START earthengine__import_export01__export_vectors]
+# Export the FeatureCollection to a KML file.
+task = ee.batch.Export.table.toDrive(
+    collection=features, description='vectorsToDriveExample', fileFormat='KML'
+)
+task.start()
+# [END earthengine__import_export01__export_vectors]
+
 # [START earthengine__import_export01__export_table_asset]
 # Export an ee.FeatureCollection as an Earth Engine asset.
 task = ee.batch.Export.table.toAsset(
@@ -155,6 +155,16 @@ task = ee.batch.Export.table.toAsset(
 task.start()
 # [END earthengine__import_export01__export_table_asset]
 
+# [START earthengine__import_export01__export_table_to_bq]
+task = ee.batch.Export.table.toBigQuery(
+    collection=features,
+    table='myproject.mydataset.mytable',
+    description='put_my_data_in_bigquery',
+    append=True,
+    overwrite=False,
+)
+task.start()
+# [END earthengine__import_export01__export_table_to_bq]
 
 # [START earthengine__import_export01__export_table]
 # Load a Landsat image.
@@ -189,7 +199,9 @@ task.start()
 
 # [START earthengine__import_export01__export_map]
 # Load the global Accessibility to Cities image.
-accessibility = ee.Image('Oxford/MAP/accessibility_to_cities_2015_v1_0')
+accessibility = ee.Image(
+    'projects/malariaatlasproject/assets/accessibility/accessibility_to_cities/2015_v1_0'
+)
 
 # Color palette for visualizing accessibility data.
 accessibility_palette = [

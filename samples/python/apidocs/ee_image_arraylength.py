@@ -20,41 +20,41 @@ def samp_arr_img(arr_img):
 
 # A 3-band image of constants.
 img = ee.Image([0, 1, 2])
-print('3-band image:', img.getInfo())
+display('3-band image:', img)
 
 # Convert the 3-band image to a 2D array image.
 array_img_2d = img.toArray().toArray(1)
-print('2D array image (pixel):', samp_arr_img(array_img_2d).getInfo())
+display('2D array image (pixel):', samp_arr_img(array_img_2d))
 # [[0],
 #  [1],
 #  [2]]
 
 # Get the number of dimensions in each pixel's array.
 array_img2d_dim = array_img_2d.arrayDimensions()
-print('N dimensions in array:', samp_arr_img(array_img2d_dim).getInfo())
+display('N dimensions in array:', samp_arr_img(array_img2d_dim))
 # 2
 
 # Get the array length per dimension per pixel.
 array_img_2d_dim_len = array_img_2d.arrayLengths()
-print(
+display(
     'Array length per dimension:',
-    samp_arr_img(array_img_2d_dim_len).getInfo()
+    samp_arr_img(array_img_2d_dim_len)
 )
 # [3, 1]
 
 # Get the array length for 0-axis (rows).
 array_img2d_axis0_len = array_img_2d.arrayLength(0)
-print(
+display(
     'Array length 0-axis (rows):',
-    samp_arr_img(array_img2d_axis0_len).getInfo()
+    samp_arr_img(array_img2d_axis0_len)
 )
 # 3
 
 # Get the array length for 1-axis (columns).
 array_img_2d_axis1_len = array_img_2d.arrayLength(1)
-print(
+display(
     'Array length 1-axis (columns):',
-    samp_arr_img(array_img_2d_axis1_len).getInfo()
+    samp_arr_img(array_img_2d_axis1_len)
 )
 # 1
 # [END earthengine__apidocs__ee_image_arraylength]

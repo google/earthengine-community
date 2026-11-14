@@ -55,7 +55,7 @@ var input = ee.ImageCollection('LANDSAT/LC08/C02/T1_L2')
     .select(['SR_B2', 'SR_B3', 'SR_B4', 'SR_B5', 'SR_B6', 'SR_B7']);
 
 // Use MODIS land cover, IGBP classification, for training.
-var modis = ee.Image('MODIS/006/MCD12Q1/2020_01_01')
+var modis = ee.Image('MODIS/061/MCD12Q1/2020_01_01')
     .select('LC_Type1');
 
 // Sample the input imagery to get a FeatureCollection of training data.
@@ -99,7 +99,6 @@ print('Validation overall accuracy: ', testAccuracy.accuracy());
 
 // Define a palette for the IGBP classification.
 var igbpPalette = [
-  'aec3d4', // water
   '152106', '225129', '369b47', '30eb5b', '387242', // forest
   '6a2325', 'c3aa69', 'b76031', 'd9903d', '91af40',  // shrub, grass
   '111149', // wetlands
@@ -108,7 +107,7 @@ var igbpPalette = [
   '33280d', // crop mosaic
   'd7cdcc', // snow and ice
   'f7e084', // barren
-  '6f6f6f'  // tundra
+  'aec3d4'  // water
 ];
 
 // Display the input and the classification.
@@ -117,7 +116,7 @@ Map.addLayer(input.clip(roi),
              {bands: ['SR_B4', 'SR_B3', 'SR_B2'], min: 0, max: 0.25},
              'landsat');
 Map.addLayer(classified.clip(roi),
-             {palette: igbpPalette, min: 0, max: 17},
+             {palette: igbpPalette, min: 1, max: 17},
              'classification');
 // [END earthengine__classification03__sample]
 
@@ -187,6 +186,6 @@ var savedClassifier = ee.Classifier.load(classifierAssetId);
 // We can perform classification just as before with the saved classifier now.
 var classified = input.classify(savedClassifier);
 Map.addLayer(classified.clip(roi),
-             {palette: igbpPalette, min: 0, max: 17},
+             {palette: igbpPalette, min: 1, max: 17},
              'classification');
 // [END earthengine__classification03__load_classifier]

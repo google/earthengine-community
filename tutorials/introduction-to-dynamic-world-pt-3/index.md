@@ -21,7 +21,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 -->
 
-_This is part 3 of a 3-part tutorial, see also
+_This is part 3 of a three-part tutorial, see also
 [part 1](/earth-engine/tutorials/community/introduction-to-dynamic-world-pt-1) and
 [part 2](/earth-engine/tutorials/community/introduction-to-dynamic-world-pt-2)._
 
@@ -99,7 +99,7 @@ options. You will find the explanations and a full list of parameters in the
 [Google Charts documentation](/chart/interactive/docs/gallery/linechart).
 
 Each band value is plotted as a line in the chart. This is called a series.
-We need to set the label, color, and style properties for each of the 9 series
+We need to set the label, color, and style properties for each of the nine series
 in the chart. We define a helper function to make the code simpler. This
 function returns a dictionary for each series based on the label and color
 arguments.

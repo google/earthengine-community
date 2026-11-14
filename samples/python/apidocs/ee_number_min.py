@@ -13,6 +13,6 @@
 # limitations under the License.
 
 # [START earthengine__apidocs__ee_number_min]
-print('Given 5 and 10, min is 5:',
-      ee.Number(5).min(ee.Number(10)).getInfo())  # 5
+display('Given 5 and 10, min is 5:',
+        ee.Number(5).min(ee.Number(10)))  # 5
 # [END earthengine__apidocs__ee_number_min]

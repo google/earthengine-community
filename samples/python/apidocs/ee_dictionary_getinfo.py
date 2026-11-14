@@ -21,7 +21,7 @@ dic = ee.Dictionary({
 })
 
 # Request the server-side ee.Dictionary as a client-side object.
-print('Client-side object:', dic.getInfo())
-print('Using the client-side object (e.g. fetch number of keys):',
+display('Client-side object:', dic.getInfo())
+display('Using the client-side object (e.g. fetch number of keys):',
       len(dic.getInfo().keys()))
 # [END earthengine__apidocs__ee_dictionary_getinfo]

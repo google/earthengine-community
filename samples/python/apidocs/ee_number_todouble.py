@@ -15,9 +15,9 @@
 # [START earthengine__apidocs__ee_number_todouble]
 # Declare an ee.Number.
 number = ee.Number(100)
-print('ee.Number:', number.getInfo())
+display('ee.Number:', number)
 
 # Cast a number to signed 64-bit floating point.
 double_number = number.toDouble()
-print('ee.Number cast to double:', double_number.getInfo())
+display('ee.Number cast to double:', double_number)
 # [END earthengine__apidocs__ee_number_todouble]

@@ -18,4 +18,7 @@
 print(ee.String('abc123').index(''));  // 0
 print(ee.String('abc123').index('c1'));  // 2
 print(ee.String('abc123').index('ZZ'));  // -1
+
+// index is case-sensitive.
+print(ee.String('abc123').index('BC'));  // -1
 // [END earthengine__apidocs__ee_string_index]

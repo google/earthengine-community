@@ -15,13 +15,13 @@
 # [START earthengine__apidocs__ee_filter_bounds]
 # collection.filterBounds() is preferred.
 # A Sentinel-2 surface reflectance image collection for 3 months in 2021.
-ic = ee.ImageCollection('COPERNICUS/S2_SR').filterDate('2021-07-01',
+ic = ee.ImageCollection('COPERNICUS/S2_SR_HARMONIZED').filterDate('2021-07-01',
                                                        '2021-10-01')
 
 # A point geometry for the peak of Mount Shasta, California, USA.
 geom = ee.Geometry.Point(-122.196, 41.411)
-print('Images intersecting point geometry:',
-      ic.filter(ee.Filter.bounds(geom)).getInfo())
+display('Images intersecting point geometry:',
+        ic.filter(ee.Filter.bounds(geom)))
 
 # A feature collection of point geometries for mountain peaks.
 fc = ee.FeatureCollection([
@@ -30,6 +30,6 @@ fc = ee.FeatureCollection([
     ee.Feature(ee.Geometry.Point(-121.697, 45.374),
                {'mountain': 'Mount Hood'})
 ])
-print('Images intersecting feature collection:',
-      ic.filter(ee.Filter.bounds(fc)).getInfo())
+display('Images intersecting feature collection:',
+        ic.filter(ee.Filter.bounds(fc)))
 # [END earthengine__apidocs__ee_filter_bounds]

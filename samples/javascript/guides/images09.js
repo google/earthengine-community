@@ -22,14 +22,14 @@
 // [START earthengine__images09__where_operator]
 // Load a cloudy Sentinel-2 image.
 var image = ee.Image(
-  'COPERNICUS/S2_SR/20210114T185729_20210114T185730_T10SEG');
+  'COPERNICUS/S2_SR_HARMONIZED/20210114T185729_20210114T185730_T10SEG');
 Map.addLayer(image,
              {bands: ['B4', 'B3', 'B2'], min: 0, max: 2000},
              'original image');
 
 // Load another image to replace the cloudy pixels.
 var replacement = ee.Image(
-  'COPERNICUS/S2_SR/20210109T185751_20210109T185931_T10SEG');
+  'COPERNICUS/S2_SR_HARMONIZED/20210109T185751_20210109T185931_T10SEG');
 
 // Set cloudy pixels (greater than 5% probability) to the other image.
 var replaced = image.where(image.select('MSK_CLDPRB').gt(5), replacement);

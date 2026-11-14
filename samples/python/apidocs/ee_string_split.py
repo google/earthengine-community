@@ -14,34 +14,34 @@
 
 # [START earthengine__apidocs__ee_string_split]
 s = ee.String('aBAbcD')
-print(s.split('Ab').getInfo())  # ['aB', 'cD']
+display(s.split('Ab'))  # ['aB', 'cD']
 # 'i' tells split to ignore case.
-print(s.split('ab', 'i').getInfo())  # ['', '', 'cD']
+display(s.split('ab', 'i'))  # ['', '', 'cD']
 # Split on 'b' or 'c'
-print(s.split('[bc]', 'i').getInfo())  # ['a', 'A', '', 'D']
+display(s.split('[bc]', 'i'))  # ['a', 'A', '', 'D']
 # Split on 'BA' or 'c'
-print(s.split('(BA|c)').getInfo())  # ['a', 'b', 'D']
+display(s.split('(BA|c)'))  # ['a', 'b', 'D']
 
 s = ee.String('a,b,cdee f,g')
 # ['a', ',', 'b', ',', 'c', 'd', 'e', 'e', ' ', 'f', ',', 'g']
-print(s.split('').getInfo())
+display(s.split(''))
 
-print(s.split(' ').getInfo())  # ['a,b,cdee', 'f,g']
-print(s.split('[[:space:]]').getInfo())  # ['a,b,cdee', 'f,g']
+display(s.split(' '))  # ['a,b,cdee', 'f,g']
+display(s.split('[[:space:]]'))  # ['a,b,cdee', 'f,g']
 
-print(s.split(',').getInfo())  # ['a', 'b', 'cdee f', 'g']
+display(s.split(','))  # ['a', 'b', 'cdee f', 'g']
 
-print(s.split('ee').getInfo())  # ['a,b,cd', ' f,g']
+display(s.split('ee'))  # ['a,b,cd', ' f,g']
 
 # Split on any lower case letter.
-print(s.split('[a-z]').getInfo())  # ['', ',', ',', '', '', '', ' ', ',']
+display(s.split('[a-z]'))  # ['', ',', ',', '', '', '', ' ', ',']
 
 # ^ as the first character in [] excludes.
-print(s.split('[^a-z]').getInfo())  # ['a', 'b', 'cdee', 'f', 'g']
+display(s.split('[^a-z]'))  # ['a', 'b', 'cdee', 'f', 'g']
 
 # Splitting on characters that are special to split.
 s = ee.String('a.b*c?d')
-print(s.split('\\.').getInfo())  # ['a', 'b*c?d']
-print(s.split('[*]').getInfo())  # ['a.b', 'c?d']
-print(s.split('[?]').getInfo())  # ['a.b*c', 'd']
+display(s.split('\\.'))  # ['a', 'b*c?d']
+display(s.split('[*]'))  # ['a.b', 'c?d']
+display(s.split('[?]'))  # ['a.b*c', 'd']
 # [END earthengine__apidocs__ee_string_split]

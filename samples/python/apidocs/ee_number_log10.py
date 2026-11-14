@@ -13,8 +13,8 @@
 # limitations under the License.
 
 # [START earthengine__apidocs__ee_number_log10]
-print(ee.Number(0.1).log10().getInfo())  # -1
-print(ee.Number(1).log10().getInfo())  # 0
-print(ee.Number(10).log10().getInfo())  # 1
-print(ee.Number(100).log10().getInfo())  # 2
+display(ee.Number(0.1).log10())  # -1
+display(ee.Number(1).log10())  # 0
+display(ee.Number(10).log10())  # 1
+display(ee.Number(100).log10())  # 2
 # [END earthengine__apidocs__ee_number_log10]

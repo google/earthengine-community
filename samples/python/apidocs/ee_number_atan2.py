@@ -13,12 +13,12 @@
 # limitations under the License.
 
 # [START earthengine__apidocs__ee_number_atan2]
-print('Atan2 of point (0,0):', ee.Number(0).atan2(0).getInfo())  # 0
-print('Atan2 of point (1,0):', ee.Number(1).atan2(0).getInfo())  # 0
+display('Atan2 of point (0,0):', ee.Number(0).atan2(0))  # 0
+display('Atan2 of point (1,0):', ee.Number(1).atan2(0))  # 0
 # 1.570796326 (π/2)
-print('Atan2 of point (0,1):', ee.Number(0).atan2(1).getInfo())
+display('Atan2 of point (0,1):', ee.Number(0).atan2(1))
 # 3.141592653 (π)
-print('Atan2 of point (-1,0):', ee.Number(-1).atan2(0).getInfo())
+display('Atan2 of point (-1,0):', ee.Number(-1).atan2(0))
 # -1.570796326 (-π/2)
-print('Atan2 of point (0,-1):', ee.Number(0).atan2(-1).getInfo())
+display('Atan2 of point (0,-1):', ee.Number(0).atan2(-1))
 # [END earthengine__apidocs__ee_number_atan2]

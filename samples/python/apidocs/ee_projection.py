@@ -21,8 +21,8 @@
 #   crs: EPSG:3857
 #   transform: [1,0,0,0,1,0]
 
-print(ee.Projection('EPSG:3857').getInfo())  # https://epsg.io/3857
-print(ee.Projection('EPSG:4326').getInfo())  # https://epsg.io/4326
+display(ee.Projection('EPSG:3857'))  # https://epsg.io/3857
+display(ee.Projection('EPSG:4326'))  # https://epsg.io/4326
 
 # WKT projection description for https://epsg.io/27572
 proj = ee.Projection(
@@ -47,5 +47,5 @@ proj = ee.Projection(
     '  AXIS["Easting", EAST], ' +
     '  AXIS["Northing", NORTH], ' +
     '  AUTHORITY["EPSG","27572"]]')
-print(proj.getInfo())  # crs: EPSG:27572
+display(proj)  # crs: EPSG:27572
 # [END earthengine__apidocs__ee_projection]

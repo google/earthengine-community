@@ -25,7 +25,7 @@ ui.root.clear();
 
 // [START earthengine__ui03_panels__root_map]
 // Load a VIIRS surface reflectance image and display on the map.
-var image = ee.Image('NOAA/VIIRS/001/VNP09GA/2022_06_05').select('M.*');
+var image = ee.Image('NASA/VIIRS/002/VNP09GA/2022_06_05').select('M.*');
 Map.addLayer(image, {bands: ['M5', 'M4', 'M3'], min: 0, max: 4e3, gamma: 1.5});
 
 // Create the title label.
@@ -93,7 +93,7 @@ ui.root.add(makeButton('bottom-right'));
 
 // [START earthengine__ui03_panels__panel_widgets]
 // Load and display NDVI data.
-var ndvi = ee.ImageCollection('NOAA/VIIRS/001/VNP13A1')
+var ndvi = ee.ImageCollection('NASA/VIIRS/002/VNP13A1')
     .filterDate('2021-01-01', '2022-01-01').select('NDVI');
 Map.addLayer(
   ndvi.median(), {min: 0, max: 10000, palette: ['99c199', '006400']}, 'NDVI');

@@ -13,8 +13,6 @@
 # limitations under the License.
 
 # [START earthengine__apidocs__ee_kernel_add]
-from pprint import pprint
-
 # Two kernels, they do not need to have the same dimensions.
 kernel_a = ee.Kernel.chebyshev(**{'radius': ee.Number(3)})
 kernel_b = ee.Kernel.square(**{
@@ -22,8 +20,8 @@ kernel_b = ee.Kernel.square(**{
     'normalize': False,
     'magnitude': 100
 })
-pprint(kernel_a.getInfo())
-pprint(kernel_b.getInfo())
+display('a:', kernel_a)
+display('b:', kernel_b)
 
 #  Two kernel weights matrices
 
@@ -35,8 +33,7 @@ pprint(kernel_b.getInfo())
 #   [3, 2, 2, 2, 2, 2, 3]
 #   [3, 3, 3, 3, 3, 3, 3]
 
-print('Pointwise addition of two kernels:')
-pprint(kernel_a.add(kernel_b).getInfo())
+display('Pointwise addition of two kernels:', kernel_a.add(kernel_b))
 
 #  [3, 3,   3,   3,   3, 3, 3]
 #  [3, 2,   2,   2,   2, 2, 3]

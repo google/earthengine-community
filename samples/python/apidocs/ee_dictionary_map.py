@@ -25,5 +25,5 @@ def scale(key, value):
   """Convert S2 surface reflectance units to native scale."""
   return ee.Number(value).divide(1e4)
 
-print('S2 surface reflectance in native units:', dic.map(scale).getInfo())
+display('S2 surface reflectance in native units:', dic.map(scale))
 # [END earthengine__apidocs__ee_dictionary_map]

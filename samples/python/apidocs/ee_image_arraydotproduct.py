@@ -20,16 +20,16 @@ def samp_arr_img(arr_img):
 
 # A 1D array image.
 array_img_1d_a = ee.Image([0, 1, 2]).toArray()
-print('1D array image A (pixel):', samp_arr_img(array_img_1d_a).getInfo())
+display('1D array image A (pixel):', samp_arr_img(array_img_1d_a))
 # [0, 1, 2]
 
 # A second 1D array image of the same length.
 array_img_1d_b = ee.Image([3, 4, 5]).toArray()
-print('1D array image B (pixel):', samp_arr_img(array_img_1d_b).getInfo())
+display('1D array image B (pixel):', samp_arr_img(array_img_1d_b))
 # [3, 4, 5]
 
 # Calculate the dot product for the two 1D arrays.
 test = array_img_1d_a.arrayDotProduct(array_img_1d_b)
-print('A⋅B = 0(3) + 1(4) + 2(5) = ', samp_arr_img(test).getInfo())
+display('A⋅B = 0(3) + 1(4) + 2(5) = ', samp_arr_img(test))
 # 14
 # [END earthengine__apidocs__ee_image_arraydotproduct]

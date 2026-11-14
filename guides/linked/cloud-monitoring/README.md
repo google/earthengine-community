@@ -1,12 +1,12 @@
 # Use Cloud Monitoring with Earth Engine
 
-This notebook demonstrates a mechanism for fetching data from Cloud Monitoring,
-filtering it, and presenting the results in a table.
+These notebooks demonstrate how to fetch, filter, and aggregate data from
+[Cloud Monitoring](https://docs.cloud.google.com/monitoring/docs),
+displaying the results in tables and charts.
 
-For more information about using Cloud Monitoring with Earth Engine, please see
-the "API Monitoring" page in the Earth Engine documentation:
-<https://developers.google.com/earth-engine/cloud/api_monitoring>
+- [Get EECU usage and costs for workloads](monitoring_metrics.ipynb).
+- [Get total daily and monthly EECU usage for a project](earth_engine_noncommercial_eecu_monitor.ipynb).
 
-Disclaimer: these numbers [come with caveats!][caveats]
-
-[caveats]: https://developers.google.com/earth-engine/cloud/api_monitoring#caveats
+To learn more about using Cloud Monitoring with Earth Engine, refer to the
+[Monitoring Usage](https://developers.google.com/earth-engine/guides/monitoring_usage)
+guide in the Earth Engine documentation.

@@ -16,11 +16,13 @@
 
 # [START earthengine__images09__where_operator]
 # Load a cloudy Sentinel-2 image.
-image = ee.Image('COPERNICUS/S2_SR/20210114T185729_20210114T185730_T10SEG')
+image = ee.Image(
+    'COPERNICUS/S2_SR_HARMONIZED/20210114T185729_20210114T185730_T10SEG'
+)
 
 # Load another image to replace the cloudy pixels.
 replacement = ee.Image(
-    'COPERNICUS/S2_SR/20210109T185751_20210109T185931_T10SEG'
+    'COPERNICUS/S2_SR_HARMONIZED/20210109T185751_20210109T185931_T10SEG'
 )
 
 # Set cloudy pixels (greater than 5% probability) to the other image.

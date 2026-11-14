@@ -25,7 +25,7 @@ var regions = ee.FeatureCollection([
 
 // Define an image collection time series to chart, MODIS vegetation indices
 // in this case.
-var imgCol = ee.ImageCollection('MODIS/006/MOD13A1')
+var imgCol = ee.ImageCollection('MODIS/061/MOD13A1')
   .filter(ee.Filter.date('2015-01-01', '2020-01-01'))
   .select(['NDVI', 'EVI']);
 

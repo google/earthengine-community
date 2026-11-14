@@ -15,13 +15,13 @@
 # [START earthengine__apidocs__ee_number_hypot]
 # Left input is x and right input is y, representing point (x,y).
 # 0
-print('Length from origin to point (0,0):', ee.Number(0).hypot(0).getInfo())
+display('Length from origin to point (0,0):', ee.Number(0).hypot(0))
 # 3
-print('Length from origin to point (3,0):', ee.Number(3).hypot(0).getInfo())
+display('Length from origin to point (3,0):', ee.Number(3).hypot(0))
 # 5
-print('Length from origin to point (3,4):', ee.Number(3).hypot(4).getInfo())
+display('Length from origin to point (3,4):', ee.Number(3).hypot(4))
 # 5
-print('Length from origin to point (-3,4):', ee.Number(-3).hypot(4).getInfo())
+display('Length from origin to point (-3,4):', ee.Number(-3).hypot(4))
 # 5
-print('Length from origin to point (-3,-4):', ee.Number(-3).hypot(-4).getInfo())
+display('Length from origin to point (-3,-4):', ee.Number(-3).hypot(-4))
 # [END earthengine__apidocs__ee_number_hypot]

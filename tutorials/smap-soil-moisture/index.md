@@ -116,7 +116,7 @@ There are three different SMAP products available in the catalog.
 
     - Data outages: June 19-July 23, 2019; September 20-October 6th, 2022
 
-2.  [SPL4SMGP.007 Level 4 product][NASA_SMAP_SPL4SMGP_007]
+2.  [SPL4SMGP.008 Level 4 product][NASA_SMAP_SPL4SMGP_008]
 
     - The SMAP Level-4 (L4) Soil Moisture product includes surface soil moisture
       (0-5 cm vertical average), root-zone soil moisture (0-100 cm vertical
@@ -166,7 +166,7 @@ There are three different SMAP products available in the catalog.
 The table below describes the surface soil moisture, root-zone soil moisture,
 and soil moisture anomaly bands available with each product.
 
-Band description                   | [NASA-USDA Enhanced SMAP][NASA_USDA_HSL_SMAP10KM_soil_moisture] | [SPL4SMGP.007][NASA_SMAP_SPL4SMGP_007] | [SPL3SMP_E.005][NASA_SMAP_SPL3SMP_E_005]               |
+Band description                   | [NASA-USDA Enhanced SMAP][NASA_USDA_HSL_SMAP10KM_soil_moisture] | [SPL4SMGP.008][NASA_SMAP_SPL4SMGP_008] | [SPL3SMP_E.005][NASA_SMAP_SPL3SMP_E_005]               |
 |----------------------------------|-----------------------------------------------------------------|----------------------------------------|--------------------------------------------------------|
 | Surface soil moisture            | ssm                                                             | sm_surface                             | soil_moisture_am <br> soil_moisture_pm                 |
 | Subsurface soil moisture         | susm                                                            | sm_rootzone                            | NA                                                     |
@@ -278,10 +278,10 @@ Export.image(SM_MEAN, 'SM_July2022MEAN_URY', exportParams);
 Plotting a time series of daily surface and root zone soil moisture.
 
 ```js
-// Create single-day average of SMAP L4 version 7, 3-hourly soil moisture
+// Create single-day average of SMAP L4 version 8, 3-hourly soil moisture
 // to view. Plot surface soil moisture and root zone soil moisture over
 // user-determined time period.
-var SMAPL4 = ee.ImageCollection('NASA/SMAP/SPL4SMGP/007');
+var SMAPL4 = ee.ImageCollection('NASA/SMAP/SPL4SMGP/008');
 // Set lon, lat of point of interest.
 var point = ee.Geometry.Point([-97.808804, 34.975981]);
 // Zoom to point with zoom level 7.
@@ -320,7 +320,7 @@ var chart =
         })
         .setSeriesNames(['root zone soil moisture', 'surface soil moisture'])
         .setOptions({
-          title: 'SMAP L4 version 7, 3-hourly surface and root zone soil '
+          title: 'SMAP L4 version 8, 3-hourly surface and root zone soil '
             + 'moisture (34.975981 N, 97.808804 W)',
           hAxis: {
             title: 'Date',
@@ -350,5 +350,5 @@ print(chart);
 [NASA ARSET SMAP training](https://appliedsciences.nasa.gov/join-mission/training/english/arset-applications-remote-sensing-soil-moisture-and)
 
 [NASA_SMAP_SPL3SMP_E_005]: https://developers.google.com/earth-engine/datasets/catalog/NASA_SMAP_SPL3SMP_E_005
-[NASA_SMAP_SPL4SMGP_007]: https://developers.google.com/earth-engine/datasets/catalog/NASA_SMAP_SPL4SMGP_007
+[NASA_SMAP_SPL4SMGP_008]: https://developers.google.com/earth-engine/datasets/catalog/NASA_SMAP_SPL4SMGP_008
 [NASA_USDA_HSL_SMAP10KM_soil_moisture]: https://developers.google.com/earth-engine/datasets/catalog/NASA_USDA_HSL_SMAP10KM_soil_moisture

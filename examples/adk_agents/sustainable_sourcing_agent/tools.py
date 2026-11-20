@@ -3,7 +3,7 @@
 import asyncio
 import json
 import logging
-from typing import Any, List
+from typing import Any
 
 import ee
 from google.api_core import retry
@@ -17,9 +17,9 @@ from . import datasets
 @retry.AsyncRetry(deadline=60)
 async def retrieve_rag_documentation(query: str) -> str:
   """Retrieves information about EUDR, WHISP, compliance and due diligence.
-  
+
   NOTE: Edit the rag_corpus variable to use your Cloud Project and your RAG ID.
-  
+
   Args:
     query: The search query.
 
@@ -57,7 +57,7 @@ def _get_commodity_by_year_and_version(
   Args:
     commodity: The name of the commodity (e.g., 'cocoa', 'palm').
     year: The year of the data to retrieve.
-    version: The model version string (e.g., '2025b').
+    version: The model version string (e.g., '2026a').
 
   Returns:
     An ee.Image containing the commodity probability for the specified year
@@ -105,23 +105,23 @@ def get_areas_image() -> ee.Image:
   # THRESHOLDS FOR DEMONSTRATION ONLY! Tune these to your needs.
   thresholds = [
       0.37,  # forest
-      0.48,  # cocoa
-      0.28,  # coffee
-      0.90,  # palm
-      0.38,  # rubber
+      0.54,  # cocoa
+      0.33,  # coffee
+      0.47,  # palm
+      0.35,  # rubber
   ]
 
   # A mini-ensemble of GDM and Forest Data Partnership products.
   ensemble = ee.Image.cat(
       _get_nf_image().rename('forest'),
-      _get_commodity_by_year_and_version('cocoa', 2020, '2025b').rename(
+      _get_commodity_by_year_and_version('cocoa', 2020, '2026a').rename(
           'cocoa'
       ),
-      _get_commodity_by_year_and_version('coffee', 2020, '2025b').rename(
+      _get_commodity_by_year_and_version('coffee', 2020, '2026a').rename(
           'coffee'
       ),
-      _get_commodity_by_year_and_version('palm', 2020, '2025b').rename('palm'),
-      _get_commodity_by_year_and_version('rubber', 2020, '2025b').rename(
+      _get_commodity_by_year_and_version('palm', 2020, '2026a').rename('palm'),
+      _get_commodity_by_year_and_version('rubber', 2020, '2026a').rename(
           'rubber'
       ),
   )
@@ -140,26 +140,6 @@ def get_areas_image() -> ee.Image:
       unclassified.rename('unclassified'),
       confusion.rename('confusion'),
   ).multiply(ee.Image.pixelArea())
-
-
-def get_suso_layers_2025b() -> ee.Image:
-  """Returns a stacked Earth Engine Image of key SUSO layers for 2025b.
-
-  This includes Natural Forest 2020 and commodity probability layers
-  (cocoa, coffee, palm, rubber) for both 2020 and 2024, using the '2025b'
-  model version.
-  """
-  return ee.Image.cat(
-      _get_nf_image(),
-      _get_commodity_by_year_and_version('cocoa', 2020, '2025b'),
-      _get_commodity_by_year_and_version('cocoa', 2024, '2025b'),
-      _get_commodity_by_year_and_version('coffee', 2020, '2025b'),
-      _get_commodity_by_year_and_version('coffee', 2024, '2025b'),
-      _get_commodity_by_year_and_version('palm', 2020, '2025b'),
-      _get_commodity_by_year_and_version('palm', 2024, '2025b'),
-      _get_commodity_by_year_and_version('rubber', 2020, '2025b'),
-      _get_commodity_by_year_and_version('rubber', 2024, '2025b'),
-  )
 
 
 @retry.AsyncRetry(deadline=60)
@@ -197,52 +177,34 @@ async def get_suso_stats(geojson: dict[str, str | float]) -> dict[str, float]:
   return await asyncio.to_thread(stats.getInfo)
 
 
-def easy_whisp() -> List[ee.Image]:
-  """Retrieves a list of Earth Engine Images from functions in the datasets module.
-
-  Each function in `datasets.list_functions()` is called, and the resulting
-  ee.Image is added to a list. Exceptions during image retrieval are logged.
-
-  Returns:
-    A list of ee.Image objects.
-  """
-  images_list = []
-  for func in datasets.list_functions():
-    try:
-      image = func()
-      images_list.append(image)
-    except ee.EEException as e:
-      logging.error(str(e))
-  return images_list
-
-
 @retry.AsyncRetry(deadline=60)
 async def get_stats(region: ee.Geometry, image: ee.Image) -> dict[str, float]:
-  """Calculates mean values of an image within a given region.
+  """Calculates total area (in square meters) of an image band within a region.
 
   Args:
     region: The region of interest (ee.Geometry).
-    image: The ee.Image to calculate stats for.
+    image: The pixel-area-weighted ee.Image to calculate stats for.
 
   Returns:
-    A dictionary containing the mean values of image bands within the region.
+    A dictionary containing the summed area values of image bands within the
+    region.
   """
   stats = image.reduceRegion(
-      reducer=ee.Reducer.mean(), geometry=region, scale=10, maxPixels=1e10
+      reducer=ee.Reducer.sum(), geometry=region, scale=10, maxPixels=1e10
   )
   return await asyncio.to_thread(stats.getInfo)
 
 
 @retry.AsyncRetry(deadline=60)
 async def get_whisp_stats(geojson: dict[str, str | float]) -> dict[str, float]:
-  """Calculates WHISP stats for a given geojson.
+  """Calculates WHISP area stats (in square meters) for a given geojson.
 
   Args:
     geojson: The geojson defining the region of interest.
 
   Returns:
-    A dictionary containing the mean values of the WHISP images within the
-    region.
+    A dictionary containing the total area (in square meters) of each WHISP
+    dataset band within the region.
 
   Raises:
       RuntimeError: If no WHISP stats could be retrieved due to API errors.
@@ -250,7 +212,13 @@ async def get_whisp_stats(geojson: dict[str, str | float]) -> dict[str, float]:
   global _WHISP_IMAGES
   async with _WHISP_IMAGES_LOCK:
     if _WHISP_IMAGES is None:
-      _WHISP_IMAGES = await asyncio.to_thread(easy_whisp)
+      whisp_image = await asyncio.to_thread(
+          datasets.combine_datasets,
+          include_context_bands=False,
+          auto_recovery=True,
+      )
+      band_names = await asyncio.to_thread(whisp_image.bandNames().getInfo)
+      _WHISP_IMAGES = [whisp_image.select([band]) for band in band_names]
   region = ee.Geometry(geojson)
   whisp_stats = {}
   successful_requests = 0
@@ -290,7 +258,7 @@ def get_angle(image1: ee.Image, image2: ee.Image) -> ee.Image:
   Returns:
     An ee.Image containing the angle in radians.
   """
-  return image1.multiply(image2).reduce(ee.Reducer.sum()).acos().rename("angle")
+  return image1.multiply(image2).reduce(ee.Reducer.sum()).acos().rename('angle')
 
 
 def get_change_year_image(threshold: float):
@@ -311,29 +279,29 @@ def get_change_year_image(threshold: float):
     An ee.Image with bands for each year from 2018 to 2025, indicating
     the year of change.
   """
-  embeddings = ee.ImageCollection("GOOGLE/SATELLITE_EMBEDDING/V1/ANNUAL")
+  embeddings = ee.ImageCollection('GOOGLE/SATELLITE_EMBEDDING/V1/ANNUAL')
   years = ee.List.sequence(2018, 2025)
 
   def annual_changes(year: int) -> ee.Image:
     cur = embeddings.filter(
-        ee.Filter.calendarRange(year, year, "year")
+        ee.Filter.calendarRange(year, year, 'year')
     ).mosaic()
     prev_year = ee.Number(year).subtract(1)
     prev = embeddings.filter(
-        ee.Filter.calendarRange(prev_year, prev_year, "year")
+        ee.Filter.calendarRange(prev_year, prev_year, 'year')
     ).mosaic()
     return (
         get_angle(prev, cur)
         .gt(threshold)
         .multiply(ee.Image.constant(year))
         .selfMask()
-        .rename(ee.Number(year).format("%d"))
+        .rename(ee.Number(year).format('%d'))
     )
 
   changes = (
       ee.ImageCollection.fromImages(years.map(annual_changes))
       .toBands()
-      .rename(years.map(lambda s: ee.Number(s).format("%d")))
+      .rename(years.map(lambda s: ee.Number(s).format('%d')))
   )
   return changes
 
@@ -384,4 +352,3 @@ async def get_annual_change_stats_2018_2025(
   return await asyncio.to_thread(
       get_annual_change_dictionary_2018_2025(region).getInfo
   )
-
